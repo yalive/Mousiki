@@ -25,13 +25,13 @@ import com.secureappinc.musicplayer.ui.home.models.HomeItem
 class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val callback: (item: HomeItem) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var newReleaseViewHolder: NewReleaseViewHolder
+    var newReleaseViewHolder: NewReleaseViewHolder? = null
     lateinit var featuredViewHolder: FeaturedViewHolder
 
     var tracks: List<MusicTrack> = listOf()
         set(value) {
             field = value
-            newReleaseViewHolder.adapter.updateList(value)
+            newReleaseViewHolder?.adapter?.updateList(value)
             featuredViewHolder.update(value)
 
         }
@@ -58,7 +58,7 @@ class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val c
             TYPE_NEW_RELEASE -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_new_release, parent, false)
                 newReleaseViewHolder = NewReleaseViewHolder(view)
-                return newReleaseViewHolder
+                return newReleaseViewHolder!!
             }
             TYPE_ARTIST -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_artist, parent, false)

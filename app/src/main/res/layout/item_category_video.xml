@@ -14,11 +14,35 @@
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
-        <ImageView
-            android:id="@+id/imgSong"
-            android:layout_width="120dp"
-            android:layout_height="64dp"
-            tools:background="#0f0" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgSong"
+                android:layout_width="120dp"
+                android:layout_height="64dp"
+                tools:background="#0f0" />
+
+            <TextView
+                android:id="@+id/txtDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignEnd="@+id/imgSong"
+                android:layout_alignBottom="@+id/imgSong"
+                android:layout_marginEnd="@dimen/four_4dp"
+                android:layout_marginBottom="@dimen/four_4dp"
+                android:background="@drawable/bg_duration_black"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:padding="@dimen/two_2dp"
+                android:text="03:14"
+                android:textColor="@color/colorWhite"
+                android:textSize="11sp" />
+        </RelativeLayout>
+
     </androidx.cardview.widget.CardView>
 
 

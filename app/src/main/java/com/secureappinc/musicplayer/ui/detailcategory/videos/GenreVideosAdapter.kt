@@ -43,6 +43,7 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
 
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private val txtDuration: TextView = view.findViewById(R.id.txtDuration)
         private val txtCategory: TextView = view.findViewById(R.id.txtCategory)
 
         init {
@@ -57,7 +58,9 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
                 .fit()
                 .into(imgSong)
             txtTitle.text = item.title
+            txtDuration.text = item.durationFormatted
             txtCategory.text = "${genreMusic.title} - Topic"
+
         }
     }
 

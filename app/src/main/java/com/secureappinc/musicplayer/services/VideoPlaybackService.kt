@@ -166,6 +166,13 @@ class VideoPlaybackService : LifecycleService() {
             }
         })
 
+        videoContainerView.findViewById<View>(R.id.draggableView).setOnClickListener {
+            val intent = Intent(this@VideoPlaybackService, MainActivity::class.java)
+            intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+
         windowManager.addView(videoContainerView, videoViewParams)
 
         youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {

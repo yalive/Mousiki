@@ -23,15 +23,20 @@ interface YoutubeApi {
             "playlists?part=snippet%2CcontentDetails&maxResults=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
 
         const val DUMMY_CHANNEL_ID = "UCmhzb5pJId5QY0r6gZqMDdA"
+
+        const val GENRE_VIDEOS_DETAIL =
+            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
     }
 
     @GET
     fun getTrending(@Url url: String): Call<YTTrendingMusicRS>
 
-    @GET("search?part=snippet%2CcontentDetails&chart=mostPopular&maxResults=25&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
+    @GET("search?part=snippet&chart=mostPopular&maxResults=25&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
     fun getCategoryMusic(@Query("topicId") topicId: String, @Query("regionCode") regionCode: String): Call<YTCategoryMusicRS>
 
     @GET(PLAYLIST)
     fun getPlaylist(@Query("channelId") channelId: String, @Query("regionCode") regionCode: String): Call<YTTrendingMusicRS>
 
+    @GET(GENRE_VIDEOS_DETAIL)
+    fun getCategoryMusicDetail(@Query("id") ids: String): Call<YTTrendingMusicRS>
 }
