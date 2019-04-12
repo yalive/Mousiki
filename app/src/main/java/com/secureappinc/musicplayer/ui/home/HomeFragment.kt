@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.models.YTTrendingItem
 import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.net.YoutubeApi
 import com.secureappinc.musicplayer.ui.MainViewModel
@@ -75,7 +77,8 @@ class HomeFragment : Fragment() {
                 if (response.isSuccessful) {
                     val listTrendingMusic = response.body()?.items
                     listTrendingMusic?.let {
-                        adapter.trendingMusicList = listTrendingMusic
+                        val tracks: List<MusicTrack> = createTracksListFrom(listTrendingMusic)
+                        adapter.tracks = tracks
                     }
                 }
             }
@@ -85,6 +88,16 @@ class HomeFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun createTracksListFrom(listTrendingYutube: List<YTTrendingItem>): List<MusicTrack> {
+        val tracks: MutableList<MusicTrack> = mutableListOf()
+        for (ytTrendingItem in listTrendingYutube) {
+            val track =
+                MusicTrack(ytTrendingItem.id, ytTrendingItem.snippet.title, ytTrendingItem.contentDetails.duration)
+            tracks.add(track)
+        }
+        return tracks
     }
 
     fun mockList(): List<HomeItem> {

@@ -9,15 +9,19 @@ import com.google.gson.annotations.SerializedName
  **********************************
  */
 data class YTCategoryMusictem(
-        @Expose
-        @SerializedName("kind")
-        val kind: String,
+    @Expose
+    @SerializedName("kind")
+    val kind: String,
 
-        @Expose
-        @SerializedName("id")
-        val id: YTVideoId,
+    @Expose
+    @SerializedName("id")
+    val id: YTVideoId,
 
-        @Expose
-        @SerializedName("snippet")
-        val snippet: SnippetVideo
+    @Expose
+    @SerializedName("contentDetails")
+    val contentDetails: ContentDetailVideo,
+
+    @Expose
+    @SerializedName("snippet")
+    val snippet: SnippetVideo
 )

@@ -15,10 +15,12 @@ import retrofit2.http.Url
 interface YoutubeApi {
 
     companion object {
-        val TRENDING = "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&regionCode=MA&maxResults=25&videoCategoryId=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+        val TRENDING =
+            "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&regionCode=MA&maxResults=25&videoCategoryId=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
 
 
-        const val PLAYLIST = "playlists?part=snippet%2CcontentDetails&maxResults=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
+        const val PLAYLIST =
+            "playlists?part=snippet%2CcontentDetails&maxResults=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
 
         const val DUMMY_CHANNEL_ID = "UCmhzb5pJId5QY0r6gZqMDdA"
     }
@@ -26,7 +28,7 @@ interface YoutubeApi {
     @GET
     fun getTrending(@Url url: String): Call<YTTrendingMusicRS>
 
-    @GET("search?part=snippet&chart=mostPopular&maxResults=25&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
+    @GET("search?part=snippet%2CcontentDetails&chart=mostPopular&maxResults=25&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
     fun getCategoryMusic(@Query("topicId") topicId: String, @Query("regionCode") regionCode: String): Call<YTCategoryMusicRS>
 
     @GET(PLAYLIST)
