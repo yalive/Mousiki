@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.secureappinc.musicplayer.models.SnippetVideo
 import com.secureappinc.musicplayer.models.VideoEmplacement
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.services.VideoPlayBackState
 import com.secureappinc.musicplayer.ui.MainActivity
@@ -128,7 +128,7 @@ class BottomPanelFragment : Fragment() {
 
     }
 
-    private fun onVideoChanged(video: SnippetVideo) {
+    private fun onVideoChanged(video: MusicTrack) {
 
         txtTitle.text = video.title
         txtTitleVideoCenter.text = video.title
@@ -149,6 +149,6 @@ class BottomPanelFragment : Fragment() {
         }
 
         imgBlured.tag = target
-        Picasso.get().load(video.thumbnails.high.url).into(target)
+        Picasso.get().load(video.imgUrl).into(target)
     }
 }
