@@ -1,6 +1,7 @@
 package com.secureappinc.musicplayer.ui.bottompanel
 
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.VideoEmplacement
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.services.PlaybackLiveData
@@ -20,6 +22,7 @@ import com.secureappinc.musicplayer.services.VideoPlayBackState
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.utils.BlurImage
+import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.dpToPixel
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
@@ -30,6 +33,8 @@ import kotlinx.android.synthetic.main.fragment_bottom_panel.*
 class BottomPanelFragment : Fragment() {
 
     val TAG = "BottomPanelFragment"
+
+    private lateinit var mVideo: MusicTrack
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_bottom_panel, container, false)
@@ -59,7 +64,15 @@ class BottomPanelFragment : Fragment() {
 
         val viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
         viewModel.currentVideo.observe(this, Observer { video ->
+            mVideo = video
             onVideoChanged(video)
+
+            if (UserPrefs.isFav(mVideo.youtubeId)) {
+                btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+            } else {
+                btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+
+            }
         })
 
 
@@ -71,6 +84,21 @@ class BottomPanelFragment : Fragment() {
             onClickPlayPause()
         }
 
+        btnShareVia.setOnClickListener {
+            shareVideoId(mVideo.shareVideoUrl)
+        }
+
+        btnAddFav.setOnClickListener {
+            if (!UserPrefs.isFav(mVideo.youtubeId)) {
+                UserPrefs.saveFav(mVideo.youtubeId, true)
+                btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+            } else {
+                UserPrefs.saveFav(mVideo.youtubeId, false)
+                btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+
+            }
+
+        }
         PlaybackLiveData.observe(this, Observer {
             if (it.state == PlayerConstants.PlayerState.PAUSED) {
                 btnPlayPause.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_play)
@@ -147,5 +175,14 @@ class BottomPanelFragment : Fragment() {
 
         imgBlured.tag = target
         Picasso.get().load(video.imgUrl).into(target)
+    }
+
+    private fun shareVideoId(videoId: String) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, videoId)
+            type = "text/plain"
+        }
+        startActivity(sendIntent)
     }
 }

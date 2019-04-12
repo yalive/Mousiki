@@ -14,11 +14,15 @@ object UserPrefs {
     val PREF_NAME = "music-app-pref"
 
 
-    fun saveFav(videoId: String) {
+    fun saveFav(videoId: String, isAdd: Boolean) {
         val pref = getPrefs()
-        pref.edit().putBoolean("", true).apply()
+        pref.edit().putBoolean(videoId, isAdd).apply()
     }
 
+    fun isFav(videoId: String): Boolean {
+        val pref = getPrefs()
+        return pref.getBoolean(videoId, false)
+    }
 
     private fun getPrefs(): SharedPreferences {
         return MusicApp.get().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
