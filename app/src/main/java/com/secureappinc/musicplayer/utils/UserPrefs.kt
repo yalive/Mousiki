@@ -16,7 +16,7 @@ object UserPrefs {
 
     fun saveFav(videoId: String) {
         val pref = getPrefs()
-        pref.edit().putBoolean("", true).apply()
+        pref.edit().putBoolean(videoId, true).apply()
     }
 
 
