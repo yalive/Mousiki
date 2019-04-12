@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="half_05dp">0.5dp</dimen>
+    <dimen name="one_1dp">1dp</dimen>
+    <dimen name="two_2dp">2dp</dimen>
+    <dimen name="four_4dp">4dp</dimen>
+    <dimen name="eight_8dp">8dp</dimen>
+    <dimen name="sixteen_16dp">16dp</dimen>
+    <dimen name="twenty_four_24dp">24dp</dimen>
+    <dimen name="thirty_two_32dp">32dp</dimen>
+
+
+    <dimen name="floating_video_height">70dp</dimen>
+    <dimen name="floating_video_width">120dp</dimen>
+    <dimen name="bottom_pannel_height">54dp</dimen>
+
+</resources>
