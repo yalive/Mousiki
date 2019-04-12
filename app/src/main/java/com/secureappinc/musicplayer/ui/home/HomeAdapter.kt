@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTTrendingItem
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.home.models.GenreItem
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
@@ -28,7 +28,7 @@ class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val c
     lateinit var newReleaseViewHolder: NewReleaseViewHolder
     lateinit var featuredViewHolder: FeaturedViewHolder
 
-    var trendingMusicList: List<YTTrendingItem> = listOf()
+    var tracks: List<MusicTrack> = listOf()
         set(value) {
             field = value
             newReleaseViewHolder.adapter.updateList(value)
@@ -138,7 +138,7 @@ class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val c
 
         fun bind() {
             adapter = HomeFeaturedAdapter(itemView.context)
-            adapter.pages = this@HomeAdapter.trendingMusicList
+            adapter.pages = this@HomeAdapter.tracks
 
             // Disable clip to padding
             viewPager.setClipToPadding(false);
@@ -150,7 +150,7 @@ class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val c
             viewPager.adapter = adapter
         }
 
-        fun update(value: List<YTTrendingItem>) {
+        fun update(value: List<MusicTrack>) {
             this.adapter.pages = value
             this.adapter.notifyDataSetChanged()
         }
@@ -162,7 +162,7 @@ class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val c
         lateinit var adapter: HomeNewReleaseAdapter
 
         fun bind() {
-            adapter = HomeNewReleaseAdapter(this@HomeAdapter.trendingMusicList, viewModel)
+            adapter = HomeNewReleaseAdapter(this@HomeAdapter.tracks, viewModel)
             recyclerView.layoutManager = LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
             recyclerView.adapter = adapter
         }

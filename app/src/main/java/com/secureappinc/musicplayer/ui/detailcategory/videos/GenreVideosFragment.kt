@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.YTCategoryMusicRS
+import com.secureappinc.musicplayer.models.YTCategoryMusictem
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
@@ -56,7 +58,9 @@ class GenreVideosFragment : Fragment() {
                 if (response.isSuccessful) {
                     val listMusics = response.body()?.items
                     listMusics?.let {
-                        adapter.items = listMusics
+
+                        val tracks: List<MusicTrack> = createTracksListFrom(listMusics)
+                        adapter.items = tracks
                     }
                 }
             }
@@ -65,5 +69,16 @@ class GenreVideosFragment : Fragment() {
                 Log.d(TAG, "")
             }
         })
+    }
+
+    private fun createTracksListFrom(listMusics: List<YTCategoryMusictem>): List<MusicTrack> {
+        val tracks: MutableList<MusicTrack> = mutableListOf()
+        for (musicItem in listMusics) {
+            val track =
+                MusicTrack(musicItem.id.videoId, musicItem.snippet.title, musicItem.contentDetails.duration)
+            tracks.add(track)
+        }
+        return tracks
+
     }
 }

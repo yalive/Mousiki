@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTCategoryMusictem
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.squareup.picasso.Picasso
@@ -17,10 +17,10 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class GenreVideosAdapter(items: List<YTCategoryMusictem>, val genreMusic: GenreMusic, val viewModel: MainViewModel) :
+class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, val viewModel: MainViewModel) :
     RecyclerView.Adapter<GenreVideosAdapter.ViewHolder>() {
 
-    var items: List<YTCategoryMusictem> = items
+    var items: List<MusicTrack> = items
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -47,16 +47,16 @@ class GenreVideosAdapter(items: List<YTCategoryMusictem>, val genreMusic: GenreM
 
         init {
             view.setOnClickListener {
-                viewModel.playVideo.value = items[adapterPosition].id.videoId
-                viewModel.currentVideo.value = items[adapterPosition].snippet
+                viewModel.playVideo.value = items[adapterPosition].youtubeId
+                viewModel.currentVideo.value = items[adapterPosition]
             }
         }
 
-        fun bind(item: YTCategoryMusictem) {
-            Picasso.get().load("https://img.youtube.com/vi/${item.id.videoId}/maxresdefault.jpg")
+        fun bind(item: MusicTrack) {
+            Picasso.get().load(item.imgUrl)
                 .fit()
                 .into(imgSong)
-            txtTitle.text = item.snippet.title
+            txtTitle.text = item.title
             txtCategory.text = "${genreMusic.title} - Topic"
         }
     }

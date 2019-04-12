@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTTrendingItem
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.squareup.picasso.Picasso
 
 
@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso
 
 internal class HomeFeaturedAdapter(var mContext: Context) : PagerAdapter() {
     var mLayoutInflater: LayoutInflater
-    var pages: List<YTTrendingItem> = ArrayList()
+    var pages: List<MusicTrack> = ArrayList()
 
     init {
         mLayoutInflater = LayoutInflater.from(mContext)
@@ -41,9 +41,9 @@ internal class HomeFeaturedAdapter(var mContext: Context) : PagerAdapter() {
         val itemView = mLayoutInflater.inflate(R.layout.item_featured, container, false)
         // Find and populate data into the page (i.e set the image)
         val imageView = itemView.findViewById(R.id.imgSong) as ImageView
-        Picasso.get().load("https://img.youtube.com/vi/${pages[position].id}/maxresdefault.jpg")
-                .fit()
-                .into(imageView)
+        Picasso.get().load("https://img.youtube.com/vi/${pages[position].youtubeId}/maxresdefault.jpg")
+            .fit()
+            .into(imageView)
         // ...
         // Add the page to the container
         container.addView(itemView)
