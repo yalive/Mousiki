@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'secureappinc'
+            keyPassword 'secureappinc'
+            storeFile file('../keystore/keystore')
+            storePassword 'secureappinc'
+        }
+    }
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.secureappinc.musicplayer"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.releaseConfig
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    androidExtensions {
+        experimental = true
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    // Sliding menu
+    implementation 'com.yarolegovich:sliding-root-nav:1.1.0'
+    // Navigation
+    def nav_version = "2.1.0-alpha02"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    def lifecycle_version = "2.0.0"
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    // Network
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Youtube Player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.3'
+
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+}

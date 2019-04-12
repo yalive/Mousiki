@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">@color/colorTransparent</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorTransparent">#00000000</color>
+
+    <color name="colorYellow">#F3CB45</color>
+
+
+    <color name="colorClosePlayerOn">#BCC7485B</color>
+    <color name="colorClosePlayerOff">#45000000</color>
+
+</resources>
