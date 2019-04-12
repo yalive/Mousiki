@@ -34,8 +34,6 @@ class BottomPanelFragment : Fragment() {
 
     val TAG = "BottomPanelFragment"
 
-    private lateinit var mVideo: MusicTrack
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_bottom_panel, container, false)
     }
@@ -64,10 +62,9 @@ class BottomPanelFragment : Fragment() {
 
         val viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
         viewModel.currentVideo.observe(this, Observer { video ->
-            mVideo = video
             onVideoChanged(video)
 
-            if (UserPrefs.isFav(mVideo.youtubeId)) {
+            if (UserPrefs.isFav(video.youtubeId)) {
                 btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
             } else {
                 btnAddFav.setImageResource(R.drawable.ic_favorite_border)
@@ -85,15 +82,15 @@ class BottomPanelFragment : Fragment() {
         }
 
         btnShareVia.setOnClickListener {
-            shareVideoId(mVideo.shareVideoUrl)
+            shareVideoId(viewModel.currentVideo.value?.shareVideoUrl)
         }
 
         btnAddFav.setOnClickListener {
-            if (!UserPrefs.isFav(mVideo.youtubeId)) {
-                UserPrefs.saveFav(mVideo.youtubeId, true)
+            if (!UserPrefs.isFav(viewModel.currentVideo.value?.youtubeId)) {
+                UserPrefs.saveFav(viewModel.currentVideo.value?.youtubeId, true)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
             } else {
-                UserPrefs.saveFav(mVideo.youtubeId, false)
+                UserPrefs.saveFav(viewModel.currentVideo.value?.youtubeId, false)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_border)
 
             }
@@ -177,7 +174,7 @@ class BottomPanelFragment : Fragment() {
         Picasso.get().load(video.imgUrl).into(target)
     }
 
-    private fun shareVideoId(videoId: String) {
+    private fun shareVideoId(videoId: String?) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, videoId)
