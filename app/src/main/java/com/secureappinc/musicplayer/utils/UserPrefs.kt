@@ -14,12 +14,12 @@ object UserPrefs {
     val PREF_NAME = "music-app-pref"
 
 
-    fun saveFav(videoId: String, isAdd: Boolean) {
+    fun saveFav(videoId: String?, isAdd: Boolean) {
         val pref = getPrefs()
         pref.edit().putBoolean(videoId, isAdd).apply()
     }
 
-    fun isFav(videoId: String): Boolean {
+    fun isFav(videoId: String?): Boolean {
         val pref = getPrefs()
         return pref.getBoolean(videoId, false)
     }
