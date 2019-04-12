@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.YTTrendingItem
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.squareup.picasso.Picasso
@@ -18,7 +19,7 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class HomeNewReleaseAdapter(var items: List<YTTrendingItem>, val viewModel: MainViewModel) :
+class HomeNewReleaseAdapter(var items: List<MusicTrack>, val viewModel: MainViewModel) :
     RecyclerView.Adapter<HomeNewReleaseAdapter.ViewHolder>() {
 
 
@@ -35,7 +36,7 @@ class HomeNewReleaseAdapter(var items: List<YTTrendingItem>, val viewModel: Main
     override fun getItemCount() = items.size
 
 
-    fun updateList(items: List<YTTrendingItem>) {
+    fun updateList(items: List<MusicTrack>) {
         this.items = items
         notifyDataSetChanged()
     }
@@ -49,19 +50,19 @@ class HomeNewReleaseAdapter(var items: List<YTTrendingItem>, val viewModel: Main
         init {
 
             view.findViewById<View>(R.id.cardView).setOnClickListener {
-                viewModel.playVideo.value = items[adapterPosition].id
-                viewModel.currentVideo.value = items[adapterPosition].snippet
+                viewModel.playVideo.value = items[adapterPosition].youtubeId
+                viewModel.currentVideo.value = items[adapterPosition]
                 VideoEmplacementLiveData.bottom()
             }
         }
 
-        fun bind(item: YTTrendingItem) {
-            Picasso.get().load("https://img.youtube.com/vi/${item.id}/maxresdefault.jpg")
+        fun bind(item: MusicTrack) {
+            Picasso.get().load("https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg")
                 .fit()
                 .into(imgSong)
 
-            txtTitle.text = item.snippet.title
-            txtDuration.text = formatDuration(item.contentDetails.duration)
+            txtTitle.text = item.title
+            txtDuration.text = formatDuration(item.duration)
 
         }
 
