@@ -10,4 +10,8 @@ data class MusicTrack(val youtubeId: String, val title: String, val duration: St
         get() {
             return "https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg"
         }
+    val shareVideoUrl: String
+        get() {
+            return "https://www.youtube.com/watch?v=$youtubeId"
+        }
 }
