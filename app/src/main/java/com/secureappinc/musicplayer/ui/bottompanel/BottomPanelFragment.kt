@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -69,12 +68,6 @@ class BottomPanelFragment : Fragment() {
         PlayerQueue.observe(this, Observer { video ->
             onVideoChanged(video)
 
-            if (UserPrefs.isFav(video.youtubeId)) {
-                btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_added_24dp)
-            } else {
-                btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_border)
-
-            }
         })
 
         btnPlayPause.setOnClickListener {
@@ -86,18 +79,18 @@ class BottomPanelFragment : Fragment() {
         }
 
         btnShareVia.setOnClickListener {
-            shareVideoId(viewModel.currentVideo.value?.shareVideoUrl)
+            shareVideoId(PlayerQueue.value?.shareVideoUrl)
         }
 
         btnAddFav.setOnClickListener {
-            if (!UserPrefs.isFav(viewModel.currentVideo.value?.youtubeId)) {
+            if (!UserPrefs.isFav(PlayerQueue.value?.youtubeId)) {
                 Executors.newSingleThreadExecutor().execute {
-                    db.musicTrackDao().insertMusicTrack(viewModel.currentVideo.value!!)
+                    db.musicTrackDao().insertMusicTrack(PlayerQueue.value!!)
                 }
-                UserPrefs.saveFav(viewModel.currentVideo.value?.youtubeId, true)
+                UserPrefs.saveFav(PlayerQueue.value?.youtubeId, true)
                 btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_added_24dp)
             } else {
-                UserPrefs.saveFav(viewModel.currentVideo.value?.youtubeId, false)
+                UserPrefs.saveFav(PlayerQueue.value?.youtubeId, false)
                 btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_border)
 
             }
@@ -178,6 +171,12 @@ class BottomPanelFragment : Fragment() {
         txtTitle.text = video.title
         txtTitleVideoCenter.text = video.title
 
+        if (UserPrefs.isFav(video.youtubeId)) {
+            btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_added_24dp)
+        } else {
+            btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_border)
+
+        }
         loadAndBlureImage(video)
 
         configureSeekBar(video)
@@ -187,6 +186,7 @@ class BottomPanelFragment : Fragment() {
     private fun configureSeekBar(video: MusicTrack) {
         txtDuration.text = video.durationFormatted
         txtElapsedTime.text = "00:00"
+        seekBarDuration.progress = 0
         seekBarDuration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
