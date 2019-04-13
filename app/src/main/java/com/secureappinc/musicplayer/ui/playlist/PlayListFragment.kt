@@ -11,7 +11,7 @@ import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
-import com.secureappinc.musicplayer.ui.bottomsheet.BottomSheetFragment
+import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_play_list.*
@@ -55,7 +55,7 @@ class PlayListFragment : Fragment(), PlayListAdapter.onItemClickListener {
     }
 
     override fun onItemClick(musicTrack: MusicTrack) {
-        val bottomSheetFragment = BottomSheetFragment()
+        val bottomSheetFragment = FvaBottomSheetFragment()
         val bundle = Bundle()
         bundle.putString("MUSIC_TRACK", Gson().toJson(musicTrack))
         bottomSheetFragment.arguments = bundle

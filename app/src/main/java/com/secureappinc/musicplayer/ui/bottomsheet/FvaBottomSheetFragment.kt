@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
+import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.Utils
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_dialog.*
@@ -18,7 +19,7 @@ import java.util.concurrent.Executors
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
-class BottomSheetFragment : BottomSheetDialogFragment() {
+class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     val TAG = "BottomSheetFragment"
     lateinit var musicTrack: MusicTrack
@@ -31,6 +32,8 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        PlayerQueue.hideVideo()
 
         db = MusicTrackRoomDatabase.getDatabase(context!!)
 
@@ -55,5 +58,10 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                 this.dismiss()
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        PlayerQueue.showVideo()
     }
 }

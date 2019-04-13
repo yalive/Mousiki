@@ -149,7 +149,7 @@ class BottomPanelFragment : Fragment() {
     }
 
     private fun showQueue() {
-        val dialog = BottomSheetFragment()
+        val dialog = PlayerBottomSheetFragment()
         dialog.show(childFragmentManager, "BottomSheetFragment")
     }
 
