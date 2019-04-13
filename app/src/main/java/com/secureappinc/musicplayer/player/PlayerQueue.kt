@@ -17,8 +17,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
 
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
-        this.value = currentTrack
         this.queue = queue
+        this.value = currentTrack
         notifyService(currentTrack.youtubeId)
     }
 

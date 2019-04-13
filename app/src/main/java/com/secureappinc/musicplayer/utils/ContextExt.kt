@@ -5,6 +5,7 @@ import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.lifecycle.LifecycleService
 import com.secureappinc.musicplayer.dpToPixel
 import com.secureappinc.musicplayer.pixelsToDp
@@ -43,4 +44,8 @@ fun Context.screenSize(): ScreenSize {
     val w = displayMetrics.widthPixels
 
     return ScreenSize(w, h)
+}
+
+fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }

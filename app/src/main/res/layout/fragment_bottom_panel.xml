@@ -2,8 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/antiDrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".ui.bottompanel.BottomPanelFragment">
 
     <!-- Top Bar-->
@@ -43,6 +47,7 @@
             android:src="@drawable/ic_pause" />
 
         <ImageButton
+            android:id="@+id/btnShowQueue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/sixteen_16dp"
@@ -275,6 +280,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/btnShowQueueFull"
                 android:layout_width="@dimen/thirty_two_32dp"
                 android:layout_height="@dimen/thirty_two_32dp"
                 android:layout_marginEnd="@dimen/sixteen_16dp"

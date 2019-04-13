@@ -63,6 +63,7 @@ class BottomPanelFragment : Fragment() {
             }
         })
 
+
         db = MusicTrackRoomDatabase.getDatabase(context!!)
 
         PlayerQueue.observe(this, Observer { video ->
@@ -125,8 +126,32 @@ class BottomPanelFragment : Fragment() {
             val minutes = (elapsedSeconds / 60).toInt()
             val seconds = (elapsedSeconds % 60).toInt()
             txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
+
+            PlayerQueue.value?.let { currentTrack ->
+                val progress = elapsedSeconds * 100 / currentTrack.durationToSeconds()
+                seekBarDuration.progress = progress.toInt()
+            }
+
         })
 
+        btnShowQueue.setOnClickListener {
+            showQueue()
+        }
+
+        btnShowQueueFull.setOnClickListener {
+            showQueue()
+        }
+
+        antiDrag.setOnClickListener {
+            if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+            }
+        }
+    }
+
+    private fun showQueue() {
+        val dialog = BottomSheetFragment()
+        dialog.show(childFragmentManager, "BottomSheetFragment")
     }
 
     private fun onClickPlayPause() {
@@ -197,8 +222,8 @@ class BottomPanelFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 seekBar?.progress?.let { progress ->
                     // Map from  (0,100) to (0,duration)
-                    val seekTo = progress * video.durationToSeconds() / 100
-                    PlayerQueue.seekTo(seekTo)
+                    val seconds = progress * video.durationToSeconds() / 100
+                    PlayerQueue.seekTo(seconds)
                 }
             }
         })

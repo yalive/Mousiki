@@ -15,6 +15,7 @@ import com.secureappinc.musicplayer.models.EmplacementBottom
 import com.secureappinc.musicplayer.models.EmplacementCenter
 import com.secureappinc.musicplayer.models.EmplacementOut
 import com.secureappinc.musicplayer.models.VideoEmplacement
+import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.secureappinc.musicplayer.utils.dpToPixel
@@ -203,33 +204,25 @@ class VideoPlaybackService : LifecycleService() {
                     youTubePlayer.loadVideo(id, 0f)
                 }
                 this@VideoPlaybackService.youTubePlayer = youTubePlayer
+
             }
 
             override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
                 super.onStateChange(youTubePlayer, state)
                 PlaybackLiveData.value = state
+                if (state == PlayerConstants.PlayerState.ENDED) {
+                    PlayerQueue.playNextTrack()
+                }
             }
 
             override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
                 super.onCurrentSecond(youTubePlayer, second)
                 PlaybackDuration.value = second
             }
+
         })
     }
 
-/*
-    private fun observeClickControls() {
-        PlaybackLiveData.observe(this, Observer {
-            if (it.fromUser) {
-                if (it.state == PlayerConstants.PlayerState.PAUSED) {
-                    youTubePlayer?.pause()
-                } else if (it.state == PlayerConstants.PlayerState.PLAYING) {
-                    youTubePlayer?.play()
-                }
-            }
-        })
-    }
-*/
 
     private fun observeForegroundToggle() {
 

@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.ui.detailcategory.videos
+package com.secureappinc.musicplayer.ui.bottompanel
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.PlayerQueue
-import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.squareup.picasso.Picasso
 
 /**
@@ -17,8 +16,8 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, val onVideoSelected: () -> Unit) :
-    RecyclerView.Adapter<GenreVideosAdapter.ViewHolder>() {
+class BottomSheetVideosAdapter(items: List<MusicTrack>) :
+    RecyclerView.Adapter<BottomSheetVideosAdapter.ViewHolder>() {
 
     var items: List<MusicTrack> = items
         set(value) {
@@ -28,7 +27,7 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category_video, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_bottom_sheet_video, parent, false)
         return ViewHolder(view)
     }
 
@@ -48,7 +47,6 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
 
         init {
             view.setOnClickListener {
-                onVideoSelected()
                 PlayerQueue.playTrack(items[adapterPosition], items)
             }
         }
@@ -59,8 +57,6 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
                 .into(imgSong)
             txtTitle.text = item.title
             txtDuration.text = item.durationFormatted
-            txtCategory.text = "${genreMusic.title} - Topic"
-
         }
     }
 

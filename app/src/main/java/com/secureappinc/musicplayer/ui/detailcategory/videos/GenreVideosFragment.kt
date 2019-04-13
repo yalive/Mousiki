@@ -13,11 +13,12 @@ import com.secureappinc.musicplayer.models.Resource
 import com.secureappinc.musicplayer.models.Status
 import com.secureappinc.musicplayer.models.YTCategoryMusictem
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.ui.MainViewModel
+import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
@@ -48,9 +49,11 @@ class GenreVideosFragment : Fragment() {
         genreMusic = parcelableGenre
         adapter = GenreVideosAdapter(
             listOf(),
-            genreMusic,
-            ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
-        )
+            genreMusic
+        ) {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
         recyclerView.adapter = adapter
 
         viewModel.searchResultList.observe(this, Observer { resource ->
