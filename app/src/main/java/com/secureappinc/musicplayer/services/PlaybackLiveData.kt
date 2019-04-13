@@ -11,4 +11,5 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 
 data class VideoPlayBackState(val state: PlayerConstants.PlayerState, val fromUser: Boolean)
 
-object PlaybackLiveData : MutableLiveData<VideoPlayBackState>()
+object PlaybackLiveData : MutableLiveData<PlayerConstants.PlayerState>()
+object PlaybackDuration : MutableLiveData<Float>()

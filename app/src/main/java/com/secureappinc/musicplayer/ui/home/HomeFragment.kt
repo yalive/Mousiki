@@ -16,10 +16,12 @@ import com.secureappinc.musicplayer.models.YTTrendingMusicRS
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.net.YoutubeApi
+import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.*
 import com.secureappinc.musicplayer.utils.dpToPixel
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,13 +53,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        adapter = HomeAdapter(mockList(), ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)) {
+        adapter = HomeAdapter(mockList(), ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java), {
             if (it is GenreItem) {
                 val bundle = Bundle()
                 bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, it.genre)
                 recyclerView.findNavController().navigate(R.id.detailGenreFragment, bundle)
             }
-        }
+        }, {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        })
 
 
         recyclerView.layoutManager = gridLayoutManager
