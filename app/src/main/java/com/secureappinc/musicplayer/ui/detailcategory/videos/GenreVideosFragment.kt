@@ -9,11 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.models.Resource
+import com.secureappinc.musicplayer.models.Status
 import com.secureappinc.musicplayer.models.YTCategoryMusictem
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
+import com.secureappinc.musicplayer.utils.gone
+import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
@@ -49,11 +53,30 @@ class GenreVideosFragment : Fragment() {
         )
         recyclerView.adapter = adapter
 
-        viewModel.searchResultList.observe(this, Observer { tracks ->
-            adapter.items = tracks
+        viewModel.searchResultList.observe(this, Observer { resource ->
+            updateUI(resource)
         })
 
         laodCategoryMusic()
+    }
+
+    private fun updateUI(resource: Resource<List<MusicTrack>>) {
+        when (resource.status) {
+            Status.SUCCESS -> {
+                adapter.items = resource.data!!
+                recyclerView.visible()
+                progressBar.gone()
+                txtError.gone()
+            }
+            Status.ERROR -> {
+                progressBar.gone()
+                txtError.visible()
+            }
+            Status.LOADING -> {
+                progressBar.visible()
+                txtError.gone()
+            }
+        }
     }
 
     private fun laodCategoryMusic() {

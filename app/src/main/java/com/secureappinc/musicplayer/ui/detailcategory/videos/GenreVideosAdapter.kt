@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.squareup.picasso.Picasso
@@ -48,8 +49,7 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
 
         init {
             view.setOnClickListener {
-                viewModel.playVideo.value = items[adapterPosition].youtubeId
-                viewModel.currentVideo.value = items[adapterPosition]
+                PlayerQueue.playTrack(items[adapterPosition], items)
             }
         }
 

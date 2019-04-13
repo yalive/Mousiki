@@ -13,7 +13,6 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -25,7 +24,6 @@ import com.secureappinc.musicplayer.models.EmplacementOut
 import com.secureappinc.musicplayer.services.DragBottomPanelLiveData
 import com.secureappinc.musicplayer.services.DragPanelInfo
 import com.secureappinc.musicplayer.services.PlaybackLiveData
-import com.secureappinc.musicplayer.services.VideoPlaybackService
 import com.secureappinc.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.secureappinc.musicplayer.utils.canDrawOverApps
@@ -58,11 +56,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        viewModel.playVideo.observe(this, Observer {
-            val intent = Intent(this, VideoPlaybackService::class.java)
-            intent.putExtra("video-id", it)
-            startService(intent)
-        })
 
         setupMenu()
         contentMenu = findViewById<FrameLayout>(com.secureappinc.musicplayer.R.id.contentMenu)
@@ -211,7 +204,7 @@ class MainActivity : AppCompatActivity() {
         val playBackState = PlaybackLiveData.value
         val lastVideoEmplacement = viewModel.lastVideoEmplacement
 
-        if (lastVideoEmplacement != null && playBackState != null && playBackState.state != PlayerConstants.PlayerState.UNKNOWN) {
+        if (lastVideoEmplacement != null && playBackState != null && playBackState != PlayerConstants.PlayerState.UNKNOWN) {
 
             // Usually for coming from background
             if (lastVideoEmplacement !is EmplacementOut) {

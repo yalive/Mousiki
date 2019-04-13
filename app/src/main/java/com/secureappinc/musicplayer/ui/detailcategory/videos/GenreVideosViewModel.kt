@@ -2,10 +2,7 @@ package com.secureappinc.musicplayer.ui.detailcategory.videos
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.models.YTCategoryMusicRS
-import com.secureappinc.musicplayer.models.YTCategoryMusictem
-import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.models.*
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import retrofit2.Call
@@ -19,21 +16,26 @@ import retrofit2.Response
  */
 class GenreVideosViewModel : ViewModel() {
 
-    val searchResultList = MutableLiveData<List<MusicTrack>>()
+    val searchResultList = MutableLiveData<Resource<List<MusicTrack>>>()
 
     fun loadVideosForTopic(topicId: String) {
+        searchResultList.value = Resource.loading()
         ApiManager.api.getCategoryMusic(topicId, "MA").enqueue(object : Callback<YTCategoryMusicRS> {
             override fun onResponse(call: Call<YTCategoryMusicRS>, response: Response<YTCategoryMusicRS>) {
                 if (response.isSuccessful) {
                     val listMusics = response.body()?.items
-                    listMusics?.let {
+                    if (listMusics != null) {
                         loadVideosDetails(listMusics)
+                    } else {
+                        searchResultList.value = Resource.error("Error loading")
                     }
+                } else {
+                    searchResultList.value = Resource.error("Error loading")
                 }
             }
 
             override fun onFailure(call: Call<YTCategoryMusicRS>, t: Throwable) {
-                print("")
+                searchResultList.value = Resource.error("Error loading")
             }
         })
     }
@@ -51,19 +53,23 @@ class GenreVideosViewModel : ViewModel() {
 
             override fun onResponse(call: Call<YTTrendingMusicRS?>, response: Response<YTTrendingMusicRS?>) {
                 if (response.isSuccessful) {
-                    val listMusics = response.body()?.items
-                    listMusics?.let {
+                    val videosDetailsList = response.body()?.items
 
-                        val tracks: List<MusicTrack> = createTracksListFrom(listMusics)
+                    if (videosDetailsList != null) {
+                        val tracks: List<MusicTrack> = createTracksListFrom(videosDetailsList)
 
-                        searchResultList.value = tracks
-
+                        searchResultList.value = Resource.success(tracks)
+                    } else {
+                        searchResultList.value = Resource.error("Error loading")
                     }
+
+                } else {
+                    searchResultList.value = Resource.error("Error loading")
                 }
             }
 
             override fun onFailure(call: Call<YTTrendingMusicRS?>, t: Throwable) {
-                print("")
+                searchResultList.value = Resource.error("Error loading")
             }
         })
     }
