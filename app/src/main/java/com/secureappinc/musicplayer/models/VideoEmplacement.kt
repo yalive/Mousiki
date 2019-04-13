@@ -81,22 +81,22 @@ class EmplacementCenter : VideoEmplacement() {
 class EmplacementPlaylist : VideoEmplacement() {
     override val x: Int
         get() {
-            return dpToPixel(1f)
+            return dpToPixel(7.5f)
         }
 
     override val y: Int
         get() {
-            return screenHeightPx - height - dpToPixel(28f) // fixed value
+            return screenHeightPx - dpToPixel(365.5f) // fixed value
         }
 
     override val width: Int
         get() {
-            return dpToPixel(90f)
+            return dpToPixel(120f)
         }
 
     override val height: Int
         get() {
-            return dpToPixel(45f)
+            return dpToPixel(64f)
         }
 }
 

@@ -11,19 +11,33 @@ import com.secureappinc.musicplayer.models.VideoEmplacement
 
 object VideoEmplacementLiveData : MutableLiveData<VideoEmplacement>() {
 
+    var oldValue1: VideoEmplacement? = null
+        private set
+
+    var oldValue2: VideoEmplacement? = null
+        private set
+
     fun center() {
+        oldValue2 = oldValue1
+        oldValue1 = value
         value = VideoEmplacement.center()
     }
 
     fun bottom() {
+        oldValue2 = oldValue1
+        oldValue1 = value
         value = VideoEmplacement.bottom()
     }
 
     fun playlist() {
+        oldValue2 = oldValue1
+        oldValue1 = value
         value = VideoEmplacement.playlist()
     }
 
     fun out() {
+        oldValue2 = oldValue1
+        oldValue1 = value
         value = VideoEmplacement.out()
     }
 }

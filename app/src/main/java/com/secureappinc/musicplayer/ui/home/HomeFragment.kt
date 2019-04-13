@@ -2,30 +2,27 @@ package com.secureappinc.musicplayer.ui.home
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.models.Resource
+import com.secureappinc.musicplayer.models.Status
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.net.ApiManager
-import com.secureappinc.musicplayer.net.YoutubeApi
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.*
 import com.secureappinc.musicplayer.utils.dpToPixel
+import com.secureappinc.musicplayer.utils.gone
+import com.secureappinc.musicplayer.utils.visible
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_home.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class HomeFragment : Fragment() {
@@ -70,39 +67,32 @@ class HomeFragment : Fragment() {
         val spacingDp = requireActivity().dpToPixel(8f)
         val marginDp = requireActivity().dpToPixel(8f)
         recyclerView.addItemDecoration(GridSpacingItemDecoration(spacingDp, marginDp))
-        //recyclerView.isNestedScrollingEnabled = true
-
-        loadTrendingMusic()
-    }
 
 
-    private fun loadTrendingMusic() {
-        ApiManager.api.getTrending(YoutubeApi.TRENDING).enqueue(object : Callback<YTTrendingMusicRS> {
-            override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
-                if (response.isSuccessful) {
-                    val listTrendingMusic = response.body()?.items
-                    listTrendingMusic?.let {
-                        val tracks: List<MusicTrack> = createTracksListFrom(listTrendingMusic)
-                        adapter.tracks = tracks
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<YTTrendingMusicRS>, t: Throwable) {
-                Log.d(TAG, "")
-            }
+        val viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        viewModel.trendingTracks.observe(this, Observer { resource ->
+            updateUI(resource)
         })
 
+        viewModel.loadTrendingMusic()
     }
 
-    private fun createTracksListFrom(listTrendingYutube: List<YTTrendingItem>): List<MusicTrack> {
-        val tracks: MutableList<MusicTrack> = mutableListOf()
-        for (ytTrendingItem in listTrendingYutube) {
-            val track =
-                MusicTrack(ytTrendingItem.id, ytTrendingItem.snippet.title, ytTrendingItem.contentDetails.duration)
-            tracks.add(track)
+
+    private fun updateUI(resource: Resource<List<MusicTrack>>) {
+        if (resource.status == Status.LOADING) {
+            txtError.gone()
+            progressBar.visible()
+            recyclerView.gone()
+        } else if (resource.status == Status.ERROR) {
+            txtError.visible()
+            progressBar.gone()
+            recyclerView.gone()
+        } else {
+            txtError.gone()
+            progressBar.gone()
+            recyclerView.visible()
+            adapter.tracks = resource.data!!
         }
-        return tracks
     }
 
     fun mockList(): List<HomeItem> {

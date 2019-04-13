@@ -201,6 +201,9 @@ class MainActivity : AppCompatActivity() {
      */
     private fun restoreOldVideoState() {
 
+        val oldValue1 = VideoEmplacementLiveData.oldValue1
+        val oldValue2 = VideoEmplacementLiveData.oldValue2
+
         val playBackState = PlaybackLiveData.value
         val lastVideoEmplacement = viewModel.lastVideoEmplacement
 
