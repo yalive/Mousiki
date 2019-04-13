@@ -7,9 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTTrendingItem
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.ui.MainViewModel
+import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.squareup.picasso.Picasso
 
@@ -19,7 +18,7 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class HomeNewReleaseAdapter(var items: List<MusicTrack>, val viewModel: MainViewModel) :
+class HomeNewReleaseAdapter(var items: List<MusicTrack>, val onVideoSelected: () -> Unit) :
     RecyclerView.Adapter<HomeNewReleaseAdapter.ViewHolder>() {
 
 
@@ -50,14 +49,14 @@ class HomeNewReleaseAdapter(var items: List<MusicTrack>, val viewModel: MainView
         init {
 
             view.findViewById<View>(R.id.cardView).setOnClickListener {
-                viewModel.playVideo.value = items[adapterPosition].youtubeId
-                viewModel.currentVideo.value = items[adapterPosition]
+                onVideoSelected()
+                PlayerQueue.playTrack(items[adapterPosition], items)
                 VideoEmplacementLiveData.bottom()
             }
         }
 
         fun bind(item: MusicTrack) {
-            Picasso.get().load("https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg")
+            Picasso.get().load(item.imgUrl)
                 .fit()
                 .into(imgSong)
 
