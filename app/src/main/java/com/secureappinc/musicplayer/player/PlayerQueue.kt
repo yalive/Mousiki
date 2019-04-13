@@ -15,7 +15,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
     var queue: List<MusicTrack>? = null
 
-
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
         this.queue = queue
         this.value = currentTrack
@@ -35,6 +34,21 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (previousTrack != null) {
             this.value = previousTrack
             notifyService(previousTrack.youtubeId)
+        }
+    }
+
+    fun addAsNext(track: MusicTrack) {
+
+        val newList = mutableListOf<MusicTrack>()
+        if (queue != null) {
+            for (musicTrack in queue!!) {
+                newList.add(musicTrack)
+                if (musicTrack.youtubeId == value?.youtubeId) {
+                    newList.add(track)
+                }
+            }
+
+            this.queue = newList
         }
     }
 
