@@ -3,10 +3,9 @@ package com.secureappinc.musicplayer.ui.dashboard
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.secureappinc.musicplayer.MusicApp
-import com.secureappinc.musicplayer.dpToPixel
 import com.secureappinc.musicplayer.ui.home.HomeFragment
 import com.secureappinc.musicplayer.ui.home.OtherFragment
+import com.secureappinc.musicplayer.ui.playlist.PlayListFragment
 
 /**
  **********************************
@@ -18,10 +17,14 @@ class DashboardPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     val titles = listOf("HOME", "SONGS", "ALBUMS", "ARTISTS", "PLAYLISTS")
 
     override fun getItem(position: Int): Fragment {
-        if (position != 0) {
-            return OtherFragment()
+        return when (position) {
+            0 -> HomeFragment()
+            1 -> OtherFragment()
+            2 -> OtherFragment()
+            3 -> OtherFragment()
+            4 -> PlayListFragment()
+            else -> HomeFragment()
         }
-        return HomeFragment()
     }
 
     override fun getCount() = 5
