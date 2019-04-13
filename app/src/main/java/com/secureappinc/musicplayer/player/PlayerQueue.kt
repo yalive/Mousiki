@@ -51,6 +51,18 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         seekTrackTo(to)
     }
 
+    fun hideVideo() {
+        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
+        intent.putExtra(VideoPlaybackService.COMMAND_HIDE_VIDEO, true)
+        MusicApp.get().startService(intent)
+    }
+
+    fun showVideo() {
+        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
+        intent.putExtra(VideoPlaybackService.COMMAND_SHOW_VIDEO, true)
+        MusicApp.get().startService(intent)
+    }
+
     private fun getNextTrack(): MusicTrack? {
 
         if (queue == null) {

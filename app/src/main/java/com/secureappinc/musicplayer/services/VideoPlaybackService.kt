@@ -17,9 +17,7 @@ import com.secureappinc.musicplayer.models.EmplacementOut
 import com.secureappinc.musicplayer.models.VideoEmplacement
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity
-import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
-import com.secureappinc.musicplayer.utils.dpToPixel
-import com.secureappinc.musicplayer.utils.screenSize
+import com.secureappinc.musicplayer.utils.*
 
 
 /**
@@ -34,6 +32,8 @@ class VideoPlaybackService : LifecycleService() {
         val COMMAND_RESUME = "resume"
         val COMMAND_PAUSE = "pause"
         val COMMAND_SEEK_TO = "seek-to"
+        val COMMAND_HIDE_VIDEO = "hide-video"
+        val COMMAND_SHOW_VIDEO = "show-video"
     }
 
     lateinit var windowManager: WindowManager
@@ -71,6 +71,18 @@ class VideoPlaybackService : LifecycleService() {
         intent?.getLongExtra(COMMAND_SEEK_TO, -1)?.let { seekTo ->
             if (seekTo.toInt() != -1 && videoId != null) {
                 youTubePlayer?.seekTo(seekTo.toFloat())
+            }
+        }
+
+        intent?.getBooleanExtra(COMMAND_HIDE_VIDEO, false)?.let { hideVideo ->
+            if (hideVideo) {
+                videoContainerView.invisible()
+            }
+        }
+
+        intent?.getBooleanExtra(COMMAND_SHOW_VIDEO, false)?.let { showVideo ->
+            if (showVideo) {
+                videoContainerView.visible()
             }
         }
 

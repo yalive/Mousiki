@@ -17,7 +17,7 @@
         android:orientation="vertical"
         app:behavior_peekHeight="350dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        tools:context=".ui.bottompanel.BottomSheetFragment">
+        tools:context=".ui.bottompanel.PlayerBottomSheetFragment">
 
         <include layout="@layout/item_category_video" />
 

@@ -21,7 +21,7 @@ import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
 
 
-class BottomSheetFragment : BottomSheetDialogFragment() {
+class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
 
     val TAG = "BottomSheetFragment"
 
