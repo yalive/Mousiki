@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +18,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.VideoEmplacement
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.services.VideoPlayBackState
 import com.secureappinc.musicplayer.ui.MainActivity
@@ -28,11 +30,14 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fragment_bottom_panel.*
+import java.util.concurrent.Executors
 
 
 class BottomPanelFragment : Fragment() {
 
     val TAG = "BottomPanelFragment"
+
+    lateinit var db: MusicTrackRoomDatabase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_bottom_panel, container, false)
@@ -59,6 +64,7 @@ class BottomPanelFragment : Fragment() {
             }
         })
 
+        db = MusicTrackRoomDatabase.getDatabase(context!!)
 
         val viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
         viewModel.currentVideo.observe(this, Observer { video ->
@@ -71,7 +77,6 @@ class BottomPanelFragment : Fragment() {
 
             }
         })
-
 
         btnPlayPause.setOnClickListener {
             onClickPlayPause()
@@ -87,6 +92,9 @@ class BottomPanelFragment : Fragment() {
 
         btnAddFav.setOnClickListener {
             if (!UserPrefs.isFav(viewModel.currentVideo.value?.youtubeId)) {
+                Executors.newSingleThreadExecutor().execute {
+                    db.musicTrackDao().insertMusicTrack(viewModel.currentVideo.value!!)
+                }
                 UserPrefs.saveFav(viewModel.currentVideo.value?.youtubeId, true)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
             } else {
