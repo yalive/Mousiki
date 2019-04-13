@@ -18,4 +18,7 @@ interface MusicTrackDAO {
 
     @Query("SELECT * from music_track")
     fun getAllMusicTrack(): LiveData<List<MusicTrack>>
+
+    @Query("DELETE  from music_track WHERE youtube_id=:youtubeId ")
+    fun deleteMusicTrack(youtubeId: String)
 }

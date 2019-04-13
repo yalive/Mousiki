@@ -1,7 +1,6 @@
 package com.secureappinc.musicplayer.ui.bottompanel
 
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -21,10 +20,7 @@ import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.MainActivity
-import com.secureappinc.musicplayer.utils.BlurImage
-import com.secureappinc.musicplayer.utils.UserPrefs
-import com.secureappinc.musicplayer.utils.dpToPixel
-import com.secureappinc.musicplayer.utils.durationToSeconds
+import com.secureappinc.musicplayer.utils.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -80,7 +76,7 @@ class BottomPanelFragment : Fragment() {
         }
 
         btnShareVia.setOnClickListener {
-            shareVideoId(PlayerQueue.value?.shareVideoUrl)
+            Utils.shareVia(this, PlayerQueue.value?.shareVideoUrl)
         }
 
         btnAddFav.setOnClickListener {
@@ -91,6 +87,9 @@ class BottomPanelFragment : Fragment() {
                 UserPrefs.saveFav(PlayerQueue.value?.youtubeId, true)
                 btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_added_24dp)
             } else {
+                Executors.newSingleThreadExecutor().execute {
+                    db.musicTrackDao().deleteMusicTrack(PlayerQueue.value!!.youtubeId)
+                }
                 UserPrefs.saveFav(PlayerQueue.value?.youtubeId, false)
                 btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_border)
 
@@ -244,14 +243,5 @@ class BottomPanelFragment : Fragment() {
 
         imgBlured.tag = target
         Picasso.get().load(video.imgUrl).into(target)
-    }
-
-    private fun shareVideoId(videoId: String?) {
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, videoId)
-            type = "text/plain"
-        }
-        startActivity(sendIntent)
     }
 }
