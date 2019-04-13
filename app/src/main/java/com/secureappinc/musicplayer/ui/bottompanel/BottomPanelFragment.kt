@@ -10,22 +10,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.VideoEmplacement
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
+import com.secureappinc.musicplayer.player.PlayerQueue
+import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.PlaybackLiveData
-import com.secureappinc.musicplayer.services.VideoPlayBackState
 import com.secureappinc.musicplayer.ui.MainActivity
-import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.utils.BlurImage
 import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.dpToPixel
+import com.secureappinc.musicplayer.utils.durationToSeconds
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -66,14 +66,13 @@ class BottomPanelFragment : Fragment() {
 
         db = MusicTrackRoomDatabase.getDatabase(context!!)
 
-        val viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
-        viewModel.currentVideo.observe(this, Observer { video ->
+        PlayerQueue.observe(this, Observer { video ->
             onVideoChanged(video)
 
             if (UserPrefs.isFav(video.youtubeId)) {
-                btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+                btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_added_24dp)
             } else {
-                btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+                btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_border)
 
             }
         })
@@ -96,19 +95,20 @@ class BottomPanelFragment : Fragment() {
                     db.musicTrackDao().insertMusicTrack(viewModel.currentVideo.value!!)
                 }
                 UserPrefs.saveFav(viewModel.currentVideo.value?.youtubeId, true)
-                btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+                btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_added_24dp)
             } else {
                 UserPrefs.saveFav(viewModel.currentVideo.value?.youtubeId, false)
-                btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+                btnAddFav.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_favorite_border)
 
             }
 
         }
+
         PlaybackLiveData.observe(this, Observer {
-            if (it.state == PlayerConstants.PlayerState.PAUSED) {
+            if (it == PlayerConstants.PlayerState.PAUSED) {
                 btnPlayPause.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_play)
                 btnPlayPauseMain.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_play)
-            } else if (it.state == PlayerConstants.PlayerState.PLAYING) {
+            } else if (it == PlayerConstants.PlayerState.PLAYING) {
                 btnPlayPause.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_pause)
                 btnPlayPauseMain.setImageResource(com.secureappinc.musicplayer.R.drawable.ic_pause)
             }
@@ -118,17 +118,32 @@ class BottomPanelFragment : Fragment() {
             mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         }
 
+        btnPlayNext.setOnClickListener {
+            PlayerQueue.playNextTrack()
+        }
+
+        btnPlayPrevious.setOnClickListener {
+            PlayerQueue.playPreviousTrack()
+        }
+
         adjustCenterViews()
+
+        PlaybackDuration.observe(this, Observer { elapsedSeconds ->
+            val minutes = (elapsedSeconds / 60).toInt()
+            val seconds = (elapsedSeconds % 60).toInt()
+            txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
+        })
+
     }
 
     private fun onClickPlayPause() {
         val oldState = PlaybackLiveData.value
         oldState?.let { playerState ->
 
-            if (playerState.state == PlayerConstants.PlayerState.PLAYING) {
-                PlaybackLiveData.value = VideoPlayBackState(PlayerConstants.PlayerState.PAUSED, true)
-            } else if ((playerState.state == PlayerConstants.PlayerState.PAUSED)) {
-                PlaybackLiveData.value = VideoPlayBackState(PlayerConstants.PlayerState.PLAYING, true)
+            if (playerState == PlayerConstants.PlayerState.PLAYING) {
+                PlayerQueue.pause()
+            } else if (playerState == PlayerConstants.PlayerState.PAUSED) {
+                PlayerQueue.resume()
             }
         }
     }
@@ -163,9 +178,33 @@ class BottomPanelFragment : Fragment() {
         txtTitle.text = video.title
         txtTitleVideoCenter.text = video.title
 
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        loadAndBlureImage(video)
 
+        configureSeekBar(video)
+    }
+
+
+    private fun configureSeekBar(video: MusicTrack) {
+        txtDuration.text = video.durationFormatted
+        txtElapsedTime.text = "00:00"
+        seekBarDuration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                seekBar?.progress?.let { progress ->
+                    // Map from  (0,100) to (0,duration)
+                    val seekTo = progress * video.durationToSeconds() / 100
+                    PlayerQueue.seekTo(seekTo)
+                }
+            }
+        })
+    }
+
+    private fun loadAndBlureImage(video: MusicTrack) {
         val target = object : Target {
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             }

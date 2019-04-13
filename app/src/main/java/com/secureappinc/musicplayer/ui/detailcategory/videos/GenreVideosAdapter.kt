@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.squareup.picasso.Picasso
@@ -43,12 +44,12 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
 
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private val txtDuration: TextView = view.findViewById(R.id.txtDuration)
         private val txtCategory: TextView = view.findViewById(R.id.txtCategory)
 
         init {
             view.setOnClickListener {
-                viewModel.playVideo.value = items[adapterPosition].youtubeId
-                viewModel.currentVideo.value = items[adapterPosition]
+                PlayerQueue.playTrack(items[adapterPosition], items)
             }
         }
 
@@ -57,7 +58,9 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
                 .fit()
                 .into(imgSong)
             txtTitle.text = item.title
+            txtDuration.text = item.durationFormatted
             txtCategory.text = "${genreMusic.title} - Topic"
+
         }
     }
 

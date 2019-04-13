@@ -22,17 +22,22 @@ import com.secureappinc.musicplayer.ui.home.models.HomeItem
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val callback: (item: HomeItem) -> Unit) :
+class HomeAdapter(
+    val items: List<HomeItem>,
+    val viewModel: MainViewModel,
+    val callback: (item: HomeItem) -> Unit,
+    val onVideoSelected: () -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var newReleaseViewHolder: NewReleaseViewHolder
-    lateinit var featuredViewHolder: FeaturedViewHolder
+    var newReleaseViewHolder: NewReleaseViewHolder? = null
+    var featuredViewHolder: FeaturedViewHolder? = null
 
     var tracks: List<MusicTrack> = listOf()
         set(value) {
             field = value
-            newReleaseViewHolder.adapter.updateList(value)
-            featuredViewHolder.update(value)
+            newReleaseViewHolder?.adapter?.updateList(value)
+            featuredViewHolder?.update(value)
 
         }
 
@@ -53,12 +58,12 @@ class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val c
             TYPE_FEATURED -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_featured, parent, false)
                 featuredViewHolder = FeaturedViewHolder(view)
-                return featuredViewHolder
+                return featuredViewHolder!!
             }
             TYPE_NEW_RELEASE -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_new_release, parent, false)
                 newReleaseViewHolder = NewReleaseViewHolder(view)
-                return newReleaseViewHolder
+                return newReleaseViewHolder!!
             }
             TYPE_ARTIST -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_artist, parent, false)
@@ -162,7 +167,7 @@ class HomeAdapter(val items: List<HomeItem>, val viewModel: MainViewModel, val c
         lateinit var adapter: HomeNewReleaseAdapter
 
         fun bind() {
-            adapter = HomeNewReleaseAdapter(this@HomeAdapter.tracks, viewModel)
+            adapter = HomeNewReleaseAdapter(this@HomeAdapter.tracks, onVideoSelected)
             recyclerView.layoutManager = LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
             recyclerView.adapter = adapter
         }

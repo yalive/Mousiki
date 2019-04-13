@@ -28,6 +28,13 @@ import com.secureappinc.musicplayer.utils.screenSize
  */
 class VideoPlaybackService : LifecycleService() {
 
+    companion object {
+        val COMMAND_PLAY_TRACK = "video-id"
+        val COMMAND_RESUME = "resume"
+        val COMMAND_PAUSE = "pause"
+        val COMMAND_SEEK_TO = "seek-to"
+    }
+
     lateinit var windowManager: WindowManager
     lateinit var videoContainerView: View
     lateinit var bottomView: View
@@ -42,10 +49,30 @@ class VideoPlaybackService : LifecycleService() {
     var videoEmplacement: VideoEmplacement = VideoEmplacement.bottom()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        videoId = intent?.getStringExtra("video-id")
-        videoId?.let { id ->
-            youTubePlayer?.loadVideo(id, 0f)
+
+        intent?.getBooleanExtra(COMMAND_RESUME, false)?.let { resume ->
+            if (resume) {
+                youTubePlayer?.play()
+            }
         }
+
+        intent?.getBooleanExtra(COMMAND_PAUSE, false)?.let { pause ->
+            if (pause) {
+                youTubePlayer?.pause()
+            }
+        }
+
+        intent?.getStringExtra(COMMAND_PLAY_TRACK)?.let { trackId ->
+            videoId = trackId
+            youTubePlayer?.loadVideo(trackId, 0f)
+        }
+
+        intent?.getLongExtra(COMMAND_SEEK_TO, -1)?.let { seekTo ->
+            if (seekTo.toInt() != -1 && videoId != null) {
+                youTubePlayer?.seekTo(seekTo.toFloat())
+            }
+        }
+
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -58,7 +85,7 @@ class VideoPlaybackService : LifecycleService() {
 
         preparePlayerView()
 
-        observeClickControls()
+        //observeClickControls()
 
         observeForegroundToggle()
 
@@ -166,6 +193,7 @@ class VideoPlaybackService : LifecycleService() {
             }
         })
 
+
         windowManager.addView(videoContainerView, videoViewParams)
 
         youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
@@ -179,11 +207,17 @@ class VideoPlaybackService : LifecycleService() {
 
             override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
                 super.onStateChange(youTubePlayer, state)
-                PlaybackLiveData.value = VideoPlayBackState(state, false)
+                PlaybackLiveData.value = state
+            }
+
+            override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                super.onCurrentSecond(youTubePlayer, second)
+                PlaybackDuration.value = second
             }
         })
     }
 
+/*
     private fun observeClickControls() {
         PlaybackLiveData.observe(this, Observer {
             if (it.fromUser) {
@@ -195,6 +229,7 @@ class VideoPlaybackService : LifecycleService() {
             }
         })
     }
+*/
 
     private fun observeForegroundToggle() {
 
@@ -268,7 +303,7 @@ class VideoPlaybackService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        PlaybackLiveData.value = VideoPlayBackState(PlayerConstants.PlayerState.UNKNOWN, false)
+        PlaybackLiveData.value = PlayerConstants.PlayerState.UNKNOWN
         windowManager.removeView(videoContainerView)
         windowManager.removeView(bottomView)
     }
