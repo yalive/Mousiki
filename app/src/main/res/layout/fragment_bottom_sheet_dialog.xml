@@ -1,134 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:gravity="center"
-              android:background="@color/colorBlack"
-              android:paddingBottom="8dp"
-              android:paddingTop="8dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBlack"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <LinearLayout
-            android:id="@+id/shareVia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="@dimen/sixteen_16dp"
-            android:paddingRight="@dimen/sixteen_16dp"
-            android:paddingTop="8dp" android:focusable="true">
+        android:id="@+id/shareVia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
 
         <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:padding="@dimen/two_2dp"
-                android:src="@drawable/ic_share"
-                android:tint="@color/colorYellow"/>
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_share"
+            android:tint="@color/colorYellow" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Share"
-                android:layout_gravity="center"
-                android:textColor="@color/colorWhite"
-                android:paddingTop="@dimen/eight_8dp"
-                android:textSize="12sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/eight_8dp"
+            android:text="Share"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/removeFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="@dimen/sixteen_16dp"
-            android:paddingRight="@dimen/sixteen_16dp"
-            android:paddingTop="8dp"
-            android:focusable="true">
+        android:id="@+id/removeFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
 
         <ImageView
-                android:layout_width="24dp"
-                android:padding="@dimen/two_2dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_favorite_added_24dp"
-                android:tint="@color/colorYellow"/>
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_favorite_added_24dp"
+            android:tint="@color/colorYellow" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Unfavorite"
-                android:textColor="@color/colorWhite"
-                android:paddingTop="@dimen/eight_8dp"
-                android:textSize="12sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="@dimen/eight_8dp"
+            android:text="Unfavorite"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="@dimen/sixteen_16dp"
-            android:paddingRight="@dimen/sixteen_16dp"
-            android:paddingTop="8dp" android:focusable="true">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
 
         <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:padding="@dimen/two_2dp"
-                android:src="@drawable/ic_playlist_add"
-                android:tint="@color/colorYellow"/>
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_playlist_add"
+            android:tint="@color/colorYellow" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Add to..."
-                android:textColor="@color/colorWhite"
-                android:paddingTop="@dimen/eight_8dp"
-                android:textSize="12sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/eight_8dp"
+            android:text="Add to..."
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="@dimen/sixteen_16dp"
-            android:paddingRight="@dimen/sixteen_16dp"
-            android:paddingTop="8dp"
-            android:focusable="true">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
 
-        <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:padding="@dimen/two_2dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_play"
-                android:tint="@color/colorYellow"/>
+        <ImageButton
+            android:id="@+id/btnAddAsNext"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_play"
+            android:tint="@color/colorYellow" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Play next"
-                android:textColor="@color/colorWhite"
-                android:paddingTop="@dimen/eight_8dp"
-                android:textSize="12sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/eight_8dp"
+            android:text="Play next"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

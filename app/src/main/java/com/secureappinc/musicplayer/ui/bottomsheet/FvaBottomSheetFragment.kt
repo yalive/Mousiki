@@ -58,6 +58,11 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
                 this.dismiss()
             }
         }
+
+        btnAddAsNext.setOnClickListener {
+            PlayerQueue.addAsNext(musicTrack)
+            this.dismiss()
+        }
     }
 
     override fun onPause() {
