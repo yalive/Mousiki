@@ -18,7 +18,7 @@
         app:tabIndicatorHeight="@dimen/two_2dp"
         app:tabMaxWidth="200dp"
         app:tabMinWidth="120dp"
-        app:tabMode="scrollable"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorWhite"
         app:tabTextColor="@color/colorWhite" />
 
