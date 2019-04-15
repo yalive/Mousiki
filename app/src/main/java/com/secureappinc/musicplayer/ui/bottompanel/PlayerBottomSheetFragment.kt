@@ -17,7 +17,9 @@ import com.secureappinc.musicplayer.models.EmplacementCenter
 import com.secureappinc.musicplayer.models.EmplacementPlaylist
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.PlayerQueue
+import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
 
 
@@ -85,12 +87,23 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
         } else {
             backVideoToOldPlace()
         }
-        print("")
     }
 
     private fun backVideoToOldPlace() {
         val oldPlace1 = VideoEmplacementLiveData.oldValue1
         val oldPlace2 = VideoEmplacementLiveData.oldValue2
+
+
+        val mainActivity = requireActivity() as MainActivity
+
+        if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            VideoEmplacementLiveData.center()
+            return
+        } else if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            VideoEmplacementLiveData.bottom()
+            return
+        }
+
         if (oldPlace1 is EmplacementBottom) {
             VideoEmplacementLiveData.bottom()
         } else if (oldPlace1 is EmplacementCenter) {

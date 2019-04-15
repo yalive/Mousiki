@@ -21,8 +21,10 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.dpToPixel
 import com.secureappinc.musicplayer.models.EmplacementOut
+import com.secureappinc.musicplayer.models.EmplacementPlaylist
 import com.secureappinc.musicplayer.services.DragBottomPanelLiveData
 import com.secureappinc.musicplayer.services.DragPanelInfo
+import com.secureappinc.musicplayer.services.DragSlidePanelMonitor
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
@@ -30,6 +32,7 @@ import com.secureappinc.musicplayer.utils.canDrawOverApps
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.yarolegovich.slidingrootnav.SlidingRootNav
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder
+import com.yarolegovich.slidingrootnav.callback.DragStateListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -103,10 +106,16 @@ class MainActivity : AppCompatActivity() {
 
         if (isFromService) {
             isFromService = false
-            // For now show large video
-            // TODO: Support when playlist is visible
-            slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-            VideoEmplacementLiveData.center()
+
+            val emplacement = VideoEmplacementLiveData.oldValue1
+
+            if (emplacement is EmplacementPlaylist) {
+                VideoEmplacementLiveData.playlist()
+            } else {
+                slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+                VideoEmplacementLiveData.center()
+            }
+
         } else {
             // Restore old video state if any
             restoreOldVideoState()
@@ -178,16 +187,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupMenu() {
         slidingMenu = SlidingRootNavBuilder(this)
+            .addDragStateListener(object : DragStateListener {
+                override fun onDragEnd(isMenuOpened: Boolean) {
+
+                }
+
+                override fun onDragStart() {
+                }
+            })
             .withMenuLayout(com.secureappinc.musicplayer.R.layout.menu_left_drawer)
             .withDragDistance(240)
-            .withRootViewScale(0.9f)
+            .withRootViewScale(0.8f)
             .addDragListener {
                 Log.d(tag, "Progress=$it")
                 contentMenu?.translationX = dpToPixel(260 * (it - 1), this)
                 contentMenu?.scaleX = 1.0f - 0.4f * (1 - it)
                 contentMenu?.scaleY = 1.0f - 0.4f * (1 - it)
+
+                DragSlidePanelMonitor.value = it
             }
             .inject();
+
     }
 
 

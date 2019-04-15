@@ -11,3 +11,4 @@ import androidx.lifecycle.MutableLiveData
 data class DragPanelInfo(val pannelY: Float, val slideOffset: Float)
 
 object DragBottomPanelLiveData : MutableLiveData<DragPanelInfo>()
+object DragSlidePanelMonitor : MutableLiveData<Float>()

@@ -10,7 +10,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.EmplacementBottom
 import com.secureappinc.musicplayer.models.EmplacementCenter
 import com.secureappinc.musicplayer.models.EmplacementOut
@@ -34,6 +33,8 @@ class VideoPlaybackService : LifecycleService() {
         val COMMAND_SEEK_TO = "seek-to"
         val COMMAND_HIDE_VIDEO = "hide-video"
         val COMMAND_SHOW_VIDEO = "show-video"
+
+        val CLICK_ACTION_THRESHOLD = 160
     }
 
     lateinit var windowManager: WindowManager
@@ -103,13 +104,16 @@ class VideoPlaybackService : LifecycleService() {
         observeForegroundToggle()
 
         observeBottomPanelDragging()
+
+        observeSlidePanelDragging()
     }
 
 
     private fun preparePlayerView() {
-        videoContainerView = LayoutInflater.from(this).inflate(R.layout.view_floating_video, null)
+        videoContainerView =
+            LayoutInflater.from(this).inflate(com.secureappinc.musicplayer.R.layout.view_floating_video, null)
 
-        youTubePlayerView = videoContainerView.findViewById(R.id.youtubePlayerView)
+        youTubePlayerView = videoContainerView.findViewById(com.secureappinc.musicplayer.R.id.youtubePlayerView)
         lifecycle.addObserver(youTubePlayerView)
 
 
@@ -134,77 +138,79 @@ class VideoPlaybackService : LifecycleService() {
 
 
         //Drag and move chat head using user's touch action.
-        videoContainerView.findViewById<View>(R.id.draggableView).setOnTouchListener(object : View.OnTouchListener {
-            private var lastAction: Int = 0
-            private var initialX: Int = 0
-            private var initialY: Int = 0
-            private var initialTouchX: Float = 0.toFloat()
-            private var initialTouchY: Float = 0.toFloat()
+        videoContainerView.findViewById<View>(com.secureappinc.musicplayer.R.id.draggableView)
+            .setOnTouchListener(object : View.OnTouchListener {
+                private var lastAction: Int = 0
+                private var initialX: Int = 0
+                private var initialY: Int = 0
+                private var initialTouchX: Float = 0.toFloat()
+                private var initialTouchY: Float = 0.toFloat()
 
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                override fun onTouch(v: View, event: MotionEvent): Boolean {
 
-                if (videoEmplacement !is EmplacementOut) {
-                    return true
-                }
-
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-
-                        bottomView.visibility = View.VISIBLE
-
-                        //remember the initial position.
-                        initialX = videoViewParams.x
-                        initialY = videoViewParams.y
-
-                        //get the touch location
-                        initialTouchX = event.rawX
-                        initialTouchY = event.rawY
-
-                        lastAction = event.action
+                    if (videoEmplacement !is EmplacementOut) {
                         return true
                     }
 
-                    MotionEvent.ACTION_UP -> {
-                        bottomView.visibility = View.GONE
-                        //As we implemented on touch listener with ACTION_MOVE,
-                        //we have to check if the previous action was ACTION_DOWN
-                        //to identify if the user clicked the view or not.
-                        if (lastAction == MotionEvent.ACTION_DOWN) {
-                            //Open app
-                            val intent = Intent(this@VideoPlaybackService, MainActivity::class.java)
-                            intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        } else if (bottomView.isActivated) {
-                            stopSelf()
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+
+                            bottomView.visibility = View.VISIBLE
+
+                            //remember the initial position.
+                            initialX = videoViewParams.x
+                            initialY = videoViewParams.y
+
+                            //get the touch location
+                            initialTouchX = event.rawX
+                            initialTouchY = event.rawY
+
+                            lastAction = event.action
+                            return true
                         }
 
-                        lastAction = event.action
-                        return true
+                        MotionEvent.ACTION_UP -> {
+                            bottomView.visibility = View.GONE
+
+                            val endX = event.rawX
+                            val endY = event.rawY
+
+                            if (isAClick(initialTouchX, endX, initialTouchY, endY)) {
+                                //Open app
+                                val intent = Intent(this@VideoPlaybackService, MainActivity::class.java)
+                                intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                            } else if (bottomView.isActivated) {
+                                stopSelf()
+                            }
+
+                            lastAction = event.action
+                            return true
+                        }
+
+                        MotionEvent.ACTION_MOVE -> {
+
+                            //Calculate the X and Y coordinates of the view.
+                            videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
+                            videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
+
+                            //Update the layout with new X & Y coordinate
+                            windowManager.updateViewLayout(videoContainerView, videoViewParams)
+                            lastAction = event.action
+
+
+                            val y = videoViewParams.y
+
+                            bottomView.isActivated =
+                                screenSize().heightPx - y - youTubePlayerView.height - bottomView.height <= 0
+
+                            return true
+                        }
                     }
-
-                    MotionEvent.ACTION_MOVE -> {
-
-                        //Calculate the X and Y coordinates of the view.
-                        videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
-                        videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
-
-                        //Update the layout with new X & Y coordinate
-                        windowManager.updateViewLayout(videoContainerView, videoViewParams)
-                        lastAction = event.action
-
-
-                        val y = videoViewParams.y
-
-                        bottomView.isActivated =
-                            screenSize().heightPx - y - youTubePlayerView.height - bottomView.height <= 0
-
-                        return true
-                    }
+                    return false
                 }
-                return false
-            }
-        })
+            })
 
 
         windowManager.addView(videoContainerView, videoViewParams)
@@ -276,10 +282,32 @@ class VideoPlaybackService : LifecycleService() {
         })
     }
 
+    val bottomEmp = EmplacementBottom()
+    val centerEmp = EmplacementCenter()
+
+    private fun observeSlidePanelDragging() {
+
+        DragSlidePanelMonitor.observe(this, Observer { progress ->
+
+            if (videoEmplacement is EmplacementCenter) {
+                videoViewParams.x = (centerEmp.x + progress * dpToPixel(280f)).toInt()
+                videoViewParams.y = (centerEmp.y + progress * dpToPixel(20f)).toInt()
+                windowManager.updateViewLayout(videoContainerView, videoViewParams)
+            } else if (videoEmplacement is EmplacementBottom) {
+
+                videoViewParams.x = (bottomEmp.x + progress * dpToPixel(280f)).toInt()
+                videoViewParams.y = (bottomEmp.y - progress * dpToPixel(56f)).toInt()
+                windowManager.updateViewLayout(videoContainerView, videoViewParams)
+            }
+
+        })
+    }
+
 
     private fun addBottomView() {
 
-        bottomView = LayoutInflater.from(this).inflate(R.layout.bottom_floating_player, null)
+        bottomView =
+            LayoutInflater.from(this).inflate(com.secureappinc.musicplayer.R.layout.bottom_floating_player, null)
         bottomView.visibility = View.GONE
 
         val type = when {
@@ -305,6 +333,12 @@ class VideoPlaybackService : LifecycleService() {
         windowManager.addView(bottomView, bottomViewParams)
     }
 
+
+    private fun isAClick(startX: Float, endX: Float, startY: Float, endY: Float): Boolean {
+        val differenceX = Math.abs(startX - endX)
+        val differenceY = Math.abs(startY - endY)
+        return !(differenceX > CLICK_ACTION_THRESHOLD || differenceY > CLICK_ACTION_THRESHOLD)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
