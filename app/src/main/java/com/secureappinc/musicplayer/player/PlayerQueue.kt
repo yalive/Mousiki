@@ -1,10 +1,14 @@
 package com.secureappinc.musicplayer.player
 
 import android.content.Intent
+import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.MusicApp
+import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.services.VideoPlaybackService
+import com.secureappinc.musicplayer.utils.UserPrefs
+
 
 /**
  **********************************
@@ -102,6 +106,28 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
                     return mQueue[index + 1]
                 }
             }
+        } else if (sort == PlaySort.LOOP_ONE) {
+            return value
+        } else if (sort == PlaySort.LOOP_ALL) {
+
+            for ((index, track) in mQueue.withIndex()) {
+                if (track == this.value && index < mQueue.size - 1) {
+                    return mQueue[index + 1]
+                } else if (track == this.value && index == mQueue.size - 1) {
+                    return mQueue[0]
+                }
+            }
+        } else if (sort == PlaySort.RANDOM) {
+
+            val indexOfCurrent = mQueue.indexOf(value)
+
+            var random = (0 until mQueue.size).random()
+
+            while (indexOfCurrent == random) {
+                random = (0 until mQueue.size).random()
+            }
+
+            return mQueue[random]
         }
 
         return null
@@ -125,6 +151,27 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
                     return mQueue[index - 1]
                 }
             }
+        } else if (sort == PlaySort.LOOP_ONE) {
+            return value
+        } else if (sort == PlaySort.LOOP_ALL) {
+            for ((index, track) in mQueue.withIndex()) {
+                if (track == this.value && index > 0) {
+                    return mQueue[index - 1]
+                } else if (track == this.value && index == 0) {
+                    return mQueue[mQueue.size - 1]
+                }
+            }
+        } else if (sort == PlaySort.RANDOM) {
+
+            val indexOfCurrent = mQueue.indexOf(value)
+
+            var random = (0 until mQueue.size).random()
+
+            while (indexOfCurrent == random) {
+                random = (0 until mQueue.size).random()
+            }
+
+            return mQueue[random]
         }
 
         return null
@@ -132,7 +179,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
 
     private fun getPlaySort(): PlaySort {
-        return PlaySort.SEQUENCE
+        return UserPrefs.getSort()
     }
 
 
@@ -158,12 +205,36 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO, to)
         MusicApp.get().startService(intent)
+
     }
 }
 
-enum class PlaySort {
-    RANDOM,
-    LOOP_ONE,
-    LOOP_ALL,
-    SEQUENCE
+enum class PlaySort(@DrawableRes val icon: Int) {
+    RANDOM(R.drawable.ic_shuffle),
+    LOOP_ONE(R.drawable.ic_repeat_one),
+    LOOP_ALL(R.drawable.ic_repeat_all),
+    SEQUENCE(R.drawable.ic_sequence);
+
+    fun next(): PlaySort {
+        if (this == RANDOM) {
+            return LOOP_ONE
+        } else if (this == LOOP_ONE) {
+            return LOOP_ALL
+        } else if (this == LOOP_ALL) {
+            return SEQUENCE
+        } else {
+            return RANDOM
+        }
+    }
+
+    companion object {
+        fun toEnum(enumString: String): PlaySort {
+            return try {
+                PlaySort.valueOf(enumString)
+            } catch (ex: Exception) {
+                // For error cases
+                SEQUENCE
+            }
+        }
+    }
 }

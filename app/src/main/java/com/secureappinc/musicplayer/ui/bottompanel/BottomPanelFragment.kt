@@ -146,6 +146,15 @@ class BottomPanelFragment : Fragment() {
                 mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
             }
         }
+
+        btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+
+        btnPlayOption.setOnClickListener {
+            // Get next state
+            val nextSort = UserPrefs.getSort().next()
+            btnPlayOption.setImageResource(nextSort.icon)
+            UserPrefs.saveSort(nextSort)
+        }
     }
 
     private fun showQueue() {
