@@ -29,6 +29,13 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
     }
 
+    fun repeatCurrentTrack() {
+        value?.youtubeId?.let {
+            notifyService(it)
+        }
+
+    }
+
     fun playPreviousTrack() {
         val previousTrack = getPreviousTrack()
         if (previousTrack != null) {
