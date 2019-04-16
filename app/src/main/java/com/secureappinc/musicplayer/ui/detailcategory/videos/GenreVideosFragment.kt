@@ -18,7 +18,6 @@ import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
@@ -52,7 +51,7 @@ class GenreVideosFragment : Fragment() {
             genreMusic
         ) {
             val mainActivity = requireActivity() as MainActivity
-            mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+            mainActivity.showBottomPanel()
         }
         recyclerView.adapter = adapter
 

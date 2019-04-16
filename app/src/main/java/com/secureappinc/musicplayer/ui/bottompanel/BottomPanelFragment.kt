@@ -1,6 +1,7 @@
 package com.secureappinc.musicplayer.ui.bottompanel
 
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
@@ -20,6 +22,7 @@ import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.MainActivity
+import com.secureappinc.musicplayer.ui.fullscreen.FullscreenPlayerActivity
 import com.secureappinc.musicplayer.utils.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
@@ -33,6 +36,8 @@ class BottomPanelFragment : Fragment() {
     val TAG = "BottomPanelFragment"
 
     lateinit var db: MusicTrackRoomDatabase
+
+    var dialogBottomShet: PlayerBottomSheetFragment? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_bottom_panel, container, false)
@@ -108,7 +113,7 @@ class BottomPanelFragment : Fragment() {
         })
 
         btnClosePanel.setOnClickListener {
-            mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+            mainActivity.showBottomPanel()
         }
 
         btnPlayNext.setOnClickListener {
@@ -143,7 +148,7 @@ class BottomPanelFragment : Fragment() {
 
         antiDrag.setOnClickListener {
             if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+                mainActivity.expandBottomPanel()
             }
         }
 
@@ -155,11 +160,25 @@ class BottomPanelFragment : Fragment() {
             btnPlayOption.setImageResource(nextSort.icon)
             UserPrefs.saveSort(nextSort)
         }
+
+        btnFullScreen.setOnClickListener {
+            val intent = Intent(requireContext(), FullscreenPlayerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                dialogBottomShet?.onGlobalLayoutEvent()
+            }
+        })
     }
 
     private fun showQueue() {
-        val dialog = PlayerBottomSheetFragment()
-        dialog.show(childFragmentManager, "BottomSheetFragment")
+        dialogBottomShet = PlayerBottomSheetFragment()
+        dialogBottomShet?.show(childFragmentManager, "BottomSheetFragment")
     }
 
     private fun onClickPlayPause() {
