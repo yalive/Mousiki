@@ -13,6 +13,7 @@ import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Resource
 import com.secureappinc.musicplayer.models.Status
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
@@ -31,7 +32,10 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = NewReleaseVideoAdapter(listOf(), this)
+        adapter = NewReleaseVideoAdapter(listOf(), this) {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.showBottomPanel()
+        }
 
         recyclerView.adapter = adapter
 
