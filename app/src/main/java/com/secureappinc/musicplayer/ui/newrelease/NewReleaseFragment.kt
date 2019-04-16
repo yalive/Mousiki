@@ -32,6 +32,9 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity!!.title = "New Release"
+
         adapter = NewReleaseVideoAdapter(listOf(), this) {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.showBottomPanel()
