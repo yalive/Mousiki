@@ -3,6 +3,7 @@ package com.secureappinc.musicplayer.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -26,7 +27,8 @@ class HomeAdapter(
     val items: List<HomeItem>,
     val viewModel: MainViewModel,
     val callback: (item: HomeItem) -> Unit,
-    val onVideoSelected: () -> Unit
+    val onVideoSelected: () -> Unit,
+    val moreItemClickListener: onMoreItemClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -83,7 +85,7 @@ class HomeAdapter(
             holder.bind()
         } else if (holder is HeaderViewHolder) {
             val headerItem = items[position] as HeaderItem
-            holder.bind(headerItem)
+            holder.bind(headerItem, moreItemClickListener)
         } else if (holder is GenreViewHolder) {
             val genreItem = items[position] as GenreItem
             holder.bind(genreItem.genre)
@@ -127,12 +129,23 @@ class HomeAdapter(
         }
     }
 
-    class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
         val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        val showAll: ImageButton = view.findViewById(R.id.showAll)
 
-        fun bind(headerItem: HeaderItem) {
+        fun bind(headerItem: HeaderItem, moreItemClickListener: onMoreItemClickListener) {
             txtTitle.text = headerItem.title
+
+            view.setOnClickListener {
+
+                moreItemClickListener.onMoreItemClick(headerItem)
+            }
+
+            showAll.setOnClickListener {
+
+                moreItemClickListener.onMoreItemClick(headerItem)
+            }
         }
     }
 
@@ -172,5 +185,9 @@ class HomeAdapter(
             recyclerView.adapter = adapter
         }
 
+    }
+
+    interface onMoreItemClickListener {
+        fun onMoreItemClick(headerItem: HeaderItem)
     }
 }
