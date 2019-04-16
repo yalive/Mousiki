@@ -14,4 +14,6 @@
     <color name="colorClosePlayerOn">#BCC7485B</color>
     <color name="colorClosePlayerOff">#45000000</color>
 
+    <color name="black_overlay">#66000000</color>
+
 </resources>

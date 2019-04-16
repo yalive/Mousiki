@@ -22,7 +22,6 @@ import com.secureappinc.musicplayer.ui.home.models.*
 import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -58,7 +57,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             }
         }, {
             val mainActivity = requireActivity() as MainActivity
-            mainActivity.slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+            mainActivity.showBottomPanel()
         }, this)
 
 
@@ -118,9 +117,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     }
 
     override fun onMoreItemClick(headerItem: HeaderItem) {
-
         if (headerItem.title.equals("New Release")) {
-
             findNavController().navigate(R.id.newReleaseFragment)
         }
     }

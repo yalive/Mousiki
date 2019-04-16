@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.Lifecycle
@@ -31,6 +32,7 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
     val mainTrackCategory: TextView by lazy { view!!.findViewById<TextView>(com.secureappinc.musicplayer.R.id.txtCategory) }
     val mainTrackDuration: TextView by lazy { view!!.findViewById<TextView>(com.secureappinc.musicplayer.R.id.txtDuration) }
     val mBottomSheet: LinearLayout by lazy { view!!.findViewById<LinearLayout>(com.secureappinc.musicplayer.R.id.bottom_sheet) }
+    var imgSongShadow: ImageView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_bottom_shet, container, false)
@@ -49,8 +51,9 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
             //mainTrackCategory.text = track.title
         })
 
-        initializeBottomSheet()
+        imgSongShadow = view.findViewById<ImageView>(com.secureappinc.musicplayer.R.id.imgSong)
 
+        initializeBottomSheet()
     }
 
     private fun initializeBottomSheet() {
@@ -68,10 +71,6 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Log.d(TAG, "slideOffset:$slideOffset")
-                if (isAdded) {
-                    //animateBottomSheetArrows(slideOffset)
-                }
             }
         })
 
@@ -123,6 +122,14 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
                 VideoEmplacementLiveData.center()
             }
         }
+    }
+
+    fun onGlobalLayoutEvent() {
+        val location = IntArray(2)
+        val locationInWindow = imgSongShadow?.getLocationInWindow(location)
+        Log.d(TAG, "locationInWindow = (${location[0]},${location[1]})")
+
+        //DragBottomSheetMonitor.value = location[1]
     }
 }
 
