@@ -117,9 +117,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     }
 
     override fun onMoreItemClick(headerItem: HeaderItem) {
-
         if (headerItem.title.equals("New Release")) {
-
             findNavController().navigate(R.id.newReleaseFragment)
         }
     }
