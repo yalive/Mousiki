@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Resource
@@ -24,8 +25,7 @@ import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment : Fragment() {
-
+class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     val TAG = "HomeFragment"
 
     lateinit var adapter: HomeAdapter
@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
         }, {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.showBottomPanel()
-        })
+        }, this)
 
 
         recyclerView.layoutManager = gridLayoutManager
@@ -76,7 +76,6 @@ class HomeFragment : Fragment() {
         viewModel.loadTrendingMusic()
     }
 
-
     private fun updateUI(resource: Resource<List<MusicTrack>>) {
         if (resource.status == Status.LOADING) {
             txtError.gone()
@@ -93,6 +92,7 @@ class HomeFragment : Fragment() {
             adapter.tracks = resource.data!!
         }
     }
+
 
     fun mockList(): List<HomeItem> {
         val list = mutableListOf<HomeItem>()
@@ -114,5 +114,13 @@ class HomeFragment : Fragment() {
             }
         }
         return list
+    }
+
+    override fun onMoreItemClick(headerItem: HeaderItem) {
+
+        if (headerItem.title.equals("New Release")) {
+
+            findNavController().navigate(R.id.newReleaseFragment)
+        }
     }
 }
