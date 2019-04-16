@@ -41,7 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/removeFavorite"
+        android:id="@+id/favController"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -54,14 +54,16 @@
         android:paddingBottom="8dp">
 
         <ImageView
+            android:id="@+id/favIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_favorite_added_24dp"
+            android:src="@drawable/ic_favorite_added_yellow"
             android:tint="@color/colorYellow" />
 
         <TextView
+            android:id="@+id/favLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

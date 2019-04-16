@@ -40,6 +40,14 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         val json = arguments?.getString("MUSIC_TRACK")
         musicTrack = Gson().fromJson(json, MusicTrack::class.java)
 
+        if (!UserPrefs.isFav(musicTrack.youtubeId)) {
+            favIcon.setImageResource(R.drawable.ic_favorite_border_yellow)
+            favLabel.text="Favorite"
+        } else {
+            favIcon.setImageResource(R.drawable.ic_favorite_added_yellow)
+            favLabel.text="Unfavorite"
+        }
+
         shareVia.setOnClickListener {
             Log.d(TAG, musicTrack.shareVideoUrl)
             Utils.shareVia(this, musicTrack.shareVideoUrl)
@@ -48,11 +56,20 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        removeFavorite.setOnClickListener {
+        favController.setOnClickListener {
             Executors.newSingleThreadExecutor().execute {
-                db.musicTrackDao().deleteMusicTrack(musicTrack.youtubeId)
+                if (UserPrefs.isFav(musicTrack.youtubeId)) {
+                    db.musicTrackDao().deleteMusicTrack(musicTrack.youtubeId)
+                    UserPrefs.saveFav(musicTrack.youtubeId, false)
+                    favIcon.setImageResource(R.drawable.ic_favorite_border_yellow)
+                    favLabel.text="Favorite"
+                } else {
+                    db.musicTrackDao().insertMusicTrack(musicTrack)
+                    UserPrefs.saveFav(musicTrack.youtubeId, true)
+                    favIcon.setImageResource(R.drawable.ic_favorite_added_yellow)
+                    favLabel.text="Unfavorite"
+                }
             }
-            UserPrefs.saveFav(musicTrack.youtubeId, false)
 
             if (this.isVisible) {
                 this.dismiss()

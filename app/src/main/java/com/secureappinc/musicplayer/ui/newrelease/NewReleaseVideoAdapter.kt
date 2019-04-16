@@ -49,7 +49,10 @@ class NewReleaseVideoAdapter(items: List<MusicTrack>, private val itemClickListe
         private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
 
         init {
-            itemView.setOnClickListener {
+            imgSong.setOnClickListener {
+                PlayerQueue.playTrack(items[adapterPosition], items)
+            }
+            txtTitle.setOnClickListener {
                 PlayerQueue.playTrack(items[adapterPosition], items)
             }
         }
