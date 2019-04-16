@@ -56,10 +56,6 @@ class NewReleaseVideoAdapter(
             imgSong.setOnClickListener {
                 PlayerQueue.playTrack(items[adapterPosition], items)
             }
-            txtTitle.setOnClickListener {
-                onVideoSelected()
-                PlayerQueue.playTrack(items[adapterPosition], items)
-            }
         }
 
         fun bind(item: MusicTrack, itemClickListener: onItemClickListener) {
