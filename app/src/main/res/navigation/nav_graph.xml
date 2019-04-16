@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_detailGenreFragment"
             app:destination="@id/detailGenreFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_newReleaseFragment"
+            app:destination="@id/newReleaseFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailGenreFragment"
@@ -27,4 +30,8 @@
         android:name="com.secureappinc.musicplayer.ui.player.VideoPlayerFragment"
         android:label="Youtube Player"
         tools:layout="@layout/fragment_video_player" />
+    <fragment
+        android:id="@+id/newReleaseFragment"
+        android:name="com.secureappinc.musicplayer.ui.newrelease.NewReleaseFragment"
+        android:label="NewReleaseFragment" />
 </navigation>
