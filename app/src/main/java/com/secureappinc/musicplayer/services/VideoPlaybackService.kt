@@ -10,10 +10,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import com.secureappinc.musicplayer.models.EmplacementBottom
-import com.secureappinc.musicplayer.models.EmplacementCenter
-import com.secureappinc.musicplayer.models.EmplacementOut
-import com.secureappinc.musicplayer.models.VideoEmplacement
+import com.secureappinc.musicplayer.models.*
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.*
@@ -31,6 +28,7 @@ class VideoPlaybackService : LifecycleService() {
         val COMMAND_RESUME = "resume"
         val COMMAND_PAUSE = "pause"
         val COMMAND_SEEK_TO = "seek-to"
+        val COMMAND_SEEK_TO_FROM_FULL_SCREEN = "seek-to-from-fullscreen"
         val COMMAND_HIDE_VIDEO = "hide-video"
         val COMMAND_SHOW_VIDEO = "show-video"
 
@@ -64,14 +62,23 @@ class VideoPlaybackService : LifecycleService() {
             }
         }
 
-        intent?.getStringExtra(COMMAND_PLAY_TRACK)?.let { trackId ->
-            videoId = trackId
-            youTubePlayer?.loadVideo(trackId, 0f)
+        intent?.getStringExtra(COMMAND_PLAY_TRACK)?.let {
+            PlayerQueue.value?.let { currentTrack ->
+                youTubePlayer?.loadVideo(currentTrack.youtubeId, 0f)
+            }
         }
 
         intent?.getLongExtra(COMMAND_SEEK_TO, -1)?.let { seekTo ->
-            if (seekTo.toInt() != -1 && videoId != null) {
-                youTubePlayer?.seekTo(seekTo.toFloat())
+            if (seekTo.toInt() != -1) {
+                val fromFullScreen = intent.getBooleanExtra(COMMAND_SEEK_TO_FROM_FULL_SCREEN, false)
+                PlayerQueue.value?.let { currentTrack ->
+
+                    if (fromFullScreen) {
+                        youTubePlayer?.loadVideo(currentTrack.youtubeId, seekTo.toFloat())
+                    } else {
+                        youTubePlayer?.seekTo(seekTo.toFloat())
+                    }
+                }
             }
         }
 
@@ -106,6 +113,8 @@ class VideoPlaybackService : LifecycleService() {
         observeBottomPanelDragging()
 
         observeSlidePanelDragging()
+
+        observeBottomSheetPlayerDragging()
     }
 
 
@@ -218,8 +227,8 @@ class VideoPlaybackService : LifecycleService() {
         youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 super.onReady(youTubePlayer)
-                videoId?.let { id ->
-                    youTubePlayer.loadVideo(id, 0f)
+                PlayerQueue.value?.let { currentTrack ->
+                    youTubePlayer.loadVideo(currentTrack.youtubeId, 0f)
                 }
                 this@VideoPlaybackService.youTubePlayer = youTubePlayer
 
@@ -303,6 +312,18 @@ class VideoPlaybackService : LifecycleService() {
         })
     }
 
+
+    private fun observeBottomSheetPlayerDragging() {
+
+        DragBottomSheetMonitor.observe(this, Observer { progress ->
+
+            if (videoEmplacement is EmplacementPlaylist) {
+                videoViewParams.y = progress
+                windowManager.updateViewLayout(videoContainerView, videoViewParams)
+            }
+
+        })
+    }
 
     private fun addBottomView() {
 

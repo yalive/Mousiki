@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             if (emplacement is EmplacementPlaylist) {
                 VideoEmplacementLiveData.playlist()
             } else {
-                slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+                expandBottomPanel()
                 VideoEmplacementLiveData.center()
             }
 
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
         }
         supportFragmentManager.beginTransaction().replace(R.id.bottomPanelContent, fragment).commit()
 
-        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+        hideBottomPanel()
 
         slidingPaneLayout.addPanelSlideListener(object : SlidingUpPanelLayout.SimplePanelSlideListener() {
             override fun onPanelSlide(panel: View?, slideOffset: Float) {
@@ -235,7 +235,20 @@ class MainActivity : AppCompatActivity() {
             }
 
         } else {
-            slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+            hideBottomPanel()
         }
+    }
+
+
+    fun hideBottomPanel() {
+        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+    }
+
+    fun expandBottomPanel() {
+        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+    }
+
+    fun showBottomPanel() {
+        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
     }
 }

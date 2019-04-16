@@ -15,7 +15,11 @@ import com.squareup.picasso.Picasso
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
-class NewReleaseVideoAdapter(items: List<MusicTrack>, private val itemClickListener: onItemClickListener) :
+class NewReleaseVideoAdapter(
+    items: List<MusicTrack>,
+    private val itemClickListener: onItemClickListener,
+    val onVideoSelected: () -> Unit
+) :
     RecyclerView.Adapter<NewReleaseVideoAdapter.NewReleaseViewHolder>() {
 
     var items: List<MusicTrack> = items
@@ -53,6 +57,7 @@ class NewReleaseVideoAdapter(items: List<MusicTrack>, private val itemClickListe
                 PlayerQueue.playTrack(items[adapterPosition], items)
             }
             txtTitle.setOnClickListener {
+                onVideoSelected()
                 PlayerQueue.playTrack(items[adapterPosition], items)
             }
         }
