@@ -61,13 +61,9 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
                 if (UserPrefs.isFav(musicTrack.youtubeId)) {
                     db.musicTrackDao().deleteMusicTrack(musicTrack.youtubeId)
                     UserPrefs.saveFav(musicTrack.youtubeId, false)
-                    favIcon.setImageResource(R.drawable.ic_favorite_border_yellow)
-                    favLabel.text="Favorite"
                 } else {
                     db.musicTrackDao().insertMusicTrack(musicTrack)
                     UserPrefs.saveFav(musicTrack.youtubeId, true)
-                    favIcon.setImageResource(R.drawable.ic_favorite_added_yellow)
-                    favLabel.text="Unfavorite"
                 }
             }
 
