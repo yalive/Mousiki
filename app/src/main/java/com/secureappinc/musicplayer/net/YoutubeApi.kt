@@ -28,7 +28,15 @@ interface YoutubeApi {
         const val DUMMY_CHANNEL_ID = "UCmhzb5pJId5QY0r6gZqMDdA"
 
         const val GENRE_VIDEOS_DETAIL =
-            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
+
+        // Get images
+        const val ARTISTS_THUMBNAILS =
+            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id%2Csnippet%2Fthumbnails)&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+
+        const val PLAYLISTITEMS =
+            "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+
     }
 
     @GET
@@ -42,4 +50,14 @@ interface YoutubeApi {
 
     @GET(GENRE_VIDEOS_DETAIL)
     fun getCategoryMusicDetail(@Query("id") ids: String): Call<YTTrendingMusicRS>
+
+    @GET(ARTISTS_THUMBNAILS)
+    fun getArtistsImages(@Query("id") ids: String): Call<YTTrendingMusicRS>
+
+
+    @GET("search?part=snippet&maxResults=50&videoCategory=10&type=video&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
+    fun getArtistTracks(@Query("channelId") channelId: String): Call<YTCategoryMusicRS>
+
+    @GET(PLAYLISTITEMS)
+    fun getPlaylistVideos(@Query("playlistId") playlistId: String): Call<YTTrendingMusicRS>
 }

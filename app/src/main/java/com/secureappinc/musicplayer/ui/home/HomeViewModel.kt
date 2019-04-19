@@ -2,16 +2,17 @@ package com.secureappinc.musicplayer.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.Status
-import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import com.google.gson.reflect.TypeToken
+import com.secureappinc.musicplayer.models.*
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.net.YoutubeApi
+import com.secureappinc.musicplayer.utils.Utils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Executors
+
 
 /**
  **********************************
@@ -22,6 +23,7 @@ class HomeViewModel : ViewModel() {
 
 
     var trendingTracks = MutableLiveData<Resource<List<MusicTrack>>>()
+    var sixArtistResources = MutableLiveData<Resource<List<Artist>>>()
 
     fun loadTrendingMusic() {
 
@@ -47,6 +49,61 @@ class HomeViewModel : ViewModel() {
 
             override fun onFailure(call: Call<YTTrendingMusicRS>, t: Throwable) {
                 trendingTracks.value = Resource.error("Error")
+            }
+        })
+    }
+
+
+    fun loadArtists(countryCode: String) {
+        sixArtistResources.postValue(Resource.loading())
+        Executors.newSingleThreadExecutor().execute {
+            val json = Utils.loadStringJSONFromAsset("artists.json")
+            val artists = ApiManager.gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
+
+            // Filter 6 artist by country
+            val sixeArtist = artists.filter { it.countryCode.equals(countryCode, true) }.take(6)
+
+            if (sixeArtist.size < 6) {
+                // Request US
+                loadArtists("US")
+                return@execute
+            }
+
+            sixArtistResources.postValue(Resource.success(sixeArtist))
+
+            val ids = mutableListOf<String>()
+            for (searchItem in sixeArtist) {
+                ids.add(searchItem.channelId)
+            }
+
+            val idsStr = ids.joinToString()
+
+            loadChannelsImages(idsStr)
+        }
+    }
+
+    fun loadChannelsImages(ids: String) {
+        ApiManager.api.getArtistsImages(ids).enqueue(object : Callback<YTTrendingMusicRS?> {
+            override fun onFailure(call: Call<YTTrendingMusicRS?>, t: Throwable) {
+                //sixArtistResources.value = Resource.error("Error")
+            }
+
+            override fun onResponse(call: Call<YTTrendingMusicRS?>, response: Response<YTTrendingMusicRS?>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val items = response.body()!!.items
+
+                    var newList = sixArtistResources.value!!.data!!
+
+                    for (artist in newList) {
+                        val foundItem = items.find { it.id == artist.channelId }
+                        artist.urlImage = foundItem?.snippet?.thumbnails?.high?.url ?: ""
+                    }
+
+                    sixArtistResources.postValue(Resource.success(newList))
+
+                } else {
+                    //sixArtistResources.value = Resource.error("Error")
+                }
             }
         })
     }

@@ -251,4 +251,8 @@ class MainActivity : AppCompatActivity() {
     fun showBottomPanel() {
         slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
     }
+
+    fun isBottomPanelCollapsed(): Boolean {
+        return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED
+    }
 }
