@@ -106,7 +106,7 @@ class VideoPlaybackService : LifecycleService() {
 
         preparePlayerView()
 
-        //observeClickControls()
+        /*//observeClickControls()*/
 
         observeForegroundToggle()
 

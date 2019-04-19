@@ -1,22 +1,25 @@
 package com.secureappinc.musicplayer.ui.home
 
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.Resource
 import com.secureappinc.musicplayer.models.Status
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.MainViewModel
+import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.*
 import com.secureappinc.musicplayer.utils.dpToPixel
@@ -31,7 +34,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     lateinit var adapter: HomeAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_home, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -53,7 +56,11 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             if (it is GenreItem) {
                 val bundle = Bundle()
                 bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, it.genre)
-                recyclerView.findNavController().navigate(R.id.detailGenreFragment, bundle)
+                findNavController().navigate(com.secureappinc.musicplayer.R.id.detailGenreFragment, bundle)
+            } else if (it is ArtistItem) {
+                val bundle = Bundle()
+                bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, it.artist)
+                findNavController().navigate(com.secureappinc.musicplayer.R.id.artistFragment, bundle)
             }
         }, {
             val mainActivity = requireActivity() as MainActivity
@@ -73,7 +80,30 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             updateUI(resource)
         })
 
+        viewModel.sixArtistResources.observe(this, Observer { resource ->
+            updateArtists(resource)
+        })
+
         viewModel.loadTrendingMusic()
+        viewModel.loadArtists(getCurrentLocale())
+    }
+
+    private fun updateArtists(resource: Resource<List<Artist>>) {
+        if (resource.status == Status.SUCCESS) {
+            val artists = resource.data!!
+
+            val artistItems = artists.map { ArtistItem(it) }
+
+            if (artistItems.size == 6) {
+                for (i in 4..9) {
+                    adapter.items[i] = artistItems[i - 4]
+                }
+
+                adapter.notifyItemRangeChanged(4, 6)
+            } else {
+                // TODO
+            }
+        }
     }
 
     private fun updateUI(resource: Resource<List<MusicTrack>>) {
@@ -94,7 +124,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     }
 
 
-    fun mockList(): List<HomeItem> {
+    fun mockList(): MutableList<HomeItem> {
         val list = mutableListOf<HomeItem>()
         for (i in 0 until 20) {
             if (i == 0) {
@@ -106,7 +136,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             } else if (i == 3) {
                 list.add(HeaderItem("ARTIST"))
             } else if (i in 4..9) {
-                list.add(ArtistItem(listOf()))
+                list.add(ArtistItem(artist = Artist("", "", "", "")))
             } else if (i == 10) {
                 list.add(HeaderItem("GENRES"))
             } else if (i in 11..19) {
@@ -118,7 +148,23 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
 
     override fun onMoreItemClick(headerItem: HeaderItem) {
         if (headerItem.title.equals("New Release")) {
-            findNavController().navigate(R.id.newReleaseFragment)
+            findNavController().navigate(com.secureappinc.musicplayer.R.id.newReleaseFragment)
+        }
+    }
+
+    fun getCurrentLocale(): String {
+        val tm = requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val countryCodeValue = tm.networkCountryIso
+
+        if (countryCodeValue != null) {
+            return countryCodeValue
+        }
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            requireActivity().resources.configuration.locales.get(0).country
+        } else {
+
+            requireActivity().resources.configuration.locale.country
         }
     }
 }
