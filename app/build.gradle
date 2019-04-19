@@ -86,4 +86,8 @@ dependencies {
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    // Network inspection
+    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 }

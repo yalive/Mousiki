@@ -2,6 +2,7 @@ package com.secureappinc.musicplayer.ui.home.models
 
 import android.os.Parcelable
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.ui.home.HomeAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -26,7 +27,7 @@ data class HeaderItem(val title: String) : HomeItem() {
     override val type = HomeAdapter.TYPE_HEADER
 }
 
-data class ArtistItem(private val list: List<String>) : HomeItem() {
+data class ArtistItem(val artist: Artist) : HomeItem() {
     override val type = HomeAdapter.TYPE_ARTIST
 }
 

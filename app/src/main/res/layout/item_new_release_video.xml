@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/four_4dp"
+    android:background="@drawable/bg_item_track"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
