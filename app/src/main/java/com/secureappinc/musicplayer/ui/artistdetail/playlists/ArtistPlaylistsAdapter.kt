@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.ui.detailcategory.playlists
+package com.secureappinc.musicplayer.ui.artistdetail.playlists
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.squareup.picasso.Picasso
 
 /**
@@ -16,8 +16,12 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class GenrePlaylistsAdapter(items: List<YTTrendingItem>, val genreMusic: GenreMusic) :
-    RecyclerView.Adapter<GenrePlaylistsAdapter.ViewHolder>() {
+class ArtistPlaylistsAdapter(
+    items: List<YTTrendingItem>,
+    val artist: Artist,
+    val onClickPlaylist: (playlist: YTTrendingItem) -> Unit
+) :
+    RecyclerView.Adapter<ArtistPlaylistsAdapter.ViewHolder>() {
 
     var items: List<YTTrendingItem> = items
         set(value) {
@@ -45,12 +49,18 @@ class GenrePlaylistsAdapter(items: List<YTTrendingItem>, val genreMusic: GenreMu
         private val txtCategory: TextView = view.findViewById(R.id.txtCategory)
         private val txtCount: TextView = view.findViewById(R.id.txtCount)
 
+        init {
+            itemView.setOnClickListener {
+                onClickPlaylist(items[adapterPosition])
+            }
+        }
+
         fun bind(item: YTTrendingItem) {
             Picasso.get().load(item.snippet.thumbnails.high.url)
                 .fit()
                 .into(imgSong)
             txtTitle.text = item.snippet.title
-            txtCategory.text = "${genreMusic.title}"
+            txtCategory.text = "${artist.name}"
             txtCount.text = "${item.contentDetails.itemCount}"
         }
     }

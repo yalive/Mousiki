@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
+import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.player.PlayerQueue
+import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.Utils
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_dialog.*
@@ -38,14 +39,14 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         db = MusicTrackRoomDatabase.getDatabase(context!!)
 
         val json = arguments?.getString("MUSIC_TRACK")
-        musicTrack = Gson().fromJson(json, MusicTrack::class.java)
+        musicTrack = ApiManager.gson.fromJson(json, MusicTrack::class.java)
 
         if (!UserPrefs.isFav(musicTrack.youtubeId)) {
             favIcon.setImageResource(R.drawable.ic_favorite_border_yellow)
-            favLabel.text="Favorite"
+            favLabel.text = "Favorite"
         } else {
             favIcon.setImageResource(R.drawable.ic_favorite_added_yellow)
-            favLabel.text="Unfavorite"
+            favLabel.text = "Unfavorite"
         }
 
         shareVia.setOnClickListener {
@@ -80,6 +81,10 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onPause() {
         super.onPause()
-        PlayerQueue.showVideo()
+        val mainActivity = requireActivity() as MainActivity
+        if (mainActivity.isBottomPanelCollapsed()) {
+            PlayerQueue.showVideo()
+            PlayerQueue.resume()
+        }
     }
 }

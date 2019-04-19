@@ -50,6 +50,7 @@ class PlayListAdapter(items: List<MusicTrack>, private val itemClickListener: on
 
         init {
             itemView.setOnClickListener {
+                itemClickListener.onSelectVideo(items[adapterPosition])
                 PlayerQueue.playTrack(items[adapterPosition], items)
             }
         }
@@ -70,5 +71,6 @@ class PlayListAdapter(items: List<MusicTrack>, private val itemClickListener: on
 
     interface onItemClickListener {
         fun onItemClick(musicTrack: MusicTrack)
+        fun onSelectVideo(musicTrack: MusicTrack)
     }
 }

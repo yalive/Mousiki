@@ -9,15 +9,19 @@ import com.google.gson.annotations.SerializedName
  **********************************
  */
 data class ContentDetailVideo(
-        @Expose
-        @SerializedName("duration")
-        val duration: String,
+    @Expose
+    @SerializedName("duration")
+    val duration: String,
 
-        @Expose
-        @SerializedName("itemCount")
-        val itemCount: Int,
+    @Expose
+    @SerializedName("itemCount")
+    val itemCount: Int,
 
-        @Expose
-        @SerializedName("dimension")
-        val dimension: String
+    @Expose
+    @SerializedName("videoId")
+    val videoId: String,
+
+    @Expose
+    @SerializedName("dimension")
+    val dimension: String
 )

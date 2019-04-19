@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.ui.detailcategory.playlists
+package com.secureappinc.musicplayer.ui.artistdetail.videos
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.ui.home.models.GenreMusic
+import com.secureappinc.musicplayer.models.Artist
+import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.player.PlayerQueue
 import com.squareup.picasso.Picasso
 
 /**
@@ -16,10 +17,10 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class GenrePlaylistsAdapter(items: List<YTTrendingItem>, val genreMusic: GenreMusic) :
-    RecyclerView.Adapter<GenrePlaylistsAdapter.ViewHolder>() {
+class ArtistVideosAdapter(items: List<MusicTrack>, val artist: Artist, val onVideoSelected: () -> Unit) :
+    RecyclerView.Adapter<ArtistVideosAdapter.ViewHolder>() {
 
-    var items: List<YTTrendingItem> = items
+    var items: List<MusicTrack> = items
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -27,7 +28,7 @@ class GenrePlaylistsAdapter(items: List<YTTrendingItem>, val genreMusic: GenreMu
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_channel_playlist, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category_video, parent, false)
         return ViewHolder(view)
     }
 
@@ -42,16 +43,24 @@ class GenrePlaylistsAdapter(items: List<YTTrendingItem>, val genreMusic: GenreMu
 
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private val txtDuration: TextView = view.findViewById(R.id.txtDuration)
         private val txtCategory: TextView = view.findViewById(R.id.txtCategory)
-        private val txtCount: TextView = view.findViewById(R.id.txtCount)
 
-        fun bind(item: YTTrendingItem) {
-            Picasso.get().load(item.snippet.thumbnails.high.url)
+        init {
+            view.setOnClickListener {
+                onVideoSelected()
+                PlayerQueue.playTrack(items[adapterPosition], items)
+            }
+        }
+
+        fun bind(item: MusicTrack) {
+            Picasso.get().load(item.imgUrl)
                 .fit()
                 .into(imgSong)
-            txtTitle.text = item.snippet.title
-            txtCategory.text = "${genreMusic.title}"
-            txtCount.text = "${item.contentDetails.itemCount}"
+            txtTitle.text = item.title
+            txtDuration.text = item.durationFormatted
+            txtCategory.text = "${artist.name} - Topic"
+
         }
     }
 

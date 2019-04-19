@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainViewModel
-import com.secureappinc.musicplayer.ui.home.models.GenreItem
-import com.secureappinc.musicplayer.ui.home.models.GenreMusic
-import com.secureappinc.musicplayer.ui.home.models.HeaderItem
-import com.secureappinc.musicplayer.ui.home.models.HomeItem
+import com.secureappinc.musicplayer.ui.home.models.*
+import com.squareup.picasso.Picasso
 
 /**
  **********************************
@@ -24,7 +24,7 @@ import com.secureappinc.musicplayer.ui.home.models.HomeItem
  **********************************
  */
 class HomeAdapter(
-    val items: List<HomeItem>,
+    val items: MutableList<HomeItem>,
     val viewModel: MainViewModel,
     val callback: (item: HomeItem) -> Unit,
     val onVideoSelected: () -> Unit,
@@ -89,6 +89,9 @@ class HomeAdapter(
         } else if (holder is GenreViewHolder) {
             val genreItem = items[position] as GenreItem
             holder.bind(genreItem.genre)
+        } else if (holder is ArtistViewHolder) {
+            val genreItem = items[position] as ArtistItem
+            holder.bind(genreItem.artist)
         }
     }
 
@@ -101,14 +104,22 @@ class HomeAdapter(
 
     inner class ArtistViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        val imgArtist: ImageView = view.findViewById(R.id.imgArtist)
+        val txtName: TextView = view.findViewById(R.id.txtName)
+
         init {
-            view.setOnClickListener {
+            view.findViewById<CardView>(R.id.cardView).setOnClickListener {
                 callback(items[adapterPosition])
             }
         }
 
-        fun bind() {
-
+        fun bind(artist: Artist) {
+            txtName.text = artist.name
+            if (artist.urlImage != null && artist.urlImage!!.isNotEmpty()) {
+                Picasso.get().load(artist.urlImage)
+                    .fit()
+                    .into(imgArtist)
+            }
         }
     }
 
