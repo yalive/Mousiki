@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Resource
@@ -17,6 +19,8 @@ import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListener {
@@ -35,15 +39,31 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
 
         activity!!.title = "New Release"
 
+        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
+
+        collapsingToolbar?.isTitleEnabled = true
+
+        collapsingToolbar?.title = "New Release"
+
+        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
+
+        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
+
+        rltContainer?.visible()
+
         adapter = NewReleaseVideoAdapter(listOf(), this) {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.showBottomPanel()
         }
-
         recyclerView.adapter = adapter
 
         val viewModel = ViewModelProviders.of(this).get(NewReleaseViewModel::class.java)
         viewModel.trendingTracks.observe(this, Observer { resource ->
+            Picasso.get().load(resource.data?.get(0)?.imgUrl)
+                .fit()
+                .centerInside()
+                .placeholder(R.drawable.bg_circle_black)
+                .into(imgCollapsed)
             updateUI(resource)
         })
 

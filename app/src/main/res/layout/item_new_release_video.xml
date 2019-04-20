@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/four_4dp"
-    android:background="@drawable/bg_item_track"
+    android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:orientation="horizontal">
@@ -80,5 +80,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="?selectableItemBackgroundBorderless"
+        android:padding="@dimen/eight_8dp"
         android:src="@drawable/ic_more_vertical" />
 </LinearLayout>

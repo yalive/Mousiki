@@ -1,24 +1,21 @@
 package com.secureappinc.musicplayer.ui.detailcategory
 
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.detailcategory.playlists.GenrePlaylistsFragment
 import com.secureappinc.musicplayer.ui.detailcategory.videos.GenreVideosFragment
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
-import com.secureappinc.musicplayer.utils.BlurImage
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
-import kotlinx.android.synthetic.main.activity_main.*
+import com.secureappinc.musicplayer.utils.visible
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
 
 
@@ -45,7 +42,17 @@ class DetailGenreFragment : Fragment() {
         }
         genreMusic = parcelableGenre
 
-        requireActivity().toolbar.title = genreMusic.title
+        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
+
+        collapsingToolbar?.isTitleEnabled = true
+
+        collapsingToolbar?.title = genreMusic.title
+
+        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
+
+        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
+
+        rltContainer?.visible()
 
         val videosFragment = GenreVideosFragment()
         videosFragment.arguments = arguments
@@ -58,29 +65,9 @@ class DetailGenreFragment : Fragment() {
 
         val viewModel = ViewModelProviders.of(this).get(DetailGenreViewModel::class.java)
         viewModel.firstTrack.observe(this, Observer { firstTrack ->
-            /*Picasso.get().load(firstTrack.imgUrl)
-                //.fit()
-                .into(imgProfileGenre)*/
-            loadAndBlureImage(firstTrack)
+
         })
 
-        imgProfileGenre.setImageResource(genreMusic.img)
-    }
-
-    private fun loadAndBlureImage(video: MusicTrack) {
-        val target = object : Target {
-            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-            }
-
-            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            }
-
-            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                blureBackgorundImg.setImageBitmap(BlurImage.fastblur(bitmap, 2f, 90))
-            }
-        }
-
-        blureBackgorundImg.tag = target
-        Picasso.get().load(video.imgUrl).into(target)
+        imgCollapsed?.setImageResource(genreMusic.img)
     }
 }

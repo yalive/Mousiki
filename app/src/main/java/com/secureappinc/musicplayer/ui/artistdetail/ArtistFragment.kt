@@ -1,23 +1,22 @@
 package com.secureappinc.musicplayer.ui.artistdetail
 
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.ui.artistdetail.playlists.ArtistPlaylistsFragment
 import com.secureappinc.musicplayer.ui.artistdetail.videos.ArtistVideosFragment
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreViewModel
-import com.secureappinc.musicplayer.utils.BlurImage
+import com.secureappinc.musicplayer.utils.visible
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
-import kotlinx.android.synthetic.main.activity_main.*
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
 
 
@@ -44,7 +43,17 @@ class ArtistFragment : Fragment() {
         }
         artist = parcelableGenre
 
-        requireActivity().toolbar.title = artist.name
+        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
+
+        collapsingToolbar?.isTitleEnabled = true
+
+        collapsingToolbar?.title = artist.name
+
+        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
+
+        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
+
+        rltContainer?.visible()
 
         val videosFragment = ArtistVideosFragment()
         videosFragment.arguments = arguments
@@ -61,27 +70,10 @@ class ArtistFragment : Fragment() {
             if (urlImage.isNotEmpty()) {
                 Picasso.get().load(urlImage)
                     .fit()
-                    .into(imgProfileGenre)
-
-                loadAndBlureImage(urlImage)
+                    .centerInside()
+                    .placeholder(R.drawable.bg_circle_black)
+                    .into(imgCollapsed)
             }
         }
-    }
-
-    private fun loadAndBlureImage(urlImage: String) {
-        val target = object : Target {
-            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-            }
-
-            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            }
-
-            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                blureBackgorundImg.setImageBitmap(BlurImage.fastblur(bitmap, 2f, 90))
-            }
-        }
-
-        blureBackgorundImg.tag = target
-        Picasso.get().load(urlImage).into(target)
     }
 }

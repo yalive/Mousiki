@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        collapsingToolbar.isTitleEnabled = true
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         setupMenu()

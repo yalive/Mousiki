@@ -8,11 +8,14 @@ import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.Resource
 import com.secureappinc.musicplayer.models.Status
@@ -51,6 +54,13 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
                 }
             }
         }
+        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
+
+        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
+
+        rltContainer?.gone()
+
+        collapsingToolbar?.isTitleEnabled = false
 
         adapter = HomeAdapter(mockList(), ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java), {
             if (it is GenreItem) {

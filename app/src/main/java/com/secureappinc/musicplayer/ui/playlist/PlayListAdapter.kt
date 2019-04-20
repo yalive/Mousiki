@@ -61,7 +61,7 @@ class PlayListAdapter(items: List<MusicTrack>, private val itemClickListener: on
                 .into(imgSong)
             txtTitle.text = item.title
             txtDuration.text = item.durationFormatted
-            //  txtCategory.text = "${genreMusic.title} - Topic"
+            txtCategory.text = item.title.split("-")[0]
             btnMore.setOnClickListener {
                 itemClickListener.onItemClick(item)
             }
