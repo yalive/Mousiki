@@ -28,7 +28,7 @@ class PlaylistVideosAdapter(items: List<MusicTrack>, val artist: Artist, val onV
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category_video, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_artist, parent, false)
         return ViewHolder(view)
     }
 

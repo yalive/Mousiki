@@ -69,11 +69,9 @@
         </com.google.android.material.appbar.AppBarLayout>
 
 
-        <androidx.core.widget.NestedScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorTransparent"
-            android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <fragment
@@ -84,8 +82,17 @@
                 app:defaultNavHost="true"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:navGraph="@navigation/nav_graph" />
-        </androidx.core.widget.NestedScrollView>
+        </RelativeLayout>
 
+        <!-- When clicked close menu -->
+        <FrameLayout
+            android:id="@+id/viewDetectGesture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorTransparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

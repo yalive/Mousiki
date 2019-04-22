@@ -61,6 +61,7 @@ class BottomPanelFragment : Fragment() {
                 newState: SlidingUpPanelLayout.PanelState?
             ) {
 
+                btnFullScreen.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
             }
         })
 
@@ -81,7 +82,7 @@ class BottomPanelFragment : Fragment() {
         }
 
         btnShareVia.setOnClickListener {
-            Utils.shareVia(this, PlayerQueue.value?.shareVideoUrl)
+            Utils.shareVia(PlayerQueue.value?.shareVideoUrl)
         }
 
         btnAddFav.setOnClickListener {

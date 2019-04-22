@@ -102,6 +102,10 @@ class HomeAdapter(
 
     override fun getItemCount() = items.size
 
+    fun autoScrollFeaturedVideos() {
+        featuredViewHolder?.autoScrollFeaturedVideos()
+    }
+
     inner class ArtistViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val imgArtist: ImageView = view.findViewById(R.id.imgArtist)
@@ -166,8 +170,8 @@ class HomeAdapter(
         private lateinit var adapter: HomeFeaturedAdapter
 
         fun bind() {
-            adapter = HomeFeaturedAdapter(itemView.context)
-            adapter.pages = this@HomeAdapter.tracks
+            adapter = HomeFeaturedAdapter(itemView.context, onVideoSelected)
+            adapter.tracks = this@HomeAdapter.tracks
 
             // Disable clip to padding
             viewPager.setClipToPadding(false);
@@ -179,9 +183,18 @@ class HomeAdapter(
             viewPager.adapter = adapter
         }
 
-        fun update(value: List<MusicTrack>) {
-            this.adapter.pages = value
+        fun update(featuredTracks: List<MusicTrack>) {
+            this.adapter.tracks = featuredTracks
             this.adapter.notifyDataSetChanged()
+        }
+
+        fun autoScrollFeaturedVideos() {
+            val currentItem = viewPager.currentItem
+            if (currentItem < adapter.tracks.size - 1) {
+                viewPager.setCurrentItem(currentItem + 1, true)
+            } else {
+                viewPager.setCurrentItem(0, true)
+            }
         }
     }
 

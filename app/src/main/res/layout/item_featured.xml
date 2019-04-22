@@ -8,6 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:id="@+id/cardView"
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"

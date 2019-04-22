@@ -8,6 +8,8 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.player.PlayerQueue
+import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.squareup.picasso.Picasso
 
 
@@ -17,9 +19,9 @@ import com.squareup.picasso.Picasso
  **********************************
  */
 
-internal class HomeFeaturedAdapter(var mContext: Context) : PagerAdapter() {
+internal class HomeFeaturedAdapter(var mContext: Context, val onVideoSelected: () -> Unit) : PagerAdapter() {
     var mLayoutInflater: LayoutInflater
-    var pages: List<MusicTrack> = ArrayList()
+    var tracks: List<MusicTrack> = ArrayList()
 
     init {
         mLayoutInflater = LayoutInflater.from(mContext)
@@ -27,7 +29,7 @@ internal class HomeFeaturedAdapter(var mContext: Context) : PagerAdapter() {
 
     // Returns the number of pages to be displayed in the ViewPager.
     override fun getCount(): Int {
-        return pages.size
+        return tracks.size
     }
 
     // Returns true if a particular object (page) is from a particular page
@@ -41,12 +43,18 @@ internal class HomeFeaturedAdapter(var mContext: Context) : PagerAdapter() {
         val itemView = mLayoutInflater.inflate(R.layout.item_featured, container, false)
         // Find and populate data into the page (i.e set the image)
         val imageView = itemView.findViewById(R.id.imgSong) as ImageView
-        Picasso.get().load("https://img.youtube.com/vi/${pages[position].youtubeId}/maxresdefault.jpg")
+        Picasso.get().load("https://img.youtube.com/vi/${tracks[position].youtubeId}/maxresdefault.jpg")
             .fit()
             .into(imageView)
         // ...
         // Add the page to the container
         container.addView(itemView)
+        itemView.findViewById<View>(R.id.cardView).setOnClickListener {
+            onVideoSelected()
+            PlayerQueue.playTrack(tracks[position], tracks)
+            VideoEmplacementLiveData.bottom()
+        }
+
         // Return the page
         return itemView
     }

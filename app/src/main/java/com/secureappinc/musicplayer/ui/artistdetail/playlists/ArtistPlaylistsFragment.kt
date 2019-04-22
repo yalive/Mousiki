@@ -2,24 +2,21 @@ package com.secureappinc.musicplayer.ui.artistdetail.playlists
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Artist
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
-import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.models.Status
 import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_artist_playlists.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class ArtistPlaylistsFragment : Fragment() {
@@ -54,21 +51,17 @@ class ArtistPlaylistsFragment : Fragment() {
 
     private fun loadPlaylist() {
 
-        ApiManager.api.getPlaylist(artist.channelId, "MA").enqueue(object : Callback<YTTrendingMusicRS> {
-            override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
-                if (response.isSuccessful) {
-                    showSuccess()
-                    val listMusics = response.body()?.items
-                    listMusics?.let {
-                        adapter.items = listMusics
-                    }
-                } else {
-                    showError()
-                }
-            }
+        val viewModel = ViewModelProviders.of(this).get(ArtistPlaylistsViewModel::class.java)
 
-            override fun onFailure(call: Call<YTTrendingMusicRS>, t: Throwable) {
-                Log.d(TAG, "")
+        viewModel.loadPlaylist(artist.channelId)
+
+        viewModel.searchResultList.observe(this, Observer {
+            if (it.status == Status.LOADING) {
+
+            } else if (it.status == Status.SUCCESS) {
+                showSuccess()
+                adapter.items = it.data!!
+            } else if (it.status == Status.ERROR) {
                 showError()
             }
         })

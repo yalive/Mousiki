@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/listContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_list_artist" />
+
+
+        <com.secureappinc.musicplayer.base.views.SideBar
+            android:id="@+id/sideBar"
+            android:layout_width="20dp"
+            android:layout_height="380dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_sidebar" />
+
+        <TextView
+            android:id="@+id/txtDialog"
+            android:layout_width="45.5dp"
+            android:layout_height="45.5dp"
+            android:layout_alignTop="@+id/sideBar"
+            android:layout_marginEnd="9dp"
+            android:layout_toStartOf="@+id/sideBar"
+            android:background="@drawable/bg_text_dialog"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:background="@drawable/bg_circle"
+        android:indeterminateTint="@color/colorYellow"
+        android:padding="@dimen/four_4dp"
+        android:visibility="visible"
+        tools:visibility="gone" />
+
+</LinearLayout>

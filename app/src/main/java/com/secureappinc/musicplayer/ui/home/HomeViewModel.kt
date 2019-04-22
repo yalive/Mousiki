@@ -55,6 +55,11 @@ class HomeViewModel : ViewModel() {
 
 
     fun loadArtists(countryCode: String) {
+        val oldValue = sixArtistResources.value
+        if (oldValue?.data != null && oldValue.data!!.isNotEmpty()) {
+            return
+        }
+
         sixArtistResources.postValue(Resource.loading())
         Executors.newSingleThreadExecutor().execute {
             val json = Utils.loadStringJSONFromAsset("artists.json")

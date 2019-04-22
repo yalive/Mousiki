@@ -4,6 +4,7 @@ package com.secureappinc.musicplayer.ui.home
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
@@ -33,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     val TAG = "HomeFragment"
-
+    private val handler = Handler()
     lateinit var adapter: HomeAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -96,6 +97,24 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
 
         viewModel.loadTrendingMusic()
         viewModel.loadArtists(getCurrentLocale())
+
+        autoScrollFeaturedVideos()
+    }
+
+
+    val autoScrollRunnable = Runnable {
+        adapter.autoScrollFeaturedVideos()
+        autoScrollFeaturedVideos()
+    }
+
+
+    private fun autoScrollFeaturedVideos() {
+        handler.postDelayed(autoScrollRunnable, 5000)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        handler.removeCallbacks(autoScrollRunnable)
     }
 
     private fun updateArtists(resource: Resource<List<Artist>>) {
@@ -159,6 +178,8 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     override fun onMoreItemClick(headerItem: HeaderItem) {
         if (headerItem.title.equals("New Release")) {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.newReleaseFragment)
+        } else if (headerItem.title.equals("ARTIST", true)) {
+            findNavController().navigate(com.secureappinc.musicplayer.R.id.artistsFragment)
         }
     }
 

@@ -13,12 +13,9 @@ import com.secureappinc.musicplayer.utils.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
 import java.util.concurrent.TimeUnit
 
 object ApiManager {
-
-    val DEBUG_NETWORK = true
 
     lateinit var api: YoutubeApi
         private set
@@ -43,7 +40,7 @@ object ApiManager {
             .writeTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
             .readTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
 
-        if (DEBUG_NETWORK) {
+        if (Constants.Config.DEBUG_NETWORK) {
             client.addInterceptor(ChuckInterceptor(MusicApp.get()))
         }
 

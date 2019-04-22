@@ -13,7 +13,7 @@
         android:text="@string/hello_blank_fragment"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_category_video"
+        tools:listitem="@layout/item_artist"
         tools:visibility="visible" />
 
     <ProgressBar

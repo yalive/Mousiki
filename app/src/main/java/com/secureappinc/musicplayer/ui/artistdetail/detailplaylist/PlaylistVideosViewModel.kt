@@ -21,6 +21,12 @@ class PlaylistVideosViewModel : ViewModel() {
     val searchResultList = MutableLiveData<Resource<List<MusicTrack>>>()
 
     fun getPlaylistVideos(playlistId: String) {
+
+        val oldValue = searchResultList.value
+        if (oldValue?.data != null && oldValue.data!!.isNotEmpty()) {
+            return
+        }
+
         searchResultList.value = Resource.loading()
         ApiManager.api.getPlaylistVideos(playlistId).enqueue(object : Callback<YTTrendingMusicRS> {
             override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
