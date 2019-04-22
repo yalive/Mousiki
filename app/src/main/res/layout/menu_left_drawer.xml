@@ -22,7 +22,7 @@
             android:layout_marginStart="@dimen/sixteen_16dp"
             android:layout_marginTop="64dp"
             android:gravity="start"
-            android:text="Music Player"
+            android:text="@string/app_name"
             android:textAllCaps="true"
             android:textColor="@color/colorWhite"
             android:textSize="26sp"
@@ -30,11 +30,15 @@
 
 
         <LinearLayout
+            android:id="@+id/btnLibrary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/thirty_two_32dp"
+            android:background="?selectableItemBackground"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:paddingTop="@dimen/eight_8dp"
+            android:paddingBottom="@dimen/eight_8dp">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -55,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_16dp"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:visibility="gone">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -82,7 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/twenty_four_24dp"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:visibility="gone">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -99,11 +105,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnEqualizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:layout_marginTop="@dimen/eight_8dp"
+            android:background="?selectableItemBackground"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:paddingTop="@dimen/eight_8dp"
+            android:paddingBottom="@dimen/eight_8dp">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -120,11 +130,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnSleepTimer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:background="?selectableItemBackground"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:paddingTop="@dimen/eight_8dp"
+            android:paddingBottom="@dimen/eight_8dp"
+            android:visibility="gone">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -141,11 +155,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnShareApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:background="?selectableItemBackground"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:paddingTop="@dimen/eight_8dp"
+            android:paddingBottom="@dimen/eight_8dp">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -162,11 +179,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnShareFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:background="?selectableItemBackground"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:paddingTop="@dimen/eight_8dp"
+            android:paddingBottom="@dimen/eight_8dp">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -189,11 +209,15 @@
             android:background="#23F3F1F1" />
 
         <LinearLayout
+            android:id="@+id/btnPrivacyPolicy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_four_24dp"
+            android:layout_marginTop="@dimen/eight_8dp"
+            android:background="?selectableItemBackground"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:paddingTop="@dimen/eight_8dp"
+            android:paddingBottom="@dimen/eight_8dp">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -210,11 +234,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:background="?selectableItemBackground"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/sixteen_16dp">
+            android:paddingStart="@dimen/sixteen_16dp"
+            android:paddingTop="@dimen/eight_8dp"
+            android:paddingBottom="@dimen/eight_8dp"
+            android:visibility="gone">
 
             <ImageButton
                 android:layout_width="wrap_content"

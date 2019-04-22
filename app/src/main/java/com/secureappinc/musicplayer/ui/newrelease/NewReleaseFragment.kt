@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Resource
 import com.secureappinc.musicplayer.models.Status
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.utils.gone
@@ -90,7 +90,7 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
     override fun onItemClick(musicTrack: MusicTrack) {
         val bottomSheetFragment = FvaBottomSheetFragment()
         val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", Gson().toJson(musicTrack))
+        bundle.putString("MUSIC_TRACK", ApiManager.gson.toJson(musicTrack))
         bottomSheetFragment.arguments = bundle
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }

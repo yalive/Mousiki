@@ -34,8 +34,6 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        PlayerQueue.hideVideo()
-
         db = MusicTrackRoomDatabase.getDatabase(context!!)
 
         val json = arguments?.getString("MUSIC_TRACK")
@@ -51,7 +49,7 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
         shareVia.setOnClickListener {
             Log.d(TAG, musicTrack.shareVideoUrl)
-            Utils.shareVia(this, musicTrack.shareVideoUrl)
+            Utils.shareVia(musicTrack.shareVideoUrl)
             if (this.isVisible) {
                 this.dismiss()
             }
@@ -77,6 +75,11 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             PlayerQueue.addAsNext(musicTrack)
             this.dismiss()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        PlayerQueue.hideVideo()
     }
 
     override fun onPause() {

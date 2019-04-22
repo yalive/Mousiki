@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_artistFragment"
             app:destination="@id/artistFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_artistsFragment"
+            app:destination="@id/artistsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailGenreFragment"
@@ -49,4 +52,8 @@
         android:id="@+id/playlistVideosFragment"
         android:name="com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment"
         android:label="PlaylistVideosFragment" />
+    <fragment
+        android:id="@+id/artistsFragment"
+        android:name="com.secureappinc.musicplayer.ui.artists.ArtistsFragment"
+        android:label="Artists" />
 </navigation>

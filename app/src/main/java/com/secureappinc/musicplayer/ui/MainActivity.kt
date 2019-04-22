@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
@@ -13,6 +14,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -27,8 +29,7 @@ import com.secureappinc.musicplayer.services.DragPanelInfo
 import com.secureappinc.musicplayer.services.DragSlidePanelMonitor
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.bottompanel.BottomPanelFragment
-import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
-import com.secureappinc.musicplayer.utils.canDrawOverApps
+import com.secureappinc.musicplayer.utils.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.yarolegovich.slidingrootnav.SlidingRootNav
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder
@@ -47,11 +48,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var slidingMenu: SlidingRootNav
     private lateinit var navController: NavController
 
+    private val handler = Handler()
+
     lateinit var slidingPaneLayout: SlidingUpPanelLayout
 
     lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(com.secureappinc.musicplayer.R.layout.activity_main)
         slidingPaneLayout = findViewById(R.id.sliding_layout)
@@ -88,7 +92,6 @@ class MainActivity : AppCompatActivity() {
 
 
         setupBottomPanelFragment()
-
     }
 
     var isFromService = false
@@ -161,12 +164,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        PlaybackLiveData.observe(this, Observer {
+            if (it == PlayerConstants.PlayerState.UNKNOWN) {
+                hideBottomPanel()
+            }
+        })
+
     }
 
 
     private fun showHomeIcon() {
         toolbar.setNavigationIcon(R.drawable.ic_menu_toolbar)
-        toolbar.title = "Music Player"
+        toolbar.title = getString(R.string.app_name)
         toolbar.setNavigationOnClickListener {
             if (isHome()) {
                 toggleMenu()
@@ -190,7 +200,11 @@ class MainActivity : AppCompatActivity() {
         slidingMenu = SlidingRootNavBuilder(this)
             .addDragStateListener(object : DragStateListener {
                 override fun onDragEnd(isMenuOpened: Boolean) {
-
+                    if (isMenuOpened) {
+                        viewDetectGesture.visible()
+                    } else {
+                        viewDetectGesture.gone()
+                    }
                 }
 
                 override fun onDragStart() {
@@ -209,6 +223,47 @@ class MainActivity : AppCompatActivity() {
             }
             .inject();
 
+        findViewById<View>(R.id.btnEqualizer).setOnClickListener {
+            Utils.openEqualizer(this)
+        }
+
+        findViewById<View>(R.id.btnShareApp).setOnClickListener {
+            Utils.shareAppVia()
+        }
+
+        findViewById<View>(R.id.btnShareFeedback).setOnClickListener {
+            Utils.shareFeedback()
+        }
+
+        findViewById<View>(R.id.btnSleepTimer).setOnClickListener {
+
+        }
+
+        findViewById<View>(R.id.btnPrivacyPolicy).setOnClickListener {
+            Utils.openWebview(
+                this,
+                "http://secureappinc.com/privacy_policy_fr.html"
+            )
+        }
+
+        findViewById<View>(R.id.btnSettings).setOnClickListener {
+        }
+
+        findViewById<View>(R.id.btnLibrary).setOnClickListener {
+            if (navController.currentDestination?.id != R.id.dashboardFragment) {
+                slidingMenu.closeMenu()
+                handler.postDelayed({
+                    navController.popBackStack(R.id.dashboardFragment, false)
+                }, 500)
+
+            }
+        }
+
+        viewDetectGesture.setOnTouchListener { v, event ->
+            slidingMenu.closeMenu()
+            viewDetectGesture.gone()
+            true
+        }
     }
 
 

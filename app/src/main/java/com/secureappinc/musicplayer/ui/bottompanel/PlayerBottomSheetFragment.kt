@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -20,6 +21,7 @@ import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
+import com.secureappinc.musicplayer.utils.gone
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
 
@@ -52,6 +54,13 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
         })
 
         imgSongShadow = view.findViewById<ImageView>(com.secureappinc.musicplayer.R.id.imgSong)
+        mainTrackDuration.gone()
+        imgSongShadow?.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                com.secureappinc.musicplayer.R.color.black_overlay
+            )
+        )
 
         initializeBottomSheet()
     }

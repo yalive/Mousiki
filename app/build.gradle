@@ -8,6 +8,9 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply plugin: 'kotlin-kapt'
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 
 android {
     signingConfigs {
@@ -28,6 +31,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.releaseConfig
     }
+
+    packagingOptions {
+        exclude 'META-INF/core_release.kotlin_module'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -49,12 +57,11 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
     implementation 'com.google.android.material:material:1.0.0-beta01'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
@@ -79,15 +86,16 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-
     // Youtube Player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.3'
-
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
-
     implementation 'de.hdodenhof:circleimageview:3.0.0'
-
     // Network inspection
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.afollestad.material-dialogs:core:2.8.1'
+
 }

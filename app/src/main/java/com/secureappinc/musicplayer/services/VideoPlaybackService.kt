@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.*
+import android.widget.TextView
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -75,6 +76,7 @@ class VideoPlaybackService : LifecycleService() {
 
                     if (fromFullScreen) {
                         youTubePlayer?.loadVideo(currentTrack.youtubeId, seekTo.toFloat())
+
                     } else {
                         youTubePlayer?.seekTo(seekTo.toFloat())
                     }
@@ -84,13 +86,20 @@ class VideoPlaybackService : LifecycleService() {
 
         intent?.getBooleanExtra(COMMAND_HIDE_VIDEO, false)?.let { hideVideo ->
             if (hideVideo) {
-                videoContainerView.invisible()
+                //videoContainerView.invisible()
+                videoViewParams.width = 0
+                videoViewParams.height = 0
+                windowManager.updateViewLayout(videoContainerView, videoViewParams)
+
             }
         }
 
         intent?.getBooleanExtra(COMMAND_SHOW_VIDEO, false)?.let { showVideo ->
             if (showVideo) {
                 videoContainerView.visible()
+                videoViewParams.width = videoEmplacement.width
+                videoViewParams.height = videoEmplacement.height
+                windowManager.updateViewLayout(videoContainerView, videoViewParams)
             }
         }
 
@@ -104,9 +113,11 @@ class VideoPlaybackService : LifecycleService() {
 
         addBottomView()
 
-        preparePlayerView()
+        if (Constants.Config.DEBUG_PLAYER) {
+            addDebugView()
+        }
 
-        /*//observeClickControls()*/
+        preparePlayerView()
 
         observeForegroundToggle()
 
@@ -115,6 +126,8 @@ class VideoPlaybackService : LifecycleService() {
         observeSlidePanelDragging()
 
         observeBottomSheetPlayerDragging()
+
+        startForegroundService()
     }
 
 
@@ -354,6 +367,40 @@ class VideoPlaybackService : LifecycleService() {
         windowManager.addView(bottomView, bottomViewParams)
     }
 
+    var debugView: View? = null
+
+    private fun addDebugView() {
+
+        debugView =
+            LayoutInflater.from(this).inflate(com.secureappinc.musicplayer.R.layout.view_debug_floating_player, null)
+
+        val debugTextView = debugView?.findViewById<TextView>(com.secureappinc.musicplayer.R.id.txtDebug)
+        val type = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            else -> WindowManager.LayoutParams.TYPE_PHONE
+        }
+
+        val debugViewParams = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            dpToPixel(60f),
+            type,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
+
+        //Specify the chat head position
+        //Initially view will be added to top-left corner
+        debugViewParams.gravity = Gravity.TOP or Gravity.START
+        debugViewParams.x = 0
+        debugViewParams.y = 0
+
+
+        windowManager.addView(debugView, debugViewParams)
+
+        PlaybackLiveData.observe(this, Observer {
+            debugTextView?.text = it.name
+        })
+    }
 
     private fun isAClick(startX: Float, endX: Float, startY: Float, endY: Float): Boolean {
         val differenceX = Math.abs(startX - endX)
@@ -366,5 +413,16 @@ class VideoPlaybackService : LifecycleService() {
         PlaybackLiveData.value = PlayerConstants.PlayerState.UNKNOWN
         windowManager.removeView(videoContainerView)
         windowManager.removeView(bottomView)
+        if (debugView != null) {
+            windowManager.removeView(debugView)
+        }
+    }
+
+
+    /* Used to build and start foreground service. */
+    private fun startForegroundService() {
+        val helper = NotificationHelper(this)
+        helper.init()
+
     }
 }

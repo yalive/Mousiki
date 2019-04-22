@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Music Player</string>
+    <string name="app_name">Free Music App</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -8,4 +8,7 @@
     <string name="title_activity_fullscreen_player">FullscreenPlayerActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="no_equalizer">No equalizer found.</string>
+    <string name="no_audio_ID">Play a song first, then try again.</string>
 </resources>
