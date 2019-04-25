@@ -10,11 +10,19 @@ import com.google.gson.annotations.SerializedName
  */
 data class YTVideoId(
 
-        @Expose
-        @SerializedName("kind")
-        val kind: String,
+    @Expose
+    @SerializedName("kind")
+    val kind: String,
 
-        @Expose
-        @SerializedName("videoId")
-        val videoId: String
+    @Expose
+    @SerializedName("channelId")
+    val channelId: String,
+
+    @Expose
+    @SerializedName("playlistId")
+    val playlistId: String,
+
+    @Expose
+    @SerializedName("videoId")
+    val videoId: String
 )

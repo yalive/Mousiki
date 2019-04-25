@@ -85,6 +85,9 @@ class PlaylistVideosViewModel : ViewModel() {
     private fun createTracksListFrom(listMusics: List<YTTrendingItem>): List<MusicTrack> {
         val tracks: MutableList<MusicTrack> = mutableListOf()
         for (musicItem in listMusics) {
+            if (musicItem.contentDetails == null) {
+                continue
+            }
             val track =
                 MusicTrack(musicItem.id, musicItem.snippet.title, musicItem.contentDetails.duration)
             tracks.add(track)
