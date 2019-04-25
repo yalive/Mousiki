@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_artistsFragment"
             app:destination="@id/artistsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_searchYoutubeFragment"
+            app:destination="@id/searchYoutubeFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailGenreFragment"
@@ -43,7 +46,7 @@
     <fragment
         android:id="@+id/artistFragment"
         android:name="com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment"
-        android:label="ArtistFragment" >
+        android:label="ArtistFragment">
         <action
             android:id="@+id/action_artistFragment_to_playlistVideosFragment"
             app:destination="@id/playlistVideosFragment" />
@@ -56,4 +59,8 @@
         android:id="@+id/artistsFragment"
         android:name="com.secureappinc.musicplayer.ui.artists.ArtistsFragment"
         android:label="Artists" />
+    <fragment
+        android:id="@+id/searchYoutubeFragment"
+        android:name="com.secureappinc.musicplayer.ui.searchyoutube.SearchYoutubeFragment"
+        android:label="" />
 </navigation>

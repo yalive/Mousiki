@@ -8,11 +8,13 @@ import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -266,10 +268,34 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    var searchView: SearchView? = null
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(com.secureappinc.musicplayer.R.menu.menu_toolbar, menu)
+        val searchItem = menu.findItem(R.id.searchYoutubeFragment)
+        searchView = searchItem.actionView as SearchView
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                if (!isHome()) {
+                    navController.popBackStack()
+                }
+                return true
+            }
+        })
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.searchYoutubeFragment && navController.currentDestination?.id != R.id.searchYoutubeFragment) {
+            navController.navigate(R.id.searchYoutubeFragment)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /**

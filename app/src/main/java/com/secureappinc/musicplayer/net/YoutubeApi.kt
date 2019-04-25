@@ -23,7 +23,7 @@ interface YoutubeApi {
 
 
         const val PLAYLIST =
-            "playlists?part=snippet%2CcontentDetails&maxResults=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
+            "playlists?part=snippet%2CcontentDetails&maxResults=50&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
 
         const val DUMMY_CHANNEL_ID = "UCmhzb5pJId5QY0r6gZqMDdA"
 
@@ -60,4 +60,13 @@ interface YoutubeApi {
 
     @GET(PLAYLISTITEMS)
     fun getPlaylistVideos(@Query("playlistId") playlistId: String): Call<YTTrendingMusicRS>
+
+    @GET("search?part=snippet&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
+    fun searchYoutube(@Query("q") query: String, @Query("type") type: String, @Query("maxResults") maxResults: Int): Call<YTCategoryMusicRS>
+
+    @GET("search?part=snippet&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10")
+    fun searchYoutubeMusic(@Query("q") query: String, @Query("type") type: String, @Query("maxResults") maxResults: Int): Call<YTCategoryMusicRS>
+
+    @GET(PLAYLIST)
+    fun getPlaylistsDetail(@Query("id") channelId: String): Call<YTTrendingMusicRS>
 }

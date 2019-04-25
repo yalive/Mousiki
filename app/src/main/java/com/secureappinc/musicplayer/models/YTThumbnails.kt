@@ -1,3 +1,5 @@
+@file:Suppress("UNREACHABLE_CODE")
+
 package com.secureappinc.musicplayer.models
 
 import com.google.gson.annotations.Expose
@@ -9,37 +11,53 @@ import com.google.gson.annotations.SerializedName
  **********************************
  */
 data class YTThumbnails(
-        @Expose
-        @SerializedName("default")
-        val default: YTThumbnailDefault,
+    @Expose
+    @SerializedName("default")
+    val default: YTThumbnailDefault,
 
-        @Expose
-        @SerializedName("medium")
-        val medium: YTThumbnailMedium,
+    @Expose
+    @SerializedName("medium")
+    val medium: YTThumbnailMedium,
 
-        @Expose
-        @SerializedName("high")
-        val high: YTThumbnailHigh
+    @Expose
+    @SerializedName("high")
+    val high: YTThumbnailHigh
 )
+
+fun YTThumbnails.urlOrEmpty(): String {
+    high?.url?.let {
+        return it
+    }
+
+    medium?.url?.let {
+        return it
+    }
+
+    default?.url?.let {
+        return it
+    }
+
+    return ""
+}
 
 data class YTThumbnailDefault(
 
-        @Expose
-        @SerializedName("url")
-        val url: String
+    @Expose
+    @SerializedName("url")
+    val url: String
 )
 
 
 data class YTThumbnailMedium(
 
-        @Expose
-        @SerializedName("url")
-        val url: String
+    @Expose
+    @SerializedName("url")
+    val url: String
 )
 
 data class YTThumbnailHigh(
 
-        @Expose
-        @SerializedName("url")
-        val url: String
+    @Expose
+    @SerializedName("url")
+    val url: String
 )
