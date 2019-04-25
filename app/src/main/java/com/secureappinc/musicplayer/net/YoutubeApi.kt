@@ -5,7 +5,6 @@ import com.secureappinc.musicplayer.models.YTTrendingMusicRS
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 /**
  **********************************
@@ -15,12 +14,8 @@ import retrofit2.http.Url
 interface YoutubeApi {
 
     companion object {
-        val TRENDING =
-            "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&regionCode=MA&maxResults=25&videoCategoryId=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
-
-        val TRENDING_ALL =
-            "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&regionCode=MA&maxResults=50&videoCategoryId=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
-
+        const val TRENDING =
+            "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&videoCategoryId=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
 
         const val PLAYLIST =
             "playlists?part=snippet%2CcontentDetails&maxResults=50&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
@@ -39,8 +34,8 @@ interface YoutubeApi {
 
     }
 
-    @GET
-    fun getTrending(@Url url: String): Call<YTTrendingMusicRS>
+    @GET(TRENDING)
+    fun getTrending(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): Call<YTTrendingMusicRS>
 
     @GET("search?part=snippet&chart=mostPopular&maxResults=25&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
     fun getCategoryMusic(@Query("topicId") topicId: String, @Query("regionCode") regionCode: String): Call<YTCategoryMusicRS>

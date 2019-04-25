@@ -98,4 +98,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'com.afollestad.material-dialogs:core:2.8.1'
 
+
+    implementation 'com.google.android.gms:play-services-ads:17.2.0'
+
 }

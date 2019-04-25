@@ -27,7 +27,7 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
     init {
         this.mTouchable = false
         this.letters = arrayOf(
-           /* "Hot",*/
+            /* "Hot",*/
             "A",
             "B",
             "C",

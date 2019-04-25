@@ -8,7 +8,7 @@ import com.secureappinc.musicplayer.models.YTTrendingItem
 import com.secureappinc.musicplayer.models.YTTrendingMusicRS
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
-import com.secureappinc.musicplayer.net.YoutubeApi
+import com.secureappinc.musicplayer.utils.getCurrentLocale
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +32,7 @@ class NewReleaseViewModel : ViewModel() {
 
         trendingTracks.value = Resource.loading()
 
-        ApiManager.api.getTrending(YoutubeApi.TRENDING_ALL).enqueue(object : Callback<YTTrendingMusicRS> {
+        ApiManager.api.getTrending(50, getCurrentLocale()).enqueue(object : Callback<YTTrendingMusicRS> {
             override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
                 if (response.isSuccessful) {
                     val listTrendingMusic = response.body()?.items

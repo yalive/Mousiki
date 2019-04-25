@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_searchYoutubeFragment"
             app:destination="@id/searchYoutubeFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_playListFragment"
+            app:destination="@id/playListFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailGenreFragment"
@@ -63,4 +66,9 @@
         android:id="@+id/searchYoutubeFragment"
         android:name="com.secureappinc.musicplayer.ui.searchyoutube.SearchYoutubeFragment"
         android:label="" />
+    <fragment
+        android:id="@+id/playListFragment"
+        android:name="com.secureappinc.musicplayer.ui.playlist.PlayListFragment"
+        android:label="@string/favourites"
+        tools:layout="@layout/fragment_play_list" />
 </navigation>
