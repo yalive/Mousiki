@@ -12,6 +12,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:tabGravity="fill"
         app:tabIndicatorAnimationDuration="400"
         app:tabIndicatorColor="@color/colorYellow"

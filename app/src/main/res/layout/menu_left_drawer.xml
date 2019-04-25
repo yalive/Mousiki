@@ -30,7 +30,7 @@
 
 
         <LinearLayout
-            android:id="@+id/btnLibrary"
+            android:id="@+id/btnFavourite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/thirty_two_32dp"
@@ -44,13 +44,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_headset_" />
+                android:src="@drawable/ic_favorite_border" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/sixteen_16dp"
-                android:text="Library"
+                android:text="@string/favourites"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
 

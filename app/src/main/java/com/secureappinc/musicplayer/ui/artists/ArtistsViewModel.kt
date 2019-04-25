@@ -66,8 +66,6 @@ class ArtistsViewModel : ViewModel() {
             val idsStr = ids.joinToString()
 
             loadArtistsImages(idsStr)
-
-            //Thread.sleep(1000 * 1)
         }
 
 

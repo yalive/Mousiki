@@ -32,8 +32,8 @@ class ArtistsFragment : Fragment() {
     lateinit var viewModel: ArtistsViewModel
     lateinit var adapter: ArtistsAdapter
 
-    val sideBar: SideBar by lazy { view?.findViewById(R.id.sideBar) as SideBar }
-    val txtDialog: TextView by lazy { view?.findViewById(R.id.txtDialog) as TextView }
+    lateinit var sideBar: SideBar
+    lateinit var txtDialog: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_artists, container, false)
@@ -41,6 +41,8 @@ class ArtistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sideBar = view.findViewById(R.id.sideBar)
+        txtDialog = view.findViewById(R.id.txtDialog)
 
         val collapsingToolbar =
             activity?.findViewById<CollapsingToolbarLayout>(com.secureappinc.musicplayer.R.id.collapsingToolbar)
@@ -121,6 +123,7 @@ class ArtistsFragment : Fragment() {
             override fun onTouchingLetterChanged(str: String) {
                 val headPositionInAdapter = adapter.getLetterPosition(str)
                 if (headPositionInAdapter != -1) {
+                    Log.d(TAG, "On Touch side bar: $headPositionInAdapter")
                     val layoutManager = recycler.layoutManager as LinearLayoutManager
                     layoutManager.scrollToPositionWithOffset(headPositionInAdapter, 0)
                     layoutManager.stackFromEnd = true

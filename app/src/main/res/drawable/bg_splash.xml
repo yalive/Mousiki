@@ -9,9 +9,9 @@
 
     <!-- Your product logo - 144dp color version of your app icon -->
     <item>
-
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/img_splash" />
     </item>
+
 </layer-list>

@@ -23,7 +23,7 @@ class DashboardPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         }
     }
 
-    override fun getCount() = 2
+    override fun getCount() = 1
 
     override fun getPageTitle(position: Int) = titles[position]
 

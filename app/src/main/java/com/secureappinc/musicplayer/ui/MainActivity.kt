@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,7 +38,7 @@ import com.yarolegovich.slidingrootnav.callback.DragStateListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     companion object {
         const val EXTRAS_FROM_PLAY_SERVICE = "from_player_service"
@@ -68,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         setupMenu()
+
         contentMenu = findViewById<FrameLayout>(com.secureappinc.musicplayer.R.id.contentMenu)
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
@@ -77,6 +77,9 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             if (destination.id == R.id.dashboardFragment) {
                 showHomeIcon()
+                searchItem?.isVisible = true
+            } else {
+                searchItem?.isVisible = false
             }
         }
 
@@ -244,18 +247,18 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.btnPrivacyPolicy).setOnClickListener {
             Utils.openWebview(
                 this,
-                "http://secureappinc.com/privacy_policy_fr.html"
+                "file:///android_asset/policy.html"
             )
         }
 
         findViewById<View>(R.id.btnSettings).setOnClickListener {
         }
 
-        findViewById<View>(R.id.btnLibrary).setOnClickListener {
-            if (navController.currentDestination?.id != R.id.dashboardFragment) {
+        findViewById<View>(R.id.btnFavourite).setOnClickListener {
+            if (navController.currentDestination?.id != R.id.playListFragment) {
                 slidingMenu.closeMenu()
                 handler.postDelayed({
-                    navController.popBackStack(R.id.dashboardFragment, false)
+                    navController.navigate(R.id.playListFragment)
                 }, 500)
 
             }
@@ -269,13 +272,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     var searchView: SearchView? = null
+    var searchItem: MenuItem? = null
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(com.secureappinc.musicplayer.R.menu.menu_toolbar, menu)
-        val searchItem = menu.findItem(R.id.searchYoutubeFragment)
-        searchView = searchItem.actionView as SearchView
+        searchItem = menu.findItem(R.id.searchYoutubeFragment)
+        searchView = searchItem?.actionView as SearchView
 
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 return true
             }

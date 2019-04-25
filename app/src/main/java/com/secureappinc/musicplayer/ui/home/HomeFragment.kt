@@ -1,11 +1,8 @@
 package com.secureappinc.musicplayer.ui.home
 
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +24,7 @@ import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.*
 import com.secureappinc.musicplayer.utils.dpToPixel
+import com.secureappinc.musicplayer.utils.getCurrentLocale
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -180,22 +178,6 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.newReleaseFragment)
         } else if (headerItem.title.equals("ARTIST", true)) {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.artistsFragment)
-        }
-    }
-
-    fun getCurrentLocale(): String {
-        val tm = requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val countryCodeValue = tm.networkCountryIso
-
-        if (countryCodeValue != null) {
-            return countryCodeValue
-        }
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            requireActivity().resources.configuration.locales.get(0).country
-        } else {
-
-            requireActivity().resources.configuration.locale.country
         }
     }
 }
