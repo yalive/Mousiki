@@ -39,6 +39,7 @@ object ApiManager {
             .connectTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
             .writeTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
             .readTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
+            .addInterceptor(AddKeyInterceptor())
 
         if (Constants.Config.DEBUG_NETWORK) {
             client.addInterceptor(ChuckInterceptor(MusicApp.get()))

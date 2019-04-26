@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.secureappinc.musicplayer.models.*
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.utils.getCurrentLocale
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +21,7 @@ class GenreVideosViewModel : ViewModel() {
 
     fun loadVideosForTopic(topicId: String) {
         searchResultList.value = Resource.loading()
-        ApiManager.api.getCategoryMusic(topicId, "MA").enqueue(object : Callback<YTCategoryMusicRS> {
+        ApiManager.api.getCategoryMusic(topicId, getCurrentLocale()).enqueue(object : Callback<YTCategoryMusicRS> {
             override fun onResponse(call: Call<YTCategoryMusicRS>, response: Response<YTCategoryMusicRS>) {
                 if (response.isSuccessful) {
                     val listMusics = response.body()?.items

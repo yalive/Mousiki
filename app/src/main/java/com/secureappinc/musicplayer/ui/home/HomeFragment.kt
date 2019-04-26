@@ -107,7 +107,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
 
 
     private fun autoScrollFeaturedVideos() {
-        handler.postDelayed(autoScrollRunnable, 5000)
+        handler.postDelayed(autoScrollRunnable, 10 * 1000)
     }
 
     override fun onStop() {
@@ -167,7 +167,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             } else if (i == 10) {
                 list.add(HeaderItem("GENRES"))
             } else if (i in 11..19) {
-                list.add(GenreItem(GenreMusic.allValues[i - 11]))
+                list.add(GenreItem(GenreMusic.allValues.take(9)[i - 11]))
             }
         }
         return list
@@ -178,6 +178,8 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.newReleaseFragment)
         } else if (headerItem.title.equals("ARTIST", true)) {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.artistsFragment)
+        } else if (headerItem.title.equals("Genres", true)) {
+            findNavController().navigate(com.secureappinc.musicplayer.R.id.genresFragment)
         }
     }
 }
