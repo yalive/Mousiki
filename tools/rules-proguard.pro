@@ -1,0 +1,1 @@
+-dontwarn com.sothree.slidinguppanel.SlidingUpPanelLayout

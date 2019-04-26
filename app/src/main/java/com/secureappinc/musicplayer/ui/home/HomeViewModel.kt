@@ -66,7 +66,7 @@ class HomeViewModel : ViewModel() {
             val artists = ApiManager.gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
 
             // Filter 6 artist by country
-            val sixeArtist = artists.filter { it.countryCode.equals(countryCode, true) }.take(6)
+            val sixeArtist = artists.filter { it.countryCode.equals(countryCode, true) }.shuffled().take(6)
 
             if (sixeArtist.size < 6) {
                 // Request US

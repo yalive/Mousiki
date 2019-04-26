@@ -15,29 +15,29 @@ interface YoutubeApi {
 
     companion object {
         const val TRENDING =
-            "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&videoCategoryId=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+            "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&videoCategoryId=10"
 
         const val PLAYLIST =
-            "playlists?part=snippet%2CcontentDetails&maxResults=50&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
+            "playlists?part=snippet%2CcontentDetails&maxResults=50&videoCategoryId=10"
 
         const val DUMMY_CHANNEL_ID = "UCmhzb5pJId5QY0r6gZqMDdA"
 
         const val GENRE_VIDEOS_DETAIL =
-            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10"
+            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&videoCategoryId=10"
 
         // Get images
         const val ARTISTS_THUMBNAILS =
-            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id%2Csnippet%2Fthumbnails)&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id%2Csnippet%2Fthumbnails)"
 
         const val PLAYLISTITEMS =
-            "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+            "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50"
 
     }
 
     @GET(TRENDING)
     fun getTrending(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): Call<YTTrendingMusicRS>
 
-    @GET("search?part=snippet&chart=mostPopular&maxResults=25&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
+    @GET("search?part=snippet&chart=mostPopular&maxResults=50&videoCategory=10")
     fun getCategoryMusic(@Query("topicId") topicId: String, @Query("regionCode") regionCode: String): Call<YTCategoryMusicRS>
 
     @GET(PLAYLIST)
@@ -50,16 +50,16 @@ interface YoutubeApi {
     fun getArtistsImages(@Query("id") ids: String): Call<YTTrendingMusicRS>
 
 
-    @GET("search?part=snippet&maxResults=50&videoCategory=10&type=video&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
+    @GET("search?part=snippet&maxResults=50&videoCategory=10&type=video")
     fun getArtistTracks(@Query("channelId") channelId: String): Call<YTCategoryMusicRS>
 
     @GET(PLAYLISTITEMS)
     fun getPlaylistVideos(@Query("playlistId") playlistId: String): Call<YTTrendingMusicRS>
 
-    @GET("search?part=snippet&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk")
+    @GET("search?part=snippet&videoCategory=10")
     fun searchYoutube(@Query("q") query: String, @Query("type") type: String, @Query("maxResults") maxResults: Int): Call<YTCategoryMusicRS>
 
-    @GET("search?part=snippet&videoCategory=10&key=AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk&videoCategoryId=10")
+    @GET("search?part=snippet&videoCategory=10&videoCategoryId=10")
     fun searchYoutubeMusic(@Query("q") query: String, @Query("type") type: String, @Query("maxResults") maxResults: Int): Call<YTCategoryMusicRS>
 
     @GET(PLAYLIST)

@@ -50,6 +50,16 @@ data class GenreMusic(val title: String, val img: Int, val icon: Int, val topicI
             add(GenreMusic("K-Pop", R.drawable.img_genres_6, 0, "/m/064t9")) // todo: Set
             add(GenreMusic("Electronic Music", R.drawable.img_genres_7, 0, "/m/02lkt"))
             add(GenreMusic("House Music", R.drawable.img_genres_8, 0, "/m/064t9")) // todo: Set
+
+            add(GenreMusic("Music", R.drawable.img_genre_music_all, 0, "/m/04rlf"))
+            add(GenreMusic("Christian music", R.drawable.img_genre_christian, 0, "/m/02mscn"))
+            add(GenreMusic("Classical music", R.drawable.img_genre_classical, 0, "/m/0ggq0m"))
+            add(GenreMusic("Independent music", R.drawable.img_genre_indie, 0, "/m/05rwpb"))
+            add(GenreMusic("Jazz", R.drawable.img_genre_jaz, 0, "/m/03_d0"))
+            add(GenreMusic("Music of Asia", R.drawable.img_genre_asian, 0, "/m/028sqc"))
+            add(GenreMusic("Music of Latin America", R.drawable.img_genre_latin, 0, "/m/0g293"))
+            add(GenreMusic("Rhythm and blues", R.drawable.img_genre_rhythm, 0, "/m/06j6l"))
+            add(GenreMusic("Soul music", R.drawable.img_genre_soul, 0, "/m/0gywn"))
         }
     }
 }

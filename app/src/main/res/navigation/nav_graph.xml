@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_playListFragment"
             app:destination="@id/playListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_genresFragment"
+            app:destination="@id/genresFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailGenreFragment"
@@ -71,4 +74,8 @@
         android:name="com.secureappinc.musicplayer.ui.playlist.PlayListFragment"
         android:label="@string/favourites"
         tools:layout="@layout/fragment_play_list" />
+    <fragment
+        android:id="@+id/genresFragment"
+        android:name="com.secureappinc.musicplayer.ui.genres.GenresFragment"
+        android:label="@string/genres" />
 </navigation>

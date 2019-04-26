@@ -13,6 +13,7 @@ import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.net.YoutubeApi.Companion.DUMMY_CHANNEL_ID
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
+import com.secureappinc.musicplayer.utils.getCurrentLocale
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
@@ -48,7 +49,7 @@ class GenrePlaylistsFragment : Fragment() {
 
     private fun loadPlaylist() {
 
-        ApiManager.api.getPlaylist(DUMMY_CHANNEL_ID, "MA").enqueue(object : Callback<YTTrendingMusicRS> {
+        ApiManager.api.getPlaylist(DUMMY_CHANNEL_ID, getCurrentLocale()).enqueue(object : Callback<YTTrendingMusicRS> {
             override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
                 if (response.isSuccessful) {
                     showSuccess()

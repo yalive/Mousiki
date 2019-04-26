@@ -23,7 +23,7 @@ android {
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.secureappinc.musicplayer"
+        applicationId "com.secureappinc.freemusic"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -38,9 +38,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
             signingConfig signingConfigs.releaseConfig
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), "$project.rootDir/tools/rules-proguard.pro"
         }
     }
     compileOptions {

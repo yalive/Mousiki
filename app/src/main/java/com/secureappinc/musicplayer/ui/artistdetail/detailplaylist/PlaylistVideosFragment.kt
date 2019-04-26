@@ -49,7 +49,6 @@ class PlaylistVideosFragment : Fragment() {
         }
 
         viewModel = ViewModelProviders.of(this).get(PlaylistVideosViewModel::class.java)
-        val detailGenreFragment = parentFragment as DetailGenreFragment
 
         artist = parcelableGenre
         adapter = PlaylistVideosAdapter(
