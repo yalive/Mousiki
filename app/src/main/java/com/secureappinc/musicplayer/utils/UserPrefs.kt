@@ -14,7 +14,8 @@ object UserPrefs {
 
     val PREF_NAME = "music-app-pref"
     val KEY_CURRENT_SORT = "current-sort"
-
+    val KEY_LAUNCH_COUNT = "launch-count"
+    val KEY_RATED_APP = "has-rated-app"
 
     fun saveFav(videoId: String?, isAdd: Boolean) {
         val pref = getPrefs()
@@ -37,6 +38,23 @@ object UserPrefs {
         val pref = getPrefs()
         val sort = pref.getString(KEY_CURRENT_SORT, PlaySort.SEQUENCE.toString())
         return PlaySort.toEnum(sort!!)
+    }
+
+    fun onLaunchApp() {
+        val count = getLaunchCount()
+        getPrefs().edit().putInt(KEY_LAUNCH_COUNT, count + 1).apply()
+    }
+
+    fun getLaunchCount(): Int {
+        return getPrefs().getInt(KEY_LAUNCH_COUNT, 0)
+    }
+
+    fun hasRatedApp(): Boolean {
+        return getPrefs().getBoolean(KEY_RATED_APP, false)
+    }
+
+    fun setRatedApp() {
+        getPrefs().edit().putBoolean(KEY_RATED_APP, true).apply()
     }
 
     private fun getPrefs(): SharedPreferences {

@@ -10,15 +10,18 @@ import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.view.LayoutInflater
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
 import androidx.annotation.NonNull
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
 import com.secureappinc.musicplayer.MusicApp
+import com.secureappinc.musicplayer.R
 import java.io.IOException
 import java.nio.charset.Charset
 
@@ -128,6 +131,39 @@ object Utils {
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+    }
+
+    fun rateApp(context: Context) {
+        val view = LayoutInflater.from(context).inflate(R.layout.dialog_rate, null)
+        val btnRate = view.findViewById<Button>(R.id.btnRate)
+        val btnRemindMe = view.findViewById<Button>(R.id.btnRemindMe)
+        val btnNoThanks = view.findViewById<Button>(R.id.btnNoThanks)
+        val dialog = MaterialDialog(context).show {
+            customView(null, view, false, true)
+            cancelOnTouchOutside(false)
+        }
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+
+        btnRate.setOnClickListener {
+            dialog.dismiss()
+            UserPrefs.setRatedApp()
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(
+                    "https://play.google.com/store/apps/details?id=com.secureappinc.freemusic"
+                )
+                setPackage("com.android.vending")
+            }
+            context.startActivity(intent)
+        }
+
+        btnRemindMe.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnNoThanks.setOnClickListener {
+            dialog.dismiss()
+        }
     }
 }
 

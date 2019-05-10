@@ -58,6 +58,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
+        UserPrefs.onLaunchApp()
         setContentView(com.secureappinc.musicplayer.R.layout.activity_main)
         slidingPaneLayout = findViewById(R.id.sliding_layout)
 
@@ -97,6 +98,13 @@ class MainActivity : BaseActivity() {
 
 
         setupBottomPanelFragment()
+
+        if (!UserPrefs.hasRatedApp()) {
+            val launchCount = UserPrefs.getLaunchCount()
+            if (launchCount > 2 && launchCount % 2 == 0) {
+                Utils.rateApp(this)
+            }
+        }
     }
 
     var isFromService = false
