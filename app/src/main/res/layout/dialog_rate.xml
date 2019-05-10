@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#FFB200"
+        android:gravity="center"
+        android:text="Did you like this app? Please we need your support."
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:gravity="center"
+        android:text="Rate the App Please"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:gravity="center"
+        android:text="It wont take more than a minute. Thanks for your support!"
+        android:textColor="@color/colorBlack" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:layout_marginBottom="@dimen/sixteen_16dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_star_rate" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_star_rate" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_star_rate" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_star_rate" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_star_rate" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:background="#FFB200"
+        android:text="RATE 5 STARS" />
+
+    <Button
+        android:id="@+id/btnRemindMe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:background="#726D6D"
+        android:text="REMIND ME LATER"
+        android:textColor="@color/colorBlack" />
+
+    <Button
+        android:id="@+id/btnNoThanks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:layout_marginBottom="@dimen/sixteen_16dp"
+        android:background="#726D6D"
+        android:text="NO, THANKS"
+        android:textColor="@color/colorBlack" />
+</LinearLayout>
