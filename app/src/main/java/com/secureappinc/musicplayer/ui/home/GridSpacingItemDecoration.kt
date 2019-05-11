@@ -12,7 +12,8 @@ import com.secureappinc.musicplayer.utils.dpToPixel
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class GridSpacingItemDecoration(private val spacing: Int, private var edgeMargin: Int = 0) : RecyclerView.ItemDecoration() {
+class GridSpacingItemDecoration(private val spacing: Int, private var edgeMargin: Int = 0) :
+    RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val position = parent.getChildAdapterPosition(view) // item position
@@ -32,7 +33,7 @@ class GridSpacingItemDecoration(private val spacing: Int, private var edgeMargin
 
         val type = adapter.getItemViewType(position)
 
-        if (type == HomeAdapter.TYPE_NEW_RELEASE || type == HomeAdapter.TYPE_FEATURED) {
+        if (type == HomeAdapter.TYPE_NEW_RELEASE || type == HomeAdapter.TYPE_CHART || type == HomeAdapter.TYPE_FEATURED) {
 
         } else {
             outRect.left = leftPadding
@@ -40,7 +41,7 @@ class GridSpacingItemDecoration(private val spacing: Int, private var edgeMargin
         }
 
 
-        if (type == HomeAdapter.TYPE_NEW_RELEASE || type == HomeAdapter.TYPE_HEADER) {
+        if (type == HomeAdapter.TYPE_NEW_RELEASE || type == HomeAdapter.TYPE_CHART || type == HomeAdapter.TYPE_HEADER) {
 
         } else {
             if (position < totalSpanSize) {

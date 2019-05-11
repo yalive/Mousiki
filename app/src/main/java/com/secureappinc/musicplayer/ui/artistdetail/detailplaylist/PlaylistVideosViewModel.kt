@@ -28,7 +28,7 @@ class PlaylistVideosViewModel : ViewModel() {
         }
 
         searchResultList.value = Resource.loading()
-        ApiManager.api.getPlaylistVideos(playlistId).enqueue(object : Callback<YTTrendingMusicRS> {
+        ApiManager.api.getPlaylistVideos(playlistId, "50").enqueue(object : Callback<YTTrendingMusicRS> {
             override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
                 if (response.isSuccessful) {
                     val listMusics = response.body()?.items

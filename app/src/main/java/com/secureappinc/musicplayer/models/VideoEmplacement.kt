@@ -44,7 +44,7 @@ class EmplacementBottom : VideoEmplacement() {
 
     override val y: Int
         get() {
-            return screenHeightPx - height - dpToPixel(28f) // fixed value
+            return screenHeightPx - height - dpToPixel(6f)
         }
 
     override val width: Int
@@ -66,7 +66,7 @@ class EmplacementCenter : VideoEmplacement() {
 
     override val y: Int
         get() {
-            return (screenHeightPx - height) / 2 - dpToPixel(80f)
+            return (screenHeightPx - height) / 2 - dpToPixel(40f)
         }
 
     override val width: Int

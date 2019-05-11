@@ -61,20 +61,21 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
 
         collapsingToolbar?.isTitleEnabled = false
 
-        adapter = HomeAdapter(mockList(), ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java), {
-            if (it is GenreItem) {
-                val bundle = Bundle()
-                bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, it.genre)
-                findNavController().navigate(com.secureappinc.musicplayer.R.id.detailGenreFragment, bundle)
-            } else if (it is ArtistItem) {
-                val bundle = Bundle()
-                bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, it.artist)
-                findNavController().navigate(com.secureappinc.musicplayer.R.id.artistFragment, bundle)
-            }
-        }, {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.collapseBottomPanel()
-        }, this)
+        adapter =
+            HomeAdapter(initializeList(), ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java), {
+                if (it is GenreItem) {
+                    val bundle = Bundle()
+                    bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, it.genre)
+                    findNavController().navigate(com.secureappinc.musicplayer.R.id.detailGenreFragment, bundle)
+                } else if (it is ArtistItem) {
+                    val bundle = Bundle()
+                    bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, it.artist)
+                    findNavController().navigate(com.secureappinc.musicplayer.R.id.artistFragment, bundle)
+                }
+            }, {
+                val mainActivity = requireActivity() as MainActivity
+                mainActivity.collapseBottomPanel()
+            }, this)
 
 
         recyclerView.layoutManager = gridLayoutManager
@@ -122,11 +123,11 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             val artistItems = artists.map { ArtistItem(it) }
 
             if (artistItems.size == 6) {
-                for (i in 4..9) {
-                    adapter.items[i] = artistItems[i - 4]
+                for (i in 6..11) {
+                    adapter.items[i] = artistItems[i - 6]
                 }
 
-                adapter.notifyItemRangeChanged(4, 6)
+                adapter.notifyItemRangeChanged(6, 11)
             } else {
                 // TODO
             }
@@ -151,35 +152,41 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     }
 
 
-    fun mockList(): MutableList<HomeItem> {
+    private fun initializeList(): MutableList<HomeItem> {
         val list = mutableListOf<HomeItem>()
-        for (i in 0 until 20) {
+        for (i in 0 until 22) {
             if (i == 0) {
                 list.add(FeaturedItem(listOf()))
             } else if (i == 1) {
-                list.add(HeaderItem("New Release"))
+                list.add(HeaderItem("NEW RELEASE"))
             } else if (i == 2) {
                 list.add(NewReleaseItem(listOf()))
             } else if (i == 3) {
+                list.add(HeaderItem("CHARTS"))
+            } else if (i == 4) {
+                list.add(ChartItem(ChartModel.allValues.take(6).shuffled()))
+            } else if (i == 5) {
                 list.add(HeaderItem("ARTIST"))
-            } else if (i in 4..9) {
+            } else if (i in 6..11) {
                 list.add(ArtistItem(artist = Artist("", "", "", "")))
-            } else if (i == 10) {
+            } else if (i == 12) {
                 list.add(HeaderItem("GENRES"))
-            } else if (i in 11..19) {
-                list.add(GenreItem(GenreMusic.allValues.take(9)[i - 11]))
+            } else if (i in 13..21) {
+                list.add(GenreItem(GenreMusic.allValues.take(9)[i - 13]))
             }
         }
         return list
     }
 
     override fun onMoreItemClick(headerItem: HeaderItem) {
-        if (headerItem.title.equals("New Release")) {
+        if (headerItem.title.equals("New Release", true)) {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.newReleaseFragment)
         } else if (headerItem.title.equals("ARTIST", true)) {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.artistsFragment)
         } else if (headerItem.title.equals("Genres", true)) {
             findNavController().navigate(com.secureappinc.musicplayer.R.id.genresFragment)
+        } else if (headerItem.title.equals("Charts", true)) {
+            findNavController().navigate(com.secureappinc.musicplayer.R.id.chartsFragment)
         }
     }
 }

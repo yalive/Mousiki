@@ -48,7 +48,7 @@ class YTSearchArtistsAdapter(items: List<Artist>) :
 
         init {
             view.setOnClickListener {
-                if (adapterPosition > 0) {
+                if (adapterPosition >= 0) {
                     //onClickArtist(items[adapterPosition])
                     val bundle = Bundle()
                     bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, items[adapterPosition])
