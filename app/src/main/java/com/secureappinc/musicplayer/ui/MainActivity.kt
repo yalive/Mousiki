@@ -1,7 +1,6 @@
 package com.secureappinc.musicplayer.ui
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -22,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.secureappinc.musicplayer.BuildConfig
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.dpToPixel
 import com.secureappinc.musicplayer.models.EmplacementFullScreen
@@ -101,7 +101,7 @@ class MainActivity : BaseActivity() {
 
         setupBottomPanelFragment()
 
-        if (!UserPrefs.hasRatedApp()) {
+        if (!UserPrefs.hasRatedApp() && !BuildConfig.DEBUG) {
             val launchCount = UserPrefs.getLaunchCount()
             if (launchCount > 2 && launchCount % 2 == 0) {
                 Utils.rateApp(this)
@@ -123,10 +123,14 @@ class MainActivity : BaseActivity() {
             isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false)
         }
 
-        if (isFromService) {
-            isFromService = false
+        val emplacement = VideoEmplacementLiveData.oldValue1
 
-            val emplacement = VideoEmplacementLiveData.oldValue1
+        if (emplacement is EmplacementFullScreen || isLandscape()) {
+            showStatusBar()
+            switchToPortrait()
+            VideoEmplacementLiveData.center()
+        } else if (isFromService) {
+            isFromService = false
 
             if (emplacement is EmplacementPlaylist) {
                 VideoEmplacementLiveData.playlist()
@@ -314,7 +318,8 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            showStatusBar()
+            switchToPortrait()
             VideoEmplacementLiveData.center()
             return
         }
@@ -336,9 +341,6 @@ class MainActivity : BaseActivity() {
      * Restore state: Not from service
      */
     private fun restoreOldVideoState() {
-
-        val oldValue1 = VideoEmplacementLiveData.oldValue1
-        val oldValue2 = VideoEmplacementLiveData.oldValue2
 
         val playBackState = PlaybackLiveData.value
         val lastVideoEmplacement = viewModel.lastVideoEmplacement

@@ -32,7 +32,7 @@ interface YoutubeApi {
             "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id%2Csnippet%2Fthumbnails)"
 
         const val PLAYLISTITEMS =
-            "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50"
+            "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails"
 
     }
 
@@ -56,7 +56,7 @@ interface YoutubeApi {
     fun getArtistTracks(@Query("channelId") channelId: String): Call<YTCategoryMusicRS>
 
     @GET(PLAYLISTITEMS)
-    fun getPlaylistVideos(@Query("playlistId") playlistId: String): Call<YTTrendingMusicRS>
+    fun getPlaylistVideos(@Query("playlistId") playlistId: String, @Query("maxResults") maxResults: String): Call<YTTrendingMusicRS>
 
     @GET("search?part=snippet&videoCategory=10")
     fun searchYoutube(@Query("q") query: String, @Query("type") type: String, @Query("maxResults") maxResults: Int): Call<YTCategoryMusicRS>

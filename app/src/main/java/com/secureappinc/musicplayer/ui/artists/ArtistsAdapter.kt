@@ -67,7 +67,7 @@ class ArtistsAdapter(items: List<Artist>, var onClickArtist: (artist: Artist) ->
 
         init {
             view.setOnClickListener {
-                if (adapterPosition > 0) {
+                if (adapterPosition >= 0) {
                     onClickArtist(items[adapterPosition])
                 }
             }

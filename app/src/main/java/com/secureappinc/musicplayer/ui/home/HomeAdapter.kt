@@ -49,6 +49,7 @@ class HomeAdapter(
         const val TYPE_HEADER = 3
         const val TYPE_ARTIST = 4
         const val TYPE_GENRE = 5
+        const val TYPE_CHART = 6
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -71,6 +72,10 @@ class HomeAdapter(
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_artist, parent, false)
                 return ArtistViewHolder(view)
             }
+            TYPE_CHART -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_new_release, parent, false)
+                return ChartViewHolder(view)
+            }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_genre, parent, false)
                 return GenreViewHolder(view)
@@ -92,6 +97,10 @@ class HomeAdapter(
         } else if (holder is ArtistViewHolder) {
             val genreItem = items[position] as ArtistItem
             holder.bind(genreItem.artist)
+        } else if (holder is ChartViewHolder) {
+            val chartItem = items[position] as ChartItem
+
+            holder.bind(chartItem.chartItems)
         }
     }
 
@@ -205,6 +214,19 @@ class HomeAdapter(
 
         fun bind() {
             adapter = HomeNewReleaseAdapter(this@HomeAdapter.tracks, onVideoSelected)
+            recyclerView.layoutManager = LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
+            recyclerView.adapter = adapter
+        }
+
+    }
+
+    inner class ChartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        private var recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+        lateinit var adapter: HomeChartAdapter
+
+        fun bind(chartItems: List<ChartModel>) {
+            adapter = HomeChartAdapter(chartItems)
             recyclerView.layoutManager = LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
             recyclerView.adapter = adapter
         }

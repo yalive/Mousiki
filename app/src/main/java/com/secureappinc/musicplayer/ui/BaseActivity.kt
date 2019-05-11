@@ -1,16 +1,20 @@
 package com.secureappinc.musicplayer.ui
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.BuildConfig
 import com.secureappinc.musicplayer.base.common.EventObserver
 import com.secureappinc.musicplayer.player.ClickVideoListener
 import com.secureappinc.musicplayer.utils.UserPrefs
+
 
 /**
  **********************************
@@ -36,12 +40,12 @@ open class BaseActivity : AppCompatActivity() {
 
     private fun configureInterstitialAd() {
         interstitialAd = InterstitialAd(this)
-        interstitialAd.adUnitId = getString(R.string.admob_interstitial_id)
+        interstitialAd.adUnitId = getString(com.secureappinc.musicplayer.R.string.admob_interstitial_id)
         loadInterstitialAd()
         interstitialAd.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 Log.d(TAG, "onAdLoaded")
-                if (interstitialAd.isLoaded && !hasShownFirstInterAds) {
+                if (interstitialAd.isLoaded && !hasShownFirstInterAds && !BuildConfig.DEBUG) {
                     hasShownFirstInterAds = true
                     interstitialAd.show()
                 }
@@ -80,12 +84,13 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+
     fun loadInterstitialAd() {
         interstitialAd.loadAd(AdRequest.Builder().addTestDevice("8D18CFA4FEE362E160E97DB5E6D6E770").build())
     }
 
     fun showInterstitialAd() {
-        if (interstitialAd.isLoaded) {
+        if (interstitialAd.isLoaded && !BuildConfig.DEBUG) {
             interstitialAd.show()
         }
     }
@@ -98,5 +103,30 @@ open class BaseActivity : AppCompatActivity() {
                 showInterstitialAd()
             }
         })
+    }
+
+    fun isFullScreen(): Boolean {
+        return window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN != 0
+    }
+
+    fun hideStatusBar() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+
+    fun showStatusBar() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+
+    fun switchToLandscape() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    }
+
+    fun switchToPortrait() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    fun isLandscape(): Boolean {
+        val orientation = resources.configuration.orientation
+        return orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 }

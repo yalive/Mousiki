@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_genresFragment"
             app:destination="@id/genresFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_chartsFragment"
+            app:destination="@id/chartsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailGenreFragment"
@@ -78,4 +81,8 @@
         android:id="@+id/genresFragment"
         android:name="com.secureappinc.musicplayer.ui.genres.GenresFragment"
         android:label="@string/genres" />
+    <fragment
+        android:id="@+id/chartsFragment"
+        android:name="com.secureappinc.musicplayer.ui.charts.ChartsFragment"
+        android:label="Charts" />
 </navigation>

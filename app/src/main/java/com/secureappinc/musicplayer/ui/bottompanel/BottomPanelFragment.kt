@@ -1,7 +1,6 @@
 package com.secureappinc.musicplayer.ui.bottompanel
 
 
-import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -162,7 +161,8 @@ class BottomPanelFragment : Fragment() {
         }
 
         btnFullScreen.setOnClickListener {
-            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            (requireActivity() as MainActivity).switchToLandscape()
+            (requireActivity() as MainActivity).hideStatusBar()
             VideoEmplacementLiveData.fullscreen()
         }
     }
@@ -199,7 +199,7 @@ class BottomPanelFragment : Fragment() {
         val paramsTitle = txtTitleVideoCenter.layoutParams as RelativeLayout.LayoutParams
         val horizontalMargin = emplacementCenter.x
 
-        paramsTitle.topMargin = emplacementCenter.y - requireActivity().dpToPixel(16f)
+        paramsTitle.topMargin = emplacementCenter.y - requireActivity().dpToPixel(40f)
         paramsTitle.marginStart = horizontalMargin
         paramsTitle.leftMargin = horizontalMargin
         paramsTitle.marginEnd = horizontalMargin
@@ -208,7 +208,7 @@ class BottomPanelFragment : Fragment() {
         txtTitleVideoCenter.layoutParams = paramsTitle
 
         val paramsTxtYoutubeCopy = btnYoutube.layoutParams as RelativeLayout.LayoutParams
-        paramsTxtYoutubeCopy.topMargin = paramsTitle.topMargin + requireActivity().dpToPixel(8f)
+        paramsTxtYoutubeCopy.topMargin = paramsTitle.topMargin
         paramsTxtYoutubeCopy.marginStart = paramsTitle.marginStart
         paramsTxtYoutubeCopy.leftMargin = paramsTitle.leftMargin
         paramsTxtYoutubeCopy.marginEnd = paramsTitle.marginEnd

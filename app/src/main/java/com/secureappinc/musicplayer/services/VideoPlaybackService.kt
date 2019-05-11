@@ -3,6 +3,7 @@ package com.secureappinc.musicplayer.services
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.lifecycle.LifecycleService
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.secureappinc.musicplayer.models.*
 import com.secureappinc.musicplayer.player.PlayerQueue
@@ -23,6 +25,8 @@ import com.secureappinc.musicplayer.utils.*
  **********************************
  */
 class VideoPlaybackService : LifecycleService() {
+
+    val TAG = "VideoPlaybackService"
 
     companion object {
         val COMMAND_PLAY_TRACK = "video-id"
@@ -40,6 +44,7 @@ class VideoPlaybackService : LifecycleService() {
     lateinit var videoContainerView: View
     lateinit var bottomView: View
     lateinit var youTubePlayerView: YouTubePlayerView
+    var draggableView: View? = null
 
     lateinit var videoViewParams: WindowManager.LayoutParams
 
@@ -148,7 +153,7 @@ class VideoPlaybackService : LifecycleService() {
             videoEmplacement.width,
             videoEmplacement.height,
             type,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
             PixelFormat.TRANSLUCENT
         )
 
@@ -158,79 +163,79 @@ class VideoPlaybackService : LifecycleService() {
 
 
         //Drag and move chat head using user's touch action.
-        videoContainerView.findViewById<View>(com.secureappinc.musicplayer.R.id.draggableView)
-            .setOnTouchListener(object : View.OnTouchListener {
-                private var lastAction: Int = 0
-                private var initialX: Int = 0
-                private var initialY: Int = 0
-                private var initialTouchX: Float = 0.toFloat()
-                private var initialTouchY: Float = 0.toFloat()
+        draggableView = videoContainerView.findViewById<View>(com.secureappinc.musicplayer.R.id.draggableView)
+        draggableView?.setOnTouchListener(object : View.OnTouchListener {
+            private var lastAction: Int = 0
+            private var initialX: Int = 0
+            private var initialY: Int = 0
+            private var initialTouchX: Float = 0.toFloat()
+            private var initialTouchY: Float = 0.toFloat()
 
-                override fun onTouch(v: View, event: MotionEvent): Boolean {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
 
-                    if (videoEmplacement !is EmplacementOut) {
+                if (videoEmplacement !is EmplacementOut) {
+                    return true
+                }
+
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+
+                        bottomView.visibility = View.VISIBLE
+
+                        //remember the initial position.
+                        initialX = videoViewParams.x
+                        initialY = videoViewParams.y
+
+                        //get the touch location
+                        initialTouchX = event.rawX
+                        initialTouchY = event.rawY
+
+                        lastAction = event.action
                         return true
                     }
 
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
+                    MotionEvent.ACTION_UP -> {
+                        bottomView.visibility = View.GONE
 
-                            bottomView.visibility = View.VISIBLE
+                        val endX = event.rawX
+                        val endY = event.rawY
 
-                            //remember the initial position.
-                            initialX = videoViewParams.x
-                            initialY = videoViewParams.y
-
-                            //get the touch location
-                            initialTouchX = event.rawX
-                            initialTouchY = event.rawY
-
-                            lastAction = event.action
-                            return true
+                        if (isAClick(initialTouchX, endX, initialTouchY, endY)) {
+                            //Open app
+                            val intent = Intent(this@VideoPlaybackService, MainActivity::class.java)
+                            intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        } else if (bottomView.isActivated) {
+                            stopSelf()
                         }
 
-                        MotionEvent.ACTION_UP -> {
-                            bottomView.visibility = View.GONE
-
-                            val endX = event.rawX
-                            val endY = event.rawY
-
-                            if (isAClick(initialTouchX, endX, initialTouchY, endY)) {
-                                //Open app
-                                val intent = Intent(this@VideoPlaybackService, MainActivity::class.java)
-                                intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
-                            } else if (bottomView.isActivated) {
-                                stopSelf()
-                            }
-
-                            lastAction = event.action
-                            return true
-                        }
-
-                        MotionEvent.ACTION_MOVE -> {
-
-                            //Calculate the X and Y coordinates of the view.
-                            videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
-                            videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
-
-                            //Update the layout with new X & Y coordinate
-                            windowManager.updateViewLayout(videoContainerView, videoViewParams)
-                            lastAction = event.action
-
-
-                            val y = videoViewParams.y
-
-                            bottomView.isActivated =
-                                screenSize().heightPx - y - youTubePlayerView.height - bottomView.height <= 0
-
-                            return true
-                        }
+                        lastAction = event.action
+                        return true
                     }
-                    return false
+
+                    MotionEvent.ACTION_MOVE -> {
+
+                        //Calculate the X and Y coordinates of the view.
+                        videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
+                        videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
+
+                        //Update the layout with new X & Y coordinate
+                        windowManager.updateViewLayout(videoContainerView, videoViewParams)
+                        lastAction = event.action
+
+
+                        val y = videoViewParams.y
+
+                        bottomView.isActivated =
+                            screenSize().heightPx - y - youTubePlayerView.height - bottomView.height <= 0
+
+                        return true
+                    }
                 }
-            })
+                return false
+            }
+        })
 
 
         windowManager.addView(videoContainerView, videoViewParams)
@@ -261,17 +266,38 @@ class VideoPlaybackService : LifecycleService() {
         })
     }
 
+    private val fullScreenListener = object : YouTubePlayerFullScreenListener {
+        override fun onYouTubePlayerEnterFullScreen() {
+            Log.d(TAG, "onYouTubePlayerEnterFullScreen")
+        }
+
+        override fun onYouTubePlayerExitFullScreen() {
+            Log.d(TAG, "onYouTubePlayerExitFullScreen")
+            youTubePlayerView.exitFullScreen()
+            VideoEmplacementLiveData.center()
+
+        }
+    }
+
 
     private fun observeForegroundToggle() {
 
         VideoEmplacementLiveData.observe(this, Observer { emplacement ->
             this.videoEmplacement = emplacement
 
+            if (emplacement is EmplacementFullScreen) {
+                toggleFullScreenVideoPlayer(true)
+
+            } else {
+                toggleFullScreenVideoPlayer(false)
+            }
+
             if (emplacement is EmplacementOut) {
-                videoViewParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                videoViewParams.flags =
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
             } else {
                 videoViewParams.flags =
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
             }
 
             videoViewParams.x = emplacement.x
@@ -284,6 +310,26 @@ class VideoPlaybackService : LifecycleService() {
 
             videoContainerView.alpha = 1f
         })
+    }
+
+    private fun toggleFullScreenVideoPlayer(fullScreen: Boolean) {
+        youTubePlayerView.getPlayerUiController().showPlayPauseButton(fullScreen)
+        youTubePlayerView.getPlayerUiController().showCurrentTime(fullScreen)
+        youTubePlayerView.getPlayerUiController().showDuration(fullScreen)
+        youTubePlayerView.getPlayerUiController().showSeekBar(fullScreen)
+        youTubePlayerView.getPlayerUiController().showUi(fullScreen)
+        youTubePlayerView.getPlayerUiController().showBufferingProgress(fullScreen)
+        youTubePlayerView.getPlayerUiController().showVideoTitle(fullScreen)
+
+        if (fullScreen) {
+            youTubePlayerView.enterFullScreen()
+            draggableView?.gone()
+        } else {
+            if (youTubePlayerView.isFullScreen()) {
+                youTubePlayerView.exitFullScreen()
+            }
+            draggableView?.visible()
+        }
     }
 
 
