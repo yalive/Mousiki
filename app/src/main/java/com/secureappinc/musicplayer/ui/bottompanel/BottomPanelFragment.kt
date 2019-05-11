@@ -11,9 +11,12 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.RelativeLayout
 import android.widget.SeekBar
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.secureappinc.musicplayer.dpToPixel
+import com.secureappinc.musicplayer.models.EmplacementFullScreen
 import com.secureappinc.musicplayer.models.VideoEmplacement
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
@@ -165,6 +168,11 @@ class BottomPanelFragment : Fragment() {
             (requireActivity() as MainActivity).hideStatusBar()
             VideoEmplacementLiveData.fullscreen()
         }
+
+        DeviceInset.observe(this, Observer { inset ->
+            fullScreenSwitchView.updatePadding(top = inset.top + dpToPixel(8f, requireContext()).toInt())
+            adjustCenterViews()
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -194,6 +202,11 @@ class BottomPanelFragment : Fragment() {
     }
 
     private fun adjustCenterViews() {
+
+        if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
+            return
+        }
+
         val emplacementCenter = VideoEmplacement.center()
 
         val paramsTitle = txtTitleVideoCenter.layoutParams as RelativeLayout.LayoutParams
@@ -208,7 +221,7 @@ class BottomPanelFragment : Fragment() {
         txtTitleVideoCenter.layoutParams = paramsTitle
 
         val paramsTxtYoutubeCopy = btnYoutube.layoutParams as RelativeLayout.LayoutParams
-        paramsTxtYoutubeCopy.topMargin = paramsTitle.topMargin
+        paramsTxtYoutubeCopy.topMargin = paramsTitle.topMargin - requireActivity().dpToPixel(40f)
         paramsTxtYoutubeCopy.marginStart = paramsTitle.marginStart
         paramsTxtYoutubeCopy.leftMargin = paramsTitle.leftMargin
         paramsTxtYoutubeCopy.marginEnd = paramsTitle.marginEnd
