@@ -18,8 +18,10 @@ import com.secureappinc.musicplayer.models.EmplacementBottom
 import com.secureappinc.musicplayer.models.EmplacementCenter
 import com.secureappinc.musicplayer.models.EmplacementPlaylist
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity
+import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.secureappinc.musicplayer.utils.gone
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -44,13 +46,16 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val tracks: List<MusicTrack> = PlayerQueue.queue ?: listOf()
-        recyclerView.adapter = BottomSheetVideosAdapter(tracks)
-
+        val adapter = BottomSheetVideosAdapter(tracks)
+        recyclerView.adapter = adapter
         VideoEmplacementLiveData.playlist()
+
+        adapter.onClickMore = { track ->
+            showBottomMenuButtons(track)
+        }
 
         PlayerQueue.observe(this, Observer { track ->
             mainTrackTitle.text = track.title
-            //mainTrackCategory.text = track.title
         })
 
         imgSongShadow = view.findViewById<ImageView>(com.secureappinc.musicplayer.R.id.imgSong)
@@ -61,6 +66,8 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
                 com.secureappinc.musicplayer.R.color.black_overlay
             )
         )
+
+        view.findViewById<View>(com.secureappinc.musicplayer.R.id.btnMore).gone()
 
         initializeBottomSheet()
     }
@@ -137,8 +144,14 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
         val location = IntArray(2)
         val locationInWindow = imgSongShadow?.getLocationInWindow(location)
         Log.d(TAG, "locationInWindow = (${location[0]},${location[1]})")
+    }
 
-        //DragBottomSheetMonitor.value = location[1]
+    private fun showBottomMenuButtons(musicTrack: MusicTrack) {
+        val bottomSheetFragment = FvaBottomSheetFragment()
+        val bundle = Bundle()
+        bundle.putString("MUSIC_TRACK", ApiManager.gson.toJson(musicTrack))
+        bottomSheetFragment.arguments = bundle
+        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 }
 

@@ -5,8 +5,8 @@ import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.base.common.Event
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.VideoPlaybackService
 import com.secureappinc.musicplayer.utils.UserPrefs
 
@@ -16,26 +16,28 @@ import com.secureappinc.musicplayer.utils.UserPrefs
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
+
+object ClickVideoListener : MutableLiveData<Event<MusicTrack>>()
+
 object PlayerQueue : MutableLiveData<MusicTrack>() {
 
     var queue: List<MusicTrack>? = null
-
-    var isFullScreen = false
-        private set
 
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
         this.queue = queue
         this.value = currentTrack
         notifyService(currentTrack.youtubeId)
+
+        // For Ads
+        UserPrefs.onClickTrack()
+        ClickVideoListener.value = Event(currentTrack)
     }
 
     fun playNextTrack() {
         val nextTrack = getNextTrack()
         if (nextTrack != null) {
             this.value = nextTrack
-            if (!isFullScreen) {
-                notifyService(nextTrack.youtubeId)
-            }
+            notifyService(nextTrack.youtubeId)
         }
     }
 
@@ -43,9 +45,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val previousTrack = getPreviousTrack()
         if (previousTrack != null) {
             this.value = previousTrack
-            if (!isFullScreen) {
-                notifyService(previousTrack.youtubeId)
-            }
+            notifyService(previousTrack.youtubeId)
         }
     }
 
@@ -74,21 +74,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
     fun seekTo(to: Long, comeFromFullScreen: Boolean = false) {
         seekTrackTo(to, comeFromFullScreen)
-    }
-
-    fun enterFullScreen() {
-        isFullScreen = true
-        hideVideo()
-        pause()
-    }
-
-    fun exitFullScreen() {
-        isFullScreen = false
-        showVideo()
-        PlaybackDuration.value?.let { currentSeconds ->
-            seekTo(currentSeconds.toLong(), true)
-        }
-        resume()
     }
 
     fun hideVideo() {
@@ -221,7 +206,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO, to)
         intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO_FROM_FULL_SCREEN, comeFromFullScreen)
         MusicApp.get().startService(intent)
-
     }
 }
 

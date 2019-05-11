@@ -5,6 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.secureappinc.musicplayer.models.*
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.utils.getCurrentLocale
+import com.secureappinc.musicplayer.utils.getLanguage
+import okhttp3.ResponseBody
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,6 +24,8 @@ class SearchYoutubeViewModel : ViewModel() {
     val channels = MutableLiveData<List<Artist>>()
     val playlists = MutableLiveData<List<YTTrendingItem>>()
 
+    val searchSuggestions = MutableLiveData<List<String>>()
+
     var lastQuery = ""
 
     fun search(query: String) {
@@ -30,6 +36,45 @@ class SearchYoutubeViewModel : ViewModel() {
         loadVideos(query)
         loadPlaylists(query)
         loadChannels(query)
+    }
+
+    fun getSuggestions(query: String) {
+
+        val url =
+            "https://clients1.google.com/complete/search?client=youtube&hl=${getLanguage()}&ql=${getCurrentLocale()}&gs_rn=23&gs_ri=youtube&ds=yt&cp=${query.length}&q=${query.replace(
+                " ",
+                "+"
+            )}"
+
+        val call: Call<ResponseBody> = ApiManager.api.getSuggestions(url)
+
+        call.enqueue(object : Callback<ResponseBody?> {
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                print("")
+            }
+
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                try {
+                    response.body()?.string()?.let { stringResponse ->
+                        if (stringResponse.startsWith("window.google.ac.h")) {
+
+                            val json =
+                                stringResponse.substring(stringResponse.indexOf("(") + 1, stringResponse.indexOf(")"))
+
+                            val jsonArray = JSONArray(json).getJSONArray(1)
+
+                            val suggestions = mutableListOf<String>()
+                            for (i in 0 until jsonArray.length()) {
+                                suggestions.add(jsonArray.getJSONArray(i).getString(0))
+                            }
+
+                            searchSuggestions.value = suggestions
+                        }
+                    }
+                } catch (e: Exception) {
+                }
+            }
+        })
     }
 
     private fun loadVideos(query: String) {

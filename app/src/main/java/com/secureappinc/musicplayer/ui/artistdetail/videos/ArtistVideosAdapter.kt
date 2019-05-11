@@ -11,6 +11,7 @@ import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_artist.view.*
 
 /**
  **********************************
@@ -26,6 +27,8 @@ class ArtistVideosAdapter(items: List<MusicTrack>, val artist: Artist, val onVid
             notifyDataSetChanged()
         }
 
+
+    var onClickMore: ((track: MusicTrack) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_artist, parent, false)
@@ -61,6 +64,9 @@ class ArtistVideosAdapter(items: List<MusicTrack>, val artist: Artist, val onVid
             txtDuration.text = item.durationFormatted
             txtCategory.text = "${artist.name} - Topic"
 
+            itemView.btnMore.setOnClickListener {
+                onClickMore?.invoke(item)
+            }
         }
     }
 

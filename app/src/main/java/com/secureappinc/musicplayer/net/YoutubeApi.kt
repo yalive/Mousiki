@@ -2,9 +2,11 @@ package com.secureappinc.musicplayer.net
 
 import com.secureappinc.musicplayer.models.YTCategoryMusicRS
 import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 /**
  **********************************
@@ -64,4 +66,8 @@ interface YoutubeApi {
 
     @GET(PLAYLIST)
     fun getPlaylistsDetail(@Query("id") channelId: String): Call<YTTrendingMusicRS>
+
+    @GET
+    fun getSuggestions(@Url url: String): Call<ResponseBody>
+
 }

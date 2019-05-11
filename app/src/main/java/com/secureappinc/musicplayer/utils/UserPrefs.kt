@@ -15,6 +15,7 @@ object UserPrefs {
     val PREF_NAME = "music-app-pref"
     val KEY_CURRENT_SORT = "current-sort"
     val KEY_LAUNCH_COUNT = "launch-count"
+    val CLICK_TRACK_COUNT = "click-track-count"
     val KEY_RATED_APP = "has-rated-app"
 
     fun saveFav(videoId: String?, isAdd: Boolean) {
@@ -59,5 +60,14 @@ object UserPrefs {
 
     private fun getPrefs(): SharedPreferences {
         return MusicApp.get().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+    fun onClickTrack() {
+        val count = getClickTrackCount()
+        getPrefs().edit().putLong(CLICK_TRACK_COUNT, count + 1).apply()
+    }
+
+    fun getClickTrackCount(): Long {
+        return getPrefs().getLong(CLICK_TRACK_COUNT, 0)
     }
 }

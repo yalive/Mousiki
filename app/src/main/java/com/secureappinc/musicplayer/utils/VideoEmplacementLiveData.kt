@@ -35,6 +35,13 @@ object VideoEmplacementLiveData : MutableLiveData<VideoEmplacement>() {
         value = VideoEmplacement.playlist()
     }
 
+
+    fun fullscreen() {
+        oldValue2 = oldValue1
+        oldValue1 = value
+        value = VideoEmplacement.fullscreen()
+    }
+
     fun out() {
         oldValue2 = oldValue1
         oldValue1 = value

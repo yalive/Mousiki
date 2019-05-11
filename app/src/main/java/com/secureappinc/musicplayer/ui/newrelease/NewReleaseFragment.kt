@@ -37,7 +37,7 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity!!.title = "New Release"
+        activity?.title = "New Release"
 
         val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
 
@@ -53,7 +53,7 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
 
         adapter = NewReleaseVideoAdapter(listOf(), this) {
             val mainActivity = requireActivity() as MainActivity
-            mainActivity.showBottomPanel()
+            mainActivity.collapseBottomPanel()
         }
         recyclerView.adapter = adapter
 

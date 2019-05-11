@@ -1,5 +1,6 @@
 package com.secureappinc.musicplayer.models
 
+import android.view.WindowManager
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.utils.screenSize
@@ -29,6 +30,7 @@ sealed class VideoEmplacement {
         fun bottom(): EmplacementBottom = EmplacementBottom()
         fun center(): EmplacementCenter = EmplacementCenter()
         fun playlist(): EmplacementPlaylist = EmplacementPlaylist()
+        fun fullscreen(): EmplacementFullScreen = EmplacementFullScreen()
         fun out(): EmplacementOut = EmplacementOut()
     }
 }
@@ -98,6 +100,16 @@ class EmplacementPlaylist : VideoEmplacement() {
         get() {
             return dpToPixel(64f)
         }
+}
+
+class EmplacementFullScreen : VideoEmplacement() {
+    override val x: Int = 0
+
+    override val y: Int = 0
+
+    override val width: Int = WindowManager.LayoutParams.MATCH_PARENT
+
+    override val height: Int = WindowManager.LayoutParams.MATCH_PARENT
 }
 
 class EmplacementOut : VideoEmplacement() {

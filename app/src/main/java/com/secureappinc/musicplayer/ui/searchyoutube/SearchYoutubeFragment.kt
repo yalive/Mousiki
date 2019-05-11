@@ -8,6 +8,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.gone
@@ -23,6 +25,29 @@ class SearchYoutubeFragment : Fragment() {
 
     lateinit var viewModel: SearchYoutubeViewModel
 
+    var searchSuggestionsAdapter = YTSearchSuggestionsAdapter(mutableListOf())
+
+    private val queryChangeListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            query?.let {
+                recyclerViewSuggestions.gone()
+                pagerContainer.gone()
+                progressBar.visible()
+                viewModel.search(it)
+            }
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            newText?.let { query ->
+                if (query.isNotEmpty()) {
+                    viewModel.getSuggestions(query)
+                }
+            }
+            return false
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = LayoutInflater.from(context).inflate(R.layout.fragment_search_youtube, container, false)
         return view
@@ -34,27 +59,48 @@ class SearchYoutubeFragment : Fragment() {
         tabLayout.setupWithViewPager(viewPager)
         viewModel = ViewModelProviders.of(this)[SearchYoutubeViewModel::class.java]
 
-        (activity as MainActivity).searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    pagerContainer.gone()
-                    progressBar.visible()
-                    viewModel.search(it)
-                }
-                return false
-            }
+        attachQueryListener()
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
+        recyclerViewSuggestions.adapter = searchSuggestionsAdapter
+        recyclerViewSuggestions.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+        searchSuggestionsAdapter.onClickItem = { suggestion ->
+            recyclerViewSuggestions.gone()
+            pagerContainer.gone()
+            progressBar.visible()
+            removeQueryListener()
+            mainActivity().searchView?.setQuery(suggestion, false)
+            attachQueryListener()
+
+            viewModel.search(suggestion)
+        }
+
         observeViewModel()
+    }
+
+    private fun mainActivity(): MainActivity {
+        return activity as MainActivity
+    }
+
+    private fun removeQueryListener() {
+        (activity as MainActivity).searchView?.setOnQueryTextListener(null)
+    }
+
+    private fun attachQueryListener() {
+        (activity as MainActivity).searchView?.setOnQueryTextListener(queryChangeListener)
     }
 
     private fun observeViewModel() {
         viewModel.videos.observe(this, Observer {
             pagerContainer.visible()
             progressBar.gone()
+            recyclerViewSuggestions.gone()
+        })
+
+        viewModel.searchSuggestions.observe(this, Observer { suggestions ->
+            recyclerViewSuggestions.visible()
+            pagerContainer.gone()
+            progressBar.gone()
+            searchSuggestionsAdapter.suggestions = suggestions
         })
     }
 }

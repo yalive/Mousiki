@@ -1,7 +1,7 @@
 package com.secureappinc.musicplayer.ui.bottompanel
 
 
-import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -22,7 +22,6 @@ import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.MainActivity
-import com.secureappinc.musicplayer.ui.fullscreen.FullscreenPlayerActivity
 import com.secureappinc.musicplayer.utils.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
@@ -114,7 +113,7 @@ class BottomPanelFragment : Fragment() {
         })
 
         btnClosePanel.setOnClickListener {
-            mainActivity.showBottomPanel()
+            mainActivity.collapseBottomPanel()
         }
 
         btnPlayNext.setOnClickListener {
@@ -163,8 +162,8 @@ class BottomPanelFragment : Fragment() {
         }
 
         btnFullScreen.setOnClickListener {
-            val intent = Intent(requireContext(), FullscreenPlayerActivity::class.java)
-            startActivity(intent)
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            VideoEmplacementLiveData.fullscreen()
         }
     }
 

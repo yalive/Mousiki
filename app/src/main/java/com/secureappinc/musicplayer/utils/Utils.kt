@@ -24,6 +24,7 @@ import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
 import java.io.IOException
 import java.nio.charset.Charset
+import java.util.*
 
 
 /**
@@ -181,4 +182,12 @@ fun getCurrentLocale(): String {
 
         MusicApp.get().resources.configuration.locale.country
     }
+}
+
+fun getLanguage(): String {
+    val language = Locale.getDefault().language.toLowerCase()
+    if (language.isEmpty()) {
+        return "en"
+    }
+    return language
 }
