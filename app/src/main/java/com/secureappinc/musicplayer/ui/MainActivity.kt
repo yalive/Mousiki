@@ -1,6 +1,7 @@
 package com.secureappinc.musicplayer.ui
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +24,7 @@ import androidx.navigation.ui.NavigationUI
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.dpToPixel
+import com.secureappinc.musicplayer.models.EmplacementFullScreen
 import com.secureappinc.musicplayer.models.EmplacementOut
 import com.secureappinc.musicplayer.models.EmplacementPlaylist
 import com.secureappinc.musicplayer.services.DragBottomPanelLiveData
@@ -310,6 +312,26 @@ class MainActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            VideoEmplacementLiveData.center()
+            return
+        }
+
+        if (slidingMenu.isMenuOpened) {
+            slidingMenu.closeMenu()
+            return
+        }
+
+        if (isBottomPanelExpanded()) {
+            collapseBottomPanel()
+            return
+        }
+
+        super.onBackPressed()
+    }
+
     /**
      * Restore state: Not from service
      */
@@ -342,11 +364,15 @@ class MainActivity : BaseActivity() {
         slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
     }
 
-    fun showBottomPanel() {
+    fun collapseBottomPanel() {
         slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
     }
 
     fun isBottomPanelCollapsed(): Boolean {
         return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED
+    }
+
+    fun isBottomPanelExpanded(): Boolean {
+        return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
     }
 }

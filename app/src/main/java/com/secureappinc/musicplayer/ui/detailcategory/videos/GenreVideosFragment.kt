@@ -11,9 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Resource
 import com.secureappinc.musicplayer.models.Status
-import com.secureappinc.musicplayer.models.YTCategoryMusictem
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.ui.MainActivity
+import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreViewModel
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
@@ -55,13 +56,17 @@ class GenreVideosFragment : Fragment() {
             genreMusic
         ) {
             val mainActivity = requireActivity() as MainActivity
-            mainActivity.showBottomPanel()
+            mainActivity.collapseBottomPanel()
         }
         recyclerView.adapter = adapter
 
         viewModel.searchResultList.observe(this, Observer { resource ->
             updateUI(resource)
         })
+
+        adapter.onClickMore = {
+            showBottomMenuButtons(it)
+        }
 
         laodCategoryMusic()
     }
@@ -88,5 +93,13 @@ class GenreVideosFragment : Fragment() {
 
     private fun laodCategoryMusic() {
         viewModel.loadVideosForTopic(genreMusic.topicId)
+    }
+
+    private fun showBottomMenuButtons(musicTrack: MusicTrack) {
+        val bottomSheetFragment = FvaBottomSheetFragment()
+        val bundle = Bundle()
+        bundle.putString("MUSIC_TRACK", ApiManager.gson.toJson(musicTrack))
+        bottomSheetFragment.arguments = bundle
+        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 }

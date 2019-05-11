@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "823337060804",
+    "firebase_url": "https://youp-films.firebaseio.com",
+    "project_id": "youp-films",
+    "storage_bucket": "youp-films.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823337060804:android:3eabb436478a242e",
+        "android_client_info": {
+          "package_name": "com.secureappinc.freemusic.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823337060804-ao54dobvll21basdm5ea0r24g42pmrk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTwAR_rXm8oBrKV9dKcwmwQs7vVE6ECLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823337060804-ao54dobvll21basdm5ea0r24g42pmrk1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "823337060804-55u4mrgrs5gg1fajou537971qogorjru.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yabahddou.DemoPushProfileNop"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

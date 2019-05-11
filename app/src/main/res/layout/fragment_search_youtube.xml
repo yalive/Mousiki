@@ -49,4 +49,12 @@
             tools:listitem="@layout/item_fav_video" />
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSuggestions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_youtube_serach_suggestion" />
+
 </FrameLayout>

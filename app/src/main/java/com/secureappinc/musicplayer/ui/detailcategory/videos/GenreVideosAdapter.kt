@@ -3,6 +3,7 @@ package com.secureappinc.musicplayer.ui.detailcategory.videos
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
             notifyDataSetChanged()
         }
 
+    var onClickMore: ((track: MusicTrack) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_artist, parent, false)
@@ -45,6 +47,7 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
         private val txtDuration: TextView = view.findViewById(R.id.txtDuration)
         private val txtCategory: TextView = view.findViewById(R.id.txtCategory)
+        private val btnMore: ImageButton = view.findViewById(R.id.btnMore)
 
         init {
             view.setOnClickListener {
@@ -61,6 +64,9 @@ class GenreVideosAdapter(items: List<MusicTrack>, val genreMusic: GenreMusic, va
             txtDuration.text = item.durationFormatted
             txtCategory.text = "${genreMusic.title} - Topic"
 
+            btnMore.setOnClickListener {
+                onClickMore?.invoke(item)
+            }
         }
     }
 

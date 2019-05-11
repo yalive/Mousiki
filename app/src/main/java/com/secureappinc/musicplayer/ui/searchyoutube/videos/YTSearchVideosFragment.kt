@@ -49,7 +49,7 @@ class YTSearchVideosFragment : Fragment(), YTSearchVideosAdapter.onItemClickList
 
         adapter = YTSearchVideosAdapter(listOf(), this) {
             val mainActivity = requireActivity() as MainActivity
-            mainActivity.showBottomPanel()
+            mainActivity.collapseBottomPanel()
         }
         recyclerView.adapter = adapter
 

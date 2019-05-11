@@ -65,6 +65,6 @@ class PlayListFragment : Fragment(), PlayListAdapter.onItemClickListener {
 
     override fun onSelectVideo(musicTrack: MusicTrack) {
         val mainActivity = requireActivity() as MainActivity
-        mainActivity.showBottomPanel()
+        mainActivity.collapseBottomPanel()
     }
 }

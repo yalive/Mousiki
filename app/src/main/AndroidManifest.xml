@@ -16,17 +16,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.fullscreen.FullscreenPlayerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen_player"
-            android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/FullscreenTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.secureappinc.musicplayer.ui.MainActivity" />
-        </activity>
-        <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
@@ -42,13 +31,13 @@
         </activity>
 
         <service android:name=".services.VideoPlaybackService" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="cbb00eb164e4c79cea570ce84292636421ba8030"
-            />
+            android:value="cbb00eb164e4c79cea570ce84292636421ba8030" />
     </application>
 
 </manifest>

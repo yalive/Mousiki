@@ -73,7 +73,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
             }
         }, {
             val mainActivity = requireActivity() as MainActivity
-            mainActivity.showBottomPanel()
+            mainActivity.collapseBottomPanel()
         }, this)
 
 

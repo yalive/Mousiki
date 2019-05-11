@@ -86,7 +86,6 @@ class VideoPlaybackService : LifecycleService() {
 
         intent?.getBooleanExtra(COMMAND_HIDE_VIDEO, false)?.let { hideVideo ->
             if (hideVideo) {
-                //videoContainerView.invisible()
                 videoViewParams.width = 0
                 videoViewParams.height = 0
                 windowManager.updateViewLayout(videoContainerView, videoViewParams)
@@ -102,7 +101,6 @@ class VideoPlaybackService : LifecycleService() {
                 windowManager.updateViewLayout(videoContainerView, videoViewParams)
             }
         }
-
         return super.onStartCommand(intent, flags, startId)
     }
 

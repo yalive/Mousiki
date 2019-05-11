@@ -10,6 +10,7 @@ import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_bottom_sheet_video.view.*
 
 /**
  **********************************
@@ -25,6 +26,7 @@ class BottomSheetVideosAdapter(items: List<MusicTrack>) :
             notifyDataSetChanged()
         }
 
+    var onClickMore: ((track: MusicTrack) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_bottom_sheet_video, parent, false)
@@ -57,6 +59,10 @@ class BottomSheetVideosAdapter(items: List<MusicTrack>) :
                 .into(imgSong)
             txtTitle.text = item.title
             txtDuration.text = item.durationFormatted
+
+            itemView.btnMore.setOnClickListener {
+                onClickMore?.invoke(item)
+            }
         }
     }
 

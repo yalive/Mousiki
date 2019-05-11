@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
     android:layout_margin="@dimen/four_4dp"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
@@ -76,12 +76,4 @@
             android:textSize="12sp"
             tools:text="Hello Test" />
     </LinearLayout>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/sixteen_16dp"
-        android:layout_gravity="center_vertical"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_more_vertical" />
 </LinearLayout>

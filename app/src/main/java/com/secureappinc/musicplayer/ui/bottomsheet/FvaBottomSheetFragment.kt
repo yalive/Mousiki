@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.player.PlayerQueue
+import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.Utils
@@ -79,13 +81,15 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        PlayerQueue.hideVideo()
+        if (PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
+            PlayerQueue.hideVideo()
+        }
     }
 
     override fun onPause() {
         super.onPause()
         val mainActivity = requireActivity() as MainActivity
-        if (mainActivity.isBottomPanelCollapsed()) {
+        if (mainActivity.isBottomPanelCollapsed() && PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
             PlayerQueue.showVideo()
             PlayerQueue.resume()
         }
