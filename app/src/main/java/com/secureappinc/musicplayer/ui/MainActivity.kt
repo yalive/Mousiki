@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -107,7 +109,41 @@ class MainActivity : BaseActivity() {
                 Utils.rateApp(this)
             }
         }
+
+        ViewCompat.setOnApplyWindowInsetsListener(cordinator) { v, insets ->
+
+            if (insets.systemWindowInsetTop > 0) {
+                DeviceInset.value = ScreenInset(
+                    insets.systemWindowInsetLeft,
+                    insets.systemWindowInsetTop,
+                    insets.systemWindowInsetRight,
+                    insets.systemWindowInsetBottom
+                )
+            }
+
+            var consumed = false
+
+            val viewGroup = v as ViewGroup
+            for (i in 0 until viewGroup.childCount) {
+                val child = viewGroup.getChildAt(i)
+                // Dispatch the insets to the child
+                val childResult = ViewCompat.dispatchApplyWindowInsets(child, insets)
+                // If the child consumed the insets, record it
+                if (childResult.isConsumed) {
+                    consumed = true
+                }
+            }
+            // If any of the children consumed the insets, return
+            // an appropriate value
+            if (consumed) insets.consumeSystemWindowInsets() else insets
+        }
+
+        DeviceInset.observe(this, Observer { inset ->
+            appbar.updatePadding(top = inset.top)
+        })
+
     }
+
 
     var isFromService = false
 
@@ -129,6 +165,11 @@ class MainActivity : BaseActivity() {
             showStatusBar()
             switchToPortrait()
             VideoEmplacementLiveData.center()
+            // To be sure
+            handler.postDelayed({
+                VideoEmplacementLiveData.center()
+            }, 1000)
+
         } else if (isFromService) {
             isFromService = false
 
@@ -142,6 +183,10 @@ class MainActivity : BaseActivity() {
         } else {
             // Restore old video state if any
             restoreOldVideoState()
+        }
+
+        if (slidingMenu.isMenuOpened) {
+            slidingMenu.closeMenu()
         }
     }
 

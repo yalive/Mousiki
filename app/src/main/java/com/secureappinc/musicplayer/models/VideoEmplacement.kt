@@ -2,6 +2,7 @@ package com.secureappinc.musicplayer.models
 
 import android.view.WindowManager
 import com.secureappinc.musicplayer.MusicApp
+import com.secureappinc.musicplayer.utils.DeviceInset
 import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.utils.screenSize
 
@@ -44,7 +45,10 @@ class EmplacementBottom : VideoEmplacement() {
 
     override val y: Int
         get() {
-            return screenHeightPx - height - dpToPixel(6f)
+
+            val notch = if (DeviceInset.hasNotch()) dpToPixel(24f) else 0
+
+            return screenHeightPx - height - dpToPixel(28f) + DeviceInset.get().top + notch
         }
 
     override val width: Int
@@ -66,7 +70,7 @@ class EmplacementCenter : VideoEmplacement() {
 
     override val y: Int
         get() {
-            return (screenHeightPx - height) / 2 - dpToPixel(40f)
+            return (screenHeightPx - height) / 2 - dpToPixel(40f) + DeviceInset.get().top
         }
 
     override val width: Int
@@ -88,7 +92,8 @@ class EmplacementPlaylist : VideoEmplacement() {
 
     override val y: Int
         get() {
-            return screenHeightPx - dpToPixel(365.5f) // fixed value
+            val notch = if (DeviceInset.hasNotch()) dpToPixel(24f) else 0
+            return screenHeightPx - dpToPixel(365.5f) + DeviceInset.get().top + notch
         }
 
     override val width: Int
