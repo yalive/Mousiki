@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.YTTrendingItem
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
-import com.squareup.picasso.Picasso
+import com.secureappinc.musicplayer.utils.loadImage
 
 /**
  **********************************
@@ -46,13 +46,10 @@ class GenrePlaylistsAdapter(items: List<YTTrendingItem>, val genreMusic: GenreMu
         private val txtCount: TextView = view.findViewById(R.id.txtCount)
 
         fun bind(item: YTTrendingItem) {
-            Picasso.get().load(item.snippet.thumbnails.high.url)
-                .fit()
-                .into(imgSong)
-            txtTitle.text = item.snippet.title
+            imgSong.loadImage(item.snippet)
+            txtTitle.text = item.snippetTitle()
             txtCategory.text = "${genreMusic.title}"
             txtCount.text = "${item.contentDetails.itemCount}"
         }
     }
-
 }

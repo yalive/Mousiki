@@ -1,6 +1,7 @@
 package com.secureappinc.musicplayer.models
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -10,6 +11,7 @@ import kotlinx.android.parcel.Parcelize
  * Created by Abdelhadi on 4/18/19.
  **********************************
  */
+@Keep
 @Parcelize
 data class Artist(
     @Expose

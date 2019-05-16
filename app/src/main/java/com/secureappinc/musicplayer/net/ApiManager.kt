@@ -11,6 +11,7 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.utils.Constants
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -42,6 +43,9 @@ object ApiManager {
             .addInterceptor(AddKeyInterceptor())
 
         if (Constants.Config.DEBUG_NETWORK) {
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            client.addInterceptor(logging)
             client.addInterceptor(ChuckInterceptor(MusicApp.get()))
         }
 

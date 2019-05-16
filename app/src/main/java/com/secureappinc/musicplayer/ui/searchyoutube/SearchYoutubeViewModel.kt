@@ -126,7 +126,7 @@ class SearchYoutubeViewModel : ViewModel() {
         val artists: MutableList<Artist> = mutableListOf()
         for (item in items) {
             if (item.id != null) {
-                val artist = Artist(item.snippet.title, "US", item.id.channelId, item.snippet.thumbnails.high.url)
+                val artist = Artist(item.snippet.title, "US", item.id.channelId, item.snippet.urlImageOrEmpty())
                 artists.add(artist)
             }
         }
@@ -186,7 +186,10 @@ class SearchYoutubeViewModel : ViewModel() {
         val tracks: MutableList<MusicTrack> = mutableListOf()
         for (ytTrendingItem in listTrendingYutube) {
             val track =
-                MusicTrack(ytTrendingItem.id, ytTrendingItem.snippet.title, ytTrendingItem.contentDetails.duration)
+                MusicTrack(ytTrendingItem.id, ytTrendingItem.snippetTitle(), ytTrendingItem.contentDetails.duration)
+            ytTrendingItem.snippet?.urlImageOrEmpty()?.let { url ->
+                track.fullImageUrl = url
+            }
             tracks.add(track)
         }
         return tracks

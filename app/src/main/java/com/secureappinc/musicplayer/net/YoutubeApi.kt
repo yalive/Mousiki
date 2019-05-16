@@ -40,7 +40,7 @@ interface YoutubeApi {
     fun getTrending(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): Call<YTTrendingMusicRS>
 
     @GET("search?part=snippet&chart=mostPopular&maxResults=50&videoCategory=10")
-    fun getCategoryMusic(@Query("topicId") topicId: String, @Query("regionCode") regionCode: String): Call<YTCategoryMusicRS>
+    fun getCategoryMusic(@Query("channelId") topicId: String, @Query("regionCode") regionCode: String): Call<YTCategoryMusicRS>
 
     @GET(PLAYLIST)
     fun getPlaylist(@Query("channelId") channelId: String, @Query("regionCode") regionCode: String): Call<YTTrendingMusicRS>

@@ -117,7 +117,10 @@ class HomeViewModel : ViewModel() {
         val tracks: MutableList<MusicTrack> = mutableListOf()
         for (ytTrendingItem in listTrendingYutube) {
             val track =
-                MusicTrack(ytTrendingItem.id, ytTrendingItem.snippet.title, ytTrendingItem.contentDetails.duration)
+                MusicTrack(ytTrendingItem.id, ytTrendingItem.snippetTitle(), ytTrendingItem.contentDetails.duration)
+            ytTrendingItem.snippet?.urlImageOrEmpty()?.let { url ->
+                track.fullImageUrl = url
+            }
             tracks.add(track)
         }
         return tracks

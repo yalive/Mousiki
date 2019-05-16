@@ -2,10 +2,11 @@ package com.secureappinc.musicplayer.ui.detailcategory.videos
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.models.*
+import com.secureappinc.musicplayer.models.Resource
+import com.secureappinc.musicplayer.models.YTTrendingItem
+import com.secureappinc.musicplayer.models.YTTrendingMusicRS
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
-import com.secureappinc.musicplayer.utils.getCurrentLocale
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,10 +20,10 @@ class GenreVideosViewModel : ViewModel() {
 
     val searchResultList = MutableLiveData<Resource<List<MusicTrack>>>()
 
-    fun loadVideosForTopic(topicId: String) {
+    fun loadTopTracks(topTracksPlaylist: String) {
         searchResultList.value = Resource.loading()
-        ApiManager.api.getCategoryMusic(topicId, getCurrentLocale()).enqueue(object : Callback<YTCategoryMusicRS> {
-            override fun onResponse(call: Call<YTCategoryMusicRS>, response: Response<YTCategoryMusicRS>) {
+        ApiManager.api.getPlaylistVideos(topTracksPlaylist, "50").enqueue(object : Callback<YTTrendingMusicRS> {
+            override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
                 if (response.isSuccessful) {
                     val listMusics = response.body()?.items
                     if (listMusics != null) {
@@ -35,17 +36,16 @@ class GenreVideosViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<YTCategoryMusicRS>, t: Throwable) {
+            override fun onFailure(call: Call<YTTrendingMusicRS>, t: Throwable) {
                 searchResultList.value = Resource.error("Error loading")
             }
         })
     }
 
-
-    private fun loadVideosDetails(listMusics: List<YTCategoryMusictem>) {
+    private fun loadVideosDetails(listMusics: List<YTTrendingItem>) {
         val ids = mutableListOf<String>()
         for (searchItem in listMusics) {
-            ids.add(searchItem.id.videoId)
+            ids.add(searchItem.contentDetails.videoId)
         }
 
         val idsStr = ids.joinToString()
@@ -79,7 +79,10 @@ class GenreVideosViewModel : ViewModel() {
         val tracks: MutableList<MusicTrack> = mutableListOf()
         for (musicItem in listMusics) {
             val track =
-                MusicTrack(musicItem.id, musicItem.snippet.title, musicItem.contentDetails.duration)
+                MusicTrack(musicItem.id, musicItem.snippetTitle(), musicItem.contentDetails.duration)
+            musicItem.snippet?.urlImageOrEmpty()?.let { url ->
+                track.fullImageUrl = url
+            }
             tracks.add(track)
         }
         return tracks

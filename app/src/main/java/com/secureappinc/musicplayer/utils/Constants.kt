@@ -11,6 +11,6 @@ object Constants {
 
     object Config {
         const val DEBUG_PLAYER = false
-        const val DEBUG_NETWORK = true
+        const val DEBUG_NETWORK = false
     }
 }

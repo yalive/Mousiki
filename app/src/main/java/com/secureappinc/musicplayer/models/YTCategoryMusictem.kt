@@ -1,5 +1,6 @@
 package com.secureappinc.musicplayer.models
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -8,6 +9,7 @@ import com.google.gson.annotations.SerializedName
  * Created by Abdelhadi on 4/6/19.
  **********************************
  */
+@Keep
 data class YTCategoryMusictem(
     @Expose
     @SerializedName("kind")
