@@ -14,8 +14,16 @@ data class MusicTrack(
     @PrimaryKey @ColumnInfo(name = "youtube_id") val youtubeId: String, val title: String,
     val duration: String
 ) {
+
+    var fullImageUrl = ""
+
     val imgUrl: String
         get() {
+
+            if (fullImageUrl.startsWith("http")) {
+                return fullImageUrl
+            }
+
             return "https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg"
         }
     val shareVideoUrl: String

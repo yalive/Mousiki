@@ -2,6 +2,7 @@
 
 package com.secureappinc.musicplayer.models
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -10,24 +11,22 @@ import com.google.gson.annotations.SerializedName
  * Created by Abdelhadi on 4/6/19.
  **********************************
  */
+@Keep
 data class YTThumbnails(
     @Expose
     @SerializedName("default")
-    val default: YTThumbnailDefault,
+    val default: YTThumbnailDefault?,
 
     @Expose
     @SerializedName("medium")
-    val medium: YTThumbnailMedium,
+    val medium: YTThumbnailMedium?,
 
     @Expose
     @SerializedName("high")
-    val high: YTThumbnailHigh
+    val high: YTThumbnailHigh?
 )
 
 fun YTThumbnails.urlOrEmpty(): String {
-    high?.url?.let {
-        return it
-    }
 
     medium?.url?.let {
         return it
@@ -37,9 +36,14 @@ fun YTThumbnails.urlOrEmpty(): String {
         return it
     }
 
+    high?.url?.let {
+        return it
+    }
+
     return ""
 }
 
+@Keep
 data class YTThumbnailDefault(
 
     @Expose
@@ -47,7 +51,7 @@ data class YTThumbnailDefault(
     val url: String
 )
 
-
+@Keep
 data class YTThumbnailMedium(
 
     @Expose
@@ -55,6 +59,7 @@ data class YTThumbnailMedium(
     val url: String
 )
 
+@Keep
 data class YTThumbnailHigh(
 
     @Expose

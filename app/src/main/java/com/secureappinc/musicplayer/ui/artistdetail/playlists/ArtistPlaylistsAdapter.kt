@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.squareup.picasso.Picasso
+import com.secureappinc.musicplayer.utils.loadImage
 
 /**
  **********************************
@@ -56,10 +56,8 @@ class ArtistPlaylistsAdapter(
         }
 
         fun bind(item: YTTrendingItem) {
-            Picasso.get().load(item.snippet.thumbnails.high.url)
-                .fit()
-                .into(imgSong)
-            txtTitle.text = item.snippet.title
+            imgSong.loadImage(item.snippet)
+            txtTitle.text = item.snippetTitle()
             txtCategory.text = "${artist.name}"
             txtCount.text = "${item.contentDetails.itemCount}"
         }

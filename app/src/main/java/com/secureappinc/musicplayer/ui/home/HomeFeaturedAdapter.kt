@@ -43,7 +43,7 @@ internal class HomeFeaturedAdapter(var mContext: Context, val onVideoSelected: (
         val itemView = mLayoutInflater.inflate(R.layout.item_featured, container, false)
         // Find and populate data into the page (i.e set the image)
         val imageView = itemView.findViewById(R.id.imgSong) as ImageView
-        Picasso.get().load("https://img.youtube.com/vi/${tracks[position].youtubeId}/maxresdefault.jpg")
+        Picasso.get().load(tracks[position].imgUrl)
             .fit()
             .into(imageView)
         // ...

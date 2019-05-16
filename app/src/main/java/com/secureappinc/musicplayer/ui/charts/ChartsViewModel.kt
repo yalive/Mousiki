@@ -39,9 +39,9 @@ class ChartsViewModel : ViewModel() {
                     val listMusics = response.body()?.items
                     print("")
                     if (listMusics != null && listMusics.size == 3) {
-                        chart.track1 = listMusics[0].snippet.title
-                        chart.track2 = listMusics[1].snippet.title
-                        chart.track3 = listMusics[2].snippet.title
+                        chart.track1 = listMusics[0].snippetTitle()
+                        chart.track2 = listMusics[1].snippetTitle()
+                        chart.track3 = listMusics[2].snippetTitle()
                         chartDetail.value = chart
                     }
                 }

@@ -23,7 +23,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.secureappinc.musicplayer.BuildConfig
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.dpToPixel
 import com.secureappinc.musicplayer.models.EmplacementFullScreen
@@ -59,6 +58,8 @@ class MainActivity : BaseActivity() {
 
     lateinit var viewModel: MainViewModel
 
+    var isInHome = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
@@ -81,9 +82,11 @@ class MainActivity : BaseActivity() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             if (destination.id == R.id.dashboardFragment) {
+                isInHome = true
                 showHomeIcon()
                 searchItem?.isVisible = true
             } else {
+                isInHome = false
                 searchItem?.isVisible = false
             }
         }
@@ -102,13 +105,6 @@ class MainActivity : BaseActivity() {
 
 
         setupBottomPanelFragment()
-
-        if (!UserPrefs.hasRatedApp() && !BuildConfig.DEBUG) {
-            val launchCount = UserPrefs.getLaunchCount()
-            if (launchCount > 2 && launchCount % 2 == 0) {
-                Utils.rateApp(this)
-            }
-        }
 
         ViewCompat.setOnApplyWindowInsetsListener(cordinator) { v, insets ->
 
@@ -377,6 +373,14 @@ class MainActivity : BaseActivity() {
         if (isBottomPanelExpanded()) {
             collapseBottomPanel()
             return
+        }
+
+        if (!UserPrefs.hasRatedApp() && isInHome) {
+            val launchCount = UserPrefs.getLaunchCount()
+            if (launchCount > 2 && launchCount % 2 == 0) {
+                Utils.rateApp(this)
+                return
+            }
         }
 
         super.onBackPressed()

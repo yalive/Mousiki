@@ -92,7 +92,7 @@ class GenreVideosFragment : Fragment() {
     }
 
     private fun laodCategoryMusic() {
-        viewModel.loadVideosForTopic(genreMusic.topicId)
+        viewModel.loadTopTracks(genreMusic.topTracksPlaylist)
     }
 
     private fun showBottomMenuButtons(musicTrack: MusicTrack) {

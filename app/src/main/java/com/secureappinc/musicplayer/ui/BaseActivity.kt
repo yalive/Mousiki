@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import com.secureappinc.musicplayer.BuildConfig
 import com.secureappinc.musicplayer.base.common.EventObserver
 import com.secureappinc.musicplayer.player.ClickVideoListener
 import com.secureappinc.musicplayer.utils.UserPrefs
@@ -45,7 +44,7 @@ open class BaseActivity : AppCompatActivity() {
         interstitialAd.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 Log.d(TAG, "onAdLoaded")
-                if (interstitialAd.isLoaded && !hasShownFirstInterAds && !BuildConfig.DEBUG) {
+                if (interstitialAd.isLoaded && !hasShownFirstInterAds) {
                     hasShownFirstInterAds = true
                     interstitialAd.show()
                 }
@@ -86,11 +85,12 @@ open class BaseActivity : AppCompatActivity() {
 
 
     fun loadInterstitialAd() {
-        interstitialAd.loadAd(AdRequest.Builder().addTestDevice("8D18CFA4FEE362E160E97DB5E6D6E770").build())
+        // .addTestDevice("8D18CFA4FEE362E160E97DB5E6D6E770")
+        interstitialAd.loadAd(AdRequest.Builder().build())
     }
 
     fun showInterstitialAd() {
-        if (interstitialAd.isLoaded && !BuildConfig.DEBUG) {
+        if (interstitialAd.isLoaded) {
             interstitialAd.show()
         }
     }

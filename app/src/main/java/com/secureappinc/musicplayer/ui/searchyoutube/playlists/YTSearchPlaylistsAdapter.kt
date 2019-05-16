@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.urlOrEmpty
 import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment
-import com.squareup.picasso.Picasso
+import com.secureappinc.musicplayer.utils.loadImage
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
@@ -58,20 +57,15 @@ class YTSearchPlaylistsAdapter(
                 val item = items[adapterPosition]
                 val bundle = Bundle()
                 bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.id)
-                val artist = Artist(item.snippet.title, "US", item.id, item.snippet.thumbnails.high.url)
+                val artist = Artist(item.snippetTitle(), "US", item.id, item.snippet?.urlImageOrEmpty())
                 bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
             }
         }
 
         fun bind(item: YTTrendingItem) {
-            val urlOrEmpty = item.snippet.thumbnails.urlOrEmpty()
-            if (urlOrEmpty.isNotEmpty()) {
-                Picasso.get().load(urlOrEmpty)
-                    .fit()
-                    .into(imgSong)
-            }
-            txtTitle.text = item.snippet.title
+            imgSong.loadImage(item.snippet)
+            txtTitle.text = item.snippetTitle()
             //txtCategory.text = "${artist.name}"
             txtCount.text = "${item.contentDetails.itemCount}"
         }

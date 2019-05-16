@@ -89,7 +89,10 @@ class PlaylistVideosViewModel : ViewModel() {
                 continue
             }
             val track =
-                MusicTrack(musicItem.id, musicItem.snippet.title, musicItem.contentDetails.duration)
+                MusicTrack(musicItem.id, musicItem.snippetTitle(), musicItem.contentDetails.duration)
+            musicItem.snippet?.urlImageOrEmpty()?.let { url ->
+                track.fullImageUrl = url
+            }
             tracks.add(track)
         }
         return tracks

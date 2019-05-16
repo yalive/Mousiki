@@ -1,1 +1,3 @@
 -dontwarn com.sothree.slidinguppanel.SlidingUpPanelLayout
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable

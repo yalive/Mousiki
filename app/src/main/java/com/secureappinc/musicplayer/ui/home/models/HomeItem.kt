@@ -69,29 +69,161 @@ data class ChartModel(val title: String, @DrawableRes val image: Int, val channe
 }
 
 @Parcelize
-data class GenreMusic(val title: String, val img: Int, val icon: Int, val topicId: String) : Parcelable {
+data class GenreMusic(val title: String, val img: Int, val channelId: String, val topTracksPlaylist: String) :
+    Parcelable {
 
     companion object {
         val allValues = mutableListOf<GenreMusic>().apply {
-            add(GenreMusic("Pop Music", R.drawable.img_genres_0, 0, "/m/064t9"))
-            add(GenreMusic("Hip Hop Music", R.drawable.img_genres_1, 0, "/m/0glt670"))
-            add(GenreMusic("Country Music", R.drawable.img_genres_2, 0, "/m/01lyv"))
-            add(GenreMusic("Alternative Rock", R.drawable.img_genres_3, 0, "/m/06by7"))
-            add(GenreMusic("Reggaeton", R.drawable.img_genres_4, 0, "/m/06cqb"))
-            add(GenreMusic("Heavy Metal Music", R.drawable.img_genres_5, 0, "/m/064t9")) // todo: Set
-            add(GenreMusic("K-Pop", R.drawable.img_genres_6, 0, "/m/064t9")) // todo: Set
-            add(GenreMusic("Electronic Music", R.drawable.img_genres_7, 0, "/m/02lkt"))
-            add(GenreMusic("House Music", R.drawable.img_genres_8, 0, "/m/064t9")) // todo: Set
+            add(
+                GenreMusic(
+                    "Pop Music",
+                    R.drawable.img_genres_0,
+                    "UCE80FOXpJydkkMo-BYoJdEg",
+                    "PLDcnymzs18LWLKtkNrKYzPpHLbnXRu4nN"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Hip Hop Music",
+                    R.drawable.img_genres_1,
+                    "UCUnSTiCHiHgZA9NQUG6lZkQ",
+                    "PLH6pfBXQXHEANvXkdNlaofmN-2dOpGTHZ"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Country Music",
+                    R.drawable.img_genres_2,
+                    "UClYMFaf6IdjQnZmsnw9N1hQ",
+                    "PLvLX2y1VZ-tFJCfRG7hi_OjIAyCriNUT2"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Alternative Rock",
+                    R.drawable.img_genres_3,
+                    "UCHtUkBSmt4d92XP8q17JC3w",
+                    "PL47oRh0-pTouthHPv6AbALWPvPJHlKiF7"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Reggaeton",
+                    R.drawable.img_genres_4,
+                    "UCh3PEQmV2_1D69MCcx-PArg",
+                    "PLS_oEMUyvA728OZPmF9WPKjsGtfC75LiN"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Heavy Metal Music",
+                    R.drawable.img_genres_5,
+                    "UCSkJDgBGvNOEXSQl4YNjDtQ",
+                    "PLfY-m4YMsF-OM1zG80pMguej_Ufm8t0VC"
+                )
+            )
+            add(
+                GenreMusic(
+                    "K-Pop",
+                    R.drawable.img_genres_6,
+                    "UCsEonk9fs_9jmtw9PwER9yg",
+                    "PLTDluH66q5mqwAXTBhU0IbgRzXedQE4FW"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Electronic Music",
+                    R.drawable.img_genres_7,
+                    "UCCIPrrom6DIftcrInjeMvsQ",
+                    "PLFPg_IUxqnZNnACUGsfn50DySIOVSkiKI"
+                )
+            )
+            add(
+                GenreMusic(
+                    "House Music",
+                    R.drawable.img_genres_8,
+                    "UCBg69z2WJGVY2TbhJ1xG4AA",
+                    "PLhInz4M-OzRUsuBj8wF6383E7zm2dJfqZ"
+                )
+            )
 
-            add(GenreMusic("Music", R.drawable.img_genre_music_all, 0, "/m/04rlf"))
-            add(GenreMusic("Christian music", R.drawable.img_genre_christian, 0, "/m/02mscn"))
-            add(GenreMusic("Classical music", R.drawable.img_genre_classical, 0, "/m/0ggq0m"))
-            add(GenreMusic("Independent music", R.drawable.img_genre_indie, 0, "/m/05rwpb"))
-            add(GenreMusic("Jazz", R.drawable.img_genre_jaz, 0, "/m/03_d0"))
-            add(GenreMusic("Music of Asia", R.drawable.img_genre_asian, 0, "/m/028sqc"))
-            add(GenreMusic("Music of Latin America", R.drawable.img_genre_latin, 0, "/m/0g293"))
-            add(GenreMusic("Rhythm and blues", R.drawable.img_genre_rhythm, 0, "/m/06j6l"))
-            add(GenreMusic("Soul music", R.drawable.img_genre_soul, 0, "/m/0gywn"))
+            add(
+                GenreMusic(
+                    "Music",
+                    R.drawable.img_genre_music_all,
+                    "UC-9-kyTW8ZkZNDHQJ6FgpwQ",
+                    "PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Christian music",
+                    R.drawable.img_genre_christian,
+                    "UCnl8lkoNIxpKL9aO0wqHYfA",
+                    "PLLMA7Sh3JsOQQFAtj1no-_keicrqjEZDm"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Classical music",
+                    R.drawable.img_genre_classical,
+                    "UCLwMU2tKAlCoMSbGQDuiMSg",
+                    "PLVXq77mXV53-Np39jM456si2PeTrEm9Mj"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Independent music",
+                    R.drawable.img_genre_indie,
+                    "UCm-O8i4MEqBWq2wB03YGtfg",
+                    "PLSn1U7lJJ1UnczTmNYXW8ZEjJsCxTZull"
+                )
+            )
+
+            add(
+                GenreMusic(
+                    "Jazz",
+                    R.drawable.img_genre_jaz,
+                    "UC7KZmdQxhcajZSEFLJr3gCg",
+                    "PLMcThd22goGYit-NKu2O8b4YMtwSTK9b9"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Music of Asia",
+                    R.drawable.img_genre_asian,
+                    "UCDQ_5Wcc54n1_GrAzf05uWQ",
+                    "PL0zQrw6ZA60Z6JT4lFH-lAq5AfDnO2-aE"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Music of Latin America",
+                    R.drawable.img_genre_latin,
+                    "UCYYsyo5ekR-2Nw10s4mj3pQ",
+                    "PLcfQmtiAG0X-fmM85dPlql5wfYbmFumzQ"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Rhythm and blues",
+                    R.drawable.img_genre_rhythm,
+                    "UCvwDeZSN2oUHlLWYRLvKceA",
+                    "PLWNXn_iQ2yrKzFcUarHPdC4c_LPm-kjQy"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Soul music",
+                    R.drawable.img_genre_soul,
+                    "UCsFaF_3y_L__y8kWAIEhv1w",
+                    "PLQog_FHUHAFUDDQPOTeAWSHwzFV1Zz5PZ"
+                )
+            )
         }
+    }
+
+    fun toArtist(): Artist {
+        return Artist(title, "us", channelId)
     }
 }
