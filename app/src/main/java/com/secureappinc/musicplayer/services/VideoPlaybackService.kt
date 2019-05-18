@@ -3,6 +3,7 @@ package com.secureappinc.musicplayer.services
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.widget.TextView
@@ -13,7 +14,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import com.secureappinc.musicplayer.base.common.EventObserver
 import com.secureappinc.musicplayer.models.*
+import com.secureappinc.musicplayer.player.OnShowAdsListener
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.*
@@ -129,6 +132,8 @@ class VideoPlaybackService : LifecycleService() {
         observeSlidePanelDragging()
 
         observeBottomSheetPlayerDragging()
+
+        observeAdsVisibility()
 
         startForegroundService()
     }
@@ -379,6 +384,24 @@ class VideoPlaybackService : LifecycleService() {
                 windowManager.updateViewLayout(videoContainerView, videoViewParams)
             }
 
+        })
+    }
+
+    val handler = Handler()
+
+    private fun observeAdsVisibility() {
+        OnShowAdsListener.observe(this, EventObserver { shown ->
+            if (shown) {
+                videoContainerView.gone()
+                handler.postDelayed({
+                    youTubePlayer?.pause()
+                }, 1000)
+            } else {
+                videoContainerView.visible()
+                handler.postDelayed({
+                    youTubePlayer?.play()
+                }, 1000)
+            }
         })
     }
 

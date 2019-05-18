@@ -62,12 +62,17 @@ object UserPrefs {
         return MusicApp.get().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
-    fun onClickTrack() {
+    fun resetNumberOfTrackClick() {
         val count = getClickTrackCount()
-        getPrefs().edit().putLong(CLICK_TRACK_COUNT, count + 1).apply()
+        getPrefs().edit().putInt(CLICK_TRACK_COUNT, 0).apply()
     }
 
-    fun getClickTrackCount(): Long {
-        return getPrefs().getLong(CLICK_TRACK_COUNT, 0)
+    fun onClickTrack() {
+        val count = getClickTrackCount()
+        getPrefs().edit().putInt(CLICK_TRACK_COUNT, count + 1).apply()
+    }
+
+    fun getClickTrackCount(): Int {
+        return getPrefs().getInt(CLICK_TRACK_COUNT, 0)
     }
 }

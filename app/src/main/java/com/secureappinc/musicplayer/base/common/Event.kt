@@ -30,3 +30,7 @@ open class Event<out T>(private val content: T) {
      */
     fun peekContent(): T = content
 }
+
+fun <T> T.asEvent(): Event<T> {
+    return Event(this)
+}
