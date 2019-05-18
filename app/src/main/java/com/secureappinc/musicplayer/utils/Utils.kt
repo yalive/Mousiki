@@ -50,6 +50,7 @@ object Utils {
                 Intent.EXTRA_TEXT,
                 "Install Free Music App from: https://play.google.com/store/apps/details?id=com.secureappinc.freemusic"
             )
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             type = "text/plain"
         }
 
@@ -62,7 +63,10 @@ object Utils {
             Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", "secureappinc@gmail.com", null
             )
-        )
+        ).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Free Music App")
         emailIntent.putExtra(Intent.EXTRA_TEXT, "")
         MusicApp.get().startActivity(Intent.createChooser(emailIntent, "Send email..."))

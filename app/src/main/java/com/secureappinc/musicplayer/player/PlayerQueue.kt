@@ -9,6 +9,7 @@ import com.secureappinc.musicplayer.base.common.Event
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.services.VideoPlaybackService
 import com.secureappinc.musicplayer.utils.UserPrefs
+import com.secureappinc.musicplayer.utils.canDrawOverApps
 
 
 /**
@@ -18,6 +19,8 @@ import com.secureappinc.musicplayer.utils.UserPrefs
  */
 
 object ClickVideoListener : MutableLiveData<Event<MusicTrack>>()
+
+object OnShowAdsListener : MutableLiveData<Event<Boolean>>()
 
 object PlayerQueue : MutableLiveData<MusicTrack>() {
 
@@ -184,24 +187,36 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
 
     private fun notifyService(videoId: String) {
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_PLAY_TRACK, videoId)
         MusicApp.get().startService(intent)
     }
 
     private fun pauseVideo() {
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_PAUSE, true)
         MusicApp.get().startService(intent)
     }
 
     private fun resumeVideo() {
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_RESUME, true)
         MusicApp.get().startService(intent)
     }
 
     private fun seekTrackTo(to: Long, comeFromFullScreen: Boolean) {
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO, to)
         intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO_FROM_FULL_SCREEN, comeFromFullScreen)

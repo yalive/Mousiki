@@ -11,7 +11,9 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.secureappinc.musicplayer.base.common.EventObserver
+import com.secureappinc.musicplayer.base.common.asEvent
 import com.secureappinc.musicplayer.player.ClickVideoListener
+import com.secureappinc.musicplayer.player.OnShowAdsListener
 import com.secureappinc.musicplayer.utils.UserPrefs
 
 
@@ -44,9 +46,9 @@ open class BaseActivity : AppCompatActivity() {
         interstitialAd.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 Log.d(TAG, "onAdLoaded")
-                if (interstitialAd.isLoaded && !hasShownFirstInterAds) {
+                if (!hasShownFirstInterAds) {
                     hasShownFirstInterAds = true
-                    interstitialAd.show()
+                    showInterstitialAd()
                 }
             }
 
@@ -74,6 +76,7 @@ open class BaseActivity : AppCompatActivity() {
                 Log.d(TAG, "onAdClosed")
                 super.onAdClosed()
                 loadInterstitialAd()
+                onAdsClosed()
             }
 
             override fun onAdOpened() {
@@ -85,21 +88,30 @@ open class BaseActivity : AppCompatActivity() {
 
 
     fun loadInterstitialAd() {
-        // .addTestDevice("8D18CFA4FEE362E160E97DB5E6D6E770")
         interstitialAd.loadAd(AdRequest.Builder().build())
     }
 
     fun showInterstitialAd() {
+        print("Show Ads")
         if (interstitialAd.isLoaded) {
+            onAdsShown()
             interstitialAd.show()
         }
+    }
+
+    fun onAdsShown() {
+        OnShowAdsListener.value = true.asEvent()
+    }
+
+    fun onAdsClosed() {
+        OnShowAdsListener.value = false.asEvent()
     }
 
     fun observeClickVideo() {
         ClickVideoListener.observe(this, EventObserver {
             val clickTrackCount = UserPrefs.getClickTrackCount()
             Log.d(TAG, "Click track count = $clickTrackCount")
-            if (clickTrackCount % 3 == 0L) {
+            if (clickTrackCount > 0 && clickTrackCount % 3 == 0) {
                 showInterstitialAd()
             }
         })

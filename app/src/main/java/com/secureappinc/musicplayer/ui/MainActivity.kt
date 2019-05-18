@@ -2,7 +2,6 @@ package com.secureappinc.musicplayer.ui
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
@@ -64,6 +63,7 @@ class MainActivity : BaseActivity() {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         UserPrefs.onLaunchApp()
+        UserPrefs.resetNumberOfTrackClick()
         setContentView(com.secureappinc.musicplayer.R.layout.activity_main)
         slidingPaneLayout = findViewById(R.id.sliding_layout)
 
@@ -91,16 +91,8 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        if (!canDrawOverApps() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            AlertDialog.Builder(this).setCancelable(false)
-                .setMessage("Please enable the \"Draw over other apps\" permission to start the floating player window.")
-                .setNegativeButton("DENY") { _, _ ->
-                }.setPositiveButton("AGREE") { _, _ ->
-                    //If the draw over permission is not available open the settings screen
-                    //to grant the permission.
-                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-                    startActivityForResult(intent, 10)
-                }.show()
+        if (!canDrawOverApps()) {
+            requestDrawOverAppsPermission()
         }
 
 
@@ -138,6 +130,18 @@ class MainActivity : BaseActivity() {
             appbar.updatePadding(top = inset.top)
         })
 
+    }
+
+    private fun requestDrawOverAppsPermission() {
+        AlertDialog.Builder(this).setCancelable(false)
+            .setMessage("Please enable the \"Draw over other apps\" permission to start the floating player window.")
+            .setNegativeButton("DENY") { _, _ ->
+            }.setPositiveButton("AGREE") { _, _ ->
+                //If the draw over permission is not available open the settings screen
+                //to grant the permission.
+                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+                startActivityForResult(intent, 10)
+            }.show()
     }
 
 
@@ -416,6 +420,10 @@ class MainActivity : BaseActivity() {
     }
 
     fun collapseBottomPanel() {
+        if (!canDrawOverApps()) {
+            requestDrawOverAppsPermission()
+            return
+        }
         slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
     }
 

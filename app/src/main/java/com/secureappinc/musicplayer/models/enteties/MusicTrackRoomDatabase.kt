@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.secureappinc.musicplayer.BuildConfig
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
-@Database(entities = [MusicTrack::class], version = 1)
+@Database(entities = [MusicTrack::class], version = BuildConfig.VERSION_CODE)
 public abstract class MusicTrackRoomDatabase : RoomDatabase() {
 
     abstract fun musicTrackDao(): MusicTrackDAO
@@ -29,7 +30,7 @@ public abstract class MusicTrackRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     MusicTrackRoomDatabase::class.java,
                     DATABASE_NAME
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBlack"
     android:gravity="center"
     android:orientation="horizontal"
@@ -60,6 +61,7 @@
             android:layout_gravity="center"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_favorite_added_yellow"
+
             android:tint="@color/colorYellow" />
 
         <TextView
