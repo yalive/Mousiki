@@ -264,10 +264,13 @@ class VideoPlaybackService : LifecycleService() {
             }
 
             override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                if (isScreenLocked()) {
+                    PlayerQueue.pause()
+                    return
+                }
                 super.onCurrentSecond(youTubePlayer, second)
                 PlaybackDuration.value = second
             }
-
         })
     }
 

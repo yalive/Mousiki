@@ -13,6 +13,9 @@ import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment
 import com.secureappinc.musicplayer.ui.home.models.ChartModel
+import com.secureappinc.musicplayer.utils.AdsOrigin
+import com.secureappinc.musicplayer.utils.RequestAdsLiveData
+import com.secureappinc.musicplayer.utils.Utils
 import kotlinx.android.synthetic.main.item_home_chart.view.*
 
 
@@ -57,6 +60,11 @@ class HomeChartAdapter(var items: List<ChartModel>) :
                     val artist = Artist(item.title, "US", item.channelId)
                     bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                     itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
+
+                    if (!Utils.hasShownAdsOneTime) {
+                        Utils.hasShownAdsOneTime = true
+                        RequestAdsLiveData.value = AdsOrigin("chart")
+                    }
                 }
             }
         }

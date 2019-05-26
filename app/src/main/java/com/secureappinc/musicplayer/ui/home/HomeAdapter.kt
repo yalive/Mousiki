@@ -16,6 +16,9 @@ import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.home.models.*
+import com.secureappinc.musicplayer.utils.AdsOrigin
+import com.secureappinc.musicplayer.utils.RequestAdsLiveData
+import com.secureappinc.musicplayer.utils.Utils
 import com.squareup.picasso.Picasso
 
 /**
@@ -123,6 +126,11 @@ class HomeAdapter(
         init {
             view.findViewById<CardView>(R.id.cardView).setOnClickListener {
                 callback(items[adapterPosition])
+
+                if (!Utils.hasShownAdsOneTime) {
+                    Utils.hasShownAdsOneTime = true
+                    RequestAdsLiveData.value = AdsOrigin("artist")
+                }
             }
         }
 
@@ -144,6 +152,11 @@ class HomeAdapter(
         init {
             view.findViewById<ViewGroup>(R.id.cardView).setOnClickListener {
                 callback(items[adapterPosition])
+
+                if (!Utils.hasShownAdsOneTime) {
+                    Utils.hasShownAdsOneTime = true
+                    RequestAdsLiveData.value = AdsOrigin("genre")
+                }
             }
         }
 

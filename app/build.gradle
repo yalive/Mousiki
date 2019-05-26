@@ -47,8 +47,8 @@ android {
         applicationId "com.secureappinc.freemusic"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.4"
+        versionCode 10
+        versionName "1.64"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.releaseConfig
     }

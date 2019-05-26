@@ -1,6 +1,7 @@
 package com.secureappinc.musicplayer.utils
 
 import android.app.Activity
+import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -21,7 +22,6 @@ import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
 import com.secureappinc.musicplayer.MusicApp
-import com.secureappinc.musicplayer.R
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
@@ -31,6 +31,8 @@ import java.util.*
  * Created by Fayssel Yabahddou on 4/13/19.
  */
 object Utils {
+
+    var hasShownAdsOneTime = false
 
     fun shareVia(videoId: String?) {
         val sendIntent: Intent = Intent().apply {
@@ -139,10 +141,10 @@ object Utils {
     }
 
     fun rateApp(context: Context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.dialog_rate, null)
-        val btnRate = view.findViewById<Button>(R.id.btnRate)
-        val btnRemindMe = view.findViewById<Button>(R.id.btnRemindMe)
-        val btnNoThanks = view.findViewById<Button>(R.id.btnNoThanks)
+        val view = LayoutInflater.from(context).inflate(com.secureappinc.musicplayer.R.layout.dialog_rate, null)
+        val btnRate = view.findViewById<Button>(com.secureappinc.musicplayer.R.id.btnRate)
+        val btnRemindMe = view.findViewById<Button>(com.secureappinc.musicplayer.R.id.btnRemindMe)
+        val btnNoThanks = view.findViewById<Button>(com.secureappinc.musicplayer.R.id.btnNoThanks)
         val dialog = MaterialDialog(context).show {
             customView(null, view, false, true)
             cancelOnTouchOutside(false)
@@ -170,6 +172,11 @@ object Utils {
             dialog.dismiss()
         }
     }
+}
+
+fun isScreenLocked(): Boolean {
+    val myKM = MusicApp.get().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+    return myKM.isKeyguardLocked
 }
 
 fun getCurrentLocale(): String {

@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -14,6 +16,7 @@ import com.secureappinc.musicplayer.base.common.EventObserver
 import com.secureappinc.musicplayer.base.common.asEvent
 import com.secureappinc.musicplayer.player.ClickVideoListener
 import com.secureappinc.musicplayer.player.OnShowAdsListener
+import com.secureappinc.musicplayer.utils.RequestAdsLiveData
 import com.secureappinc.musicplayer.utils.UserPrefs
 
 
@@ -28,6 +31,8 @@ open class BaseActivity : AppCompatActivity() {
     private var hasShownFirstInterAds = false
 
     private lateinit var interstitialAd: InterstitialAd
+
+    protected val handler = Handler()
 
     val TAG = "BaseActivity"
 
@@ -91,11 +96,14 @@ open class BaseActivity : AppCompatActivity() {
         interstitialAd.loadAd(AdRequest.Builder().build())
     }
 
+
     fun showInterstitialAd() {
         print("Show Ads")
         if (interstitialAd.isLoaded) {
             onAdsShown()
-            interstitialAd.show()
+            handler.postDelayed({
+                interstitialAd.show()
+            }, 1000)
         }
     }
 
@@ -107,13 +115,9 @@ open class BaseActivity : AppCompatActivity() {
         OnShowAdsListener.value = false.asEvent()
     }
 
-    fun observeClickVideo() {
-        ClickVideoListener.observe(this, EventObserver {
-            val clickTrackCount = UserPrefs.getClickTrackCount()
-            Log.d(TAG, "Click track count = $clickTrackCount")
-            if (clickTrackCount > 0 && clickTrackCount % 3 == 0) {
-                showInterstitialAd()
-            }
+    fun observeAdsRequests() {
+        RequestAdsLiveData.observe(this, Observer {
+            //showInterstitialAd()
         })
     }
 
@@ -140,5 +144,15 @@ open class BaseActivity : AppCompatActivity() {
     fun isLandscape(): Boolean {
         val orientation = resources.configuration.orientation
         return orientation == Configuration.ORIENTATION_LANDSCAPE
+    }
+
+    fun observeClickVideo() {
+        ClickVideoListener.observe(this, EventObserver {
+            val clickTrackCount = UserPrefs.getClickTrackCount()
+            Log.d(TAG, "Click track count = $clickTrackCount")
+            if (clickTrackCount % 4 == 0) {
+                showInterstitialAd()
+            }
+        })
     }
 }
