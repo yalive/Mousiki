@@ -51,7 +51,6 @@ class MainActivity : BaseActivity() {
     private lateinit var slidingMenu: SlidingRootNav
     private lateinit var navController: NavController
 
-    private val handler = Handler()
 
     lateinit var slidingPaneLayout: SlidingUpPanelLayout
 

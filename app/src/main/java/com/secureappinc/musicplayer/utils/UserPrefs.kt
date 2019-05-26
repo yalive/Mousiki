@@ -75,4 +75,5 @@ object UserPrefs {
     fun getClickTrackCount(): Int {
         return getPrefs().getInt(CLICK_TRACK_COUNT, 0)
     }
+
 }

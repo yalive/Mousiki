@@ -10,6 +10,7 @@ import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.services.VideoPlaybackService
 import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.canDrawOverApps
+import com.secureappinc.musicplayer.utils.isScreenLocked
 
 
 /**
@@ -27,6 +28,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     var queue: List<MusicTrack>? = null
 
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
+        if (isScreenLocked()) return
         this.queue = queue
         this.value = currentTrack
         notifyService(currentTrack.youtubeId)
@@ -37,6 +39,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun playNextTrack() {
+        if (isScreenLocked()) return
         val nextTrack = getNextTrack()
         if (nextTrack != null) {
             this.value = nextTrack
@@ -45,6 +48,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun playPreviousTrack() {
+        if (isScreenLocked()) return
         val previousTrack = getPreviousTrack()
         if (previousTrack != null) {
             this.value = previousTrack
@@ -190,6 +194,10 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
+        if (isScreenLocked()) {
+            pauseVideo()
+            return
+        }
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_PLAY_TRACK, videoId)
         MusicApp.get().startService(intent)
@@ -208,6 +216,10 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
+        if (isScreenLocked()) {
+            pauseVideo()
+            return
+        }
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_RESUME, true)
         MusicApp.get().startService(intent)
@@ -215,6 +227,10 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
     private fun seekTrackTo(to: Long, comeFromFullScreen: Boolean) {
         if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
+        if (isScreenLocked()) {
+            pauseVideo()
             return
         }
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
