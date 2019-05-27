@@ -7,6 +7,7 @@ package com.secureappinc.musicplayer.net
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.utils.Constants
@@ -52,6 +53,7 @@ object ApiManager {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(client.build())
             .build()
 
