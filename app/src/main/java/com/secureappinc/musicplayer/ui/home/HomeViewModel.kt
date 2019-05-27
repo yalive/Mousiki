@@ -90,7 +90,7 @@ class HomeViewModel : ViewModel() {
     fun loadChannelsImages(ids: String) {
         ApiManager.api.getArtistsImages(ids).enqueue(object : Callback<YTTrendingMusicRS?> {
             override fun onFailure(call: Call<YTTrendingMusicRS?>, t: Throwable) {
-                //sixArtistResources.value = Resource.error("Error")
+                // TODO: Handle error
             }
 
             override fun onResponse(call: Call<YTTrendingMusicRS?>, response: Response<YTTrendingMusicRS?>) {
@@ -107,7 +107,7 @@ class HomeViewModel : ViewModel() {
                     sixArtistResources.postValue(Resource.success(newList))
 
                 } else {
-                    //sixArtistResources.value = Resource.error("Error")
+                    // TODO: Handle error
                 }
             }
         })
