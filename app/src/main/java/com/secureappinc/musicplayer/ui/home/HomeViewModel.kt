@@ -8,11 +8,17 @@ import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.utils.Utils
 import com.secureappinc.musicplayer.utils.getCurrentLocale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executors
 
+val bgContext = Dispatchers.IO
+val uiContext = Dispatchers.Main
 
 /**
  **********************************
@@ -26,31 +32,25 @@ class HomeViewModel : ViewModel() {
     var sixArtistResources = MutableLiveData<Resource<List<Artist>>>()
 
     fun loadTrendingMusic() {
-
         val oldValue = trendingTracks.value
         if (oldValue?.status == Status.SUCCESS && oldValue.data != null && oldValue.data!!.isNotEmpty()) {
             return
         }
+        loadNewReleasesTracks()
+    }
 
-        ApiManager.api.getTrending(25, getCurrentLocale()).enqueue(object : Callback<YTTrendingMusicRS> {
-            override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
-                if (response.isSuccessful) {
-                    val listTrendingMusic = response.body()?.items
-
-                    if (listTrendingMusic != null) {
-                        val tracks: List<MusicTrack> = createTracksListFrom(listTrendingMusic)
-                        trendingTracks.value = Resource.success(tracks)
-                    } else {
-                        trendingTracks.value = Resource.error("Error")
-                    }
-
-                }
+    private fun loadNewReleasesTracks() = GlobalScope.launch(uiContext) {
+        trendingTracks.value = Resource.loading()
+        try {
+            val result = withContext(bgContext) {
+                ApiManager.api.getTrendingCor(25, getCurrentLocale())
             }
-
-            override fun onFailure(call: Call<YTTrendingMusicRS>, t: Throwable) {
-                trendingTracks.value = Resource.error("Error")
-            }
-        })
+            val musicRS = result.await()
+            val tracks: List<MusicTrack> = withContext(bgContext) { createTracksListFrom(musicRS.items) }
+            trendingTracks.value = Resource.success(tracks)
+        } catch (e: Exception) {
+            trendingTracks.value = Resource.error("Error")
+        }
     }
 
 

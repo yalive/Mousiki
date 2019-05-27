@@ -2,6 +2,7 @@ package com.secureappinc.musicplayer.net
 
 import com.secureappinc.musicplayer.models.YTCategoryMusicRS
 import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -70,4 +71,7 @@ interface YoutubeApi {
     @GET
     fun getSuggestions(@Url url: String): Call<ResponseBody>
 
+
+    @GET(TRENDING)
+    fun getTrendingCor(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): Deferred<YTTrendingMusicRS>
 }
