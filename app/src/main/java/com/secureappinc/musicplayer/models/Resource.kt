@@ -1,5 +1,7 @@
 package com.secureappinc.musicplayer.models
 
+import androidx.lifecycle.MutableLiveData
+
 /**
  **********************************
  * Created by Abdelhadi on 4/12/19.
@@ -46,4 +48,20 @@ enum class Status {
      * Returns `true` if the [Status] is loading else `false`.
      */
     fun isLoading() = this == LOADING
+}
+
+fun <T> MutableLiveData<Resource<T>>.isSuccess(): Boolean {
+    return value != null && value!!.status == Status.SUCCESS && value!!.data != null
+}
+
+fun <T> MutableLiveData<Resource<List<T>>>.hasItems(): Boolean {
+    return isSuccess() && value!!.data!!.isNotEmpty()
+}
+
+fun <T> MutableLiveData<Resource<T>>.isLoading(): Boolean {
+    return value != null && value!!.status == Status.LOADING
+}
+
+fun <T> MutableLiveData<Resource<T>>.isError(): Boolean {
+    return value != null && value!!.status == Status.ERROR
 }

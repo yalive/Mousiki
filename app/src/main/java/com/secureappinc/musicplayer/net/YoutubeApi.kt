@@ -2,7 +2,6 @@ package com.secureappinc.musicplayer.net
 
 import com.secureappinc.musicplayer.models.YTCategoryMusicRS
 import com.secureappinc.musicplayer.models.YTTrendingMusicRS
-import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -38,19 +37,16 @@ interface YoutubeApi {
     }
 
     @GET(TRENDING)
-    fun getTrending(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): Call<YTTrendingMusicRS>
-
-    @GET("search?part=snippet&chart=mostPopular&maxResults=50&videoCategory=10")
-    fun getCategoryMusic(@Query("channelId") topicId: String, @Query("regionCode") regionCode: String): Call<YTCategoryMusicRS>
+    suspend fun getTrending(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): YTTrendingMusicRS
 
     @GET(PLAYLIST)
-    fun getPlaylist(@Query("channelId") channelId: String, @Query("regionCode") regionCode: String): Call<YTTrendingMusicRS>
+    suspend fun getPlaylist(@Query("channelId") channelId: String, @Query("regionCode") regionCode: String): YTTrendingMusicRS
 
     @GET(GENRE_VIDEOS_DETAIL)
     fun getCategoryMusicDetail(@Query("id") ids: String): Call<YTTrendingMusicRS>
 
     @GET(ARTISTS_THUMBNAILS)
-    fun getArtistsImages(@Query("id") ids: String): Call<YTTrendingMusicRS>
+    suspend fun getArtistsImages(@Query("id") ids: String): YTTrendingMusicRS
 
 
     @GET("search?part=snippet&maxResults=50&videoCategory=10&type=video")
@@ -70,8 +66,4 @@ interface YoutubeApi {
 
     @GET
     fun getSuggestions(@Url url: String): Call<ResponseBody>
-
-
-    @GET(TRENDING)
-    fun getTrendingCor(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): Deferred<YTTrendingMusicRS>
 }

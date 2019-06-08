@@ -1,17 +1,14 @@
 package com.secureappinc.musicplayer.ui.artists
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.gson.reflect.TypeToken
+import com.secureappinc.musicplayer.base.BaseViewModel
 import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
 import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.Utils
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 /**
@@ -19,7 +16,7 @@ import java.util.concurrent.Executors
  * Created by Abdelhadi on 4/16/19.
  **********************************
  */
-class ArtistsViewModel : ViewModel() {
+class ArtistsViewModel : BaseViewModel() {
 
     var artistResources = MutableLiveData<Resource<List<Artist>>>()
 
@@ -84,26 +81,22 @@ class ArtistsViewModel : ViewModel() {
 
 
     private fun loadArtistsImages(ids: String) {
-        ApiManager.api.getArtistsImages(ids).enqueue(object : Callback<YTTrendingMusicRS?> {
-            override fun onFailure(call: Call<YTTrendingMusicRS?>, t: Throwable) {
-                Log.d("", "")
-            }
 
-            override fun onResponse(call: Call<YTTrendingMusicRS?>, response: Response<YTTrendingMusicRS?>) {
-                if (response.isSuccessful && response.body() != null) {
+        uiScope.launch(coroutineContext) {
+            try {
+                val artistsImages = api().getArtistsImages(ids)
+                val items = artistsImages.items
 
-                    val items = response.body()!!.items
+                val newList = artistResources.value!!.data!!
 
-                    val newList = artistResources.value!!.data!!
-
-                    for (artist in newList) {
-                        val foundItem = items.find { it.id == artist.channelId }
-                        artist.urlImage = foundItem?.snippet?.thumbnails?.high?.url ?: artist.urlImage
-                    }
-
-                    artistResources.postValue(Resource.success(newList))
+                for (artist in newList) {
+                    val foundItem = items.find { it.id == artist.channelId }
+                    artist.urlImage = foundItem?.snippet?.thumbnails?.high?.url ?: artist.urlImage
                 }
+
+                artistResources.postValue(Resource.success(newList))
+            } catch (e: Exception) {
             }
-        })
+        }
     }
 }
