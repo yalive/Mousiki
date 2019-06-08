@@ -1,25 +1,21 @@
 package com.secureappinc.musicplayer.ui.artistdetail.playlists
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.secureappinc.musicplayer.base.BaseViewModel
 import com.secureappinc.musicplayer.models.Resource
 import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
-import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.getCurrentLocale
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  **********************************
  * Created by Abdelhadi on 4/12/19.
  **********************************
  */
-class ArtistPlaylistsViewModel : ViewModel() {
+class ArtistPlaylistsViewModel : BaseViewModel() {
 
     val searchResultList = MutableLiveData<Resource<List<YTTrendingItem>>>()
-
 
     fun loadPlaylist(channelId: String) {
         val oldValue = searchResultList.value
@@ -27,23 +23,13 @@ class ArtistPlaylistsViewModel : ViewModel() {
             return
         }
         searchResultList.value = Resource.loading()
-        ApiManager.api.getPlaylist(channelId, getCurrentLocale()).enqueue(object : Callback<YTTrendingMusicRS> {
-            override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
-                if (response.isSuccessful) {
-                    val listMusics = response.body()?.items
-                    if (listMusics != null) {
-                        searchResultList.value = Resource.success(listMusics)
-                    } else {
-                        searchResultList.value = Resource.error("Error loading")
-                    }
-                } else {
-                    searchResultList.value = Resource.error("Error")
-                }
-            }
-
-            override fun onFailure(call: Call<YTTrendingMusicRS>, t: Throwable) {
+        uiScope.launch(coroutineContext) {
+            try {
+                val response = api().getPlaylist(channelId, getCurrentLocale())
+                searchResultList.value = Resource.success(response.items)
+            } catch (e: Exception) {
                 searchResultList.value = Resource.error("Error")
             }
-        })
+        }
     }
 }

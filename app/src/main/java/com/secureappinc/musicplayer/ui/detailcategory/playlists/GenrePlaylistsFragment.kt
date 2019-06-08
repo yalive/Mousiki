@@ -2,28 +2,31 @@ package com.secureappinc.musicplayer.ui.detailcategory.playlists
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
+import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.getCurrentLocale
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
-class GenrePlaylistsFragment : Fragment() {
+class GenrePlaylistsFragment : Fragment(), CoroutineScope {
 
     val TAG = "DetailCategoryFragment"
+
+    val job = Job()
+    override val coroutineContext = job + Dispatchers.Main
 
     lateinit var adapter: GenrePlaylistsAdapter
     lateinit var genreMusic: GenreMusic
@@ -58,28 +61,24 @@ class GenrePlaylistsFragment : Fragment() {
     }
 
     private fun loadPlaylist() {
-
-        ApiManager.api.getPlaylist(genreMusic.channelId, getCurrentLocale())
-            .enqueue(object : Callback<YTTrendingMusicRS> {
-                override fun onResponse(call: Call<YTTrendingMusicRS>, response: Response<YTTrendingMusicRS>) {
-                    if (response.isSuccessful && isActive) {
-                        showSuccess()
-                        val listMusics = response.body()?.items
-                        listMusics?.let {
-                            adapter.items = listMusics.filter { it.contentDetails.itemCount > 0 }
-                        }
-                    } else {
-                        showError()
-                    }
+        uiScope.launch(coroutineContext) {
+            try {
+                val response = ApiManager.api.getPlaylist(genreMusic.channelId, getCurrentLocale())
+                showSuccess()
+                val listMusics = response.items
+                listMusics.let {
+                    adapter.items = listMusics.filter { it.contentDetails.itemCount > 0 }
                 }
-
-                override fun onFailure(call: Call<YTTrendingMusicRS>, t: Throwable) {
-                    Log.d(TAG, "")
-                    showError()
-                }
-            })
+            } catch (e: Exception) {
+                showError()
+            }
+        }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel() // TODO: Move to base class or use viewModel
+    }
 
     fun showSuccess() {
         if (!isActive) return

@@ -1,128 +1,90 @@
 package com.secureappinc.musicplayer.ui.home
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.gson.reflect.TypeToken
+import com.secureappinc.musicplayer.base.BaseViewModel
 import com.secureappinc.musicplayer.models.*
 import com.secureappinc.musicplayer.models.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.utils.Utils
 import com.secureappinc.musicplayer.utils.getCurrentLocale
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.concurrent.Executors
 
 val bgContext = Dispatchers.IO
 val uiContext = Dispatchers.Main
+
+val uiScope = CoroutineScope(uiContext)
 
 /**
  **********************************
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
-class HomeViewModel : ViewModel() {
-
-
+class HomeViewModel : BaseViewModel() {
     var trendingTracks = MutableLiveData<Resource<List<MusicTrack>>>()
     var sixArtistResources = MutableLiveData<Resource<List<Artist>>>()
 
     fun loadTrendingMusic() {
-        val oldValue = trendingTracks.value
-        if (oldValue?.status == Status.SUCCESS && oldValue.data != null && oldValue.data!!.isNotEmpty()) {
+        if (trendingTracks.hasItems() || trendingTracks.isLoading()) {
             return
         }
         loadNewReleasesTracks()
     }
 
-    private fun loadNewReleasesTracks() = GlobalScope.launch(uiContext) {
+    private fun loadNewReleasesTracks() = uiScope.launch(coroutineContext) {
         trendingTracks.value = Resource.loading()
         try {
-            val result = withContext(bgContext) {
-                ApiManager.api.getTrendingCor(25, getCurrentLocale())
-            }
-            val musicRS = result.await()
-            val tracks: List<MusicTrack> = withContext(bgContext) { createTracksListFrom(musicRS.items) }
+            val musicRS = api().getTrending(25, getCurrentLocale())
+            val tracks = createTracksListFrom(musicRS.items)
             trendingTracks.value = Resource.success(tracks)
         } catch (e: Exception) {
             trendingTracks.value = Resource.error("Error")
         }
     }
 
+    fun loadArtists(countryCode: String) = uiScope.launch(coroutineContext) {
+        if (!sixArtistResources.hasItems() && !sixArtistResources.isLoading()) {
+            sixArtistResources.value = Resource.loading()
+            val sixArtist = getSixArtists(countryCode)
+            sixArtistResources.value = Resource.success(sixArtist)
 
-    fun loadArtists(countryCode: String) {
-        val oldValue = sixArtistResources.value
-        if (oldValue?.data != null && oldValue.data!!.isNotEmpty()) {
-            return
-        }
-
-        sixArtistResources.postValue(Resource.loading())
-        Executors.newSingleThreadExecutor().execute {
-            val json = Utils.loadStringJSONFromAsset("artists.json")
-            val artists = ApiManager.gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
-
-            // Filter 6 artist by country
-            val sixeArtist = artists.filter { it.countryCode.equals(countryCode, true) }.shuffled().take(6)
-
-            if (sixeArtist.size < 6) {
-                // Request US
-                loadArtists("US")
-                return@execute
-            }
-
-            sixArtistResources.postValue(Resource.success(sixeArtist))
-
-            val ids = mutableListOf<String>()
-            for (searchItem in sixeArtist) {
-                ids.add(searchItem.channelId)
-            }
-
-            val idsStr = ids.joinToString()
-
-            loadChannelsImages(idsStr)
-        }
-    }
-
-    fun loadChannelsImages(ids: String) {
-        ApiManager.api.getArtistsImages(ids).enqueue(object : Callback<YTTrendingMusicRS?> {
-            override fun onFailure(call: Call<YTTrendingMusicRS?>, t: Throwable) {
-                //sixArtistResources.value = Resource.error("Error")
-            }
-
-            override fun onResponse(call: Call<YTTrendingMusicRS?>, response: Response<YTTrendingMusicRS?>) {
-                if (response.isSuccessful && response.body() != null) {
-                    val items = response.body()!!.items
-
-                    var newList = sixArtistResources.value!!.data!!
-
-                    for (artist in newList) {
-                        val foundItem = items.find { it.id == artist.channelId }
-                        artist.urlImage = foundItem?.snippet?.thumbnails?.high?.url ?: ""
-                    }
-
-                    sixArtistResources.postValue(Resource.success(newList))
-
-                } else {
-                    //sixArtistResources.value = Resource.error("Error")
+            try {
+                val ids = sixArtist.joinToString { it.channelId }
+                val ytbRS = api().getArtistsImages(ids)
+                for (artist in sixArtist) {
+                    val foundItem = ytbRS.items.find { it.id == artist.channelId }
+                    artist.urlImage = foundItem?.snippet?.thumbnails?.high?.url ?: ""
                 }
+                sixArtistResources.value = Resource.success(sixArtist)
+            } catch (e: Exception) {
             }
-        })
+        }
     }
 
-    private fun createTracksListFrom(listTrendingYutube: List<YTTrendingItem>): List<MusicTrack> {
-        val tracks: MutableList<MusicTrack> = mutableListOf()
-        for (ytTrendingItem in listTrendingYutube) {
-            val track =
-                MusicTrack(ytTrendingItem.id, ytTrendingItem.snippetTitle(), ytTrendingItem.contentDetails.duration)
-            ytTrendingItem.snippet?.urlImageOrEmpty()?.let { url ->
+    private suspend fun getSixArtists(countryCode: String): List<Artist> = withContext(bgContext) {
+        val json = Utils.loadStringJSONFromAsset("artists.json")
+        val artists = ApiManager.gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
+
+        // Filter 6 artist by country
+        var sixeArtist = artists.filter { it.countryCode.equals(countryCode, true) }.shuffled().take(6)
+
+        if (sixeArtist.size < 6) {
+            // Request US
+            sixeArtist = artists.filter { it.countryCode.equals("US", true) }.shuffled().take(6)
+        }
+        return@withContext sixeArtist
+    }
+
+    private suspend fun createTracksListFrom(items: List<YTTrendingItem>): List<MusicTrack> = withContext(bgContext) {
+        items.map {
+            val track = MusicTrack(it.id, it.snippetTitle(), it.contentDetails.duration)
+            it.snippet?.urlImageOrEmpty()?.let { url ->
                 track.fullImageUrl = url
             }
-            tracks.add(track)
+            track
         }
-        return tracks
     }
 }
