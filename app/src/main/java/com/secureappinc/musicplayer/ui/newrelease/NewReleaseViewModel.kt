@@ -2,10 +2,10 @@ package com.secureappinc.musicplayer.ui.newrelease
 
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.base.BaseViewModel
-import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.Status
-import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.Resource
+import com.secureappinc.musicplayer.data.models.Status
+import com.secureappinc.musicplayer.data.models.YTTrendingItem
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.home.bgContext
 import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.getCurrentLocale

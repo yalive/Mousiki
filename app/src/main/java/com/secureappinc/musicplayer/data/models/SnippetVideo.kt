@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.models
+package com.secureappinc.musicplayer.data.models
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.Expose

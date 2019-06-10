@@ -2,7 +2,7 @@ package com.secureappinc.musicplayer.ui.artists
 
 import android.os.Bundle
 import androidx.recyclerview.widget.DiffUtil
-import com.secureappinc.musicplayer.models.Artist
+import com.secureappinc.musicplayer.data.models.Artist
 
 
 /**

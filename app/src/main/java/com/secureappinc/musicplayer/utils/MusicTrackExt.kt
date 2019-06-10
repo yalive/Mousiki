@@ -1,6 +1,6 @@
 package com.secureappinc.musicplayer.utils
 
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import java.util.regex.Pattern
 
 /**

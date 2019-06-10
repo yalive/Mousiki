@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.Artist
-import com.secureappinc.musicplayer.models.Status
+import com.secureappinc.musicplayer.data.models.Artist
+import com.secureappinc.musicplayer.data.models.Status
 import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment
 import com.secureappinc.musicplayer.utils.gone

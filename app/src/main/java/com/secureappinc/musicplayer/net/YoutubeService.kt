@@ -1,7 +1,7 @@
 package com.secureappinc.musicplayer.net
 
-import com.secureappinc.musicplayer.models.YTCategoryMusicRS
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.data.models.YTCategoryMusicRS
+import com.secureappinc.musicplayer.data.models.YTTrendingMusicRS
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET

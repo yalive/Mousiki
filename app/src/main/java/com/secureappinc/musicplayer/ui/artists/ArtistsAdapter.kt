@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.Artist
+import com.secureappinc.musicplayer.data.models.Artist
 import com.squareup.picasso.Picasso
 
 

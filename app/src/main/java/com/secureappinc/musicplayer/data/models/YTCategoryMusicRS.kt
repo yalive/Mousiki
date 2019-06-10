@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.models
+package com.secureappinc.musicplayer.data.models
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
@@ -11,11 +11,11 @@ import com.google.gson.annotations.SerializedName
  */
 @Keep
 data class YTCategoryMusicRS(
-        @Expose
-        @SerializedName("kind")
-        val kind: String,
+    @Expose
+    @SerializedName("kind")
+    val kind: String,
 
-        @Expose
-        @SerializedName("items")
-        val items: List<YTCategoryMusictem>
+    @Expose
+    @SerializedName("items")
+    val items: List<YTCategoryMusictem>
 )

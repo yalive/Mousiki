@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.Artist
+import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.squareup.picasso.Picasso
 

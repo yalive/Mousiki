@@ -3,7 +3,7 @@ package com.secureappinc.musicplayer.ui.home.models
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.Artist
+import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.home.HomeAdapter
 import kotlinx.android.parcel.Parcelize
 

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.views.SideBar
-import com.secureappinc.musicplayer.models.Status
+import com.secureappinc.musicplayer.data.models.Status
 import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible

@@ -3,7 +3,6 @@ package com.secureappinc.musicplayer.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
@@ -24,9 +23,9 @@ import androidx.navigation.ui.NavigationUI
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.dpToPixel
-import com.secureappinc.musicplayer.models.EmplacementFullScreen
-import com.secureappinc.musicplayer.models.EmplacementOut
-import com.secureappinc.musicplayer.models.EmplacementPlaylist
+import com.secureappinc.musicplayer.data.models.EmplacementFullScreen
+import com.secureappinc.musicplayer.data.models.EmplacementOut
+import com.secureappinc.musicplayer.data.models.EmplacementPlaylist
 import com.secureappinc.musicplayer.services.DragBottomPanelLiveData
 import com.secureappinc.musicplayer.services.DragPanelInfo
 import com.secureappinc.musicplayer.services.DragSlidePanelMonitor

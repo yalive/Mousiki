@@ -2,7 +2,7 @@ package com.secureappinc.musicplayer.ui.charts
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.data.models.YTTrendingMusicRS
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.ui.home.models.ChartModel
 import retrofit2.Call

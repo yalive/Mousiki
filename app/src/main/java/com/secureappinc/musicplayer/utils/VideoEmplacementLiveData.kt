@@ -1,7 +1,7 @@
 package com.secureappinc.musicplayer.utils
 
 import androidx.lifecycle.MutableLiveData
-import com.secureappinc.musicplayer.models.VideoEmplacement
+import com.secureappinc.musicplayer.data.models.VideoEmplacement
 
 /**
  **********************************

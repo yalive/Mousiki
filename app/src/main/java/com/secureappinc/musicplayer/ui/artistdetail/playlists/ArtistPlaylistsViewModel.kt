@@ -2,8 +2,8 @@ package com.secureappinc.musicplayer.ui.artistdetail.playlists
 
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.base.BaseViewModel
-import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.YTTrendingItem
+import com.secureappinc.musicplayer.data.models.Resource
+import com.secureappinc.musicplayer.data.models.YTTrendingItem
 import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.getCurrentLocale
 import kotlinx.coroutines.launch

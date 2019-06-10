@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.enteties.MusicTrackRoomDatabase
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.services.PlaybackLiveData

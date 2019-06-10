@@ -1,11 +1,14 @@
 package com.secureappinc.musicplayer.repository
 
 import com.google.gson.reflect.TypeToken
-import com.secureappinc.musicplayer.models.Artist
-import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.net.*
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.mappers.TrackMapper
+import com.secureappinc.musicplayer.data.models.Artist
+import com.secureappinc.musicplayer.data.models.Resource
+import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.net.RetrofitRunner
+import com.secureappinc.musicplayer.net.YoutubeService
+import com.secureappinc.musicplayer.net.toResource
 import com.secureappinc.musicplayer.ui.home.bgContext
 import com.secureappinc.musicplayer.utils.Utils
 import kotlinx.coroutines.withContext
@@ -25,17 +28,22 @@ class HomeRepository @Inject constructor(
 ) {
 
     suspend fun loadNewReleases(): Resource<List<MusicTrack>> {
-        val result = retrofitRunner.execute(trackMapper) {
+        val result = retrofitRunner.executeNetworkCall(trackMapper) {
             youtubeService.getTrending(25, "ma")
         }
-        println()
         return result.toResource()
     }
 
     suspend fun loadArtists(countryCode: String): Resource<List<Artist>> = try {
+
+        // Get six artist from json
         val sixArtist = getSixArtists(countryCode)
+
+        // Get detail of artists
         val ids = sixArtist.joinToString { it.channelId }
         val ytbRS = youtubeService.getArtistsImages(ids)
+
+        // Merge results
         for (artist in sixArtist) {
             val foundItem = ytbRS.items.find { it.id == artist.channelId }
             artist.urlImage = foundItem?.snippet?.thumbnails?.high?.url ?: ""
@@ -43,17 +51,6 @@ class HomeRepository @Inject constructor(
         Resource.success(sixArtist)
     } catch (e: Exception) {
         Resource.error("Error")
-    }
-
-
-    private suspend fun createTracksListFrom(items: List<YTTrendingItem>): List<MusicTrack> = withContext(bgContext) {
-        items.map {
-            val track = MusicTrack(it.id, it.snippetTitle(), it.contentDetails.duration)
-            it.snippet?.urlImageOrEmpty()?.let { url ->
-                track.fullImageUrl = url
-            }
-            track
-        }
     }
 
     private suspend fun getSixArtists(countryCode: String): List<Artist> = withContext(bgContext) {

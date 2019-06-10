@@ -2,8 +2,8 @@ package com.secureappinc.musicplayer.ui.artistdetail.videos
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.models.*
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.*
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import retrofit2.Call
 import retrofit2.Callback

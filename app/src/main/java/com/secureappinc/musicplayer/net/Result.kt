@@ -1,6 +1,6 @@
 package com.secureappinc.musicplayer.net
 
-import com.secureappinc.musicplayer.models.Resource
+import com.secureappinc.musicplayer.data.models.Resource
 
 /**
  ***************************************
