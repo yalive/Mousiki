@@ -1,7 +1,6 @@
 package com.secureappinc.musicplayer.ui.bottompanel
 
 
-import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -17,10 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.dpToPixel
-import com.secureappinc.musicplayer.models.EmplacementFullScreen
-import com.secureappinc.musicplayer.models.VideoEmplacement
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
+import com.secureappinc.musicplayer.data.models.EmplacementFullScreen
+import com.secureappinc.musicplayer.data.models.VideoEmplacement
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.enteties.MusicTrackRoomDatabase
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.PlaybackLiveData

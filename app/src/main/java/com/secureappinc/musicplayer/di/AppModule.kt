@@ -59,7 +59,7 @@ class AppModule {
         return client.build()
     }
 
-    @Singleton
+    /*@Singleton
     @Provides
-    fun providesViewModelFactory(repository: HomeRepository): HomeViewModelFactory = HomeViewModelFactory(repository)
+    fun providesViewModelFactory(repository: HomeRepository): HomeViewModelFactory = HomeViewModelFactory(repository)*/
 }

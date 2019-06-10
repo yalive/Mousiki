@@ -2,11 +2,8 @@ package com.secureappinc.musicplayer.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.base.BaseViewModel
-import com.secureappinc.musicplayer.models.Artist
-import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.models.hasItems
-import com.secureappinc.musicplayer.models.isLoading
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.*
 import com.secureappinc.musicplayer.repository.HomeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +29,7 @@ class HomeViewModel(val homeRepository: HomeRepository) : BaseViewModel() {
         if (trendingTracks.hasItems() || trendingTracks.isLoading()) {
             return@launch
         }
-        trendingTracks.value = Resource.loading()
+        trendingTracks.loading()
         val result = homeRepository.loadNewReleases()
         trendingTracks.value = result
     }
@@ -40,7 +37,7 @@ class HomeViewModel(val homeRepository: HomeRepository) : BaseViewModel() {
 
     fun loadArtists(countryCode: String) = uiScope.launch(coroutineContext) {
         if (!sixArtists.hasItems() && !sixArtists.isLoading()) {
-            sixArtists.value = Resource.loading()
+            sixArtists.loading()
             val sixArtistResult = homeRepository.loadArtists(countryCode)
             sixArtists.value = sixArtistResult
         }

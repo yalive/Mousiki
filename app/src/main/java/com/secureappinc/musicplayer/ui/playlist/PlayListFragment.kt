@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
-import com.secureappinc.musicplayer.models.enteties.MusicTrackRoomDatabase
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.enteties.MusicTrackRoomDatabase
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.utils.gone

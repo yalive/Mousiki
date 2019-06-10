@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.common.Event
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.services.VideoPlaybackService
 import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.canDrawOverApps

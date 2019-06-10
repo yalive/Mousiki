@@ -11,9 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.Status
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.Resource
+import com.secureappinc.musicplayer.data.models.Status
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment

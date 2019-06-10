@@ -1,7 +1,7 @@
 package com.secureappinc.musicplayer.utils
 
 import android.widget.ImageView
-import com.secureappinc.musicplayer.models.SnippetVideo
+import com.secureappinc.musicplayer.data.models.SnippetVideo
 import com.squareup.picasso.Picasso
 
 /**

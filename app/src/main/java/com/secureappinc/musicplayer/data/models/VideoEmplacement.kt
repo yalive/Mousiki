@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.models
+package com.secureappinc.musicplayer.data.models
 
 import android.view.WindowManager
 import com.secureappinc.musicplayer.MusicApp

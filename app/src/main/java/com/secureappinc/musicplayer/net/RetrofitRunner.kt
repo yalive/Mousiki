@@ -1,7 +1,6 @@
 package com.secureappinc.musicplayer.net
 
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.mappers.Mapper
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +11,13 @@ import javax.inject.Singleton
  */
 @Singleton
 class RetrofitRunner @Inject constructor() {
-    suspend fun <T, E> execute(mapper: Mapper<T, E>, request: suspend () -> T): Result<E> = try {
+
+    /**
+     * Executes webservice call and map the response to an app domain model.
+     * [T]: The return type of the webservice call.
+     * [E]: Mapped to model
+     */
+    suspend fun <T, E> executeNetworkCall(mapper: Mapper<T, E>, request: suspend () -> T): Result<E> = try {
         val response = request()
         Success(mapper.map(response))
     } catch (e: Exception) {
@@ -20,19 +25,3 @@ class RetrofitRunner @Inject constructor() {
     }
 }
 
-interface Mapper<F, T> {
-    suspend fun map(from: F): T
-}
-
-@Singleton
-class TrackMapper @Inject constructor() : Mapper<YTTrendingMusicRS, List<MusicTrack>> {
-    override suspend fun map(from: YTTrendingMusicRS): List<MusicTrack> {
-        return from.items.map {
-            val track = MusicTrack(it.id, it.snippetTitle(), it.contentDetails.duration)
-            it.snippet?.urlImageOrEmpty()?.let { url ->
-                track.fullImageUrl = url
-            }
-            track
-        }
-    }
-}

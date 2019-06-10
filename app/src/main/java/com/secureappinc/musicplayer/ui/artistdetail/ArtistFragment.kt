@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.Artist
+import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.artistdetail.playlists.ArtistPlaylistsFragment
 import com.secureappinc.musicplayer.ui.artistdetail.videos.ArtistVideosFragment
 import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreViewModel

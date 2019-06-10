@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.models.enteties
+package com.secureappinc.musicplayer.data.enteties
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

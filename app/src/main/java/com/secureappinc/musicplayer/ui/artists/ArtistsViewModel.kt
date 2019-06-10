@@ -3,8 +3,8 @@ package com.secureappinc.musicplayer.ui.artists
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.reflect.TypeToken
 import com.secureappinc.musicplayer.base.BaseViewModel
-import com.secureappinc.musicplayer.models.Artist
-import com.secureappinc.musicplayer.models.Resource
+import com.secureappinc.musicplayer.data.models.Artist
+import com.secureappinc.musicplayer.data.models.Resource
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.Utils

@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.models
+package com.secureappinc.musicplayer.data.models
 
 import androidx.lifecycle.MutableLiveData
 
@@ -64,4 +64,8 @@ fun <T> MutableLiveData<Resource<T>>.isLoading(): Boolean {
 
 fun <T> MutableLiveData<Resource<T>>.isError(): Boolean {
     return value != null && value!!.status == Status.ERROR
+}
+
+fun <T> MutableLiveData<Resource<T>>.loading() {
+    value = Resource.loading()
 }

@@ -1,7 +1,7 @@
 package com.secureappinc.musicplayer.ui
 
 import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.models.VideoEmplacement
+import com.secureappinc.musicplayer.data.models.VideoEmplacement
 
 /**
  **********************************

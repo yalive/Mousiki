@@ -7,8 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.Artist
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.Artist
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_artist.view.*

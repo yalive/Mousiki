@@ -1,7 +1,7 @@
 package com.secureappinc.musicplayer.repository
 
-import com.secureappinc.musicplayer.models.Status
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.data.models.Status
+import com.secureappinc.musicplayer.data.models.YTTrendingMusicRS
 import com.secureappinc.musicplayer.net.YoutubeService
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`

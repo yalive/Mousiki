@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.models
+package com.secureappinc.musicplayer.data.models
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
@@ -10,20 +10,26 @@ import com.google.gson.annotations.SerializedName
  **********************************
  */
 @Keep
-data class YTCategoryMusictem(
+data class YTTrendingItem(
+
     @Expose
     @SerializedName("kind")
     val kind: String,
 
     @Expose
-    @SerializedName("id")
-    val id: YTVideoId,
+    @SerializedName("snippet")
+    val snippet: SnippetVideo?,
 
     @Expose
     @SerializedName("contentDetails")
     val contentDetails: ContentDetailVideo,
 
     @Expose
-    @SerializedName("snippet")
-    val snippet: SnippetVideo
-)
+    @SerializedName("id")
+    val id: String
+) {
+    fun snippetTitle(): String {
+        if (snippet == null) return ""
+        return snippet.title
+    }
+}

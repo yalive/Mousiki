@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.squareup.picasso.Picasso

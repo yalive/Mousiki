@@ -14,10 +14,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.secureappinc.musicplayer.models.EmplacementBottom
-import com.secureappinc.musicplayer.models.EmplacementCenter
-import com.secureappinc.musicplayer.models.EmplacementPlaylist
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.EmplacementBottom
+import com.secureappinc.musicplayer.data.models.EmplacementCenter
+import com.secureappinc.musicplayer.data.models.EmplacementPlaylist
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity

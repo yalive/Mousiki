@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.models.YTTrendingItem
+import com.secureappinc.musicplayer.data.models.YTTrendingItem
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
 import com.secureappinc.musicplayer.utils.loadImage
 

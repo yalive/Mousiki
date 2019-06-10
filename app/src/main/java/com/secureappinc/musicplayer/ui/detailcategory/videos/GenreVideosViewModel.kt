@@ -2,10 +2,10 @@ package com.secureappinc.musicplayer.ui.detailcategory.videos
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.models.Resource
-import com.secureappinc.musicplayer.models.YTTrendingItem
-import com.secureappinc.musicplayer.models.YTTrendingMusicRS
-import com.secureappinc.musicplayer.models.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.Resource
+import com.secureappinc.musicplayer.data.models.YTTrendingItem
+import com.secureappinc.musicplayer.data.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.net.ApiManager
 import retrofit2.Call
 import retrofit2.Callback

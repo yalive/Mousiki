@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer.models.enteties
+package com.secureappinc.musicplayer.data.enteties
 
 import android.content.Context
 import androidx.room.Database
