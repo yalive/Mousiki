@@ -84,7 +84,7 @@ class ArtistsViewModel : BaseViewModel() {
 
         uiScope.launch(coroutineContext) {
             try {
-                val artistsImages = api().getArtistsImages(ids)
+                val artistsImages = youtubeService().getArtistsImages(ids)
                 val items = artistsImages.items
 
                 val newList = artistResources.value!!.data!!

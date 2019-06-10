@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.models.Artist
 import com.secureappinc.musicplayer.models.Resource
@@ -28,6 +29,7 @@ import com.secureappinc.musicplayer.utils.getCurrentLocale
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_home.*
+import javax.inject.Inject
 
 
 class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
@@ -35,13 +37,16 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     private val handler = Handler()
     lateinit var adapter: HomeAdapter
 
+    @Inject
+    lateinit var homeViewModelFactory: HomeViewModelFactory
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_home, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        MusicApp.get().appComponent.inject(this)
         val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -85,12 +90,12 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
         recyclerView.addItemDecoration(GridSpacingItemDecoration(spacingDp, marginDp))
 
 
-        val viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
         viewModel.trendingTracks.observe(this, Observer { resource ->
             updateUI(resource)
         })
 
-        viewModel.sixArtistResources.observe(this, Observer { resource ->
+        viewModel.sixArtists.observe(this, Observer { resource ->
             updateArtists(resource)
         })
 

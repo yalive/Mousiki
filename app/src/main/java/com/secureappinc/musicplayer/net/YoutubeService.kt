@@ -13,7 +13,7 @@ import retrofit2.http.Url
  * Created by Abdelhadi on 4/6/19.
  **********************************
  */
-interface YoutubeApi {
+interface YoutubeService {
 
     companion object {
         const val TRENDING =

@@ -25,7 +25,7 @@ class ArtistPlaylistsViewModel : BaseViewModel() {
         searchResultList.value = Resource.loading()
         uiScope.launch(coroutineContext) {
             try {
-                val response = api().getPlaylist(channelId, getCurrentLocale())
+                val response = youtubeService().getPlaylist(channelId, getCurrentLocale())
                 searchResultList.value = Resource.success(response.items)
             } catch (e: Exception) {
                 searchResultList.value = Resource.error("Error")
