@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiManager {
 
-    lateinit var api: YoutubeApi
+    lateinit var api: YoutubeService
         private set
 
     lateinit var gson: Gson
@@ -55,7 +55,7 @@ object ApiManager {
             .client(client.build())
             .build()
 
-        api = retrofit.create(YoutubeApi::class.java)
+        api = retrofit.create(YoutubeService::class.java)
     }
 }
 

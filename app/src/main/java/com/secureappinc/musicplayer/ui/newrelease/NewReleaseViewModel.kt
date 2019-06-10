@@ -33,7 +33,7 @@ class NewReleaseViewModel : BaseViewModel() {
 
         uiScope.launch(coroutineContext) {
             try {
-                val musicRS = api().getTrending(50, getCurrentLocale())
+                val musicRS = youtubeService().getTrending(50, getCurrentLocale())
                 val tracks = createTracksListFrom(musicRS.items)
                 trendingTracks.value = Resource.success(tracks)
             } catch (e: Exception) {
