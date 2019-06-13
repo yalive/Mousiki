@@ -9,8 +9,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.data.models.Artist
-import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
-import com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment
+import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.secureappinc.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment
 import com.secureappinc.musicplayer.ui.home.models.ChartModel
 import kotlinx.android.synthetic.main.item_chart.view.*
 
@@ -39,7 +39,7 @@ class ChartsAdapter(items: MutableList<ChartModel>) : RecyclerView.Adapter<Chart
     }
 
     fun updateChart(chart: ChartModel) {
-        val indexOf = items.indexOfFirst { it.channelId == chart.channelId }
+        val indexOf = items.indexOfFirst { it.playlistId == chart.playlistId }
         if (indexOf >= 0) {
             items[indexOf] = chart
             notifyItemChanged(indexOf)
@@ -53,8 +53,8 @@ class ChartsAdapter(items: MutableList<ChartModel>) : RecyclerView.Adapter<Chart
             itemView.setOnClickListener {
                 val item = items[adapterPosition]
                 val bundle = Bundle()
-                bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.channelId)
-                val artist = Artist(item.title, "US", item.channelId)
+                bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.playlistId)
+                val artist = Artist(item.title, "US", item.playlistId)
                 bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
             }

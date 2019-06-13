@@ -1,9 +1,7 @@
 package com.secureappinc.musicplayer.net
 
-import com.secureappinc.musicplayer.data.models.YTCategoryMusicRS
-import com.secureappinc.musicplayer.data.models.YTTrendingMusicRS
+import com.secureappinc.musicplayer.data.models.*
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Url
@@ -22,14 +20,16 @@ interface YoutubeService {
         const val PLAYLIST =
             "playlists?part=snippet%2CcontentDetails&maxResults=50&videoCategoryId=10"
 
-        const val DUMMY_CHANNEL_ID = "UCmhzb5pJId5QY0r6gZqMDdA"
-
-        const val GENRE_VIDEOS_DETAIL =
-            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&videoCategoryId=10"
+        const val LIST_VIDEOS_DETAIL =
+            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&videoCategoryId=10&fields=items(id%2CcontentDetails%2Fduration" +
+                    "%2Csnippet%2FchannelId" +
+                    "%2Csnippet%2Ftitle" +
+                    "%2Csnippet%2Fthumbnails" +
+                    "%2Csnippet%2FchannelTitle)"
 
         // Get images
         const val ARTISTS_THUMBNAILS =
-            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id%2Csnippet%2Fthumbnails)"
+            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id%2Csnippet%2Fthumbnails%2Csnippet%2Ftitle)"
 
         const val PLAYLISTITEMS =
             "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails"
@@ -37,33 +37,63 @@ interface YoutubeService {
     }
 
     @GET(TRENDING)
-    suspend fun getTrending(@Query("maxResults") maxResults: Int, @Query("regionCode") regionCode: String): YTTrendingMusicRS
+    suspend fun trending(
+        @Query("maxResults") maxResults: Int,
+        @Query("regionCode") regionCode: String
+    ): Videos
 
     @GET(PLAYLIST)
-    suspend fun getPlaylist(@Query("channelId") channelId: String, @Query("regionCode") regionCode: String): YTTrendingMusicRS
+    suspend fun playlists(
+        @Query("channelId") channelId: String,
+        @Query("regionCode") regionCode: String
+    ): Playlists
 
-    @GET(GENRE_VIDEOS_DETAIL)
-    fun getCategoryMusicDetail(@Query("id") ids: String): Call<YTTrendingMusicRS>
+    @GET(LIST_VIDEOS_DETAIL)
+    suspend fun videos(
+        @Query("id") ids: String
+    ): Videos
+
+    @GET("playlistItems?part=contentDetails&fields=items(contentDetails%2FvideoId)")
+    suspend fun playlistVideoIds(
+        @Query("playlistId") playlistId: String,
+        @Query("maxResults") maxResults: Int
+    ): PlaylistItems
 
     @GET(ARTISTS_THUMBNAILS)
-    suspend fun getArtistsImages(@Query("id") ids: String): YTTrendingMusicRS
-
+    suspend fun getArtistsImages(
+        @Query("id") ids: String
+    ): Channels
 
     @GET("search?part=snippet&maxResults=50&videoCategory=10&type=video")
-    fun getArtistTracks(@Query("channelId") channelId: String): Call<YTCategoryMusicRS>
+    suspend fun searchVideosInChannel(
+        @Query("playlistId") channelId: String
+    ): SearchResults
 
-    @GET(PLAYLISTITEMS)
-    fun getPlaylistVideos(@Query("playlistId") playlistId: String, @Query("maxResults") maxResults: String): Call<YTTrendingMusicRS>
+
+    @GET("search?part=snippet&videoCategory=10&videoCategoryId=10&type=video")
+    suspend fun searchYoutubeMusic(
+        @Query("q") query: String,
+        @Query("maxResults") maxResults: Int
+    ): SearchResults
 
     @GET("search?part=snippet&videoCategory=10")
-    fun searchYoutube(@Query("q") query: String, @Query("type") type: String, @Query("maxResults") maxResults: Int): Call<YTCategoryMusicRS>
-
-    @GET("search?part=snippet&videoCategory=10&videoCategoryId=10")
-    fun searchYoutubeMusic(@Query("q") query: String, @Query("type") type: String, @Query("maxResults") maxResults: Int): Call<YTCategoryMusicRS>
+    suspend fun searchYoutube(
+        @Query("q") query: String,
+        @Query("type") type: String,
+        @Query("maxResults") maxResults: Int
+    ): SearchResults
 
     @GET(PLAYLIST)
-    fun getPlaylistsDetail(@Query("id") channelId: String): Call<YTTrendingMusicRS>
+    suspend fun getPlaylistsDetail(
+        @Query("id") channelId: String
+    ): Playlists
+
+    @GET(PLAYLISTITEMS)
+    suspend fun playlistVideos(
+        @Query("playlistId") playlistId: String,
+        @Query("maxResults") maxResults: Int
+    ): PlaylistItems
 
     @GET
-    fun getSuggestions(@Url url: String): Call<ResponseBody>
+    suspend fun getSuggestions(@Url url: String): ResponseBody
 }

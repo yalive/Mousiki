@@ -15,9 +15,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.secureappinc.musicplayer.base.common.EventObserver
-import com.secureappinc.musicplayer.data.models.*
-import com.secureappinc.musicplayer.player.OnShowAdsListener
-import com.secureappinc.musicplayer.player.PlayerQueue
+import com.secureappinc.musicplayer.player.*
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.*
 

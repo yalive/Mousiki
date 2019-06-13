@@ -15,15 +15,23 @@ import com.google.gson.annotations.SerializedName
 data class YTThumbnails(
     @Expose
     @SerializedName("default")
-    val default: YTThumbnailDefault?,
+    val default: YTThumbnail?,
 
     @Expose
     @SerializedName("medium")
-    val medium: YTThumbnailMedium?,
+    val medium: YTThumbnail?,
 
     @Expose
     @SerializedName("high")
-    val high: YTThumbnailHigh?
+    val high: YTThumbnail?,
+
+    @Expose
+    @SerializedName("standard")
+    val standard: YTThumbnail?,
+
+    @Expose
+    @SerializedName("maxres")
+    val maxres: YTThumbnail?
 )
 
 fun YTThumbnails.urlOrEmpty(): String {
@@ -44,24 +52,7 @@ fun YTThumbnails.urlOrEmpty(): String {
 }
 
 @Keep
-data class YTThumbnailDefault(
-
-    @Expose
-    @SerializedName("url")
-    val url: String
-)
-
-@Keep
-data class YTThumbnailMedium(
-
-    @Expose
-    @SerializedName("url")
-    val url: String
-)
-
-@Keep
-data class YTThumbnailHigh(
-
+data class YTThumbnail(
     @Expose
     @SerializedName("url")
     val url: String

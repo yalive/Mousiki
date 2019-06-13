@@ -1,7 +1,6 @@
 package com.secureappinc.musicplayer.utils
 
 import android.widget.ImageView
-import com.secureappinc.musicplayer.data.models.SnippetVideo
 import com.squareup.picasso.Picasso
 
 /**
@@ -10,9 +9,8 @@ import com.squareup.picasso.Picasso
  **********************************
  */
 
-fun ImageView.loadImage(snippetVideo: SnippetVideo?) {
-    val urlImage = snippetVideo?.urlImageOrEmpty()
-    if (urlImage != null && urlImage.isNotEmpty()) {
+fun ImageView.loadImage(urlImage: String) {
+    if (urlImage.isNotEmpty()) {
         Picasso.get().load(urlImage)
             .fit()
             .into(this)

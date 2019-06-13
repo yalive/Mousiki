@@ -16,13 +16,13 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.data.models.Artist
-import com.secureappinc.musicplayer.data.models.Resource
-import com.secureappinc.musicplayer.data.models.Status
+import com.secureappinc.musicplayer.base.common.Resource
+import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.MainViewModel
-import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
-import com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment
+import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.secureappinc.musicplayer.ui.genres.detailgenre.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.*
 import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.utils.getCurrentLocale

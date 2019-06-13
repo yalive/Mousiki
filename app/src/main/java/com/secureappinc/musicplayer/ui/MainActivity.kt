@@ -23,9 +23,9 @@ import androidx.navigation.ui.NavigationUI
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.dpToPixel
-import com.secureappinc.musicplayer.data.models.EmplacementFullScreen
-import com.secureappinc.musicplayer.data.models.EmplacementOut
-import com.secureappinc.musicplayer.data.models.EmplacementPlaylist
+import com.secureappinc.musicplayer.player.EmplacementFullScreen
+import com.secureappinc.musicplayer.player.EmplacementOut
+import com.secureappinc.musicplayer.player.EmplacementPlaylist
 import com.secureappinc.musicplayer.services.DragBottomPanelLiveData
 import com.secureappinc.musicplayer.services.DragPanelInfo
 import com.secureappinc.musicplayer.services.DragSlidePanelMonitor

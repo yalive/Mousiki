@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailGenreFragment"
-        android:name="com.secureappinc.musicplayer.ui.detailcategory.DetailGenreFragment"
+        android:name="com.secureappinc.musicplayer.ui.genres.detailgenre.DetailGenreFragment"
         android:label="DetailGenreFragment">
         <action
             android:id="@+id/action_detailGenreFragment_to_videoPlayerFragment"
@@ -54,7 +54,7 @@
         android:label="NewReleaseFragment" />
     <fragment
         android:id="@+id/artistFragment"
-        android:name="com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment"
+        android:name="com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment"
         android:label="ArtistFragment">
         <action
             android:id="@+id/action_artistFragment_to_playlistVideosFragment"
@@ -62,11 +62,11 @@
     </fragment>
     <fragment
         android:id="@+id/playlistVideosFragment"
-        android:name="com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment"
+        android:name="com.secureappinc.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment"
         android:label="PlaylistVideosFragment" />
     <fragment
         android:id="@+id/artistsFragment"
-        android:name="com.secureappinc.musicplayer.ui.artists.ArtistsFragment"
+        android:name="com.secureappinc.musicplayer.ui.artists.list.ArtistListFragment"
         android:label="Artists" />
     <fragment
         android:id="@+id/searchYoutubeFragment"
@@ -74,12 +74,12 @@
         android:label="" />
     <fragment
         android:id="@+id/playListFragment"
-        android:name="com.secureappinc.musicplayer.ui.playlist.PlayListFragment"
+        android:name="com.secureappinc.musicplayer.ui.favourite.FavouriteTracksFragment"
         android:label="@string/favourites"
         tools:layout="@layout/fragment_play_list" />
     <fragment
         android:id="@+id/genresFragment"
-        android:name="com.secureappinc.musicplayer.ui.genres.GenresFragment"
+        android:name="com.secureappinc.musicplayer.ui.genres.list.GenresFragment"
         android:label="@string/genres" />
     <fragment
         android:id="@+id/chartsFragment"

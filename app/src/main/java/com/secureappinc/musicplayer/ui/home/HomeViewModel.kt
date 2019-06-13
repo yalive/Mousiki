@@ -2,6 +2,10 @@ package com.secureappinc.musicplayer.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.base.BaseViewModel
+import com.secureappinc.musicplayer.base.common.Resource
+import com.secureappinc.musicplayer.base.common.hasItems
+import com.secureappinc.musicplayer.base.common.isLoading
+import com.secureappinc.musicplayer.base.common.loading
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.data.models.*
 import com.secureappinc.musicplayer.repository.HomeRepository

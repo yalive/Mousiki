@@ -5,27 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.ui.BaseFragment
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_search_youtube.*
+import javax.inject.Inject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
-class SearchYoutubeFragment : Fragment() {
+class SearchYoutubeFragment : BaseFragment() {
 
     lateinit var viewModel: SearchYoutubeViewModel
 
     var searchSuggestionsAdapter = YTSearchSuggestionsAdapter(mutableListOf())
+
+    @Inject
+    lateinit var viewModelFactory: SearchYoutubeViewModelFactory
 
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
@@ -55,9 +59,10 @@ class SearchYoutubeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        app().appComponent.inject(this)
         viewPager.adapter = SearchYoutubePagerAdapter(childFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
-        viewModel = ViewModelProviders.of(this)[SearchYoutubeViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[SearchYoutubeViewModel::class.java]
 
         attachQueryListener()
 
