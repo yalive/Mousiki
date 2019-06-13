@@ -1,12 +1,12 @@
 package com.secureappinc.musicplayer.repository
 
+import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.data.enteties.Playlist
 import com.secureappinc.musicplayer.data.mappers.YTBPlaylistItemToVideoId
 import com.secureappinc.musicplayer.data.mappers.YTBPlaylistToPlaylist
 import com.secureappinc.musicplayer.data.mappers.YTBVideoToTrack
 import com.secureappinc.musicplayer.data.mappers.toListMapper
-import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.net.RetrofitRunner
 import com.secureappinc.musicplayer.net.Success
 import com.secureappinc.musicplayer.net.YoutubeService
@@ -44,7 +44,7 @@ class GenresRepository @Inject constructor(
 
     suspend fun getPlaylists(channelId: String): Resource<List<Playlist>> {
         return retrofitRunner.executeNetworkCall(playlistMapper.toListMapper()) {
-            youtubeService.playlists(channelId, "ma").items!!
+            youtubeService.channelPlaylists(channelId).items!!
         }.toResource()
     }
 }

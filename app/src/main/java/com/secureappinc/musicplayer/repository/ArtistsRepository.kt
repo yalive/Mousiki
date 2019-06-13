@@ -36,13 +36,13 @@ class ArtistsRepository @Inject constructor(
 
     suspend fun getPlaylists(channelId: String): Resource<List<Playlist>> {
         return retrofitRunner.executeNetworkCall(playlistMapper.toListMapper()) {
-            youtubeService.playlists(channelId, "ma").items!!
+            youtubeService.channelPlaylists(channelId).items!!
         }.toResource()
     }
 
     suspend fun getArtists(ids: String): Resource<List<Artist>> {
         return retrofitRunner.executeNetworkCall(artistMapper.toListMapper()) {
-            youtubeService.getArtistsImages(ids).items!!
+            youtubeService.channels(ids).items!!
         }.toResource()
     }
 
@@ -55,7 +55,7 @@ class ArtistsRepository @Inject constructor(
 
     suspend fun getArtistTracks(artistChannelId: String): Resource<List<MusicTrack>> {
         val result = retrofitRunner.executeNetworkCall(searchMapper.toListMapper()) {
-            youtubeService.searchVideosInChannel(artistChannelId).items!!
+            youtubeService.channelVideoIds(artistChannelId).items!!
         } as? Success ?: return Resource.error("")
 
         // 2 - Get videos

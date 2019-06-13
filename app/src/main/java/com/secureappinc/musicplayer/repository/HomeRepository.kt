@@ -43,7 +43,7 @@ class HomeRepository @Inject constructor(
         // Get detail of artists
         val ids = sixArtist.joinToString { it.channelId }
         return retrofitRunner.executeNetworkCall(artistMapper.toListMapper()) {
-            youtubeService.getArtistsImages(ids).items!!
+            youtubeService.channels(ids).items!!
         }.toResource()
     }
 

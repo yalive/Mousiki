@@ -1,7 +1,7 @@
 package com.secureappinc.musicplayer.data.mappers
 
 import com.secureappinc.musicplayer.data.enteties.Channel
-import com.secureappinc.musicplayer.data.models.YTBSearchResult
+import com.secureappinc.musicplayer.data.models.YTBChannel
 import com.secureappinc.musicplayer.data.models.urlOrEmpty
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,10 +12,10 @@ import javax.inject.Singleton
  ***************************************
  */
 @Singleton
-class YTBSearchResultToChannel @Inject constructor() : Mapper<YTBSearchResult, Channel> {
-    override suspend fun map(from: YTBSearchResult): Channel {
+class YTBChannelToChannel @Inject constructor() : Mapper<YTBChannel, Channel> {
+    override suspend fun map(from: YTBChannel): Channel {
         return Channel(
-            from.id?.channelId ?: "",
+            from.id ?: "",
             from.snippet?.title ?: "",
             "",
             from.snippet?.thumbnails?.urlOrEmpty() ?: ""

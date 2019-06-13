@@ -15,7 +15,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.secureappinc.musicplayer.dpToPixel
+import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.player.EmplacementFullScreen
 import com.secureappinc.musicplayer.player.VideoEmplacement
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
@@ -171,7 +171,10 @@ class BottomPanelFragment : Fragment() {
         }
 
         DeviceInset.observe(this, Observer { inset ->
-            fullScreenSwitchView.updatePadding(top = inset.top + dpToPixel(8f, requireContext()).toInt())
+            fullScreenSwitchView.updatePadding(top = inset.top + dpToPixel(
+                8f,
+                requireContext()
+            ).toInt())
             adjustCenterViews()
         })
     }

@@ -7,8 +7,6 @@ import android.util.DisplayMetrics
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.LifecycleService
-import com.secureappinc.musicplayer.dpToPixel
-import com.secureappinc.musicplayer.pixelsToDp
 
 /**
  **********************************
