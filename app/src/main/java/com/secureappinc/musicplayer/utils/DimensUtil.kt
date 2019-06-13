@@ -1,4 +1,4 @@
-package com.secureappinc.musicplayer
+package com.secureappinc.musicplayer.utils
 
 import android.content.Context
 import android.util.DisplayMetrics

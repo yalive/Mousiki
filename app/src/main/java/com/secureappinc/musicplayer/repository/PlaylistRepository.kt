@@ -44,7 +44,7 @@ class PlaylistRepository @Inject constructor(
 
     suspend fun firstThreeVideo(playlistId: String): Resource<List<MusicTrack>> {
         return retrofitRunner.executeNetworkCall(playlistTrackMapper.toListMapper()) {
-            youtubeService.playlistVideos(playlistId, 3).items!!
+            youtubeService.playlistVideoTitles(playlistId, 3).items!!
         }.toResource()
     }
 }

@@ -2,10 +2,10 @@ package com.secureappinc.musicplayer.ui.searchyoutube
 
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.base.BaseViewModel
+import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.data.enteties.Channel
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.data.enteties.Playlist
-import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.repository.SearchRepository
 import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.getCurrentLocale

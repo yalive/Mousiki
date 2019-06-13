@@ -22,7 +22,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.dpToPixel
+import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.player.EmplacementFullScreen
 import com.secureappinc.musicplayer.player.EmplacementOut
 import com.secureappinc.musicplayer.player.EmplacementPlaylist

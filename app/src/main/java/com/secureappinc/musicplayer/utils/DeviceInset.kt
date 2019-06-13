@@ -2,7 +2,6 @@ package com.secureappinc.musicplayer.utils
 
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.MusicApp
-import com.secureappinc.musicplayer.dpToPixel
 
 /**
  **********************************
