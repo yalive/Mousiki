@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.ui.searchyoutube.SearchYoutubeFragment
 import com.secureappinc.musicplayer.utils.gone
 import de.hdodenhof.circleimageview.CircleImageView
@@ -49,7 +50,9 @@ class YTSearchChannelsFragment : Fragment() {
     fun observeViseModel() {
         val parentFragment = parentFragment as SearchYoutubeFragment
         parentFragment.viewModel.channels.observe(this, Observer {
-            adapter.items = it
+            if (it.status == Status.SUCCESS) {
+                adapter.items = it.data!!
+            }
         })
     }
 }

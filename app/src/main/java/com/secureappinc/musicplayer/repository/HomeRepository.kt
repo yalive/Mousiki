@@ -1,11 +1,13 @@
 package com.secureappinc.musicplayer.repository
 
+import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
-import com.secureappinc.musicplayer.data.mappers.TrackMapper
+import com.secureappinc.musicplayer.data.mappers.YTBChannelToArtist
+import com.secureappinc.musicplayer.data.mappers.YTBVideoToTrack
+import com.secureappinc.musicplayer.data.mappers.toListMapper
 import com.secureappinc.musicplayer.data.models.Artist
-import com.secureappinc.musicplayer.data.models.Resource
-import com.secureappinc.musicplayer.net.ApiManager
 import com.secureappinc.musicplayer.net.RetrofitRunner
 import com.secureappinc.musicplayer.net.YoutubeService
 import com.secureappinc.musicplayer.net.toResource
@@ -23,39 +25,31 @@ import javax.inject.Singleton
 @Singleton
 class HomeRepository @Inject constructor(
     private var youtubeService: YoutubeService,
+    private var gson: Gson,
     private val retrofitRunner: RetrofitRunner,
-    private val trackMapper: TrackMapper
+    private val trackMapper: YTBVideoToTrack,
+    private val artistMapper: YTBChannelToArtist
 ) {
 
-    suspend fun loadNewReleases(): Resource<List<MusicTrack>> {
-        val result = retrofitRunner.executeNetworkCall(trackMapper) {
-            youtubeService.getTrending(25, "ma")
-        }
-        return result.toResource()
-    }
+    suspend fun loadNewReleases(): Resource<List<MusicTrack>> =
+        retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
+            youtubeService.trending(25, "ma").items!!
+        }.toResource()
 
-    suspend fun loadArtists(countryCode: String): Resource<List<Artist>> = try {
-
+    suspend fun loadArtists(countryCode: String): Resource<List<Artist>> {
         // Get six artist from json
         val sixArtist = getSixArtists(countryCode)
 
         // Get detail of artists
         val ids = sixArtist.joinToString { it.channelId }
-        val ytbRS = youtubeService.getArtistsImages(ids)
-
-        // Merge results
-        for (artist in sixArtist) {
-            val foundItem = ytbRS.items.find { it.id == artist.channelId }
-            artist.urlImage = foundItem?.snippet?.thumbnails?.high?.url ?: ""
-        }
-        Resource.success(sixArtist)
-    } catch (e: Exception) {
-        Resource.error("Error")
+        return retrofitRunner.executeNetworkCall(artistMapper.toListMapper()) {
+            youtubeService.getArtistsImages(ids).items!!
+        }.toResource()
     }
 
     private suspend fun getSixArtists(countryCode: String): List<Artist> = withContext(bgContext) {
         val json = Utils.loadStringJSONFromAsset("artists.json")
-        val artists = ApiManager.gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
+        val artists = gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
 
         // Filter 6 artist by country
         var sixeArtist = artists.filter { it.countryCode.equals(countryCode, true) }.shuffled().take(6)

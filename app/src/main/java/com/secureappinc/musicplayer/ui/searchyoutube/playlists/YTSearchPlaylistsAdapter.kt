@@ -9,21 +9,21 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.data.enteties.Playlist
 import com.secureappinc.musicplayer.data.models.Artist
-import com.secureappinc.musicplayer.data.models.YTTrendingItem
-import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
-import com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment
+import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.secureappinc.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment
 import com.secureappinc.musicplayer.utils.loadImage
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
 class YTSearchPlaylistsAdapter(
-    items: List<YTTrendingItem>
+    items: List<Playlist>
 ) :
     RecyclerView.Adapter<YTSearchPlaylistsAdapter.NewReleaseViewHolder>() {
 
-    var items: List<YTTrendingItem> = items
+    var items: List<Playlist> = items
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -57,17 +57,16 @@ class YTSearchPlaylistsAdapter(
                 val item = items[adapterPosition]
                 val bundle = Bundle()
                 bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.id)
-                val artist = Artist(item.snippetTitle(), "US", item.id, item.snippet?.urlImageOrEmpty())
+                val artist = Artist(item.title, "US", item.id, item.urlImage)
                 bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
             }
         }
 
-        fun bind(item: YTTrendingItem) {
-            imgSong.loadImage(item.snippet)
-            txtTitle.text = item.snippetTitle()
-            //txtCategory.text = "${artist.name}"
-            txtCount.text = "${item.contentDetails.itemCount}"
+        fun bind(item: Playlist) {
+            imgSong.loadImage(item.urlImage)
+            txtTitle.text = item.title
+            txtCount.text = "${item.itemCount}"
         }
     }
 }

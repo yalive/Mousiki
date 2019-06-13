@@ -16,10 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.dpToPixel
-import com.secureappinc.musicplayer.data.models.EmplacementFullScreen
-import com.secureappinc.musicplayer.data.models.VideoEmplacement
+import com.secureappinc.musicplayer.player.EmplacementFullScreen
+import com.secureappinc.musicplayer.player.VideoEmplacement
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.data.enteties.MusicTrackRoomDatabase
+import com.secureappinc.musicplayer.data.enteties.durationToSeconds
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.PlaybackLiveData

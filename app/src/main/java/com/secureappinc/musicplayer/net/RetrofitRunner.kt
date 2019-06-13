@@ -1,6 +1,8 @@
 package com.secureappinc.musicplayer.net
 
 import com.secureappinc.musicplayer.data.mappers.Mapper
+import com.secureappinc.musicplayer.ui.home.bgContext
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,7 +21,10 @@ class RetrofitRunner @Inject constructor() {
      */
     suspend fun <T, E> executeNetworkCall(mapper: Mapper<T, E>, request: suspend () -> T): Result<E> = try {
         val response = request()
-        Success(mapper.map(response))
+        val mappedResponse = withContext(bgContext) {
+            mapper.map(response)
+        }
+        Success(mappedResponse)
     } catch (e: Exception) {
         ErrorResult(e)
     }

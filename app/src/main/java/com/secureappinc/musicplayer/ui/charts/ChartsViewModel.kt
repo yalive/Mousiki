@@ -1,20 +1,19 @@
 package com.secureappinc.musicplayer.ui.charts
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.secureappinc.musicplayer.data.models.YTTrendingMusicRS
-import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.base.BaseViewModel
+import com.secureappinc.musicplayer.base.common.Status
+import com.secureappinc.musicplayer.repository.PlaylistRepository
 import com.secureappinc.musicplayer.ui.home.models.ChartModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.secureappinc.musicplayer.ui.home.uiScope
+import kotlinx.coroutines.launch
 
 /**
  **********************************
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-class ChartsViewModel : ViewModel() {
+class ChartsViewModel(val playlistRepository: PlaylistRepository) : BaseViewModel() {
 
     val charts = MutableLiveData<List<ChartModel>>()
     val chartDetail = MutableLiveData<ChartModel>()
@@ -25,27 +24,20 @@ class ChartsViewModel : ViewModel() {
         }
     }
 
-    private fun loadLast3Videos(chart: ChartModel) {
-        if (chart.channelId.isEmpty()) {
-            return
+    private fun loadLast3Videos(chart: ChartModel) = uiScope.launch(coroutineContext) {
+        if (chart.playlistId.isEmpty()) {
+            return@launch
         }
 
-        ApiManager.api.getPlaylistVideos(chart.channelId, "3").enqueue(object : Callback<YTTrendingMusicRS?> {
-            override fun onFailure(call: Call<YTTrendingMusicRS?>, t: Throwable) {
+        val resource = playlistRepository.firstThreeVideo(chart.playlistId)
+        if (resource.status == Status.SUCCESS) {
+            val listMusics = resource.data
+            if (listMusics != null && listMusics.size == 3) {
+                chart.track1 = listMusics[0].title
+                chart.track2 = listMusics[1].title
+                chart.track3 = listMusics[2].title
+                chartDetail.value = chart
             }
-
-            override fun onResponse(call: Call<YTTrendingMusicRS?>, response: Response<YTTrendingMusicRS?>) {
-                if (response.isSuccessful) {
-                    val listMusics = response.body()?.items
-                    print("")
-                    if (listMusics != null && listMusics.size == 3) {
-                        chart.track1 = listMusics[0].snippetTitle()
-                        chart.track2 = listMusics[1].snippetTitle()
-                        chart.track3 = listMusics[2].snippetTitle()
-                        chartDetail.value = chart
-                    }
-                }
-            }
-        })
+        }
     }
 }

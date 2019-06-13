@@ -41,7 +41,7 @@ data class GenreItem(val genre: GenreMusic) : HomeItem() {
 }
 
 @Parcelize
-data class ChartModel(val title: String, @DrawableRes val image: Int, val channelId: String) : Parcelable {
+data class ChartModel(val title: String, @DrawableRes val image: Int, val playlistId: String) : Parcelable {
 
     var track1 = ""
     var track2 = ""

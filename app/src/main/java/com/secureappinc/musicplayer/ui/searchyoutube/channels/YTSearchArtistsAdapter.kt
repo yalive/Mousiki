@@ -9,9 +9,10 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
+import com.secureappinc.musicplayer.data.enteties.Channel
 import com.secureappinc.musicplayer.data.models.Artist
-import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
-import com.squareup.picasso.Picasso
+import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.secureappinc.musicplayer.utils.loadImage
 
 
 /**
@@ -19,10 +20,10 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class YTSearchArtistsAdapter(items: List<Artist>) :
+class YTSearchArtistsAdapter(items: List<Channel>) :
     RecyclerView.Adapter<YTSearchArtistsAdapter.ViewHolder>() {
 
-    var items: List<Artist> = items
+    var items: List<Channel> = items
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -49,24 +50,18 @@ class YTSearchArtistsAdapter(items: List<Artist>) :
         init {
             view.setOnClickListener {
                 if (adapterPosition >= 0) {
-                    //onClickArtist(items[adapterPosition])
                     val bundle = Bundle()
-                    bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, items[adapterPosition])
+                    val item = items[adapterPosition]
+                    val artist = Artist(item.title, "US", item.id, item.urlImage)
+                    bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                     itemView.findNavController().navigate(R.id.artistFragment, bundle)
                 }
             }
         }
 
-        fun bind(item: Artist) {
-            item.urlImage?.let { urlImage ->
-                if (urlImage.isNotEmpty()) {
-                    Picasso.get().load(urlImage)
-                        .fit()
-                        .into(imgSong)
-                }
-            }
-
-            txtTitle.text = item.name
+        fun bind(item: Channel) {
+            imgSong.loadImage(item.urlImage)
+            txtTitle.text = item.title
         }
     }
 

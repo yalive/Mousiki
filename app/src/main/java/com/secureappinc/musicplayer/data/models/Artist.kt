@@ -23,5 +23,5 @@ data class Artist(
     @Expose
     @SerializedName("channel")
     val channelId: String,
-    var urlImage: String? = null
+    var urlImage: String = ""
 ) : Parcelable

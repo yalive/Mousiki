@@ -10,8 +10,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.data.models.Artist
-import com.secureappinc.musicplayer.ui.artistdetail.ArtistFragment
-import com.secureappinc.musicplayer.ui.artistdetail.detailplaylist.PlaylistVideosFragment
+import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.secureappinc.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment
 import com.secureappinc.musicplayer.ui.home.models.ChartModel
 import com.secureappinc.musicplayer.utils.AdsOrigin
 import com.secureappinc.musicplayer.utils.RequestAdsLiveData
@@ -56,8 +56,8 @@ class HomeChartAdapter(var items: List<ChartModel>) :
                 if (adapterPosition >= 0) {
                     val item = items[adapterPosition]
                     val bundle = Bundle()
-                    bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.channelId)
-                    val artist = Artist(item.title, "US", item.channelId)
+                    bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.playlistId)
+                    val artist = Artist(item.title, "US", item.playlistId)
                     bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                     itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
 

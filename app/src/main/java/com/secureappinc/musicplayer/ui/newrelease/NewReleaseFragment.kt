@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.data.models.Resource
-import com.secureappinc.musicplayer.data.models.Status
+import com.secureappinc.musicplayer.base.common.Resource
+import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
-import com.secureappinc.musicplayer.net.ApiManager
+import com.secureappinc.musicplayer.ui.BaseFragment
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.utils.gone
@@ -22,12 +22,19 @@ import com.secureappinc.musicplayer.utils.visible
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
+import javax.inject.Inject
 
-class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListener {
+class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.onItemClickListener {
 
     val TAG = "NewReleaseFragment"
 
     lateinit var adapter: NewReleaseVideoAdapter
+
+    @Inject
+    lateinit var newReleaseViewModelFactory: NewReleaseViewModelFactory
+
+    @Inject
+    lateinit var gson: Gson
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -36,6 +43,7 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        app().appComponent.inject(this)
 
         activity?.title = "New Release"
 
@@ -57,7 +65,7 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
         }
         recyclerView.adapter = adapter
 
-        val viewModel = ViewModelProviders.of(this).get(NewReleaseViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this, newReleaseViewModelFactory)[NewReleaseViewModel::class.java]
         viewModel.trendingTracks.observe(this, Observer { resource ->
             Picasso.get().load(resource.data?.get(0)?.imgUrl)
                 .fit()
@@ -90,7 +98,7 @@ class NewReleaseFragment : Fragment(), NewReleaseVideoAdapter.onItemClickListene
     override fun onItemClick(musicTrack: MusicTrack) {
         val bottomSheetFragment = FvaBottomSheetFragment()
         val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", ApiManager.gson.toJson(musicTrack))
+        bundle.putString("MUSIC_TRACK", gson.toJson(musicTrack))
         bottomSheetFragment.arguments = bundle
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
