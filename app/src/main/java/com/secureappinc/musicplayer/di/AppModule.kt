@@ -6,8 +6,6 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.net.AddKeyInterceptor
 import com.secureappinc.musicplayer.net.YoutubeService
-import com.secureappinc.musicplayer.repository.HomeRepository
-import com.secureappinc.musicplayer.ui.home.HomeViewModelFactory
 import com.secureappinc.musicplayer.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -58,8 +56,4 @@ class AppModule {
         }
         return client.build()
     }
-
-    /*@Singleton
-    @Provides
-    fun providesViewModelFactory(repository: HomeRepository): HomeViewModelFactory = HomeViewModelFactory(repository)*/
 }
