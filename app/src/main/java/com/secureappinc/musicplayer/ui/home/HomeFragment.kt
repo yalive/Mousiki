@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
+import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
