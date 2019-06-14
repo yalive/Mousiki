@@ -13,6 +13,7 @@ import com.secureappinc.musicplayer.net.YoutubeService
 import com.secureappinc.musicplayer.net.toResource
 import com.secureappinc.musicplayer.ui.home.bgContext
 import com.secureappinc.musicplayer.utils.Utils
+import com.secureappinc.musicplayer.utils.getCurrentLocale
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,10 +32,11 @@ class HomeRepository @Inject constructor(
     private val artistMapper: YTBChannelToArtist
 ) {
 
-    suspend fun loadNewReleases(): Resource<List<MusicTrack>> =
-        retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.trending(25, "ma").items!!
+    suspend fun loadNewReleases(): Resource<List<MusicTrack>> {
+        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
+            youtubeService.trending(25, getCurrentLocale()).items!!
         }.toResource()
+    }
 
     suspend fun loadArtists(countryCode: String): Resource<List<Artist>> {
         // Get six artist from json
