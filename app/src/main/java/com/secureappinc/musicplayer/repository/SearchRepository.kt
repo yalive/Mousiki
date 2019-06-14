@@ -62,7 +62,6 @@ class SearchRepository @Inject constructor(
             youtubeService.searchItemIdsByQuery(query, "channel", 15).items!!
         } as? Success ?: return Resource.error("")
 
-        // TODO: Load channels
         val ids = idsResult.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(channelMapper.toListMapper()) {
             youtubeService.channels(ids).items!!
