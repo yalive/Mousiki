@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.base.common.Status
@@ -22,7 +21,6 @@ import com.secureappinc.musicplayer.utils.visible
 import com.secureappinc.musicplayer.viewmodel.activityViewModel
 import com.secureappinc.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
-import javax.inject.Inject
 
 
 class GenreVideosFragment : BaseFragment() {
@@ -36,16 +34,12 @@ class GenreVideosFragment : BaseFragment() {
     private val viewModel by viewModel { injector.genreVideosViewModel }
     private val detailGenreViewModel by activityViewModel { injector.detailGenreViewModel }
 
-    @Inject
-    lateinit var gson: Gson
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_genre_videos, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        injector.inject(this)
         val parcelableGenre = arguments?.getParcelable<GenreMusic>(DetailGenreFragment.EXTRAS_GENRE)
         if (parcelableGenre == null) {
             requireActivity().onBackPressed()
@@ -102,7 +96,7 @@ class GenreVideosFragment : BaseFragment() {
     private fun showBottomMenuButtons(musicTrack: MusicTrack) {
         val bottomSheetFragment = FvaBottomSheetFragment()
         val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", gson.toJson(musicTrack))
+        bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
         bottomSheetFragment.arguments = bundle
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }

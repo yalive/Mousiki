@@ -14,7 +14,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.gson.Gson
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.EmplacementBottom
 import com.secureappinc.musicplayer.player.EmplacementCenter
@@ -27,7 +26,6 @@ import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.secureappinc.musicplayer.utils.gone
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
-import javax.inject.Inject
 
 
 class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
@@ -40,16 +38,12 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
     val mBottomSheet: LinearLayout by lazy { view!!.findViewById<LinearLayout>(com.secureappinc.musicplayer.R.id.bottom_sheet) }
     var imgSongShadow: ImageView? = null
 
-    @Inject
-    lateinit var gson: Gson
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_bottom_shet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        injector.inject(this)
         val tracks: List<MusicTrack> = PlayerQueue.queue ?: listOf()
         val adapter = BottomSheetVideosAdapter(tracks)
         recyclerView.adapter = adapter
@@ -154,7 +148,7 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
     private fun showBottomMenuButtons(musicTrack: MusicTrack) {
         val bottomSheetFragment = FvaBottomSheetFragment()
         val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", gson.toJson(musicTrack))
+        bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
         bottomSheetFragment.arguments = bundle
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
