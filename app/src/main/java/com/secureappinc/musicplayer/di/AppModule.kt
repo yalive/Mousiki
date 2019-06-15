@@ -24,9 +24,10 @@ import javax.inject.Singleton
  ***************************************
  */
 @Module
-class AppModule {
+object AppModule {
 
     @Singleton
+    @JvmStatic
     @Provides
     fun providesYoutubeService(gson: Gson, client: OkHttpClient): YoutubeService {
         val retrofit = Retrofit.Builder()
@@ -38,10 +39,12 @@ class AppModule {
     }
 
     @Singleton
+    @JvmStatic
     @Provides
     fun providesGson(): Gson = GsonBuilder().setLenient().create()
 
     @Singleton
+    @JvmStatic
     @Provides
     fun providesOkHttp(): OkHttpClient {
         val client = OkHttpClient.Builder()
@@ -60,6 +63,7 @@ class AppModule {
     }
 
     @Singleton
+    @JvmStatic
     @Provides
     fun providesSharedPref(context: Context): SharedPreferences =
         context.getSharedPreferences("music.app", Context.MODE_PRIVATE)

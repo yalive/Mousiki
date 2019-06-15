@@ -58,6 +58,8 @@ class ArtistsRepository @Inject constructor(
             youtubeService.channelVideoIds(artistChannelId).items!!
         } as? Success ?: return Resource.error("")
 
+        // TODO() check empty list
+
         // 2 - Get videos
         val ids = result.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
