@@ -8,6 +8,8 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'org.sonarqube'
+
 repositories {
     maven { url 'https://jitpack.io' }
 }
@@ -32,6 +34,7 @@ apply plugin: 'io.fabric'
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
+
 
 android {
     signingConfigs {
@@ -95,9 +98,23 @@ android {
     }
 }
 
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "MusicPlayer"
+        property "sonar.projectKey", "MusicPlayer"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.language", "java"
+        property "sonar.sources", "src/main/java"
+        property "sonar.java.sources", "src/main/java"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.login", "admin"
+        property "sonar.password", "admin"
+    }
+}
+
 dependencies {
 
-    // Unit tests
     // Optional -- Mockito framework
     testImplementation "org.mockito:mockito-core:2.25.0"
 
@@ -142,7 +159,7 @@ dependencies {
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'com.afollestad.material-dialogs:core:2.8.1'
 
 
