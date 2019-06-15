@@ -8,7 +8,6 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
@@ -19,7 +18,6 @@ import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
-import javax.inject.Inject
 
 /**
  **********************************
@@ -32,9 +30,6 @@ class YTSearchVideosFragment : Fragment(), YTSearchVideosAdapter.onItemClickList
 
     lateinit var adapter: YTSearchVideosAdapter
 
-    @Inject
-    lateinit var gson: Gson
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_yt_search_videos, container, false)
@@ -42,7 +37,6 @@ class YTSearchVideosFragment : Fragment(), YTSearchVideosAdapter.onItemClickList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        injector.inject(this)
 
         val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
 
@@ -76,7 +70,7 @@ class YTSearchVideosFragment : Fragment(), YTSearchVideosAdapter.onItemClickList
     override fun onItemClick(musicTrack: MusicTrack) {
         val bottomSheetFragment = FvaBottomSheetFragment()
         val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", gson.toJson(musicTrack))
+        bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
         bottomSheetFragment.arguments = bundle
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }

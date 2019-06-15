@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.gson.Gson
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
@@ -19,7 +18,6 @@ import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.Utils
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_dialog.*
 import java.util.concurrent.Executors
-import javax.inject.Inject
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
@@ -31,21 +29,17 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     lateinit var db: MusicTrackRoomDatabase
 
-    @Inject
-    lateinit var gson: Gson
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_bottom_sheet_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        injector.inject(this)
 
         db = MusicTrackRoomDatabase.getDatabase(context!!)
 
         val json = arguments?.getString("MUSIC_TRACK")
-        musicTrack = gson.fromJson(json, MusicTrack::class.java)
+        musicTrack = injector.gson.fromJson(json, MusicTrack::class.java)
 
         if (!UserPrefs.isFav(musicTrack.youtubeId)) {
             favIcon.setImageResource(R.drawable.ic_favorite_border_yellow)
