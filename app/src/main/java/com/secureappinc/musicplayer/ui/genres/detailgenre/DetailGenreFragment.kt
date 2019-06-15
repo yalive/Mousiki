@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsFragment
 import com.secureappinc.musicplayer.ui.genres.detailgenre.videos.GenreVideosFragment
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.visible
+import com.secureappinc.musicplayer.viewmodel.activityViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
 
@@ -26,6 +27,8 @@ class DetailGenreFragment : Fragment() {
     companion object {
         val EXTRAS_GENRE = "genre"
     }
+
+    private val viewModel by activityViewModel { injector.detailGenreViewModel }
 
     lateinit var genreMusic: GenreMusic
 
@@ -63,9 +66,7 @@ class DetailGenreFragment : Fragment() {
         viewPager.adapter = DetailGenrePagerAdapter(childFragmentManager, listOf(videosFragment, playlistsFragment))
         tabLayout.setupWithViewPager(viewPager)
 
-        val viewModel = ViewModelProviders.of(this).get(DetailGenreViewModel::class.java)
         viewModel.firstTrack.observe(this, Observer { firstTrack ->
-
         })
 
         imgCollapsed?.setImageResource(genreMusic.img)

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.common.Resource
@@ -17,8 +16,10 @@ import com.secureappinc.musicplayer.ui.BaseFragment
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
+import com.secureappinc.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 import javax.inject.Inject
 
@@ -35,10 +36,7 @@ class PlaylistVideosFragment : BaseFragment() {
     lateinit var artist: Artist
     lateinit var playlistId: String
 
-    lateinit var viewModel: PlaylistVideosViewModel
-
-    @Inject
-    lateinit var viewModelFactory: PlaylistVideosViewModelFactory
+    private val viewModel by viewModel { injector.playlistVideosViewModel }
 
     @Inject
     lateinit var gson: Gson
@@ -49,15 +47,13 @@ class PlaylistVideosFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        app().appComponent.inject(this)
+        injector.inject(this)
         val parcelableGenre = arguments?.getParcelable<Artist>(ArtistFragment.EXTRAS_ARTIST)
         playlistId = arguments?.getString(EXTRAS_PLAYLIST_ID)!!
         if (parcelableGenre == null) {
             requireActivity().onBackPressed()
             return
         }
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(PlaylistVideosViewModel::class.java)
 
         artist = parcelableGenre
         adapter = PlaylistVideosAdapter(

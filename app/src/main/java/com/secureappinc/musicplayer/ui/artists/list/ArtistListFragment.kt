@@ -9,35 +9,33 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.base.views.SideBar
 import com.secureappinc.musicplayer.base.common.Status
+import com.secureappinc.musicplayer.base.views.SideBar
 import com.secureappinc.musicplayer.ui.BaseFragment
 import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
+import com.secureappinc.musicplayer.viewmodel.activityViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_artists.*
-import javax.inject.Inject
 
 
 class ArtistListFragment : BaseFragment() {
 
     val TAG = "ArtistsFragmentLog"
 
-    lateinit var viewModel: ArtistListViewModel
     lateinit var adapter: ArtistListAdapter
 
     lateinit var sideBar: SideBar
     lateinit var txtDialog: TextView
 
-    @Inject
-    lateinit var viewModelFactory: ArtistListViewModelFactory
+    private val viewModel by activityViewModel { injector.artistListViewModel }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_artists, container, false)
@@ -45,7 +43,6 @@ class ArtistListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        app().appComponent.inject(this)
         sideBar = view.findViewById(R.id.sideBar)
         txtDialog = view.findViewById(R.id.txtDialog)
 
@@ -60,8 +57,6 @@ class ArtistListFragment : BaseFragment() {
 
         val imgCollapsed = activity?.findViewById<CircleImageView>(com.secureappinc.musicplayer.R.id.imgCollapsed)
         rltContainer?.gone()
-
-        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(ArtistListViewModel::class.java)
 
         setupRecyclerView()
 

@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.data.enteties.MusicTrackRoomDatabase
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.MainActivity
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.UserPrefs
 import com.secureappinc.musicplayer.utils.Utils
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_dialog.*
@@ -40,7 +40,7 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MusicApp.get().appComponent.inject(this)
+        injector.inject(this)
 
         db = MusicTrackRoomDatabase.getDatabase(context!!)
 

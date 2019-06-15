@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
-import com.secureappinc.musicplayer.ui.MainViewModel
+import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.home.models.*
 import com.secureappinc.musicplayer.utils.AdsOrigin
 import com.secureappinc.musicplayer.utils.RequestAdsLiveData
@@ -28,7 +27,6 @@ import com.squareup.picasso.Picasso
  */
 class HomeAdapter(
     val items: MutableList<HomeItem>,
-    val viewModel: MainViewModel,
     val callback: (item: HomeItem) -> Unit,
     val onVideoSelected: () -> Unit,
     val moreItemClickListener: onMoreItemClickListener

@@ -1,7 +1,6 @@
 package com.secureappinc.musicplayer.ui
 
 import androidx.fragment.app.Fragment
-import com.secureappinc.musicplayer.MusicApp
 
 /**
  ***************************************
@@ -9,5 +8,4 @@ import com.secureappinc.musicplayer.MusicApp
  ***************************************
  */
 open class BaseFragment : Fragment() {
-    fun app() = MusicApp.get()
 }

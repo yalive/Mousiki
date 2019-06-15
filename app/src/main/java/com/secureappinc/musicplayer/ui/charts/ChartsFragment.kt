@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.ui.BaseFragment
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
+import com.secureappinc.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_charts.view.*
 import kotlinx.android.synthetic.main.fragment_genres.*
-import javax.inject.Inject
 
 /**
  **********************************
@@ -25,8 +25,7 @@ import javax.inject.Inject
  */
 class ChartsFragment : BaseFragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ChartsViewModelFactory
+    private val viewModel by viewModel { injector.chartsViewModel }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_charts, container, false)
@@ -36,7 +35,6 @@ class ChartsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        app().appComponent.inject(this)
         activity?.title = "Charts"
 
         val collapsingToolbar =
@@ -46,8 +44,6 @@ class ChartsFragment : BaseFragment() {
 
         val rltContainer = activity?.findViewById<RelativeLayout>(com.secureappinc.musicplayer.R.id.rltContainer)
         rltContainer?.gone()
-
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChartsViewModel::class.java)
 
         val linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager

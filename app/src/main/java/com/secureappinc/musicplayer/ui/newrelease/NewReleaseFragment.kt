@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
@@ -17,8 +16,10 @@ import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.BaseFragment
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
+import com.secureappinc.musicplayer.viewmodel.viewModel
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
@@ -30,8 +31,7 @@ class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.onItemClickLis
 
     lateinit var adapter: NewReleaseVideoAdapter
 
-    @Inject
-    lateinit var newReleaseViewModelFactory: NewReleaseViewModelFactory
+    private val viewModel by viewModel { injector.newReleaseViewModel }
 
     @Inject
     lateinit var gson: Gson
@@ -43,7 +43,7 @@ class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.onItemClickLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        app().appComponent.inject(this)
+        injector.inject(this)
 
         activity?.title = "New Release"
 
@@ -65,7 +65,6 @@ class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.onItemClickLis
         }
         recyclerView.adapter = adapter
 
-        val viewModel = ViewModelProviders.of(this, newReleaseViewModelFactory)[NewReleaseViewModel::class.java]
         viewModel.trendingTracks.observe(this, Observer { resource ->
             Picasso.get().load(resource.data?.get(0)?.imgUrl)
                 .fit()

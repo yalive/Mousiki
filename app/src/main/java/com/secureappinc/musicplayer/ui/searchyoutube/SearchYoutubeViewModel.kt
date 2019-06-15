@@ -11,13 +11,14 @@ import com.secureappinc.musicplayer.ui.home.uiScope
 import com.secureappinc.musicplayer.utils.getCurrentLocale
 import com.secureappinc.musicplayer.utils.getLanguage
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
-class SearchYoutubeViewModel(val searchRepository: SearchRepository) : BaseViewModel() {
+class SearchYoutubeViewModel @Inject constructor(val searchRepository: SearchRepository) : BaseViewModel() {
 
     val videos = MutableLiveData<Resource<List<MusicTrack>>>()
     val channels = MutableLiveData<Resource<List<Channel>>>()
