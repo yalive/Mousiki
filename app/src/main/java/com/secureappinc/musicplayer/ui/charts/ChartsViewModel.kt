@@ -7,13 +7,14 @@ import com.secureappinc.musicplayer.repository.PlaylistRepository
 import com.secureappinc.musicplayer.ui.home.models.ChartModel
 import com.secureappinc.musicplayer.ui.home.uiScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-class ChartsViewModel(val playlistRepository: PlaylistRepository) : BaseViewModel() {
+class ChartsViewModel @Inject constructor(val playlistRepository: PlaylistRepository) : BaseViewModel() {
 
     val charts = MutableLiveData<List<ChartModel>>()
     val chartDetail = MutableLiveData<ChartModel>()

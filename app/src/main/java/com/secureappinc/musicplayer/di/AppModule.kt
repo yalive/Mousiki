@@ -1,5 +1,7 @@
 package com.secureappinc.musicplayer.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
@@ -56,4 +58,9 @@ class AppModule {
         }
         return client.build()
     }
+
+    @Singleton
+    @Provides
+    fun providesSharedPref(context: Context): SharedPreferences =
+        context.getSharedPreferences("music.app", Context.MODE_PRIVATE)
 }

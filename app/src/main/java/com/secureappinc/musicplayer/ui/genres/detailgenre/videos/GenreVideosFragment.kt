@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.common.Resource
@@ -16,10 +15,12 @@ import com.secureappinc.musicplayer.ui.BaseFragment
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.secureappinc.musicplayer.ui.genres.detailgenre.DetailGenreViewModel
 import com.secureappinc.musicplayer.ui.home.models.GenreMusic
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
+import com.secureappinc.musicplayer.viewmodel.activityViewModel
+import com.secureappinc.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 import javax.inject.Inject
 
@@ -32,11 +33,8 @@ class GenreVideosFragment : BaseFragment() {
     lateinit var adapter: GenreVideosAdapter
     lateinit var genreMusic: GenreMusic
 
-    lateinit var viewModel: GenreVideosViewModel
-    lateinit var parentViewModel: DetailGenreViewModel
-
-    @Inject
-    lateinit var genreVideosViewModelFactory: GenreVideosViewModelFactory
+    private val viewModel by viewModel { injector.genreVideosViewModel }
+    private val detailGenreViewModel by activityViewModel { injector.detailGenreViewModel }
 
     @Inject
     lateinit var gson: Gson
@@ -47,16 +45,14 @@ class GenreVideosFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        app().appComponent.inject(this)
+        injector.inject(this)
         val parcelableGenre = arguments?.getParcelable<GenreMusic>(DetailGenreFragment.EXTRAS_GENRE)
         if (parcelableGenre == null) {
             requireActivity().onBackPressed()
             return
         }
 
-        viewModel = ViewModelProviders.of(this, genreVideosViewModelFactory).get(GenreVideosViewModel::class.java)
         val detailGenreFragment = parentFragment as DetailGenreFragment
-        parentViewModel = ViewModelProviders.of(detailGenreFragment).get(DetailGenreViewModel::class.java)
 
         genreMusic = parcelableGenre
         adapter = GenreVideosAdapter(
@@ -86,7 +82,7 @@ class GenreVideosFragment : BaseFragment() {
                 recyclerView.visible()
                 progressBar.gone()
                 txtError.gone()
-                parentViewModel.firstTrack.value = resource.data!![0]
+                detailGenreViewModel.firstTrack.value = resource.data!![0]
             }
             Status.ERROR -> {
                 progressBar.gone()

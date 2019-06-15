@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsFragment
 import com.secureappinc.musicplayer.ui.artists.artistdetail.videos.ArtistVideosFragment
-import com.secureappinc.musicplayer.ui.genres.detailgenre.DetailGenreViewModel
 import com.secureappinc.musicplayer.utils.visible
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -63,8 +61,6 @@ class ArtistFragment : Fragment() {
 
         viewPager.adapter = ArtistPagerAdapter(childFragmentManager, listOf(videosFragment, playlistsFragment))
         tabLayout.setupWithViewPager(viewPager)
-
-        val viewModel = ViewModelProviders.of(this).get(DetailGenreViewModel::class.java)
 
         artist.urlImage?.let { urlImage ->
             if (urlImage.isNotEmpty()) {

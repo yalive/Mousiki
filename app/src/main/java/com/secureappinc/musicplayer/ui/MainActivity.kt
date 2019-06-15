@@ -16,13 +16,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.secureappinc.musicplayer.R
-import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.player.EmplacementFullScreen
 import com.secureappinc.musicplayer.player.EmplacementOut
 import com.secureappinc.musicplayer.player.EmplacementPlaylist
@@ -32,6 +30,8 @@ import com.secureappinc.musicplayer.services.DragSlidePanelMonitor
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.secureappinc.musicplayer.utils.*
+import com.secureappinc.musicplayer.utils.Extensions.injector
+import com.secureappinc.musicplayer.viewmodel.viewModel
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.yarolegovich.slidingrootnav.SlidingRootNav
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder
@@ -53,7 +53,7 @@ class MainActivity : BaseActivity() {
 
     lateinit var slidingPaneLayout: SlidingUpPanelLayout
 
-    lateinit var viewModel: MainViewModel
+    private val viewModel by viewModel { injector.mainViewModel }
 
     var isInHome = true
 
@@ -68,7 +68,6 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         collapsingToolbar.isTitleEnabled = true
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         setupMenu()
 

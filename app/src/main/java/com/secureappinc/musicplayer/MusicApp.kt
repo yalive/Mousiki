@@ -4,6 +4,7 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.MobileAds
 import com.secureappinc.musicplayer.di.AppComponent
+import com.secureappinc.musicplayer.di.ComponentProvider
 import com.secureappinc.musicplayer.di.DaggerAppComponent
 import io.fabric.sdk.android.Fabric
 
@@ -13,18 +14,19 @@ import io.fabric.sdk.android.Fabric
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class MusicApp : Application() {
+class MusicApp : Application(), ComponentProvider {
 
-    lateinit var appComponent: AppComponent
-        private set
+    override val component: AppComponent by lazy {
+        DaggerAppComponent
+            .factory()
+            .create(this)
+    }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
         MobileAds.initialize(this, getString(R.string.admob_app_id))
         Fabric.with(this, Crashlytics())
-
-        appComponent = DaggerAppComponent.create()
     }
 
     companion object {

@@ -9,27 +9,25 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.MainActivity
-import com.secureappinc.musicplayer.ui.MainViewModel
 import com.secureappinc.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.secureappinc.musicplayer.ui.genres.detailgenre.DetailGenreFragment
 import com.secureappinc.musicplayer.ui.home.models.*
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.dpToPixel
 import com.secureappinc.musicplayer.utils.getCurrentLocale
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
+import com.secureappinc.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_home.*
-import javax.inject.Inject
 
 
 class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
@@ -37,8 +35,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
     private val handler = Handler()
     lateinit var adapter: HomeAdapter
 
-    @Inject
-    lateinit var homeViewModelFactory: HomeViewModelFactory
+    private val viewModel by viewModel { injector.homeViewModel }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.secureappinc.musicplayer.R.layout.fragment_home, container, false)
@@ -46,7 +43,6 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        MusicApp.get().appComponent.inject(this)
         val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -67,7 +63,7 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
         collapsingToolbar?.isTitleEnabled = false
 
         adapter =
-            HomeAdapter(initializeList(), ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java), {
+            HomeAdapter(initializeList(), {
                 if (it is GenreItem) {
                     val bundle = Bundle()
                     bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, it.genre)
@@ -89,8 +85,6 @@ class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
         val marginDp = requireActivity().dpToPixel(8f)
         recyclerView.addItemDecoration(GridSpacingItemDecoration(spacingDp, marginDp))
 
-
-        val viewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
         viewModel.trendingTracks.observe(this, Observer { resource ->
             updateUI(resource)
         })

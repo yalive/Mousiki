@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.gson.Gson
-import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.secureappinc.musicplayer.ui.searchyoutube.SearchYoutubeFragment
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
@@ -42,7 +42,7 @@ class YTSearchVideosFragment : Fragment(), YTSearchVideosAdapter.onItemClickList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MusicApp.get().appComponent.inject(this)
+        injector.inject(this)
 
         val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
 

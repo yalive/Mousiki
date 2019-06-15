@@ -15,7 +15,6 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
-import com.secureappinc.musicplayer.MusicApp
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.player.EmplacementBottom
 import com.secureappinc.musicplayer.player.EmplacementCenter
@@ -23,6 +22,7 @@ import com.secureappinc.musicplayer.player.EmplacementPlaylist
 import com.secureappinc.musicplayer.player.PlayerQueue
 import com.secureappinc.musicplayer.ui.MainActivity
 import com.secureappinc.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.VideoEmplacementLiveData
 import com.secureappinc.musicplayer.utils.gone
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -49,7 +49,7 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MusicApp.get().appComponent.inject(this)
+        injector.inject(this)
         val tracks: List<MusicTrack> = PlayerQueue.queue ?: listOf()
         val adapter = BottomSheetVideosAdapter(tracks)
         recyclerView.adapter = adapter

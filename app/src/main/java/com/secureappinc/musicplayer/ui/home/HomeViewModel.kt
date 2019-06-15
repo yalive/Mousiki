@@ -7,11 +7,12 @@ import com.secureappinc.musicplayer.base.common.hasItems
 import com.secureappinc.musicplayer.base.common.isLoading
 import com.secureappinc.musicplayer.base.common.loading
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
-import com.secureappinc.musicplayer.data.models.*
+import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.repository.HomeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 val bgContext = Dispatchers.IO
 val uiContext = Dispatchers.Main
@@ -23,7 +24,7 @@ val uiScope = CoroutineScope(uiContext)
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
-class HomeViewModel(val homeRepository: HomeRepository) : BaseViewModel() {
+class HomeViewModel @Inject constructor(val homeRepository: HomeRepository) : BaseViewModel() {
 
     var trendingTracks = MutableLiveData<Resource<List<MusicTrack>>>()
 

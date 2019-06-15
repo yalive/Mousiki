@@ -2,19 +2,20 @@ package com.secureappinc.musicplayer.ui.artists.list
 
 import androidx.lifecycle.MutableLiveData
 import com.secureappinc.musicplayer.base.BaseViewModel
-import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.base.common.Resource
 import com.secureappinc.musicplayer.base.common.Status
+import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.repository.ArtistsRepository
 import com.secureappinc.musicplayer.ui.home.uiScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/16/19.
  **********************************
  */
-class ArtistListViewModel(val repository: ArtistsRepository) : BaseViewModel() {
+class ArtistListViewModel @Inject constructor(val repository: ArtistsRepository) : BaseViewModel() {
 
     var artistResources = MutableLiveData<Resource<List<Artist>>>()
 
