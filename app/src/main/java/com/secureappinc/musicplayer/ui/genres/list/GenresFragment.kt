@@ -45,7 +45,6 @@ class GenresFragment : Fragment() {
         val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         recyclerView.layoutManager = gridLayoutManager
         val spacingDp = requireActivity().dpToPixel(8f)
-        val marginDp = requireActivity().dpToPixel(8f)
         recyclerView.addItemDecoration(
             GenresItemSpacing(
                 3,

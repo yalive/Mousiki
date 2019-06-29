@@ -15,17 +15,17 @@ import com.secureappinc.musicplayer.ui.BaseFragment
 import com.secureappinc.musicplayer.utils.Extensions.injector
 import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.viewmodel.viewModel
+import kotlinx.android.synthetic.main.fragment_charts.*
 import kotlinx.android.synthetic.main.fragment_charts.view.*
-import kotlinx.android.synthetic.main.fragment_genres.*
 
 /**
  **********************************
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-class ChartsFragment : BaseFragment() {
+open class ChartsFragment : BaseFragment() {
 
-    private val viewModel by viewModel { injector.chartsViewModel }
+    open val viewModel by viewModel { injector.chartsViewModel }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_charts, container, false)

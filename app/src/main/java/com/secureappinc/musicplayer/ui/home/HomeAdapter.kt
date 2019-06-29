@@ -29,7 +29,7 @@ class HomeAdapter(
     val items: MutableList<HomeItem>,
     val callback: (item: HomeItem) -> Unit,
     val onVideoSelected: () -> Unit,
-    val moreItemClickListener: onMoreItemClickListener
+    val moreItemClickListener: OnMoreItemClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -169,7 +169,7 @@ class HomeAdapter(
         val txtTitle: TextView = view.findViewById(R.id.txtTitle)
         val showAll: ImageButton = view.findViewById(R.id.showAll)
 
-        fun bind(headerItem: HeaderItem, moreItemClickListener: onMoreItemClickListener) {
+        fun bind(headerItem: HeaderItem, moreItemClickListener: OnMoreItemClickListener) {
             txtTitle.text = headerItem.title
 
             view.setOnClickListener {
@@ -244,7 +244,7 @@ class HomeAdapter(
 
     }
 
-    interface onMoreItemClickListener {
+    interface OnMoreItemClickListener {
         fun onMoreItemClick(headerItem: HeaderItem)
     }
 }

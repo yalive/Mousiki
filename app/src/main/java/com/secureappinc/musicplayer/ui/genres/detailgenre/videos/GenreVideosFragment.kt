@@ -45,9 +45,7 @@ class GenreVideosFragment : BaseFragment() {
             requireActivity().onBackPressed()
             return
         }
-
-        val detailGenreFragment = parentFragment as DetailGenreFragment
-
+        
         genreMusic = parcelableGenre
         adapter = GenreVideosAdapter(
             listOf(),

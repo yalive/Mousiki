@@ -269,6 +269,7 @@ class MainActivity : BaseActivity() {
                 }
 
                 override fun onDragStart() {
+                    // Nothing
                 }
             })
             .withMenuLayout(com.secureappinc.musicplayer.R.layout.menu_left_drawer)

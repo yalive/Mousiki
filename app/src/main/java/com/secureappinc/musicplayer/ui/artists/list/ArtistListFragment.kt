@@ -79,7 +79,6 @@ class ArtistListFragment : BaseFragment() {
         val layoutManager = recycler.layoutManager as LinearLayoutManager
         var firstVisibleInListview = layoutManager.findFirstVisibleItemPosition()
 
-        //val nestedScrollView = activity?.findViewById<NestedScrollView>(R.id.nestedScrollView)
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

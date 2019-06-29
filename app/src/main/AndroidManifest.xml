@@ -38,6 +38,8 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="cbb00eb164e4c79cea570ce84292636421ba8030" />
+
+        <activity android:name=".SingleFragmentActivity" />
     </application>
 
 </manifest>

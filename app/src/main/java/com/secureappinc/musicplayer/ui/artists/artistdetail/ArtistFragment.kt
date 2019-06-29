@@ -12,8 +12,8 @@ import com.secureappinc.musicplayer.R
 import com.secureappinc.musicplayer.data.models.Artist
 import com.secureappinc.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsFragment
 import com.secureappinc.musicplayer.ui.artists.artistdetail.videos.ArtistVideosFragment
+import com.secureappinc.musicplayer.utils.loadImage
 import com.secureappinc.musicplayer.utils.visible
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
 
@@ -62,14 +62,8 @@ class ArtistFragment : Fragment() {
         viewPager.adapter = ArtistPagerAdapter(childFragmentManager, listOf(videosFragment, playlistsFragment))
         tabLayout.setupWithViewPager(viewPager)
 
-        artist.urlImage?.let { urlImage ->
-            if (urlImage.isNotEmpty()) {
-                Picasso.get().load(urlImage)
-                    .fit()
-                    .centerInside()
-                    .placeholder(R.drawable.bg_circle_black)
-                    .into(imgCollapsed)
-            }
+        if (artist.urlImage.isNotEmpty()) {
+            imgCollapsed?.loadImage(artist.urlImage)
         }
     }
 }

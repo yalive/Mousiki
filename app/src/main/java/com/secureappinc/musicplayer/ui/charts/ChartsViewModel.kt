@@ -1,6 +1,7 @@
 package com.secureappinc.musicplayer.ui.charts
 
 import androidx.lifecycle.MutableLiveData
+import com.secureappinc.musicplayer.OpenForTesting
 import com.secureappinc.musicplayer.base.BaseViewModel
 import com.secureappinc.musicplayer.base.common.Status
 import com.secureappinc.musicplayer.repository.PlaylistRepository
@@ -14,6 +15,7 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
+@OpenForTesting
 class ChartsViewModel @Inject constructor(val playlistRepository: PlaylistRepository) : BaseViewModel() {
 
     val charts = MutableLiveData<List<ChartModel>>()

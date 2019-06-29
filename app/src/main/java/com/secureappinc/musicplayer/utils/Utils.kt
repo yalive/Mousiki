@@ -82,14 +82,15 @@ object Utils {
      */
     fun loadStringJSONFromAsset(assetFileName: String): String {
         try {
-            val `is` = MusicApp.get().assets.open(assetFileName)
-            val size = `is`.available()
+            val inputStream = MusicApp.get().assets.open(assetFileName)
+            val size = inputStream.available()
             val buffer = ByteArray(size)
-            `is`.read(buffer)
-            `is`.close()
+            inputStream.read(buffer)
+            inputStream.close()
             return String(buffer, Charset.forName("UTF-8"))
 
         } catch (ignored: IOException) {
+            // Ignore
         }
         return "{}"
     }

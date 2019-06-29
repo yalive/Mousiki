@@ -5,6 +5,9 @@ import android.util.Log;
 
 public class BlurImage {
 
+    private BlurImage() {
+    }
+
     public static Bitmap fastblur(Bitmap sentBitmap, float scale, int radius) {
 
         int width = Math.round(sentBitmap.getWidth() * scale);

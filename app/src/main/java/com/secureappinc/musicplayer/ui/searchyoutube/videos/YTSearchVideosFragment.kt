@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_new_release.*
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
-class YTSearchVideosFragment : Fragment(), YTSearchVideosAdapter.onItemClickListener {
+class YTSearchVideosFragment : Fragment(), YTSearchVideosAdapter.OnItemClickListener {
 
     val TAG = "NewReleaseFragment"
 
