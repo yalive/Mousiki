@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
-class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListener: onItemClickListener) :
+class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<FavouriteTracksAdapter.PlayListViewHolder>() {
 
     var items: List<MusicTrack> = items
@@ -55,7 +55,7 @@ class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListe
             }
         }
 
-        fun bind(item: MusicTrack, itemClickListener: onItemClickListener) {
+        fun bind(item: MusicTrack, itemClickListener: OnItemClickListener) {
             Picasso.get().load(item.imgUrl)
                 .fit()
                 .into(imgSong)
@@ -69,7 +69,7 @@ class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListe
         }
     }
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(musicTrack: MusicTrack)
         fun onSelectVideo(musicTrack: MusicTrack)
     }

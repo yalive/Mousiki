@@ -30,7 +30,7 @@ import com.secureappinc.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment : Fragment(), HomeAdapter.onMoreItemClickListener {
+class HomeFragment : Fragment(), HomeAdapter.OnMoreItemClickListener {
     val TAG = "HomeFragment"
     private val handler = Handler()
     lateinit var adapter: HomeAdapter

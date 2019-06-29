@@ -13,32 +13,29 @@ import retrofit2.http.Url
  */
 interface YoutubeService {
 
+
     companion object {
+        private const val SNIPPET_TITLE = "%2Csnippet%2Ftitle"
+        private const val SNIPPET_THUMBNAILS = "%2Csnippet%2Fthumbnails"
+        private const val SNIPPET_CHANNEL_ID = "%2Csnippet%2FchannelId"
+        private const val SNIPPET_CHANNEL_TITLE = "%2Csnippet%2FchannelTitle"
+        private const val CONTENTDETAILS_DURATION = "%2CcontentDetails%2Fduration"
 
-        const val TRENDING_ITEMS = "&fields=items(id%2CcontentDetails%2Fduration" +
-                "%2Csnippet%2FchannelId" +
-                "%2Csnippet%2Ftitle" +
-                "%2Csnippet%2Fthumbnails" +
-                "%2Csnippet%2FchannelTitle)"
+        const val TRENDING_ITEMS =
+            "&fields=items(id$CONTENTDETAILS_DURATION$SNIPPET_CHANNEL_ID$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
 
-        const val PLAYLIST_ITEMS = "&fields=items(id%2CcontentDetails%2FitemCount" +
-                "%2Csnippet%2Ftitle" +
-                "%2Csnippet%2Fthumbnails" +
-                "%2Csnippet%2FchannelTitle)"
+        const val PLAYLIST_ITEMS =
+            "&fields=items(id%2CcontentDetails%2FitemCount$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
 
         const val PLAYLISTS =
             "playlists?part=snippet%2CcontentDetails&maxResults=50&videoCategoryId=10$PLAYLIST_ITEMS"
 
         const val VIDEOS =
-            "videos?part=contentDetails,snippet&videoCategoryId=10&fields=items(id%2CcontentDetails%2Fduration" +
-                    "%2Csnippet%2FchannelId" +
-                    "%2Csnippet%2Ftitle" +
-                    "%2Csnippet%2Fthumbnails" +
-                    "%2Csnippet%2FchannelTitle)"
+            "videos?part=contentDetails,snippet&videoCategoryId=10&fields=items(id$CONTENTDETAILS_DURATION$SNIPPET_CHANNEL_ID$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
 
         // Get images
         const val CHANNELS =
-            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id%2Csnippet%2Fthumbnails%2Csnippet%2Ftitle)"
+            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id$SNIPPET_THUMBNAILS$SNIPPET_TITLE)"
 
     }
 

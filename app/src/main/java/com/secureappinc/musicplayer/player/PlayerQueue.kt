@@ -96,99 +96,37 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun getNextTrack(): MusicTrack? {
-
         if (queue == null) {
             return null
         }
 
-        if (this.value == null) {
-            return null
-        }
-
+        val mValue = this.value ?: return null
         val mQueue = queue!!
-        val sort = getPlaySort()
-        if (sort == PlaySort.SEQUENCE) {
-            for ((index, track) in mQueue.withIndex()) {
-                if (track == this.value && index < mQueue.size - 1) {
-                    return mQueue[index + 1]
-                }
-            }
-        } else if (sort == PlaySort.LOOP_ONE) {
-            return value
-        } else if (sort == PlaySort.LOOP_ALL) {
-
-            for ((index, track) in mQueue.withIndex()) {
-                if (track == this.value && index < mQueue.size - 1) {
-                    return mQueue[index + 1]
-                } else if (track == this.value && index == mQueue.size - 1) {
-                    return mQueue[0]
-                }
-            }
-        } else if (sort == PlaySort.RANDOM) {
-
-            val indexOfCurrent = mQueue.indexOf(value)
-
-            var random = (0 until mQueue.size).random()
-
-            while (indexOfCurrent == random) {
-                random = (0 until mQueue.size).random()
-            }
-
-            return mQueue[random]
+        return when (getPlaySort()) {
+            PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(mValue) + 1)
+            PlaySort.LOOP_ONE -> mValue
+            PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(mValue) + 1) { mQueue[0] }
+            PlaySort.RANDOM -> mQueue.filter { it != mValue }.random()
         }
-
-        return null
     }
 
     private fun getPreviousTrack(): MusicTrack? {
-
         if (queue == null) {
             return null
         }
-
-        if (this.value == null) {
-            return null
-        }
-
+        val mValue = this.value ?: return null
         val mQueue = queue!!
-        val sort = getPlaySort()
-        if (sort == PlaySort.SEQUENCE) {
-            for ((index, track) in mQueue.withIndex()) {
-                if (track == this.value && index > 0) {
-                    return mQueue[index - 1]
-                }
-            }
-        } else if (sort == PlaySort.LOOP_ONE) {
-            return value
-        } else if (sort == PlaySort.LOOP_ALL) {
-            for ((index, track) in mQueue.withIndex()) {
-                if (track == this.value && index > 0) {
-                    return mQueue[index - 1]
-                } else if (track == this.value && index == 0) {
-                    return mQueue[mQueue.size - 1]
-                }
-            }
-        } else if (sort == PlaySort.RANDOM) {
-
-            val indexOfCurrent = mQueue.indexOf(value)
-
-            var random = (0 until mQueue.size).random()
-
-            while (indexOfCurrent == random) {
-                random = (0 until mQueue.size).random()
-            }
-
-            return mQueue[random]
+        return when (getPlaySort()) {
+            PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(mValue) - 1)
+            PlaySort.LOOP_ONE -> mValue
+            PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(mValue) - 1) { mQueue[mQueue.size - 1] }
+            PlaySort.RANDOM -> mQueue.filter { it != mValue }.random()
         }
-
-        return null
     }
-
 
     private fun getPlaySort(): PlaySort {
         return UserPrefs.getSort()
     }
-
 
     private fun notifyService(videoId: String) {
         if (!MusicApp.get().canDrawOverApps()) {

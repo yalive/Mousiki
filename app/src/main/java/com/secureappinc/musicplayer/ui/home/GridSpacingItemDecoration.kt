@@ -33,17 +33,13 @@ class GridSpacingItemDecoration(private val spacing: Int, private var edgeMargin
 
         val type = adapter.getItemViewType(position)
 
-        if (type == HomeAdapter.TYPE_NEW_RELEASE || type == HomeAdapter.TYPE_CHART || type == HomeAdapter.TYPE_FEATURED) {
-
-        } else {
+        if (type != HomeAdapter.TYPE_NEW_RELEASE && type != HomeAdapter.TYPE_CHART && type != HomeAdapter.TYPE_FEATURED) {
             outRect.left = leftPadding
             outRect.right = rightPadding
         }
 
 
-        if (type == HomeAdapter.TYPE_NEW_RELEASE || type == HomeAdapter.TYPE_CHART || type == HomeAdapter.TYPE_HEADER) {
-
-        } else {
+        if (type != HomeAdapter.TYPE_NEW_RELEASE && type != HomeAdapter.TYPE_CHART && type != HomeAdapter.TYPE_HEADER) {
             if (position < totalSpanSize) {
                 outRect.top = spacing
             }

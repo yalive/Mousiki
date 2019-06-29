@@ -8,20 +8,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.secureappinc.musicplayer.utils.dpToPixel
-import com.secureappinc.musicplayer.player.EmplacementFullScreen
-import com.secureappinc.musicplayer.player.VideoEmplacement
 import com.secureappinc.musicplayer.data.enteties.MusicTrack
 import com.secureappinc.musicplayer.data.enteties.MusicTrackRoomDatabase
 import com.secureappinc.musicplayer.data.enteties.durationToSeconds
+import com.secureappinc.musicplayer.player.EmplacementFullScreen
 import com.secureappinc.musicplayer.player.PlayerQueue
+import com.secureappinc.musicplayer.player.VideoEmplacement
 import com.secureappinc.musicplayer.services.PlaybackDuration
 import com.secureappinc.musicplayer.services.PlaybackLiveData
 import com.secureappinc.musicplayer.ui.MainActivity
@@ -171,20 +169,13 @@ class BottomPanelFragment : Fragment() {
         }
 
         DeviceInset.observe(this, Observer { inset ->
-            fullScreenSwitchView.updatePadding(top = inset.top + dpToPixel(
-                8f,
-                requireContext()
-            ).toInt())
+            fullScreenSwitchView.updatePadding(
+                top = inset.top + dpToPixel(
+                    8f,
+                    requireContext()
+                ).toInt()
+            )
             adjustCenterViews()
-        })
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                dialogBottomShet?.onGlobalLayoutEvent()
-            }
         })
     }
 
@@ -258,9 +249,11 @@ class BottomPanelFragment : Fragment() {
         seekBarDuration.progress = 0
         seekBarDuration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                // Nothing
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Nothing
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -276,9 +269,11 @@ class BottomPanelFragment : Fragment() {
     private fun loadAndBlureImage(video: MusicTrack) {
         val target = object : Target {
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                // Nothing
             }
 
             override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                // Nothing
             }
 
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {

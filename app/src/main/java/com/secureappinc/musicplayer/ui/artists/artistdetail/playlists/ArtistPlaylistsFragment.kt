@@ -58,8 +58,7 @@ class ArtistPlaylistsFragment : BaseFragment() {
 
         viewModel.playlists.observe(this, Observer {
             when (it.status) {
-                Status.LOADING -> {
-
+                Status.LOADING -> { /* Show loading*/
                 }
                 Status.SUCCESS -> {
                     showSuccess()

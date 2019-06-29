@@ -53,7 +53,7 @@ open class BaseActivity : AppCompatActivity() {
                 Log.d(TAG, "onAdLoaded")
                 if (!hasShownFirstInterAds) {
                     hasShownFirstInterAds = true
-                    //showInterstitialAd()
+                    showInterstitialAd()
                 }
             }
 
@@ -102,7 +102,7 @@ open class BaseActivity : AppCompatActivity() {
         if (interstitialAd.isLoaded) {
             onAdsShown()
             handler.postDelayed({
-                //interstitialAd.show()
+                interstitialAd.show()
             }, 1000)
         }
     }
@@ -117,7 +117,7 @@ open class BaseActivity : AppCompatActivity() {
 
     fun observeAdsRequests() {
         RequestAdsLiveData.observe(this, Observer {
-            //showInterstitialAd()
+            showInterstitialAd()
         })
     }
 
@@ -151,7 +151,7 @@ open class BaseActivity : AppCompatActivity() {
             val clickTrackCount = UserPrefs.getClickTrackCount()
             Log.d(TAG, "Click track count = $clickTrackCount")
             if (clickTrackCount % 4 == 0) {
-                //showInterstitialAd()
+                showInterstitialAd()
             }
         })
     }

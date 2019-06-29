@@ -53,7 +53,7 @@ class GenrePlaylistsFragment : BaseFragment() {
         viewModel.playlists.observe(this, Observer { resource ->
             when (resource.status) {
                 Status.LOADING -> {
-
+                    // Review
                 }
                 Status.ERROR -> {
                     showError()

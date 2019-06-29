@@ -17,7 +17,7 @@ import com.secureappinc.musicplayer.utils.gone
 import com.secureappinc.musicplayer.utils.visible
 import kotlinx.android.synthetic.main.fragment_play_list.*
 
-class FavouriteTracksFragment : Fragment(), FavouriteTracksAdapter.onItemClickListener {
+class FavouriteTracksFragment : Fragment(), FavouriteTracksAdapter.OnItemClickListener {
 
     val TAG = "PlayListFragment"
 

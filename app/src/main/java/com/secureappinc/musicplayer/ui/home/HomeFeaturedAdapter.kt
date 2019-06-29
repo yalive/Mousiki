@@ -33,8 +33,8 @@ internal class HomeFeaturedAdapter(var mContext: Context, val onVideoSelected: (
     }
 
     // Returns true if a particular object (page) is from a particular page
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view === `object`
+    override fun isViewFromObject(view: View, objectView: Any): Boolean {
+        return view === objectView
     }
 
     // This method should create the page for the given position passed to it as an argument.
@@ -60,7 +60,7 @@ internal class HomeFeaturedAdapter(var mContext: Context, val onVideoSelected: (
     }
 
     // Removes the page from the container for the given position.
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as View)
+    override fun destroyItem(container: ViewGroup, position: Int, objectView: Any) {
+        container.removeView(objectView as View)
     }
 }

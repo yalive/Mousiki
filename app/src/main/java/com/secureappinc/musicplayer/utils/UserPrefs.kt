@@ -63,7 +63,6 @@ object UserPrefs {
     }
 
     fun resetNumberOfTrackClick() {
-        val count = getClickTrackCount()
         getPrefs().edit().putInt(CLICK_TRACK_COUNT, 0).apply()
     }
 

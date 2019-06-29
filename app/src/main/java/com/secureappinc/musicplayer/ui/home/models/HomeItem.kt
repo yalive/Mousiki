@@ -50,7 +50,6 @@ data class ChartModel(val title: String, @DrawableRes val image: Int, val playli
     companion object {
 
         val allValues = mutableListOf<ChartModel>().apply {
-            // add(ChartModel("Top Tracks", R.drawable.img_chart_0, ""))
             add(ChartModel("Billboard Top", R.drawable.img_chart_1, "PLD7SPvDoEddZUrho5ynsBfaI7nqhaNN5c"))
             add(ChartModel("UK Top", R.drawable.img_chart_2, "PL2vrmw2gup2Jre1MK2FL72rQkzbQzFnFM"))
             add(ChartModel("Itunes Top", R.drawable.img_chart_3, "PLYaYA2UVwkq0NAuTPF8F8RsNR3WWqTEU4"))

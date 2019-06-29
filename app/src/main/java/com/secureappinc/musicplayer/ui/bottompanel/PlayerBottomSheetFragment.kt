@@ -86,6 +86,7 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // Nothing
             }
         })
 
@@ -97,7 +98,7 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
 
         val currentState = requireActivity().lifecycle.currentState
         if (currentState < Lifecycle.State.RESUMED) {
-
+            // Review
         } else {
             backVideoToOldPlace()
         }
@@ -123,26 +124,12 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
         } else if (oldPlace1 is EmplacementCenter) {
             VideoEmplacementLiveData.center()
         } else if (oldPlace1 is EmplacementPlaylist) {
-
-            if (oldPlace2 is EmplacementBottom) {
-                VideoEmplacementLiveData.bottom()
-            } else if (oldPlace2 is EmplacementCenter) {
-                VideoEmplacementLiveData.center()
-            }
-        } else if (oldPlace1 is EmplacementPlaylist) {
-
             if (oldPlace2 is EmplacementBottom) {
                 VideoEmplacementLiveData.bottom()
             } else if (oldPlace2 is EmplacementCenter) {
                 VideoEmplacementLiveData.center()
             }
         }
-    }
-
-    fun onGlobalLayoutEvent() {
-        val location = IntArray(2)
-        val locationInWindow = imgSongShadow?.getLocationInWindow(location)
-        Log.d(TAG, "locationInWindow = (${location[0]},${location[1]})")
     }
 
     private fun showBottomMenuButtons(musicTrack: MusicTrack) {

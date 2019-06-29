@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
  */
 class YTSearchVideosAdapter(
     items: List<MusicTrack>,
-    private val itemClickListener: onItemClickListener,
+    private val itemClickListener: OnItemClickListener,
     val onVideoSelected: () -> Unit
 ) :
     RecyclerView.Adapter<YTSearchVideosAdapter.NewReleaseViewHolder>() {
@@ -59,7 +59,7 @@ class YTSearchVideosAdapter(
             }
         }
 
-        fun bind(item: MusicTrack, itemClickListener: onItemClickListener) {
+        fun bind(item: MusicTrack, itemClickListener: OnItemClickListener) {
             Picasso.get().load(item.imgUrl)
                 .fit()
                 .into(imgSong)
@@ -73,7 +73,7 @@ class YTSearchVideosAdapter(
         }
     }
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(musicTrack: MusicTrack)
     }
 }

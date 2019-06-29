@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
-class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.onItemClickListener {
+class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.OnItemClickListener {
 
     val TAG = "NewReleaseFragment"
 
