@@ -18,7 +18,7 @@ repositories {
 apply plugin: "kotlin-allopen"
 allOpen {
     // allows mocking for classes w/o directly opening them for release builds
-    annotation 'com.secureappinc.musicplayer.OpenClass'
+    annotation 'com.cas.musicplayer.OpenClass'
 }
 
 buildscript {
@@ -54,12 +54,12 @@ android {
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.secureappinc.freemusic"
+        applicationId "com.cas.freemusic"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 10
         versionName "1.64"
-        testInstrumentationRunner "com.secureappinc.musicplayer.testing.TestRunner"
+        testInstrumentationRunner "com.cas.musicplayer.testing.TestRunner"
         signingConfig signingConfigs.releaseConfig
     }
 
