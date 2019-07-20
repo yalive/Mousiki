@@ -46,10 +46,10 @@ repositories {
 android {
     signingConfigs {
         releaseConfig {
-            keyAlias 'secureappinc'
-            keyPassword 'secureappinc'
+            keyAlias 'yabahddou'
+            keyPassword 'yabahddou'
             storeFile file('../keystore/keystore')
-            storePassword 'secureappinc'
+            storePassword 'yabahddou'
         }
     }
     compileSdkVersion 28
