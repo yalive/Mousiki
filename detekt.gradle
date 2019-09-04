@@ -1,0 +1,17 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+    toolVersion = "1.0.1"
+    input = files("src/main/java")
+    config = files("$rootDir/default-detekt-config.yml")
+    reports {
+        xml {
+            enabled = true                                // Enable/Disable XML report (default: true)
+            destination = file("build/reports/detekt.xml")  // Path where XML report will be stored (default: `build/reports/detekt/detekt.xml`)
+        }
+        html {
+            enabled = true                                // Enable/Disable HTML report (default: true)
+            destination = file("build/reports/detekt.html") // Path where HTML report will be stored (default: `build/reports/detekt/detekt.html`)
+        }
+    }
+}
