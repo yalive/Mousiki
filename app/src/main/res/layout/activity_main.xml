@@ -13,7 +13,7 @@
         android:id="@+id/cordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_music_1"
+        android:background="#78909C"
         tools:context=".ui.MainActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:collapsedTitleTextAppearance="@style/Toolbar.TitleText"
-                app:contentScrim="@android:color/black"
+                app:contentScrim="@color/colorSplash"
                 app:expandedTitleGravity="bottom|center_horizontal"
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
@@ -95,7 +95,6 @@
             android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
     <FrameLayout
         android:id="@+id/bottomPanelContent"
