@@ -14,11 +14,15 @@
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="@dimen/four_4dp"
+        android:elevation="4dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
         app:cardPreventCornerOverlap="true">
 
         <ImageView
             android:id="@+id/imgSong"
             android:layout_width="match_parent"
+            android:scaleType="matrix"
             android:layout_height="match_parent" />
     </androidx.cardview.widget.CardView>
 

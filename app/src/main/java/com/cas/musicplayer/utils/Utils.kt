@@ -72,6 +72,7 @@ object Utils {
 
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Free Music App")
         emailIntent.putExtra(Intent.EXTRA_TEXT, "")
+        emailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         MusicApp.get().startActivity(Intent.createChooser(emailIntent, "Send email..."))
     }
 
@@ -185,9 +186,9 @@ fun getCurrentLocale(): String {
     val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
     val countryCodeValue = tm.networkCountryIso
 
-    if (countryCodeValue != null) {
+    /*if (countryCodeValue != null) {
         return countryCodeValue
-    }
+    }*/
 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         MusicApp.get().resources.configuration.locales.get(0).country

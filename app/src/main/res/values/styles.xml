@@ -43,7 +43,7 @@
 
     <style name="AppTheme.Launcher">
         <!-- The background-->
-        <item name="android:windowBackground">@drawable/img_splash</item>
+        <item name="android:windowBackground">@drawable/bg_splash</item>
         <!-- Make status bar white as the background-->
         <item name="colorPrimaryDark">@color/colorSplash</item>
 
