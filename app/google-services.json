@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "113879425493",
-    "firebase_url": "https://free-music-39b0a.firebaseio.com",
-    "project_id": "free-music-39b0a",
-    "storage_bucket": "free-music-39b0a.appspot.com"
+    "project_number": "647445796489",
+    "firebase_url": "https://mousiki-256920.firebaseio.com",
+    "project_id": "mousiki-256920",
+    "storage_bucket": "mousiki-256920.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:113879425493:android:a5fc9ef4d8c43cb6",
+        "mobilesdk_app_id": "1:647445796489:android:a0918e9c377b0df74b5858",
         "android_client_info": {
           "package_name": "com.cas.freemusic"
         }
       },
       "oauth_client": [
         {
-          "client_id": "113879425493-6f1elr0k3g4nvg1n86kri4dk98omlpb3.apps.googleusercontent.com",
+          "client_id": "647445796489-ga0mhh797215srcan4c98bsm5ve31kmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cas.freemusic",
+            "certificate_hash": "ee20acb8c093b76dda15f054b106fe7b71d417ee"
+          }
+        },
+        {
+          "client_id": "647445796489-69gufiegeg6te2lk16n52gdvr8f4gulo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDaplJJ8osCoQmqnxe4of6maHAyhYkrqj4"
+          "current_key": "AIzaSyAlH2WVXkmKzwzpsoEsGBjPCw1i7i8oS5U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "113879425493-6f1elr0k3g4nvg1n86kri4dk98omlpb3.apps.googleusercontent.com",
+              "client_id": "647445796489-69gufiegeg6te2lk16n52gdvr8f4gulo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

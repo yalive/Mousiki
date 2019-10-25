@@ -97,12 +97,22 @@
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/btnLockScreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sixteen_16dp"
+                android:layout_marginEnd="@dimen/sixteen_16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_lock_screen" />
+
+            <ImageButton
                 android:id="@+id/btnFullScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/sixteen_16dp"
                 android:layout_marginEnd="@dimen/sixteen_16dp"
-                android:background="?selectableItemBackgroundBorderless"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/app_name"
                 android:rotation="90"
                 android:src="@drawable/ic_fullscreen" />
@@ -117,6 +127,22 @@
             android:layout_marginEnd="@dimen/twenty_four_24dp"
             android:ellipsize="end"
             android:gravity="center"
+            android:lines="2"
+            android:textColor="@color/colorWhite"
+            tools:background="#f00"
+            tools:text="Video title" />
+
+        <TextView
+            android:id="@+id/txtTitleVideoLock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtTitleVideoCenter"
+            android:layout_marginStart="@dimen/twenty_four_24dp"
+            android:layout_marginTop="168dp"
+            android:layout_marginEnd="@dimen/twenty_four_24dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:visibility="gone"
             android:lines="2"
             android:textColor="@color/colorWhite"
             tools:background="#f00"
@@ -137,6 +163,26 @@
             android:src="@drawable/ic_youtube_copyright"
             android:text="Developed with Youtube"
             android:textAllCaps="false" />
+
+        <com.ncorti.slidetoact.SlideToActView
+            android:id="@+id/slideToUnlock"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/playbackControlsView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:elevation="6dp"
+            android:visibility="gone"
+            app:animate_completion="true"
+            app:inner_color="@color/white"
+            app:outer_color="@color/colorBlack"
+            app:rotate_icon="true"
+            app:slider_height="60dp"
+            app:slider_icon="@drawable/ic_arrow_unlock"
+            app:slider_locked="false"
+            app:text="Slide to unlock"
+            app:text_color="@color/white"
+            app:text_size="12sp" />
 
         <LinearLayout
             android:id="@+id/favView"
