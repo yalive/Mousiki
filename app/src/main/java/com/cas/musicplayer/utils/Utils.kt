@@ -23,6 +23,7 @@ import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.R
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
@@ -75,6 +76,16 @@ object Utils {
         emailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         MusicApp.get().startActivity(Intent.createChooser(emailIntent, "Send email..."))
     }
+
+    fun sendEmail(context: Context) {
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+            "mailto", "fayssel.mp1993@gmail.com", null))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "")
+        context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
+
+    }
+
 
     /**
      * Load json from asset file

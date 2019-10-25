@@ -19,7 +19,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.EmplacementOut
@@ -32,6 +31,7 @@ import com.cas.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.cas.musicplayer.utils.*
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.viewmodel.viewModel
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.yarolegovich.slidingrootnav.SlidingRootNav
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder
@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
 
     private val tag = "MainActivity"
     private var contentMenu: ViewGroup? = null
-    private lateinit var slidingMenu: SlidingRootNav
+    lateinit var slidingMenu: SlidingRootNav
     private lateinit var navController: NavController
 
 
@@ -56,6 +56,8 @@ class MainActivity : BaseActivity() {
     private val viewModel by viewModel { injector.mainViewModel }
 
     var isInHome = true
+
+    var isLocked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
@@ -294,7 +296,7 @@ class MainActivity : BaseActivity() {
         }
 
         findViewById<View>(R.id.btnShareFeedback).setOnClickListener {
-            Utils.shareFeedback()
+            Utils.sendEmail(this)
         }
 
         findViewById<View>(R.id.btnSleepTimer).setOnClickListener {
@@ -372,8 +374,11 @@ class MainActivity : BaseActivity() {
             return
         }
 
-        if (isBottomPanelExpanded()) {
+        if (isBottomPanelExpanded() && !isLocked) {
             collapseBottomPanel()
+            return
+        } else if (isLocked) {
+
             return
         }
 
