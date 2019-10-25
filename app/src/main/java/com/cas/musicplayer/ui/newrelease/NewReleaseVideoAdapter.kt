@@ -12,6 +12,8 @@ import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.squareup.picasso.Picasso
 
+
+
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
@@ -21,6 +23,12 @@ class NewReleaseVideoAdapter(
     val onVideoSelected: () -> Unit
 ) :
     RecyclerView.Adapter<NewReleaseVideoAdapter.NewReleaseViewHolder>() {
+
+    // A menu item view type.
+    private val MENU_ITEM_VIEW_TYPE = 0
+
+    // The unified native ad view type.
+    private val UNIFIED_NATIVE_AD_VIEW_TYPE = 1
 
     var items: List<MusicTrack> = items
         set(value) {
