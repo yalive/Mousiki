@@ -11,4 +11,5 @@
     <string name="no_audio_ID">Play a song first, then try again.</string>
     <string name="favourites">Favourites</string>
     <string name="genres">Genres</string>
+    <string name="sponsored">sponsored</string>
 </resources>

@@ -16,6 +16,7 @@ import com.cas.musicplayer.base.common.EventObserver
 import com.cas.musicplayer.base.common.asEvent
 import com.cas.musicplayer.player.ClickVideoListener
 import com.cas.musicplayer.player.OnShowAdsListener
+import com.cas.musicplayer.utils.AudienceNetworkInitializeHelper
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.UserPrefs
 
@@ -42,6 +43,12 @@ open class BaseActivity : AppCompatActivity() {
         configureInterstitialAd()
 
         observeClickVideo()
+
+        // If you call AudienceNetworkAds.buildInitSettings(Context).initialize()
+        // in Application.onCreate() this call is not really necessary.
+        // Otherwise call initialize() onCreate() of all Activities that contain ads or
+        // from onCreate() of your Splash Activity.
+        AudienceNetworkInitializeHelper.initialize(this)
     }
 
     private fun configureInterstitialAd() {
