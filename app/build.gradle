@@ -206,6 +206,9 @@ dependencies {
     // slide to unlock button
     implementation 'com.ncorti:slidetoact:0.7.0'
 
+    // facebook
+    implementation 'com.facebook.android:audience-network-sdk:5.5.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,11 +1,12 @@
 package com.cas.musicplayer
 
 import android.app.Application
-import com.crashlytics.android.Crashlytics
-import com.google.android.gms.ads.MobileAds
 import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
+import com.crashlytics.android.Crashlytics
+import com.facebook.ads.AudienceNetworkAds
+import com.google.android.gms.ads.MobileAds
 import io.fabric.sdk.android.Fabric
 
 
@@ -24,6 +25,11 @@ class MusicApp : Application(), ComponentProvider {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (AudienceNetworkAds.isInAdsProcess(this)) {
+
+            return
+        }
         instance = this
         MobileAds.initialize(this, getString(R.string.admob_app_id))
         Fabric.with(this, Crashlytics())
