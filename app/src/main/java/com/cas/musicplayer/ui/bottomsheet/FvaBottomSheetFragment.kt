@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.enteties.MusicTrackRoomDatabase
@@ -16,6 +14,8 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_dialog.*
 import java.util.concurrent.Executors
 
@@ -51,7 +51,7 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
         shareVia.setOnClickListener {
             Log.d(TAG, musicTrack.shareVideoUrl)
-            Utils.shareVia(musicTrack.shareVideoUrl)
+            Utils.shareVia(musicTrack.shareVideoUrl, context!!)
             if (this.isVisible) {
                 this.dismiss()
             }

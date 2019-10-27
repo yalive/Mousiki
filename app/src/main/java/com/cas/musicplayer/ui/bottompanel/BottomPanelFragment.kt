@@ -123,7 +123,7 @@ class BottomPanelFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener,
         }
 
         btnShareVia.setOnClickListener {
-            Utils.shareVia(PlayerQueue.value?.shareVideoUrl)
+            Utils.shareVia(PlayerQueue.value?.shareVideoUrl, mContext = mainActivity)
         }
 
         btnAddFav.setOnClickListener {

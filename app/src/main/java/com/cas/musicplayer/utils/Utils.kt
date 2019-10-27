@@ -36,7 +36,7 @@ object Utils {
 
     var hasShownAdsOneTime = false
 
-    fun shareVia(videoId: String?) {
+    fun shareVia(videoId: String?, mContext: Context) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, videoId)
@@ -44,7 +44,7 @@ object Utils {
         }
 
         // TODO: Resolve intent first
-        MusicApp.get().startActivity(sendIntent)
+        mContext.startActivity(sendIntent)
     }
 
     fun shareAppVia() {
@@ -60,21 +60,6 @@ object Utils {
 
         // TODO: Resolve intent first
         MusicApp.get().startActivity(sendIntent)
-    }
-
-    fun shareFeedback() {
-        val emailIntent = Intent(
-            Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", "memory.games.apps@gmail.com", null
-            )
-        ).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Free Music App")
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "")
-        emailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        MusicApp.get().startActivity(Intent.createChooser(emailIntent, "Send email..."))
     }
 
     fun sendEmail(context: Context) {
