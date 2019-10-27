@@ -58,7 +58,7 @@ class NewReleaseVideoAdapter(
 
     override fun getItemCount(): Int {
 
-        return items.size + mAdItems.size
+        return items.size + mAdItems.size + 1
     }
 
     override fun getItemViewType(position: Int): Int {
