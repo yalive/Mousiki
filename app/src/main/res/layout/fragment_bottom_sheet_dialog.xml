@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorBlack"
     android:gravity="center"
     android:orientation="horizontal"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    android:weightSum="4">
 
     <LinearLayout
         android:id="@+id/shareVia"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
@@ -23,31 +23,31 @@
         android:paddingBottom="8dp">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_share"
-            android:tint="@color/colorYellow" />
+            android:tint="@color/colorAccent" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="@dimen/eight_8dp"
-            android:text="Share"
-            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:text="@string/label_share"
+            android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/favController"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
@@ -56,32 +56,31 @@
 
         <ImageView
             android:id="@+id/favIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_favorite_added_yellow"
-
-            android:tint="@color/colorYellow" />
+            android:tint="@color/colorAccent" />
 
         <TextView
             android:id="@+id/favLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingTop="@dimen/eight_8dp"
+            android:gravity="center"
             android:text="Unfavorite"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
@@ -89,30 +88,30 @@
         android:paddingBottom="8dp">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_playlist_add"
-            android:tint="@color/colorYellow" />
+            android:tint="@color/colorAccent" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="@dimen/eight_8dp"
-            android:text="Add to..."
-            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:text="@string/label_add_to"
+            android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
@@ -127,15 +126,14 @@
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_play"
-            android:tint="@color/colorYellow" />
+            android:tint="@color/colorAccent" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="@dimen/eight_8dp"
-            android:text="Play next"
-            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:text="@string/label_play_next"
+            android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 
     </LinearLayout>
