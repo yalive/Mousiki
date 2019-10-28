@@ -58,7 +58,7 @@ class NewReleaseVideoAdapter(
 
     override fun getItemCount(): Int {
 
-        return items.size + mAdItems.size + 1
+        return items.size + mAdItems.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -114,7 +114,7 @@ class NewReleaseVideoAdapter(
             //Calculate where the next postItem index is by subtracting ads we've shown.
             val index = position - position / AD_DISPLAY_FREQUENCY - 1
 
-            newReleaseVideoAdapter.bind(items[position], itemClickListener)
+            newReleaseVideoAdapter.bind(items[index], itemClickListener)
 
         }
 

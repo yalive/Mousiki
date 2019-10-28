@@ -12,4 +12,7 @@
     <string name="favourites">Favourites</string>
     <string name="genres">Genres</string>
     <string name="sponsored">sponsored</string>
+    <string name="label_share">Share</string>
+    <string name="label_add_to">Add to...</string>
+    <string name="label_play_next">Play next</string>
 </resources>

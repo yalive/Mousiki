@@ -41,7 +41,7 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:padding="@dimen/two_2dp"
-                android:text="03:14"
+                tools:text="03:14"
                 android:textColor="@color/colorWhite"
                 android:textSize="11sp" />
         </RelativeLayout>
@@ -61,7 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
-            android:text="Hello Test"
+            tools:text="Hello Test"
+            android:textSize="14sp"
             android:textColor="@color/colorWhite" />
 
         <TextView
@@ -69,8 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
-            android:text="Hello Test"
-            android:textColor="#71717A"
+            tools:text="Hello Test"
+            android:textColor="#BDBDBE"
             android:textSize="12sp" />
     </LinearLayout>
 
