@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.home
+package com.cas.musicplayer.ui.home.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.ui.home.models.*
+import com.cas.musicplayer.ui.home.domain.model.*
+import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.observer
 import com.squareup.picasso.Picasso
 
 /**
@@ -33,16 +34,13 @@ class HomeAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var newReleaseViewHolder: NewReleaseViewHolder? = null
-    var featuredViewHolder: FeaturedViewHolder? = null
+    private var newReleaseViewHolder: NewReleaseViewHolder? = null
+    private var featuredViewHolder: FeaturedViewHolder? = null
 
-    var tracks: List<MusicTrack> = listOf()
-        set(value) {
-            field = value
-            newReleaseViewHolder?.adapter?.updateList(value)
-            featuredViewHolder?.update(value)
-
-        }
+    var newReleaseItems: List<NewReleaseDisplayedItem> by observer(emptyList()) { value ->
+        newReleaseViewHolder?.adapter?.newReleaseItems = value
+        featuredViewHolder?.adapter?.newReleaseItems = value
+    }
 
     companion object {
         const val TYPE_FEATURED = 1
@@ -56,29 +54,35 @@ class HomeAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
             TYPE_HEADER -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_header, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_home_header, parent, false)
                 return HeaderViewHolder(view)
             }
             TYPE_FEATURED -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_featured, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_home_featured, parent, false)
                 featuredViewHolder = FeaturedViewHolder(view)
                 return featuredViewHolder!!
             }
             TYPE_NEW_RELEASE -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_new_release, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_home_new_release, parent, false)
                 newReleaseViewHolder = NewReleaseViewHolder(view)
                 return newReleaseViewHolder!!
             }
             TYPE_ARTIST -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_artist, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_home_artist, parent, false)
                 return ArtistViewHolder(view)
             }
             TYPE_CHART -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_new_release, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_home_new_release, parent, false)
                 return ChartViewHolder(view)
             }
             else -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_genre, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_home_genre, parent, false)
                 return GenreViewHolder(view)
             }
         }
@@ -160,7 +164,12 @@ class HomeAdapter(
 
         fun bind(genreMusic: GenreMusic) {
             txtTitle.text = genreMusic.title
-            imgCategory.setImageDrawable(ContextCompat.getDrawable(itemView.context, genreMusic.img))
+            imgCategory.setImageDrawable(
+                ContextCompat.getDrawable(
+                    itemView.context,
+                    genreMusic.img
+                )
+            )
         }
     }
 
@@ -185,32 +194,22 @@ class HomeAdapter(
     }
 
     inner class FeaturedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
+        val adapter = HomeFeaturedAdapter(view.context, onVideoSelected)
         private var viewPager: ViewPager = view.findViewById(R.id.viewPager)
-        private lateinit var adapter: HomeFeaturedAdapter
 
         fun bind() {
-            adapter = HomeFeaturedAdapter(itemView.context, onVideoSelected)
-            adapter.tracks = this@HomeAdapter.tracks
-
-            // Disable clip to padding
-            viewPager.setClipToPadding(false);
-            // set padding manually, the more you set the padding the more you see of prev & next page
-            viewPager.setPadding(40, 0, 40, 0);
-            // sets a margin b/w individual pages to ensure that there is a gap b/w them
-            viewPager.pageMargin = 20
-
+            with(viewPager) {
+                clipToPadding = false;
+                setPadding(40, 0, 40, 0);
+                pageMargin = 20
+            }
+            adapter.newReleaseItems = this@HomeAdapter.newReleaseItems
             viewPager.adapter = adapter
-        }
-
-        fun update(featuredTracks: List<MusicTrack>) {
-            this.adapter.tracks = featuredTracks
-            this.adapter.notifyDataSetChanged()
         }
 
         fun autoScrollFeaturedVideos() {
             val currentItem = viewPager.currentItem
-            if (currentItem < adapter.tracks.size - 1) {
+            if (currentItem < adapter.newReleaseItems.size - 1) {
                 viewPager.setCurrentItem(currentItem + 1, true)
             } else {
                 viewPager.setCurrentItem(0, true)
@@ -219,16 +218,16 @@ class HomeAdapter(
     }
 
     inner class NewReleaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var adapter = HomeNewReleaseAdapter(onVideoSelected)
 
-        private var recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        lateinit var adapter: HomeNewReleaseAdapter
-
-        fun bind() {
-            adapter = HomeNewReleaseAdapter(this@HomeAdapter.tracks, onVideoSelected)
-            recyclerView.layoutManager = LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
+        init {
+            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
             recyclerView.adapter = adapter
         }
 
+        fun bind() {
+            adapter.newReleaseItems = this@HomeAdapter.newReleaseItems
+        }
     }
 
     inner class ChartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -238,7 +237,8 @@ class HomeAdapter(
 
         fun bind(chartItems: List<ChartModel>) {
             adapter = HomeChartAdapter(chartItems)
-            recyclerView.layoutManager = LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
             recyclerView.adapter = adapter
         }
 

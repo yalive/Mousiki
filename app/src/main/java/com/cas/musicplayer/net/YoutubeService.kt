@@ -13,7 +13,6 @@ import retrofit2.http.Url
  */
 interface YoutubeService {
 
-
     companion object {
         private const val SNIPPET_TITLE = "%2Csnippet%2Ftitle"
         private const val SNIPPET_THUMBNAILS = "%2Csnippet%2Fthumbnails"
@@ -22,20 +21,20 @@ interface YoutubeService {
         private const val CONTENTDETAILS_DURATION = "%2CcontentDetails%2Fduration"
 
         const val TRENDING_ITEMS =
-            "&fields=items(id$CONTENTDETAILS_DURATION$SNIPPET_CHANNEL_ID$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
+            "&fields=newReleaseItems(id$CONTENTDETAILS_DURATION$SNIPPET_CHANNEL_ID$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
 
         const val PLAYLIST_ITEMS =
-            "&fields=items(id%2CcontentDetails%2FitemCount$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
+            "&fields=newReleaseItems(id%2CcontentDetails%2FitemCount$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
 
         const val PLAYLISTS =
             "playlists?part=snippet%2CcontentDetails&maxResults=50&videoCategoryId=10$PLAYLIST_ITEMS"
 
         const val VIDEOS =
-            "videos?part=contentDetails,snippet&videoCategoryId=10&fields=items(id$CONTENTDETAILS_DURATION$SNIPPET_CHANNEL_ID$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
+            "videos?part=contentDetails,snippet&videoCategoryId=10&fields=newReleaseItems(id$CONTENTDETAILS_DURATION$SNIPPET_CHANNEL_ID$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)"
 
         // Get images
         const val CHANNELS =
-            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items(id$SNIPPET_THUMBNAILS$SNIPPET_TITLE)"
+            "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=newReleaseItems(id$SNIPPET_THUMBNAILS$SNIPPET_TITLE)"
 
     }
 
@@ -66,24 +65,24 @@ interface YoutubeService {
         @Query("channelId") channelId: String
     ): Playlists
 
-    @GET("search?part=snippet&maxResults=50&videoCategory=10&type=video&fields=items(id%2FvideoId)")
+    @GET("search?part=snippet&maxResults=50&videoCategory=10&type=video&fields=newReleaseItems(id%2FvideoId)")
     suspend fun channelVideoIds(
         @Query("channelId") channelId: String
     ): SearchResults
 
-    @GET("playlistItems?part=contentDetails&fields=items(contentDetails%2FvideoId)")
+    @GET("playlistItems?part=contentDetails&fields=newReleaseItems(contentDetails%2FvideoId)")
     suspend fun playlistVideoIds(
         @Query("playlistId") playlistId: String,
         @Query("maxResults") maxResults: Int
     ): PlaylistItems
 
-    @GET("search?part=snippet&videoCategory=10&videoCategoryId=10&type=video&fields=items(id%2FvideoId)")
+    @GET("search?part=snippet&videoCategory=10&videoCategoryId=10&type=video&fields=newReleaseItems(id%2FvideoId)")
     suspend fun searchVideoIdsByQuery(
         @Query("q") query: String,
         @Query("maxResults") maxResults: Int
     ): SearchResults
 
-    @GET("search?part=snippet&videoCategory=10&fields=items(id%2FchannelId%2Cid%2FplaylistId)")
+    @GET("search?part=snippet&videoCategory=10&fields=newReleaseItems(id%2FchannelId%2Cid%2FplaylistId)")
     suspend fun searchItemIdsByQuery(
         @Query("q") query: String,
         @Query("type") type: String,
@@ -91,7 +90,7 @@ interface YoutubeService {
     ): SearchResults
 
     // Return just title
-    @GET("playlistItems?part=snippet,contentDetails&fields=items(snippet%2Ftitle)")
+    @GET("playlistItems?part=snippet,contentDetails&fields=newReleaseItems(snippet%2Ftitle)")
     suspend fun playlistVideoTitles(
         @Query("playlistId") playlistId: String,
         @Query("maxResults") maxResults: Int

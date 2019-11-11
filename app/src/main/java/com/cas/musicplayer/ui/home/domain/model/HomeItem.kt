@@ -1,10 +1,10 @@
-package com.cas.musicplayer.ui.home.models
+package com.cas.musicplayer.ui.home.domain.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.ui.home.HomeAdapter
+import com.cas.musicplayer.ui.home.ui.adapters.HomeAdapter
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -220,9 +220,5 @@ data class GenreMusic(val title: String, val img: Int, val channelId: String, va
                 )
             )
         }
-    }
-
-    fun toArtist(): Artist {
-        return Artist(title, "us", channelId)
     }
 }

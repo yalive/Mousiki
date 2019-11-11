@@ -2,13 +2,13 @@ package com.cas.musicplayer.ui.newrelease
 
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.base.common.hasItems
 import com.cas.musicplayer.base.common.isLoading
 import com.cas.musicplayer.base.common.loading
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.repository.NewReleaseRepository
-import com.cas.musicplayer.ui.home.uiScope
+import com.cas.musicplayer.ui.home.ui.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ import javax.inject.Inject
  */
 class NewReleaseViewModel @Inject constructor(val newReleaseRepository: NewReleaseRepository) : BaseViewModel() {
 
-    var trendingTracks = MutableLiveData<Resource<List<MusicTrack>>>()
+    var trendingTracks = MutableLiveData<ResourceOld<List<MusicTrack>>>()
 
     fun loadTrendingMusic() = uiScope.launch(coroutineContext) {
         if (trendingTracks.hasItems() || trendingTracks.isLoading()) {

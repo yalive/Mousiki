@@ -1,7 +1,8 @@
 package com.cas.musicplayer.net
 
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.mappers.Mapper
-import com.cas.musicplayer.ui.home.bgContext
+import com.cas.musicplayer.ui.home.ui.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,14 +20,17 @@ class RetrofitRunner @Inject constructor() {
      * [T]: The return type of the webservice call.
      * [E]: Mapped to model
      */
-    suspend fun <T, E> executeNetworkCall(mapper: Mapper<T, E>, request: suspend () -> T): Result<E> = try {
+    suspend fun <T, E> executeNetworkCall(
+        mapper: Mapper<T, E>,
+        request: suspend () -> T
+    ): Result<E> = try {
         val response = request()
         val mappedResponse = withContext(bgContext) {
             mapper.map(response)
         }
-        Success(mappedResponse)
+        Result.Success(mappedResponse)
     } catch (e: Exception) {
-        ErrorResult(e)
+        Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
     }
 }
 

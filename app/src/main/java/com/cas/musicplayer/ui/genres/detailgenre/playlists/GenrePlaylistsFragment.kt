@@ -10,7 +10,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.cas.musicplayer.ui.home.models.GenreMusic
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
 import com.cas.musicplayer.utils.visible

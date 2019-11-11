@@ -1,9 +1,10 @@
-package com.cas.musicplayer.ui.home
+package com.cas.musicplayer.ui.home.ui
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.musicplayer.ui.home.ui.adapters.HomeAdapter
 import com.cas.musicplayer.utils.dpToPixel
 
 

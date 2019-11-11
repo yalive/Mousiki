@@ -1,23 +1,45 @@
 package com.cas.musicplayer.net
 
+import androidx.annotation.StringRes
 import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-06-10.
  ***************************************
  */
-sealed class Result<T> {
-    open fun get(): T? = null
+sealed class Result<out T> {
+    data class Success<T>(val data: T) : Result<T>()
+    data class Error(val message: AppMessage, val code: String = "") : Result<Nothing>()
 }
 
-data class Success<T>(val data: T) : Result<T>() {
-    override fun get(): T = data
+sealed class AppMessage {
+    data class ResourceMessage(
+        @StringRes val resMessage: Int,
+        val arguments: List<String> = emptyList()
+    ) : AppMessage()
+
+    data class StringMessage(val message: String) : AppMessage()
 }
 
-data class ErrorResult<T>(val exception: Exception) : Result<T>()
+fun <T> Result<T>.asOldResource(): ResourceOld<T> {
+    return when (this) {
+        is Result.Success -> ResourceOld.success(this.data)
+        is Result.Error -> ResourceOld.error("error")
+    }
+}
 
+fun <T> Result<T>.asResource(): Resource<T> {
+    return when (this) {
+        is Result.Success -> Resource.Success(data)
+        is Result.Error -> Resource.Failure(message)
+    }
+}
 
-fun <T> Result<T>.toResource(): Resource<T> {
-    return if (this is Success) Resource.success(this.data) else Resource.error("error")
+suspend fun <I, O> Result<I>.map(mapSuccess: suspend (I) -> O): Result<O> {
+    return when (this) {
+        is Result.Success -> Result.Success(mapSuccess(data))
+        is Result.Error -> this
+    }
 }

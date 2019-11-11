@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.enteties.Playlist
-import com.cas.musicplayer.ui.home.models.GenreMusic
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.utils.loadImage
 
 /**

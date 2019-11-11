@@ -2,12 +2,12 @@ package com.cas.musicplayer.ui.searchyoutube
 
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.Channel
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.repository.SearchRepository
-import com.cas.musicplayer.ui.home.uiScope
+import com.cas.musicplayer.ui.home.ui.uiScope
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.cas.musicplayer.utils.getLanguage
 import kotlinx.coroutines.launch
@@ -20,9 +20,9 @@ import javax.inject.Inject
  */
 class SearchYoutubeViewModel @Inject constructor(val searchRepository: SearchRepository) : BaseViewModel() {
 
-    val videos = MutableLiveData<Resource<List<MusicTrack>>>()
-    val channels = MutableLiveData<Resource<List<Channel>>>()
-    val playlists = MutableLiveData<Resource<List<Playlist>>>()
+    val videos = MutableLiveData<ResourceOld<List<MusicTrack>>>()
+    val channels = MutableLiveData<ResourceOld<List<Channel>>>()
+    val playlists = MutableLiveData<ResourceOld<List<Playlist>>>()
 
     val searchSuggestions = MutableLiveData<List<String>>()
 
@@ -39,21 +39,21 @@ class SearchYoutubeViewModel @Inject constructor(val searchRepository: SearchRep
     }
 
     private suspend fun loadVideos(query: String) {
-        videos.value = Resource.loading()
+        videos.value = ResourceOld.loading()
         val resource = searchRepository.searchTracks(query)
         videos.value = resource
         println()
     }
 
     private suspend fun loadPlaylists(query: String) {
-        playlists.value = Resource.loading()
+        playlists.value = ResourceOld.loading()
         val resource = searchRepository.searchPlaylists(query)
         playlists.value = resource
         println()
     }
 
     private suspend fun loadChannels(query: String) {
-        channels.value = Resource.loading()
+        channels.value = ResourceOld.loading()
         val resource = searchRepository.searchChannels(query)
         channels.value = resource
         println()

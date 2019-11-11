@@ -184,22 +184,17 @@ enum class PlaySort(@DrawableRes val icon: Int) {
     LOOP_ALL(R.drawable.ic_repeat_all),
     SEQUENCE(R.drawable.ic_sequence);
 
-    fun next(): PlaySort {
-        if (this == RANDOM) {
-            return LOOP_ONE
-        } else if (this == LOOP_ONE) {
-            return LOOP_ALL
-        } else if (this == LOOP_ALL) {
-            return SEQUENCE
-        } else {
-            return RANDOM
-        }
+    fun next(): PlaySort = when {
+        this == RANDOM -> LOOP_ONE
+        this == LOOP_ONE -> LOOP_ALL
+        this == LOOP_ALL -> SEQUENCE
+        else -> RANDOM
     }
 
     companion object {
         fun toEnum(enumString: String): PlaySort {
             return try {
-                PlaySort.valueOf(enumString)
+                valueOf(enumString)
             } catch (ex: Exception) {
                 // For error cases
                 SEQUENCE
