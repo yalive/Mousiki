@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.lifecycle.Observer
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.ui.BaseFragment
@@ -95,7 +95,7 @@ class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.OnItemClickLis
 
     }
 
-    private fun updateUI(resource: Resource<List<MusicTrack>>) {
+    private fun updateUI(resource: ResourceOld<List<MusicTrack>>) {
         if (resource.status == Status.LOADING) {
             txtError.gone()
             progressBar.visible()

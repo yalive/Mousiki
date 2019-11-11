@@ -2,11 +2,11 @@ package com.cas.musicplayer.ui.artists.list
 
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.repository.ArtistsRepository
-import com.cas.musicplayer.ui.home.uiScope
+import com.cas.musicplayer.ui.home.ui.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ import javax.inject.Inject
  */
 class ArtistListViewModel @Inject constructor(val repository: ArtistsRepository) : BaseViewModel() {
 
-    var artistResources = MutableLiveData<Resource<List<Artist>>>()
+    var artistResources = MutableLiveData<ResourceOld<List<Artist>>>()
 
     private val pageSize = 15
 
@@ -25,7 +25,7 @@ class ArtistListViewModel @Inject constructor(val repository: ArtistsRepository)
         if (artistResources.value != null && artistResources.value?.data != null && artistResources.value?.data!!.size > 0) {
             return@launch
         }
-        artistResources.value = Resource.loading()
+        artistResources.value = ResourceOld.loading()
         val artistList = repository.getArtistsFromFile()
         //artistResources.value = Resource.success(artistList)
         loadImages(artistList)
@@ -53,9 +53,9 @@ class ArtistListViewModel @Inject constructor(val repository: ArtistsRepository)
     private fun appendArtists(artists: List<Artist>) {
         val resource = artistResources.value
         if (resource != null && resource.status == Status.SUCCESS) {
-            artistResources.value = Resource.success(resource.data!! + artists)
+            artistResources.value = ResourceOld.success(resource.data!! + artists)
         } else {
-            artistResources.value = Resource.success(artists)
+            artistResources.value = ResourceOld.success(artists)
         }
     }
 }

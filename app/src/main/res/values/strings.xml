@@ -15,4 +15,7 @@
     <string name="label_share">Share</string>
     <string name="label_add_to">Add to...</string>
     <string name="label_play_next">Play next</string>
+
+    <!-- Common -->
+    <string name="common_technical_issue">Something was wrong</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.home
+package com.cas.musicplayer.ui.home.ui.adapters
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment
-import com.cas.musicplayer.ui.home.models.ChartModel
+import com.cas.musicplayer.ui.home.domain.model.ChartModel
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
@@ -28,13 +28,13 @@ class HomeChartAdapter(var items: List<ChartModel>) :
     RecyclerView.Adapter<HomeChartAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeChartAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(com.cas.musicplayer.R.layout.item_home_chart, parent, false)
+            .inflate(R.layout.item_home_chart, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeChartAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 

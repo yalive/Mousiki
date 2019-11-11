@@ -5,8 +5,8 @@ import com.cas.musicplayer.OpenForTesting
 import com.cas.musicplayer.base.BaseViewModel
 import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.repository.PlaylistRepository
-import com.cas.musicplayer.ui.home.models.ChartModel
-import com.cas.musicplayer.ui.home.uiScope
+import com.cas.musicplayer.ui.home.domain.model.ChartModel
+import com.cas.musicplayer.ui.home.ui.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

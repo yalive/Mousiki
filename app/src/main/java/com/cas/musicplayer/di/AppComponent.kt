@@ -1,7 +1,6 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
-import com.google.gson.Gson
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsViewModel
@@ -12,9 +11,11 @@ import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreViewModel
 import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsViewModel
 import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreVideosViewModel
 import com.cas.musicplayer.ui.genres.list.GenresViewModel
-import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.ui.home.di.HomeModule
+import com.cas.musicplayer.ui.home.ui.HomeViewModel
 import com.cas.musicplayer.ui.newrelease.NewReleaseViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
+import com.google.gson.Gson
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -26,7 +27,12 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(
+    modules = [
+        AppModule::class,
+        HomeModule::class
+    ]
+)
 interface AppComponent {
 
     @Component.Factory

@@ -1,14 +1,14 @@
 package com.cas.musicplayer.repository
 
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.Channel
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.data.mappers.*
 import com.cas.musicplayer.net.RetrofitRunner
-import com.cas.musicplayer.net.Success
+import com.cas.musicplayer.net.Result.Success
 import com.cas.musicplayer.net.YoutubeService
-import com.cas.musicplayer.net.toResource
+import com.cas.musicplayer.net.asOldResource
 import org.json.JSONArray
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,43 +30,43 @@ class SearchRepository @Inject constructor(
     private val playlistIdMapper: YTBSearchResultToPlaylistId
 ) {
 
-    suspend fun searchTracks(query: String): Resource<List<MusicTrack>> {
+    suspend fun searchTracks(query: String): ResourceOld<List<MusicTrack>> {
         val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
             youtubeService.searchVideoIdsByQuery(query, 50).items!!
-        } as? Success ?: return Resource.error("")
+        } as? Success ?: return ResourceOld.error("")
 
         // 2 - Get videos
         val ids = idsResult.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
             youtubeService.videos(ids).items!!
         }
-        return videosResult.toResource()
+        return videosResult.asOldResource()
     }
 
-    suspend fun searchPlaylists(query: String): Resource<List<Playlist>> {
+    suspend fun searchPlaylists(query: String): ResourceOld<List<Playlist>> {
         val idsResult = retrofitRunner.executeNetworkCall(playlistIdMapper.toListMapper()) {
             youtubeService.searchItemIdsByQuery(query, "playlist", 30).items!!
-        } as? Success ?: return Resource.error("")
+        } as? Success ?: return ResourceOld.error("")
 
         // 2 - Get videos
         val ids = idsResult.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(playlistMapper.toListMapper()) {
             youtubeService.playlists(ids).items!!
         }
-        return videosResult.toResource()
+        return videosResult.asOldResource()
     }
 
 
-    suspend fun searchChannels(query: String): Resource<List<Channel>> {
+    suspend fun searchChannels(query: String): ResourceOld<List<Channel>> {
         val idsResult = retrofitRunner.executeNetworkCall(channelIdMapper.toListMapper()) {
             youtubeService.searchItemIdsByQuery(query, "channel", 15).items!!
-        } as? Success ?: return Resource.error("")
+        } as? Success ?: return ResourceOld.error("")
 
         val ids = idsResult.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(channelMapper.toListMapper()) {
             youtubeService.channels(ids).items!!
         }
-        return videosResult.toResource()
+        return videosResult.asOldResource()
     }
 
     suspend fun getSuggestions(url: String): List<String> {

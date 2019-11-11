@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.home
+package com.cas.musicplayer.ui.home.ui
 
 
 import android.os.Bundle
@@ -11,22 +11,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.cas.musicplayer.R
 import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.base.common.Status
-import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.cas.musicplayer.ui.home.models.*
+import com.cas.musicplayer.ui.home.domain.model.*
+import com.cas.musicplayer.ui.home.ui.adapters.HomeAdapter
+import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.cas.musicplayer.utils.gone
 import com.cas.musicplayer.utils.visible
 import com.cas.musicplayer.viewmodel.viewModel
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -37,8 +39,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnMoreItemClickListener {
 
     private val viewModel by viewModel { injector.homeViewModel }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(com.cas.musicplayer.R.layout.fragment_home, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -54,7 +60,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnMoreItemClickListener {
                 }
             }
         }
-        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
+        val collapsingToolbar =
+            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
 
         val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
 
@@ -67,11 +74,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnMoreItemClickListener {
                 if (it is GenreItem) {
                     val bundle = Bundle()
                     bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, it.genre)
-                    findNavController().navigate(com.cas.musicplayer.R.id.detailGenreFragment, bundle)
+                    findNavController().navigate(
+                        R.id.detailGenreFragment,
+                        bundle
+                    )
                 } else if (it is ArtistItem) {
                     val bundle = Bundle()
                     bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, it.artist)
-                    findNavController().navigate(com.cas.musicplayer.R.id.artistFragment, bundle)
+                    findNavController().navigate(R.id.artistFragment, bundle)
                 }
             }, {
                 val mainActivity = requireActivity() as MainActivity
@@ -83,7 +93,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnMoreItemClickListener {
         recyclerView.adapter = adapter
         val spacingDp = requireActivity().dpToPixel(8f)
         val marginDp = requireActivity().dpToPixel(8f)
-        recyclerView.addItemDecoration(GridSpacingItemDecoration(spacingDp, marginDp))
+        recyclerView.addItemDecoration(
+            GridSpacingItemDecoration(
+                spacingDp,
+                marginDp
+            )
+        )
 
         viewModel.trendingTracks.observe(this, Observer { resource ->
             updateUI(resource)
@@ -115,7 +130,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnMoreItemClickListener {
         handler.removeCallbacks(autoScrollRunnable)
     }
 
-    private fun updateArtists(resource: Resource<List<Artist>>) {
+    private fun updateArtists(resource: ResourceOld<List<Artist>>) {
         if (resource.status == Status.SUCCESS) {
             val artists = resource.data!!
 
@@ -133,20 +148,24 @@ class HomeFragment : Fragment(), HomeAdapter.OnMoreItemClickListener {
         }
     }
 
-    private fun updateUI(resource: Resource<List<MusicTrack>>) {
-        if (resource.status == Status.LOADING) {
-            txtError.gone()
-            progressBar.visible()
-            recyclerView.gone()
-        } else if (resource.status == Status.ERROR) {
-            txtError.visible()
-            progressBar.gone()
-            recyclerView.gone()
-        } else {
-            txtError.gone()
-            progressBar.gone()
-            recyclerView.visible()
-            adapter.tracks = resource.data!!
+    private fun updateUI(resource: Resource<List<NewReleaseDisplayedItem>>) {
+        when (resource) {
+            is Resource.Loading -> {
+                txtError.gone()
+                progressBar.visible()
+                recyclerView.gone()
+            }
+            is Resource.Failure -> {
+                txtError.visible()
+                progressBar.gone()
+                recyclerView.gone()
+            }
+            is Resource.Success -> {
+                txtError.gone()
+                progressBar.gone()
+                recyclerView.visible()
+                adapter.newReleaseItems = resource.data
+            }
         }
     }
 

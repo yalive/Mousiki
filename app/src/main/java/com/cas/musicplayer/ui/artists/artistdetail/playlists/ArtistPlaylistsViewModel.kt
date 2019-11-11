@@ -2,10 +2,10 @@ package com.cas.musicplayer.ui.artists.artistdetail.playlists
 
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.repository.ArtistsRepository
-import com.cas.musicplayer.ui.home.uiScope
+import com.cas.musicplayer.ui.home.ui.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,10 +16,10 @@ import javax.inject.Inject
  */
 class ArtistPlaylistsViewModel @Inject constructor(private val repository: ArtistsRepository) : BaseViewModel() {
 
-    val playlists = MutableLiveData<Resource<List<Playlist>>>()
+    val playlists = MutableLiveData<ResourceOld<List<Playlist>>>()
 
     fun loadPlaylist(channelId: String) = uiScope.launch(coroutineContext) {
-        playlists.value = Resource.loading()
+        playlists.value = ResourceOld.loading()
         val resource = repository.getPlaylists(channelId)
         playlists.value = resource
     }

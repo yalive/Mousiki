@@ -1,80 +1,47 @@
 package com.cas.musicplayer.base.common
 
 import androidx.lifecycle.MutableLiveData
+import com.cas.musicplayer.net.AppMessage
 
 /**
  **********************************
- * Created by Abdelhadi on 4/12/19.
+ * Created by Abdelhadi on 2019-05-15.
  **********************************
  */
 /**
- * A generic class that holds a value with its loading status.
- * @param <T>
-</T> */
-data class Resource<ResultType>(var status: Status, var data: ResultType? = null, var message: String? = null) {
-
-    companion object {
-        /**
-         * Creates [Resource] object with `SUCCESS` status and [data].
-         */
-        fun <ResultType> success(data: ResultType): Resource<ResultType> =
-            Resource(
-                Status.SUCCESS,
-                data
-            )
-
-        /**
-         * Creates [Resource] object with `LOADING` status to notify
-         * the UI to showing loading.
-         */
-        fun <ResultType> loading(): Resource<ResultType> =
-            Resource(Status.LOADING)
-
-        /**
-         * Creates [Resource] object with `ERROR` status and [message].
-         */
-        fun <ResultType> error(message: String?): Resource<ResultType> =
-            Resource(
-                Status.ERROR,
-                message = message
-            )
-    }
-}
-
-/**
- * Status of a resource that is provided to the UI.
- *
- *
- * These are usually created by the Repository classes where they return
- * `LiveData<Resource<T>>` to pass back the latest data to the UI with its fetch status.
+ * Represent a network-bound resource and its states.
  */
-enum class Status {
-    SUCCESS,
-    ERROR,
-    LOADING;
+sealed class Resource<out T> {
 
-    /**
-     * Returns `true` if the [Status] is loading else `false`.
-     */
-    fun isLoading() = this == LOADING
-}
+    object Loading : Resource<Nothing>()
 
-fun <T> MutableLiveData<Resource<T>>.isSuccess(): Boolean {
-    return value != null && value!!.status == Status.SUCCESS && value!!.data != null
+    data class Success<out T>(val data: T) : Resource<T>()
+
+    data class Failure(val message: AppMessage) : Resource<Nothing>()
 }
 
 fun <T> MutableLiveData<Resource<List<T>>>.hasItems(): Boolean {
-    return isSuccess() && value!!.data!!.isNotEmpty()
+    return when (val currentValue = value ?: return false) {
+        is Resource.Success -> currentValue.data.isNotEmpty()
+        else -> false
+    }
 }
 
 fun <T> MutableLiveData<Resource<T>>.isLoading(): Boolean {
-    return value != null && value!!.status == Status.LOADING
+    val currentValue = value ?: return false
+    return currentValue is Resource.Loading
 }
 
 fun <T> MutableLiveData<Resource<T>>.isError(): Boolean {
-    return value != null && value!!.status == Status.ERROR
+    val currentValue = value ?: return false
+    return currentValue is Resource.Failure
 }
 
 fun <T> MutableLiveData<Resource<T>>.loading() {
-    value = Resource.loading()
+    value = Resource.Loading
 }
+
+/*
+fun <T> MutableLiveData<Resource<T>>.isSuccess(): Boolean {
+    return value != null && value!!.status == Status.SUCCESS && value!!.data != null
+}*/

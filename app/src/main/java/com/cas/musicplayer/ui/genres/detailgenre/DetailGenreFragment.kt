@@ -12,7 +12,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsFragment
 import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreVideosFragment
-import com.cas.musicplayer.ui.home.models.GenreMusic
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.visible
 import com.cas.musicplayer.viewmodel.activityViewModel

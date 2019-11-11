@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.ui.home.models.GenreMusic
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.squareup.picasso.Picasso
 
 /**

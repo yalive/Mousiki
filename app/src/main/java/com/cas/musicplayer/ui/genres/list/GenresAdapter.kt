@@ -11,7 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.cas.musicplayer.ui.home.models.GenreMusic
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.utils.dpToPixel
 
 /**

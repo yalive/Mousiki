@@ -2,16 +2,16 @@ package com.cas.musicplayer.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.data.mappers.*
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.net.RetrofitRunner
-import com.cas.musicplayer.net.Success
+import com.cas.musicplayer.net.Result.Success
 import com.cas.musicplayer.net.YoutubeService
-import com.cas.musicplayer.net.toResource
-import com.cas.musicplayer.ui.home.bgContext
+import com.cas.musicplayer.net.asOldResource
+import com.cas.musicplayer.ui.home.ui.bgContext
 import com.cas.musicplayer.utils.Utils
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -34,16 +34,16 @@ class ArtistsRepository @Inject constructor(
     private val playlistMapper: YTBPlaylistToPlaylist
 ) {
 
-    suspend fun getPlaylists(channelId: String): Resource<List<Playlist>> {
+    suspend fun getPlaylists(channelId: String): ResourceOld<List<Playlist>> {
         return retrofitRunner.executeNetworkCall(playlistMapper.toListMapper()) {
             youtubeService.channelPlaylists(channelId).items!!
-        }.toResource()
+        }.asOldResource()
     }
 
-    suspend fun getArtists(ids: String): Resource<List<Artist>> {
+    suspend fun getArtists(ids: String): ResourceOld<List<Artist>> {
         return retrofitRunner.executeNetworkCall(artistMapper.toListMapper()) {
             youtubeService.channels(ids).items!!
-        }.toResource()
+        }.asOldResource()
     }
 
     suspend fun getArtistsFromFile(): List<Artist> = withContext(bgContext) {
@@ -53,10 +53,10 @@ class ArtistsRepository @Inject constructor(
         distinctBy.sortedBy { artist -> artist.name }
     }
 
-    suspend fun getArtistTracks(artistChannelId: String): Resource<List<MusicTrack>> {
+    suspend fun getArtistTracks(artistChannelId: String): ResourceOld<List<MusicTrack>> {
         val result = retrofitRunner.executeNetworkCall(searchMapper.toListMapper()) {
             youtubeService.channelVideoIds(artistChannelId).items!!
-        } as? Success ?: return Resource.error("")
+        } as? Success ?: return ResourceOld.error("")
 
         // TODO() check empty list
 
@@ -65,6 +65,6 @@ class ArtistsRepository @Inject constructor(
         val videosResult = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
             youtubeService.videos(ids).items!!
         }
-        return videosResult.toResource()
+        return videosResult.asOldResource()
     }
 }

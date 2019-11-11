@@ -5,11 +5,11 @@ import com.cas.musicplayer.data.mappers.YTBPlaylistItemToTrack
 import com.cas.musicplayer.data.mappers.YTBPlaylistItemToVideoId
 import com.cas.musicplayer.data.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.mappers.toListMapper
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.net.RetrofitRunner
-import com.cas.musicplayer.net.Success
+import com.cas.musicplayer.net.Result.Success
 import com.cas.musicplayer.net.YoutubeService
-import com.cas.musicplayer.net.toResource
+import com.cas.musicplayer.net.asOldResource
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,23 +28,23 @@ class PlaylistRepository @Inject constructor(
     private val videoIdMapper: YTBPlaylistItemToVideoId
 ) {
 
-    suspend fun playlistVideos(playlistId: String): Resource<List<MusicTrack>> {
+    suspend fun playlistVideos(playlistId: String): ResourceOld<List<MusicTrack>> {
         // 1 - Get video ids
         val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
             youtubeService.playlistVideoIds(playlistId, 50).items!!
-        } as? Success ?: return Resource.error("")
+        } as? Success ?: return ResourceOld.error("")
 
         // 2 - Get videos
         val ids = idsResult.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
             youtubeService.videos(ids).items!!
         }
-        return videosResult.toResource()
+        return videosResult.asOldResource()
     }
 
-    suspend fun firstThreeVideo(playlistId: String): Resource<List<MusicTrack>> {
+    suspend fun firstThreeVideo(playlistId: String): ResourceOld<List<MusicTrack>> {
         return retrofitRunner.executeNetworkCall(playlistTrackMapper.toListMapper()) {
             youtubeService.playlistVideoTitles(playlistId, 3).items!!
-        }.toResource()
+        }.asOldResource()
     }
 }

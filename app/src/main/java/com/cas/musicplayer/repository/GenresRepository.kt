@@ -1,6 +1,6 @@
 package com.cas.musicplayer.repository
 
-import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.data.mappers.YTBPlaylistItemToVideoId
@@ -8,9 +8,9 @@ import com.cas.musicplayer.data.mappers.YTBPlaylistToPlaylist
 import com.cas.musicplayer.data.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.mappers.toListMapper
 import com.cas.musicplayer.net.RetrofitRunner
-import com.cas.musicplayer.net.Success
+import com.cas.musicplayer.net.Result.Success
 import com.cas.musicplayer.net.YoutubeService
-import com.cas.musicplayer.net.toResource
+import com.cas.musicplayer.net.asOldResource
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,24 +28,24 @@ class GenresRepository @Inject constructor(
     private val playlistMapper: YTBPlaylistToPlaylist
 ) {
 
-    suspend fun getTopTracks(topTracksPlaylistId: String): Resource<List<MusicTrack>> {
+    suspend fun getTopTracks(topTracksPlaylistId: String): ResourceOld<List<MusicTrack>> {
         // 1 - Get video ids
         val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
             youtubeService.playlistVideoIds(topTracksPlaylistId, 50).items!!
-        } as? Success ?: return Resource.error("")
+        } as? Success ?: return ResourceOld.error("")
 
         // 2 - Get videos
         val ids = idsResult.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
             youtubeService.videos(ids).items!!
         }
-        return videosResult.toResource()
+        return videosResult.asOldResource()
     }
 
-    suspend fun getPlaylists(channelId: String): Resource<List<Playlist>> {
+    suspend fun getPlaylists(channelId: String): ResourceOld<List<Playlist>> {
         return retrofitRunner.executeNetworkCall(playlistMapper.toListMapper()) {
             youtubeService.channelPlaylists(channelId).items!!
-        }.toResource()
+        }.asOldResource()
     }
 }
 

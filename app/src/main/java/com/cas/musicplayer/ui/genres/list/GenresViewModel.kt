@@ -2,7 +2,7 @@ package com.cas.musicplayer.ui.genres.list
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cas.musicplayer.ui.home.models.GenreMusic
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import javax.inject.Inject
 
 /**
