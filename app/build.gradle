@@ -100,7 +100,7 @@ android {
         dev {
             versionCode 3
             versionName "1.3"
-            applicationIdSuffix ""
+            applicationIdSuffix ".dev"
         }
     }
 }
