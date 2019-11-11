@@ -13,7 +13,7 @@ open class YoutubeResource<T>(
     @SerializedName("kind")
     val kind: String?,
     @Expose
-    @SerializedName("newReleaseItems")
+    @SerializedName("items")
     val items: List<T>?
 )
 
