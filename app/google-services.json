@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "647445796489",
-    "firebase_url": "https://mousiki-256920.firebaseio.com",
-    "project_id": "mousiki-256920",
-    "storage_bucket": "mousiki-256920.appspot.com"
+    "project_number": "905678518748",
+    "firebase_url": "https://mousiki-e3e22.firebaseio.com",
+    "project_id": "mousiki-e3e22",
+    "storage_bucket": "mousiki-e3e22.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:647445796489:android:a0918e9c377b0df74b5858",
+        "mobilesdk_app_id": "1:905678518748:android:aa6681e59a9e46d725b719",
         "android_client_info": {
-          "package_name": "com.cas.freemusic"
+          "package_name": "com.cas.musicplayer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "647445796489-ga0mhh797215srcan4c98bsm5ve31kmr.apps.googleusercontent.com",
+          "client_id": "905678518748-980v9u84n5ni89m7q87n7sn1ec7qa2t3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.cas.freemusic",
+            "package_name": "com.cas.musicplayer",
             "certificate_hash": "ee20acb8c093b76dda15f054b106fe7b71d417ee"
           }
         },
         {
-          "client_id": "647445796489-69gufiegeg6te2lk16n52gdvr8f4gulo.apps.googleusercontent.com",
+          "client_id": "905678518748-iebebebiu21428lgpliqff9anc9sf11n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAlH2WVXkmKzwzpsoEsGBjPCw1i7i8oS5U"
+          "current_key": "AIzaSyC81Jt4fDkIfgVc1kHzSJeOIv8OrQx3Z78"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "647445796489-69gufiegeg6te2lk16n52gdvr8f4gulo.apps.googleusercontent.com",
+              "client_id": "905678518748-iebebebiu21428lgpliqff9anc9sf11n.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
