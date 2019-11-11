@@ -13,7 +13,7 @@ class AddKeyInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         val url = request.url().newBuilder()
-            .addQueryParameter("key", "AIzaSyAW4wuOevLGzocoQ-3w2KxXYNJrJv99G3g")
+            .addQueryParameter("key", "AIzaSyAzLo5mV0ciK_Rhn5uzlsDouDieJA8FYNM")
             .build()
         val builder = request.newBuilder()
         request = builder.url(url).build()
