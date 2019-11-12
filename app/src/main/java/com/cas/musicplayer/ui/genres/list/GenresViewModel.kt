@@ -15,6 +15,6 @@ class GenresViewModel @Inject constructor() : ViewModel() {
     val genres = MutableLiveData<List<GenreMusic>>()
 
     fun loadAllGenres() {
-        genres.value = GenreMusic.allValues
+        //genres.value = GenreMusic.allValues
     }
 }

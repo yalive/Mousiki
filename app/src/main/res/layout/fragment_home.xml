@@ -14,7 +14,8 @@
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
-        tools:listitem="@layout/item_home_genre"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_new_release"
         tools:visibility="visible" />
 
     <ProgressBar
@@ -23,9 +24,9 @@
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/eight_8dp"
-        android:padding="@dimen/four_4dp"
-        android:indeterminateTint="@color/colorYellow"
         android:background="@drawable/bg_circle"
+        android:indeterminateTint="@color/colorYellow"
+        android:padding="@dimen/four_4dp"
         android:visibility="visible"
         tools:visibility="gone" />
 

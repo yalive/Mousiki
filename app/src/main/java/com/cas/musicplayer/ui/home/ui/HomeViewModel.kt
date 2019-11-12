@@ -3,24 +3,24 @@ package com.cas.musicplayer.ui.home.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.*
+import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.base.common.hasItems
+import com.cas.musicplayer.base.common.isLoading
+import com.cas.musicplayer.base.common.loading
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.net.asOldResource
 import com.cas.musicplayer.net.asResource
 import com.cas.musicplayer.net.map
+import com.cas.musicplayer.ui.home.domain.model.ChartModel
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
+import com.cas.musicplayer.ui.home.domain.usecase.GetChartsUseCase
+import com.cas.musicplayer.ui.home.domain.usecase.GetGenresUseCase
 import com.cas.musicplayer.ui.home.domain.usecase.GetNewReleasedSongsUseCase
 import com.cas.musicplayer.ui.home.domain.usecase.GetTopArtistsUseCase
 import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
 import com.cas.musicplayer.ui.home.ui.model.toDisplayedNewRelease
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.cas.musicplayer.utils.getCurrentLocale
+import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
-
-val bgContext = Dispatchers.IO
-val uiContext = Dispatchers.Main
-
-val uiScope = CoroutineScope(uiContext)
 
 /**
  **********************************
@@ -29,18 +29,38 @@ val uiScope = CoroutineScope(uiContext)
  */
 class HomeViewModel @Inject constructor(
     private val getNewReleasedSongs: GetNewReleasedSongsUseCase,
-    private val getTopArtists: GetTopArtistsUseCase
+    private val getTopArtists: GetTopArtistsUseCase,
+    private val getCharts: GetChartsUseCase,
+    private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
 
     private val _trendingTracks = MutableLiveData<Resource<List<NewReleaseDisplayedItem>>>()
     val trendingTracks: LiveData<Resource<List<NewReleaseDisplayedItem>>>
         get() = _trendingTracks
 
-    var sixArtists = MutableLiveData<ResourceOld<List<Artist>>>()
+    private val _charts = MutableLiveData<Resource<List<ChartModel>>>()
+    val charts: LiveData<Resource<List<ChartModel>>>
+        get() = _charts
 
-    fun loadTrendingMusic() = uiScope.launch(coroutineContext) {
+    private val _genres = MutableLiveData<Resource<List<GenreMusic>>>()
+    val genres: LiveData<Resource<List<GenreMusic>>>
+        get() = _genres
+
+    private val _artists = MutableLiveData<Resource<List<Artist>>>()
+    val artists: LiveData<Resource<List<Artist>>>
+        get() = _artists
+
+    init {
+        loadTrending()
+        loadArtists(getCurrentLocale())
+        loadCharts()
+        loadGenres()
+    }
+
+
+    private fun loadTrending() = uiCoroutine {
         if (_trendingTracks.hasItems() || _trendingTracks.isLoading()) {
-            return@launch
+            return@uiCoroutine
         }
         _trendingTracks.loading()
         val result = getNewReleasedSongs()
@@ -49,11 +69,23 @@ class HomeViewModel @Inject constructor(
         }.asResource()
     }
 
-    fun loadArtists(countryCode: String) = uiScope.launch(coroutineContext) {
-        if (!sixArtists.hasItems() && !sixArtists.isLoading()) {
-            sixArtists.loading()
-            val sixArtistResult = getTopArtists(countryCode)
-            sixArtists.value = sixArtistResult.asOldResource()
+    private fun loadCharts() = uiCoroutine {
+        _charts.loading()
+        val chartList = getCharts()
+        _charts.value = Resource.Success(chartList)
+    }
+
+    private fun loadGenres() = uiCoroutine {
+        _genres.loading()
+        val chartList = getGenres()
+        _genres.value = Resource.Success(chartList)
+    }
+
+    private fun loadArtists(countryCode: String) = uiCoroutine {
+        if (!_artists.hasItems() && !_artists.isLoading()) {
+            _artists.loading()
+            val result = getTopArtists(countryCode)
+            _artists.value = result.asResource()
         }
     }
 }

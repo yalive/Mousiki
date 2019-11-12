@@ -5,7 +5,7 @@ import com.cas.musicplayer.base.BaseViewModel
 import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.repository.GenresRepository
-import com.cas.musicplayer.ui.home.ui.uiScope
+import com.cas.musicplayer.utils.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

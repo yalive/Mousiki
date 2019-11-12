@@ -11,8 +11,8 @@ import com.cas.musicplayer.net.RetrofitRunner
 import com.cas.musicplayer.net.Result.Success
 import com.cas.musicplayer.net.YoutubeService
 import com.cas.musicplayer.net.asOldResource
-import com.cas.musicplayer.ui.home.ui.bgContext
 import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton

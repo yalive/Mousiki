@@ -1,25 +1,22 @@
 package com.cas.musicplayer.ui.home.ui.adapters
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.ui.home.domain.model.*
+import com.cas.musicplayer.ui.home.GridSpacingItemDecoration
+import com.cas.musicplayer.ui.home.domain.model.ChartModel
+import com.cas.musicplayer.ui.home.domain.model.GenreMusic
+import com.cas.musicplayer.ui.home.domain.model.HeaderItem
+import com.cas.musicplayer.ui.home.domain.model.HomeItem
 import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
-import com.cas.musicplayer.utils.AdsOrigin
-import com.cas.musicplayer.utils.RequestAdsLiveData
-import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.Extensions.inflate
+import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.observer
-import com.squareup.picasso.Picasso
 
 /**
  **********************************
@@ -27,174 +24,121 @@ import com.squareup.picasso.Picasso
  **********************************
  */
 class HomeAdapter(
-    val items: MutableList<HomeItem>,
-    val callback: (item: HomeItem) -> Unit,
-    val onVideoSelected: () -> Unit,
-    val moreItemClickListener: OnMoreItemClickListener
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val items: MutableList<HomeItem>,
+    private val onVideoSelected: () -> Unit,
+    private val moreItemClickListener: OnMoreItemClickListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var newReleaseViewHolder: NewReleaseViewHolder? = null
-    private var featuredViewHolder: FeaturedViewHolder? = null
-
-    var newReleaseItems: List<NewReleaseDisplayedItem> by observer(emptyList()) { value ->
-        newReleaseViewHolder?.adapter?.newReleaseItems = value
-        featuredViewHolder?.adapter?.newReleaseItems = value
+    var newReleaseItems: List<NewReleaseDisplayedItem> by observer(emptyList()) {
+        newReleaseViewHolder?.bind()
+        featuredViewHolder?.bind()
     }
-
-    companion object {
-        const val TYPE_FEATURED = 1
-        const val TYPE_NEW_RELEASE = 2
-        const val TYPE_HEADER = 3
-        const val TYPE_ARTIST = 4
-        const val TYPE_GENRE = 5
-        const val TYPE_CHART = 6
+    var charts: List<ChartModel> by observer(emptyList()) {
+        chartViewHolder?.bind()
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
-            TYPE_HEADER -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_home_header, parent, false)
-                return HeaderViewHolder(view)
-            }
-            TYPE_FEATURED -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_home_featured, parent, false)
-                featuredViewHolder = FeaturedViewHolder(view)
-                return featuredViewHolder!!
-            }
-            TYPE_NEW_RELEASE -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_home_new_release, parent, false)
-                newReleaseViewHolder = NewReleaseViewHolder(view)
-                return newReleaseViewHolder!!
-            }
-            TYPE_ARTIST -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_home_artist, parent, false)
-                return ArtistViewHolder(view)
-            }
-            TYPE_CHART -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_home_new_release, parent, false)
-                return ChartViewHolder(view)
-            }
-            else -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_home_genre, parent, false)
-                return GenreViewHolder(view)
-            }
-        }
+    var genres: List<GenreMusic> by observer(emptyList()) {
+        genreViewHolder?.bind()
     }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is FeaturedViewHolder) {
-            holder.bind()
-        } else if (holder is NewReleaseViewHolder) {
-            holder.bind()
-        } else if (holder is HeaderViewHolder) {
-            val headerItem = items[position] as HeaderItem
-            holder.bind(headerItem, moreItemClickListener)
-        } else if (holder is GenreViewHolder) {
-            val genreItem = items[position] as GenreItem
-            holder.bind(genreItem.genre)
-        } else if (holder is ArtistViewHolder) {
-            val genreItem = items[position] as ArtistItem
-            holder.bind(genreItem.artist)
-        } else if (holder is ChartViewHolder) {
-            val chartItem = items[position] as ChartItem
-
-            holder.bind(chartItem.chartItems)
-        }
+    var artists: List<Artist> by observer(emptyList()) {
+        artistViewHolder?.bind()
     }
-
-    override fun getItemViewType(position: Int): Int {
-        val item = items[position]
-        return item.type
-    }
-
-    override fun getItemCount() = items.size
 
     fun autoScrollFeaturedVideos() {
         featuredViewHolder?.autoScrollFeaturedVideos()
     }
 
-    inner class ArtistViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private var newReleaseViewHolder: NewReleaseViewHolder? = null
+    private var featuredViewHolder: FeaturedViewHolder? = null
+    private var chartViewHolder: ChartViewHolder? = null
+    private var genreViewHolder: GenreViewHolder? = null
+    private var artistViewHolder: ArtistViewHolder? = null
 
-        val imgArtist: ImageView = view.findViewById(R.id.imgArtist)
-        val txtName: TextView = view.findViewById(R.id.txtName)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        TYPE_HEADER -> HeaderViewHolder(parent.inflate(R.layout.item_home_header))
+        TYPE_FEATURED -> FeaturedViewHolder(parent.inflate(R.layout.item_home_featured)).also {
+            featuredViewHolder = it
+        }
+        TYPE_NEW_RELEASE -> NewReleaseViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
+            newReleaseViewHolder = it
+        }
+        TYPE_ARTIST -> ArtistViewHolder(parent.inflate(R.layout.item_home_list_artists)).also {
+            artistViewHolder = it
+        }
+        TYPE_CHART -> ChartViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
+            chartViewHolder = it
+        }
+        else -> GenreViewHolder(parent.inflate(R.layout.item_home_list_genres)).also {
+            genreViewHolder = it
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
+        is FeaturedViewHolder -> holder.bind()
+        is NewReleaseViewHolder -> holder.bind()
+        is HeaderViewHolder -> {
+            val headerItem = items[position] as HeaderItem
+            holder.bind(headerItem, moreItemClickListener)
+        }
+        is GenreViewHolder -> holder.bind()
+        is ArtistViewHolder -> holder.bind()
+        is ChartViewHolder -> holder.bind()
+        else -> {
+            // Nothing
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int = items[position].type
+
+    override fun getItemCount() = items.size
+
+    inner class ArtistViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private var adapter = HomeArtistsAdapter()
 
         init {
-            view.findViewById<CardView>(R.id.cardView).setOnClickListener {
-                callback(items[adapterPosition])
-
-                if (!Utils.hasShownAdsOneTime) {
-                    Utils.hasShownAdsOneTime = true
-                    RequestAdsLiveData.value = AdsOrigin("artist")
-                }
-            }
+            val spacingDp = itemView.context.dpToPixel(8f)
+            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+            recyclerView.addItemDecoration(GridSpacingItemDecoration(3, spacingDp, true))
+            recyclerView.adapter = adapter
         }
 
-        fun bind(artist: Artist) {
-            txtName.text = artist.name
-            if (artist.urlImage != null && artist.urlImage!!.isNotEmpty()) {
-                Picasso.get().load(artist.urlImage)
-                    .fit()
-                    .into(imgArtist)
-            }
+        fun bind() {
+            adapter.dataItems = artists
         }
     }
 
     inner class GenreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val imgCategory: ImageView = view.findViewById(R.id.imgCategory)
-        val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private var adapter = HomeGenresAdapter()
 
         init {
-            view.findViewById<ViewGroup>(R.id.cardView).setOnClickListener {
-                callback(items[adapterPosition])
-
-                if (!Utils.hasShownAdsOneTime) {
-                    Utils.hasShownAdsOneTime = true
-                    RequestAdsLiveData.value = AdsOrigin("genre")
-                }
-            }
+            val spacingDp = itemView.context.dpToPixel(8f)
+            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+            recyclerView.addItemDecoration(GridSpacingItemDecoration(3, spacingDp, true))
+            recyclerView.adapter = adapter
         }
 
-        fun bind(genreMusic: GenreMusic) {
-            txtTitle.text = genreMusic.title
-            imgCategory.setImageDrawable(
-                ContextCompat.getDrawable(
-                    itemView.context,
-                    genreMusic.img
-                )
-            )
+        fun bind() {
+            adapter.dataItems = genres
         }
     }
 
     class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-
-        val txtTitle: TextView = view.findViewById(R.id.txtTitle)
-        val showAll: ImageButton = view.findViewById(R.id.showAll)
+        private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private val showAll: ImageButton = view.findViewById(R.id.showAll)
 
         fun bind(headerItem: HeaderItem, moreItemClickListener: OnMoreItemClickListener) {
             txtTitle.text = headerItem.title
-
             view.setOnClickListener {
-
                 moreItemClickListener.onMoreItemClick(headerItem)
             }
 
             showAll.setOnClickListener {
-
                 moreItemClickListener.onMoreItemClick(headerItem)
             }
         }
     }
 
     inner class FeaturedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val adapter = HomeFeaturedAdapter(view.context, onVideoSelected)
+        private val adapter = HomeFeaturedAdapter(view.context, onVideoSelected)
         private var viewPager: ViewPager = view.findViewById(R.id.viewPager)
 
         fun bind() {
@@ -218,7 +162,7 @@ class HomeAdapter(
     }
 
     inner class NewReleaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var adapter = HomeNewReleaseAdapter(onVideoSelected)
+        private var adapter = HomeNewReleaseAdapter(onVideoSelected)
 
         init {
             val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -226,25 +170,33 @@ class HomeAdapter(
         }
 
         fun bind() {
-            adapter.newReleaseItems = this@HomeAdapter.newReleaseItems
+            adapter.dataItems = newReleaseItems
         }
     }
 
     inner class ChartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private var adapter = HomeChartAdapter()
 
-        private var recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        lateinit var adapter: HomeChartAdapter
-
-        fun bind(chartItems: List<ChartModel>) {
-            adapter = HomeChartAdapter(chartItems)
-            recyclerView.layoutManager =
-                LinearLayoutManager(itemView.context, RecyclerView.HORIZONTAL, false)
+        init {
+            val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
             recyclerView.adapter = adapter
         }
 
+        fun bind() {
+            adapter.dataItems = charts
+        }
     }
 
     interface OnMoreItemClickListener {
         fun onMoreItemClick(headerItem: HeaderItem)
+    }
+
+    companion object {
+        const val TYPE_FEATURED = 1
+        const val TYPE_NEW_RELEASE = 2
+        const val TYPE_HEADER = 3
+        const val TYPE_ARTIST = 4
+        const val TYPE_GENRE = 5
+        const val TYPE_CHART = 6
     }
 }

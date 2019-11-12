@@ -13,7 +13,7 @@ import com.cas.musicplayer.utils.dpToPixel
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class GridSpacingItemDecoration(private val spacing: Int, private var edgeMargin: Int = 0) :
+class HomeListSpacingItemDecoration(private val spacing: Int, private var edgeMargin: Int = 0) :
     RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
