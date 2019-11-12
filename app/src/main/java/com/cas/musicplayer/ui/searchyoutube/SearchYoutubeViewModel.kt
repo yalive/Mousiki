@@ -7,9 +7,9 @@ import com.cas.musicplayer.data.enteties.Channel
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.repository.SearchRepository
-import com.cas.musicplayer.ui.home.ui.uiScope
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.cas.musicplayer.utils.getLanguage
+import com.cas.musicplayer.utils.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

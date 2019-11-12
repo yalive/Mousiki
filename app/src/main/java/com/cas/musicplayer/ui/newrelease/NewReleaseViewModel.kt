@@ -8,7 +8,7 @@ import com.cas.musicplayer.base.common.isLoading
 import com.cas.musicplayer.base.common.loading
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.repository.NewReleaseRepository
-import com.cas.musicplayer.ui.home.ui.uiScope
+import com.cas.musicplayer.utils.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

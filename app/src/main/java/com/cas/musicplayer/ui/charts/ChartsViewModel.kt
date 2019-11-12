@@ -6,7 +6,7 @@ import com.cas.musicplayer.base.BaseViewModel
 import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.repository.PlaylistRepository
 import com.cas.musicplayer.ui.home.domain.model.ChartModel
-import com.cas.musicplayer.ui.home.ui.uiScope
+import com.cas.musicplayer.utils.uiScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,9 +22,9 @@ class ChartsViewModel @Inject constructor(val playlistRepository: PlaylistReposi
     val chartDetail = MutableLiveData<ChartModel>()
 
     fun loadAllCharts() {
-        charts.value = ChartModel.allValues.apply {
+        /*charts.value = ChartModel.allValues.apply {
             forEach { loadLast3Videos(it) }
-        }
+        }*/
     }
 
     private fun loadLast3Videos(chart: ChartModel) = uiScope.launch(coroutineContext) {

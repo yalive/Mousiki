@@ -45,3 +45,21 @@ fun <T> MutableLiveData<Resource<T>>.loading() {
 fun <T> MutableLiveData<Resource<T>>.isSuccess(): Boolean {
     return value != null && value!!.status == Status.SUCCESS && value!!.data != null
 }*/
+
+fun <T> Resource<T>.doOnSuccess(block: (T) -> Unit) {
+    when (this) {
+        is Resource.Success -> block(data)
+    }
+}
+
+fun <T> Resource<T>.doOnError(block: (AppMessage) -> Unit) {
+    when (this) {
+        is Resource.Failure -> block(this.message)
+    }
+}
+
+fun <T> Resource<T>.doOnLoading(block: () -> Unit) {
+    when (this) {
+        is Resource.Loading -> block()
+    }
+}

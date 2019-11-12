@@ -2,7 +2,7 @@ package com.cas.musicplayer.net
 
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.mappers.Mapper
-import com.cas.musicplayer.ui.home.ui.bgContext
+import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton

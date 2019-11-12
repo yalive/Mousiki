@@ -1,11 +1,16 @@
 package com.cas.musicplayer.utils
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 
 /**
@@ -22,6 +27,15 @@ fun Context.dpToPixel(dp: Float): Int {
 
 fun Context.pixelsToDp(px: Float): Float {
     return pixelsToDp(px, this)
+}
+
+@ColorInt
+fun Context.color(@ColorRes id: Int): Int {
+    return ContextCompat.getColor(this, id)
+}
+
+fun Context.drawable(@DrawableRes id: Int): Drawable? {
+    return ContextCompat.getDrawable(this, id)
 }
 
 fun Context.canDrawOverApps() =
