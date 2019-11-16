@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_charts.view.*
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-open class ChartsFragment : BaseFragment() {
+open class ChartsFragment : Fragment() {
 
     open val viewModel by viewModel { injector.chartsViewModel }
 

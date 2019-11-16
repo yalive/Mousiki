@@ -10,32 +10,19 @@ import kotlinx.android.parcel.Parcelize
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-sealed class HomeItem {
-    abstract val type: Int
+sealed class HomeItem(val type: Int) {
+    object FeaturedItem : HomeItem(HomeAdapter.TYPE_FEATURED)
+    object NewReleaseItem : HomeItem(HomeAdapter.TYPE_NEW_RELEASE)
+    object ChartItem : HomeItem(HomeAdapter.TYPE_CHART)
+    object ArtistItem : HomeItem(HomeAdapter.TYPE_ARTIST)
+    object GenreItem : HomeItem(HomeAdapter.TYPE_GENRE)
 }
 
-object FeaturedItem : HomeItem() {
-    override val type = HomeAdapter.TYPE_FEATURED
-}
-
-object NewReleaseItem : HomeItem() {
-    override val type = HomeAdapter.TYPE_NEW_RELEASE
-}
-
-object ChartItem : HomeItem() {
-    override val type = HomeAdapter.TYPE_CHART
-}
-
-data class HeaderItem(val title: String) : HomeItem() {
-    override val type = HomeAdapter.TYPE_HEADER
-}
-
-object ArtistItem : HomeItem() {
-    override val type = HomeAdapter.TYPE_ARTIST
-}
-
-object GenreItem : HomeItem() {
-    override val type = HomeAdapter.TYPE_GENRE
+sealed class HeaderItem(val title: String) : HomeItem(HomeAdapter.TYPE_HEADER) {
+    object NewReleaseHeader : HeaderItem("NEW RELEASE")
+    object ChartsHeader : HeaderItem("CHARTS")
+    object ArtistsHeader : HeaderItem("ARTIST")
+    object GenresHeader : HeaderItem("GENRES")
 }
 
 @Parcelize

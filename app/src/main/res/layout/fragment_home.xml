@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         tools:itemCount="20"
@@ -27,7 +27,7 @@
         android:background="@drawable/bg_circle"
         android:indeterminateTint="@color/colorYellow"
         android:padding="@dimen/four_4dp"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="gone" />
 
     <TextView

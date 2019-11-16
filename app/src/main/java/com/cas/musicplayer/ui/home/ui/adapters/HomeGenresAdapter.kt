@@ -21,7 +21,7 @@ import com.cas.musicplayer.utils.drawable
  * Created by Abdelhadi on 2019-11-12.
  ***************************************
  */
-internal class HomeGenresAdapter() : SimpleBaseAdapter<GenreMusic, HomeGenreViewHolder>() {
+internal class HomeGenresAdapter : SimpleBaseAdapter<GenreMusic, HomeGenreViewHolder>() {
     override val cellResId: Int = R.layout.item_home_genre
     override fun createViewHolder(view: View): HomeGenreViewHolder {
         return HomeGenreViewHolder(view)

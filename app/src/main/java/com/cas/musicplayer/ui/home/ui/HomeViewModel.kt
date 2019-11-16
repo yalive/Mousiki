@@ -34,16 +34,16 @@ class HomeViewModel @Inject constructor(
     private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
 
-    private val _trendingTracks = MutableLiveData<Resource<List<NewReleaseDisplayedItem>>>()
-    val trendingTracks: LiveData<Resource<List<NewReleaseDisplayedItem>>>
-        get() = _trendingTracks
+    private val _newReleases = MutableLiveData<Resource<List<NewReleaseDisplayedItem>>>()
+    val newReleases: LiveData<Resource<List<NewReleaseDisplayedItem>>>
+        get() = _newReleases
 
-    private val _charts = MutableLiveData<Resource<List<ChartModel>>>()
-    val charts: LiveData<Resource<List<ChartModel>>>
+    private val _charts = MutableLiveData<List<ChartModel>>()
+    val charts: LiveData<List<ChartModel>>
         get() = _charts
 
-    private val _genres = MutableLiveData<Resource<List<GenreMusic>>>()
-    val genres: LiveData<Resource<List<GenreMusic>>>
+    private val _genres = MutableLiveData<List<GenreMusic>>()
+    val genres: LiveData<List<GenreMusic>>
         get() = _genres
 
     private val _artists = MutableLiveData<Resource<List<Artist>>>()
@@ -59,26 +59,24 @@ class HomeViewModel @Inject constructor(
 
 
     private fun loadTrending() = uiCoroutine {
-        if (_trendingTracks.hasItems() || _trendingTracks.isLoading()) {
+        if (_newReleases.hasItems() || _newReleases.isLoading()) {
             return@uiCoroutine
         }
-        _trendingTracks.loading()
+        _newReleases.loading()
         val result = getNewReleasedSongs()
-        _trendingTracks.value = result.map { tracks ->
+        _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedNewRelease() }
         }.asResource()
     }
 
     private fun loadCharts() = uiCoroutine {
-        _charts.loading()
         val chartList = getCharts()
-        _charts.value = Resource.Success(chartList)
+        _charts.value = chartList
     }
 
     private fun loadGenres() = uiCoroutine {
-        _genres.loading()
         val chartList = getGenres()
-        _genres.value = Resource.Success(chartList)
+        _genres.value = chartList
     }
 
     private fun loadArtists(countryCode: String) = uiCoroutine {

@@ -18,7 +18,7 @@ import com.cas.musicplayer.utils.loadImage
  **********************************
  */
 class HomeNewReleaseAdapter(
-    val onVideoSelected: () -> Unit
+    private val onVideoSelected: () -> Unit
 ) : SimpleBaseAdapter<NewReleaseDisplayedItem, HomeNewReleaseViewHolder>() {
 
     override val cellResId: Int = R.layout.item_new_release

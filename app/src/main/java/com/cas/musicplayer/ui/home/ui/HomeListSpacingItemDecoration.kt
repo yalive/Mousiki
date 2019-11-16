@@ -39,7 +39,6 @@ class HomeListSpacingItemDecoration(private val spacing: Int, private var edgeMa
             outRect.right = rightPadding
         }
 
-
         if (type != HomeAdapter.TYPE_NEW_RELEASE && type != HomeAdapter.TYPE_CHART && type != HomeAdapter.TYPE_HEADER) {
             if (position < totalSpanSize) {
                 outRect.top = spacing
