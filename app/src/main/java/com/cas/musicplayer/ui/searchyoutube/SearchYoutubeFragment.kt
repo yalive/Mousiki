@@ -1,9 +1,7 @@
 package com.cas.musicplayer.ui.searchyoutube
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,11 +20,12 @@ import kotlinx.android.synthetic.main.fragment_search_youtube.*
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
-class SearchYoutubeFragment : BaseFragment() {
+class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
 
-    var searchSuggestionsAdapter = YTSearchSuggestionsAdapter(mutableListOf())
+    public override val viewModel by viewModel { injector.searchYoutubeViewModel }
+    override val layoutResourceId: Int = R.layout.fragment_search_youtube
 
-    val viewModel by viewModel { injector.searchYoutubeViewModel }
+    private var searchSuggestionsAdapter = YTSearchSuggestionsAdapter(mutableListOf())
 
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
@@ -49,11 +48,6 @@ class SearchYoutubeFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = LayoutInflater.from(context).inflate(R.layout.fragment_search_youtube, container, false)
-        return view
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewPager.adapter = SearchYoutubePagerAdapter(childFragmentManager)
@@ -68,17 +62,13 @@ class SearchYoutubeFragment : BaseFragment() {
             pagerContainer.gone()
             progressBar.visible()
             removeQueryListener()
-            mainActivity().searchView?.setQuery(suggestion, false)
+            mainActivity()?.searchView?.setQuery(suggestion, false)
             attachQueryListener()
 
             viewModel.search(suggestion)
         }
 
         observeViewModel()
-    }
-
-    private fun mainActivity(): MainActivity {
-        return activity as MainActivity
     }
 
     private fun removeQueryListener() {

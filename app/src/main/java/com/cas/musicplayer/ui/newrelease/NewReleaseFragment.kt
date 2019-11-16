@@ -2,9 +2,7 @@ package com.cas.musicplayer.ui.newrelease
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.lifecycle.Observer
 import com.cas.musicplayer.R
@@ -26,8 +24,13 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
-class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.OnItemClickListener,
+class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoAdapter.OnItemClickListener,
     NativeAdsManager.Listener {
+
+    override val viewModel by viewModel { injector.newReleaseViewModel }
+    override val layoutResourceId: Int = R.layout.fragment_new_release
+    private lateinit var adapter: NewReleaseVideoAdapter
+    private var mNativeAdsManager: NativeAdsManager? = null
 
     override fun onAdsLoaded() {
         adapter = NewReleaseVideoAdapter(listOf(), context, mNativeAdsManager!!, this) {
@@ -50,24 +53,6 @@ class NewReleaseFragment : BaseFragment(), NewReleaseVideoAdapter.OnItemClickLis
     }
 
     override fun onAdError(p0: AdError?) {
-    }
-
-    val TAG = "NewReleaseFragment"
-
-    lateinit var adapter: NewReleaseVideoAdapter
-
-    private var mNativeAdsManager: NativeAdsManager? = null
-
-
-    private val viewModel by viewModel { injector.newReleaseViewModel }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_release, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
