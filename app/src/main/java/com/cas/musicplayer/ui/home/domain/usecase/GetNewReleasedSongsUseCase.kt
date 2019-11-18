@@ -14,7 +14,7 @@ class GetNewReleasedSongsUseCase @Inject constructor(
     private val repository: HomeRepository
 ) {
 
-    suspend operator fun invoke(): Result<List<MusicTrack>> {
+    suspend operator fun invoke(max: Int): Result<List<MusicTrack>> {
         return repository.loadNewReleases()
     }
 }

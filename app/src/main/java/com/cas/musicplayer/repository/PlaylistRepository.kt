@@ -1,13 +1,14 @@
 package com.cas.musicplayer.repository
 
+import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.mappers.YTBPlaylistItemToTrack
 import com.cas.musicplayer.data.mappers.YTBPlaylistItemToVideoId
 import com.cas.musicplayer.data.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.mappers.toListMapper
-import com.cas.musicplayer.base.common.ResourceOld
-import com.cas.musicplayer.net.RetrofitRunner
+import com.cas.musicplayer.net.Result
 import com.cas.musicplayer.net.Result.Success
+import com.cas.musicplayer.net.RetrofitRunner
 import com.cas.musicplayer.net.YoutubeService
 import com.cas.musicplayer.net.asOldResource
 import javax.inject.Inject
@@ -42,9 +43,9 @@ class PlaylistRepository @Inject constructor(
         return videosResult.asOldResource()
     }
 
-    suspend fun firstThreeVideo(playlistId: String): ResourceOld<List<MusicTrack>> {
+    suspend fun firstThreeVideo(playlistId: String): Result<List<MusicTrack>> {
         return retrofitRunner.executeNetworkCall(playlistTrackMapper.toListMapper()) {
-            youtubeService.playlistVideoTitles(playlistId, 3).items!!
-        }.asOldResource()
+            youtubeService.playlistVideosTitle(playlistId, 3).items!!
+        }
     }
 }
