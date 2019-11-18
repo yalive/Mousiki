@@ -17,7 +17,7 @@ abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> :
     @get:LayoutRes
     protected abstract val cellResId: Int
 
-    var dataItems: List<DataType> by observer(listOf()) {
+    var dataItems: MutableList<DataType> by observer(mutableListOf()) {
         notifyDataSetChanged()
     }
 

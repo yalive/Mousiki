@@ -13,7 +13,7 @@ class GetChartsUseCase @Inject constructor(
     private val repository: HomeRepository
 ) {
 
-    suspend operator fun invoke(): List<ChartModel> {
-        return repository.loadCharts().take(6).shuffled()
+    suspend operator fun invoke(max: Int = 100): List<ChartModel> {
+        return repository.loadCharts().take(max)
     }
 }

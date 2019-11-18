@@ -92,7 +92,7 @@ interface YoutubeService {
 
     // Return just title
     @GET("playlistItems?part=snippet,contentDetails&fields=items(snippet%2Ftitle)")
-    suspend fun playlistVideoTitles(
+    suspend fun playlistVideosTitle(
         @Query("playlistId") playlistId: String,
         @Query("maxResults") maxResults: Int
     ): PlaylistItems

@@ -31,17 +31,17 @@ class HomeAdapter(
     private val onVideoSelected: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var newReleaseItems: List<NewReleaseDisplayedItem> by observer(emptyList()) {
+    private var newReleaseItems: List<NewReleaseDisplayedItem> by observer(emptyList()) {
         newReleaseViewHolder?.bind()
         featuredViewHolder?.bind()
     }
-    var charts: List<ChartModel> by observer(emptyList()) {
+    private var charts: List<ChartModel> by observer(emptyList()) {
         chartViewHolder?.bind()
     }
-    var genres: List<GenreMusic> by observer(emptyList()) {
+    private var genres: List<GenreMusic> by observer(emptyList()) {
         genreViewHolder?.bind()
     }
-    var artists: List<Artist> by observer(emptyList()) {
+    private var artists: List<Artist> by observer(emptyList()) {
         artistViewHolder?.bind()
     }
 
@@ -153,7 +153,7 @@ class HomeAdapter(
         }
 
         fun bind() {
-            adapter.dataItems = newReleaseItems
+            adapter.dataItems = newReleaseItems.toMutableList()
         }
     }
 
@@ -166,7 +166,7 @@ class HomeAdapter(
         }
 
         fun bind() {
-            adapter.dataItems = charts
+            adapter.dataItems = charts.toMutableList()
         }
     }
 
@@ -181,7 +181,7 @@ class HomeAdapter(
         }
 
         fun bind() {
-            adapter.dataItems = artists
+            adapter.dataItems = artists.toMutableList()
         }
     }
 
@@ -196,7 +196,7 @@ class HomeAdapter(
         }
 
         fun bind() {
-            adapter.dataItems = genres
+            adapter.dataItems = genres.toMutableList()
         }
     }
 

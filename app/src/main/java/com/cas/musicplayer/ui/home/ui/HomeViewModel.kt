@@ -63,14 +63,14 @@ class HomeViewModel @Inject constructor(
             return@uiCoroutine
         }
         _newReleases.loading()
-        val result = getNewReleasedSongs()
+        val result = getNewReleasedSongs(max = 25)
         _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedNewRelease() }
         }.asResource()
     }
 
     private fun loadCharts() = uiCoroutine {
-        val chartList = getCharts()
+        val chartList = getCharts(max = 6).shuffled()
         _charts.value = chartList
     }
 

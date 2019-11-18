@@ -4,16 +4,15 @@ package com.cas.musicplayer.ui.newrelease
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
-import androidx.lifecycle.Observer
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.ResourceOld
-import com.cas.musicplayer.base.common.Status
+import com.cas.musicplayer.base.common.Resource
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
+import com.cas.musicplayer.utils.observe
 import com.cas.musicplayer.utils.visible
 import com.cas.musicplayer.viewmodel.viewModel
 import com.facebook.ads.AdError
@@ -30,30 +29,7 @@ class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoA
     override val viewModel by viewModel { injector.newReleaseViewModel }
     override val layoutResourceId: Int = R.layout.fragment_new_release
     private lateinit var adapter: NewReleaseVideoAdapter
-    private var mNativeAdsManager: NativeAdsManager? = null
-
-    override fun onAdsLoaded() {
-        adapter = NewReleaseVideoAdapter(listOf(), context, mNativeAdsManager!!, this) {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.collapseBottomPanel()
-        }
-        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
-
-        recyclerView.adapter = adapter
-        viewModel.trendingTracks.observe(this, Observer { resource ->
-            Picasso.get().load(resource.data?.get(0)?.imgUrl)
-                .fit()
-                .centerInside()
-                .placeholder(R.drawable.bg_circle_black)
-                .into(imgCollapsed)
-            updateUI(resource)
-        })
-
-        viewModel.loadTrendingMusic()
-    }
-
-    override fun onAdError(p0: AdError?) {
-    }
+    private lateinit var mNativeAdsManager: NativeAdsManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,27 +50,22 @@ class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoA
 
         val placement_id = "261549011432104_261551618098510"
         mNativeAdsManager = NativeAdsManager(activity!!, placement_id, 5)
-        mNativeAdsManager!!.loadAds()
-        mNativeAdsManager!!.setListener(this)
-
-
+        mNativeAdsManager.loadAds()
+        mNativeAdsManager.setListener(this)
     }
 
-    private fun updateUI(resource: ResourceOld<List<MusicTrack>>) {
-        if (resource.status == Status.LOADING) {
-            txtError.gone()
-            progressBar.visible()
-            recyclerView.gone()
-        } else if (resource.status == Status.ERROR) {
-            txtError.visible()
-            progressBar.gone()
-            recyclerView.gone()
-        } else {
-            txtError.gone()
-            progressBar.gone()
-            recyclerView.visible()
-            adapter.items = resource.data!!
+    override fun onAdsLoaded() {
+        adapter = NewReleaseVideoAdapter(listOf(), context, mNativeAdsManager, this) {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.collapseBottomPanel()
         }
+        recyclerView.adapter = adapter
+        observe(viewModel.newReleases) { resource ->
+            updateUI(resource)
+        }
+    }
+
+    override fun onAdError(p0: AdError?) {
     }
 
     override fun onItemClick(musicTrack: MusicTrack) {
@@ -103,5 +74,34 @@ class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoA
         bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
         bottomSheetFragment.arguments = bundle
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+    }
+
+    private fun updateUI(resource: Resource<List<MusicTrack>>) = when (resource) {
+        is Resource.Loading -> {
+            txtError.gone()
+            progressBar.visible()
+            recyclerView.gone()
+        }
+        is Resource.Failure -> {
+            txtError.visible()
+            progressBar.gone()
+            recyclerView.gone()
+        }
+        is Resource.Success -> {
+            showFeaturedImage(resource)
+            txtError.gone()
+            progressBar.gone()
+            recyclerView.visible()
+            adapter.items = resource.data
+        }
+    }
+
+    private fun showFeaturedImage(resource: Resource.Success<List<MusicTrack>>) {
+        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
+        Picasso.get().load(resource.data[0].imgUrl)
+            .fit()
+            .centerInside()
+            .placeholder(R.drawable.bg_circle_black)
+            .into(imgCollapsed)
     }
 }

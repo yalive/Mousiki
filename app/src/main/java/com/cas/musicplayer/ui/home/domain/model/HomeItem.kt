@@ -29,12 +29,11 @@ sealed class HeaderItem(val title: String) : HomeItem(HomeAdapter.TYPE_HEADER) {
 data class ChartModel(
     val title: String,
     @DrawableRes val image: Int,
-    val playlistId: String
-) : Parcelable {
-    var track1 = ""
-    var track2 = ""
-    var track3 = ""
-}
+    val playlistId: String,
+    val track1: String = "",
+    val track2: String = "",
+    val track3: String = ""
+) : Parcelable
 
 @Parcelize
 data class GenreMusic(

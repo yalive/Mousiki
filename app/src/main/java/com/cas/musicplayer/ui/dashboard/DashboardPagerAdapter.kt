@@ -13,7 +13,7 @@ import com.cas.musicplayer.ui.home.ui.HomeFragment
  */
 class DashboardPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
-    val titles = listOf("HOME", "FAVOURITES", "ALBUMS", "ARTISTS", "PLAYLISTS")
+    private val titles = listOf("HOME", "FAVOURITES", "ALBUMS", "ARTISTS", "PLAYLISTS")
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
