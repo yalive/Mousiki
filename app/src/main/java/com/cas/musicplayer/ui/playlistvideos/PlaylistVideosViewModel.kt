@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.genres.detailgenre.videos
+package com.cas.musicplayer.ui.playlistvideos
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,18 +17,18 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/12/19.
  **********************************
  */
-class GenreVideosViewModel @Inject constructor(
-    val getPlaylistVideos: GetPlaylistVideosUseCase
+class PlaylistVideosViewModel @Inject constructor(
+    private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase
 ) : BaseViewModel() {
 
-    private val _tracks = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
-    val tracks: LiveData<Resource<List<DisplayedVideoItem>>>
-        get() = _tracks
+    private val _videos = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
+    val videos: LiveData<Resource<List<DisplayedVideoItem>>>
+        get() = _videos
 
-    fun loadTopTracks(topTracksPlaylist: String) = uiCoroutine {
-        _tracks.value = Resource.Loading
-        val result = getPlaylistVideos(topTracksPlaylist)
-        _tracks.value = result.map { tracks ->
+    fun getPlaylistVideos(playlistId: String) = uiCoroutine {
+        _videos.value = Resource.Loading
+        val result = getPlaylistVideosUseCase(playlistId)
+        _videos.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
     }

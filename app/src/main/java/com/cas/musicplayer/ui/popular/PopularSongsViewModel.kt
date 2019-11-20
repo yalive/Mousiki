@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.newrelease
+package com.cas.musicplayer.ui.popular
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,9 +7,11 @@ import com.cas.musicplayer.base.common.Resource
 import com.cas.musicplayer.base.common.hasItems
 import com.cas.musicplayer.base.common.isLoading
 import com.cas.musicplayer.base.common.loading
-import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.net.asResource
-import com.cas.musicplayer.ui.home.domain.usecase.GetNewReleasedSongsUseCase
+import com.cas.musicplayer.net.map
+import com.cas.musicplayer.ui.home.domain.usecase.GetPopularSongsUseCase
+import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.home.ui.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -18,12 +20,12 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
-class NewReleaseViewModel @Inject constructor(
-    val getNewReleasedSongs: GetNewReleasedSongsUseCase
+class PopularSongsViewModel @Inject constructor(
+    val getPopularSongs: GetPopularSongsUseCase
 ) : BaseViewModel() {
 
-    private val _newReleases = MutableLiveData<Resource<List<MusicTrack>>>()
-    val newReleases: LiveData<Resource<List<MusicTrack>>>
+    private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
+    val newReleases: LiveData<Resource<List<DisplayedVideoItem>>>
         get() = _newReleases
 
     init {
@@ -35,7 +37,9 @@ class NewReleaseViewModel @Inject constructor(
             return@uiCoroutine
         }
         _newReleases.loading()
-        val result = getNewReleasedSongs(max = 50)
-        _newReleases.value = result.asResource()
+        val result = getPopularSongs(max = 50)
+        _newReleases.value = result.map { tracks ->
+            tracks.map { it.toDisplayedVideoItem() }
+        }.asResource()
     }
 }

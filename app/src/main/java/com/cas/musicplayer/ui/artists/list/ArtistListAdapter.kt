@@ -1,14 +1,13 @@
 package com.cas.musicplayer.ui.artists.list
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
+import com.cas.musicplayer.base.SimpleBaseAdapter
+import com.cas.musicplayer.base.SimpleBaseViewHolder
 import com.cas.musicplayer.data.models.Artist
-import com.squareup.picasso.Picasso
+import com.cas.musicplayer.utils.loadImage
 
 
 /**
@@ -16,21 +15,24 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class ArtistListAdapter(items: List<Artist>, var onClickArtist: (artist: Artist) -> Unit) :
-    RecyclerView.Adapter<ArtistListAdapter.ViewHolder>() {
+class ArtistListAdapter(
+    private val onClickArtist: (artist: Artist) -> Unit
+) : SimpleBaseAdapter<Artist, ArtistsViewHolder>() {
 
+    override val cellResId: Int = R.layout.item_list_artist
     private val headPositionMap = HashMap<String, Int>()
 
+    override fun createViewHolder(view: View): ArtistsViewHolder {
+        return ArtistsViewHolder(view, onClickArtist)
+    }
 
-    var items: List<Artist> = items
-        set(value) {
-            field = value
-            fillHeadMap()
-            notifyDataSetChanged()
-        }
+    override fun onDataChanged() {
+        fillHeadMap()
+        notifyDataSetChanged()
+    }
 
     private fun fillHeadMap() {
-        for ((index, item) in items.withIndex()) {
+        for ((index, item) in dataItems.withIndex()) {
             val firstLetter = item.name[0].toString()
             if (!headPositionMap.containsKey(firstLetter)) {
                 headPositionMap[firstLetter] = index
@@ -38,52 +40,32 @@ class ArtistListAdapter(items: List<Artist>, var onClickArtist: (artist: Artist)
         }
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(com.cas.musicplayer.R.layout.item_list_artist, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
-    }
-
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_list_artist
     }
 
-    override fun getItemCount() = items.size
-
-
     fun getLetterPosition(letter: String): Int {
         return if (headPositionMap.containsKey(letter)) (headPositionMap[letter] as Int).toInt() else -1
     }
+}
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class ArtistsViewHolder(
+    view: View,
+    var onClickArtist: (artist: Artist) -> Unit
+) : SimpleBaseViewHolder<Artist>(view) {
 
-        private val imgSong: ImageView = view.findViewById(com.cas.musicplayer.R.id.imgSong)
-        private val txtTitle: TextView = view.findViewById(com.cas.musicplayer.R.id.txtTitle)
+    private val imgSong: ImageView = view.findViewById(R.id.imgSong)
+    private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
-        init {
-            view.setOnClickListener {
-                if (adapterPosition >= 0) {
-                    onClickArtist(items[adapterPosition])
-                }
-            }
+    override fun bind(item: Artist) {
+        if (item.urlImage.isNotEmpty()) {
+            imgSong.loadImage(item.urlImage)
         }
-
-        fun bind(item: Artist) {
-            item.urlImage?.let { urlImage ->
-                if (urlImage.isNotEmpty()) {
-                    Picasso.get().load(urlImage)
-                        .fit()
-                        .into(imgSong)
-                }
+        txtTitle.text = item.name
+        itemView.setOnClickListener {
+            if (adapterPosition >= 0) {
+                onClickArtist(item)
             }
-
-            txtTitle.text = item.name
         }
     }
-
 }

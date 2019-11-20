@@ -12,13 +12,14 @@ import com.cas.musicplayer.utils.observer
  * Created by Abdelhadi on 2019-11-10.
  ***************************************
  */
-abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> : RecyclerView.Adapter<T>() {
+abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> :
+    RecyclerView.Adapter<T>() {
 
     @get:LayoutRes
     protected abstract val cellResId: Int
 
     var dataItems: MutableList<DataType> by observer(mutableListOf()) {
-        notifyDataSetChanged()
+        onDataChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
@@ -32,8 +33,8 @@ abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> :
         holder.bind(dataItems[position])
     }
 
-    fun getItem(position: Int): DataType = dataItems[position]
-
+    protected fun getItem(position: Int): DataType = dataItems[position]
+    protected open fun onDataChanged() = notifyDataSetChanged()
     abstract fun createViewHolder(view: View): T
 }
 

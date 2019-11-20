@@ -1,46 +1,46 @@
-package com.cas.musicplayer.ui.genres.detailgenre.videos
+package com.cas.musicplayer.ui.playlistvideos
 
 
 import android.os.Bundle
 import android.view.View
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.PageableFragment
 import com.cas.musicplayer.base.common.Resource
 import com.cas.musicplayer.data.enteties.MusicTrack
+import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
 import com.cas.musicplayer.utils.observe
 import com.cas.musicplayer.utils.visible
-import com.cas.musicplayer.viewmodel.activityViewModel
 import com.cas.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
-class GenreVideosFragment : BaseFragment<GenreVideosViewModel>(), PageableFragment {
-    override val layoutResourceId: Int = R.layout.fragment_genre_videos
-    override val viewModel by viewModel { injector.genreVideosViewModel }
+class PlaylistVideosFragment : BaseFragment<PlaylistVideosViewModel>() {
 
-    private lateinit var adapter: GenreVideosAdapter
-    private lateinit var genreMusic: GenreMusic
-    private val detailGenreViewModel by activityViewModel { injector.detailGenreViewModel }
+    override val layoutResourceId: Int = R.layout.fragment_artist_videos
+    override val viewModel by viewModel { injector.playlistVideosViewModel }
+
+    private lateinit var adapter: PlaylistVideosAdapter
+    private lateinit var artist: Artist
+    private lateinit var playlistId: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val parcelableGenre = arguments?.getParcelable<GenreMusic>(DetailGenreFragment.EXTRAS_GENRE)
+        val parcelableGenre = arguments?.getParcelable<Artist>(ArtistFragment.EXTRAS_ARTIST)
+        playlistId = arguments?.getString(EXTRAS_PLAYLIST_ID)!!
         if (parcelableGenre == null) {
             requireActivity().onBackPressed()
             return
         }
 
-        genreMusic = parcelableGenre
-        adapter = GenreVideosAdapter(
-            genreMusic = genreMusic,
+        artist = parcelableGenre
+        adapter = PlaylistVideosAdapter(
+            artist = artist,
             onVideoSelected = {
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
@@ -50,20 +50,17 @@ class GenreVideosFragment : BaseFragment<GenreVideosViewModel>(), PageableFragme
             }
         )
         recyclerView.adapter = adapter
-        viewModel.loadTopTracks(genreMusic.topTracksPlaylist)
-        observe(viewModel.tracks, this::updateUI)
+        observe(viewModel.videos, this::updateUI)
+        viewModel.getPlaylistVideos(playlistId)
+        requireActivity().title = artist.name
     }
-
-    override fun getPageTitle(): String = "Videos"
 
     private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
         is Resource.Success -> {
-            val videos = resource.data
-            adapter.dataItems = videos.toMutableList()
+            adapter.dataItems = resource.data.toMutableList()
             recyclerView.visible()
             progressBar.gone()
             txtError.gone()
-            detailGenreViewModel.firstTrack.value = videos[0].track
         }
         is Resource.Failure -> {
             progressBar.gone()
@@ -81,5 +78,9 @@ class GenreVideosFragment : BaseFragment<GenreVideosViewModel>(), PageableFragme
         bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
         bottomSheetFragment.arguments = bundle
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+    }
+
+    companion object {
+        val EXTRAS_PLAYLIST_ID = "playlist_id"
     }
 }

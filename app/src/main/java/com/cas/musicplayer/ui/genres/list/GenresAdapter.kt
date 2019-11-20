@@ -1,69 +1,53 @@
 package com.cas.musicplayer.ui.genres.list
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
+import com.cas.musicplayer.base.SimpleBaseAdapter
+import com.cas.musicplayer.base.SimpleBaseViewHolder
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
 import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.utils.dpToPixel
+import com.cas.musicplayer.utils.drawable
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
-class GenresAdapter(items: List<GenreMusic>) : RecyclerView.Adapter<GenresAdapter.ViewHolder>() {
+class GenresAdapter : SimpleBaseAdapter<GenreMusic, GenresViewHolder>() {
+    override val cellResId: Int = R.layout.item_genre
+    override fun createViewHolder(view: View) = GenresViewHolder(view)
+}
 
-    var items: List<GenreMusic> = items
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+class GenresViewHolder(itemView: View) : SimpleBaseViewHolder<GenreMusic>(itemView) {
+
+    private val imgCategory: ImageView = itemView.findViewById(R.id.imgCategory)
+    private val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
+    private val cardView: View = itemView.findViewById(R.id.cardView)
+
+    override fun bind(item: GenreMusic) {
+        itemView.layoutParams = when (adapterPosition) {
+            0 -> ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            else -> ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                itemView.context.dpToPixel(120f)
+            )
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_genre, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-
-        return items.size
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items.get(position), position)
-    }
-
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val imgCategory: ImageView = itemView.findViewById(R.id.imgCategory)
-        private val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
-        private val cardView: View = itemView.findViewById(R.id.cardView)
-
-        init {
-            cardView.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, items[adapterPosition])
-                itemView.findNavController().navigate(com.cas.musicplayer.R.id.detailGenreFragment, bundle)
-            }
-        }
-
-        fun bind(item: GenreMusic, position: Int) {
-            if (position == 0) {
-                itemView.layoutParams =
-                    ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            } else {
-                val itemHeight = itemView.context.dpToPixel(120f)
-                itemView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight)
-            }
-            imgCategory.setImageDrawable(ContextCompat.getDrawable(itemView.context, item.img))
-            txtTitle.text = item.title
+        imgCategory.setImageDrawable(itemView.context.drawable(item.img))
+        txtTitle.text = item.title
+        cardView.setOnClickListener {
+            itemView.findNavController().navigate(
+                R.id.detailGenreFragment, bundleOf(
+                    DetailGenreFragment.EXTRAS_GENRE to item
+                )
+            )
         }
     }
 }

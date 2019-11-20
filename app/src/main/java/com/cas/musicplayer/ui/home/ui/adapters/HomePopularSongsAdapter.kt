@@ -7,7 +7,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.base.SimpleBaseAdapter
 import com.cas.musicplayer.base.SimpleBaseViewHolder
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
+import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.loadImage
 
@@ -17,21 +17,21 @@ import com.cas.musicplayer.utils.loadImage
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class HomeNewReleaseAdapter(
+class HomePopularSongsAdapter(
     private val onVideoSelected: () -> Unit
-) : SimpleBaseAdapter<NewReleaseDisplayedItem, HomeNewReleaseViewHolder>() {
+) : SimpleBaseAdapter<DisplayedVideoItem, HomePopularSongsViewHolder>() {
 
     override val cellResId: Int = R.layout.item_new_release
-    override fun createViewHolder(view: View): HomeNewReleaseViewHolder {
-        return HomeNewReleaseViewHolder(view, onVideoSelected, dataItems)
+    override fun createViewHolder(view: View): HomePopularSongsViewHolder {
+        return HomePopularSongsViewHolder(view, onVideoSelected, dataItems)
     }
 }
 
-class HomeNewReleaseViewHolder(
+class HomePopularSongsViewHolder(
     view: View,
     private val onVideoSelected: () -> Unit,
-    private val newReleaseItems: List<NewReleaseDisplayedItem>
-) : SimpleBaseViewHolder<NewReleaseDisplayedItem>(view) {
+    private val newReleaseItems: List<DisplayedVideoItem>
+) : SimpleBaseViewHolder<DisplayedVideoItem>(view) {
     private val imgSong: ImageView = view.findViewById(R.id.imgSong)
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
     private val txtDuration: TextView = view.findViewById(R.id.txtDuration)
@@ -45,7 +45,7 @@ class HomeNewReleaseViewHolder(
         }
     }
 
-    override fun bind(item: NewReleaseDisplayedItem) {
+    override fun bind(item: DisplayedVideoItem) {
         imgSong.loadImage(item.songImagePath)
         txtTitle.text = item.songTitle
         txtDuration.text = item.songDuration

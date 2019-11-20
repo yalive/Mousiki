@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
+import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.loadImage
 import com.cas.musicplayer.utils.observer
@@ -25,7 +25,7 @@ class HomeFeaturedAdapter(
     val onVideoSelected: () -> Unit
 ) : PagerAdapter() {
 
-    var newReleaseItems: List<NewReleaseDisplayedItem> by observer(emptyList()) {
+    var newReleaseItems: List<DisplayedVideoItem> by observer(emptyList()) {
         notifyDataSetChanged()
     }
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)

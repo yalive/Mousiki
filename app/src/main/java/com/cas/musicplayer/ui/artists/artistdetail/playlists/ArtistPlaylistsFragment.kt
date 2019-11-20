@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.cas.musicplayer.R
+import com.cas.musicplayer.base.common.PageableFragment
 import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment
+import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
 import com.cas.musicplayer.utils.visible
@@ -21,7 +21,7 @@ import com.cas.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_artist_playlists.*
 
 
-class ArtistPlaylistsFragment : Fragment() {
+class ArtistPlaylistsFragment : Fragment(),PageableFragment {
 
     val TAG = "DetailCategoryFragment"
 
@@ -52,6 +52,8 @@ class ArtistPlaylistsFragment : Fragment() {
         recyclerView.adapter = adapter
         loadPlaylist()
     }
+
+    override fun getPageTitle(): String = "Playlist"
 
     private fun loadPlaylist() {
 

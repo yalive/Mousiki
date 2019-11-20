@@ -7,28 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.cas.musicplayer.R
+import com.cas.musicplayer.base.common.FragmentPageAdapter
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsFragment
 import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosFragment
 import com.cas.musicplayer.utils.loadImage
 import com.cas.musicplayer.utils.visible
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
 
 
 class ArtistFragment : Fragment() {
 
-    val TAG = "DetailCategoryFragment"
-
     companion object {
-        val EXTRAS_ARTIST = "artist"
+        const val EXTRAS_ARTIST = "artist"
     }
 
     lateinit var artist: Artist
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_detail_genre, container, false)
     }
 
@@ -41,7 +44,8 @@ class ArtistFragment : Fragment() {
         }
         artist = parcelableGenre
 
-        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
+        val collapsingToolbar =
+            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
 
         collapsingToolbar?.isTitleEnabled = true
 
@@ -59,7 +63,8 @@ class ArtistFragment : Fragment() {
         val playlistsFragment = ArtistPlaylistsFragment()
         playlistsFragment.arguments = arguments
 
-        viewPager.adapter = ArtistPagerAdapter(childFragmentManager, listOf(videosFragment, playlistsFragment))
+        viewPager.adapter =
+            FragmentPageAdapter(childFragmentManager, listOf(videosFragment, playlistsFragment))
         tabLayout.setupWithViewPager(viewPager)
 
         if (artist.urlImage.isNotEmpty()) {

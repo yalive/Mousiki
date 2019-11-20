@@ -35,9 +35,9 @@ class HomeRepositoryImpl @Inject constructor(
     private val artistMapper: YTBChannelToArtist
 ) : HomeRepository {
 
-    override suspend fun loadNewReleases(): Result<List<MusicTrack>> {
+    override suspend fun loadNewReleases(max: Int): Result<List<MusicTrack>> {
         return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.trending(25, getCurrentLocale()).items!!
+            youtubeService.trending(max, getCurrentLocale()).items!!
         }
     }
 
