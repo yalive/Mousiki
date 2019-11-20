@@ -20,7 +20,7 @@ class YTSearchVideosAdapter(
     private val itemClickListener: OnItemClickListener,
     val onVideoSelected: () -> Unit
 ) :
-    RecyclerView.Adapter<YTSearchVideosAdapter.NewReleaseViewHolder>() {
+    RecyclerView.Adapter<YTSearchVideosAdapter.YTSearchVideosViewHoder>() {
 
     var items: List<MusicTrack> = items
         set(value) {
@@ -28,10 +28,10 @@ class YTSearchVideosAdapter(
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewReleaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YTSearchVideosViewHoder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_new_release_video, parent, false)
-        return NewReleaseViewHolder(view)
+        return YTSearchVideosViewHoder(view)
     }
 
     override fun getItemCount(): Int {
@@ -39,12 +39,12 @@ class YTSearchVideosAdapter(
         return items.size
     }
 
-    override fun onBindViewHolder(holder: NewReleaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: YTSearchVideosViewHoder, position: Int) {
         holder.bind(items.get(position), itemClickListener)
     }
 
 
-    inner class NewReleaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class YTSearchVideosViewHoder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val imgSong: ImageView = itemView.findViewById(R.id.imgSong)
         private val btnMore: ImageButton = itemView.findViewById(R.id.btnMore)

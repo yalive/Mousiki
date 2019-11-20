@@ -2,36 +2,29 @@ package com.cas.musicplayer.ui.genres.detailgenre.playlists
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.Status
+import com.cas.musicplayer.base.common.PageableFragment
+import com.cas.musicplayer.base.common.Resource
+import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
 import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
+import com.cas.musicplayer.utils.observe
 import com.cas.musicplayer.utils.visible
 import com.cas.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
-class GenrePlaylistsFragment : Fragment() {
+class GenrePlaylistsFragment : BaseFragment<GenrePlaylistsViewModel>(), PageableFragment {
 
-    val TAG = "DetailCategoryFragment"
+    override val layoutResourceId: Int = R.layout.fragment_genre_videos
+    override val viewModel by viewModel { injector.genrePlaylistsViewModel }
 
-
-    private val viewModel by viewModel { injector.genrePlaylistsViewModel }
-
-    lateinit var adapter: GenrePlaylistsAdapter
-    lateinit var genreMusic: GenreMusic
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_genre_videos, container, false)
-    }
+    private lateinit var adapter: GenrePlaylistsAdapter
+    private lateinit var genreMusic: GenreMusic
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,31 +33,32 @@ class GenrePlaylistsFragment : Fragment() {
             requireActivity().onBackPressed()
             return
         }
-
         genreMusic = parcelableGenre
-        adapter = GenrePlaylistsAdapter(listOf(), genreMusic)
+        adapter = GenrePlaylistsAdapter(genreMusic)
         recyclerView.adapter = adapter
-
         viewModel.loadTopTracks(genreMusic.channelId)
-
         observeViewModel()
     }
 
+    override fun getPageTitle(): String = "Playlist"
+
     private fun observeViewModel() {
-        viewModel.playlists.observe(this, Observer { resource ->
-            when (resource.status) {
-                Status.LOADING -> {
-                    // Review
-                }
-                Status.ERROR -> {
-                    showError()
-                }
-                Status.SUCCESS -> {
-                    showSuccess()
-                    adapter.items = resource.data!!.filter { it.itemCount > 0 }
-                }
+        observe(viewModel.playlists, this::updateList)
+    }
+
+    private fun updateList(resource: Resource<List<Playlist>>) {
+        when (resource) {
+            is Resource.Loading -> {
+                // Review
             }
-        })
+            is Resource.Failure -> {
+                showError()
+            }
+            is Resource.Success -> {
+                showSuccess()
+                adapter.dataItems = resource.data.toMutableList()
+            }
+        }
     }
 
     private fun showSuccess() {

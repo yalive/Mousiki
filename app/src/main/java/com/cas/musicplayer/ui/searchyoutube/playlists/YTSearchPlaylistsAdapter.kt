@@ -12,7 +12,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment
+import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
 import com.cas.musicplayer.utils.loadImage
 
 /**
@@ -21,7 +21,7 @@ import com.cas.musicplayer.utils.loadImage
 class YTSearchPlaylistsAdapter(
     items: List<Playlist>
 ) :
-    RecyclerView.Adapter<YTSearchPlaylistsAdapter.NewReleaseViewHolder>() {
+    RecyclerView.Adapter<YTSearchPlaylistsAdapter.YTSearchPlaylistsViewHolder>() {
 
     var items: List<Playlist> = items
         set(value) {
@@ -29,10 +29,10 @@ class YTSearchPlaylistsAdapter(
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewReleaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YTSearchPlaylistsViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_channel_playlist, parent, false)
-        return NewReleaseViewHolder(view)
+        return YTSearchPlaylistsViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -40,12 +40,12 @@ class YTSearchPlaylistsAdapter(
         return items.size
     }
 
-    override fun onBindViewHolder(holder: NewReleaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: YTSearchPlaylistsViewHolder, position: Int) {
         holder.bind(items.get(position))
     }
 
 
-    inner class NewReleaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class YTSearchPlaylistsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)

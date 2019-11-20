@@ -11,6 +11,7 @@ import kotlinx.coroutines.Job
  **********************************
  */
 open class BaseViewModel : ViewModel(), CoroutineScope {
+
     private val job = Job()
     override val coroutineContext = job + Dispatchers.Main
 

@@ -13,7 +13,7 @@ import com.cas.musicplayer.ui.home.domain.model.GenreMusic
  */
 interface HomeRepository {
 
-    suspend fun loadNewReleases(): Result<List<MusicTrack>>
+    suspend fun loadNewReleases(max: Int): Result<List<MusicTrack>>
 
     suspend fun loadArtists(countryCode: String): Result<List<Artist>>
 

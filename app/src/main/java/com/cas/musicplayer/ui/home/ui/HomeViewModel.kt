@@ -14,10 +14,10 @@ import com.cas.musicplayer.ui.home.domain.model.ChartModel
 import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.ui.home.domain.usecase.GetChartsUseCase
 import com.cas.musicplayer.ui.home.domain.usecase.GetGenresUseCase
-import com.cas.musicplayer.ui.home.domain.usecase.GetNewReleasedSongsUseCase
+import com.cas.musicplayer.ui.home.domain.usecase.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.home.domain.usecase.GetTopArtistsUseCase
-import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
-import com.cas.musicplayer.ui.home.ui.model.toDisplayedNewRelease
+import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.home.ui.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
@@ -28,14 +28,14 @@ import javax.inject.Inject
  **********************************
  */
 class HomeViewModel @Inject constructor(
-    private val getNewReleasedSongs: GetNewReleasedSongsUseCase,
+    private val getNewReleasedSongs: GetPopularSongsUseCase,
     private val getTopArtists: GetTopArtistsUseCase,
     private val getCharts: GetChartsUseCase,
     private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
 
-    private val _newReleases = MutableLiveData<Resource<List<NewReleaseDisplayedItem>>>()
-    val newReleases: LiveData<Resource<List<NewReleaseDisplayedItem>>>
+    private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
+    val newReleases: LiveData<Resource<List<DisplayedVideoItem>>>
         get() = _newReleases
 
     private val _charts = MutableLiveData<List<ChartModel>>()
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
         _newReleases.loading()
         val result = getNewReleasedSongs(max = 25)
         _newReleases.value = result.map { tracks ->
-            tracks.map { it.toDisplayedNewRelease() }
+            tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
     }
 
@@ -75,7 +75,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadGenres() = uiCoroutine {
-        val chartList = getGenres()
+        val chartList = getGenres().take(9)
         _genres.value = chartList
     }
 

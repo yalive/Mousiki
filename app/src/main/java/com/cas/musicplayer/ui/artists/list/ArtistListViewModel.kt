@@ -1,13 +1,15 @@
 package com.cas.musicplayer.ui.artists.list
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.ResourceOld
+import com.cas.musicplayer.base.common.Resource
 import com.cas.musicplayer.base.common.Status
+import com.cas.musicplayer.base.common.hasItems
+import com.cas.musicplayer.base.common.isLoading
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.repository.ArtistsRepository
-import com.cas.musicplayer.utils.uiScope
-import kotlinx.coroutines.launch
+import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
 /**
@@ -15,19 +17,23 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/16/19.
  **********************************
  */
-class ArtistListViewModel @Inject constructor(val repository: ArtistsRepository) : BaseViewModel() {
+class ArtistListViewModel @Inject constructor(
+    val repository: ArtistsRepository
+) : BaseViewModel() {
 
-    var artistResources = MutableLiveData<ResourceOld<List<Artist>>>()
+    private val _artists = MutableLiveData<Resource<List<Artist>>>()
+    val artists: LiveData<Resource<List<Artist>>>
+        get() = _artists
 
     private val pageSize = 15
 
-    fun loadAllArtists() = uiScope.launch(coroutineContext) {
-        if (artistResources.value != null && artistResources.value?.data != null && artistResources.value?.data!!.size > 0) {
-            return@launch
+    fun loadAllArtists() = uiCoroutine {
+        if (_artists.hasItems() || _artists.isLoading()) {
+            return@uiCoroutine
         }
-        artistResources.value = ResourceOld.loading()
+        _artists.value = Resource.Loading
         val artistList = repository.getArtistsFromFile()
-        //artistResources.value = Resource.success(artistList)
+        _artists.value = Resource.Success(artistList)
         loadImages(artistList)
     }
 
@@ -39,7 +45,8 @@ class ArtistListViewModel @Inject constructor(val repository: ArtistsRepository)
             loadArtists(subList.joinToString { it.channelId })
         }
         // Load the rest
-        val subList = artists.subList(numberOfTenGroups * pageSize, numberOfTenGroups * pageSize + rest)
+        val subList =
+            artists.subList(numberOfTenGroups * pageSize, numberOfTenGroups * pageSize + rest)
         loadArtists(subList.joinToString { it.channelId })
     }
 
@@ -51,11 +58,11 @@ class ArtistListViewModel @Inject constructor(val repository: ArtistsRepository)
     }
 
     private fun appendArtists(artists: List<Artist>) {
-        val resource = artistResources.value
-        if (resource != null && resource.status == Status.SUCCESS) {
-            artistResources.value = ResourceOld.success(resource.data!! + artists)
+        val resource = _artists.value
+        if (resource != null && resource is Resource.Success) {
+            _artists.value = Resource.Success(resource.data + artists)
         } else {
-            artistResources.value = ResourceOld.success(artists)
+            _artists.value = Resource.Success(artists)
         }
     }
 }

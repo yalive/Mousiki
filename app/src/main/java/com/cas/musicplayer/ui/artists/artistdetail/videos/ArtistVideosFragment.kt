@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.cas.musicplayer.R
+import com.cas.musicplayer.base.common.PageableFragment
 import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
@@ -23,7 +23,7 @@ import com.cas.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
-class ArtistVideosFragment : Fragment() {
+class ArtistVideosFragment : Fragment(), PageableFragment {
 
     val TAG = "DetailCategoryFragment"
 
@@ -32,7 +32,11 @@ class ArtistVideosFragment : Fragment() {
 
     private val viewModel by viewModel { injector.artistVideosViewModel }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_artist_videos, container, false)
     }
 
@@ -66,6 +70,8 @@ class ArtistVideosFragment : Fragment() {
 
         requireActivity().title = artist.name
     }
+
+    override fun getPageTitle(): String = "Videos"
 
     private fun updateUI(resource: ResourceOld<List<MusicTrack>>) {
         when (resource.status) {

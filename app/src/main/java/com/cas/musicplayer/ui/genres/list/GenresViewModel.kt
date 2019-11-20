@@ -1,8 +1,11 @@
 package com.cas.musicplayer.ui.genres.list
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.cas.musicplayer.base.BaseViewModel
 import com.cas.musicplayer.ui.home.domain.model.GenreMusic
+import com.cas.musicplayer.ui.home.domain.usecase.GetGenresUseCase
+import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
 /**
@@ -10,11 +13,16 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-class GenresViewModel @Inject constructor() : ViewModel() {
+class GenresViewModel @Inject constructor(
+    private val getGenres: GetGenresUseCase
+) : BaseViewModel() {
 
-    val genres = MutableLiveData<List<GenreMusic>>()
+    private val _genres = MutableLiveData<List<GenreMusic>>()
+    val genres: LiveData<List<GenreMusic>>
+        get() = _genres
 
-    fun loadAllGenres() {
-        //genres.value = GenreMusic.allValues
+    fun loadAllGenres() = uiCoroutine {
+        val listGenres = getGenres()
+        _genres.value = listGenres
     }
 }

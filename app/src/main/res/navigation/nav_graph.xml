@@ -50,7 +50,7 @@
         tools:layout="@layout/fragment_video_player" />
     <fragment
         android:id="@+id/newReleaseFragment"
-        android:name="com.cas.musicplayer.ui.newrelease.NewReleaseFragment"
+        android:name="com.cas.musicplayer.ui.popular.PopularSingsFragment"
         android:label="NewReleaseFragment" />
     <fragment
         android:id="@+id/artistFragment"
@@ -62,7 +62,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlistVideosFragment"
-        android:name="com.cas.musicplayer.ui.artists.artistdetail.detailplaylist.PlaylistVideosFragment"
+        android:name="com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment"
         android:label="PlaylistVideosFragment" />
     <fragment
         android:id="@+id/artistsFragment"

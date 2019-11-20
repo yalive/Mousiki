@@ -18,4 +18,5 @@
 
     <!-- Common -->
     <string name="common_technical_issue">Something was wrong</string>
+    <string name="common_empty_state">No result found</string>
 </resources>

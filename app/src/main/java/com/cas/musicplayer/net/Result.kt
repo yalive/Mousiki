@@ -1,6 +1,7 @@
 package com.cas.musicplayer.net
 
 import androidx.annotation.StringRes
+import com.cas.musicplayer.R
 import com.cas.musicplayer.base.common.Resource
 import com.cas.musicplayer.base.common.ResourceOld
 
@@ -43,3 +44,7 @@ suspend fun <I, O> Result<I>.map(mapSuccess: suspend (I) -> O): Result<O> {
         is Result.Error -> this
     }
 }
+
+val TECHNICAL_ISSUE_RESULT =
+    Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
+val NO_RESULT = Result.Error(AppMessage.ResourceMessage(R.string.common_empty_state))

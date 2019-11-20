@@ -17,7 +17,7 @@ import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.ui.home.domain.model.HeaderItem
 import com.cas.musicplayer.ui.home.domain.model.HeaderItem.*
 import com.cas.musicplayer.ui.home.domain.model.HomeItem.*
-import com.cas.musicplayer.ui.home.ui.model.NewReleaseDisplayedItem
+import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.Extensions.inflate
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.observer
@@ -31,8 +31,8 @@ class HomeAdapter(
     private val onVideoSelected: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var newReleaseItems: List<NewReleaseDisplayedItem> by observer(emptyList()) {
-        newReleaseViewHolder?.bind()
+    private var newReleaseItems: List<DisplayedVideoItem> by observer(emptyList()) {
+        popularSongsViewHolder?.bind()
         featuredViewHolder?.bind()
     }
     private var charts: List<ChartModel> by observer(emptyList()) {
@@ -51,8 +51,8 @@ class HomeAdapter(
 
     private val items = listOf(
         FeaturedItem,
-        NewReleaseHeader,
-        NewReleaseItem,
+        PopularsHeader,
+        PopularsItem,
         ChartsHeader,
         ChartItem,
         ArtistsHeader,
@@ -60,7 +60,7 @@ class HomeAdapter(
         GenresHeader,
         GenreItem
     )
-    private var newReleaseViewHolder: NewReleaseViewHolder? = null
+    private var popularSongsViewHolder: PopularSongsViewHolder? = null
     private var featuredViewHolder: FeaturedViewHolder? = null
     private var chartViewHolder: ChartViewHolder? = null
     private var genreViewHolder: GenreViewHolder? = null
@@ -71,8 +71,8 @@ class HomeAdapter(
         TYPE_FEATURED -> FeaturedViewHolder(parent.inflate(R.layout.item_home_featured)).also {
             featuredViewHolder = it
         }
-        TYPE_NEW_RELEASE -> NewReleaseViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
-            newReleaseViewHolder = it
+        TYPE_NEW_RELEASE -> PopularSongsViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
+            popularSongsViewHolder = it
         }
         TYPE_ARTIST -> ArtistViewHolder(parent.inflate(R.layout.item_home_list_artists)).also {
             artistViewHolder = it
@@ -87,7 +87,7 @@ class HomeAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
         is FeaturedViewHolder -> holder.bind()
-        is NewReleaseViewHolder -> holder.bind()
+        is PopularSongsViewHolder -> holder.bind()
         is HeaderViewHolder -> holder.bind(items[position] as HeaderItem)
         is GenreViewHolder -> holder.bind()
         is ArtistViewHolder -> holder.bind()
@@ -100,7 +100,7 @@ class HomeAdapter(
     override fun getItemViewType(position: Int): Int = items[position].type
     override fun getItemCount() = items.size
 
-    fun updateNewRelease(resource: Resource<List<NewReleaseDisplayedItem>>) {
+    fun updateNewRelease(resource: Resource<List<DisplayedVideoItem>>) {
         resource.doOnSuccess {
             this.newReleaseItems = it
         }
@@ -144,8 +144,8 @@ class HomeAdapter(
         }
     }
 
-    inner class NewReleaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var adapter = HomeNewReleaseAdapter(onVideoSelected)
+    inner class PopularSongsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private var adapter = HomePopularSongsAdapter(onVideoSelected)
 
         init {
             val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -213,7 +213,7 @@ class HomeAdapter(
         private fun showMore(headerItem: HeaderItem) {
             val destination = when (headerItem) {
                 ArtistsHeader -> R.id.artistsFragment
-                NewReleaseHeader -> R.id.newReleaseFragment
+                PopularsHeader -> R.id.newReleaseFragment
                 ChartsHeader -> R.id.chartsFragment
                 GenresHeader -> R.id.genresFragment
             }

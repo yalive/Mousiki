@@ -13,6 +13,6 @@ class GetGenresUseCase @Inject constructor(
     private val repository: HomeRepository
 ) {
     suspend operator fun invoke(): List<GenreMusic> {
-        return repository.loadGenres().take(9)
+        return repository.loadGenres()
     }
 }

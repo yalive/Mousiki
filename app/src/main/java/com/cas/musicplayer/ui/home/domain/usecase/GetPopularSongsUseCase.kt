@@ -10,11 +10,11 @@ import javax.inject.Inject
  * Created by Abdelhadi on 2019-11-11.
  ***************************************
  */
-class GetNewReleasedSongsUseCase @Inject constructor(
+class GetPopularSongsUseCase @Inject constructor(
     private val repository: HomeRepository
 ) {
 
     suspend operator fun invoke(max: Int): Result<List<MusicTrack>> {
-        return repository.loadNewReleases()
+        return repository.loadNewReleases(max)
     }
 }

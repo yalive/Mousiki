@@ -2,39 +2,28 @@ package com.cas.musicplayer.ui.genres.detailgenre
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RelativeLayout
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.cas.musicplayer.R
+import com.cas.musicplayer.base.common.FragmentPageAdapter
+import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsFragment
 import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreVideosFragment
 import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.visible
 import com.cas.musicplayer.viewmodel.activityViewModel
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
 
 
-class DetailGenreFragment : Fragment() {
+class DetailGenreFragment : BaseFragment<DetailGenreViewModel>() {
 
-    val TAG = "DetailCategoryFragment"
+    override val layoutResourceId: Int = R.layout.fragment_detail_genre
+    override val viewModel by activityViewModel { injector.detailGenreViewModel }
 
-    companion object {
-        val EXTRAS_GENRE = "genre"
-    }
-
-    private val viewModel by activityViewModel { injector.detailGenreViewModel }
-
-    lateinit var genreMusic: GenreMusic
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_detail_genre, container, false)
-    }
+    private lateinit var genreMusic: GenreMusic
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,31 +33,28 @@ class DetailGenreFragment : Fragment() {
             return
         }
         genreMusic = parcelableGenre
-
-        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-
+        val collapsingToolbar =
+            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
         collapsingToolbar?.isTitleEnabled = true
-
         collapsingToolbar?.title = genreMusic.title
-
         val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-
         val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
-
         rltContainer?.visible()
 
-        val videosFragment = GenreVideosFragment()
-        videosFragment.arguments = arguments
-
-        val playlistsFragment = GenrePlaylistsFragment()
-        playlistsFragment.arguments = arguments
-
-        viewPager.adapter = DetailGenrePagerAdapter(childFragmentManager, listOf(videosFragment, playlistsFragment))
+        val videosFragment = GenreVideosFragment().also {
+            it.arguments = arguments
+        }
+        val playlistFragment = GenrePlaylistsFragment().also {
+            it.arguments = arguments
+        }
+        viewPager.adapter = FragmentPageAdapter(
+            childFragmentManager, listOf(videosFragment, playlistFragment)
+        )
         tabLayout.setupWithViewPager(viewPager)
-
-        viewModel.firstTrack.observe(this, Observer { firstTrack ->
-        })
-
         imgCollapsed?.setImageResource(genreMusic.img)
+    }
+
+    companion object {
+        const val EXTRAS_GENRE = "genre"
     }
 }

@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.newrelease
+package com.cas.musicplayer.ui.popular
 
 
 import android.os.Bundle
@@ -10,6 +10,7 @@ import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
 import com.cas.musicplayer.utils.observe
@@ -23,39 +24,31 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
-class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoAdapter.OnItemClickListener,
+class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
+    PopularSongsAdapter.OnItemClickListener,
     NativeAdsManager.Listener {
 
     override val viewModel by viewModel { injector.newReleaseViewModel }
     override val layoutResourceId: Int = R.layout.fragment_new_release
-    private lateinit var adapter: NewReleaseVideoAdapter
+    private lateinit var adapter: PopularSongsAdapter
     private lateinit var mNativeAdsManager: NativeAdsManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         activity?.title = "New Release"
-
         val collapsingToolbar =
             activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-
         collapsingToolbar?.isTitleEnabled = true
-
         collapsingToolbar?.title = "New Release"
-
         val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-
-
         rltContainer?.visible()
 
         val placement_id = "261549011432104_261551618098510"
         mNativeAdsManager = NativeAdsManager(activity!!, placement_id, 5)
         mNativeAdsManager.loadAds()
         mNativeAdsManager.setListener(this)
-    }
 
-    override fun onAdsLoaded() {
-        adapter = NewReleaseVideoAdapter(listOf(), context, mNativeAdsManager, this) {
+        adapter = PopularSongsAdapter(context, mNativeAdsManager, this) {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.collapseBottomPanel()
         }
@@ -63,6 +56,10 @@ class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoA
         observe(viewModel.newReleases) { resource ->
             updateUI(resource)
         }
+    }
+
+    override fun onAdsLoaded() {
+
     }
 
     override fun onAdError(p0: AdError?) {
@@ -76,7 +73,7 @@ class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoA
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 
-    private fun updateUI(resource: Resource<List<MusicTrack>>) = when (resource) {
+    private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
         is Resource.Loading -> {
             txtError.gone()
             progressBar.visible()
@@ -96,9 +93,9 @@ class NewReleaseFragment : BaseFragment<NewReleaseViewModel>(), NewReleaseVideoA
         }
     }
 
-    private fun showFeaturedImage(resource: Resource.Success<List<MusicTrack>>) {
+    private fun showFeaturedImage(resource: Resource.Success<List<DisplayedVideoItem>>) {
         val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
-        Picasso.get().load(resource.data[0].imgUrl)
+        Picasso.get().load(resource.data[0].track.imgUrl)
             .fit()
             .centerInside()
             .placeholder(R.drawable.bg_circle_black)
