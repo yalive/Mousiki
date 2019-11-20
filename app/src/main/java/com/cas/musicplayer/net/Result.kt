@@ -3,7 +3,6 @@ package com.cas.musicplayer.net
 import androidx.annotation.StringRes
 import com.cas.musicplayer.R
 import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.base.common.ResourceOld
 
 /**
  ***************************************
@@ -22,13 +21,6 @@ sealed class AppMessage {
     ) : AppMessage()
 
     data class StringMessage(val message: String) : AppMessage()
-}
-
-fun <T> Result<T>.asOldResource(): ResourceOld<T> {
-    return when (this) {
-        is Result.Success -> ResourceOld.success(this.data)
-        is Result.Error -> ResourceOld.error("error")
-    }
 }
 
 fun <T> Result<T>.asResource(): Resource<T> {

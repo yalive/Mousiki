@@ -3,14 +3,18 @@ package com.cas.musicplayer.ui.searchyoutube
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
+import com.cas.musicplayer.base.common.FragmentPageAdapter
+import com.cas.musicplayer.base.common.PageableFragment
 import com.cas.musicplayer.ui.BaseFragment
-import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.searchyoutube.channels.YTSearchChannelsFragment
+import com.cas.musicplayer.ui.searchyoutube.playlists.YTSearchPlaylistsFragment
+import com.cas.musicplayer.ui.searchyoutube.videos.YTSearchVideosFragment
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
+import com.cas.musicplayer.utils.observe
 import com.cas.musicplayer.utils.visible
 import com.cas.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_search_youtube.*
@@ -25,7 +29,15 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
     public override val viewModel by viewModel { injector.searchYoutubeViewModel }
     override val layoutResourceId: Int = R.layout.fragment_search_youtube
 
-    private var searchSuggestionsAdapter = YTSearchSuggestionsAdapter(mutableListOf())
+    private var searchSuggestionsAdapter = YTSearchSuggestionsAdapter { suggestion ->
+        recyclerViewSuggestions.gone()
+        pagerContainer.gone()
+        progressBar.visible()
+        removeQueryListener()
+        mainActivity()?.searchView?.setQuery(suggestion, false)
+        attachQueryListener()
+        viewModel.search(suggestion)
+    }
 
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
@@ -50,47 +62,43 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager.adapter = SearchYoutubePagerAdapter(childFragmentManager)
+        val fragments = listOf<PageableFragment>(
+            YTSearchVideosFragment(),
+            YTSearchChannelsFragment(),
+            YTSearchPlaylistsFragment()
+        )
+        viewPager.adapter = FragmentPageAdapter(childFragmentManager, fragments)
         tabLayout.setupWithViewPager(viewPager)
-
         attachQueryListener()
-
         recyclerViewSuggestions.adapter = searchSuggestionsAdapter
-        recyclerViewSuggestions.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
-        searchSuggestionsAdapter.onClickItem = { suggestion ->
-            recyclerViewSuggestions.gone()
-            pagerContainer.gone()
-            progressBar.visible()
-            removeQueryListener()
-            mainActivity()?.searchView?.setQuery(suggestion, false)
-            attachQueryListener()
-
-            viewModel.search(suggestion)
-        }
-
+        recyclerViewSuggestions.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                RecyclerView.VERTICAL
+            )
+        )
         observeViewModel()
     }
 
     private fun removeQueryListener() {
-        (activity as MainActivity).searchView?.setOnQueryTextListener(null)
+        mainActivity()?.searchView?.setOnQueryTextListener(null)
     }
 
     private fun attachQueryListener() {
-        (activity as MainActivity).searchView?.setOnQueryTextListener(queryChangeListener)
+        mainActivity()?.searchView?.setOnQueryTextListener(queryChangeListener)
     }
 
     private fun observeViewModel() {
-        viewModel.videos.observe(this, Observer {
+        observe(viewModel.videos) {
             pagerContainer.visible()
             progressBar.gone()
             recyclerViewSuggestions.gone()
-        })
-
-        viewModel.searchSuggestions.observe(this, Observer { suggestions ->
+        }
+        observe(viewModel.searchSuggestions) { suggestions ->
             recyclerViewSuggestions.visible()
             pagerContainer.gone()
             progressBar.gone()
-            searchSuggestionsAdapter.suggestions = suggestions
-        })
+            searchSuggestionsAdapter.dataItems = suggestions.toMutableList()
+        }
     }
 }
