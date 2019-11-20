@@ -10,7 +10,7 @@ import javax.inject.Inject
  * Created by Abdelhadi on 2019-11-11.
  ***************************************
  */
-class GetTopArtistsUseCase @Inject constructor(
+class GetCountryArtistsUseCase @Inject constructor(
     private val repository: HomeRepository
 ) {
 

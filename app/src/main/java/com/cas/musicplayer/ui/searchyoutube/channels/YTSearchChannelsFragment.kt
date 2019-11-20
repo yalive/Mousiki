@@ -34,11 +34,7 @@ class YTSearchChannelsFragment : Fragment() {
         val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
 
         collapsingToolbar?.isTitleEnabled = true
-
         val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-
-        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
-
         rltContainer?.gone()
 
         adapter = YTSearchArtistsAdapter(listOf())

@@ -2,98 +2,71 @@ package com.cas.musicplayer.ui.artists.artistdetail.videos
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.cas.musicplayer.R
 import com.cas.musicplayer.base.common.PageableFragment
-import com.cas.musicplayer.base.common.ResourceOld
-import com.cas.musicplayer.base.common.Status
+import com.cas.musicplayer.base.common.Resource
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.models.Artist
+import com.cas.musicplayer.ui.BaseFragment
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.Extensions.injector
 import com.cas.musicplayer.utils.gone
+import com.cas.musicplayer.utils.observe
 import com.cas.musicplayer.utils.visible
 import com.cas.musicplayer.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
-class ArtistVideosFragment : Fragment(), PageableFragment {
+class ArtistVideosFragment : BaseFragment<ArtistVideosViewModel>(), PageableFragment {
 
-    val TAG = "DetailCategoryFragment"
+    override val viewModel by viewModel { injector.artistVideosViewModel }
+    override val layoutResourceId: Int = R.layout.fragment_artist_videos
+    private val adapter: ArtistVideosAdapter  by lazy {
+        ArtistVideosAdapter(
+            artist = artist,
+            onVideoSelected = {
+                val mainActivity = requireActivity() as MainActivity
+                mainActivity.collapseBottomPanel()
+            },
+            onClickMore = { track ->
+                showBottomMenuButtons(track)
+            }
+        )
+    }
 
-    lateinit var adapter: ArtistVideosAdapter
-    lateinit var artist: Artist
-
-    private val viewModel by viewModel { injector.artistVideosViewModel }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_artist_videos, container, false)
+    private val artist: Artist by lazy {
+        arguments?.getParcelable<Artist>(ArtistFragment.EXTRAS_ARTIST)!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val parcelableGenre = arguments?.getParcelable<Artist>(ArtistFragment.EXTRAS_ARTIST)
-        if (parcelableGenre == null) {
-            requireActivity().onBackPressed()
-            return
-        }
-
-        artist = parcelableGenre
-        adapter = ArtistVideosAdapter(
-            listOf(),
-            artist
-        ) {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.collapseBottomPanel()
-        }
         recyclerView.adapter = adapter
-
-        viewModel.tracks.observe(this, Observer { resource ->
-            updateUI(resource)
-        })
-
-        adapter.onClickMore = { track ->
-            showBottomMenuButtons(track)
-        }
-
-        laodCategoryMusic()
-
+        observe(viewModel.tracks, this::updateUI)
+        viewModel.loadArtistTracks(artist.channelId)
         requireActivity().title = artist.name
     }
 
     override fun getPageTitle(): String = "Videos"
 
-    private fun updateUI(resource: ResourceOld<List<MusicTrack>>) {
-        when (resource.status) {
-            Status.SUCCESS -> {
-                adapter.items = resource.data!!
-                recyclerView.visible()
-                progressBar.gone()
-                txtError.gone()
-            }
-            Status.ERROR -> {
-                progressBar.gone()
-                txtError.visible()
-            }
-            Status.LOADING -> {
-                progressBar.visible()
-                txtError.gone()
-            }
+    private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
+        is Resource.Success -> {
+            adapter.dataItems = resource.data.toMutableList()
+            recyclerView.visible()
+            progressBar.gone()
+            txtError.gone()
         }
-    }
-
-    private fun laodCategoryMusic() {
-        viewModel.loadArtistTracks(artist.channelId)
+        is Resource.Failure -> {
+            progressBar.gone()
+            txtError.visible()
+        }
+        is Resource.Loading -> {
+            progressBar.visible()
+            txtError.gone()
+        }
     }
 
     private fun showBottomMenuButtons(musicTrack: MusicTrack) {

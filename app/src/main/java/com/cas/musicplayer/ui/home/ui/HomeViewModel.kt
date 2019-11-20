@@ -15,7 +15,7 @@ import com.cas.musicplayer.ui.home.domain.model.GenreMusic
 import com.cas.musicplayer.ui.home.domain.usecase.GetChartsUseCase
 import com.cas.musicplayer.ui.home.domain.usecase.GetGenresUseCase
 import com.cas.musicplayer.ui.home.domain.usecase.GetPopularSongsUseCase
-import com.cas.musicplayer.ui.home.domain.usecase.GetTopArtistsUseCase
+import com.cas.musicplayer.ui.home.domain.usecase.GetCountryArtistsUseCase
 import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.ui.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.getCurrentLocale
@@ -29,7 +29,7 @@ import javax.inject.Inject
  */
 class HomeViewModel @Inject constructor(
     private val getNewReleasedSongs: GetPopularSongsUseCase,
-    private val getTopArtists: GetTopArtistsUseCase,
+    private val getCountryArtists: GetCountryArtistsUseCase,
     private val getCharts: GetChartsUseCase,
     private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
@@ -82,7 +82,7 @@ class HomeViewModel @Inject constructor(
     private fun loadArtists(countryCode: String) = uiCoroutine {
         if (!_artists.hasItems() && !_artists.isLoading()) {
             _artists.loading()
-            val result = getTopArtists(countryCode)
+            val result = getCountryArtists(countryCode)
             _artists.value = result.asResource()
         }
     }
