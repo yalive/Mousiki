@@ -1,14 +1,14 @@
 package com.cas.musicplayer.repository
 
-import com.cas.musicplayer.base.common.ResourceOld
 import com.cas.musicplayer.data.enteties.Channel
 import com.cas.musicplayer.data.enteties.MusicTrack
 import com.cas.musicplayer.data.enteties.Playlist
 import com.cas.musicplayer.data.mappers.*
-import com.cas.musicplayer.net.RetrofitRunner
+import com.cas.musicplayer.net.NO_RESULT
+import com.cas.musicplayer.net.Result
 import com.cas.musicplayer.net.Result.Success
+import com.cas.musicplayer.net.RetrofitRunner
 import com.cas.musicplayer.net.YoutubeService
-import com.cas.musicplayer.net.asOldResource
 import org.json.JSONArray
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,43 +30,41 @@ class SearchRepository @Inject constructor(
     private val playlistIdMapper: YTBSearchResultToPlaylistId
 ) {
 
-    suspend fun searchTracks(query: String): ResourceOld<List<MusicTrack>> {
+    suspend fun searchTracks(query: String): Result<List<MusicTrack>> {
         val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
-            youtubeService.searchVideoIdsByQuery(query, 50).items!!
-        } as? Success ?: return ResourceOld.error("")
+            youtubeService.searchVideoIdsByQuery(query, 50).items ?: emptyList()
+        } as? Success ?: return NO_RESULT
 
         // 2 - Get videos
         val ids = idsResult.data.joinToString { it.id }
-        val videosResult = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.videos(ids).items!!
+        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
+            youtubeService.videos(ids).items ?: emptyList()
         }
-        return videosResult.asOldResource()
     }
 
-    suspend fun searchPlaylists(query: String): ResourceOld<List<Playlist>> {
+    suspend fun searchPlaylists(query: String): Result<List<Playlist>> {
         val idsResult = retrofitRunner.executeNetworkCall(playlistIdMapper.toListMapper()) {
             youtubeService.searchItemIdsByQuery(query, "playlist", 30).items!!
-        } as? Success ?: return ResourceOld.error("")
+        } as? Success ?: return NO_RESULT
 
         // 2 - Get videos
         val ids = idsResult.data.joinToString { it.id }
         val videosResult = retrofitRunner.executeNetworkCall(playlistMapper.toListMapper()) {
             youtubeService.playlists(ids).items!!
         }
-        return videosResult.asOldResource()
+        return videosResult
     }
 
 
-    suspend fun searchChannels(query: String): ResourceOld<List<Channel>> {
+    suspend fun searchChannels(query: String): Result<List<Channel>> {
         val idsResult = retrofitRunner.executeNetworkCall(channelIdMapper.toListMapper()) {
-            youtubeService.searchItemIdsByQuery(query, "channel", 15).items!!
-        } as? Success ?: return ResourceOld.error("")
+            youtubeService.searchItemIdsByQuery(query, "channel", 15).items ?: emptyList()
+        } as? Success ?: return NO_RESULT
 
         val ids = idsResult.data.joinToString { it.id }
-        val videosResult = retrofitRunner.executeNetworkCall(channelMapper.toListMapper()) {
-            youtubeService.channels(ids).items!!
+        return retrofitRunner.executeNetworkCall(channelMapper.toListMapper()) {
+            youtubeService.channels(ids).items ?: emptyList()
         }
-        return videosResult.asOldResource()
     }
 
     suspend fun getSuggestions(url: String): List<String> {
@@ -75,7 +73,10 @@ class SearchRepository @Inject constructor(
             val stringResponse = responseBody.string()
             if (stringResponse.startsWith("window.google.ac.h")) {
                 val json =
-                    stringResponse.substring(stringResponse.indexOf("(") + 1, stringResponse.indexOf(")"))
+                    stringResponse.substring(
+                        stringResponse.indexOf("(") + 1,
+                        stringResponse.indexOf(")")
+                    )
 
                 val jsonArray = JSONArray(json).getJSONArray(1)
 

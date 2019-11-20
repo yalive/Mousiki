@@ -1,9 +1,9 @@
 package com.cas.musicplayer.ui.searchyoutube
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.cas.musicplayer.R
+import com.cas.musicplayer.base.SimpleBaseAdapter
+import com.cas.musicplayer.base.SimpleBaseViewHolder
 import kotlinx.android.synthetic.main.item_youtube_serach_suggestion.view.*
 
 
@@ -12,42 +12,28 @@ import kotlinx.android.synthetic.main.item_youtube_serach_suggestion.view.*
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class YTSearchSuggestionsAdapter(suggestions: List<String>) :
-    RecyclerView.Adapter<YTSearchSuggestionsAdapter.ViewHolder>() {
+class YTSearchSuggestionsAdapter(
+    private val onClickItem: ((suggestion: String) -> Unit)
+) : SimpleBaseAdapter<String, YTSearchSuggestionsViewHolder>() {
 
-    var onClickItem: ((suggestion: String) -> Unit)? = null
+    override val cellResId: Int = R.layout.item_youtube_serach_suggestion
 
-    var suggestions: List<String> = suggestions
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(com.cas.musicplayer.R.layout.item_youtube_serach_suggestion, parent, false)
-        return ViewHolder(view)
+    override fun createViewHolder(view: View): YTSearchSuggestionsViewHolder {
+        return YTSearchSuggestionsViewHolder(view, onClickItem)
     }
+}
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(suggestions[position])
-    }
+class YTSearchSuggestionsViewHolder(
+    view: View,
+    private val onClickItem: ((suggestion: String) -> Unit)
+) : SimpleBaseViewHolder<String>(view) {
 
-
-    override fun getItemCount() = suggestions.size
-
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        init {
-            view.setOnClickListener {
-                if (adapterPosition >= 0) {
-                    onClickItem?.invoke(suggestions[adapterPosition])
-                }
+    override fun bind(item: String) {
+        itemView.txtTitle.text = item
+        itemView.setOnClickListener {
+            if (adapterPosition >= 0) {
+                onClickItem.invoke(item)
             }
         }
-
-        fun bind(item: String) {
-            itemView.txtTitle.text = item
-        }
     }
-
 }

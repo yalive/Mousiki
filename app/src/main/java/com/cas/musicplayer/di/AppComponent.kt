@@ -1,6 +1,7 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
+import com.cas.musicplayer.base.EmptyViewModel
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsViewModel
@@ -65,6 +66,8 @@ interface AppComponent {
     val searchYoutubeViewModel: SearchYoutubeViewModel
 
     val genresViewModel: GenresViewModel
+
+    val emptyViewModel: EmptyViewModel
 
     val gson: Gson
 }
