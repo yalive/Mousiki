@@ -2,8 +2,8 @@ package com.cas.musicplayer.ui.searchyoutube
 
 import android.view.View
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.SimpleBaseAdapter
-import com.cas.musicplayer.base.SimpleBaseViewHolder
+import com.cas.common.adapter.SimpleBaseAdapter
+import com.cas.common.adapter.SimpleBaseViewHolder
 import kotlinx.android.synthetic.main.item_youtube_serach_suggestion.view.*
 
 

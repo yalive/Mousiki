@@ -6,17 +6,18 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.FragmentPageAdapter
-import com.cas.musicplayer.base.common.PageableFragment
-import com.cas.musicplayer.ui.BaseFragment
+import com.cas.common.adapter.FragmentPageAdapter
+import com.cas.common.adapter.PageableFragment
+import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.ui.searchyoutube.channels.YTSearchChannelsFragment
 import com.cas.musicplayer.ui.searchyoutube.playlists.YTSearchPlaylistsFragment
 import com.cas.musicplayer.ui.searchyoutube.videos.YTSearchVideosFragment
-import com.cas.musicplayer.utils.Extensions.injector
-import com.cas.musicplayer.utils.gone
-import com.cas.musicplayer.utils.observe
-import com.cas.musicplayer.utils.visible
-import com.cas.musicplayer.viewmodel.viewModel
+import com.cas.musicplayer.di.injector.injector
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
+import com.cas.common.extensions.visible
+import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.ui.MainActivity
 import kotlinx.android.synthetic.main.fragment_search_youtube.*
 
 /**
@@ -34,7 +35,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         pagerContainer.gone()
         progressBar.visible()
         removeQueryListener()
-        mainActivity()?.searchView?.setQuery(suggestion, false)
+        (activity as? MainActivity)?.searchView?.setQuery(suggestion, false)
         attachQueryListener()
         viewModel.search(suggestion)
     }
@@ -81,11 +82,11 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
     }
 
     private fun removeQueryListener() {
-        mainActivity()?.searchView?.setOnQueryTextListener(null)
+        (activity as? MainActivity)?.searchView?.setOnQueryTextListener(null)
     }
 
     private fun attachQueryListener() {
-        mainActivity()?.searchView?.setOnQueryTextListener(queryChangeListener)
+        (activity as? MainActivity)?.searchView?.setOnQueryTextListener(queryChangeListener)
     }
 
     private fun observeViewModel() {

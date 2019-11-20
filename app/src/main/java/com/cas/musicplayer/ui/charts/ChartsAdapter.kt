@@ -5,12 +5,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.SimpleBaseAdapter
-import com.cas.musicplayer.base.SimpleBaseViewHolder
+import com.cas.common.adapter.SimpleBaseAdapter
+import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
-import com.cas.musicplayer.ui.home.domain.model.ChartModel
+import com.cas.musicplayer.domain.model.ChartModel
 import kotlinx.android.synthetic.main.item_chart.view.*
 
 /**

@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import com.cas.musicplayer.base.common.EventObserver
-import com.cas.musicplayer.base.common.asEvent
+import com.cas.common.event.EventObserver
+import com.cas.common.event.asEvent
 import com.cas.musicplayer.player.ClickVideoListener
 import com.cas.musicplayer.player.OnShowAdsListener
 import com.cas.musicplayer.utils.AudienceNetworkInitializeHelper

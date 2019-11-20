@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.FragmentPageAdapter
+import com.cas.common.adapter.FragmentPageAdapter
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsFragment
 import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosFragment
 import com.cas.musicplayer.utils.loadImage
-import com.cas.musicplayer.utils.visible
+import com.cas.common.extensions.visible
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
@@ -67,8 +67,9 @@ class ArtistFragment : Fragment() {
             FragmentPageAdapter(childFragmentManager, listOf(videosFragment, playlistsFragment))
         tabLayout.setupWithViewPager(viewPager)
 
-        if (artist.urlImage.isNotEmpty()) {
-            imgCollapsed?.loadImage(artist.urlImage)
+        val urlImage: String? = artist.urlImage
+        if (urlImage != null && urlImage.isNotEmpty()) {
+            imgCollapsed?.loadImage(urlImage)
         }
     }
 }

@@ -4,12 +4,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.SimpleBaseAdapter
-import com.cas.musicplayer.base.SimpleBaseViewHolder
-import com.cas.musicplayer.data.enteties.MusicTrack
+import com.cas.common.adapter.SimpleBaseAdapter
+import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.loadImage
 import kotlinx.android.synthetic.main.item_artist.view.*
 

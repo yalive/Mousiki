@@ -10,7 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.cas.musicplayer.R
 import com.cas.musicplayer.SingleFragmentActivity
-import com.cas.musicplayer.ui.home.domain.model.ChartModel
+import com.cas.musicplayer.domain.model.ChartModel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

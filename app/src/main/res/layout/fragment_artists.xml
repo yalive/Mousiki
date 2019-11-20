@@ -21,7 +21,7 @@
             tools:listitem="@layout/item_list_artist" />
 
 
-        <com.cas.musicplayer.base.views.SideBar
+        <com.cas.musicplayer.ui.artists.sidebar.SideBar
             android:id="@+id/sideBar"
             android:layout_width="20dp"
             android:layout_height="380dp"

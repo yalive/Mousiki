@@ -5,12 +5,12 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.BaseFragment
-import com.cas.musicplayer.utils.Extensions.injector
+import com.cas.common.fragment.BaseFragment
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.dpToPixel
-import com.cas.musicplayer.utils.gone
-import com.cas.musicplayer.utils.observe
-import com.cas.musicplayer.viewmodel.viewModel
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
+import com.cas.common.viewmodel.viewModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_genres.*
 

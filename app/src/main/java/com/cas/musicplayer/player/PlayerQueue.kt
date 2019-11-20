@@ -5,9 +5,9 @@ import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.Event
-import com.cas.musicplayer.data.enteties.MusicTrack
-import com.cas.musicplayer.services.VideoPlaybackService
+import com.cas.common.event.Event
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.player.services.VideoPlaybackService
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.isScreenLocked

@@ -4,21 +4,21 @@ package com.cas.musicplayer.ui.genres.detailgenre.videos
 import android.os.Bundle
 import android.view.View
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.PageableFragment
-import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.data.enteties.MusicTrack
-import com.cas.musicplayer.ui.BaseFragment
+import com.cas.common.adapter.PageableFragment
+import com.cas.common.resource.Resource
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.cas.musicplayer.ui.home.domain.model.GenreMusic
-import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
-import com.cas.musicplayer.utils.Extensions.injector
-import com.cas.musicplayer.utils.gone
-import com.cas.musicplayer.utils.observe
-import com.cas.musicplayer.utils.visible
-import com.cas.musicplayer.viewmodel.activityViewModel
-import com.cas.musicplayer.viewmodel.viewModel
+import com.cas.musicplayer.domain.model.GenreMusic
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.di.injector.injector
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
+import com.cas.common.extensions.visible
+import com.cas.common.viewmodel.activityViewModel
+import com.cas.common.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 

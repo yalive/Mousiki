@@ -1,6 +1,6 @@
 package com.cas.musicplayer.data.mappers
 
-import com.cas.musicplayer.data.enteties.Channel
+import com.cas.musicplayer.domain.model.Channel
 import com.cas.musicplayer.data.models.YTBChannel
 import com.cas.musicplayer.data.models.urlOrEmpty
 import javax.inject.Inject

@@ -14,16 +14,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.cas.musicplayer.data.enteties.MusicTrack
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.EmplacementBottom
 import com.cas.musicplayer.player.EmplacementCenter
 import com.cas.musicplayer.player.EmplacementPlaylist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.utils.Extensions.injector
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
-import com.cas.musicplayer.utils.gone
+import com.cas.common.extensions.gone
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
 

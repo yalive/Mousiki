@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
-import com.cas.musicplayer.net.AddKeyInterceptor
-import com.cas.musicplayer.net.YoutubeService
+import com.cas.musicplayer.data.net.AddKeyInterceptor
+import com.cas.musicplayer.data.net.YoutubeService
 import com.cas.musicplayer.ui.charts.ChartsViewModel
 import com.cas.musicplayer.utils.Constants
 import dagger.Module

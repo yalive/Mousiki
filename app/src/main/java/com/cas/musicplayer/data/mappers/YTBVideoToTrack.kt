@@ -1,6 +1,6 @@
 package com.cas.musicplayer.data.mappers
 
-import com.cas.musicplayer.data.enteties.MusicTrack
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.data.models.YTBVideo
 import com.cas.musicplayer.data.models.urlOrEmpty
 import javax.inject.Inject
