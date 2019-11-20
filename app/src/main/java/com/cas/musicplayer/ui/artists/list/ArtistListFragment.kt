@@ -78,13 +78,10 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
                     listContainer.visible()
                     progressBar.gone()
                 }
-                is Resource.Loading -> {
-                    progressBar.visible()
-                }
+                is Resource.Loading -> progressBar.visible()
             }
         }
     }
-
 
     private fun setupSideBar() {
         sideBar.setTextView(txtDialog)

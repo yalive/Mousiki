@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.base.BaseViewModel
 import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.base.common.Status
 import com.cas.musicplayer.base.common.hasItems
 import com.cas.musicplayer.base.common.isLoading
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.repository.ArtistsRepository
+import com.cas.musicplayer.net.Result
+import com.cas.musicplayer.ui.artists.domain.GetArtistsFromAssetUseCase
+import com.cas.musicplayer.ui.artists.domain.GetArtistsThumbnailsUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -18,21 +19,21 @@ import javax.inject.Inject
  **********************************
  */
 class ArtistListViewModel @Inject constructor(
-    val repository: ArtistsRepository
+    val getArtistsFromAsset: GetArtistsFromAssetUseCase,
+    val getArtistsThumbnails: GetArtistsThumbnailsUseCase
 ) : BaseViewModel() {
 
     private val _artists = MutableLiveData<Resource<List<Artist>>>()
     val artists: LiveData<Resource<List<Artist>>>
         get() = _artists
 
-    private val pageSize = 15
 
     fun loadAllArtists() = uiCoroutine {
         if (_artists.hasItems() || _artists.isLoading()) {
             return@uiCoroutine
         }
         _artists.value = Resource.Loading
-        val artistList = repository.getArtistsFromFile()
+        val artistList = getArtistsFromAsset()
         _artists.value = Resource.Success(artistList)
         loadImages(artistList)
     }
@@ -51,9 +52,9 @@ class ArtistListViewModel @Inject constructor(
     }
 
     private suspend fun loadArtists(ids: String) {
-        val resource = repository.getArtists(ids)
-        if (resource.status == Status.SUCCESS) {
-            appendArtists(resource.data!!)
+        val result = getArtistsThumbnails(ids)
+        if (result is Result.Success) {
+            appendArtists(result.data)
         }
     }
 
@@ -64,5 +65,9 @@ class ArtistListViewModel @Inject constructor(
         } else {
             _artists.value = Resource.Success(artists)
         }
+    }
+
+    companion object {
+        private const val pageSize = 15
     }
 }
