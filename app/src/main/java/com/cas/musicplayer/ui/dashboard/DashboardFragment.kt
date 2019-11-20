@@ -2,24 +2,20 @@ package com.cas.musicplayer.ui.dashboard
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-
 import com.cas.musicplayer.R
+import com.cas.musicplayer.utils.NoViewModelFragment
+import com.cas.common.adapter.FragmentPageAdapter
+import com.cas.musicplayer.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
+class DashboardFragment : NoViewModelFragment() {
 
-class DashboardFragment : Fragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
-    }
+    override val layoutResourceId: Int = R.layout.fragment_dashboard
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager.adapter = DashboardPagerAdapter(childFragmentManager)
+        viewPager.adapter = FragmentPageAdapter(childFragmentManager, listOf(HomeFragment()))
         tabLayout.setupWithViewPager(viewPager)
     }
 }

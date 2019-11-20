@@ -2,11 +2,11 @@ package com.cas.musicplayer.ui.genres.detailgenre.playlists
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.data.enteties.Playlist
-import com.cas.musicplayer.net.asResource
-import com.cas.musicplayer.ui.commondomain.GetChannelPlaylistsUseCase
+import com.cas.common.viewmodel.BaseViewModel
+import com.cas.common.resource.Resource
+import com.cas.musicplayer.domain.model.Playlist
+import com.cas.common.result.asResource
+import com.cas.musicplayer.domain.usecase.channel.GetChannelPlaylistsUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 

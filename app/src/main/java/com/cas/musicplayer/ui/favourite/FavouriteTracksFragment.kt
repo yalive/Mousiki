@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.enteties.MusicTrack
-import com.cas.musicplayer.data.enteties.MusicTrackRoomDatabase
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.data.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.utils.gone
-import com.cas.musicplayer.utils.visible
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.visible
 import kotlinx.android.synthetic.main.fragment_play_list.*
 
 class FavouriteTracksFragment : Fragment(), FavouriteTracksAdapter.OnItemClickListener {

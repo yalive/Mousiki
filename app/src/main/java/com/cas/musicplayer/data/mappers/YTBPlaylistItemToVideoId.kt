@@ -1,6 +1,6 @@
 package com.cas.musicplayer.data.mappers
 
-import com.cas.musicplayer.data.enteties.VideoId
+import com.cas.musicplayer.domain.model.VideoId
 import com.cas.musicplayer.data.models.YTBPlaylistItem
 import javax.inject.Inject
 import javax.inject.Singleton

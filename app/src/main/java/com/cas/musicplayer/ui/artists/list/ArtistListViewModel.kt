@@ -2,14 +2,14 @@ package com.cas.musicplayer.ui.artists.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.base.common.hasItems
-import com.cas.musicplayer.base.common.isLoading
+import com.cas.common.resource.Resource
+import com.cas.common.resource.hasItems
+import com.cas.common.resource.isLoading
+import com.cas.common.result.Result
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.data.models.Artist
-import com.cas.musicplayer.net.Result
-import com.cas.musicplayer.ui.artists.domain.GetArtistsFromAssetUseCase
-import com.cas.musicplayer.ui.artists.domain.GetArtistsThumbnailsUseCase
+import com.cas.musicplayer.domain.usecase.artist.GetArtistsFromAssetUseCase
+import com.cas.musicplayer.domain.usecase.artist.GetArtistsThumbnailsUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -34,7 +34,6 @@ class ArtistListViewModel @Inject constructor(
         }
         _artists.value = Resource.Loading
         val artistList = getArtistsFromAsset()
-        _artists.value = Resource.Success(artistList)
         loadImages(artistList)
     }
 

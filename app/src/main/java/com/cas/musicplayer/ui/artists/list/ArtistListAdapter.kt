@@ -4,8 +4,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.SimpleBaseAdapter
-import com.cas.musicplayer.base.SimpleBaseViewHolder
+import com.cas.common.adapter.SimpleBaseAdapter
+import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.data.models.Artist
 import com.cas.musicplayer.utils.loadImage
 
@@ -58,8 +58,9 @@ class ArtistsViewHolder(
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
     override fun bind(item: Artist) {
-        if (item.urlImage.isNotEmpty()) {
-            imgSong.loadImage(item.urlImage)
+        val urlImage: String? = item.urlImage
+        if (urlImage != null && urlImage.isNotEmpty()) {
+            imgSong.loadImage(urlImage)
         }
         txtTitle.text = item.name
         itemView.setOnClickListener {

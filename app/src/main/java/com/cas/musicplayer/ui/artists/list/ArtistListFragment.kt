@@ -9,15 +9,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.base.views.SideBar
-import com.cas.musicplayer.ui.BaseFragment
+import com.cas.common.resource.Resource
+import com.cas.musicplayer.ui.artists.sidebar.SideBar
+import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.utils.Extensions.injector
-import com.cas.musicplayer.utils.gone
-import com.cas.musicplayer.utils.observe
-import com.cas.musicplayer.utils.visible
-import com.cas.musicplayer.viewmodel.activityViewModel
+import com.cas.musicplayer.di.injector.injector
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
+import com.cas.common.extensions.visible
+import com.cas.common.viewmodel.activityViewModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_artists.*
 

@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
-import com.cas.musicplayer.utils.Extensions.injector
-import com.cas.musicplayer.utils.gone
-import com.cas.musicplayer.utils.observe
-import com.cas.musicplayer.viewmodel.viewModel
+import com.cas.musicplayer.di.injector.injector
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
+import com.cas.common.viewmodel.viewModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_charts.*
 import kotlinx.android.synthetic.main.fragment_charts.view.*

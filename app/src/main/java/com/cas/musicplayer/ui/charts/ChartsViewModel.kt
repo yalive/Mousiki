@@ -3,11 +3,11 @@ package com.cas.musicplayer.ui.charts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.OpenForTesting
-import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.net.Result
-import com.cas.musicplayer.repository.PlaylistRepository
-import com.cas.musicplayer.ui.home.domain.model.ChartModel
-import com.cas.musicplayer.ui.home.domain.usecase.GetChartsUseCase
+import com.cas.common.viewmodel.BaseViewModel
+import com.cas.common.result.Result
+import com.cas.musicplayer.domain.usecase.song.GetPlaylistFirstThreeVideosUseCase
+import com.cas.musicplayer.domain.model.ChartModel
+import com.cas.musicplayer.domain.usecase.chart.GetChartsUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -18,8 +18,8 @@ import javax.inject.Inject
  */
 @OpenForTesting
 class ChartsViewModel @Inject constructor(
-    val playlistRepository: PlaylistRepository,
-    private val getCharts: GetChartsUseCase
+    private val getCharts: GetChartsUseCase,
+    private val getPlaylistFirstThreeVideos: GetPlaylistFirstThreeVideosUseCase
 ) : BaseViewModel() {
 
     private val _charts = MutableLiveData<List<ChartModel>>()
@@ -42,7 +42,7 @@ class ChartsViewModel @Inject constructor(
 
     private fun loadLast3Videos(chart: ChartModel) = uiCoroutine {
         if (chart.playlistId.isEmpty()) return@uiCoroutine
-        val result = playlistRepository.firstThreeVideo(chart.playlistId)
+        val result = getPlaylistFirstThreeVideos(chart.playlistId)
         if (result is Result.Success && result.data.size == 3) {
             val listMusics = result.data
             _chartDetail.value = chart.copy(

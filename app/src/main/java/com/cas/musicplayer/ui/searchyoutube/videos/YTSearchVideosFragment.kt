@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.NoViewModelFragment
-import com.cas.musicplayer.base.common.PageableFragment
-import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.data.enteties.MusicTrack
+import com.cas.musicplayer.utils.NoViewModelFragment
+import com.cas.common.adapter.PageableFragment
+import com.cas.common.resource.Resource
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
-import com.cas.musicplayer.utils.Extensions.injector
-import com.cas.musicplayer.utils.gone
-import com.cas.musicplayer.utils.observe
+import com.cas.musicplayer.di.injector.injector
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
@@ -35,7 +36,7 @@ class YTSearchVideosFragment : NoViewModelFragment(), PageableFragment,
         val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
         rltContainer?.gone()
         adapter = YTSearchVideosAdapter(this) {
-            mainActivity()?.collapseBottomPanel()
+            (activity as? MainActivity)?.collapseBottomPanel()
         }
         recyclerView.adapter = adapter
         observeViseModel()

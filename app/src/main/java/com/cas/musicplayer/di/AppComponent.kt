@@ -1,9 +1,8 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
-import com.cas.musicplayer.base.EmptyViewModel
+import com.cas.musicplayer.utils.EmptyViewModel
 import com.cas.musicplayer.ui.MainViewModel
-import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
@@ -12,8 +11,8 @@ import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreViewModel
 import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsViewModel
 import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreVideosViewModel
 import com.cas.musicplayer.ui.genres.list.GenresViewModel
-import com.cas.musicplayer.ui.home.di.HomeModule
-import com.cas.musicplayer.ui.home.ui.HomeViewModel
+import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
 import com.google.gson.Gson
@@ -30,8 +29,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        AppModule::class,
-        HomeModule::class
+        AppModule::class
     ]
 )
 interface AppComponent {

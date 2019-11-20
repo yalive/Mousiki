@@ -2,16 +2,16 @@ package com.cas.musicplayer.ui.popular
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.base.common.Resource
-import com.cas.musicplayer.base.common.hasItems
-import com.cas.musicplayer.base.common.isLoading
-import com.cas.musicplayer.base.common.loading
-import com.cas.musicplayer.net.asResource
-import com.cas.musicplayer.net.map
-import com.cas.musicplayer.ui.home.domain.usecase.GetPopularSongsUseCase
-import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.ui.model.toDisplayedVideoItem
+import com.cas.common.viewmodel.BaseViewModel
+import com.cas.common.resource.Resource
+import com.cas.common.resource.hasItems
+import com.cas.common.resource.isLoading
+import com.cas.common.resource.loading
+import com.cas.common.result.asResource
+import com.cas.common.result.map
+import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 

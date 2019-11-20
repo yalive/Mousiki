@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.enteties.MusicTrack
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.ui.home.ui.model.DisplayedVideoItem
-import com.cas.musicplayer.utils.Extensions.inflate
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.common.extensions.inflate
 import com.cas.musicplayer.utils.loadImage
-import com.cas.musicplayer.utils.observer
+import com.cas.common.delegate.observer
 import com.facebook.ads.*
 
 

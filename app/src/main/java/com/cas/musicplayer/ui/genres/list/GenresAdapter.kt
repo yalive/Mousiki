@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.cas.musicplayer.R
-import com.cas.musicplayer.base.SimpleBaseAdapter
-import com.cas.musicplayer.base.SimpleBaseViewHolder
+import com.cas.common.adapter.SimpleBaseAdapter
+import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.cas.musicplayer.ui.home.domain.model.GenreMusic
+import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.drawable
 

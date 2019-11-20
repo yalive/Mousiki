@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.enteties.MusicTrack
-import com.cas.musicplayer.data.enteties.MusicTrackRoomDatabase
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.data.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.services.PlaybackLiveData
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.utils.Extensions.injector
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

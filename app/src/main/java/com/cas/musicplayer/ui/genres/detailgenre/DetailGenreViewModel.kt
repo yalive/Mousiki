@@ -1,8 +1,8 @@
 package com.cas.musicplayer.ui.genres.detailgenre
 
 import androidx.lifecycle.MutableLiveData
-import com.cas.musicplayer.base.BaseViewModel
-import com.cas.musicplayer.data.enteties.MusicTrack
+import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.domain.model.MusicTrack
 import javax.inject.Inject
 
 /**
