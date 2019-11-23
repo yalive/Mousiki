@@ -1,12 +1,10 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.mappers.YTBVideoToTrack
-import com.cas.musicplayer.data.mappers.toListMapper
 import com.cas.common.result.Result
-import com.cas.musicplayer.data.net.RetrofitRunner
-import com.cas.musicplayer.data.net.YoutubeService
-import com.cas.musicplayer.utils.getCurrentLocale
+import com.cas.common.result.alsoWhenSuccess
+import com.cas.musicplayer.data.datasource.LocalSongsDataSource
+import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
+import com.cas.musicplayer.domain.model.MusicTrack
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,14 +15,14 @@ import javax.inject.Singleton
  */
 @Singleton
 class SongsRepository @Inject constructor(
-    private var youtubeService: YoutubeService,
-    private val retrofitRunner: RetrofitRunner,
-    private val trackMapper: YTBVideoToTrack
+    private val remoteDataSource: RemoteSongsDataSource,
+    private val localDataSource: LocalSongsDataSource
 ) {
-
-    suspend fun getTrendingSongs(max: Int): Result<List<MusicTrack>> {
-        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.trending(max, getCurrentLocale()).items!!
+    suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): Result<List<MusicTrack>> {
+        val cachedTracks = localDataSource.getTrendingSongs(max, lastKnown)
+        if (cachedTracks.isNotEmpty()) return Result.Success(cachedTracks)
+        return remoteDataSource.getTrendingSongs(max).alsoWhenSuccess {
+            localDataSource.saveTrendingSongs(it)
         }
     }
 }

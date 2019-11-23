@@ -2,12 +2,12 @@ package com.cas.musicplayer.data.repositories
 
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.data.mappers.*
+import com.cas.musicplayer.data.remote.mappers.*
 import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.common.result.Result.Success
-import com.cas.musicplayer.data.net.RetrofitRunner
-import com.cas.musicplayer.data.net.YoutubeService
+import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
+import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import javax.inject.Inject
 import javax.inject.Singleton
 

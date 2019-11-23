@@ -37,6 +37,11 @@ suspend fun <I, O> Result<I>.map(mapSuccess: suspend (I) -> O): Result<O> {
     }
 }
 
+suspend fun <T> Result<T>.alsoWhenSuccess(doOnSuccess: suspend (T) -> Unit): Result<T> {
+    if (this is Result.Success) doOnSuccess(data)
+    return this
+}
+
 val TECHNICAL_ISSUE_RESULT =
     Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
 val NO_RESULT = Result.Error(AppMessage.ResourceMessage(R.string.common_empty_state))

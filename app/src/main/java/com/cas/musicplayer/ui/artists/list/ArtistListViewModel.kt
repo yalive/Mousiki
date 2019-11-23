@@ -7,7 +7,7 @@ import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.result.Result
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.data.models.Artist
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.usecase.artist.GetArtistsFromAssetUseCase
 import com.cas.musicplayer.domain.usecase.artist.GetArtistsThumbnailsUseCase
 import com.cas.musicplayer.utils.uiCoroutine

@@ -7,7 +7,7 @@ import com.cas.musicplayer.R
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.models.Artist
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.loadImage

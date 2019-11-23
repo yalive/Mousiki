@@ -1,8 +1,8 @@
 package com.cas.musicplayer.domain.usecase.song
 
+import com.cas.common.result.Result
 import com.cas.musicplayer.data.repositories.SongsRepository
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.common.result.Result
 import javax.inject.Inject
 
 /**
@@ -14,7 +14,7 @@ class GetPopularSongsUseCase @Inject constructor(
     private val repository: SongsRepository
 ) {
 
-    suspend operator fun invoke(max: Int): Result<List<MusicTrack>> {
-        return repository.getTrendingSongs(max)
+    suspend operator fun invoke(max: Int, lastKnown: MusicTrack? = null): Result<List<MusicTrack>> {
+        return repository.getTrendingSongs(max, lastKnown)
     }
 }

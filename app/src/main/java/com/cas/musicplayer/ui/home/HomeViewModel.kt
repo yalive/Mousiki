@@ -2,20 +2,20 @@ package com.cas.musicplayer.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
-import com.cas.musicplayer.data.models.Artist
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.domain.model.GenreMusic
+import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.domain.usecase.chart.GetChartsUseCase
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
-import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.getCurrentLocale

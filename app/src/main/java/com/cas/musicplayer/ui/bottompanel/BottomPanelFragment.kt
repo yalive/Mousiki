@@ -19,7 +19,7 @@ import com.cas.common.extensions.invisible
 import com.cas.common.extensions.visible
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.database.MusicTrackRoomDatabase
+import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.domain.model.durationToSeconds
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue

@@ -9,7 +9,7 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import com.cas.musicplayer.R
 import com.cas.common.adapter.FragmentPageAdapter
-import com.cas.musicplayer.data.models.Artist
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsFragment
 import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosFragment
 import com.cas.musicplayer.utils.loadImage

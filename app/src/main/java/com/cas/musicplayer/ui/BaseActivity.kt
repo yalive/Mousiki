@@ -46,7 +46,7 @@ open class BaseActivity : AppCompatActivity() {
 
         // If you call AudienceNetworkAds.buildInitSettings(Context).initialize()
         // in Application.onCreate() this call is not really necessary.
-        // Otherwise call initialize() onCreate() of all Activities that contain ads or
+        // Otherwise call initialize() onCreate() of getSongs Activities that contain ads or
         // from onCreate() of your Splash Activity.
         AudienceNetworkInitializeHelper.initialize(this)
     }
