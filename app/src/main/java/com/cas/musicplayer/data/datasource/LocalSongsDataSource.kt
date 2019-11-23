@@ -19,7 +19,6 @@ class LocalSongsDataSource @Inject constructor(
 
     suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): List<MusicTrack> = withContext(bgContext) {
         if (lastKnown != null) {
-            // Find last known
             val songEntity = trendingSongsDao.getByYoutubeId(lastKnown.youtubeId)
             val songs = trendingSongsDao.getSongsStartingFrom(songEntity.id, max)
             return@withContext songs.map { it.toMusicTrack() }
