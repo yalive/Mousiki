@@ -7,6 +7,7 @@ import com.cas.musicplayer.di.DaggerAppComponent
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.facebook.ads.AudienceNetworkAds
+import com.facebook.stetho.Stetho
 import com.google.android.gms.ads.MobileAds
 import io.fabric.sdk.android.Fabric
 
@@ -37,6 +38,7 @@ class MusicApp : Application(), ComponentProvider {
             .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
             .build()
         Fabric.with(this, crashlytics)
+        Stetho.initializeWithDefaults(this)
     }
 
     companion object {

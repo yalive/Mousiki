@@ -1,16 +1,16 @@
 package com.cas.musicplayer.data.repositories
 
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.mappers.YTBChannelToArtist
-import com.cas.musicplayer.data.mappers.YTBSearchResultToVideoId
-import com.cas.musicplayer.data.mappers.YTBVideoToTrack
-import com.cas.musicplayer.data.mappers.toListMapper
-import com.cas.musicplayer.data.models.Artist
+import com.cas.musicplayer.data.remote.mappers.YTBChannelToArtist
+import com.cas.musicplayer.data.remote.mappers.YTBSearchResultToVideoId
+import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
+import com.cas.musicplayer.data.remote.mappers.toListMapper
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.common.result.Result.Success
-import com.cas.musicplayer.data.net.RetrofitRunner
-import com.cas.musicplayer.data.net.YoutubeService
+import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
+import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.google.gson.Gson

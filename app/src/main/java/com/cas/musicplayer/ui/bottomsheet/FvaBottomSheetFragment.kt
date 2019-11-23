@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.database.MusicTrackRoomDatabase
+import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity

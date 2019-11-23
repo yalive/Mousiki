@@ -6,7 +6,7 @@ import android.widget.TextView
 import com.cas.musicplayer.R
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
-import com.cas.musicplayer.data.models.Artist
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.utils.loadImage
 
 

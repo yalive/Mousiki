@@ -2,13 +2,15 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
+import com.cas.musicplayer.data.local.database.dao.TrendingSongsDao
+import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
+import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.cas.musicplayer.utils.Constants
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
-import com.cas.musicplayer.MusicApp
-import com.cas.musicplayer.data.net.AddKeyInterceptor
-import com.cas.musicplayer.data.net.YoutubeService
-import com.cas.musicplayer.utils.Constants
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -67,4 +69,14 @@ object AppModule {
     @Provides
     fun providesSharedPref(context: Context): SharedPreferences =
         context.getSharedPreferences("music.app", Context.MODE_PRIVATE)
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesDataBase(context: Context): MusicTrackRoomDatabase = MusicTrackRoomDatabase.getDatabase(context)
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesTrendingSongsDao(db: MusicTrackRoomDatabase): TrendingSongsDao = db.trendingSongsDao()
 }

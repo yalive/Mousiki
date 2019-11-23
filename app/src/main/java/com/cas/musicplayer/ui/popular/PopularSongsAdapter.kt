@@ -26,7 +26,7 @@ class PopularSongsAdapter(
     val onVideoSelected: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var items: List<DisplayedVideoItem> by observer(items) {
+    var items: List<DisplayedVideoItem> by observer(emptyList()) {
         notifyDataSetChanged()
     }
 

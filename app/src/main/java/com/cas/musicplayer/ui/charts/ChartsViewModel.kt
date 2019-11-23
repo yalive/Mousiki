@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.charts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.musicplayer.OpenForTesting
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.result.Result
 import com.cas.musicplayer.domain.usecase.song.GetPlaylistFirstThreeVideosUseCase
@@ -16,7 +15,6 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-@OpenForTesting
 class ChartsViewModel @Inject constructor(
     private val getCharts: GetChartsUseCase,
     private val getPlaylistFirstThreeVideos: GetPlaylistFirstThreeVideosUseCase

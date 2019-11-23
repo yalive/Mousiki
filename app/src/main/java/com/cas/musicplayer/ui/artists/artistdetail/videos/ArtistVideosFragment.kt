@@ -7,7 +7,7 @@ import com.cas.musicplayer.R
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.resource.Resource
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.models.Artist
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
