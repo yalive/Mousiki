@@ -17,8 +17,6 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.toast
-import com.facebook.ads.AdError
-import com.facebook.ads.NativeAdsManager
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -26,13 +24,11 @@ import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
 class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
-    PopularSongsAdapter.OnItemClickListener,
-    NativeAdsManager.Listener {
+    PopularSongsAdapter.OnItemClickListener {
 
     override val viewModel by viewModel { injector.newReleaseViewModel }
     override val layoutResourceId: Int = R.layout.fragment_new_release
     private lateinit var adapter: PopularSongsAdapter
-    private lateinit var mNativeAdsManager: NativeAdsManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,12 +40,7 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
         val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
         rltContainer?.visible()
 
-        val placement_id = "261549011432104_261551618098510"
-        mNativeAdsManager = NativeAdsManager(activity!!, placement_id, 5)
-        mNativeAdsManager.loadAds()
-        mNativeAdsManager.setListener(this)
-
-        adapter = PopularSongsAdapter(context, mNativeAdsManager, this) {
+        adapter = PopularSongsAdapter(this) {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.collapseBottomPanel()
         }
@@ -57,21 +48,12 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
         observe(viewModel.newReleases) { resource ->
             updateUI(resource)
         }
-        observe(viewModel.hepMessage){
+        observe(viewModel.hepMessage) {
             activity?.toast(it)
         }
         recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
-            print("Hello")
             viewModel.loadMoreSongs()
-            print("Hello")
         })
-    }
-
-    override fun onAdsLoaded() {
-
-    }
-
-    override fun onAdError(p0: AdError?) {
     }
 
     override fun onItemClick(musicTrack: MusicTrack) {
@@ -98,7 +80,7 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
             txtError.gone()
             progressBar.gone()
             recyclerView.visible()
-            adapter.items = resource.data
+            adapter.dataItems = resource.data.toMutableList()
         }
     }
 
