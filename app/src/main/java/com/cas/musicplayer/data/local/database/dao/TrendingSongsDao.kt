@@ -33,6 +33,12 @@ interface TrendingSongsDao {
 
     @Query("SELECT  * from trending_tracks WHERE youtube_id=:youtubeId ")
     suspend fun getByYoutubeId(youtubeId: String): TrendingSongEntity
+
+    @Query("SELECT COUNT(*) from trending_tracks")
+    suspend fun count(): Int
+
+    @Query("DELETE  from trending_tracks")
+    suspend fun clear()
 }
 
 fun TrendingSongEntity.toMusicTrack() = MusicTrack(

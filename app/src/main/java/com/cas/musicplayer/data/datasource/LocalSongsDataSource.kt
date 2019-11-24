@@ -1,8 +1,10 @@
 package com.cas.musicplayer.data.datasource
 
+import android.os.SystemClock
 import com.cas.musicplayer.data.local.database.dao.TrendingSongsDao
 import com.cas.musicplayer.data.local.database.dao.toMusicTrack
 import com.cas.musicplayer.data.local.models.TrendingSongEntity
+import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
@@ -14,7 +16,8 @@ import javax.inject.Inject
  ***************************************
  */
 class LocalSongsDataSource @Inject constructor(
-    private val trendingSongsDao: TrendingSongsDao
+    private val trendingSongsDao: TrendingSongsDao,
+    private val preferences: PreferencesHelper
 ) {
 
     suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): List<MusicTrack> = withContext(bgContext) {
@@ -27,6 +30,10 @@ class LocalSongsDataSource @Inject constructor(
     }
 
     suspend fun saveTrendingSongs(tracks: List<MusicTrack>) = withContext(bgContext) {
+        if (numberOfSongs() == 0) {
+            preferences.setMostPopularSongsUpdateDate()
+        }
+
         val trendingTracks = tracks.map {
             TrendingSongEntity(
                 youtubeId = it.youtubeId,
@@ -35,5 +42,22 @@ class LocalSongsDataSource @Inject constructor(
             )
         }
         trendingSongsDao.insert(trendingTracks)
+    }
+
+    suspend fun numberOfSongs(): Int = trendingSongsDao.count()
+
+    fun expired(): Boolean {
+        val updateDate = preferences.getMostPopularSongsUpdateDate()
+        val cacheDuration = (SystemClock.elapsedRealtime() - updateDate) / 1000
+        return cacheDuration - CACHE_MAX_DURATION_SECONDS >= 0
+    }
+
+    suspend fun clear() {
+        trendingSongsDao.clear()
+    }
+
+    companion object {
+        private const val ONE_DAY_SECONDS = 24 * 60 * 60
+        private const val CACHE_MAX_DURATION_SECONDS = 2 * ONE_DAY_SECONDS // 2 days
     }
 }

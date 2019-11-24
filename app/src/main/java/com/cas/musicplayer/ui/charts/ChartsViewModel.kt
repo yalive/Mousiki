@@ -2,11 +2,11 @@ package com.cas.musicplayer.ui.charts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.result.Result
-import com.cas.musicplayer.domain.usecase.song.GetPlaylistFirstThreeVideosUseCase
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.domain.usecase.chart.GetChartsUseCase
+import com.cas.musicplayer.domain.usecase.song.GetPlaylistFirstThreeVideosUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -24,9 +24,9 @@ class ChartsViewModel @Inject constructor(
     val charts: LiveData<List<ChartModel>>
         get() = _charts
 
-    private val _chartDetail = MutableLiveData<ChartModel>()
+    /*private val _chartDetail = MutableLiveData<ChartModel>()
     val chartDetail: LiveData<ChartModel>
-        get() = _chartDetail
+        get() = _chartDetail*/
 
     init {
         loadAllCharts()
@@ -43,11 +43,22 @@ class ChartsViewModel @Inject constructor(
         val result = getPlaylistFirstThreeVideos(chart.playlistId)
         if (result is Result.Success && result.data.size == 3) {
             val listMusics = result.data
-            _chartDetail.value = chart.copy(
-                track1 = listMusics[0].title,
-                track2 = listMusics[1].title,
-                track3 = listMusics[2].title
+            updateChart(
+                chart.copy(
+                    track1 = listMusics[0].title,
+                    track2 = listMusics[1].title,
+                    track3 = listMusics[2].title
+                )
             )
         }
+    }
+
+    private fun updateChart(chart: ChartModel) = uiCoroutine {
+        val chartList = _charts.value ?: return@uiCoroutine
+        val indexOfFirst = chartList.indexOfFirst { it.playlistId == chart.playlistId }
+        val mutList = chartList.toMutableList().apply {
+            this[indexOfFirst] = chart
+        }
+        _charts.value = mutList
     }
 }
