@@ -48,6 +48,5 @@ open class ChartsFragment : Fragment() {
         recyclerView.adapter = adapter
 
         observe(viewModel.charts, adapter::submitList)
-        observe(viewModel.chartDetail, adapter::updateChart)
     }
 }

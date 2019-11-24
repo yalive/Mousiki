@@ -25,14 +25,6 @@ internal class ChartsAdapter : SimpleBaseAdapter<ChartModel, ChartsViewHolder>()
     fun submitList(charts: List<ChartModel>) {
         this.dataItems = charts.toMutableList()
     }
-
-    fun updateChart(chart: ChartModel) {
-        val indexOf = dataItems.indexOfFirst { it.playlistId == chart.playlistId }
-        if (indexOf >= 0) {
-            dataItems[indexOf] = chart
-            notifyItemChanged(indexOf)
-        }
-    }
 }
 
 internal class ChartsViewHolder(val view: View) : SimpleBaseViewHolder<ChartModel>(view) {
