@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
+import com.cas.musicplayer.data.local.database.dao.ArtistDao
 import com.cas.musicplayer.data.local.database.dao.TrendingSongsDao
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
@@ -79,4 +80,9 @@ object AppModule {
     @JvmStatic
     @Provides
     fun providesTrendingSongsDao(db: MusicTrackRoomDatabase): TrendingSongsDao = db.trendingSongsDao()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesArtistDao(db: MusicTrackRoomDatabase): ArtistDao = db.artistsDao()
 }

@@ -15,7 +15,7 @@ class GetArtistsThumbnailsUseCase @Inject constructor(
     private val repository: ArtistsRepository
 ) {
 
-    suspend operator fun invoke(ids: String): Result<List<Artist>> {
+    suspend operator fun invoke(ids: List<String>): Result<List<Artist>> {
         return repository.getArtistsChannels(ids)
     }
 }

@@ -44,7 +44,9 @@ class LocalSongsDataSource @Inject constructor(
         trendingSongsDao.insert(trendingTracks)
     }
 
-    suspend fun numberOfSongs(): Int = trendingSongsDao.count()
+    suspend fun numberOfSongs(): Int = withContext(bgContext) {
+        return@withContext trendingSongsDao.count()
+    }
 
     fun expired(): Boolean {
         val updateDate = preferences.getMostPopularSongsUpdateDate()
@@ -52,7 +54,7 @@ class LocalSongsDataSource @Inject constructor(
         return cacheDuration - CACHE_MAX_DURATION_SECONDS >= 0
     }
 
-    suspend fun clear() {
+    suspend fun clear() = withContext(bgContext) {
         trendingSongsDao.clear()
     }
 

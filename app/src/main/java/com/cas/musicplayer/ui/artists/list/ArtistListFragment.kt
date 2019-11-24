@@ -8,16 +8,16 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.musicplayer.R
-import com.cas.common.resource.Resource
-import com.cas.musicplayer.ui.artists.sidebar.SideBar
-import com.cas.common.fragment.BaseFragment
-import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.di.injector.injector
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
+import com.cas.common.fragment.BaseFragment
+import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.activityViewModel
+import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.cas.musicplayer.ui.artists.sidebar.SideBar
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_artists.*
 
@@ -55,10 +55,10 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
             bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, it)
             findNavController().navigate(R.id.artistFragment, bundle)
         })
-        recycler.adapter = adapter
-        val layoutManager = recycler.layoutManager as LinearLayoutManager
+        recyclerView.adapter = adapter
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
         var firstVisibleInListview = layoutManager.findFirstVisibleItemPosition()
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
@@ -91,7 +91,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
             override fun onTouchingLetterChanged(str: String) {
                 val headPositionInAdapter = adapter.getLetterPosition(str)
                 if (headPositionInAdapter != -1) {
-                    val layoutManager = recycler.layoutManager as LinearLayoutManager
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     layoutManager.scrollToPositionWithOffset(headPositionInAdapter, 0)
                     layoutManager.stackFromEnd = true
                 }
