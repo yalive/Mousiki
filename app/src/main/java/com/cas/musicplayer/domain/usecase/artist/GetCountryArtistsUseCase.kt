@@ -28,7 +28,7 @@ class GetCountryArtistsUseCase @Inject constructor(
         }
 
         // Get detail of artists
-        val ids = sixArtist.joinToString { it.channelId }
+        val ids = sixArtist.map { it.channelId }
         return getArtistsThumbnails(ids)
     }
 }

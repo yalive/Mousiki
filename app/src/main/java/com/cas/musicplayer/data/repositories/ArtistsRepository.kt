@@ -1,16 +1,18 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.remote.mappers.YTBChannelToArtist
+import com.cas.common.result.NO_RESULT
+import com.cas.common.result.Result
+import com.cas.common.result.Result.Success
+import com.cas.common.result.alsoWhenSuccess
+import com.cas.musicplayer.data.datasource.ArtistsLocalDataSource
+import com.cas.musicplayer.data.datasource.ArtistsRemoteDataSource
 import com.cas.musicplayer.data.remote.mappers.YTBSearchResultToVideoId
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
 import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.common.result.NO_RESULT
-import com.cas.common.result.Result
-import com.cas.common.result.Result.Success
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.google.gson.Gson
@@ -31,13 +33,18 @@ class ArtistsRepository @Inject constructor(
     private var gson: Gson,
     private val retrofitRunner: RetrofitRunner,
     private val trackMapper: YTBVideoToTrack,
-    private val artistMapper: YTBChannelToArtist,
-    private val searchMapper: YTBSearchResultToVideoId
+    private val searchMapper: YTBSearchResultToVideoId,
+    private val localDataSource: ArtistsLocalDataSource,
+    private val remoteDataSource: ArtistsRemoteDataSource
 ) {
 
-    suspend fun getArtistsChannels(ids: String): Result<List<Artist>> {
-        return retrofitRunner.executeNetworkCall(artistMapper.toListMapper()) {
-            youtubeService.channels(ids).items ?: emptyList()
+    suspend fun getArtistsChannels(ids: List<String>): Result<List<Artist>> {
+        val artistsDb = localDataSource.getArtists(ids)
+        if (artistsDb.isNotEmpty()) {
+            return Success(artistsDb)
+        }
+        return remoteDataSource.getArtists(ids).alsoWhenSuccess {
+            localDataSource.saveArtists(it)
         }
     }
 

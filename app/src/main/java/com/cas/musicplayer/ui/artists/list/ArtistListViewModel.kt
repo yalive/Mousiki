@@ -42,15 +42,15 @@ class ArtistListViewModel @Inject constructor(
         val rest = artists.size % pageSize
         for (i in 0 until numberOfTenGroups) {
             val subList = artists.subList(i * pageSize, (i + 1) * pageSize)
-            loadArtists(subList.joinToString { it.channelId })
+            loadArtists(subList.map { it.channelId })
         }
         // Load the rest
         val subList =
             artists.subList(numberOfTenGroups * pageSize, numberOfTenGroups * pageSize + rest)
-        loadArtists(subList.joinToString { it.channelId })
+        loadArtists(subList.map { it.channelId })
     }
 
-    private suspend fun loadArtists(ids: String) {
+    private suspend fun loadArtists(ids: List<String>) {
         val result = getArtistsThumbnails(ids)
         if (result is Result.Success) {
             appendArtists(result.data)
