@@ -40,9 +40,3 @@ interface TrendingSongsDao {
     @Query("DELETE  from trending_tracks")
     suspend fun clear()
 }
-
-fun TrendingSongEntity.toMusicTrack() = MusicTrack(
-    youtubeId = youtubeId,
-    title = title,
-    duration = duration
-)

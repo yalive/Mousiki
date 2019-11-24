@@ -24,10 +24,6 @@ class ChartsViewModel @Inject constructor(
     val charts: LiveData<List<ChartModel>>
         get() = _charts
 
-    /*private val _chartDetail = MutableLiveData<ChartModel>()
-    val chartDetail: LiveData<ChartModel>
-        get() = _chartDetail*/
-
     init {
         loadAllCharts()
     }
@@ -41,7 +37,7 @@ class ChartsViewModel @Inject constructor(
     private fun loadLast3Videos(chart: ChartModel) = uiCoroutine {
         if (chart.playlistId.isEmpty()) return@uiCoroutine
         val result = getPlaylistFirstThreeVideos(chart.playlistId)
-        if (result is Result.Success && result.data.size == 3) {
+        if (result is Result.Success && result.data.size >= 3) {
             val listMusics = result.data
             updateChart(
                 chart.copy(

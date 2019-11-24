@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class GenresRepository @Inject constructor(
 ) {
-    suspend fun loadGenres(): List<GenreMusic> {
+    fun loadGenres(): List<GenreMusic> {
         return mutableListOf<GenreMusic>().apply {
             add(
                 GenreMusic(

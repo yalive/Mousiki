@@ -1,13 +1,16 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.data.remote.mappers.*
-import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.common.result.Result.Success
-import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.cas.common.result.alsoWhenSuccess
+import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsLocalDataSource
+import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsRemoteDataSource
+import com.cas.musicplayer.data.datasource.playlist.PlaylistSongTitleLocalDataSource
+import com.cas.musicplayer.data.datasource.playlist.PlaylistSongTitleRemoteDataSource
+import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
+import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.Playlist
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,36 +22,41 @@ import javax.inject.Singleton
 
 @Singleton
 class PlaylistRepository @Inject constructor(
-    private var youtubeService: YoutubeService,
-    private val retrofitRunner: RetrofitRunner,
-    private val trackMapper: YTBVideoToTrack,
-    private val playlistTrackMapper: YTBPlaylistItemToTrack,
-    private val videoIdMapper: YTBPlaylistItemToVideoId,
-    private val playlistMapper: YTBPlaylistToPlaylist
+    private val channelPlaylistsLocalDataSource: ChannelPlaylistsLocalDataSource,
+    private val channelPlaylistsRemoteDataSource: ChannelPlaylistsRemoteDataSource,
+    private val playlistSongsLocalDataSource: PlaylistSongsLocalDataSource,
+    private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource,
+    private val songTitleLocalDataSource: PlaylistSongTitleLocalDataSource,
+    private val songTitleRemoteDataSource: PlaylistSongTitleRemoteDataSource
 ) {
 
     suspend fun playlistVideos(playlistId: String): Result<List<MusicTrack>> {
-        // 1 - Get video ids
-        val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
-            youtubeService.playlistVideoIds(playlistId, 50).items ?: emptyList()
-        } as? Success ?: return NO_RESULT
-
-        // 2 - Get videos
-        val ids = idsResult.data.joinToString { it.id }
-        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.videos(ids).items!!
+        val localPlaylists = playlistSongsLocalDataSource.getPlaylistSongs(playlistId)
+        if (localPlaylists.isNotEmpty()) {
+            return Success(localPlaylists)
+        }
+        return playlistSongsRemoteDataSource.getPlaylistSongs(playlistId).alsoWhenSuccess {
+            playlistSongsLocalDataSource.savePlaylistSongs(playlistId, it)
         }
     }
 
     suspend fun firstThreeVideo(playlistId: String): Result<List<MusicTrack>> {
-        return retrofitRunner.executeNetworkCall(playlistTrackMapper.toListMapper()) {
-            youtubeService.playlistVideosTitle(playlistId, 3).items ?: emptyList()
+        val localPlaylists = songTitleLocalDataSource.getPlaylistSongs(playlistId)
+        if (localPlaylists.isNotEmpty()) {
+            return Success(localPlaylists)
+        }
+        return songTitleRemoteDataSource.getPlaylistSongs(playlistId).alsoWhenSuccess {
+            songTitleLocalDataSource.savePlaylistSongs(playlistId, it)
         }
     }
 
     suspend fun getPlaylists(channelId: String): Result<List<Playlist>> {
-        return retrofitRunner.executeNetworkCall(playlistMapper.toListMapper()) {
-            youtubeService.channelPlaylists(channelId).items ?: emptyList()
+        val localPlaylists = channelPlaylistsLocalDataSource.getChannelPlaylists(channelId)
+        if (localPlaylists.isNotEmpty()) {
+            return Success(localPlaylists)
+        }
+        return channelPlaylistsRemoteDataSource.getChannelPlaylists(channelId).alsoWhenSuccess {
+            channelPlaylistsLocalDataSource.saveChannelPlaylists(channelId, it)
         }
     }
 }

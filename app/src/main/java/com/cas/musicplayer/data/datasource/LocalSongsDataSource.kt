@@ -2,8 +2,8 @@ package com.cas.musicplayer.data.datasource
 
 import android.os.SystemClock
 import com.cas.musicplayer.data.local.database.dao.TrendingSongsDao
-import com.cas.musicplayer.data.local.database.dao.toMusicTrack
 import com.cas.musicplayer.data.local.models.TrendingSongEntity
+import com.cas.musicplayer.data.local.models.toMusicTrack
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.bgContext
