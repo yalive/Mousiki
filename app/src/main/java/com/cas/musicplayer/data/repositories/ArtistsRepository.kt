@@ -1,17 +1,13 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.common.result.Result.Success
 import com.cas.common.result.alsoWhenSuccess
 import com.cas.musicplayer.data.datasource.ArtistsLocalDataSource
 import com.cas.musicplayer.data.datasource.ArtistsRemoteDataSource
-import com.cas.musicplayer.data.remote.mappers.YTBSearchResultToVideoId
-import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
-import com.cas.musicplayer.data.remote.mappers.toListMapper
+import com.cas.musicplayer.data.datasource.channel.ChannelSongsLocalDataSource
+import com.cas.musicplayer.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
@@ -29,13 +25,11 @@ import javax.inject.Singleton
 
 @Singleton
 class ArtistsRepository @Inject constructor(
-    private var youtubeService: YoutubeService,
     private var gson: Gson,
-    private val retrofitRunner: RetrofitRunner,
-    private val trackMapper: YTBVideoToTrack,
-    private val searchMapper: YTBSearchResultToVideoId,
     private val localDataSource: ArtistsLocalDataSource,
-    private val remoteDataSource: ArtistsRemoteDataSource
+    private val remoteDataSource: ArtistsRemoteDataSource,
+    private val channelLocalDataSource: ChannelSongsLocalDataSource,
+    private val channelRemoteDataSource: ChannelSongsRemoteDataSource
 ) {
 
     suspend fun getArtistsChannels(ids: List<String>): Result<List<Artist>> {
@@ -56,14 +50,12 @@ class ArtistsRepository @Inject constructor(
     }
 
     suspend fun getArtistTracks(artistChannelId: String): Result<List<MusicTrack>> {
-        val result = retrofitRunner.executeNetworkCall(searchMapper.toListMapper()) {
-            youtubeService.channelVideoIds(artistChannelId).items ?: emptyList()
-        } as? Success ?: return NO_RESULT
-
-        // 2 - Get videos
-        val ids = result.data.joinToString { it.id }
-        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.videos(ids).items ?: emptyList()
+        val localChannelSongs = channelLocalDataSource.getChannelSongs(artistChannelId)
+        if (localChannelSongs.isNotEmpty()) {
+            return Success(localChannelSongs)
+        }
+        return channelRemoteDataSource.getChannelSongs(artistChannelId).alsoWhenSuccess {
+            channelLocalDataSource.saveChannelSongs(artistChannelId, it)
         }
     }
 }
