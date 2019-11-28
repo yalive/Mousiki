@@ -104,4 +104,9 @@ object AppModule {
     @JvmStatic
     @Provides
     fun providesSongTitleDao(db: MusicTrackRoomDatabase): SongTitleDao = db.songTitleDao()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesRecentlyPlayedTracksDao(db: MusicTrackRoomDatabase): RecentlyPlayedTracksDao = db.recentlyPlayedTracksDao()
 }

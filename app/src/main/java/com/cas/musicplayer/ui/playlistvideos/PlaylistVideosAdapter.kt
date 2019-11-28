@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.item_artist.view.*
  */
 class PlaylistVideosAdapter(
     private val artist: Artist,
-    private val onVideoSelected: () -> Unit,
+    private val onVideoSelected: (MusicTrack) -> Unit,
     private val onClickMore: ((track: MusicTrack) -> Unit)
 ) : SimpleBaseAdapter<DisplayedVideoItem, PlaylistVideosViewHolder>() {
     override val cellResId: Int = R.layout.item_artist
@@ -33,7 +33,7 @@ class PlaylistVideosViewHolder(
     view: View,
     private val items: List<DisplayedVideoItem>,
     private val artist: Artist,
-    private val onVideoSelected: () -> Unit,
+    private val onVideoSelected: (MusicTrack) -> Unit,
     private val onClickMore: ((track: MusicTrack) -> Unit)
 ) : SimpleBaseViewHolder<DisplayedVideoItem>(view) {
 
@@ -44,9 +44,10 @@ class PlaylistVideosViewHolder(
 
     init {
         view.setOnClickListener {
-            onVideoSelected()
+            val track = items[adapterPosition].track
+            onVideoSelected(track)
             val tracks = items.map { it.track }
-            PlayerQueue.playTrack(items[adapterPosition].track, tracks)
+            PlayerQueue.playTrack(track, tracks)
         }
     }
 

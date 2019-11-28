@@ -10,8 +10,9 @@ import com.cas.common.resource.loading
 import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
-import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
+import com.cas.musicplayer.ui.BaseSongsViewModel
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -23,8 +24,9 @@ import javax.inject.Inject
  **********************************
  */
 class PopularSongsViewModel @Inject constructor(
-    val getPopularSongs: GetPopularSongsUseCase
-) : BaseViewModel() {
+    private val getPopularSongs: GetPopularSongsUseCase,
+    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
+) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
 
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val newReleases: LiveData<Resource<List<DisplayedVideoItem>>>
@@ -34,7 +36,9 @@ class PopularSongsViewModel @Inject constructor(
     val hepMessage: LiveData<String>
         get() = _hepMessage
 
-    private var loadingMore = false
+    private val _loadMore = MutableLiveData<Resource<Unit>>()
+    val loadMore: LiveData<Resource<Unit>>
+        get() = _loadMore
 
     init {
         loadTrending()
@@ -54,7 +58,7 @@ class PopularSongsViewModel @Inject constructor(
     fun loadMoreSongs() = uiCoroutine {
         val previousList = _newReleases.valueOrNull()
         if (previousList != null && previousList.isNotEmpty() && previousList.size < MAX_VIDEOS) {
-            loadingMore = true
+            _loadMore.value = Resource.Loading
             val result = getPopularSongs(25, previousList.lastOrNull()?.track)
             if (result is Result.Success) {
                 _newReleases.value = result.map { tracks ->
@@ -64,7 +68,7 @@ class PopularSongsViewModel @Inject constructor(
                     }
                 }.asResource()
             }
-            loadingMore = false
+            _loadMore.value = Resource.Success(Unit)
         }
 
         if (previousList != null && previousList.size >= MAX_VIDEOS) {

@@ -3,20 +3,20 @@ package com.cas.musicplayer.ui.playlistvideos
 
 import android.os.Bundle
 import android.view.View
-import com.cas.musicplayer.R
-import com.cas.common.resource.Resource
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
+import com.cas.common.extensions.visible
 import com.cas.common.fragment.BaseFragment
+import com.cas.common.resource.Resource
+import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.R
+import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.di.injector.injector
-import com.cas.common.extensions.gone
-import com.cas.common.extensions.observe
-import com.cas.common.extensions.visible
-import com.cas.common.viewmodel.viewModel
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
@@ -41,9 +41,10 @@ class PlaylistVideosFragment : BaseFragment<PlaylistVideosViewModel>() {
         artist = parcelableGenre
         adapter = PlaylistVideosAdapter(
             artist = artist,
-            onVideoSelected = {
+            onVideoSelected = { track ->
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
+                viewModel.saveTrackToRecent(track)
             },
             onClickMore = { track ->
                 showBottomMenuButtons(track)

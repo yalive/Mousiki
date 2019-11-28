@@ -4,6 +4,7 @@ package com.cas.musicplayer.ui.popular
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.core.view.isVisible
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
@@ -43,17 +44,23 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
         adapter = PopularSongsAdapter(this) {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.collapseBottomPanel()
+            viewModel.saveTrackToRecent(it)
         }
         recyclerView.adapter = adapter
-        observe(viewModel.newReleases) { resource ->
-            updateUI(resource)
-        }
-        observe(viewModel.hepMessage) {
-            activity?.toast(it)
-        }
+        observeViewModel()
         recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
             viewModel.loadMoreSongs()
         })
+    }
+
+    private fun observeViewModel() {
+        observe(viewModel.newReleases, this::updateUI)
+        observe(viewModel.hepMessage) {
+            activity?.toast(it)
+        }
+        observe(viewModel.loadMore) {
+            showMoreProgress.isVisible = it is Resource.Loading
+        }
     }
 
     override fun onItemClick(musicTrack: MusicTrack) {
@@ -68,18 +75,18 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
         is Resource.Loading -> {
             txtError.gone()
             progressBar.visible()
-            recyclerView.gone()
+            mainView.gone()
         }
         is Resource.Failure -> {
             txtError.visible()
             progressBar.gone()
-            recyclerView.gone()
+            mainView.gone()
         }
         is Resource.Success -> {
             showFeaturedImage(resource)
             txtError.gone()
             progressBar.gone()
-            recyclerView.visible()
+            mainView.visible()
             adapter.dataItems = resource.data.toMutableList()
         }
     }

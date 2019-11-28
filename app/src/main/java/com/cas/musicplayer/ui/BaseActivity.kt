@@ -9,9 +9,6 @@ import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
 import com.cas.common.event.EventObserver
 import com.cas.common.event.asEvent
 import com.cas.musicplayer.player.ClickVideoListener
@@ -19,6 +16,9 @@ import com.cas.musicplayer.player.OnShowAdsListener
 import com.cas.musicplayer.utils.AudienceNetworkInitializeHelper
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.UserPrefs
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 
 
 /**
@@ -106,7 +106,7 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showInterstitialAd() {
         print("Show Ads")
-        if (interstitialAd.isLoaded) {
+        if (::interstitialAd.isInitialized && interstitialAd.isLoaded) {
             onAdsShown()
             handler.postDelayed({
                 interstitialAd.show()

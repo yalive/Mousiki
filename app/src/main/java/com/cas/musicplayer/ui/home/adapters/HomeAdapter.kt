@@ -6,21 +6,20 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
-import com.cas.musicplayer.R
+import com.cas.common.delegate.observer
+import com.cas.common.extensions.inflate
 import com.cas.common.resource.Resource
 import com.cas.common.resource.doOnSuccess
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.ui.home.GridSpacingItemDecoration
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.domain.model.HeaderItem.*
 import com.cas.musicplayer.domain.model.HomeItem.*
+import com.cas.musicplayer.ui.home.GridSpacingItemDecoration
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.common.extensions.inflate
 import com.cas.musicplayer.utils.dpToPixel
-import com.cas.common.delegate.observer
 
 /**
  **********************************
@@ -31,9 +30,12 @@ class HomeAdapter(
     private val onVideoSelected: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var recentTracks: List<DisplayedVideoItem> by observer(emptyList()) {
+        featuredViewHolder?.bind()
+    }
+
     private var newReleaseItems: List<DisplayedVideoItem> by observer(emptyList()) {
         popularSongsViewHolder?.bind()
-        featuredViewHolder?.bind()
     }
     private var charts: List<ChartModel> by observer(emptyList()) {
         chartViewHolder?.bind()
@@ -45,12 +47,9 @@ class HomeAdapter(
         artistViewHolder?.bind()
     }
 
-    fun autoScrollFeaturedVideos() {
-        featuredViewHolder?.autoScrollFeaturedVideos()
-    }
-
     private val items = listOf(
-        FeaturedItem,
+        RecentHeader,
+        RecentItem,
         PopularsHeader,
         PopularsItem,
         ChartsHeader,
@@ -72,7 +71,7 @@ class HomeAdapter(
                 R.layout.item_home_header
             )
         )
-        TYPE_FEATURED -> FeaturedViewHolder(parent.inflate(R.layout.item_home_featured)).also {
+        TYPE_FEATURED -> FeaturedViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
             featuredViewHolder = it
         }
         TYPE_NEW_RELEASE -> PopularSongsViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
@@ -104,6 +103,10 @@ class HomeAdapter(
     override fun getItemViewType(position: Int): Int = items[position].type
     override fun getItemCount() = items.size
 
+    fun updateRecentSongs(songs: List<DisplayedVideoItem>) {
+        this.recentTracks = songs
+    }
+
     fun updateNewRelease(resource: Resource<List<DisplayedVideoItem>>) {
         resource.doOnSuccess {
             this.newReleaseItems = it
@@ -125,25 +128,20 @@ class HomeAdapter(
     }
 
     inner class FeaturedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val adapter = HomeFeaturedAdapter(view.context, onVideoSelected)
-        private var viewPager: ViewPager = view.findViewById(R.id.viewPager)
 
-        fun bind() {
-            with(viewPager) {
-                clipToPadding = false;
-                setPadding(40, 0, 40, 0);
-                pageMargin = 20
-            }
-            adapter.newReleaseItems = this@HomeAdapter.newReleaseItems
-            viewPager.adapter = adapter
+        private var adapter = HomeRecentPlayedSongsAdapter(onVideoSelected)
+
+        init {
+            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+            recyclerView.adapter = adapter
         }
 
-        fun autoScrollFeaturedVideos() {
-            val currentItem = viewPager.currentItem
-            if (currentItem < adapter.newReleaseItems.size - 1) {
-                viewPager.setCurrentItem(currentItem + 1, true)
-            } else {
-                viewPager.setCurrentItem(0, true)
+        fun bind() {
+            val list: List<RecentPlayedSongItem> = recentTracks.map {
+                RecentPlayedSongItem.RecentSong(it)
+            }
+            adapter.dataItems = list.toMutableList().apply {
+                add(RecentPlayedSongItem.More)
             }
         }
     }
@@ -220,6 +218,7 @@ class HomeAdapter(
                 PopularsHeader -> R.id.newReleaseFragment
                 ChartsHeader -> R.id.chartsFragment
                 GenresHeader -> R.id.genresFragment
+                RecentHeader -> R.id.newReleaseFragment
             }
             itemView.findNavController().navigate(destination)
         }

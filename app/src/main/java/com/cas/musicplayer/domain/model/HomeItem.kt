@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
  **********************************
  */
 sealed class HomeItem(val type: Int) {
-    object FeaturedItem : HomeItem(HomeAdapter.TYPE_FEATURED)
+    object RecentItem : HomeItem(HomeAdapter.TYPE_FEATURED)
     object PopularsItem : HomeItem(HomeAdapter.TYPE_NEW_RELEASE)
     object ChartItem : HomeItem(HomeAdapter.TYPE_CHART)
     object ArtistItem : HomeItem(HomeAdapter.TYPE_ARTIST)
@@ -19,6 +19,7 @@ sealed class HomeItem(val type: Int) {
 }
 
 sealed class HeaderItem(val title: String) : HomeItem(HomeAdapter.TYPE_HEADER) {
+    object RecentHeader : HeaderItem("RECENT")
     object PopularsHeader : HeaderItem("NEW RELEASE")
     object ChartsHeader : HeaderItem("CHARTS")
     object ArtistsHeader : HeaderItem("ARTIST")
