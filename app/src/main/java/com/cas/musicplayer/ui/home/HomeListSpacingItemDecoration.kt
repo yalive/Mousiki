@@ -47,7 +47,7 @@ class HomeListSpacingItemDecoration(private val spacing: Int, private var edgeMa
         }
 
         if (type == HomeAdapter.TYPE_FEATURED) {
-            outRect.top = spacing + view.context.dpToPixel(16f)
+            outRect.top = spacing
         }
 
     }

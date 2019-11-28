@@ -2,11 +2,12 @@ package com.cas.musicplayer.ui.playlistvideos
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPlaylistVideosUseCase
+import com.cas.musicplayer.ui.BaseSongsViewModel
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -18,8 +19,9 @@ import javax.inject.Inject
  **********************************
  */
 class PlaylistVideosViewModel @Inject constructor(
-    private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase
-) : BaseViewModel() {
+    private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase,
+    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
+) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
 
     private val _videos = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val videos: LiveData<Resource<List<DisplayedVideoItem>>>

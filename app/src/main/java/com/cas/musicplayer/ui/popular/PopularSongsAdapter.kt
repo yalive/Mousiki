@@ -18,7 +18,7 @@ import com.cas.musicplayer.utils.loadImage
  */
 class PopularSongsAdapter(
     private val itemClickListener: OnItemClickListener,
-    val onVideoSelected: () -> Unit
+    val onVideoSelected: (MusicTrack) -> Unit
 ) : SimpleBaseAdapter<DisplayedVideoItem, PopularSongsAdapter.PopularSongsViewHolder>() {
 
     override val cellResId: Int = R.layout.item_new_release_video
@@ -39,9 +39,10 @@ class PopularSongsAdapter(
 
         init {
             itemView.setOnClickListener {
-                onVideoSelected()
+                val track = dataItems[adapterPosition].track
+                onVideoSelected(track)
                 val tracks = dataItems.map { it.track }
-                PlayerQueue.playTrack(dataItems[adapterPosition].track, tracks)
+                PlayerQueue.playTrack(track, tracks)
             }
         }
 

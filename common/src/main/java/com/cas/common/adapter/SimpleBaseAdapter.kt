@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.common.delegate.observer
 
 /**
  ***************************************
@@ -13,14 +12,10 @@ import com.cas.common.delegate.observer
  ***************************************
  */
 abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> :
-    RecyclerView.Adapter<T>() {
+    BaseAdapter<DataType, T>() {
 
     @get:LayoutRes
     protected abstract val cellResId: Int
-
-    var dataItems: MutableList<DataType> by observer(mutableListOf()) {
-        onDataChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
         val view = parent.inflate(cellResId)
@@ -33,8 +28,6 @@ abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> :
         holder.bind(dataItems[position])
     }
 
-    protected fun getItem(position: Int): DataType = dataItems[position]
-    protected open fun onDataChanged() = notifyDataSetChanged()
     abstract fun createViewHolder(view: View): T
 }
 

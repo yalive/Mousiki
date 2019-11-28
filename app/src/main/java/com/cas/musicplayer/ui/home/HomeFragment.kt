@@ -4,20 +4,18 @@ package com.cas.musicplayer.ui.home
 import android.os.Bundle
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.GridLayoutManager
-import com.cas.musicplayer.R
 import com.cas.common.adapter.PageableFragment
-import com.cas.common.fragment.BaseFragment
-import com.cas.musicplayer.ui.home.adapters.HomeAdapter
-import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.utils.dpToPixel
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
-import com.cas.musicplayer.utils.uiCoroutine
+import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.home.adapters.HomeAdapter
+import com.cas.musicplayer.utils.dpToPixel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.delay
 
 
 class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
@@ -48,23 +46,16 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
             val marginDp = requireActivity().dpToPixel(8f)
             addItemDecoration(HomeListSpacingItemDecoration(spacingDp, marginDp))
         }
-        autoScrollFeaturedVideos()
         observeViewModel()
     }
 
     override fun getPageTitle(): String = "HOME"
-
-    private fun autoScrollFeaturedVideos() = uiCoroutine {
-        while (true) {
-            delay(timeMillis = 10 * 1000)
-            homeAdapter.autoScrollFeaturedVideos()
-        }
-    }
 
     private fun observeViewModel() {
         observe(viewModel.newReleases, homeAdapter::updateNewRelease)
         observe(viewModel.charts, homeAdapter::updateCharts)
         observe(viewModel.genres, homeAdapter::updateGenres)
         observe(viewModel.artists, homeAdapter::updateArtists)
+        observe(viewModel.recentSongs, homeAdapter::updateRecentSongs)
     }
 }
