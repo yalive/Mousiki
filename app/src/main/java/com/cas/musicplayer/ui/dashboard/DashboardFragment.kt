@@ -3,10 +3,11 @@ package com.cas.musicplayer.ui.dashboard
 
 import android.os.Bundle
 import android.view.View
-import com.cas.musicplayer.R
-import com.cas.musicplayer.utils.NoViewModelFragment
 import com.cas.common.adapter.FragmentPageAdapter
+import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.home.HomeFragment
+import com.cas.musicplayer.ui.library.LibraryFragment
+import com.cas.musicplayer.utils.NoViewModelFragment
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : NoViewModelFragment() {
@@ -15,7 +16,7 @@ class DashboardFragment : NoViewModelFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager.adapter = FragmentPageAdapter(childFragmentManager, listOf(HomeFragment()))
+        viewPager.adapter = FragmentPageAdapter(childFragmentManager, listOf(HomeFragment(), LibraryFragment()))
         tabLayout.setupWithViewPager(viewPager)
     }
 }

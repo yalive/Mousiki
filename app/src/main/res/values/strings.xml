@@ -15,4 +15,9 @@
     <string name="label_share">Share</string>
     <string name="label_add_to">Add to...</string>
     <string name="label_play_next">Play next</string>
+    <string name="common_more">More</string>
+
+    <!-- Library -->
+    <string name="library_recently_played">Recently played</string>
+    <string name="library_favourites">Favourites</string>
 </resources>

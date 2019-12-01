@@ -12,9 +12,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:itemCount="20"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_new_release"
         tools:visibility="visible" />
 

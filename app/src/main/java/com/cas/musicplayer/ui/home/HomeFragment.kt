@@ -3,7 +3,6 @@ package com.cas.musicplayer.ui.home
 
 import android.os.Bundle
 import android.widget.RelativeLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
@@ -13,7 +12,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
-import com.cas.musicplayer.utils.dpToPixel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -29,33 +27,22 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int) = 3
-        }
         val collapsingToolbar =
             activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
         val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
         rltContainer?.gone()
         collapsingToolbar?.isTitleEnabled = false
-
-        recyclerView.apply {
-            layoutManager = gridLayoutManager
-            adapter = homeAdapter
-            val spacingDp = requireActivity().dpToPixel(8f)
-            val marginDp = requireActivity().dpToPixel(8f)
-            addItemDecoration(HomeListSpacingItemDecoration(spacingDp, marginDp))
-        }
+        recyclerView.addItemDecoration(HomeMarginItemDecoration())
+        recyclerView.adapter = homeAdapter
         observeViewModel()
     }
 
-    override fun getPageTitle(): String = "HOME"
+    override fun getPageTitle(): String = "Discover"
 
     private fun observeViewModel() {
         observe(viewModel.newReleases, homeAdapter::updateNewRelease)
         observe(viewModel.charts, homeAdapter::updateCharts)
         observe(viewModel.genres, homeAdapter::updateGenres)
         observe(viewModel.artists, homeAdapter::updateArtists)
-        observe(viewModel.recentSongs, homeAdapter::updateRecentSongs)
     }
 }

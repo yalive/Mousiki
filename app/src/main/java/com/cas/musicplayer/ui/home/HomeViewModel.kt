@@ -15,7 +15,6 @@ import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.domain.usecase.chart.GetChartsUseCase
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
-import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
@@ -32,8 +31,7 @@ class HomeViewModel @Inject constructor(
     private val getNewReleasedSongs: GetPopularSongsUseCase,
     private val getCountryArtists: GetCountryArtistsUseCase,
     private val getCharts: GetChartsUseCase,
-    private val getGenres: GetGenresUseCase,
-    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase
+    private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
 
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
@@ -52,16 +50,12 @@ class HomeViewModel @Inject constructor(
     val artists: LiveData<Resource<List<Artist>>>
         get() = _artists
 
-    private val _recentSongs = MutableLiveData<List<DisplayedVideoItem>>()
-    val recentSongs: LiveData<List<DisplayedVideoItem>>
-        get() = _recentSongs
 
     init {
         loadTrending()
         loadArtists(getCurrentLocale())
         loadCharts()
         loadGenres()
-        loadRecentlyPlayedSongs()
     }
 
 
@@ -94,9 +88,5 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadRecentlyPlayedSongs() = uiCoroutine {
-        val songs = getRecentlyPlayedSongs()
-        _recentSongs.value = songs.map { it.toDisplayedVideoItem() }
-    }
 }
 
