@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,15 +12,38 @@
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_toStartOf="@+id/txtMore"
         android:textColor="@color/colorWhite"
+        android:textSize="20sp"
         android:textStyle="bold"
-        tools:text="NEW RELEASE" />
+        tools:text="New releases" />
+
+    <TextView
+        android:id="@+id/txtMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="@dimen/eight_8dp"
+        android:layout_toStartOf="@+id/showAll"
+        android:text="@string/common_more"
+        android:textColor="#E6E60F"
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/showAll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignTop="@+id/txtMore"
+        android:layout_alignBottom="@+id/txtMore"
         android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
         android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_arrow_right" />
+        android:contentDescription="@string/app_name"
+        app:srcCompat="@drawable/ic_arrow_right" />
 </RelativeLayout>

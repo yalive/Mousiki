@@ -26,7 +26,7 @@ class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListe
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_fav_video, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_new_release, parent, false)
         return PlayListViewHolder(view)
     }
 
@@ -43,10 +43,10 @@ class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListe
     inner class PlayListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val imgSong: ImageView = itemView.findViewById(R.id.imgSong)
-        private val btnMore: ImageButton = itemView.findViewById(R.id.btnMore)
+       // private val btnMore: ImageButton = itemView.findViewById(R.id.btnMore)
         private val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
         private val txtDuration: TextView = itemView.findViewById(R.id.txtDuration)
-        private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
+        //private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
 
         init {
             itemView.setOnClickListener {
@@ -61,10 +61,10 @@ class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListe
                 .into(imgSong)
             txtTitle.text = item.title
             txtDuration.text = item.durationFormatted
-            txtCategory.text = item.title.split("-")[0]
-            btnMore.setOnClickListener {
-                itemClickListener.onItemClick(item)
-            }
+            //txtCategory.text = item.title.split("-")[0]
+//            btnMore.setOnClickListener {
+//                itemClickListener.onItemClick(item)
+//            }
 
         }
     }

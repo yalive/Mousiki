@@ -19,11 +19,11 @@ sealed class HomeItem(val type: Int) {
 }
 
 sealed class HeaderItem(val title: String) : HomeItem(HomeAdapter.TYPE_HEADER) {
-    object RecentHeader : HeaderItem("RECENT")
-    object PopularsHeader : HeaderItem("NEW RELEASE")
-    object ChartsHeader : HeaderItem("CHARTS")
-    object ArtistsHeader : HeaderItem("ARTIST")
-    object GenresHeader : HeaderItem("GENRES")
+    object RecentHeader : HeaderItem("Recent")
+    object PopularsHeader : HeaderItem("New Releases")
+    object ChartsHeader : HeaderItem("Top charts")
+    object ArtistsHeader : HeaderItem("Artists")
+    object GenresHeader : HeaderItem("Genres")
 }
 
 @Parcelize

@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.delegate.observer
 import com.cas.common.extensions.inflate
+import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.resource.Resource
 import com.cas.common.resource.doOnSuccess
 import com.cas.musicplayer.R
@@ -48,16 +49,13 @@ class HomeAdapter(
     }
 
     private val items = listOf(
-        RecentHeader,
-        RecentItem,
+        ChartItem,
         PopularsHeader,
         PopularsItem,
-        ChartsHeader,
-        ChartItem,
-        ArtistsHeader,
-        ArtistItem,
         GenresHeader,
-        GenreItem
+        GenreItem,
+        ArtistsHeader,
+        ArtistItem
     )
     private var popularSongsViewHolder: PopularSongsViewHolder? = null
     private var featuredViewHolder: FeaturedViewHolder? = null
@@ -164,6 +162,7 @@ class HomeAdapter(
 
         init {
             val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+            recyclerView.addItemDecoration(MarginItemDecoration(horizontalMargin = view.context.dpToPixel(8f)))
             recyclerView.adapter = adapter
         }
 

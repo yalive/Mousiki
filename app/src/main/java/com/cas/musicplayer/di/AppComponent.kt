@@ -1,7 +1,6 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
-import com.cas.musicplayer.utils.EmptyViewModel
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosViewModel
@@ -12,9 +11,11 @@ import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsViewMod
 import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreVideosViewModel
 import com.cas.musicplayer.ui.genres.list.GenresViewModel
 import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
+import com.cas.musicplayer.utils.EmptyViewModel
 import com.google.gson.Gson
 import dagger.BindsInstance
 import dagger.Component
@@ -64,6 +65,8 @@ interface AppComponent {
     val searchYoutubeViewModel: SearchYoutubeViewModel
 
     val genresViewModel: GenresViewModel
+
+    val libraryViewModel: LibraryViewModel
 
     val emptyViewModel: EmptyViewModel
 
