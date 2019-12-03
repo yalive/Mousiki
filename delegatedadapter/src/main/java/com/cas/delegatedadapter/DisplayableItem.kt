@@ -1,0 +1,3 @@
+package com.cas.delegatedadapter
+
+interface DisplayableItem
