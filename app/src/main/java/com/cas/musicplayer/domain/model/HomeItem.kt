@@ -3,7 +3,8 @@ package com.cas.musicplayer.domain.model
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.ui.home.adapters.HomeAdapter
+import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -11,15 +12,15 @@ import kotlinx.android.parcel.Parcelize
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-sealed class HomeItem(val type: Int) : DisplayableItem {
-    object RecentItem : HomeItem(HomeAdapter.TYPE_FEATURED)
-    object PopularsItem : HomeItem(HomeAdapter.TYPE_NEW_RELEASE)
-    object ChartItem : HomeItem(HomeAdapter.TYPE_CHART)
-    object ArtistItem : HomeItem(HomeAdapter.TYPE_ARTIST)
-    object GenreItem : HomeItem(HomeAdapter.TYPE_GENRE)
+sealed class HomeItem : DisplayableItem {
+    object RecentItem : HomeItem()
+    data class PopularsItem(val songs: List<DisplayedVideoItem>) : HomeItem()
+    data class ChartItem(val charts: List<ChartModel>) : HomeItem()
+    data class ArtistItem(val artists: List<Artist>) : HomeItem()
+    data class GenreItem(val genres: List<GenreMusic>) : HomeItem()
 }
 
-sealed class HeaderItem(val title: String) : HomeItem(HomeAdapter.TYPE_HEADER) {
+sealed class HeaderItem(val title: String) : HomeItem() {
     object RecentHeader : HeaderItem("Recent")
     object PopularsHeader : HeaderItem("New Releases")
     object ChartsHeader : HeaderItem("Top charts")

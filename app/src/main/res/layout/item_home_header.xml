@@ -17,8 +17,8 @@
         android:layout_marginStart="8dp"
         android:layout_toStartOf="@+id/txtMore"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textStyle="normal"
         tools:text="New releases" />
 
     <TextView

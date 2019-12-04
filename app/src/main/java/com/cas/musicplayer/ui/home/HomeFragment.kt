@@ -40,7 +40,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
     override fun getPageTitle(): String = "Discover"
 
     private fun observeViewModel() {
-        observe(viewModel.newReleases, homeAdapter::updateNewRelease)
+        observe(viewModel.newReleases, homeAdapter::updatePopularSongs)
         observe(viewModel.charts, homeAdapter::updateCharts)
         observe(viewModel.genres, homeAdapter::updateGenres)
         observe(viewModel.artists, homeAdapter::updateArtists)
