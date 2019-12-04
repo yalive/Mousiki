@@ -26,14 +26,14 @@ class HomeAdapter(
         HomeChartAdapterDelegate(),
         HomeGenreAdapterDelegate(),
         HomeHeaderAdapterDelegate(),
-        HomePopularSongsAdapterDelegate(onVideoSelected)
+        HorizontalListSongsAdapterDelegate(onVideoSelected)
     )
 ) {
     init {
         this.dataItems = mutableListOf(
             HomeItem.ChartItem(emptyList()),
-            HeaderItem.PopularsHeader,
-            HomeItem.PopularsItem(emptyList()),
+            HeaderItem.PopularsHeader(),
+            HomeItem.PopularsItem(Resource.Loading),
             HeaderItem.GenresHeader,
             HomeItem.GenreItem(emptyList()),
             HeaderItem.ArtistsHeader,
@@ -42,11 +42,13 @@ class HomeAdapter(
     }
 
     fun updatePopularSongs(resource: Resource<List<DisplayedVideoItem>>) {
-        resource.doOnSuccess {
-            val index = indexOfItem(HomeItem.PopularsItem::class)
-            if (index != -1) {
-                updateItemAtIndex(index, HomeItem.PopularsItem(it))
-            }
+        val index = indexOfItem(HomeItem.PopularsItem::class)
+        val indexOfHeader = indexOfItem(HeaderItem.PopularsHeader::class)
+        if (index != -1) {
+            updateItemAtIndex(index, HomeItem.PopularsItem(resource))
+        }
+        if (indexOfHeader != -1) {
+            updateItemAtIndex(indexOfHeader, HeaderItem.PopularsHeader(resource is Resource.Loading))
         }
     }
 
