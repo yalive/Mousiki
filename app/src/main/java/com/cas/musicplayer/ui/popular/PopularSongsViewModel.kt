@@ -59,7 +59,7 @@ class PopularSongsViewModel @Inject constructor(
         val previousList = _newReleases.valueOrNull()
         if (previousList != null && previousList.isNotEmpty() && previousList.size < MAX_VIDEOS) {
             _loadMore.value = Resource.Loading
-            val result = getPopularSongs(25, previousList.lastOrNull()?.track)
+            val result = getPopularSongs.invoke(25, previousList.lastOrNull()?.track)
             if (result is Result.Success) {
                 _newReleases.value = result.map { tracks ->
                     val newPageMapped = tracks.map { it.toDisplayedVideoItem() }

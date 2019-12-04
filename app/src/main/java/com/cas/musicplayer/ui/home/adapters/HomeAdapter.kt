@@ -31,10 +31,6 @@ class HomeAdapter(
     private val onVideoSelected: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var recentTracks: List<DisplayedVideoItem> by observer(emptyList()) {
-        featuredViewHolder?.bind()
-    }
-
     private var newReleaseItems: List<DisplayedVideoItem> by observer(emptyList()) {
         popularSongsViewHolder?.bind()
     }
@@ -58,7 +54,6 @@ class HomeAdapter(
         ArtistItem
     )
     private var popularSongsViewHolder: PopularSongsViewHolder? = null
-    private var featuredViewHolder: FeaturedViewHolder? = null
     private var chartViewHolder: ChartViewHolder? = null
     private var genreViewHolder: GenreViewHolder? = null
     private var artistViewHolder: ArtistViewHolder? = null
@@ -69,9 +64,7 @@ class HomeAdapter(
                 R.layout.item_home_header
             )
         )
-        TYPE_FEATURED -> FeaturedViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
-            featuredViewHolder = it
-        }
+
         TYPE_NEW_RELEASE -> PopularSongsViewHolder(parent.inflate(R.layout.item_home_new_release)).also {
             popularSongsViewHolder = it
         }
@@ -87,7 +80,6 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
-        is FeaturedViewHolder -> holder.bind()
         is PopularSongsViewHolder -> holder.bind()
         is HeaderViewHolder -> holder.bind(items[position] as HeaderItem)
         is GenreViewHolder -> holder.bind()
@@ -101,9 +93,6 @@ class HomeAdapter(
     override fun getItemViewType(position: Int): Int = items[position].type
     override fun getItemCount() = items.size
 
-    fun updateRecentSongs(songs: List<DisplayedVideoItem>) {
-        this.recentTracks = songs
-    }
 
     fun updateNewRelease(resource: Resource<List<DisplayedVideoItem>>) {
         resource.doOnSuccess {
@@ -122,25 +111,6 @@ class HomeAdapter(
     fun updateArtists(resource: Resource<List<Artist>>) {
         resource.doOnSuccess {
             this.artists = it
-        }
-    }
-
-    inner class FeaturedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        private var adapter = HomeRecentPlayedSongsAdapter(onVideoSelected)
-
-        init {
-            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-            recyclerView.adapter = adapter
-        }
-
-        fun bind() {
-            val list: List<RecentPlayedSongItem> = recentTracks.map {
-                RecentPlayedSongItem.RecentSong(it)
-            }
-            adapter.dataItems = list.toMutableList().apply {
-                add(RecentPlayedSongItem.More)
-            }
         }
     }
 

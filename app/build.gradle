@@ -199,8 +199,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
-
-
+    implementation project(path: ':delegatedadapter')
 }
 
 apply plugin: 'com.google.gms.google-services'
