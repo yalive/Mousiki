@@ -21,4 +21,11 @@
     <string name="library_recently_played">Recently played</string>
     <string name="library_favourites">Favourites</string>
     <string name="library_heavy">Mostly played songs</string>
+    <string name="library_empty_recent_list">Just start playing songs to see\n your recent tracks here!</string>
+    <string name="library_empty_heavy_list">List is empty</string>
+    <string name="library_empty_favourite_list">You can make any song as favourite, \n and you can access to it from here.</string>
+
+    <!-- Common -->
+    <string name="common_empty_song_list">No song found</string>
+
 </resources>
