@@ -21,7 +21,8 @@ import com.cas.musicplayer.domain.model.MusicTrack
         ChannelPlaylistEntity::class,
         PlaylistSongEntity::class,
         RecentlyPlayedTrack::class,
-        SongTitleEntity::class
+        SongTitleEntity::class,
+        HistoricTrackEntity::class
     ],
     version = BuildConfig.VERSION_CODE
 )
@@ -42,6 +43,8 @@ public abstract class MusicTrackRoomDatabase : RoomDatabase() {
     abstract fun songTitleDao(): SongTitleDao
 
     abstract fun recentlyPlayedTracksDao(): RecentlyPlayedTracksDao
+
+    abstract fun historicTracksDao(): HistoricTracksDao
 
     companion object {
         @Volatile

@@ -21,7 +21,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.visible
+import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.EmplacementOut
 import com.cas.musicplayer.player.EmplacementPlaylist
@@ -31,8 +33,6 @@ import com.cas.musicplayer.player.services.DragSlidePanelMonitor
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.cas.musicplayer.utils.*
-import com.cas.musicplayer.di.injector.injector
-import com.cas.common.viewmodel.viewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.yarolegovich.slidingrootnav.SlidingRootNav
@@ -66,7 +66,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
-        setContentView(com.cas.musicplayer.R.layout.activity_main)
+        setContentView(R.layout.activity_main)
         slidingPaneLayout = findViewById(R.id.sliding_layout)
 
         setSupportActionBar(toolbar)

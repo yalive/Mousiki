@@ -20,4 +20,5 @@
     <!-- Library -->
     <string name="library_recently_played">Recently played</string>
     <string name="library_favourites">Favourites</string>
+    <string name="library_heavy">Mostly played songs</string>
 </resources>

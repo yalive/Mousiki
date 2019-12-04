@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.home.model
 
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.delegatedadapter.DisplayableItem
 
 /**
  ***************************************
@@ -12,7 +13,7 @@ data class DisplayedVideoItem(
     val songTitle: String,
     val songDuration: String,
     val songImagePath: String
-)
+) : DisplayableItem
 
 fun MusicTrack.toDisplayedVideoItem() = DisplayedVideoItem(
     track = this,

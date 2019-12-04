@@ -25,6 +25,7 @@ abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> :
     override fun getItemCount(): Int = dataItems.size
 
     override fun onBindViewHolder(holder: T, position: Int) {
+        super.onBindViewHolder(holder, position)
         holder.bind(dataItems[position])
     }
 

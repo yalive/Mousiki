@@ -3,29 +3,28 @@ package com.cas.musicplayer.ui.popular
 
 import android.os.Bundle
 import android.view.View
-import android.widget.RelativeLayout
-import androidx.core.view.isVisible
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.viewModel
+import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.popular.delegates.SongAdapterDelegate
+import com.cas.musicplayer.ui.popular.model.LoadingItem
+import com.cas.musicplayer.ui.popular.model.SongsHeaderItem
 import com.cas.musicplayer.utils.toast
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
-class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
-    PopularSongsAdapter.OnItemClickListener {
+class PopularSongsFragment : BaseFragment<PopularSongsViewModel>(),
+    SongAdapterDelegate.OnItemClickListener {
 
     override val viewModel by viewModel { injector.newReleaseViewModel }
     override val layoutResourceId: Int = R.layout.fragment_new_release
@@ -33,14 +32,6 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.title = "New Release"
-        val collapsingToolbar =
-            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-        collapsingToolbar?.isTitleEnabled = true
-        collapsingToolbar?.title = "New Release"
-        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-        rltContainer?.visible()
-
         adapter = PopularSongsAdapter(this) {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.collapseBottomPanel()
@@ -58,9 +49,6 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
         observe(viewModel.hepMessage) {
             activity?.toast(it)
         }
-        observe(viewModel.loadMore) {
-            showMoreProgress.isVisible = it is Resource.Loading
-        }
     }
 
     override fun onItemClick(musicTrack: MusicTrack) {
@@ -71,32 +59,27 @@ class PopularSingsFragment : BaseFragment<PopularSongsViewModel>(),
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 
-    private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
-        is Resource.Loading -> {
-            txtError.gone()
-            progressBar.visible()
-            mainView.gone()
-        }
-        is Resource.Failure -> {
-            txtError.visible()
-            progressBar.gone()
-            mainView.gone()
-        }
-        is Resource.Success -> {
-            showFeaturedImage(resource)
-            txtError.gone()
-            progressBar.gone()
-            mainView.visible()
-            adapter.dataItems = resource.data.toMutableList()
-        }
-    }
+    private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) {
+        when (resource) {
+            is Resource.Loading -> {
+                txtError.gone()
+                progressBar.visible()
+            }
+            is Resource.Failure -> {
+                txtError.visible()
+                progressBar.gone()
+            }
+            is Resource.Success -> {
+                txtError.gone()
+                progressBar.gone()
+                txtCount.text = "${resource.data.size}"
 
-    private fun showFeaturedImage(resource: Resource.Success<List<DisplayedVideoItem>>) {
-        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
-        Picasso.get().load(resource.data[0].track.imgUrl)
-            .fit()
-            .centerInside()
-            .placeholder(R.drawable.bg_circle_black)
-            .into(imgCollapsed)
+                val items: MutableList<DisplayableItem> = resource.data.toMutableList()
+                adapter.dataItems = items.apply {
+                    add(0, SongsHeaderItem)
+                    add(LoadingItem)
+                }
+            }
+        }
     }
 }

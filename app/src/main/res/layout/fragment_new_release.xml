@@ -5,39 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.popular.PopularSingsFragment">
+    tools:context=".ui.popular.PopularSongsFragment">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/mainView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="7"
-                tools:listitem="@layout/item_new_release_video"
-                tools:visibility="visible" />
-
-            <ProgressBar
-                android:id="@+id/showMoreProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="7"
+        tools:listitem="@layout/item_new_release_video"
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -69,4 +48,14 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@color/colorAccent"
+        android:padding="8dp"
+        android:text="100"
+        android:textColor="@color/colorWhite" />
 </FrameLayout>

@@ -26,9 +26,9 @@ class EndlessRecyclerOnScrollListener(
         }
 
         if (!loading && numberOfItemsLeftBelow <= THRESHOLD) {
-            currentPage++;
+            currentPage++
             onLoadMore(currentPage);
-            loading = true;
+            loading = true
         }
     }
 
