@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.result.Result
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.ChartModel
-import com.cas.musicplayer.domain.usecase.chart.GetChartsUseCase
+import com.cas.musicplayer.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPlaylistFirstThreeVideosUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Inject
  **********************************
  */
 class ChartsViewModel @Inject constructor(
-    private val getCharts: GetChartsUseCase,
+    private val getCharts: GetUserRelevantChartsUseCase,
     private val getPlaylistFirstThreeVideos: GetPlaylistFirstThreeVideosUseCase
 ) : BaseViewModel() {
 
@@ -41,9 +41,9 @@ class ChartsViewModel @Inject constructor(
             val listMusics = result.data
             updateChart(
                 chart.copy(
-                    track1 = listMusics[0].title,
+                    /*track1 = listMusics[0].title,
                     track2 = listMusics[1].title,
-                    track3 = listMusics[2].title
+                    track3 = listMusics[2].title*/
                 )
             )
         }

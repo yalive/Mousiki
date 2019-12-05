@@ -5,8 +5,6 @@ import com.cas.common.result.Result.Success
 import com.cas.common.result.alsoWhenSuccess
 import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsLocalDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsRemoteDataSource
-import com.cas.musicplayer.data.datasource.playlist.PlaylistSongTitleLocalDataSource
-import com.cas.musicplayer.data.datasource.playlist.PlaylistSongTitleRemoteDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -25,9 +23,7 @@ class PlaylistRepository @Inject constructor(
     private val channelPlaylistsLocalDataSource: ChannelPlaylistsLocalDataSource,
     private val channelPlaylistsRemoteDataSource: ChannelPlaylistsRemoteDataSource,
     private val playlistSongsLocalDataSource: PlaylistSongsLocalDataSource,
-    private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource,
-    private val songTitleLocalDataSource: PlaylistSongTitleLocalDataSource,
-    private val songTitleRemoteDataSource: PlaylistSongTitleRemoteDataSource
+    private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource
 ) {
 
     suspend fun playlistVideos(playlistId: String): Result<List<MusicTrack>> {
@@ -41,12 +37,12 @@ class PlaylistRepository @Inject constructor(
     }
 
     suspend fun firstThreeVideo(playlistId: String): Result<List<MusicTrack>> {
-        val localPlaylists = songTitleLocalDataSource.getPlaylistSongs(playlistId)
+        val localPlaylists = playlistSongsLocalDataSource.getPlaylistLightSongs(playlistId)
         if (localPlaylists.isNotEmpty()) {
             return Success(localPlaylists)
         }
-        return songTitleRemoteDataSource.getPlaylistSongs(playlistId).alsoWhenSuccess {
-            songTitleLocalDataSource.savePlaylistSongs(playlistId, it)
+        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId).alsoWhenSuccess {
+            playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, it)
         }
     }
 

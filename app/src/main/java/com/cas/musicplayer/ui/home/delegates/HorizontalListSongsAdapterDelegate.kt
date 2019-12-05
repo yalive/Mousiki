@@ -33,7 +33,7 @@ open class HorizontalListSongsAdapterDelegate(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.item_home_new_release)
+        val view = parent.inflate(R.layout.horizontal_songs_list)
         return SongsListViewHolder(view)
     }
 

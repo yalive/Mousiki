@@ -2,6 +2,7 @@ package com.cas.musicplayer.data.datasource.playlist
 
 import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
+import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToTrack
 import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToVideoId
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
@@ -19,7 +20,8 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
     private var youtubeService: YoutubeService,
     private val retrofitRunner: RetrofitRunner,
     private val videoIdMapper: YTBPlaylistItemToVideoId,
-    private val trackMapper: YTBVideoToTrack
+    private val trackMapper: YTBVideoToTrack,
+    private val playlistTrackMapper: YTBPlaylistItemToTrack
 ) {
 
     suspend fun getPlaylistSongs(playlistId: String): Result<List<MusicTrack>> {
@@ -32,6 +34,12 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
         val ids = idsResult.data.joinToString { it.id }
         return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
             youtubeService.videos(ids).items!!
+        }
+    }
+
+    suspend fun getPlaylistLightSongs(playlistId: String): Result<List<MusicTrack>> {
+        return retrofitRunner.executeNetworkCall(playlistTrackMapper.toListMapper()) {
+            youtubeService.playlistLightTracks(playlistId, 3).items ?: emptyList()
         }
     }
 }
