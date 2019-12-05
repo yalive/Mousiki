@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -36,6 +38,12 @@ fun Context.color(@ColorRes id: Int): Int {
 
 fun Context.drawable(@DrawableRes id: Int): Drawable? {
     return ContextCompat.getDrawable(this, id)
+}
+
+fun Context.themeColor(@AttrRes attrRes: Int): Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(attrRes, typedValue, true)
+    return typedValue.data
 }
 
 fun Context.canDrawOverApps() =
