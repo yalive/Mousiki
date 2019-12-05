@@ -21,7 +21,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
     override val viewModel by viewModel { injector.homeViewModel }
     override val layoutResourceId: Int = R.layout.fragment_home
 
-    private val homeAdapter = HomeAdapter {
+    private val homeAdapter = HomeAdapter { track ->
         (activity as? MainActivity)?.collapseBottomPanel()
     }
 

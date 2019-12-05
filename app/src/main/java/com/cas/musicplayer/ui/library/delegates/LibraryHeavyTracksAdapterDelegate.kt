@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.library.delegates
 import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.home.delegates.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.library.model.LibraryItem
@@ -13,7 +14,7 @@ import com.cas.musicplayer.ui.library.model.LibraryItem
  ***************************************
  */
 class LibraryHeavyTracksAdapterDelegate(
-    onVideoSelected: () -> Unit
+    onVideoSelected: (MusicTrack) -> Unit
 ) : HorizontalListSongsAdapterDelegate(onVideoSelected) {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {

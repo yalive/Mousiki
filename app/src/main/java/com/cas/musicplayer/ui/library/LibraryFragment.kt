@@ -30,7 +30,8 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(), PageableFragment, Favo
     override val viewModel by viewModel { injector.libraryViewModel }
 
     private lateinit var db: MusicTrackRoomDatabase
-    private val adapter = LibraryAdapter {
+    private val adapter = LibraryAdapter { track ->
+        (activity as? MainActivity)?.collapseBottomPanel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

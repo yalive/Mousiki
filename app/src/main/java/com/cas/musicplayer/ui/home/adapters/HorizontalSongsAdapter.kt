@@ -6,6 +6,7 @@ import android.widget.TextView
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.R
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
@@ -18,7 +19,7 @@ import com.cas.musicplayer.utils.loadImage
  **********************************
  */
 class HorizontalSongsAdapter(
-    private val onVideoSelected: () -> Unit
+    private val onVideoSelected: (MusicTrack) -> Unit
 ) : SimpleBaseAdapter<DisplayedVideoItem, HorizontalSongViewHolder>() {
 
     override val cellResId: Int = R.layout.item_new_release
@@ -29,26 +30,24 @@ class HorizontalSongsAdapter(
 
 class HorizontalSongViewHolder(
     view: View,
-    private val onVideoSelected: () -> Unit,
-    private val newReleaseItems: List<DisplayedVideoItem>
+    private val onVideoSelected: (MusicTrack) -> Unit,
+    private val items: List<DisplayedVideoItem>
 ) : SimpleBaseViewHolder<DisplayedVideoItem>(view) {
 
     private val imgSong: ImageView = view.findViewById(R.id.imgSong)
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
     private val txtDuration: TextView = view.findViewById(R.id.txtDuration)
 
-    init {
-        view.findViewById<View>(R.id.cardView).setOnClickListener {
-            onVideoSelected()
-            val tracks = newReleaseItems.map { it.track }
-            PlayerQueue.playTrack(newReleaseItems[adapterPosition].track, tracks)
-            VideoEmplacementLiveData.bottom()
-        }
-    }
-
     override fun bind(item: DisplayedVideoItem) {
         imgSong.loadImage(item.songImagePath)
         txtTitle.text = item.songTitle
         txtDuration.text = item.songDuration
+
+        itemView.findViewById<View>(R.id.cardView).setOnClickListener {
+            onVideoSelected(item.track)
+            val tracks = items.map { it.track }
+            PlayerQueue.playTrack(items[adapterPosition].track, tracks)
+            VideoEmplacementLiveData.bottom()
+        }
     }
 }
