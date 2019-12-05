@@ -19,10 +19,10 @@ sealed class HomeItem : DisplayableItem {
     data class GenreItem(val genres: List<GenreMusic>) : HomeItem()
 }
 
-sealed class HeaderItem(val title: String) : HomeItem() {
+sealed class HeaderItem(val title: String, val showMore: Boolean = true) : HomeItem() {
     object RecentHeader : HeaderItem("Recent")
     data class PopularsHeader(var loading: Boolean = false) : HeaderItem("New Releases")
-    object ChartsHeader : HeaderItem("Top charts")
+    object ChartsHeader : HeaderItem("Top charts", false)
     object ArtistsHeader : HeaderItem("Artists")
     object GenresHeader : HeaderItem("Genres")
 }
