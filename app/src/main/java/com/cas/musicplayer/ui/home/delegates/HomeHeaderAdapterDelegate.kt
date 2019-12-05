@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -37,18 +38,24 @@ class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
 
     private inner class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private val txtMore: TextView = view.findViewById(R.id.txtMore)
         private val showAll: ImageButton = view.findViewById(R.id.showAll)
         private val progressBar: ProgressBar = view.findViewById(R.id.progressBar)
 
         fun bind(headerItem: HeaderItem) {
             txtTitle.text = headerItem.title
-            view.setOnClickListener { showMore(headerItem) }
-            showAll.setOnClickListener { showMore(headerItem) }
+            if (headerItem.showMore) {
+                view.setOnClickListener { showMore(headerItem) }
+                showAll.setOnClickListener { showMore(headerItem) }
+            }
             if (headerItem is HeaderItem.PopularsHeader) {
                 progressBar.isVisible = headerItem.loading
             } else {
                 progressBar.isVisible = false
             }
+
+            showAll.isInvisible = !headerItem.showMore
+            txtMore.isInvisible = !headerItem.showMore
         }
 
         private fun showMore(headerItem: HeaderItem) {
