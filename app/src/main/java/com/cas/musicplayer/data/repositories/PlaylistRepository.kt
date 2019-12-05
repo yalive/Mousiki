@@ -9,6 +9,7 @@ import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
+import com.cas.musicplayer.utils.NetworkUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,7 +24,8 @@ class PlaylistRepository @Inject constructor(
     private val channelPlaylistsLocalDataSource: ChannelPlaylistsLocalDataSource,
     private val channelPlaylistsRemoteDataSource: ChannelPlaylistsRemoteDataSource,
     private val playlistSongsLocalDataSource: PlaylistSongsLocalDataSource,
-    private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource
+    private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource,
+    private val networkUtils: NetworkUtils
 ) {
 
     suspend fun playlistVideos(playlistId: String): Result<List<MusicTrack>> {
@@ -37,12 +39,17 @@ class PlaylistRepository @Inject constructor(
     }
 
     suspend fun firstThreeVideo(playlistId: String): Result<List<MusicTrack>> {
-        val localPlaylists = playlistSongsLocalDataSource.getPlaylistLightSongs(playlistId)
-        if (localPlaylists.isNotEmpty()) {
-            return Success(localPlaylists)
+
+        if (playlistSongsLocalDataSource.expired() && networkUtils.hasNetworkConnection()) {
+            playlistSongsLocalDataSource.clear()
         }
-        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId).alsoWhenSuccess {
-            playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, it)
+
+        val localTracks = playlistSongsLocalDataSource.getPlaylistLightSongs(playlistId)
+        if (localTracks.isNotEmpty()) {
+            return Success(localTracks)
+        }
+        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId).alsoWhenSuccess { tracks ->
+            playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, tracks)
         }
     }
 

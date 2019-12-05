@@ -1,10 +1,12 @@
 package com.cas.musicplayer.data.datasource.playlist
 
+import android.os.SystemClock
 import com.cas.musicplayer.data.local.database.dao.LightSongDao
 import com.cas.musicplayer.data.local.database.dao.PlaylistSongsDao
 import com.cas.musicplayer.data.local.models.LightSongEntity
 import com.cas.musicplayer.data.local.models.PlaylistSongEntity
 import com.cas.musicplayer.data.local.models.toMusicTrack
+import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 class PlaylistSongsLocalDataSource @Inject constructor(
     private val playlistSongsDao: PlaylistSongsDao,
-    private val lightSongDao: LightSongDao
+    private val lightSongDao: LightSongDao,
+    private val preferences: PreferencesHelper
 ) {
 
     suspend fun getPlaylistSongs(playlistId: String): List<MusicTrack> = withContext(bgContext) {
@@ -46,6 +49,9 @@ class PlaylistSongsLocalDataSource @Inject constructor(
     }
 
     suspend fun savePlaylistLightSongs(playlistId: String, tracks: List<MusicTrack>) = withContext(bgContext) {
+        if (numberOfRows() == 0) {
+            preferences.setChartsUpdateDate()
+        }
         val channelSongs = tracks.map {
             LightSongEntity(
                 playlistId = playlistId,
@@ -54,5 +60,24 @@ class PlaylistSongsLocalDataSource @Inject constructor(
             )
         }
         lightSongDao.insert(channelSongs)
+    }
+
+    suspend fun numberOfRows(): Int = withContext(bgContext) {
+        return@withContext lightSongDao.count()
+    }
+
+    fun expired(): Boolean {
+        val updateDate = preferences.getChartsUpdateDate()
+        val cacheDuration = (SystemClock.elapsedRealtime() - updateDate) / 1000
+        return cacheDuration - CACHE_MAX_DURATION_SECONDS >= 0
+    }
+
+    suspend fun clear() = withContext(bgContext) {
+        lightSongDao.clear()
+    }
+
+    companion object {
+        private const val ONE_DAY_SECONDS = 24 * 60 * 60
+        private const val CACHE_MAX_DURATION_SECONDS = 8 * ONE_DAY_SECONDS // 8 days
     }
 }

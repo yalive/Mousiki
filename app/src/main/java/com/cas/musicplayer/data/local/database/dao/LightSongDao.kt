@@ -22,4 +22,10 @@ interface LightSongDao {
 
     @Query("SELECT * from playlist_first_three_tracks WHERE playlistId=:playlistId")
     suspend fun getPlaylistSongs(playlistId: String): List<LightSongEntity>
+
+    @Query("DELETE  from playlist_first_three_tracks")
+    suspend fun clear()
+
+    @Query("SELECT COUNT(*) from playlist_first_three_tracks")
+    suspend fun count(): Int
 }
