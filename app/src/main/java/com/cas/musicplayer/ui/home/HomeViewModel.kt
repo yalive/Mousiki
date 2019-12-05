@@ -64,7 +64,7 @@ class HomeViewModel @Inject constructor(
             return@uiCoroutine
         }
         _newReleases.loading()
-        val result = getNewReleasedSongs(max = 25)
+        val result = getNewReleasedSongs(max = 10)
         _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
