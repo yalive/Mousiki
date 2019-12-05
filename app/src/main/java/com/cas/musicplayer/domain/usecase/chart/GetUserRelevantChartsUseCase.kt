@@ -9,11 +9,11 @@ import javax.inject.Inject
  * Created by Abdelhadi on 2019-11-11.
  ***************************************
  */
-class GetChartsUseCase @Inject constructor(
+class GetUserRelevantChartsUseCase @Inject constructor(
     private val repository: ChartsRepository
 ) {
 
-    suspend operator fun invoke(max: Int = 100): List<ChartModel> {
-        return repository.loadCharts().take(max)
+    operator fun invoke(max: Int = 100): List<ChartModel> {
+        return repository.getUserMostRelevantCharts().take(max)
     }
 }

@@ -1,5 +1,6 @@
 package com.cas.common.extensions
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,11 +22,13 @@ fun <T> LiveData<Resource<T>>.valueOrNull(): T? {
 }
 
 fun <T> LifecycleOwner.observe(liveData: LiveData<T>, body: (T) -> Unit = {}) {
-    liveData.observe(this, Observer { it?.let { t -> body(t) } })
+    val owner = if (this is Fragment) viewLifecycleOwner else this
+    liveData.observe(owner, Observer { it?.let { t -> body(t) } })
 }
 
 fun <T> LifecycleOwner.observeEvent(liveData: LiveData<Event<T>>, body: (T) -> Unit = {}) {
-    liveData.observe(this, EventObserver { it?.let { t -> body(t) } })
+    val owner = if (this is Fragment) viewLifecycleOwner else this
+    liveData.observe(owner, EventObserver { it?.let { t -> body(t) } })
 }
 
 fun <T> MutableLiveData<T>.toImmutableLiveData() = this as LiveData<T>

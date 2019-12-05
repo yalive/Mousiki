@@ -1,7 +1,6 @@
 package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
 import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.remote.models.Artist
@@ -14,7 +13,6 @@ import kotlinx.android.parcel.Parcelize
  **********************************
  */
 sealed class HomeItem : DisplayableItem {
-    object RecentItem : HomeItem()
     data class PopularsItem(val resource: Resource<List<DisplayedVideoItem>>) : HomeItem()
     data class ChartItem(val charts: List<ChartModel>) : HomeItem()
     data class ArtistItem(val artists: List<Artist>) : HomeItem()
@@ -29,15 +27,11 @@ sealed class HeaderItem(val title: String) : HomeItem() {
     object GenresHeader : HeaderItem("Genres")
 }
 
-@Parcelize
 data class ChartModel(
     val title: String,
-    @DrawableRes val image: Int,
     val playlistId: String,
-    val track1: String = "",
-    val track2: String = "",
-    val track3: String = ""
-) : Parcelable
+    var firstTracks: List<MusicTrack> = emptyList()
+)
 
 @Parcelize
 data class GenreMusic(

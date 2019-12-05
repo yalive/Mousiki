@@ -20,6 +20,7 @@ interface YoutubeService {
         private const val SNIPPET_CHANNEL_ID = "%2Csnippet%2FchannelId"
         private const val SNIPPET_CHANNEL_TITLE = "%2Csnippet%2FchannelTitle"
         private const val CONTENTDETAILS_DURATION = "%2CcontentDetails%2Fduration"
+        private const val CONTENTDETAILS_VIDEO_ID = "%2CcontentDetails%2FvideoId"
 
         const val TRENDING_ITEMS =
             "&fields=items(id$CONTENTDETAILS_DURATION$SNIPPET_CHANNEL_ID$SNIPPET_TITLE$SNIPPET_THUMBNAILS$SNIPPET_CHANNEL_TITLE)%2CnextPageToken%2CprevPageToken%2CpageInfo"
@@ -91,9 +92,9 @@ interface YoutubeService {
         @Query("maxResults") maxResults: Int
     ): SearchResults
 
-    // Return just title
-    @GET("playlistItems?part=snippet,contentDetails&fields=items(snippet%2Ftitle)")
-    suspend fun playlistVideosTitle(
+    // Return just title, video id and thumbnails
+    @GET("playlistItems?part=snippet,contentDetails&fields=items(id$SNIPPET_TITLE$SNIPPET_THUMBNAILS$CONTENTDETAILS_VIDEO_ID)")
+    suspend fun playlistLightTracks(
         @Query("playlistId") playlistId: String,
         @Query("maxResults") maxResults: Int
     ): PlaylistItems

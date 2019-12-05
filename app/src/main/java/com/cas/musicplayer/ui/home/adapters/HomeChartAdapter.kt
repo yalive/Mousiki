@@ -3,18 +3,18 @@ package com.cas.musicplayer.ui.home.adapters
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
-import com.cas.musicplayer.R
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
-import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.loadImage
 import kotlinx.android.synthetic.main.item_home_chart.view.*
 
 
@@ -24,19 +24,26 @@ import kotlinx.android.synthetic.main.item_home_chart.view.*
  **********************************
  */
 
-internal class HomeChartAdapter : SimpleBaseAdapter<ChartModel, HomeChartViewHolder>() {
+class HomeChartAdapter : SimpleBaseAdapter<ChartModel, HomeChartViewHolder>() {
     override val cellResId: Int = R.layout.item_home_chart
     override fun createViewHolder(view: View): HomeChartViewHolder {
         return HomeChartViewHolder(view, dataItems)
     }
+
+    fun updateChart(chart: ChartModel, chartToUpdate: String) {
+        val indexOfFirst = dataItems.indexOfFirst { it.playlistId == chartToUpdate }
+        if (indexOfFirst >= 0) {
+            dataItems[indexOfFirst] = chart
+            notifyItemChanged(indexOfFirst)
+        }
+    }
 }
 
-internal class HomeChartViewHolder(val view: View, val items: List<ChartModel>) : SimpleBaseViewHolder<ChartModel>(view) {
+class HomeChartViewHolder(val view: View, val items: List<ChartModel>) : SimpleBaseViewHolder<ChartModel>(view) {
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
     init {
         view.findViewById<View>(R.id.cardView).setOnClickListener {
-
             if (adapterPosition >= 0) {
                 val item = items[adapterPosition]
                 val bundle = Bundle()
@@ -54,7 +61,10 @@ internal class HomeChartViewHolder(val view: View, val items: List<ChartModel>) 
     }
 
     override fun bind(item: ChartModel) {
-        itemView.imgChart.setImageDrawable(ContextCompat.getDrawable(itemView.context, item.image))
+        val firstTrack = item.firstTracks.getOrNull(0)
+        if (firstTrack != null) {
+            itemView.imgChart.loadImage(firstTrack.imgUrl)
+        }
         txtTitle.text = item.title
     }
 }

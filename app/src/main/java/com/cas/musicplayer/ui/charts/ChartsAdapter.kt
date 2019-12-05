@@ -30,11 +30,11 @@ internal class ChartsAdapter : SimpleBaseAdapter<ChartModel, ChartsViewHolder>()
 internal class ChartsViewHolder(val view: View) : SimpleBaseViewHolder<ChartModel>(view) {
 
     override fun bind(item: ChartModel) {
-        itemView.imgChart.setImageDrawable(ContextCompat.getDrawable(itemView.context, item.image))
+        //itemView.imgChart.setImageDrawable(ContextCompat.getDrawable(itemView.context, item.image))
         itemView.txtTitle.text = item.title
-        itemView.txtTrack1.text = String.format("1. ${item.track1}")
-        itemView.txtTrack2.text = String.format("2. ${item.track2}")
-        itemView.txtTrack3.text = String.format("3. ${item.track3}")
+        //itemView.txtTrack1.text = String.format("1. ${item.track1}")
+        //itemView.txtTrack2.text = String.format("2. ${item.track2}")
+        //itemView.txtTrack3.text = String.format("3. ${item.track3}")
 
         itemView.setOnClickListener {
             val bundle = Bundle()

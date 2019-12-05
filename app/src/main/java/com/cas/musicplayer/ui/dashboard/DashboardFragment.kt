@@ -13,10 +13,14 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 class DashboardFragment : NoViewModelFragment() {
 
     override val layoutResourceId: Int = R.layout.fragment_dashboard
+    override val keepView: Boolean = true
+
+    private val homeFragment by lazy { HomeFragment() }
+    private val libraryFragment by lazy { LibraryFragment() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager.adapter = FragmentPageAdapter(childFragmentManager, listOf(HomeFragment(), LibraryFragment()))
+        viewPager.adapter = FragmentPageAdapter(childFragmentManager, listOf(homeFragment, libraryFragment))
         tabLayout.setupWithViewPager(viewPager)
     }
 }

@@ -14,7 +14,8 @@ import java.util.regex.Pattern
 
 @Entity(tableName = "music_track")
 data class MusicTrack(
-    @PrimaryKey @ColumnInfo(name = "youtube_id") val youtubeId: String, val title: String,
+    @PrimaryKey @ColumnInfo(name = "youtube_id") val youtubeId: String,
+    val title: String,
     val duration: String
 ) {
 

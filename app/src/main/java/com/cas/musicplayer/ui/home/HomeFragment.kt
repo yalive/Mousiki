@@ -6,6 +6,7 @@ import android.widget.RelativeLayout
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
+import com.cas.common.extensions.observeEvent
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -41,7 +42,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
 
     private fun observeViewModel() {
         observe(viewModel.newReleases, homeAdapter::updatePopularSongs)
-        observe(viewModel.charts, homeAdapter::updateCharts)
+        observeEvent(viewModel.charts, homeAdapter::updateCharts)
         observe(viewModel.genres, homeAdapter::updateGenres)
         observe(viewModel.artists, homeAdapter::updateArtists)
     }

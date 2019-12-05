@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
-    android:layout_width="160dp"
+    android:layout_width="200dp"
     android:layout_height="160dp"
     android:clickable="true"
     android:focusable="true"
@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorTransparent"
         android:orientation="vertical">
 
@@ -23,23 +23,24 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitXY"
-            tools:src="@drawable/img_chart_4" />
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="@color/colorTransparent"
+            android:background="#8F000000"
             android:ellipsize="end"
             android:gravity="center"
             android:lines="2"
             android:maxLines="2"
-            android:padding="@dimen/four_4dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="visible"
             tools:text="Pop Music" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

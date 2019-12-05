@@ -20,23 +20,23 @@ import com.cas.musicplayer.utils.dpToPixel
  */
 class HomeChartAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
 
+    val adapter by lazy { HomeChartAdapter() }
+
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is HomeItem.ChartItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.item_home_new_release)
-        return ChartsViewHolder(view)
+        val view = parent.inflate(R.layout.horizontal_songs_list)
+        return HomeListChartViewHolder(view)
     }
 
     override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
         val chartItem = items[position] as HomeItem.ChartItem
-        (holder as ChartsViewHolder).bind(chartItem.charts)
+        (holder as HomeListChartViewHolder).bind(chartItem.charts)
     }
 
-    private inner class ChartsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var adapter = HomeChartAdapter()
-
+    inner class HomeListChartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
             recyclerView.addItemDecoration(MarginItemDecoration(horizontalMargin = view.context.dpToPixel(8f)))
@@ -48,3 +48,4 @@ class HomeChartAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         }
     }
 }
+

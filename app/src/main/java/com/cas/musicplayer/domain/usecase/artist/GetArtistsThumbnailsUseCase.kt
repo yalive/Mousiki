@@ -8,7 +8,7 @@ import javax.inject.Inject
 /**
  *********************************************
  * Created by Abdelhadi on 2019-11-20.
- * Copyright © BDSI group BNP Paribas 2019
+ *
  *********************************************
  */
 class GetArtistsThumbnailsUseCase @Inject constructor(

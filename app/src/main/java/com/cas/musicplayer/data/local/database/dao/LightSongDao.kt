@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.cas.musicplayer.data.local.models.SongTitleEntity
+import com.cas.musicplayer.data.local.models.LightSongEntity
 
 /**
  ***************************************
@@ -12,14 +12,14 @@ import com.cas.musicplayer.data.local.models.SongTitleEntity
  ***************************************
  */
 @Dao
-interface SongTitleDao {
+interface LightSongDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(song: SongTitleEntity)
+    suspend fun insert(song: LightSongEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(songs: List<SongTitleEntity>)
+    suspend fun insert(songs: List<LightSongEntity>)
 
-    @Query("SELECT * from song_titles WHERE playlistId=:playlistId")
-    suspend fun getPlaylistSongs(playlistId: String): List<SongTitleEntity>
+    @Query("SELECT * from playlist_first_three_tracks WHERE playlistId=:playlistId")
+    suspend fun getPlaylistSongs(playlistId: String): List<LightSongEntity>
 }
