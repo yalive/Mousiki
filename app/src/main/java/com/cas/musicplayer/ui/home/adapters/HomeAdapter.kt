@@ -5,10 +5,7 @@ import com.cas.common.resource.doOnSuccess
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.domain.model.ChartModel
-import com.cas.musicplayer.domain.model.GenreMusic
-import com.cas.musicplayer.domain.model.HeaderItem
-import com.cas.musicplayer.domain.model.HomeItem
+import com.cas.musicplayer.domain.model.*
 import com.cas.musicplayer.ui.home.delegates.*
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlin.reflect.KClass
@@ -19,7 +16,7 @@ import kotlin.reflect.KClass
  **********************************
  */
 class HomeAdapter(
-    onVideoSelected: () -> Unit
+    onVideoSelected: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
     listOf(
         HomeArtistAdapterDelegate(),

@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.library.adapters
 
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.library.delegates.LibraryFavouriteTracksAdapterDelegate
 import com.cas.musicplayer.ui.library.delegates.LibraryHeaderAdapterDelegate
@@ -16,7 +17,7 @@ import kotlin.reflect.KClass
  ***************************************
  */
 class LibraryAdapter(
-    onVideoSelected: () -> Unit
+    onVideoSelected: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
     listOf(
         LibraryRecentTracksAdapterDelegate(onVideoSelected),

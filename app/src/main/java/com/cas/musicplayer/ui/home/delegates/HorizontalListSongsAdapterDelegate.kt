@@ -14,6 +14,7 @@ import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HomeItem
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.home.adapters.HorizontalSongsAdapter
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 
@@ -24,7 +25,7 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
  */
 
 open class HorizontalListSongsAdapterDelegate(
-    private val onVideoSelected: () -> Unit
+    private val onVideoSelected: (MusicTrack) -> Unit
 ) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
