@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  **********************************
  */
 class HomeAdapter(
-    private val chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
+    chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
     onVideoSelected: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
     listOf(

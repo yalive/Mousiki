@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -27,7 +26,7 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
     val TAG = "BottomSheetFragment"
     lateinit var musicTrack: MusicTrack
 
-    lateinit var db: MusicTrackRoomDatabase
+    private val viewModel by lazy { injector.favBottomSheetViewModel }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_bottom_sheet_dialog, container, false)
@@ -35,8 +34,6 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        db = MusicTrackRoomDatabase.getDatabase(context!!)
 
         val json = arguments?.getString("MUSIC_TRACK")
         musicTrack = injector.gson.fromJson(json, MusicTrack::class.java)
@@ -60,10 +57,10 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         favController.setOnClickListener {
             Executors.newSingleThreadExecutor().execute {
                 if (UserPrefs.isFav(musicTrack.youtubeId)) {
-                    db.musicTrackDao().deleteMusicTrack(musicTrack.youtubeId)
+                    viewModel.removeSongFromFavourite(musicTrack)
                     UserPrefs.saveFav(musicTrack.youtubeId, false)
                 } else {
-                    db.musicTrackDao().insertMusicTrack(musicTrack)
+                    viewModel.makeSongAsFavourite(musicTrack)
                     UserPrefs.saveFav(musicTrack.youtubeId, true)
                 }
             }

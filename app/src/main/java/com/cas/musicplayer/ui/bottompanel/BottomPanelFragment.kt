@@ -8,18 +8,21 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.MotionEvent
+import android.view.View
+import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.core.view.updatePadding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.invisible
 import com.cas.common.extensions.visible
+import com.cas.common.fragment.BaseFragment
+import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.domain.model.durationToSeconds
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
@@ -37,54 +40,15 @@ import kotlinx.android.synthetic.main.fragment_bottom_panel.*
 import java.util.concurrent.Executors
 
 
-class BottomPanelFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener,
-    SlideToActView.OnSlideCompleteListener, View.OnTouchListener {
+class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
+    SlidingUpPanelLayout.PanelSlideListener,
+    SlideToActView.OnSlideCompleteListener,
+    View.OnTouchListener {
 
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-
-        if (event!!.action == MotionEvent.ACTION_DOWN) {
-
-            if (visible && mainActivity.isLocked) {
-
-                playbackControlsView.invisible()
-                slideToUnlock.invisible()
-                txtTitleVideoLock.invisible()
-                visible = false
-            } else if (!visible && mainActivity.isLocked) {
-
-                playbackControlsView.visible()
-                slideToUnlock.visible()
-                txtTitleVideoLock.visible()
-                visible = true
-            }
-        }
-
-        return true
-    }
-
-    override fun onSlideComplete(view: SlideToActView) {
-
-        lockScreen(false)
-    }
-
-    override fun onPanelSlide(panel: View?, slideOffset: Float) {
-        Log.d(TAG, "slideOffset = ${panel?.y}")
-        mainView.alpha = slideOffset
-        topBarView.alpha = 1 - slideOffset
-    }
-
-    override fun onPanelStateChanged(
-        panel: View?,
-        previousState: SlidingUpPanelLayout.PanelState?,
-        newState: SlidingUpPanelLayout.PanelState?
-    ) {
-        btnFullScreen.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
-
-    }
+    override val layoutResourceId: Int = R.layout.fragment_bottom_panel
+    override val viewModel by viewModel { injector.bottomPanelViewModel }
 
     val TAG = "BottomPanelFragment"
-
-    lateinit var db: MusicTrackRoomDatabase
 
     var dialogBottomShet: PlayerBottomSheetFragment? = null
 
@@ -92,29 +56,12 @@ class BottomPanelFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener,
 
     private var visible = true
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_bottom_panel, container, false)
-    }
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         mainActivity = requireActivity() as MainActivity
-
         mainActivity.slidingPaneLayout.addPanelSlideListener(this)
-
-
-        db = MusicTrackRoomDatabase.getDatabase(context!!)
-
         PlayerQueue.observe(this, Observer { video ->
             onVideoChanged(video)
-
         })
 
         btnPlayPause.setOnClickListener {
@@ -132,13 +79,17 @@ class BottomPanelFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener,
         btnAddFav.setOnClickListener {
             if (!UserPrefs.isFav(PlayerQueue.value?.youtubeId)) {
                 Executors.newSingleThreadExecutor().execute {
-                    db.musicTrackDao().insertMusicTrack(PlayerQueue.value!!)
+                    val musicTrack = PlayerQueue.value
+                    musicTrack?.let {
+                        viewModel.makeSongAsFavourite(it)
+                    }
                 }
                 UserPrefs.saveFav(PlayerQueue.value?.youtubeId, true)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
             } else {
-                Executors.newSingleThreadExecutor().execute {
-                    db.musicTrackDao().deleteMusicTrack(PlayerQueue.value!!.youtubeId)
+                val musicTrack = PlayerQueue.value
+                musicTrack?.let {
+                    viewModel.removeSongFromFavourite(it)
                 }
                 UserPrefs.saveFav(PlayerQueue.value?.youtubeId, false)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_border)
@@ -230,6 +181,47 @@ class BottomPanelFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener,
             )
             adjustCenterViews()
         })
+    }
+
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+        if (event!!.action == MotionEvent.ACTION_DOWN) {
+
+            if (visible && mainActivity.isLocked) {
+
+                playbackControlsView.invisible()
+                slideToUnlock.invisible()
+                txtTitleVideoLock.invisible()
+                visible = false
+            } else if (!visible && mainActivity.isLocked) {
+
+                playbackControlsView.visible()
+                slideToUnlock.visible()
+                txtTitleVideoLock.visible()
+                visible = true
+            }
+        }
+
+        return true
+    }
+
+    override fun onSlideComplete(view: SlideToActView) {
+        lockScreen(false)
+    }
+
+    override fun onPanelSlide(panel: View?, slideOffset: Float) {
+        Log.d(TAG, "slideOffset = ${panel?.y}")
+        mainView.alpha = slideOffset
+        topBarView.alpha = 1 - slideOffset
+    }
+
+    override fun onPanelStateChanged(
+        panel: View?,
+        previousState: SlidingUpPanelLayout.PanelState?,
+        newState: SlidingUpPanelLayout.PanelState?
+    ) {
+        btnFullScreen.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
+
     }
 
     private fun showQueue() {

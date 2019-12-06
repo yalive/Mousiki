@@ -14,7 +14,9 @@ open class BaseSongsViewModel constructor(
     private val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
 ) : BaseViewModel() {
 
-    fun saveTrackToRecent(track: MusicTrack) = uiCoroutine {
-        addTrackToRecentlyPlayed(track)
+    open fun onClickTrack(track: MusicTrack) {
+        uiCoroutine {
+            addTrackToRecentlyPlayed(track)
+        }
     }
 }

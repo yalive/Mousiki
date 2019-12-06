@@ -5,7 +5,10 @@ import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsViewModel
 import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
+import com.cas.musicplayer.ui.bottompanel.BottomPanelViewModel
+import com.cas.musicplayer.ui.bottomsheet.FavBottomSheetViewModel
 import com.cas.musicplayer.ui.charts.ChartsViewModel
+import com.cas.musicplayer.ui.favourite.FavouriteTracksViewModel
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreViewModel
 import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsViewModel
 import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreVideosViewModel
@@ -44,7 +47,7 @@ interface AppComponent {
 
     val homeViewModel: HomeViewModel
 
-    val newReleaseViewModel: PopularSongsViewModel
+    val popularSongsViewModel: PopularSongsViewModel
 
     val chartsViewModel: ChartsViewModel
 
@@ -67,6 +70,12 @@ interface AppComponent {
     val genresViewModel: GenresViewModel
 
     val libraryViewModel: LibraryViewModel
+
+    val favouriteTracksViewModel: FavouriteTracksViewModel
+
+    val favBottomSheetViewModel: FavBottomSheetViewModel
+
+    val bottomPanelViewModel: BottomPanelViewModel
 
     val emptyViewModel: EmptyViewModel
 

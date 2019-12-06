@@ -7,14 +7,12 @@ import androidx.room.RoomDatabase
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.data.local.database.dao.*
 import com.cas.musicplayer.data.local.models.*
-import com.cas.musicplayer.domain.model.MusicTrack
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
 @Database(
     entities = [
-        MusicTrack::class,
         TrendingSongEntity::class,
         ArtistEntity::class,
         ChannelSongEntity::class,
@@ -22,13 +20,14 @@ import com.cas.musicplayer.domain.model.MusicTrack
         PlaylistSongEntity::class,
         RecentlyPlayedTrack::class,
         LightSongEntity::class,
-        HistoricTrackEntity::class
+        HistoricTrackEntity::class,
+        FavouriteSongEntity::class
     ],
     version = BuildConfig.VERSION_CODE
 )
 public abstract class MusicTrackRoomDatabase : RoomDatabase() {
 
-    abstract fun musicTrackDao(): MusicTrackDAO
+    abstract fun favouriteTracksDao(): FavouriteTracksDao
 
     abstract fun trendingSongsDao(): TrendingSongsDao
 

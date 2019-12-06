@@ -83,6 +83,11 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
+    fun providesFavouriteSongsDao(db: MusicTrackRoomDatabase): FavouriteTracksDao = db.favouriteTracksDao()
+
+    @Singleton
+    @JvmStatic
+    @Provides
     fun providesArtistDao(db: MusicTrackRoomDatabase): ArtistDao = db.artistsDao()
 
     @Singleton

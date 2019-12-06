@@ -17,12 +17,14 @@ import kotlin.reflect.KClass
  ***************************************
  */
 class LibraryAdapter(
-    onVideoSelected: (MusicTrack) -> Unit
+    onRecentSongSelected: (MusicTrack) -> Unit,
+    onHeavySongSelected: (MusicTrack) -> Unit,
+    onFavouriteSongSelected: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
     listOf(
-        LibraryRecentTracksAdapterDelegate(onVideoSelected),
-        LibraryHeavyTracksAdapterDelegate(onVideoSelected),
-        LibraryFavouriteTracksAdapterDelegate(onVideoSelected),
+        LibraryRecentTracksAdapterDelegate(onRecentSongSelected),
+        LibraryHeavyTracksAdapterDelegate(onHeavySongSelected),
+        LibraryFavouriteTracksAdapterDelegate(onFavouriteSongSelected),
         LibraryHeaderAdapterDelegate()
     )
 ) {
