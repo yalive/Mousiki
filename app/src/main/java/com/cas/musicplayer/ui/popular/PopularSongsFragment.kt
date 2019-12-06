@@ -26,17 +26,18 @@ import kotlinx.android.synthetic.main.fragment_new_release.*
 class PopularSongsFragment : BaseFragment<PopularSongsViewModel>(),
     SongAdapterDelegate.OnItemClickListener {
 
-    override val viewModel by viewModel { injector.newReleaseViewModel }
+    override val viewModel by viewModel { injector.popularSongsViewModel }
     override val layoutResourceId: Int = R.layout.fragment_new_release
-    private lateinit var adapter: PopularSongsAdapter
+    private val adapter by lazy {
+        PopularSongsAdapter(this) {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.collapseBottomPanel()
+            viewModel.onClickTrack(it)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PopularSongsAdapter(this) {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.collapseBottomPanel()
-            viewModel.saveTrackToRecent(it)
-        }
         recyclerView.adapter = adapter
         observeViewModel()
         recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {

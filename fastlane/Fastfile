@@ -31,7 +31,7 @@ platform :android do
         firebase_app_distribution(
             app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
             groups: "qa-team",
-            release_notes: "Top charts and design refinement for home screen."
+            release_notes: "Favourite songs"
         )
     end
 end

@@ -62,10 +62,6 @@ class SongAdapterDelegate(
 
             itemView.setOnClickListener {
                 onVideoSelected(item.track)
-                /*val track = items[adapterPosition].track
-                onVideoSelected(track)
-                val tracks = items.map { it.track }
-                PlayerQueue.playTrack(track, tracks)*/
             }
         }
     }

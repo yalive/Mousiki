@@ -1,8 +1,5 @@
 package com.cas.musicplayer.domain.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import java.util.regex.Pattern
 
 /**
@@ -12,9 +9,8 @@ import java.util.regex.Pattern
  */
 
 
-@Entity(tableName = "music_track")
 data class MusicTrack(
-    @PrimaryKey @ColumnInfo(name = "youtube_id") val youtubeId: String,
+    val youtubeId: String,
     val title: String,
     val duration: String
 ) {

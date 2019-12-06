@@ -1,71 +1,41 @@
 package com.cas.musicplayer.ui.favourite
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.adapter.SimpleBaseAdapter
+import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.player.PlayerQueue
-import com.squareup.picasso.Picasso
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.utils.loadImage
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
-class FavouriteTracksAdapter(items: List<MusicTrack>, private val itemClickListener: OnItemClickListener) :
-    RecyclerView.Adapter<FavouriteTracksAdapter.PlayListViewHolder>() {
+class FavouriteTracksAdapter(
+    private val itemClickListener: OnItemClickListener
+) : SimpleBaseAdapter<DisplayedVideoItem, FavouriteTracksAdapter.ViewHolder>() {
 
-    var items: List<MusicTrack> = items
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    override val cellResId: Int = R.layout.item_new_release
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListViewHolder {
-
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_new_release, parent, false)
-        return PlayListViewHolder(view)
+    override fun createViewHolder(view: View): ViewHolder {
+        return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-
-        return items.size
-    }
-
-    override fun onBindViewHolder(holder: PlayListViewHolder, position: Int) {
-        holder.bind(items.get(position), itemClickListener)
-    }
-
-
-    inner class PlayListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+    inner class ViewHolder(itemView: View) : SimpleBaseViewHolder<DisplayedVideoItem>(itemView) {
         private val imgSong: ImageView = itemView.findViewById(R.id.imgSong)
-       // private val btnMore: ImageButton = itemView.findViewById(R.id.btnMore)
         private val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
         private val txtDuration: TextView = itemView.findViewById(R.id.txtDuration)
-        //private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
 
-        init {
+        override fun bind(data: DisplayedVideoItem) {
+            val track = data.track
+            imgSong.loadImage(track.imgUrl)
+            txtTitle.text = track.title
+            txtDuration.text = track.durationFormatted
             itemView.setOnClickListener {
-                itemClickListener.onSelectVideo(items[adapterPosition])
-                PlayerQueue.playTrack(items[adapterPosition], items)
+                itemClickListener.onSelectVideo(track)
             }
-        }
-
-        fun bind(item: MusicTrack, itemClickListener: OnItemClickListener) {
-            Picasso.get().load(item.imgUrl)
-                .fit()
-                .into(imgSong)
-            txtTitle.text = item.title
-            txtDuration.text = item.durationFormatted
-            //txtCategory.text = item.title.split("-")[0]
-//            btnMore.setOnClickListener {
-//                itemClickListener.onItemClick(item)
-//            }
-
         }
     }
 

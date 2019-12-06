@@ -10,8 +10,10 @@ import com.cas.common.resource.loading
 import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
+import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.BaseSongsViewModel
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
@@ -74,6 +76,12 @@ class PopularSongsViewModel @Inject constructor(
         if (previousList != null && previousList.size >= MAX_VIDEOS) {
             _hepMessage.value = "Max reached"
         }
+    }
+
+    override fun onClickTrack(track: MusicTrack) {
+        super.onClickTrack(track)
+        val tracks = (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+        PlayerQueue.playTrack(track, tracks)
     }
 
     companion object {

@@ -44,7 +44,7 @@ class PlaylistVideosFragment : BaseFragment<PlaylistVideosViewModel>() {
             onVideoSelected = { track ->
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
-                viewModel.saveTrackToRecent(track)
+                viewModel.onClickTrack(track)
             },
             onClickMore = { track ->
                 showBottomMenuButtons(track)

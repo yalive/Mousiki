@@ -12,8 +12,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.cas.common.extensions.gone
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.EmplacementBottom
 import com.cas.musicplayer.player.EmplacementCenter
@@ -21,21 +21,21 @@ import com.cas.musicplayer.player.EmplacementPlaylist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
-import com.cas.common.extensions.gone
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
 
 
 class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
 
-    val TAG = "BottomSheetFragment"
+   private val TAG = "BottomSheetFragment"
 
-    val mainTrackTitle: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtTitle) }
-    val mainTrackCategory: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtCategory) }
-    val mainTrackDuration: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtDuration) }
-    val mBottomSheet: LinearLayout by lazy { view!!.findViewById<LinearLayout>(com.cas.musicplayer.R.id.bottom_sheet) }
+    private val mainTrackTitle: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtTitle) }
+    private val mainTrackCategory: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtCategory) }
+    private val mainTrackDuration: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtDuration) }
+    private val mBottomSheet: LinearLayout by lazy { view!!.findViewById<LinearLayout>(com.cas.musicplayer.R.id.bottom_sheet) }
     var imgSongShadow: ImageView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -69,6 +69,10 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(com.cas.musicplayer.R.id.btnMore).gone()
 
         initializeBottomSheet()
+
+        PlayerQueue.observe(this, Observer {
+            adapter.items = PlayerQueue.queue ?: listOf()
+        })
     }
 
     private fun initializeBottomSheet() {

@@ -63,8 +63,11 @@ object Utils {
     }
 
     fun sendEmail(context: Context) {
-        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-            "mailto", "fayssel.mp1993@gmail.com", null))
+        val emailIntent = Intent(
+            Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", "fayssel.mp1993@gmail.com", null
+            )
+        )
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
         emailIntent.putExtra(Intent.EXTRA_TEXT, "")
         context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
@@ -179,8 +182,8 @@ fun isScreenLocked(): Boolean {
 }
 
 fun getCurrentLocale(): String {
-    val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-    val countryCodeValue = tm.networkCountryIso
+    val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+    val countryCodeValue: String? = tm?.networkCountryIso
 
     /*if (countryCodeValue != null) {
         return countryCodeValue
