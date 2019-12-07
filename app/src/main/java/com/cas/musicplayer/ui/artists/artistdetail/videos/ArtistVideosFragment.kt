@@ -17,7 +17,7 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.ui.common.SongsAdapter
+import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 

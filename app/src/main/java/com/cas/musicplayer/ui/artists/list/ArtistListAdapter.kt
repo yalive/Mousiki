@@ -3,9 +3,9 @@ package com.cas.musicplayer.ui.artists.list
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.cas.musicplayer.R
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.utils.loadImage
 
@@ -17,7 +17,7 @@ import com.cas.musicplayer.utils.loadImage
  */
 class ArtistListAdapter(
     private val onClickArtist: (artist: Artist) -> Unit
-) : SimpleBaseAdapter<Artist, ArtistsViewHolder>() {
+) : SimpleBaseAdapter<Artist, ArtistListAdapter.ArtistsViewHolder>() {
 
     override val cellResId: Int = R.layout.item_list_artist
     private val headPositionMap = HashMap<String, Int>()
@@ -47,25 +47,25 @@ class ArtistListAdapter(
     fun getLetterPosition(letter: String): Int {
         return if (headPositionMap.containsKey(letter)) (headPositionMap[letter] as Int).toInt() else -1
     }
-}
 
-class ArtistsViewHolder(
-    view: View,
-    var onClickArtist: (artist: Artist) -> Unit
-) : SimpleBaseViewHolder<Artist>(view) {
+    inner class ArtistsViewHolder(
+        view: View,
+        var onClickArtist: (artist: Artist) -> Unit
+    ) : SimpleBaseViewHolder<Artist>(view) {
 
-    private val imgSong: ImageView = view.findViewById(R.id.imgSong)
-    private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private val imgSong: ImageView = view.findViewById(R.id.imgSong)
+        private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
-    override fun bind(item: Artist) {
-        val urlImage: String? = item.urlImage
-        if (urlImage != null && urlImage.isNotEmpty()) {
-            imgSong.loadImage(urlImage)
-        }
-        txtTitle.text = item.name
-        itemView.setOnClickListener {
-            if (adapterPosition >= 0) {
-                onClickArtist(item)
+        override fun bind(item: Artist) {
+            val urlImage: String? = item.urlImage
+            if (urlImage != null && urlImage.isNotEmpty()) {
+                imgSong.loadImage(urlImage)
+            }
+            txtTitle.text = item.name
+            itemView.setOnClickListener {
+                if (adapterPosition >= 0) {
+                    onClickArtist(item)
+                }
             }
         }
     }

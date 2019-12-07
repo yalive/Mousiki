@@ -2,18 +2,20 @@ package com.cas.musicplayer.ui.searchyoutube
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.resource.Resource
-import com.cas.musicplayer.domain.model.Channel
-import com.cas.musicplayer.domain.model.Playlist
 import com.cas.common.result.asResource
 import com.cas.common.result.map
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
+import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.Playlist
+import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
 import com.cas.musicplayer.domain.usecase.search.SearchChannelsUseCase
 import com.cas.musicplayer.domain.usecase.search.SearchPlaylistsUseCase
 import com.cas.musicplayer.domain.usecase.search.SearchSongsUseCase
+import com.cas.musicplayer.ui.BaseSongsViewModel
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.cas.musicplayer.utils.uiScope
 import kotlinx.coroutines.launch
@@ -28,8 +30,9 @@ class SearchYoutubeViewModel @Inject constructor(
     private val searchSongs: SearchSongsUseCase,
     private val searchPlaylists: SearchPlaylistsUseCase,
     private val searchChannels: SearchChannelsUseCase,
-    private val getGoogleSearchSuggestions: GetGoogleSearchSuggestionsUseCase
-) : BaseViewModel() {
+    private val getGoogleSearchSuggestions: GetGoogleSearchSuggestionsUseCase,
+    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
+) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
 
     private val _videos = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val videos: LiveData<Resource<List<DisplayedVideoItem>>>
@@ -39,8 +42,8 @@ class SearchYoutubeViewModel @Inject constructor(
     val playlists: LiveData<Resource<List<Playlist>>>
         get() = _playlists
 
-    private val _channels = MutableLiveData<Resource<List<Channel>>>()
-    val channels: LiveData<Resource<List<Channel>>>
+    private val _channels = MutableLiveData<Resource<List<Artist>>>()
+    val channels: LiveData<Resource<List<Artist>>>
         get() = _channels
 
     private val _searchSuggestions = MutableLiveData<List<String>>()
@@ -75,7 +78,11 @@ class SearchYoutubeViewModel @Inject constructor(
 
     private suspend fun loadChannels(query: String) {
         _channels.value = Resource.Loading
-        val resource = searchChannels(query)
+        val resource = searchChannels(query).map { channels ->
+            channels.map {
+                Artist(it.title, "US", it.id, it.urlImage)
+            }
+        }
         _channels.value = resource.asResource()
     }
 
@@ -84,5 +91,10 @@ class SearchYoutubeViewModel @Inject constructor(
         if (suggestionList.isNotEmpty()) {
             _searchSuggestions.value = suggestionList
         }
+    }
+
+    fun onClickTrack(track: MusicTrack) = uiCoroutine {
+        val tracks = (_videos.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+        playTrackFromQueue(track, tracks)
     }
 }

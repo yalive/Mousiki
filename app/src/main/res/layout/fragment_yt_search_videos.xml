@@ -15,4 +15,16 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_new_release_video"
         tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:background="@drawable/bg_circle"
+        android:indeterminateTint="@color/colorYellow"
+        android:padding="@dimen/four_4dp"
+        android:visibility="gone"
+        tools:visibility="gone" />
 </FrameLayout>

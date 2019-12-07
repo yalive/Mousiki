@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.common
+package com.cas.musicplayer.ui.common.songs
 
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.domain.model.MusicTrack

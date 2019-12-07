@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.popular
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.popular.delegates.LoadingDelegate
-import com.cas.musicplayer.ui.common.SongAdapterDelegate
+import com.cas.musicplayer.ui.common.songs.SongAdapterDelegate
 import com.cas.musicplayer.ui.popular.delegates.SongsHeaderDelegate
 
 

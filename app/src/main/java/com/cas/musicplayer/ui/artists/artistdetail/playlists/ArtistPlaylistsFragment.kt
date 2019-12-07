@@ -17,6 +17,7 @@ import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
 import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.ui.common.playlist.PlaylistsAdapter
 import kotlinx.android.synthetic.main.fragment_artist_playlists.*
 
 
@@ -30,14 +31,7 @@ class ArtistPlaylistsFragment : BaseFragment<ArtistPlaylistsViewModel>(), Pageab
         parcelableArtist!!
     }
 
-    private val adapter by lazy {
-        ArtistPlaylistsAdapter(artist) { playlist ->
-            val bundle = Bundle()
-            bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, playlist.id)
-            bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
-            findNavController().navigate(R.id.playlistVideosFragment, bundle)
-        }
-    }
+    private val adapter by lazy { PlaylistsAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
