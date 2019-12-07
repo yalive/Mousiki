@@ -10,13 +10,49 @@ import okhttp3.Response
  */
 
 class AddKeyInterceptor : Interceptor {
+
+    private val keys = mutableListOf(
+        "AIzaSyAzLo5mV0ciK_Rhn5uzlsDouDieJA8FYNM",
+        "AIzaSyCRvpp4fPTwFbLRLf9D9Z8K85tu8Dj9NCE",
+        "AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+    )
+
+    private var currentKey = keys[0]
+
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         val url = request.url().newBuilder()
-            .addQueryParameter("key", "AIzaSyAzLo5mV0ciK_Rhn5uzlsDouDieJA8FYNM")
+            .addQueryParameter("key", currentKey)
             .build()
         val builder = request.newBuilder()
         request = builder.url(url).build()
-        return chain.proceed(request)
+        val response = chain.proceed(request)
+        if (response.code() == 403 || response.code() == 400) {
+            return retryRequestWithAnotherKey(chain)
+        }
+        return response
+    }
+
+    private fun retryRequestWithAnotherKey(chain: Interceptor.Chain): Response {
+        var retryCount = 0
+        var response: Response
+        do {
+            retryCount++
+            val request = chain.request()
+            currentKey = nexKey()
+            val urlWithNewKey = request.url().newBuilder()
+                .addQueryParameter("key", currentKey)
+                .build()
+            response = chain.proceed(request.newBuilder().url(urlWithNewKey).build())
+        } while ((response.code() == 403 || response.code() == 400) && retryCount < 4)
+        return response
+    }
+
+    private fun nexKey(): String {
+        val indexOfCurrent = keys.indexOf(currentKey)
+        if (indexOfCurrent < 0 || indexOfCurrent >= keys.size - 1) {
+            return keys[0]
+        }
+        return keys[indexOfCurrent + 1]
     }
 }
