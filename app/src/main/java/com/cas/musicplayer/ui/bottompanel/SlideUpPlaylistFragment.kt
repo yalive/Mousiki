@@ -21,7 +21,7 @@ import com.cas.musicplayer.player.EmplacementCenter
 import com.cas.musicplayer.player.EmplacementPlaylist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.common.SongsAdapter
+import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior

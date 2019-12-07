@@ -53,8 +53,9 @@
         android:id="@+id/recyclerViewSuggestions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/eight_8dp"
+        android:layout_marginEnd="@dimen/eight_8dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_youtube_serach_suggestion" />
-
 </FrameLayout>

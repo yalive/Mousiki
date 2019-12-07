@@ -5,19 +5,19 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.musicplayer.R
 import com.cas.common.adapter.FragmentPageAdapter
 import com.cas.common.adapter.PageableFragment
-import com.cas.common.fragment.BaseFragment
-import com.cas.musicplayer.ui.searchyoutube.channels.YTSearchChannelsFragment
-import com.cas.musicplayer.ui.searchyoutube.playlists.YTSearchPlaylistsFragment
-import com.cas.musicplayer.ui.searchyoutube.videos.YTSearchVideosFragment
-import com.cas.musicplayer.di.injector.injector
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
+import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchArtistsFragment
+import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchPlaylistsFragment
+import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import kotlinx.android.synthetic.main.fragment_search_youtube.*
 
 /**
@@ -30,7 +30,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
     public override val viewModel by viewModel { injector.searchYoutubeViewModel }
     override val layoutResourceId: Int = R.layout.fragment_search_youtube
 
-    private var searchSuggestionsAdapter = YTSearchSuggestionsAdapter { suggestion ->
+    private var searchSuggestionsAdapter = SearchSuggestionsAdapter { suggestion ->
         recyclerViewSuggestions.gone()
         pagerContainer.gone()
         progressBar.visible()
@@ -53,8 +53,12 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
 
         override fun onQueryTextChange(newText: String?): Boolean {
             newText?.let { query ->
-                if (query.isNotEmpty()) {
+                if (query.isNotEmpty() && query.length > 1) {
                     viewModel.getSuggestions(query)
+                } else if (query.isEmpty()) {
+                    recyclerViewSuggestions.gone()
+                } else {
+
                 }
             }
             return false
@@ -64,9 +68,9 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fragments = listOf<PageableFragment>(
-            YTSearchVideosFragment(),
-            YTSearchChannelsFragment(),
-            YTSearchPlaylistsFragment()
+            ResultSearchSongsFragment(),
+            ResultSearchArtistsFragment(),
+            ResultSearchPlaylistsFragment()
         )
         viewPager.adapter = FragmentPageAdapter(childFragmentManager, fragments)
         tabLayout.setupWithViewPager(viewPager)

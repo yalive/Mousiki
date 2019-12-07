@@ -16,7 +16,7 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.common.SongsAdapter
+import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem

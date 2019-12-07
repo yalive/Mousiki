@@ -1,31 +1,32 @@
-package com.cas.musicplayer.ui.searchyoutube.playlists
+package com.cas.musicplayer.ui.common.playlist
 
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
-import com.cas.musicplayer.R
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
-import com.cas.musicplayer.domain.model.Playlist
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
 import com.cas.musicplayer.utils.loadImage
 
 /**
- * Created by Fayssel Yabahddou on 4/13/19.
+ ***************************************
+ * Created by Abdelhadi on 2019-12-07.
+ ***************************************
  */
-class YTSearchPlaylistsAdapter :
-    SimpleBaseAdapter<Playlist, YTSearchPlaylistsAdapter.YTSearchPlaylistsViewHolder>() {
+class PlaylistsAdapter : SimpleBaseAdapter<Playlist, PlaylistsAdapter.ViewHolder>() {
+
     override val cellResId: Int = R.layout.item_channel_playlist
-    override fun createViewHolder(view: View): YTSearchPlaylistsViewHolder {
-        return YTSearchPlaylistsViewHolder(view)
+    override fun createViewHolder(view: View): ViewHolder {
+        return ViewHolder(view)
     }
 
-    inner class YTSearchPlaylistsViewHolder(view: View) : SimpleBaseViewHolder<Playlist>(view) {
-
+    inner class ViewHolder(view: View) : SimpleBaseViewHolder<Playlist>(view) {
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
         private val txtCount: TextView = view.findViewById(R.id.txtCount)
