@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPlaylistVideosUseCase
 import com.cas.musicplayer.ui.BaseSongsViewModel
@@ -33,5 +34,10 @@ class PlaylistVideosViewModel @Inject constructor(
         _videos.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
+    }
+
+    fun onClickTrack(track: MusicTrack) {
+        val tracks = (_videos.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+        playTrackFromQueue(track, tracks)
     }
 }

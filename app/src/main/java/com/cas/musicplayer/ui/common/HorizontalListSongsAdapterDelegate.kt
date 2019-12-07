@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.home.delegates
+package com.cas.musicplayer.ui.common
 
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,6 @@ import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.ui.home.adapters.HorizontalSongsAdapter
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 
 /**

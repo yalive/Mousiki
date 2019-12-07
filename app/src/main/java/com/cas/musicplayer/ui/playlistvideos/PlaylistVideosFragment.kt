@@ -15,6 +15,7 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.cas.musicplayer.ui.common.SongsAdapter
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
@@ -25,7 +26,19 @@ class PlaylistVideosFragment : BaseFragment<PlaylistVideosViewModel>() {
     override val layoutResourceId: Int = R.layout.fragment_artist_videos
     override val viewModel by viewModel { injector.playlistVideosViewModel }
 
-    private lateinit var adapter: PlaylistVideosAdapter
+    private val adapter by lazy {
+        SongsAdapter(
+            onVideoSelected = { track ->
+                val mainActivity = requireActivity() as MainActivity
+                mainActivity.collapseBottomPanel()
+                viewModel.onClickTrack(track)
+            },
+            onClickMore = { track ->
+                showBottomMenuButtons(track)
+            }
+        )
+    }
+
     private lateinit var artist: Artist
     private lateinit var playlistId: String
 
@@ -39,17 +52,6 @@ class PlaylistVideosFragment : BaseFragment<PlaylistVideosViewModel>() {
         }
 
         artist = parcelableGenre
-        adapter = PlaylistVideosAdapter(
-            artist = artist,
-            onVideoSelected = { track ->
-                val mainActivity = requireActivity() as MainActivity
-                mainActivity.collapseBottomPanel()
-                viewModel.onClickTrack(track)
-            },
-            onClickMore = { track ->
-                showBottomMenuButtons(track)
-            }
-        )
         recyclerView.adapter = adapter
         observe(viewModel.videos, this::updateUI)
         viewModel.getPlaylistVideos(playlistId)

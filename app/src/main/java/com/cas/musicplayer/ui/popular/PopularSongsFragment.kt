@@ -12,28 +12,32 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.popular.delegates.SongAdapterDelegate
 import com.cas.musicplayer.ui.popular.model.LoadingItem
 import com.cas.musicplayer.ui.popular.model.SongsHeaderItem
 import com.cas.musicplayer.utils.toast
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
-class PopularSongsFragment : BaseFragment<PopularSongsViewModel>(),
-    SongAdapterDelegate.OnItemClickListener {
+class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
 
     override val viewModel by viewModel { injector.popularSongsViewModel }
     override val layoutResourceId: Int = R.layout.fragment_new_release
     private val adapter by lazy {
-        PopularSongsAdapter(this) {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.collapseBottomPanel()
-            viewModel.onClickTrack(it)
-        }
+        PopularSongsAdapter(
+            onVideoSelected = { musicTrack ->
+                val mainActivity = requireActivity() as MainActivity
+                mainActivity.collapseBottomPanel()
+                viewModel.onClickTrack(musicTrack)
+            }, onClickMoreOptions = { musicTrack ->
+                val bottomSheetFragment = FvaBottomSheetFragment()
+                val bundle = Bundle()
+                bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
+                bottomSheetFragment.arguments = bundle
+                bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+            })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,14 +54,6 @@ class PopularSongsFragment : BaseFragment<PopularSongsViewModel>(),
         observe(viewModel.hepMessage) {
             activity?.toast(it)
         }
-    }
-
-    override fun onItemClick(musicTrack: MusicTrack) {
-        val bottomSheetFragment = FvaBottomSheetFragment()
-        val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
-        bottomSheetFragment.arguments = bundle
-        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 
     private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) {

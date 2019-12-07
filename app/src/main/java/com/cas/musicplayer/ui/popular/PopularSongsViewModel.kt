@@ -13,7 +13,6 @@ import com.cas.common.result.map
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.BaseSongsViewModel
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
@@ -78,10 +77,9 @@ class PopularSongsViewModel @Inject constructor(
         }
     }
 
-    override fun onClickTrack(track: MusicTrack) {
-        super.onClickTrack(track)
+    fun onClickTrack(track: MusicTrack) {
         val tracks = (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
-        PlayerQueue.playTrack(track, tracks)
+        playTrackFromQueue(track, tracks)
     }
 
     companion object {
