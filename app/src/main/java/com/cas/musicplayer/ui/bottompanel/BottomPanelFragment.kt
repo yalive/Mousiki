@@ -50,7 +50,7 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
 
     val TAG = "BottomPanelFragment"
 
-    var dialogBottomShet: PlayerBottomSheetFragment? = null
+    var dialogBottomShet: SlideUpPlaylistFragment? = null
 
     lateinit var mainActivity: MainActivity
 
@@ -225,7 +225,7 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     private fun showQueue() {
-        dialogBottomShet = PlayerBottomSheetFragment()
+        dialogBottomShet = SlideUpPlaylistFragment()
         dialogBottomShet?.show(childFragmentManager, "BottomSheetFragment")
     }
 

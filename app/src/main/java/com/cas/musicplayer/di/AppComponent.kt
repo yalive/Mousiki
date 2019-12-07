@@ -6,6 +6,7 @@ import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsView
 import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.bottompanel.BottomPanelViewModel
+import com.cas.musicplayer.ui.bottompanel.SlideUpPlaylistViewModel
 import com.cas.musicplayer.ui.bottomsheet.FavBottomSheetViewModel
 import com.cas.musicplayer.ui.charts.ChartsViewModel
 import com.cas.musicplayer.ui.favourite.FavouriteTracksViewModel
@@ -76,6 +77,8 @@ interface AppComponent {
     val favBottomSheetViewModel: FavBottomSheetViewModel
 
     val bottomPanelViewModel: BottomPanelViewModel
+
+    val slideUpPlaylistViewModel: SlideUpPlaylistViewModel
 
     val emptyViewModel: EmptyViewModel
 

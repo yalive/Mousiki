@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.popular.delegates
+package com.cas.musicplayer.ui.common
 
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +20,8 @@ import com.cas.musicplayer.utils.loadImage
  ***************************************
  */
 class SongAdapterDelegate(
-    private val itemClickListener: OnItemClickListener,
-    val onVideoSelected: (MusicTrack) -> Unit
+    private val onClickMoreOptions: (MusicTrack) -> Unit,
+    private val onVideoSelected: (MusicTrack) -> Unit
 ) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
@@ -30,7 +30,7 @@ class SongAdapterDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = parent.inflate(R.layout.item_new_release_video)
-        return PopularSongsViewHolder(view, itemClickListener, onVideoSelected)
+        return PopularSongsViewHolder(view)
     }
 
     override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
@@ -39,9 +39,7 @@ class SongAdapterDelegate(
     }
 
     inner class PopularSongsViewHolder(
-        itemView: View,
-        private val itemClickListener: OnItemClickListener,
-        val onVideoSelected: (MusicTrack) -> Unit
+        itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val imgSong: ImageView = itemView.findViewById(R.id.imgSong)
@@ -57,16 +55,11 @@ class SongAdapterDelegate(
             txtDuration.text = item.songDuration
             txtCategory.text = item.songTitle.split("-")[0]
             btnMore.setOnClickListener {
-                itemClickListener.onItemClick(item.track)
+                onClickMoreOptions(item.track)
             }
-
             itemView.setOnClickListener {
                 onVideoSelected(item.track)
             }
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(musicTrack: MusicTrack)
     }
 }

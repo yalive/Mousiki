@@ -2,13 +2,12 @@ package com.cas.musicplayer.ui.library
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
 import com.cas.musicplayer.domain.usecase.library.GetHeavyTracksUseCase
 import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsLiveUseCase
-import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.ui.BaseSongsViewModel
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -23,8 +22,8 @@ class LibraryViewModel @Inject constructor(
     private val getRecentlyPlayedSongsLive: GetRecentlyPlayedSongsLiveUseCase,
     private val getHeavyTracks: GetHeavyTracksUseCase,
     private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase,
-    private val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-) : BaseViewModel() {
+    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
+) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
 
     private val _recentSongs = MediatorLiveData<List<DisplayedVideoItem>>()
     val recentSongs: LiveData<List<DisplayedVideoItem>> = _recentSongs
@@ -55,24 +54,17 @@ class LibraryViewModel @Inject constructor(
 
     fun onClickRecentTrack(track: MusicTrack) {
         val tracks = _recentSongs.value?.map { it.track } ?: emptyList()
-        playTrack(track, tracks)
+        playTrackFromQueue(track, tracks)
     }
 
     fun onClickHeavyTrack(track: MusicTrack) {
         val tracks = _heavySongs.value?.map { it.track } ?: emptyList()
-        playTrack(track, tracks)
+        playTrackFromQueue(track, tracks)
     }
 
     fun onClickFavouriteTrack(track: MusicTrack) {
         val tracks = _heavySongs.value?.map { it.track } ?: emptyList()
-        playTrack(track, tracks)
-    }
-
-    private fun playTrack(track: MusicTrack, queue: List<MusicTrack>) {
-        PlayerQueue.playTrack(track, queue)
-        uiCoroutine {
-            addTrackToRecentlyPlayed(track)
-        }
+        playTrackFromQueue(track, tracks)
     }
 
     private fun tracksToDisplayableItems(songs: List<MusicTrack>) = songs.map { it.toDisplayedVideoItem() }

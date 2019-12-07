@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.bottompanel
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.cas.common.extensions.gone
+import com.cas.common.extensions.observe
+import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.EmplacementBottom
@@ -20,6 +21,7 @@ import com.cas.musicplayer.player.EmplacementCenter
 import com.cas.musicplayer.player.EmplacementPlaylist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.common.SongsAdapter
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -28,15 +30,25 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
 
 
-class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
-
-   private val TAG = "BottomSheetFragment"
+class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
 
     private val mainTrackTitle: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtTitle) }
-    private val mainTrackCategory: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtCategory) }
     private val mainTrackDuration: TextView by lazy { view!!.findViewById<TextView>(com.cas.musicplayer.R.id.txtDuration) }
     private val mBottomSheet: LinearLayout by lazy { view!!.findViewById<LinearLayout>(com.cas.musicplayer.R.id.bottom_sheet) }
-    var imgSongShadow: ImageView? = null
+    private var imgSongShadow: ImageView? = null
+
+    private val viewModel by viewModel { injector.slideUpPlaylistViewModel }
+
+    private val adapter: SongsAdapter  by lazy {
+        SongsAdapter(
+            onVideoSelected = { track ->
+                viewModel.onClickTrack(track)
+            },
+            onClickMore = { track ->
+                showBottomMenuButtons(track)
+            }
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.cas.musicplayer.R.layout.fragment_bottom_shet, container, false)
@@ -45,18 +57,8 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val tracks: List<MusicTrack> = PlayerQueue.queue ?: listOf()
-        val adapter = BottomSheetVideosAdapter(tracks)
         recyclerView.adapter = adapter
         VideoEmplacementLiveData.playlist()
-
-        adapter.onClickMore = { track ->
-            showBottomMenuButtons(track)
-        }
-
-        PlayerQueue.observe(this, Observer { track ->
-            mainTrackTitle.text = track.title
-        })
-
         imgSongShadow = view.findViewById<ImageView>(com.cas.musicplayer.R.id.imgSong)
         mainTrackDuration.gone()
         imgSongShadow?.setBackgroundColor(
@@ -65,36 +67,20 @@ class PlayerBottomSheetFragment : BottomSheetDialogFragment() {
                 com.cas.musicplayer.R.color.black_overlay
             )
         )
-
         view.findViewById<View>(com.cas.musicplayer.R.id.btnMore).gone()
-
         initializeBottomSheet()
-
-        PlayerQueue.observe(this, Observer {
-            adapter.items = PlayerQueue.queue ?: listOf()
+        PlayerQueue.observe(this, Observer { track ->
+            mainTrackTitle.text = track.title
         })
+
+        observe(viewModel.playList) { items ->
+            adapter.dataItems = items.toMutableList()
+        }
     }
 
     private fun initializeBottomSheet() {
-        // init the bottom sheet behavior
         val bottomSheetBehavior = BottomSheetBehavior.from<View>(mBottomSheet)
-
-        // change the state of the bottom sheet
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-        // set callback for changes
-        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                // Called every time when the bottom sheet changes its state.
-                Log.d(TAG, "New state:$newState")
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // Nothing
-            }
-        })
-
-
     }
 
     override fun onDestroyView() {

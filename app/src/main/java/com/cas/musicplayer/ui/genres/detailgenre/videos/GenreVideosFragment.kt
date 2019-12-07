@@ -3,22 +3,23 @@ package com.cas.musicplayer.ui.genres.detailgenre.videos
 
 import android.os.Bundle
 import android.view.View
-import com.cas.musicplayer.R
 import com.cas.common.adapter.PageableFragment
-import com.cas.common.resource.Resource
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.common.fragment.BaseFragment
-import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
-import com.cas.musicplayer.domain.model.GenreMusic
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.di.injector.injector
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
+import com.cas.common.fragment.BaseFragment
+import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.domain.model.GenreMusic
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.common.SongsAdapter
+import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
@@ -26,7 +27,19 @@ class GenreVideosFragment : BaseFragment<GenreVideosViewModel>(), PageableFragme
     override val layoutResourceId: Int = R.layout.fragment_genre_videos
     override val viewModel by viewModel { injector.genreVideosViewModel }
 
-    private lateinit var adapter: GenreVideosAdapter
+    private val adapter by lazy {
+        SongsAdapter(
+            onVideoSelected = { track ->
+                val mainActivity = requireActivity() as MainActivity
+                mainActivity.collapseBottomPanel()
+                viewModel.onClickTrack(track)
+            },
+            onClickMore = { track ->
+                showBottomMenuButtons(track)
+            }
+        )
+    }
+
     private lateinit var genreMusic: GenreMusic
     private val detailGenreViewModel by activityViewModel { injector.detailGenreViewModel }
 
@@ -37,18 +50,7 @@ class GenreVideosFragment : BaseFragment<GenreVideosViewModel>(), PageableFragme
             requireActivity().onBackPressed()
             return
         }
-
         genreMusic = parcelableGenre
-        adapter = GenreVideosAdapter(
-            genreMusic = genreMusic,
-            onVideoSelected = {
-                val mainActivity = requireActivity() as MainActivity
-                mainActivity.collapseBottomPanel()
-            },
-            onClickMore = { track ->
-                showBottomMenuButtons(track)
-            }
-        )
         recyclerView.adapter = adapter
         viewModel.loadTopTracks(genreMusic.topTracksPlaylist)
         observe(viewModel.tracks, this::updateUI)

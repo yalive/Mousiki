@@ -9,6 +9,7 @@ import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.ui.common.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.home.delegates.*
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
