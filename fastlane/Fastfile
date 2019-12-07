@@ -27,7 +27,6 @@ platform :android do
           task: "assemble",
           build_type: "DevRelease"
         )
-Implement keys rotation.
         firebase_app_distribution(
             app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
             groups: "qa-team",
