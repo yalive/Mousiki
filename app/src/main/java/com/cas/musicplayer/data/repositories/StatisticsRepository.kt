@@ -1,11 +1,15 @@
 package com.cas.musicplayer.data.repositories
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.cas.musicplayer.data.local.database.dao.HistoricTracksDao
 import com.cas.musicplayer.data.local.database.dao.RecentlyPlayedTracksDao
 import com.cas.musicplayer.data.local.models.HistoricTrackEntity
 import com.cas.musicplayer.data.local.models.RecentlyPlayedTrack
 import com.cas.musicplayer.data.local.models.toMusicTrack
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.utils.bgContext
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -43,9 +47,21 @@ class StatisticsRepository @Inject constructor(
         }
     }
 
+    suspend fun getRecentlyPlayedTracksLive(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
+        return@withContext Transformations.map(recentlyPlayedTracksDao.getSongsLive(max)) { input ->
+            input.map { it.toMusicTrack() }
+        }
+    }
+
     suspend fun getHeavyList(max: Int = 10): List<MusicTrack> {
         return historicTracksDao.getHeavyList(max).map {
             it.toMusicTrack()
+        }
+    }
+
+    suspend fun getHeavyListLive(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
+        return@withContext Transformations.map(historicTracksDao.getHeavyListLive(max)) { input ->
+            input.map { it.toMusicTrack() }
         }
     }
 }

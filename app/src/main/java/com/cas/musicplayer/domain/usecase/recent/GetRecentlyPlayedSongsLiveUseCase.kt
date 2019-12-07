@@ -1,7 +1,6 @@
-package com.cas.musicplayer.domain.usecase.library
+package com.cas.musicplayer.domain.usecase.recent
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.cas.musicplayer.data.repositories.StatisticsRepository
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.bgContext
@@ -10,18 +9,13 @@ import javax.inject.Inject
 
 /**
  ***************************************
- * Created by Abdelhadi on 2019-12-01.
+ * Created by Abdelhadi on 2019-11-26.
  ***************************************
  */
-class GetHeavyTracksUseCase @Inject constructor(
+class GetRecentlyPlayedSongsLiveUseCase @Inject constructor(
     private val statisticsRepository: StatisticsRepository
 ) {
     suspend operator fun invoke(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
-        return@withContext Transformations.map(statisticsRepository.getHeavyListLive(max)) { tracks ->
-            if (tracks.size < 3) {
-                return@map emptyList<MusicTrack>()
-            }
-            return@map tracks
-        }
+        return@withContext statisticsRepository.getRecentlyPlayedTracksLive(max)
     }
 }

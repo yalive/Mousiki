@@ -50,7 +50,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(), PageableFragment, Favo
     private fun observeViewModel() {
         observe(viewModel.recentSongs, adapter::updateRecent)
         observe(viewModel.heavySongs, adapter::updateHeavy)
-        observe(viewModel.favouritesSongs, adapter::updateFavourite)
+        observe(viewModel.favouriteSongs, adapter::updateFavourite)
     }
 
     override fun onItemClick(musicTrack: MusicTrack) {

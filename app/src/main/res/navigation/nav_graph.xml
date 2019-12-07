@@ -26,8 +26,8 @@
             android:id="@+id/action_dashboardFragment_to_searchYoutubeFragment"
             app:destination="@id/searchYoutubeFragment" />
         <action
-            android:id="@+id/action_dashboardFragment_to_playListFragment"
-            app:destination="@id/playListFragment" />
+            android:id="@+id/action_dashboardFragment_to_favouriteSongsFragment"
+            app:destination="@id/favouriteSongsFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_genresFragment"
             app:destination="@id/genresFragment" />
@@ -73,7 +73,7 @@
         android:name="com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment"
         android:label="" />
     <fragment
-        android:id="@+id/playListFragment"
+        android:id="@+id/favouriteSongsFragment"
         android:name="com.cas.musicplayer.ui.favourite.FavouriteTracksFragment"
         android:label="@string/favourites"
         tools:layout="@layout/fragment_play_list" />

@@ -17,13 +17,13 @@ interface FavouriteTracksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMusicTrack(musicTrack: FavouriteSongEntity)
 
-    @Query("SELECT * from favourite_tracks")
-    fun getAllLiveData(): LiveData<List<FavouriteSongEntity>>
+    @Query("SELECT * from favourite_tracks ORDER BY id DESC LIMIT :max")
+    fun getSongsLive(max: Int): LiveData<List<FavouriteSongEntity>>
 
     @Query("SELECT * from favourite_tracks")
     fun getAll(): List<FavouriteSongEntity>
 
-    @Query("SELECT * from favourite_tracks LIMIT :max")
+    @Query("SELECT * from favourite_tracks ORDER BY id DESC LIMIT :max")
     fun getSongs(max: Int): List<FavouriteSongEntity>
 
     @Query("DELETE  from favourite_tracks WHERE youtube_id=:youtubeId ")

@@ -8,6 +8,7 @@ import com.cas.musicplayer.ui.library.delegates.LibraryFavouriteTracksAdapterDel
 import com.cas.musicplayer.ui.library.delegates.LibraryHeaderAdapterDelegate
 import com.cas.musicplayer.ui.library.delegates.LibraryHeavyTracksAdapterDelegate
 import com.cas.musicplayer.ui.library.delegates.LibraryRecentTracksAdapterDelegate
+import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
 import com.cas.musicplayer.ui.library.model.LibraryItem
 import kotlin.reflect.KClass
 
@@ -30,9 +31,9 @@ class LibraryAdapter(
 ) {
     init {
         dataItems = mutableListOf(
-            LibraryItem.Header("Recent"),
+            LibraryHeaderItem.RecentHeader,
             LibraryItem.Recent(emptyList()),
-            LibraryItem.Header("Favourites"),
+            LibraryHeaderItem.FavouriteHeader,
             LibraryItem.Favourite(emptyList())
         )
     }
@@ -50,7 +51,7 @@ class LibraryAdapter(
             updateItemAtIndex(index, LibraryItem.Heavy(songs))
         } else if (songs.isNotEmpty()) {
             val oldSize = dataItems.size
-            dataItems.add(LibraryItem.Header("Heavy songs"))
+            dataItems.add(LibraryHeaderItem.HeavyHeader)
             dataItems.add(LibraryItem.Heavy(songs))
             notifyItemRangeInserted(oldSize, 2)
         }

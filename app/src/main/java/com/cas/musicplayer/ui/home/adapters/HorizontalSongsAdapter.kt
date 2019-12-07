@@ -7,9 +7,7 @@ import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.loadImage
 
 
@@ -45,9 +43,6 @@ class HorizontalSongViewHolder(
 
         itemView.findViewById<View>(R.id.cardView).setOnClickListener {
             onVideoSelected(item.track)
-            val tracks = items.map { it.track }
-            PlayerQueue.playTrack(items[adapterPosition].track, tracks)
-            VideoEmplacementLiveData.bottom()
         }
     }
 }

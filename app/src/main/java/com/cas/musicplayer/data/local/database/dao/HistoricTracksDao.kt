@@ -1,5 +1,6 @@
 package com.cas.musicplayer.data.local.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -25,6 +26,9 @@ interface HistoricTracksDao {
 
     @Query("SELECT * FROM historic_tracks ORDER BY count DESC LIMIT :max")
     suspend fun getHeavyList(max: Int = 10): List<HistoricTrackEntity>
+
+    @Query("SELECT * FROM historic_tracks WHERE count > 3 ORDER BY count DESC LIMIT :max")
+    fun getHeavyListLive(max: Int = 10): LiveData<List<HistoricTrackEntity>>
 
     @Query("DELETE  from historic_tracks WHERE youtube_id=:youtubeId ")
     suspend fun deleteMusicTrack(youtubeId: String)
