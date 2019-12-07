@@ -1,12 +1,13 @@
 package com.cas.musicplayer.ui.library
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
+import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
 import com.cas.musicplayer.domain.usecase.library.GetHeavyTracksUseCase
-import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
+import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
+import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsLiveUseCase
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
@@ -19,39 +20,36 @@ import javax.inject.Inject
  ***************************************
  */
 class LibraryViewModel @Inject constructor(
-    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase,
+    private val getRecentlyPlayedSongsLive: GetRecentlyPlayedSongsLiveUseCase,
     private val getHeavyTracks: GetHeavyTracksUseCase,
-    private val getFavouriteTracks: GetFavouriteTracksUseCase
+    private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase,
+    private val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
 ) : BaseViewModel() {
 
-    private val _recentSongs = MutableLiveData<List<DisplayedVideoItem>>()
+    private val _recentSongs = MediatorLiveData<List<DisplayedVideoItem>>()
     val recentSongs: LiveData<List<DisplayedVideoItem>> = _recentSongs
 
-    private val _heavySongs = MutableLiveData<List<DisplayedVideoItem>>()
+    private val _heavySongs = MediatorLiveData<List<DisplayedVideoItem>>()
     val heavySongs: LiveData<List<DisplayedVideoItem>> = _heavySongs
 
-    private val _favouritesSongs = MutableLiveData<List<DisplayedVideoItem>>()
-    val favouritesSongs: LiveData<List<DisplayedVideoItem>> = _favouritesSongs
+    private val _favouriteSongs = MediatorLiveData<List<DisplayedVideoItem>>()
+    val favouriteSongs: LiveData<List<DisplayedVideoItem>> = _favouriteSongs
 
     init {
-        loadRecentlyPlayedSongs()
-        loadHeavyTrackList()
-        loadFavouriteSongs()
-    }
+        uiCoroutine {
 
-    private fun loadRecentlyPlayedSongs() = uiCoroutine {
-        val songs = getRecentlyPlayedSongs()
-        _recentSongs.value = tracksToDisplayableItems(songs)
-    }
+            _favouriteSongs.addSource(getFavouriteTracksLive(10)) { songs ->
+                _favouriteSongs.postValue(tracksToDisplayableItems(songs))
+            }
 
-    private fun loadHeavyTrackList() = uiCoroutine {
-        val songs = getHeavyTracks()
-        _heavySongs.value = tracksToDisplayableItems(songs)
-    }
+            _recentSongs.addSource(getRecentlyPlayedSongsLive(10)) { songs ->
+                _recentSongs.postValue(tracksToDisplayableItems(songs))
+            }
 
-    private fun loadFavouriteSongs() = uiCoroutine {
-        val songs = getFavouriteTracks()
-        _favouritesSongs.value = tracksToDisplayableItems(songs)
+            _heavySongs.addSource(getHeavyTracks(10)) { songs ->
+                _heavySongs.postValue(tracksToDisplayableItems(songs))
+            }
+        }
     }
 
 
@@ -72,8 +70,10 @@ class LibraryViewModel @Inject constructor(
 
     private fun playTrack(track: MusicTrack, queue: List<MusicTrack>) {
         PlayerQueue.playTrack(track, queue)
+        uiCoroutine {
+            addTrackToRecentlyPlayed(track)
+        }
     }
 
     private fun tracksToDisplayableItems(songs: List<MusicTrack>) = songs.map { it.toDisplayedVideoItem() }
-
 }

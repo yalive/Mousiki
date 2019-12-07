@@ -13,6 +13,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
+import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -24,6 +25,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
 
     private val homeAdapter = HomeAdapter { track ->
         (activity as? MainActivity)?.collapseBottomPanel()
+        viewModel.onClickTrack(track)
+        VideoEmplacementLiveData.bottom()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

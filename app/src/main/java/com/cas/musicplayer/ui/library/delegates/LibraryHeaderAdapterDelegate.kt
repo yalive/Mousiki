@@ -4,12 +4,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.view.isInvisible
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.library.model.LibraryItem
+import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
 
 /**
  ***************************************
@@ -19,7 +21,7 @@ import com.cas.musicplayer.ui.library.model.LibraryItem
 class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
-        return items[position] is LibraryItem.Header
+        return items[position] is LibraryHeaderItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -28,29 +30,34 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
     }
 
     override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
-        val headerItem = items[position] as LibraryItem.Header
+        val headerItem = items[position] as LibraryHeaderItem
         (holder as HeaderViewHolder).bind(headerItem)
     }
 
     private inner class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
         private val showAll: ImageButton = view.findViewById(R.id.showAll)
+        private val txtMore: TextView = view.findViewById(R.id.txtMore)
 
-        fun bind(headerItem: LibraryItem.Header) {
+        fun bind(headerItem: LibraryHeaderItem) {
             txtTitle.text = headerItem.title
-            view.setOnClickListener { showMore(headerItem) }
-            showAll.setOnClickListener { showMore(headerItem) }
+            if (headerItem.showMore) {
+                view.setOnClickListener { showMore(headerItem) }
+                showAll.setOnClickListener { showMore(headerItem) }
+            }
+            showAll.isInvisible = !headerItem.showMore
+            txtMore.isInvisible = !headerItem.showMore
         }
 
-        private fun showMore(headerItem: LibraryItem.Header) {
-            /*val destination = when (headerItem) {
-                HeaderItem.ArtistsHeader -> R.id.artistsFragment
-                HeaderItem.PopularsHeader -> R.id.newReleaseFragment
-                HeaderItem.ChartsHeader -> R.id.chartsFragment
-                HeaderItem.GenresHeader -> R.id.genresFragment
-                HeaderItem.RecentHeader -> R.id.newReleaseFragment
+        private fun showMore(headerItem: LibraryHeaderItem) {
+            val destination = when (headerItem) {
+                LibraryHeaderItem.RecentHeader -> -1
+                LibraryHeaderItem.FavouriteHeader -> R.id.favouriteSongsFragment
+                LibraryHeaderItem.HeavyHeader -> -1
             }
-            itemView.findNavController().navigate(destination)*/
+            if (destination != -1) {
+                itemView.findNavController().navigate(destination)
+            }
         }
     }
 }

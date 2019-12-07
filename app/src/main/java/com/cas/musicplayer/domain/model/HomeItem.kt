@@ -20,7 +20,6 @@ sealed class HomeItem : DisplayableItem {
 }
 
 sealed class HeaderItem(val title: String, val showMore: Boolean = true) : HomeItem() {
-    object RecentHeader : HeaderItem("Recent")
     data class PopularsHeader(var loading: Boolean = false) : HeaderItem("New Releases")
     object ChartsHeader : HeaderItem("Top charts", false)
     object ArtistsHeader : HeaderItem("Artists")

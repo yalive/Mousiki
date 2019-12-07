@@ -1,5 +1,6 @@
 package com.cas.musicplayer.data.local.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -23,6 +24,9 @@ interface RecentlyPlayedTracksDao {
 
     @Query("SELECT * FROM recent_played_tracks ORDER BY id DESC LIMIT :max")
     suspend fun getSongs(max: Int = 100): List<RecentlyPlayedTrack>
+
+    @Query("SELECT * from recent_played_tracks ORDER BY id DESC LIMIT :max")
+    fun getSongsLive(max: Int): LiveData<List<RecentlyPlayedTrack>>
 
     @Query("DELETE  from recent_played_tracks WHERE youtube_id=:youtubeId ")
     suspend fun deleteMusicTrack(youtubeId: String)

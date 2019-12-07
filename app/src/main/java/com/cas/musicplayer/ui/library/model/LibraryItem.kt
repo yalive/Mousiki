@@ -9,8 +9,13 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
  ***************************************
  */
 sealed class LibraryItem : DisplayableItem {
-    data class Header(val title: String) : LibraryItem()
     data class Recent(val tracks: List<DisplayedVideoItem>) : LibraryItem()
     data class Favourite(val tracks: List<DisplayedVideoItem>) : LibraryItem()
     data class Heavy(val tracks: List<DisplayedVideoItem>) : LibraryItem()
+}
+
+sealed class LibraryHeaderItem(val title: String, val showMore: Boolean = true) : LibraryItem() {
+    object RecentHeader : LibraryHeaderItem("Recent", false)
+    object FavouriteHeader : LibraryHeaderItem("Favourites")
+    object HeavyHeader : LibraryHeaderItem("Heavy songs", false)
 }

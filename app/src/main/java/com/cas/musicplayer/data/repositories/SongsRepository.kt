@@ -1,5 +1,7 @@
 package com.cas.musicplayer.data.repositories
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.cas.common.result.Result
 import com.cas.common.result.alsoWhenSuccess
 import com.cas.musicplayer.data.datasource.LocalSongsDataSource
@@ -43,6 +45,12 @@ class SongsRepository @Inject constructor(
     suspend fun getFavouriteSongs(max: Int = 10): List<MusicTrack> = withContext(bgContext) {
         return@withContext favouriteTracksDao.getSongs(max).map {
             it.toMusicTrack()
+        }
+    }
+
+    suspend fun getFavouriteSongsLive(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
+        return@withContext Transformations.map(favouriteTracksDao.getSongsLive(max)) { input ->
+            input.map { it.toMusicTrack() }
         }
     }
 

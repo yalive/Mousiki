@@ -64,7 +64,6 @@ class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
                 is HeaderItem.PopularsHeader -> R.id.newReleaseFragment
                 HeaderItem.ChartsHeader -> R.id.chartsFragment
                 HeaderItem.GenresHeader -> R.id.genresFragment
-                HeaderItem.RecentHeader -> R.id.newReleaseFragment
             }
             itemView.findNavController().navigate(destination)
         }

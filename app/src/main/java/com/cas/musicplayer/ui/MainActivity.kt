@@ -316,10 +316,10 @@ class MainActivity : BaseActivity() {
         }
 
         findViewById<View>(R.id.btnFavourite).setOnClickListener {
-            if (navController.currentDestination?.id != R.id.playListFragment) {
+            if (navController.currentDestination?.id != R.id.favouriteSongsFragment) {
                 slidingMenu.closeMenu()
                 handler.postDelayed({
-                    navController.navigate(R.id.playListFragment)
+                    navController.navigate(R.id.favouriteSongsFragment)
                 }, 500)
 
             }

@@ -14,11 +14,14 @@ import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.domain.model.GenreMusic
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.cas.musicplayer.domain.usecase.chart.LoadChartLastThreeTracksUseCase
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
+import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
+import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.getCurrentLocale
@@ -35,7 +38,8 @@ class HomeViewModel @Inject constructor(
     private val getCountryArtists: GetCountryArtistsUseCase,
     private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
     private val loadChartLastThreeTracks: LoadChartLastThreeTracksUseCase,
-    private val getGenres: GetGenresUseCase
+    private val getGenres: GetGenresUseCase,
+    private val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
 ) : BaseViewModel() {
 
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
@@ -57,6 +61,16 @@ class HomeViewModel @Inject constructor(
         loadGenres()
     }
 
+
+    fun onClickTrack(track: MusicTrack) = uiCoroutine {
+        val tracks = (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+        playTrack(track, tracks)
+        addTrackToRecentlyPlayed(track)
+    }
+
+    private fun playTrack(track: MusicTrack, queue: List<MusicTrack>) {
+        PlayerQueue.playTrack(track, queue)
+    }
 
     private fun loadTrending() = uiCoroutine {
         if (_newReleases.hasItems() || _newReleases.isLoading()) {
