@@ -10,6 +10,7 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.domain.model.GenreMusic
@@ -18,9 +19,8 @@ import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.cas.musicplayer.domain.usecase.chart.LoadChartLastThreeTracksUseCase
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
-import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
-import com.cas.musicplayer.ui.BaseSongsViewModel
+import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.getCurrentLocale
@@ -38,8 +38,8 @@ class HomeViewModel @Inject constructor(
     private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
     private val loadChartLastThreeTracks: LoadChartLastThreeTracksUseCase,
     private val getGenres: GetGenresUseCase,
-    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
+    delegate: PlaySongDelegate
+) : BaseViewModel(), PlaySongDelegate by delegate {
 
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val newReleases: LiveData<Resource<List<DisplayedVideoItem>>> = _newReleases

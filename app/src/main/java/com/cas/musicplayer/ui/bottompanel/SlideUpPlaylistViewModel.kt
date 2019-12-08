@@ -2,10 +2,10 @@ package com.cas.musicplayer.ui.bottompanel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.ui.BaseSongsViewModel
+import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -17,8 +17,8 @@ import javax.inject.Inject
  ***************************************
  */
 class SlideUpPlaylistViewModel @Inject constructor(
-    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
+    delegate: PlaySongDelegate
+) : BaseViewModel(), PlaySongDelegate by delegate {
 
     private val _playList = MediatorLiveData<List<DisplayedVideoItem>>()
     val playList: LiveData<List<DisplayedVideoItem>> = _playList

@@ -21,8 +21,8 @@ import com.cas.musicplayer.player.EmplacementCenter
 import com.cas.musicplayer.player.EmplacementPlaylist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -45,7 +45,11 @@ class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
                 viewModel.onClickTrack(track)
             },
             onClickMore = { track ->
-                showBottomMenuButtons(track)
+                val bottomSheetFragment = FvaBottomSheetFragment()
+                val bundle = Bundle()
+                bundle.putString("MUSIC_TRACK", injector.gson.toJson(track))
+                bottomSheetFragment.arguments = bundle
+                bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
         )
     }
@@ -120,14 +124,6 @@ class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
                 VideoEmplacementLiveData.center()
             }
         }
-    }
-
-    private fun showBottomMenuButtons(musicTrack: MusicTrack) {
-        val bottomSheetFragment = FvaBottomSheetFragment()
-        val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
-        bottomSheetFragment.arguments = bundle
-        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 }
 

@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPlaylistVideosUseCase
-import com.cas.musicplayer.ui.BaseSongsViewModel
+import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -19,25 +19,25 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/12/19.
  **********************************
  */
-class PlaylistVideosViewModel @Inject constructor(
+class PlaylistSongsViewModel @Inject constructor(
     private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase,
-    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
+    delegate: PlaySongDelegate
+) : BaseViewModel(), PlaySongDelegate by delegate {
 
-    private val _videos = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
-    val videos: LiveData<Resource<List<DisplayedVideoItem>>>
-        get() = _videos
+    private val _songs = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
+    val songs: LiveData<Resource<List<DisplayedVideoItem>>>
+        get() = _songs
 
-    fun getPlaylistVideos(playlistId: String) = uiCoroutine {
-        _videos.value = Resource.Loading
+    fun getPlaylistSongs(playlistId: String) = uiCoroutine {
+        _songs.value = Resource.Loading
         val result = getPlaylistVideosUseCase(playlistId)
-        _videos.value = result.map { tracks ->
+        _songs.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
     }
 
-    fun onClickTrack(track: MusicTrack) {
-        val tracks = (_videos.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+    fun onClickTrack(track: MusicTrack) = uiCoroutine {
+        val tracks = (_songs.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
         playTrackFromQueue(track, tracks)
     }
 }

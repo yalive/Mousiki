@@ -10,10 +10,10 @@ import com.cas.common.resource.loading
 import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
-import com.cas.musicplayer.ui.BaseSongsViewModel
+import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -26,8 +26,8 @@ import javax.inject.Inject
  */
 class PopularSongsViewModel @Inject constructor(
     private val getPopularSongs: GetPopularSongsUseCase,
-    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
+    delegate: PlaySongDelegate
+) : BaseViewModel(), PlaySongDelegate by delegate {
 
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val newReleases: LiveData<Resource<List<DisplayedVideoItem>>>
@@ -79,7 +79,9 @@ class PopularSongsViewModel @Inject constructor(
 
     fun onClickTrack(track: MusicTrack) {
         val tracks = (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
-        playTrackFromQueue(track, tracks)
+        uiCoroutine {
+            playTrackFromQueue(track, tracks)
+        }
     }
 
     companion object {

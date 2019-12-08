@@ -22,9 +22,9 @@ import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
 class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
-
     override val viewModel by viewModel { injector.popularSongsViewModel }
     override val layoutResourceId: Int = R.layout.fragment_new_release
+
     private val adapter by lazy {
         PopularSongsAdapter(
             onVideoSelected = { musicTrack ->

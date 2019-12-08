@@ -13,7 +13,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
@@ -22,7 +21,7 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.android.synthetic.main.fragment_genre_videos.*
 
 
-class ArtistVideosFragment : BaseFragment<ArtistVideosViewModel>(), PageableFragment {
+class ArtistSongsFragment : BaseFragment<ArtistSongsViewModel>(), PageableFragment {
 
     override val viewModel by viewModel { injector.artistVideosViewModel }
     override val layoutResourceId: Int = R.layout.fragment_artist_videos
@@ -34,7 +33,11 @@ class ArtistVideosFragment : BaseFragment<ArtistVideosViewModel>(), PageableFrag
                 viewModel.onClickTrack(track)
             },
             onClickMore = { track ->
-                showBottomMenuButtons(track)
+                val bottomSheetFragment = FvaBottomSheetFragment()
+                val bundle = Bundle()
+                bundle.putString("MUSIC_TRACK", injector.gson.toJson(track))
+                bottomSheetFragment.arguments = bundle
+                bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
         )
     }
@@ -68,13 +71,5 @@ class ArtistVideosFragment : BaseFragment<ArtistVideosViewModel>(), PageableFrag
             progressBar.visible()
             txtError.gone()
         }
-    }
-
-    private fun showBottomMenuButtons(musicTrack: MusicTrack) {
-        val bottomSheetFragment = FvaBottomSheetFragment()
-        val bundle = Bundle()
-        bundle.putString("MUSIC_TRACK", injector.gson.toJson(musicTrack))
-        bottomSheetFragment.arguments = bundle
-        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 }

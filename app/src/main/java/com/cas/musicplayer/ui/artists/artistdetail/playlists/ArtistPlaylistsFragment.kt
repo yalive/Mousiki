@@ -3,7 +3,6 @@ package com.cas.musicplayer.ui.artists.artistdetail.playlists
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import com.cas.musicplayer.R
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.resource.Resource
@@ -11,7 +10,6 @@ import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
 import com.cas.musicplayer.di.injector.injector
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe

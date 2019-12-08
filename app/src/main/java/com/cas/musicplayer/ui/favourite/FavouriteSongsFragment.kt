@@ -16,7 +16,7 @@ import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_play_list.*
 
-class FavouriteTracksFragment : BaseFragment<FavouriteTracksViewModel>() {
+class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>() {
 
     override val layoutResourceId: Int = R.layout.fragment_play_list
     override val viewModel by viewModel { injector.favouriteTracksViewModel }
