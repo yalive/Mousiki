@@ -37,15 +37,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="16"
                     android:textColor="@color/colorWhite"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="16" />
 
                 <ImageView
                     android:layout_width="@dimen/sixteen_16dp"
                     android:layout_height="@dimen/sixteen_16dp"
                     android:src="@drawable/ic_playlist_play" />
-
             </LinearLayout>
         </FrameLayout>
 
@@ -64,7 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
-            android:textColor="@color/colorWhite"
+            android:layout_marginEnd="@dimen/eight_8dp"
+            android:textColor="@color/colorBlack"
             tools:text="Hello Test" />
 
         <TextView
@@ -72,7 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
-            android:textColor="#71717A"
+            android:layout_marginEnd="@dimen/eight_8dp"
+            android:textColor="#A5A5C4"
             android:textSize="12sp"
             tools:text="Hello Test" />
     </LinearLayout>

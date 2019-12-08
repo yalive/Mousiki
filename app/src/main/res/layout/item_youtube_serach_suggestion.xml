@@ -17,13 +17,14 @@
         android:layout_marginStart="@dimen/eight_8dp"
         android:background="@null"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_search" />
+        android:src="@drawable/ic_search"
+        android:tint="@color/colorBlack" />
 
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/eight_8dp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlack"
         tools:text="Hello Test" />
 </LinearLayout>
