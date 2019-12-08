@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/four_4dp"
-    android:background="?android:attr/selectableItemBackground"
+    android:background="@drawable/bg_ripple_row"
     android:clickable="true"
     android:focusable="true"
     android:orientation="horizontal">
@@ -41,9 +41,10 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:padding="@dimen/two_2dp"
-                tools:text="03:14"
                 android:textColor="@color/colorWhite"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:ignore="SmallSp"
+                tools:text="03:14" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -61,18 +62,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
-            tools:text="Hello Test"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            android:textColor="@color/colorWhite" />
+            tools:text="Hello Test" />
 
         <TextView
             android:id="@+id/txtCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
-            tools:text="Hello Test"
-            android:textColor="#BDBDBE"
-            android:textSize="12sp" />
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="#A5A5C4"
+            android:textSize="12sp"
+            tools:text="Hello Test" />
     </LinearLayout>
 
     <ImageButton
@@ -80,7 +85,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="@dimen/eight_8dp"
-        android:src="@drawable/ic_more_vertical" />
+        android:background="@drawable/bg_ripple_show_more"
+        android:padding="8dp"
+        android:tint="@color/colorBlack"
+        app:srcCompat="@drawable/ic_more_vertical" />
 </LinearLayout>
