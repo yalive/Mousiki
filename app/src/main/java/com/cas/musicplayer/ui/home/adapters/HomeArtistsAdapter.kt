@@ -6,9 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
-import com.cas.musicplayer.R
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
 import com.cas.musicplayer.utils.AdsOrigin
@@ -37,7 +37,7 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
         if (artist.urlImage.isNotEmpty()) {
             imgArtist.loadImage(artist.urlImage)
         }
-        view.findViewById<CardView>(R.id.cardView).setOnClickListener {
+        view.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
             itemView.findNavController().navigate(R.id.artistFragment, bundle)

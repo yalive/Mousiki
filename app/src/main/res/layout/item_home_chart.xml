@@ -8,7 +8,8 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="@dimen/two_2dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
     app:cardPreventCornerOverlap="false">
 
     <RelativeLayout
@@ -31,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="#B7000000"
+            android:background="#14000000"
             android:ellipsize="end"
             android:gravity="center"
             android:lines="2"

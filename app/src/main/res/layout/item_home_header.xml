@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlack"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:text="New releases" />
@@ -28,7 +28,7 @@
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/txtTitle"
-        android:indeterminateTint="@color/colorYellow"
+        android:indeterminateTint="@color/colorBlack"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -38,16 +38,17 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="@dimen/eight_8dp"
+        android:layout_marginEnd="4dp"
         android:layout_toStartOf="@+id/showAll"
         android:text="@string/common_more"
-        android:textColor="#E6E60F"
+        android:textAllCaps="true"
+        android:textColor="@color/colorAccent"
         android:textSize="12sp" />
 
     <ImageButton
         android:id="@+id/showAll"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignTop="@+id/txtMore"
         android:layout_alignBottom="@+id/txtMore"
         android:layout_alignParentEnd="true"
@@ -55,5 +56,6 @@
         android:layout_marginEnd="8dp"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/app_name"
+        android:tint="@color/colorAccent"
         app:srcCompat="@drawable/ic_arrow_right" />
 </RelativeLayout>

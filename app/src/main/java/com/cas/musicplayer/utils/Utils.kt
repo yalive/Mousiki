@@ -185,9 +185,9 @@ fun getCurrentLocale(): String {
     val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
     val countryCodeValue: String? = tm?.networkCountryIso
 
-    /*if (countryCodeValue != null) {
+    if (countryCodeValue != null) {
         return countryCodeValue
-    }*/
+    }
 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         MusicApp.get().resources.configuration.locales.get(0).country

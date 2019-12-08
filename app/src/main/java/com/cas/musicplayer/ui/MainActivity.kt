@@ -383,15 +383,6 @@ class MainActivity : BaseActivity() {
 
             return
         }
-
-        if (!UserPrefs.hasRatedApp() && isInHome) {
-            val launchCount = UserPrefs.getLaunchCount()
-            if (launchCount > 2 && launchCount % 2 == 0) {
-                Utils.rateApp(this)
-                return
-            }
-        }
-
         super.onBackPressed()
     }
 
