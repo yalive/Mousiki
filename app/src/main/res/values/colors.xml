@@ -16,5 +16,6 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="colorSplash">#78909C</color>
+    <color name="colorSidebarSelected">@color/colorAccent</color>
 
 </resources>

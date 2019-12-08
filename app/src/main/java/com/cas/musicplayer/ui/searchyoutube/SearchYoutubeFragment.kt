@@ -29,9 +29,10 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
 
     public override val viewModel by viewModel { injector.searchYoutubeViewModel }
     override val layoutResourceId: Int = R.layout.fragment_search_youtube
+    private var recyclerViewSuggestions: RecyclerView? = null
 
     private var searchSuggestionsAdapter = SearchSuggestionsAdapter { suggestion ->
-        recyclerViewSuggestions.gone()
+        recyclerViewSuggestions?.gone()
         pagerContainer.gone()
         progressBar.visible()
         removeQueryListener()
@@ -43,7 +44,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
-                recyclerViewSuggestions.gone()
+                recyclerViewSuggestions?.gone()
                 pagerContainer.gone()
                 progressBar.visible()
                 viewModel.search(it)
@@ -56,7 +57,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
                 if (query.isNotEmpty() && query.length > 1) {
                     viewModel.getSuggestions(query)
                 } else if (query.isEmpty()) {
-                    recyclerViewSuggestions.gone()
+                    recyclerViewSuggestions?.gone()
                 } else {
 
                 }
@@ -67,6 +68,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        recyclerViewSuggestions = view.findViewById(R.id.recyclerViewSuggestions)
         val fragments = listOf<PageableFragment>(
             ResultSearchSongsFragment(),
             ResultSearchArtistsFragment(),
@@ -75,8 +77,8 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         viewPager.adapter = FragmentPageAdapter(childFragmentManager, fragments)
         tabLayout.setupWithViewPager(viewPager)
         attachQueryListener()
-        recyclerViewSuggestions.adapter = searchSuggestionsAdapter
-        recyclerViewSuggestions.addItemDecoration(
+        recyclerViewSuggestions?.adapter = searchSuggestionsAdapter
+        recyclerViewSuggestions?.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 RecyclerView.VERTICAL
@@ -97,10 +99,10 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         observe(viewModel.videos) {
             pagerContainer.visible()
             progressBar.gone()
-            recyclerViewSuggestions.gone()
+            recyclerViewSuggestions?.gone()
         }
         observe(viewModel.searchSuggestions) { suggestions ->
-            recyclerViewSuggestions.visible()
+            recyclerViewSuggestions?.visible()
             pagerContainer.gone()
             progressBar.gone()
             searchSuggestionsAdapter.dataItems = suggestions.toMutableList()

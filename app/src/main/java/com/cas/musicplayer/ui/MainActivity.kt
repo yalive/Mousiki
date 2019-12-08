@@ -336,7 +336,7 @@ class MainActivity : BaseActivity() {
     var searchItem: MenuItem? = null
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(com.cas.musicplayer.R.menu.menu_toolbar, menu)
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
         searchItem = menu.findItem(R.id.searchYoutubeFragment)
         searchView = searchItem?.actionView as SearchView
 

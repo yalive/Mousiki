@@ -37,9 +37,9 @@
             app:tabMaxWidth="200dp"
             app:tabMinWidth="120dp"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorWhite"
+            app:tabSelectedTextColor="@color/colorBlack"
             app:tabTextAppearance="?android:textAppearanceLargePopupMenu"
-            app:tabTextColor="@color/colorWhite" />
+            app:tabTextColor="@color/colorBlack" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"

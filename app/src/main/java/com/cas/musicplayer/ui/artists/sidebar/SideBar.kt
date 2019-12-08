@@ -9,6 +9,8 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import com.cas.musicplayer.R
+import com.cas.musicplayer.utils.color
 
 class SideBar @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, i: Int = 0) :
     View(context, attributeSet, i) {
@@ -19,6 +21,9 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
     private var mTvDialog: TextView? = null
     private var onTouchingLetterChangedListener: OnTouchingLetterChangedListener? = null
     private val paint: Paint
+    private val selectedColor by lazy {
+        context.color(R.color.colorSidebarSelected)
+    }
 
     interface OnTouchingLetterChangedListener {
         fun onTouchingLetterChanged(str: String)
@@ -67,6 +72,7 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
             this.mTvDialog!!.translationY = (height * i - this.mTvDialog!!.height).toFloat() + height.toFloat() / 2.0f
             this.mTvDialog!!.text = this.letters[i]
             this.mTvDialog!!.visibility = if (z) View.VISIBLE else View.INVISIBLE
+            this.mTvDialog?.setTextColor(Color.BLACK)
         }
     }
 
@@ -99,11 +105,11 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
         val width = width
         height /= this.letters.size
         for (i in this.letters.indices) {
-            this.paint.color = -1
+            this.paint.color = Color.BLACK
             this.paint.isAntiAlias = true
             this.paint.textSize = spToPx(9).toFloat()
             if (i == this.choose) {
-                this.paint.color = Color.parseColor("#FEDF00")
+                this.paint.color = selectedColor
                 this.paint.isFakeBoldText = true
             }
             canvas.drawText(
@@ -115,7 +121,6 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
             this.paint.reset()
         }
     }
-
 
     fun setChooseLetter(c: Char) {
         val letter = c.toString()
