@@ -8,7 +8,7 @@ import com.cas.musicplayer.R
 import com.cas.common.adapter.FragmentPageAdapter
 import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsFragment
-import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreVideosFragment
+import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreSongsFragment
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.di.injector.injector
 import com.cas.common.extensions.visible
@@ -41,7 +41,7 @@ class DetailGenreFragment : BaseFragment<DetailGenreViewModel>() {
         val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
         rltContainer?.visible()
 
-        val videosFragment = GenreVideosFragment().also {
+        val videosFragment = GenreSongsFragment().also {
             it.arguments = arguments
         }
         val playlistFragment = GenrePlaylistsFragment().also {

@@ -26,7 +26,6 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(), PageableFragment {
             onVideoSelected = { track ->
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
-
                 val parentFragment = parentFragment as? SearchYoutubeFragment
                 parentFragment?.viewModel?.onClickTrack(track)
             },

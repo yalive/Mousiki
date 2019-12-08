@@ -10,7 +10,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
+import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
@@ -47,7 +47,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) : SimpleB
             if (adapterPosition >= 0) {
                 val item = items[adapterPosition]
                 val bundle = Bundle()
-                bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.playlistId)
+                bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.playlistId)
                 val artist = Artist(item.title, "US", item.playlistId)
                 bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)

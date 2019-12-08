@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_video_player.*
 class VideoPlayerFragment : Fragment() {
 
     companion object {
-
         val EXTRAS_VIDEO_ID = "video-id"
     }
 
@@ -56,7 +55,7 @@ class VideoPlayerFragment : Fragment() {
         pictureInPictureIcon.setImageDrawable(
                 ContextCompat.getDrawable(
                         requireContext(),
-                        com.cas.musicplayer.R.drawable.ic_picture_in_picture
+                        R.drawable.ic_picture_in_picture
                 )
         )
 

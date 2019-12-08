@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
-import com.cas.musicplayer.R
 import com.cas.common.adapter.FragmentPageAdapter
+import com.cas.common.extensions.visible
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsFragment
-import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistVideosFragment
+import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistSongsFragment
 import com.cas.musicplayer.utils.loadImage
-import com.cas.common.extensions.visible
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_detail_genre.*
@@ -21,11 +21,7 @@ import kotlinx.android.synthetic.main.fragment_detail_genre.*
 
 class ArtistFragment : Fragment() {
 
-    companion object {
-        const val EXTRAS_ARTIST = "artist"
-    }
-
-    lateinit var artist: Artist
+    private lateinit var artist: Artist
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +53,7 @@ class ArtistFragment : Fragment() {
 
         rltContainer?.visible()
 
-        val videosFragment = ArtistVideosFragment()
+        val videosFragment = ArtistSongsFragment()
         videosFragment.arguments = arguments
 
         val playlistsFragment = ArtistPlaylistsFragment()
@@ -71,5 +67,9 @@ class ArtistFragment : Fragment() {
         if (urlImage != null && urlImage.isNotEmpty()) {
             imgCollapsed?.loadImage(urlImage)
         }
+    }
+
+    companion object {
+        const val EXTRAS_ARTIST = "artist"
     }
 }

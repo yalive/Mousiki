@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.result.map
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
 import com.cas.musicplayer.domain.usecase.search.SearchChannelsUseCase
 import com.cas.musicplayer.domain.usecase.search.SearchPlaylistsUseCase
 import com.cas.musicplayer.domain.usecase.search.SearchSongsUseCase
-import com.cas.musicplayer.ui.BaseSongsViewModel
+import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -31,8 +31,8 @@ class SearchYoutubeViewModel @Inject constructor(
     private val searchPlaylists: SearchPlaylistsUseCase,
     private val searchChannels: SearchChannelsUseCase,
     private val getGoogleSearchSuggestions: GetGoogleSearchSuggestionsUseCase,
-    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
+    delegate: PlaySongDelegate
+) : BaseViewModel(), PlaySongDelegate by delegate {
 
     private val _videos = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val videos: LiveData<Resource<List<DisplayedVideoItem>>>

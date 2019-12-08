@@ -11,7 +11,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment
+import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
 import com.cas.musicplayer.utils.loadImage
 
 /**
@@ -35,7 +35,7 @@ class PlaylistsAdapter : SimpleBaseAdapter<Playlist, PlaylistsAdapter.ViewHolder
             itemView.setOnClickListener {
                 val item = dataItems[adapterPosition]
                 val bundle = Bundle()
-                bundle.putString(PlaylistVideosFragment.EXTRAS_PLAYLIST_ID, item.id)
+                bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.id)
                 val artist = Artist(item.title, "US", item.id, item.urlImage)
                 bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)

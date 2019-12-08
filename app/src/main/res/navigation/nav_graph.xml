@@ -62,7 +62,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlistVideosFragment"
-        android:name="com.cas.musicplayer.ui.playlistvideos.PlaylistVideosFragment"
+        android:name="com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment"
         android:label="PlaylistVideosFragment" />
     <fragment
         android:id="@+id/artistsFragment"
@@ -74,7 +74,7 @@
         android:label="" />
     <fragment
         android:id="@+id/favouriteSongsFragment"
-        android:name="com.cas.musicplayer.ui.favourite.FavouriteTracksFragment"
+        android:name="com.cas.musicplayer.ui.favourite.FavouriteSongsFragment"
         android:label="@string/favourites"
         tools:layout="@layout/fragment_play_list" />
     <fragment

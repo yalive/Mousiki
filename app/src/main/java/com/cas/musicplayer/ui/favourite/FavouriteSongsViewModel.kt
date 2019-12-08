@@ -2,10 +2,10 @@ package com.cas.musicplayer.ui.favourite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
-import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
-import com.cas.musicplayer.ui.BaseSongsViewModel
+import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
@@ -16,10 +16,10 @@ import javax.inject.Inject
  * Created by Abdelhadi on 2019-12-06.
  ***************************************
  */
-class FavouriteTracksViewModel @Inject constructor(
+class FavouriteSongsViewModel @Inject constructor(
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
-    addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-) : BaseSongsViewModel(addTrackToRecentlyPlayed) {
+    delegate: PlaySongDelegate
+) : BaseViewModel(), PlaySongDelegate by delegate {
 
     private val _favouritesSongs = MutableLiveData<List<DisplayedVideoItem>>()
     val favouritesSongs: LiveData<List<DisplayedVideoItem>> = _favouritesSongs
@@ -35,6 +35,8 @@ class FavouriteTracksViewModel @Inject constructor(
 
     fun onClickFavouriteTrack(track: MusicTrack) {
         val tracks = favouritesSongs.value?.map { it.track } ?: emptyList()
-        playTrackFromQueue(track, tracks)
+        uiCoroutine {
+            playTrackFromQueue(track, tracks)
+        }
     }
 }
