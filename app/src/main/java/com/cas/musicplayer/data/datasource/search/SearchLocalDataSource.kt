@@ -1,11 +1,10 @@
 package com.cas.musicplayer.data.datasource.search
 
+import com.cas.musicplayer.data.local.database.dao.SearchChannelDao
 import com.cas.musicplayer.data.local.database.dao.SearchPlaylistsDao
 import com.cas.musicplayer.data.local.database.dao.SearchSongDao
-import com.cas.musicplayer.data.local.models.SearchPlaylistEntity
-import com.cas.musicplayer.data.local.models.SearchSongEntity
-import com.cas.musicplayer.data.local.models.toMusicTrack
-import com.cas.musicplayer.data.local.models.toPlaylist
+import com.cas.musicplayer.data.local.models.*
+import com.cas.musicplayer.domain.model.Channel
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
 import javax.inject.Inject
@@ -17,7 +16,8 @@ import javax.inject.Inject
  */
 class SearchLocalDataSource @Inject constructor(
     private val searchSongDao: SearchSongDao,
-    private val searchPlaylistsDao: SearchPlaylistsDao
+    private val searchPlaylistsDao: SearchPlaylistsDao,
+    private val searchChannelDao: SearchChannelDao
 ) {
 
     suspend fun getSearchSongsResultForQuery(query: String): List<MusicTrack> {
@@ -46,7 +46,7 @@ class SearchLocalDataSource @Inject constructor(
     }
 
     suspend fun savePlaylists(query: String, songs: List<Playlist>) {
-        val searchSongEntities = songs.map {
+        val searchPlaylistEntities = songs.map {
             SearchPlaylistEntity(
                 playlistId = it.id,
                 itemCount = it.itemCount,
@@ -55,6 +55,24 @@ class SearchLocalDataSource @Inject constructor(
                 query = query
             )
         }
-        searchPlaylistsDao.insert(searchSongEntities)
+        searchPlaylistsDao.insert(searchPlaylistEntities)
+    }
+
+    suspend fun getSearchChannelsResultForQuery(query: String): List<Channel> {
+        return searchChannelDao.getResultForQuery(query).map {
+            it.toChannel()
+        }
+    }
+
+    suspend fun saveChannels(query: String, songs: List<Channel>) {
+        val searchChannelEntities = songs.map {
+            SearchChannelEntity(
+                channelId = it.id,
+                urlImage = it.urlImage,
+                name = it.title,
+                query = query
+            )
+        }
+        searchChannelDao.insert(searchChannelEntities)
     }
 }
