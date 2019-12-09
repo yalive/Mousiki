@@ -6,6 +6,7 @@ import com.cas.musicplayer.data.datasource.search.SearchLocalDataSource
 import com.cas.musicplayer.data.datasource.search.SearchRemoteDataSource
 import com.cas.musicplayer.data.local.database.dao.SearchQueryDao
 import com.cas.musicplayer.data.local.models.SearchQueryEntity
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.domain.model.Channel
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -49,7 +50,13 @@ class SearchRepository @Inject constructor(
 
 
     suspend fun searchChannels(query: String): Result<List<Channel>> {
-        return searchRemoteDataSource.searchChannels(query)
+        val localResult = searchLocalDataSource.getSearchChannelsResultForQuery(query)
+        if (localResult.isNotEmpty()) {
+            return Result.Success(localResult)
+        }
+        return searchRemoteDataSource.searchChannels(query).alsoWhenSuccess {
+            searchLocalDataSource.saveChannels(query, it)
+        }
     }
 
     suspend fun getSuggestions(url: String): List<String> {

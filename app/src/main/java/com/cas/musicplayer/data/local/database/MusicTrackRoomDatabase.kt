@@ -24,6 +24,7 @@ import com.cas.musicplayer.data.local.models.*
         SearchQueryEntity::class,
         SearchSongEntity::class,
         SearchPlaylistEntity::class,
+        SearchChannelEntity::class,
         FavouriteSongEntity::class
     ],
     version = BuildConfig.VERSION_CODE
@@ -53,6 +54,8 @@ public abstract class MusicTrackRoomDatabase : RoomDatabase() {
     abstract fun searchSongDao(): SearchSongDao
 
     abstract fun searchPlaylistsDao(): SearchPlaylistsDao
+
+    abstract fun searchSearchChannelDao(): SearchChannelDao
 
     companion object {
         @Volatile

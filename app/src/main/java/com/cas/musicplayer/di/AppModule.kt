@@ -134,4 +134,9 @@ object AppModule {
     @JvmStatic
     @Provides
     fun providesSearchPlaylistsDao(db: MusicTrackRoomDatabase): SearchPlaylistsDao = db.searchPlaylistsDao()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesSearchChannelDao(db: MusicTrackRoomDatabase): SearchChannelDao = db.searchSearchChannelDao()
 }
