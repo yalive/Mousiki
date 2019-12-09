@@ -13,18 +13,18 @@ import kotlinx.android.synthetic.main.item_youtube_serach_suggestion.view.*
  **********************************
  */
 class SearchSuggestionsAdapter(
-    private val onClickItem: ((SearchSuggestion) -> Unit)
+    private val onClickItem: ((SearchSuggestion) -> Unit),
+    private val onClickAutocomplete: ((SearchSuggestion) -> Unit)
 ) : SimpleBaseAdapter<SearchSuggestion, SearchSuggestionsAdapter.ViewHolder>() {
 
     override val cellResId: Int = R.layout.item_youtube_serach_suggestion
 
     override fun createViewHolder(view: View): ViewHolder {
-        return ViewHolder(view, onClickItem)
+        return ViewHolder(view)
     }
 
-    class ViewHolder(
-        view: View,
-        private val onClickItem: ((SearchSuggestion) -> Unit)
+    inner class ViewHolder(
+        view: View
     ) : SimpleBaseViewHolder<SearchSuggestion>(view) {
 
         override fun bind(item: SearchSuggestion) {
@@ -34,6 +34,11 @@ class SearchSuggestionsAdapter(
             itemView.setOnClickListener {
                 if (adapterPosition >= 0) {
                     onClickItem.invoke(item)
+                }
+            }
+            itemView.btnPast.setOnClickListener {
+                if (adapterPosition >= 0) {
+                    onClickAutocomplete.invoke(item)
                 }
             }
         }
