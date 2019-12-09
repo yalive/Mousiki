@@ -64,11 +64,13 @@ class GenreSongsFragment : BaseFragment<GenreSongsViewModel>(), PageableFragment
     private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
         is Resource.Success -> {
             val videos = resource.data
+            if (videos.isNotEmpty()) {
+                detailGenreViewModel.firstTrack.value = videos[0].track
+            }
             adapter.dataItems = videos.toMutableList()
             recyclerView.visible()
             progressBar.gone()
             txtError.gone()
-            detailGenreViewModel.firstTrack.value = videos[0].track
         }
         is Resource.Failure -> {
             progressBar.gone()
