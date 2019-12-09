@@ -9,15 +9,13 @@ import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
-import com.cas.musicplayer.domain.usecase.search.SearchChannelsUseCase
-import com.cas.musicplayer.domain.usecase.search.SearchPlaylistsUseCase
-import com.cas.musicplayer.domain.usecase.search.SearchSongsUseCase
+import com.cas.musicplayer.domain.usecase.search.*
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.cas.musicplayer.utils.uiScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +29,8 @@ class SearchYoutubeViewModel @Inject constructor(
     private val searchPlaylists: SearchPlaylistsUseCase,
     private val searchChannels: SearchChannelsUseCase,
     private val getGoogleSearchSuggestions: GetGoogleSearchSuggestionsUseCase,
+    private val saveSearchQuery: SaveSearchQueryUseCase,
+    private val getRecentSearchQueries: GetRecentSearchQueriesUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -46,8 +46,8 @@ class SearchYoutubeViewModel @Inject constructor(
     val channels: LiveData<Resource<List<Artist>>>
         get() = _channels
 
-    private val _searchSuggestions = MutableLiveData<List<String>>()
-    val searchSuggestions: LiveData<List<String>>
+    private val _searchSuggestions = MutableLiveData<List<SearchSuggestion>>()
+    val searchSuggestions: LiveData<List<SearchSuggestion>>
         get() = _searchSuggestions
 
     private var lastQuery = ""
@@ -60,6 +60,7 @@ class SearchYoutubeViewModel @Inject constructor(
         launch { loadVideos(query) }
         launch { loadPlaylists(query) }
         launch { loadChannels(query) }
+        saveSearchQuery(query)
     }
 
     private suspend fun loadVideos(query: String) {
@@ -86,10 +87,16 @@ class SearchYoutubeViewModel @Inject constructor(
         _channels.value = resource.asResource()
     }
 
-    fun getSuggestions(query: String) = uiCoroutine {
-        val suggestionList = getGoogleSearchSuggestions(query)
-        if (suggestionList.isNotEmpty()) {
-            _searchSuggestions.value = suggestionList
+    fun getSuggestions(keyword: String) = uiCoroutine {
+        val suggestionList = async {
+            getGoogleSearchSuggestions(keyword).map { SearchSuggestion(it) }
+        }
+        val localSuggestion = async {
+            getRecentSearchQueries(keyword).map { SearchSuggestion(it, true) }
+        }
+        val allSuggestions = localSuggestion.await() + suggestionList.await()
+        if (allSuggestions.isNotEmpty()) {
+            _searchSuggestions.value = allSuggestions
         }
     }
 

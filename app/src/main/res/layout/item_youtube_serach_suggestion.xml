@@ -8,9 +8,11 @@
     android:focusable="true"
     android:orientation="horizontal"
     android:paddingTop="14dp"
-    android:paddingBottom="14dp">
+    android:paddingBottom="14dp"
+    tools:background="@color/colorWhite">
 
     <ImageButton
+        android:id="@+id/imgSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
