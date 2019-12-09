@@ -31,15 +31,20 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
     override val layoutResourceId: Int = R.layout.fragment_search_youtube
     private var recyclerViewSuggestions: RecyclerView? = null
 
-    private var searchSuggestionsAdapter = SearchSuggestionsAdapter { suggestion ->
-        recyclerViewSuggestions?.gone()
-        pagerContainer.gone()
-        progressBar.visible()
-        removeQueryListener()
-        (activity as? MainActivity)?.searchView?.setQuery(suggestion.value, false)
-        attachQueryListener()
-        viewModel.search(suggestion.value)
-    }
+    private var searchSuggestionsAdapter = SearchSuggestionsAdapter(
+        onClickItem = { suggestion ->
+            recyclerViewSuggestions?.gone()
+            pagerContainer.gone()
+            progressBar.visible()
+            removeQueryListener()
+            (activity as? MainActivity)?.searchView?.setQuery(suggestion.value, false)
+            attachQueryListener()
+            viewModel.search(suggestion.value)
+        },
+        onClickAutocomplete = { suggestion ->
+            (activity as? MainActivity)?.searchView?.setQuery(suggestion.value, false)
+        }
+    )
 
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
