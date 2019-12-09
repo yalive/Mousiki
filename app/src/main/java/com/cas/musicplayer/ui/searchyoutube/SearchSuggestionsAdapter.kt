@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.item_youtube_serach_suggestion.view.*
  **********************************
  */
 class SearchSuggestionsAdapter(
-    private val onClickItem: ((suggestion: String) -> Unit)
-) : SimpleBaseAdapter<String, SearchSuggestionsAdapter.ViewHolder>() {
+    private val onClickItem: ((SearchSuggestion) -> Unit)
+) : SimpleBaseAdapter<SearchSuggestion, SearchSuggestionsAdapter.ViewHolder>() {
 
     override val cellResId: Int = R.layout.item_youtube_serach_suggestion
 
@@ -24,11 +24,13 @@ class SearchSuggestionsAdapter(
 
     class ViewHolder(
         view: View,
-        private val onClickItem: ((suggestion: String) -> Unit)
-    ) : SimpleBaseViewHolder<String>(view) {
+        private val onClickItem: ((SearchSuggestion) -> Unit)
+    ) : SimpleBaseViewHolder<SearchSuggestion>(view) {
 
-        override fun bind(item: String) {
-            itemView.txtTitle.text = item
+        override fun bind(item: SearchSuggestion) {
+            itemView.txtTitle.text = item.value
+            val searchIcon = if (item.fromHistoric) R.drawable.ic_history else R.drawable.ic_search
+            itemView.imgSearch.setImageResource(searchIcon)
             itemView.setOnClickListener {
                 if (adapterPosition >= 0) {
                     onClickItem.invoke(item)
@@ -37,5 +39,7 @@ class SearchSuggestionsAdapter(
         }
     }
 }
+
+data class SearchSuggestion(val value: String, val fromHistoric: Boolean = false)
 
 

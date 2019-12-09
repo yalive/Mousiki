@@ -16,9 +16,7 @@ import com.cas.common.resource.Resource
  */
 
 fun <T> LiveData<Resource<T>>.valueOrNull(): T? {
-    val currentValue = value
-    if (currentValue is Resource.Success) return currentValue.data
-    return null
+    return (value as? Resource.Success)?.data
 }
 
 fun <T> LifecycleOwner.observe(liveData: LiveData<T>, body: (T) -> Unit = {}) {

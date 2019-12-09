@@ -1,14 +1,16 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.musicplayer.domain.model.Channel
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.data.remote.mappers.*
 import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.common.result.Result.Success
+import com.cas.musicplayer.data.local.database.dao.SearchQueryDao
+import com.cas.musicplayer.data.local.models.SearchQueryEntity
+import com.cas.musicplayer.data.remote.mappers.*
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.cas.musicplayer.domain.model.Channel
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.Playlist
 import org.json.JSONArray
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,7 +29,8 @@ class SearchRepository @Inject constructor(
     private val channelMapper: YTBChannelToChannel,
     private val videoIdMapper: YTBSearchResultToVideoId,
     private val channelIdMapper: YTBSearchResultToChannelId,
-    private val playlistIdMapper: YTBSearchResultToPlaylistId
+    private val playlistIdMapper: YTBSearchResultToPlaylistId,
+    private val searchQueryDao: SearchQueryDao
 ) {
 
     suspend fun searchTracks(query: String): Result<List<MusicTrack>> {
@@ -92,4 +95,11 @@ class SearchRepository @Inject constructor(
         return emptyList()
     }
 
+    suspend fun saveSearchQuery(query: String) {
+        searchQueryDao.insert(SearchQueryEntity(query))
+    }
+
+    suspend fun searchRecentQueries(query: String): List<String> {
+        return searchQueryDao.search("%$query%").map { it.query }
+    }
 }

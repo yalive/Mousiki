@@ -36,9 +36,9 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         pagerContainer.gone()
         progressBar.visible()
         removeQueryListener()
-        (activity as? MainActivity)?.searchView?.setQuery(suggestion, false)
+        (activity as? MainActivity)?.searchView?.setQuery(suggestion.value, false)
         attachQueryListener()
-        viewModel.search(suggestion)
+        viewModel.search(suggestion.value)
     }
 
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
@@ -53,14 +53,11 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            newText?.let { query ->
-                if (query.isNotEmpty() && query.length > 1) {
-                    viewModel.getSuggestions(query)
-                } else if (query.isEmpty()) {
-                    recyclerViewSuggestions?.gone()
-                } else {
-
-                }
+            val query = newText ?: ""
+            if (query.isNotEmpty() && query.length > 1) {
+                viewModel.getSuggestions(query)
+            } else if (query.isEmpty()) {
+                recyclerViewSuggestions?.gone()
             }
             return false
         }
