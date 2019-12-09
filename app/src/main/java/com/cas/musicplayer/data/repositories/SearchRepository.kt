@@ -28,17 +28,23 @@ class SearchRepository @Inject constructor(
 ) {
 
     suspend fun searchTracks(query: String): Result<List<MusicTrack>> {
-        val localResult = searchLocalDataSource.getSearchResultForQuery(query)
+        val localResult = searchLocalDataSource.getSearchSongsResultForQuery(query)
         if (localResult.isNotEmpty()) {
             return Result.Success(localResult)
         }
         return searchRemoteDataSource.searchTracks(query).alsoWhenSuccess {
-            searchLocalDataSource.saveRemoteSearchSongs(query, it)
+            searchLocalDataSource.saveSongs(query, it)
         }
     }
 
     suspend fun searchPlaylists(query: String): Result<List<Playlist>> {
-        return searchRemoteDataSource.searchPlaylists(query)
+        val localResult = searchLocalDataSource.getSearchPlaylistsResultForQuery(query)
+        if (localResult.isNotEmpty()) {
+            return Result.Success(localResult)
+        }
+        return searchRemoteDataSource.searchPlaylists(query).alsoWhenSuccess {
+            searchLocalDataSource.savePlaylists(query, it)
+        }
     }
 
 
