@@ -62,7 +62,7 @@ class MainActivity : BaseActivity() {
     var isLocked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_NoActionBar)
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
@@ -130,7 +130,6 @@ class MainActivity : BaseActivity() {
         DeviceInset.observe(this, Observer { inset ->
             appbar.updatePadding(top = inset.top)
         })
-
     }
 
     private fun requestDrawOverAppsPermission() {

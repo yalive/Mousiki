@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -44,16 +43,11 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     SlidingUpPanelLayout.PanelSlideListener,
     SlideToActView.OnSlideCompleteListener,
     View.OnTouchListener {
-
     override val layoutResourceId: Int = R.layout.fragment_bottom_panel
     override val viewModel by viewModel { injector.bottomPanelViewModel }
 
-    val TAG = "BottomPanelFragment"
-
     var dialogBottomShet: SlideUpPlaylistFragment? = null
-
     lateinit var mainActivity: MainActivity
-
     private var visible = true
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -93,18 +87,14 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
                 }
                 UserPrefs.saveFav(PlayerQueue.value?.youtubeId, false)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_border)
-
             }
-
         }
 
         btnLockScreen.setOnClickListener {
-
             lockScreen(true)
         }
 
         slideToUnlock.onSlideCompleteListener = this
-
         PlaybackLiveData.observe(this, Observer {
             if (it == PlayerConstants.PlayerState.PAUSED) {
                 btnPlayPause.setImageResource(R.drawable.ic_play)
@@ -184,24 +174,19 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-
         if (event!!.action == MotionEvent.ACTION_DOWN) {
-
             if (visible && mainActivity.isLocked) {
-
                 playbackControlsView.invisible()
                 slideToUnlock.invisible()
                 txtTitleVideoLock.invisible()
                 visible = false
             } else if (!visible && mainActivity.isLocked) {
-
                 playbackControlsView.visible()
                 slideToUnlock.visible()
                 txtTitleVideoLock.visible()
                 visible = true
             }
         }
-
         return true
     }
 
@@ -210,7 +195,6 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     override fun onPanelSlide(panel: View?, slideOffset: Float) {
-        Log.d(TAG, "slideOffset = ${panel?.y}")
         mainView.alpha = slideOffset
         topBarView.alpha = 1 - slideOffset
     }
@@ -221,7 +205,6 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
         newState: SlidingUpPanelLayout.PanelState?
     ) {
         btnFullScreen.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
-
     }
 
     private fun showQueue() {
@@ -232,7 +215,6 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     private fun onClickPlayPause() {
         val oldState = PlaybackLiveData.value
         oldState?.let { playerState ->
-
             if (playerState == PlayerConstants.PlayerState.PLAYING) {
                 PlayerQueue.pause()
             } else if (playerState == PlayerConstants.PlayerState.PAUSED) {
@@ -242,13 +224,10 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     private fun adjustCenterViews() {
-
         if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
             return
         }
-
         val emplacementCenter = VideoEmplacement.center()
-
         val paramsTitle = txtTitleVideoCenter.layoutParams as RelativeLayout.LayoutParams
         val horizontalMargin = emplacementCenter.x
 
@@ -272,7 +251,6 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     private fun onVideoChanged(video: MusicTrack) {
-
         txtTitle.text = video.title
         txtTitleVideoCenter.text = video.title
         txtTitleVideoLock.text = video.title
@@ -281,13 +259,10 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
             btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
         } else {
             btnAddFav.setImageResource(R.drawable.ic_favorite_border)
-
         }
         loadAndBlureImage(video)
-
         configureSeekBar(video)
     }
-
 
     private fun configureSeekBar(video: MusicTrack) {
         txtDuration.text = video.durationFormatted
@@ -332,10 +307,8 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     private fun lockScreen(lock: Boolean) {
-
         if (lock) {
             mainActivity.slidingMenu.isMenuLocked = true
-
             setFullscreen(mainActivity)
             fullScreenSwitchView.gone()
             btnYoutube.gone()
@@ -348,11 +321,8 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
             txtTitleVideoLock.visible()
             txtTitleVideoCenter.gone()
             mainView.setBackgroundColor(Color.parseColor("#000000"))
-
             mainActivity.slidingPaneLayout.isTouchEnabled = false
-
             mainActivity.isLocked = true
-
         } else {
             mainActivity.slidingMenu.isMenuLocked = false
 

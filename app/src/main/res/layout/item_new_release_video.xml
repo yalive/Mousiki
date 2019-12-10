@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/four_4dp"
-    android:background="@drawable/bg_ripple_row"
+    android:layout_marginTop="@dimen/four_4dp"
+    android:layout_marginBottom="@dimen/four_4dp"
+    android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:orientation="horizontal">
@@ -13,19 +14,20 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_4dp"
         app:cardCornerRadius="@dimen/four_4dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPlaceholderImage">
 
             <ImageView
                 android:id="@+id/imgSong"
                 android:layout_width="140dp"
-                android:layout_height="74dp"
-                tools:background="#454B45" />
+                android:layout_height="74dp" />
 
             <TextView
                 android:id="@+id/txtDuration"
@@ -87,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/bg_ripple_show_more"
+        android:background="?selectableItemBackgroundBorderless"
         android:padding="8dp"
         android:tint="@color/colorBlack"
         app:srcCompat="@drawable/ic_more_vertical" />

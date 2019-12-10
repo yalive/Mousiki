@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorTransparent"
+        android:background="@color/colorPlaceholderImage"
         android:orientation="vertical">
 
         <ImageView
@@ -24,7 +24,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/txtTitle"
@@ -42,6 +43,5 @@
             android:textStyle="bold"
             android:visibility="visible"
             tools:text="Pop Music" />
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

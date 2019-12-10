@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackgroundBorderless"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical">
@@ -13,6 +12,7 @@
         android:id="@+id/imgArtist"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="?selectableItemBackgroundBorderless"
         android:scaleType="centerCrop"
         android:src="@drawable/img_genres_2"
         app:civ_border_color="#2C000000"
@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/colorWhite"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
