@@ -15,11 +15,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.target.NotificationTarget
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.squareup.picasso.Picasso
 
 /**
@@ -127,7 +127,7 @@ class NotificationHelper(var service: VideoPlaybackService) {
                     PlayerQueue.playNextTrack()
                 } else if (intExtra == R.id.action_play_pause) {
 
-                    if (PlaybackLiveData.value == PlayerConstants.PlayerState.PLAYING) {
+                    if (PlaybackLiveData.isPlaying()) {
                         PlayerQueue.pause()
                     } else {
                         PlayerQueue.resume()

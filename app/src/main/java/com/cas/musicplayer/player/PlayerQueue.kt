@@ -3,9 +3,9 @@ package com.cas.musicplayer.player
 import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
+import com.cas.common.event.Event
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
-import com.cas.common.event.Event
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.services.VideoPlaybackService
 import com.cas.musicplayer.utils.UserPrefs
@@ -29,6 +29,10 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
         if (isScreenLocked()) return
+        if (value == currentTrack) {
+            resume()
+            return
+        }
         this.queue = queue
         this.value = currentTrack
         notifyService(currentTrack.youtubeId)
@@ -95,7 +99,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         MusicApp.get().startService(intent)
     }
 
-    fun getNextTrack(): MusicTrack? {
+    private fun getNextTrack(): MusicTrack? {
         if (queue == null) {
             return null
         }
