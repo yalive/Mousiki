@@ -9,6 +9,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
  **********************************
  */
 
-object PlaybackLiveData : MutableLiveData<PlayerConstants.PlayerState>()
+object PlaybackLiveData : MutableLiveData<PlayerConstants.PlayerState>() {
+    fun isPlaying() = value == PlayerConstants.PlayerState.PLAYING
+}
 
 object PlaybackDuration : MutableLiveData<Float>()
