@@ -57,5 +57,6 @@
         android:background="@color/colorAccent"
         android:padding="8dp"
         android:text="100"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorWhite"
+        android:visibility="gone" />
 </FrameLayout>

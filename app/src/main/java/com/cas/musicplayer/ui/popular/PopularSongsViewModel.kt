@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.popular
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
@@ -11,11 +10,12 @@ import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
+import com.cas.musicplayer.ui.popular.model.SongsHeaderItem
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -29,13 +29,11 @@ class PopularSongsViewModel @Inject constructor(
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
-    private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
-    val newReleases: LiveData<Resource<List<DisplayedVideoItem>>>
-        get() = _newReleases
+    private val allSongs = mutableListOf<MusicTrack>()
 
-    private val _hepMessage = MutableLiveData<String>()
-    val hepMessage: LiveData<String>
-        get() = _hepMessage
+    private val _newReleases = MutableLiveData<Resource<List<DisplayableItem>>>()
+    val newReleases: LiveData<Resource<List<DisplayableItem>>>
+        get() = _newReleases
 
     private val _loadMore = MutableLiveData<Resource<Unit>>()
     val loadMore: LiveData<Resource<Unit>>
@@ -52,35 +50,35 @@ class PopularSongsViewModel @Inject constructor(
         _newReleases.loading()
         val result = getPopularSongs(25)
         _newReleases.value = result.map { tracks ->
-            tracks.map { it.toDisplayedVideoItem() }
+            allSongs.addAll(tracks)
+            val songs: MutableList<DisplayableItem> = tracks.map { it.toDisplayedVideoItem() }.toMutableList()
+            if (tracks.isNotEmpty()) {
+                songs.apply {
+                    add(0, SongsHeaderItem(tracks[0]))
+                }
+            }
+            songs
         }.asResource()
     }
 
     fun loadMoreSongs() = uiCoroutine {
-        val previousList = _newReleases.valueOrNull()
-        if (previousList != null && previousList.isNotEmpty() && previousList.size < MAX_VIDEOS) {
+        if (_loadMore.isLoading()) return@uiCoroutine
+        if (allSongs.isNotEmpty() && allSongs.size < MAX_VIDEOS) {
             _loadMore.value = Resource.Loading
-            val result = getPopularSongs.invoke(25, previousList.lastOrNull()?.track)
-            if (result is Result.Success) {
-                _newReleases.value = result.map { tracks ->
-                    val newPageMapped = tracks.map { it.toDisplayedVideoItem() }
-                    previousList.toMutableList().apply {
-                        addAll(newPageMapped)
-                    }
-                }.asResource()
-            }
+            val result = getPopularSongs.invoke(25, allSongs.lastOrNull())
             _loadMore.value = Resource.Success(Unit)
-        }
-
-        if (previousList != null && previousList.size >= MAX_VIDEOS) {
-            _hepMessage.value = "Max reached"
+            if (result is Result.Success) {
+                val newSongs = result.data
+                allSongs.addAll(newSongs)
+                val newPageMapped = newSongs.map { it.toDisplayedVideoItem() }
+                _newReleases.value = Resource.Success(newPageMapped)
+            }
         }
     }
 
     fun onClickTrack(track: MusicTrack) {
-        val tracks = (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
         uiCoroutine {
-            playTrackFromQueue(track, tracks)
+            playTrackFromQueue(track, allSongs)
         }
     }
 

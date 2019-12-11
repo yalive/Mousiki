@@ -23,6 +23,25 @@ open class BaseDelegationAdapter(
         notifyDataSetChanged()
     }
 
+    fun addNewItems(newItems: List<DisplayableItem>) {
+        removeLoadMore()
+        val oldSize = dataItems.size
+        dataItems.addAll(newItems)
+        notifyItemRangeInserted(oldSize, newItems.size)
+    }
+
+    fun showLoadMore() {
+        dataItems.add(LoadingItem)
+        notifyItemInserted(dataItems.size - 1)
+    }
+
+    fun removeLoadMore() {
+        val removed = dataItems.remove(LoadingItem)
+        if (removed) {
+            notifyItemRemoved(dataItems.size)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return delegateManager.onCreateViewHolder(parent, viewType)
     }
