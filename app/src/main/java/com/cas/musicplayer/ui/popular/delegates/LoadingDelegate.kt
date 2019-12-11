@@ -7,7 +7,7 @@ import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.popular.model.LoadingItem
+import com.cas.delegatedadapter.LoadingItem
 
 /**
  ***************************************

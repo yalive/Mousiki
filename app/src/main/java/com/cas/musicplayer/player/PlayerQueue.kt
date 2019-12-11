@@ -87,6 +87,11 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         seekTrackTo(to, comeFromFullScreen)
     }
 
+    fun isCurrentTrack(musicTrack: MusicTrack): Boolean {
+        val currentTrack = value ?: return false
+        return currentTrack.youtubeId == musicTrack.youtubeId
+    }
+
     fun hideVideo() {
         val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
         intent.putExtra(VideoPlaybackService.COMMAND_HIDE_VIDEO, true)

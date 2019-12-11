@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.popular.model
 
 import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.domain.model.MusicTrack
 
-object SongsHeaderItem : DisplayableItem
+data class SongsHeaderItem(val track: MusicTrack) : DisplayableItem
