@@ -1,6 +1,7 @@
 package com.cas.delegatedadapter
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.delegate.observer
 
@@ -23,23 +24,11 @@ open class BaseDelegationAdapter(
         notifyDataSetChanged()
     }
 
-    fun addNewItems(newItems: List<DisplayableItem>) {
-        removeLoadMore()
-        val oldSize = dataItems.size
-        dataItems.addAll(newItems)
-        notifyItemRangeInserted(oldSize, newItems.size)
-    }
-
-    fun showLoadMore() {
-        dataItems.add(LoadingItem)
-        notifyItemInserted(dataItems.size - 1)
-    }
-
-    fun removeLoadMore() {
-        val removed = dataItems.remove(LoadingItem)
-        if (removed) {
-            notifyItemRemoved(dataItems.size)
-        }
+    fun submitList(newList: List<DisplayableItem>, diffCallback: DiffUtil.Callback) {
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        dataItems.clear()
+        dataItems.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
