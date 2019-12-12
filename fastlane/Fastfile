@@ -30,7 +30,7 @@ platform :android do
         firebase_app_distribution(
             app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
             groups: "qa-team",
-            release_notes: "Handle no song found in a genre causing app crash"
+            release_notes: "Improve update list of songs/chart using diff util"
         )
     end
 end
