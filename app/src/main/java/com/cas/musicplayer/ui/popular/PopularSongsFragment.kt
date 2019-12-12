@@ -3,7 +3,6 @@ package com.cas.musicplayer.ui.popular
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
@@ -15,7 +14,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
@@ -50,13 +48,6 @@ class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
 
     private fun observeViewModel() {
         observe(viewModel.newReleases, this::updateUI)
-        observe(viewModel.loadMore) { resource ->
-            when (resource) {
-                is Resource.Loading -> adapter.showLoadMore()
-                is Resource.Success -> Unit
-                is Resource.Failure -> Unit
-            }
-        }
     }
 
     private fun updateUI(resource: Resource<List<DisplayableItem>>) {
@@ -72,9 +63,12 @@ class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
             is Resource.Success -> {
                 txtError.gone()
                 progressBar.gone()
-                adapter.addNewItems(resource.data)
+                val newList = resource.data
+                val diffCallback = SongsDiffUtil(adapter.dataItems, resource.data)
+                adapter.submitList(newList, diffCallback)
                 txtCount.text = "${adapter.dataItems.size}"
             }
         }
     }
 }
+

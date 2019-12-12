@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
@@ -47,6 +48,7 @@ class SongAdapterDelegate(
         private val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
         private val txtDuration: TextView = itemView.findViewById(R.id.txtDuration)
         private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
+        private val txtPlaying: TextView = itemView.findViewById(R.id.txtPlaying)
 
 
         fun bind(item: DisplayedVideoItem) {
@@ -60,6 +62,7 @@ class SongAdapterDelegate(
             itemView.setOnClickListener {
                 onVideoSelected(item.track)
             }
+            txtPlaying.isVisible = item.isPlaying
         }
     }
 }
