@@ -5,13 +5,12 @@ import com.cas.common.resource.doOnSuccess
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.domain.model.GenreMusic
-import com.cas.musicplayer.domain.model.HeaderItem
-import com.cas.musicplayer.domain.model.HomeItem
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.*
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
-import com.cas.musicplayer.ui.home.HomeViewModel
-import com.cas.musicplayer.ui.home.delegates.*
+import com.cas.musicplayer.ui.home.delegates.HomeArtistAdapterDelegate
+import com.cas.musicplayer.ui.home.delegates.HomeChartAdapterDelegate
+import com.cas.musicplayer.ui.home.delegates.HomeGenreAdapterDelegate
+import com.cas.musicplayer.ui.home.delegates.HomeHeaderAdapterDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlin.reflect.KClass
 
@@ -21,7 +20,7 @@ import kotlin.reflect.KClass
  **********************************
  */
 class HomeAdapter(
-    chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
+    private val chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
     onVideoSelected: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
     listOf(
@@ -56,11 +55,12 @@ class HomeAdapter(
         }
     }
 
-    fun updateCharts(data: HomeViewModel.ChartData) {
-        // TODO: Optimize this
+    fun updateCharts(charts: List<ChartModel>) {
         val index = indexOfItem(HomeItem.ChartItem::class)
         if (index != -1) {
-            updateItemAtIndex(index, HomeItem.ChartItem(data.charts))
+            val oldList = chartDelegate.adapter.dataItems
+            chartDelegate.adapter.submitList(charts, ChartsDiffUtil(oldList, charts))
+            updateItemAtIndex(index, HomeItem.ChartItem(charts))
         }
     }
 
@@ -92,3 +92,4 @@ class HomeAdapter(
         return -1
     }
 }
+
