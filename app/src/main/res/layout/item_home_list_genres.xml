@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:itemCount="9"
+        app:spanCount="2"
+        tools:itemCount="6"
         tools:listitem="@layout/item_home_genre" />
 </LinearLayout>
