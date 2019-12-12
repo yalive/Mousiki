@@ -3,6 +3,7 @@ package com.cas.common.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 
@@ -30,6 +31,13 @@ abstract class SimpleBaseAdapter<DataType, T : SimpleBaseViewHolder<DataType>> :
     }
 
     abstract fun createViewHolder(view: View): T
+
+    fun submitList(newList: List<DataType>, diffCallback: DiffUtil.Callback) {
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        dataItems.clear()
+        dataItems.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
+    }
 }
 
 open class SimpleBaseViewHolder<DataType>(view: View) : RecyclerView.ViewHolder(view) {

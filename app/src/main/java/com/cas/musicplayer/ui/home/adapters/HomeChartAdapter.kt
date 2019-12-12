@@ -29,14 +29,6 @@ class HomeChartAdapter : SimpleBaseAdapter<ChartModel, HomeChartViewHolder>() {
     override fun createViewHolder(view: View): HomeChartViewHolder {
         return HomeChartViewHolder(view, dataItems)
     }
-
-    fun updateChart(chart: ChartModel, chartToUpdate: String) {
-        val indexOfFirst = dataItems.indexOfFirst { it.playlistId == chartToUpdate }
-        if (indexOfFirst >= 0) {
-            dataItems[indexOfFirst] = chart
-            notifyItemChanged(indexOfFirst)
-        }
-    }
 }
 
 class HomeChartViewHolder(val view: View, val items: List<ChartModel>) : SimpleBaseViewHolder<ChartModel>(view) {

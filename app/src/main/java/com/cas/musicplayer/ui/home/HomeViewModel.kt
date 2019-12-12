@@ -2,8 +2,6 @@ package com.cas.musicplayer.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.event.Event
-import com.cas.common.event.asEvent
 import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
@@ -44,8 +42,8 @@ class HomeViewModel @Inject constructor(
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val newReleases: LiveData<Resource<List<DisplayedVideoItem>>> = _newReleases
 
-    private val _charts = MutableLiveData<Event<ChartData>>()
-    val charts: LiveData<Event<ChartData>> = _charts
+    private val _charts = MutableLiveData<List<ChartModel>>()
+    val charts: LiveData<List<ChartModel>> = _charts
 
     private val _genres = MutableLiveData<List<GenreMusic>>()
     val genres: LiveData<List<GenreMusic>> = _genres
@@ -77,21 +75,18 @@ class HomeViewModel @Inject constructor(
         }.asResource()
     }
 
-    // TODO: To be reviewed
     private fun loadCharts() = uiCoroutine {
         val chartList = getUserRelevantCharts(max = 6).shuffled()
-        val initialData = ChartData(chartList)
-        _charts.value = initialData.asEvent()
-
+        _charts.value = chartList
         chartList.forEach { chart ->
             val tracks = loadChartLastThreeTracks(chart)
             val chartWithTracks = chart.copy(firstTracks = tracks)
-            val currentList = _charts.value?.peekContent()?.charts?.toMutableList() ?: mutableListOf()
+            val currentList = _charts.value?.toMutableList() ?: mutableListOf()
             val indexOfChart = currentList.indexOf(chart)
             if (indexOfChart >= 0) {
                 currentList[indexOfChart] = chartWithTracks
             }
-            _charts.value = ChartData(chartToUpdate = chart.playlistId, charts = currentList).asEvent()
+            _charts.value = currentList
         }
     }
 
@@ -107,7 +102,5 @@ class HomeViewModel @Inject constructor(
             _artists.value = result.asResource()
         }
     }
-
-    data class ChartData(val charts: List<ChartModel>, val chartToUpdate: String = "")
 }
 
