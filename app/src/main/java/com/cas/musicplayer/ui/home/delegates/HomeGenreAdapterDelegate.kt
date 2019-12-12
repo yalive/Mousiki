@@ -40,7 +40,7 @@ class HomeGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         init {
             val spacingDp = itemView.context.dpToPixel(8f)
             val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-            recyclerView.addItemDecoration(GridSpacingItemDecoration(3, spacingDp, true))
+            recyclerView.addItemDecoration(GridSpacingItemDecoration(2, spacingDp, true))
             recyclerView.adapter = adapter
         }
 
