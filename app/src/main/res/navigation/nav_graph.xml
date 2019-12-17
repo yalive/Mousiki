@@ -51,7 +51,7 @@
     <fragment
         android:id="@+id/newReleaseFragment"
         android:name="com.cas.musicplayer.ui.popular.PopularSongsFragment"
-        android:label="New releases" />
+        android:label="  " />
     <fragment
         android:id="@+id/artistFragment"
         android:name="com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment"

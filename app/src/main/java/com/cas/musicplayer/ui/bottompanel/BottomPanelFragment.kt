@@ -308,7 +308,6 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
 
     private fun lockScreen(lock: Boolean) {
         if (lock) {
-            mainActivity.slidingMenu.isMenuLocked = true
             setFullscreen(mainActivity)
             fullScreenSwitchView.gone()
             btnYoutube.gone()
@@ -324,8 +323,6 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
             mainActivity.slidingPaneLayout.isTouchEnabled = false
             mainActivity.isLocked = true
         } else {
-            mainActivity.slidingMenu.isMenuLocked = false
-
             exitFullscreen(mainActivity)
             fullScreenSwitchView.visible()
             btnYoutube.visible()
@@ -368,15 +365,7 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     private fun exitFullscreen(activity: Activity) {
-        if (Build.VERSION.SDK_INT > 10) {
-            activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        } else {
-            activity.window
-                .setFlags(
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN
-                )
-        }
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
     }
 
     private fun isImmersiveAvailable(): Boolean {

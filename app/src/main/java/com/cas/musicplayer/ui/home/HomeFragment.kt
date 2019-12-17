@@ -30,11 +30,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val collapsingToolbar =
-            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-        rltContainer?.gone()
-        collapsingToolbar?.isTitleEnabled = false
         recyclerView.addItemDecoration(HomeMarginItemDecoration())
         recyclerView.adapter = homeAdapter
         observeViewModel()

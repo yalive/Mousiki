@@ -6,15 +6,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
     </style>
 
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="android:statusBarColor">@android:color/holo_blue_bright</item>
         <!-- <item name="android:statusBarColor">@color/colorWhite</item>-->
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

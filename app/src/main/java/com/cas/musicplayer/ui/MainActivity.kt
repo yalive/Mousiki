@@ -4,12 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
@@ -19,8 +17,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import com.cas.common.extensions.gone
-import com.cas.common.extensions.visible
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
@@ -29,37 +25,23 @@ import com.cas.musicplayer.player.EmplacementOut
 import com.cas.musicplayer.player.EmplacementPlaylist
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
-import com.cas.musicplayer.player.services.DragSlidePanelMonitor
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.bottompanel.BottomPanelFragment
+import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.utils.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import com.yarolegovich.slidingrootnav.SlidingRootNav
-import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder
-import com.yarolegovich.slidingrootnav.callback.DragStateListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity() {
 
-    companion object {
-        const val EXTRAS_FROM_PLAY_SERVICE = "from_player_service"
-    }
-
-    private val tag = "MainActivity"
-    private var contentMenu: ViewGroup? = null
-    lateinit var slidingMenu: SlidingRootNav
-    private lateinit var navController: NavController
-
-
-    lateinit var slidingPaneLayout: SlidingUpPanelLayout
-
+    lateinit var slidingPaneLayout: InsetSlidingPanelView
     private val viewModel by viewModel { injector.mainViewModel }
-
-    var isInHome = true
-
+    private var isInHome = true
     var isLocked = false
+    private lateinit var navController: NavController
+    private var isFromService = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -68,19 +50,9 @@ class MainActivity : BaseActivity() {
         UserPrefs.resetNumberOfTrackClick()
         setContentView(R.layout.activity_main)
         slidingPaneLayout = findViewById(R.id.sliding_layout)
-
         setSupportActionBar(toolbar)
-
-        collapsingToolbar.isTitleEnabled = true
-
-        setupMenu()
-
-        contentMenu = findViewById<FrameLayout>(com.cas.musicplayer.R.id.contentMenu)
-
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(toolbar, navController)
-
-
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             if (destination.id == R.id.dashboardFragment) {
                 isInHome = true
@@ -96,11 +68,8 @@ class MainActivity : BaseActivity() {
             requestDrawOverAppsPermission()
         }
 
-
         setupBottomPanelFragment()
-
         ViewCompat.setOnApplyWindowInsetsListener(cordinator) { v, insets ->
-
             if (insets.systemWindowInsetTop > 0) {
                 DeviceInset.value = ScreenInset(
                     insets.systemWindowInsetLeft,
@@ -109,9 +78,7 @@ class MainActivity : BaseActivity() {
                     insets.systemWindowInsetBottom
                 )
             }
-
             var consumed = false
-
             val viewGroup = v as ViewGroup
             for (i in 0 until viewGroup.childCount) {
                 val child = viewGroup.getChildAt(i)
@@ -128,24 +95,9 @@ class MainActivity : BaseActivity() {
         }
 
         DeviceInset.observe(this, Observer { inset ->
-            appbar.updatePadding(top = inset.top)
+            sliding_layout.updatePadding(top = inset.top)
         })
     }
-
-    private fun requestDrawOverAppsPermission() {
-        AlertDialog.Builder(this).setCancelable(false)
-            .setMessage("Please enable the \"Draw over other apps\" permission to start the floating player window.")
-            .setNegativeButton("DENY") { _, _ ->
-            }.setPositiveButton("AGREE") { _, _ ->
-                //If the draw over permission is not available open the settings screen
-                //to grant the permission.
-                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-                startActivityForResult(intent, 10)
-            }.show()
-    }
-
-
-    var isFromService = false
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -185,9 +137,11 @@ class MainActivity : BaseActivity() {
             restoreOldVideoState()
         }
 
-        if (slidingMenu.isMenuOpened) {
+        /*if (slidingMenu.isMenuOpened) {
             slidingMenu.closeMenu()
-        }
+        }*/
+
+        ViewCompat.requestApplyInsets(cordinator)
     }
 
 
@@ -205,11 +159,13 @@ class MainActivity : BaseActivity() {
         if (fragment == null) {
             fragment = BottomPanelFragment()
         }
-        supportFragmentManager.beginTransaction().replace(R.id.bottomPanelContent, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.bottomPanelContent, fragment)
+            .commit()
 
         hideBottomPanel()
 
-        slidingPaneLayout.addPanelSlideListener(object : SlidingUpPanelLayout.SimplePanelSlideListener() {
+        slidingPaneLayout.addPanelSlideListener(object :
+            SlidingUpPanelLayout.SimplePanelSlideListener() {
             override fun onPanelSlide(panel: View?, slideOffset: Float) {
                 panel?.y?.let { y ->
                     DragBottomPanelLiveData.value = DragPanelInfo(y, slideOffset)
@@ -243,93 +199,15 @@ class MainActivity : BaseActivity() {
         toolbar.title = getString(R.string.app_name)
         toolbar.setNavigationOnClickListener {
             if (isHome()) {
-                toggleMenu()
+
             } else {
                 onBackPressed()
             }
         }
     }
 
-    private fun toggleMenu() {
-        if (slidingMenu.isMenuOpened) {
-            slidingMenu.closeMenu()
-        } else {
-            slidingMenu.openMenu()
-        }
-    }
 
     private fun isHome() = navController.currentDestination?.id == R.id.dashboardFragment
-
-    private fun setupMenu() {
-        slidingMenu = SlidingRootNavBuilder(this)
-            .addDragStateListener(object : DragStateListener {
-                override fun onDragEnd(isMenuOpened: Boolean) {
-                    if (isMenuOpened) {
-                        viewDetectGesture.visible()
-                    } else {
-                        viewDetectGesture.gone()
-                    }
-                }
-
-                override fun onDragStart() {
-                    // Nothing
-                }
-            })
-            .withMenuLayout(com.cas.musicplayer.R.layout.menu_left_drawer)
-            .withDragDistance(240)
-            .withRootViewScale(0.8f)
-            .addDragListener {
-                Log.d(tag, "Progress=$it")
-                contentMenu?.translationX = dpToPixel(260 * (it - 1), this)
-                contentMenu?.scaleX = 1.0f - 0.4f * (1 - it)
-                contentMenu?.scaleY = 1.0f - 0.4f * (1 - it)
-
-                DragSlidePanelMonitor.value = it
-            }
-            .inject();
-
-        findViewById<View>(R.id.btnEqualizer).setOnClickListener {
-            Utils.openEqualizer(this)
-        }
-
-        findViewById<View>(R.id.btnShareApp).setOnClickListener {
-            Utils.shareAppVia()
-        }
-
-        findViewById<View>(R.id.btnShareFeedback).setOnClickListener {
-            Utils.sendEmail(this)
-        }
-
-        findViewById<View>(R.id.btnSleepTimer).setOnClickListener {
-
-        }
-
-        findViewById<View>(R.id.btnPrivacyPolicy).setOnClickListener {
-            Utils.openWebview(
-                this,
-                "file:///android_asset/policy.html"
-            )
-        }
-
-        findViewById<View>(R.id.btnSettings).setOnClickListener {
-        }
-
-        findViewById<View>(R.id.btnFavourite).setOnClickListener {
-            if (navController.currentDestination?.id != R.id.favouriteSongsFragment) {
-                slidingMenu.closeMenu()
-                handler.postDelayed({
-                    navController.navigate(R.id.favouriteSongsFragment)
-                }, 500)
-
-            }
-        }
-
-        viewDetectGesture.setOnTouchListener { v, event ->
-            slidingMenu.closeMenu()
-            viewDetectGesture.gone()
-            true
-        }
-    }
 
     var searchView: SearchView? = null
     var searchItem: MenuItem? = null
@@ -367,11 +245,6 @@ class MainActivity : BaseActivity() {
             showStatusBar()
             switchToPortrait()
             VideoEmplacementLiveData.center()
-            return
-        }
-
-        if (slidingMenu.isMenuOpened) {
-            slidingMenu.closeMenu()
             return
         }
 
@@ -428,5 +301,24 @@ class MainActivity : BaseActivity() {
 
     fun isBottomPanelExpanded(): Boolean {
         return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
+    }
+
+    private fun requestDrawOverAppsPermission() {
+        AlertDialog.Builder(this).setCancelable(false)
+            .setMessage("Please enable the \"Draw over other apps\" permission to start the floating player window.")
+            .setNegativeButton("DENY") { _, _ ->
+            }.setPositiveButton("AGREE") { _, _ ->
+                //If the draw over permission is not available open the settings screen
+                //to grant the permission.
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:$packageName")
+                )
+                startActivityForResult(intent, 10)
+            }.show()
+    }
+
+    companion object {
+        const val EXTRAS_FROM_PLAY_SERVICE = "from_player_service"
     }
 }

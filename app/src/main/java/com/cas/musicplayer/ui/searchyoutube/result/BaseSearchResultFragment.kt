@@ -24,11 +24,6 @@ abstract class BaseSearchResultFragment : NoViewModelFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val collapsingToolbar =
-            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-        collapsingToolbar?.isTitleEnabled = true
-        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-        rltContainer?.gone()
         recyclerView = view.findViewById(R.id.recyclerView)
         progressBar = view.findViewById(R.id.progressBar)
 

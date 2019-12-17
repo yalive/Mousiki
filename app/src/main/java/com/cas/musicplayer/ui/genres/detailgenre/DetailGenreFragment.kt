@@ -33,13 +33,6 @@ class DetailGenreFragment : BaseFragment<DetailGenreViewModel>() {
             return
         }
         genreMusic = parcelableGenre
-        val collapsingToolbar =
-            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-        collapsingToolbar?.isTitleEnabled = true
-        collapsingToolbar?.title = genreMusic.title
-        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-        val imgCollapsed = activity?.findViewById<CircleImageView>(R.id.imgCollapsed)
-        rltContainer?.visible()
 
         val videosFragment = GenreSongsFragment().also {
             it.arguments = arguments
@@ -51,7 +44,6 @@ class DetailGenreFragment : BaseFragment<DetailGenreViewModel>() {
             childFragmentManager, listOf(videosFragment, playlistFragment)
         )
         tabLayout.setupWithViewPager(viewPager)
-        imgCollapsed?.setImageResource(genreMusic.img)
     }
 
     companion object {

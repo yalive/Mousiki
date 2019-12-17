@@ -1,11 +1,10 @@
 package com.cas.musicplayer.ui.popular
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
-import com.cas.common.extensions.visible
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.viewModel
@@ -14,6 +13,10 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.utils.loadAndBlurImage
+import com.cas.musicplayer.utils.loadImage
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
@@ -43,7 +46,6 @@ class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
         recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
             viewModel.loadMoreSongs()
         })
-
     }
 
     private fun observeViewModel() {
@@ -53,20 +55,22 @@ class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
     private fun updateUI(resource: Resource<List<DisplayableItem>>) {
         when (resource) {
             is Resource.Loading -> {
-                txtError.gone()
-                progressBar.visible()
+                //progressBar.visible()
             }
             is Resource.Failure -> {
-                txtError.visible()
-                progressBar.gone()
+                //progressBar.gone()
             }
             is Resource.Success -> {
-                txtError.gone()
-                progressBar.gone()
                 val newList = resource.data
+                //progressBar.isInvisible = true
+                if (adapter.dataItems.isEmpty() && newList.isNotEmpty()) {
+                    val videoItem = newList[0] as DisplayedVideoItem
+                    imgArtist.loadImage(videoItem.songImagePath)
+                    background.loadAndBlurImage(videoItem.songImagePath)
+                    txtArtistName.text = "New Releases"
+                }
                 val diffCallback = SongsDiffUtil(adapter.dataItems, resource.data)
                 adapter.submitList(newList, diffCallback)
-                txtCount.text = "${adapter.dataItems.size}"
             }
         }
     }
