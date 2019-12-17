@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -21,8 +22,8 @@
     </style>
 
     <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="colorPrimaryDark">@color/colorSplash</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimaryDark">@color/colorTransparent</item>
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">

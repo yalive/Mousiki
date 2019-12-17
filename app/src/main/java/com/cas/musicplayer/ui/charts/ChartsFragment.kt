@@ -36,12 +36,6 @@ open class ChartsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.title = "Charts"
-        val collapsingToolbar =
-            activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-        collapsingToolbar?.isTitleEnabled = false
-        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-        rltContainer?.gone()
-
         val linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
         val adapter = ChartsAdapter()

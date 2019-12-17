@@ -36,12 +36,6 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
         sideBar = view.findViewById(R.id.sideBar)
         txtDialog = view.findViewById(R.id.txtDialog)
 
-        val collapsingToolbar = activity?.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-        collapsingToolbar?.isTitleEnabled = false
-        collapsingToolbar?.title = "Artists"
-        val rltContainer = activity?.findViewById<RelativeLayout>(R.id.rltContainer)
-
-        rltContainer?.gone()
         setupRecyclerView()
         observeViewModel()
         viewModel.loadAllArtists()

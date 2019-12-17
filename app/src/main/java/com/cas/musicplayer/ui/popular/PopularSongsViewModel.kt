@@ -17,7 +17,6 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.ui.popular.model.SongsHeaderItem
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -49,13 +48,8 @@ class PopularSongsViewModel @Inject constructor(
         val result = getPopularSongs(25)
         _newReleases.value = result.map { tracks ->
             allSongs.addAll(tracks)
-            val songs: MutableList<DisplayableItem> = tracks.map { it.toDisplayedVideoItem() }.toMutableList()
-            if (tracks.isNotEmpty()) {
-                songs.apply {
-                    add(0, SongsHeaderItem(tracks[0]))
-                }
-            }
-            songs
+            val swapped = tracks.swapped(0, 2)
+            swapped.map { it.toDisplayedVideoItem() }.toMutableList()
         }.asResource()
     }
 
