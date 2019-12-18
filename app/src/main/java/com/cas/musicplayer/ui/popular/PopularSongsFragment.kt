@@ -1,11 +1,11 @@
 package com.cas.musicplayer.ui.popular
 
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
+import com.cas.common.recyclerview.FirstItemMarginDecoration
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.viewModel
 import com.cas.delegatedadapter.DisplayableItem
@@ -14,9 +14,9 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.loadAndBlurImage
 import com.cas.musicplayer.utils.loadImage
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_new_release.*
 
 
@@ -46,7 +46,15 @@ class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
         recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
             viewModel.loadMoreSongs()
         })
+        recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
+        btnPlayAll.setOnClickListener {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.collapseBottomPanel()
+            viewModel.onClickTrackPlayAll()
+        }
     }
+
+    override fun withToolbar(): Boolean = false
 
     private fun observeViewModel() {
         observe(viewModel.newReleases, this::updateUI)
@@ -67,10 +75,11 @@ class PopularSongsFragment : BaseFragment<PopularSongsViewModel>() {
                     val videoItem = newList[0] as DisplayedVideoItem
                     imgArtist.loadImage(videoItem.songImagePath)
                     background.loadAndBlurImage(videoItem.songImagePath)
-                    txtArtistName.text = "New Releases"
+                    txtPrimaryTitle.text = "New Releases"
                 }
                 val diffCallback = SongsDiffUtil(adapter.dataItems, resource.data)
                 adapter.submitList(newList, diffCallback)
+                txtNumberOfSongs.text = "${newList.size} Songs"
             }
         }
     }

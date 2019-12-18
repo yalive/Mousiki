@@ -78,6 +78,13 @@ class PopularSongsViewModel @Inject constructor(
         }
     }
 
+    fun onClickTrackPlayAll() {
+        uiCoroutine {
+            if (allSongs.isEmpty()) return@uiCoroutine
+            playTrackFromQueue(allSongs.first(), allSongs)
+        }
+    }
+
     companion object {
         private const val MAX_VIDEOS = 200
     }

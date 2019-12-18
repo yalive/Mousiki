@@ -12,7 +12,7 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/background"
-            android:layout_height="80dp"
+            android:layout_height="56dp"
             android:alpha="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,23 +22,39 @@
             android:id="@+id/imgArtist"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginTop="@dimen/eight_8dp"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@+id/txtArtistName"
+            android:id="@+id/txtPrimaryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleX="0.8"
             android:scaleY="0.8"
             app:layout_constraintBottom_toBottomOf="@+id/background"
             app:layout_constraintStart_toEndOf="@id/imgArtist"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </Constraint>
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/txtNumberOfSongs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:layout_constraintBottom_toBottomOf="@+id/txtPrimaryTitle"
+            app:layout_constraintStart_toEndOf="@id/txtPrimaryTitle"
+            app:layout_constraintTop_toTopOf="@id/txtPrimaryTitle" />
+        <Constraint
+            android:id="@+id/btnPlayAll"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:scaleX="0.0"
+            android:scaleY="0.0"
+            app:layout_constraintBottom_toBottomOf="@+id/background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/background" />
     </ConstraintSet>
 
     <Transition

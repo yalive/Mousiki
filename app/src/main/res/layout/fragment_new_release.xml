@@ -29,16 +29,29 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/txtArtistName"
+        android:id="@+id/txtPrimaryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgArtist"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/txtNumberOfSongs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="No songs"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPrimaryTitle"
         tools:text="@tools:sample/full_names" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -51,4 +64,16 @@
         app:layout_constraintTop_toBottomOf="@id/background"
         tools:itemCount="20"
         tools:listitem="@layout/item_new_release_video" />
+
+    <ImageButton
+        android:id="@+id/btnPlayAll"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_big_play_button"
+        android:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/background"
+        app:srcCompat="@drawable/ic_play" />
 </androidx.constraintlayout.motion.widget.MotionLayout>

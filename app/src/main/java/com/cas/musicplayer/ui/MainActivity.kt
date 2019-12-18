@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             if (destination.id == R.id.dashboardFragment) {
                 isInHome = true
-                showHomeIcon()
+                toolbar.title = getString(R.string.app_name)
                 searchItem?.isVisible = true
             } else {
                 isInHome = false
@@ -192,20 +192,6 @@ class MainActivity : BaseActivity() {
         })
 
     }
-
-
-    private fun showHomeIcon() {
-        toolbar.setNavigationIcon(R.drawable.ic_menu_toolbar)
-        toolbar.title = getString(R.string.app_name)
-        toolbar.setNavigationOnClickListener {
-            if (isHome()) {
-
-            } else {
-                onBackPressed()
-            }
-        }
-    }
-
 
     private fun isHome() = navController.currentDestination?.id == R.id.dashboardFragment
 
