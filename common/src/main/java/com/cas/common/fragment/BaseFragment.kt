@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.core.view.ViewCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.cas.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +44,18 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val compatActivity = activity as? AppCompatActivity
+        if (withToolbar()) {
+            compatActivity?.supportActionBar?.show()
+        } else {
+            compatActivity?.supportActionBar?.hide()
+        }
+    }
+
+    open fun withToolbar(): Boolean = true
 
     override fun onStop() {
         super.onStop()
