@@ -29,6 +29,7 @@ import com.cas.musicplayer.player.VideoEmplacement
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.utils.*
 import com.ncorti.slidetoact.SlideToActView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -36,6 +37,8 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fragment_bottom_panel.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 
@@ -308,6 +311,9 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
 
     private fun lockScreen(lock: Boolean) {
         if (lock) {
+            val panelView =
+                requireActivity().findViewById<InsetSlidingPanelView>(R.id.sliding_layout)
+            panelView.updatePadding(top = 0)
             setFullscreen(mainActivity)
             fullScreenSwitchView.gone()
             btnYoutube.gone()
@@ -322,6 +328,11 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
             mainView.setBackgroundColor(Color.parseColor("#000000"))
             mainActivity.slidingPaneLayout.isTouchEnabled = false
             mainActivity.isLocked = true
+
+            launch {
+                delay(1_000)
+                panelView.updatePadding(top = 0)
+            }
         } else {
             exitFullscreen(mainActivity)
             fullScreenSwitchView.visible()
@@ -336,11 +347,8 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
             txtTitleVideoCenter.visible()
             slideToUnlock.resetSlider()
             mainView.setBackgroundColor(resources.getColor(android.R.color.transparent))
-
             mainActivity.slidingPaneLayout.isTouchEnabled = true
-
             mainActivity.isLocked = false
-
         }
     }
 
