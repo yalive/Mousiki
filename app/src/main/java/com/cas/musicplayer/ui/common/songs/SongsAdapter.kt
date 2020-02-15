@@ -13,6 +13,7 @@ class SongsAdapter(
     onClickMore: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
     listOf(
-        SongAdapterDelegate(onClickMoreOptions = onClickMore, onVideoSelected = onVideoSelected)
+        SongAdapterDelegate(onClickMoreOptions = onClickMore, onVideoSelected = onVideoSelected),
+        EmptyCellDelegate()
     )
 )

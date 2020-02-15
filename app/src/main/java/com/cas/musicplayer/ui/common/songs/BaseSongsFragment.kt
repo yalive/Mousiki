@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.common.songs
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.FirstItemMarginDecoration
 import com.cas.common.resource.Resource
@@ -65,12 +64,16 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     protected fun updateUI(resource: Resource<List<DisplayableItem>>) {
         when (resource) {
             is Resource.Success -> {
-                val newList = resource.data
+                val newList = resource.data.toMutableList().apply {
+                    add(EmptyCellItem)
+                    add(EmptyCellItem)
+                    add(EmptyCellItem)
+                }
                 if (adapter.dataItems.isEmpty() && newList.isNotEmpty()) {
                     val videoItem = newList[0] as DisplayedVideoItem
                     updateHeader(videoItem)
                 }
-                val diffCallback = SongsDiffUtil(adapter.dataItems, resource.data)
+                val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
                 txtNumberOfSongs.text = "${newList.size} Songs"
             }
