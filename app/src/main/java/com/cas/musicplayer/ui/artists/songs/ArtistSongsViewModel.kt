@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.genres.detailgenre.videos
+package com.cas.musicplayer.ui.artists.songs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +7,7 @@ import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.usecase.song.GetPlaylistVideosUseCase
+import com.cas.musicplayer.domain.usecase.artist.GetArtistSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
@@ -19,8 +19,8 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/12/19.
  **********************************
  */
-class GenreSongsViewModel @Inject constructor(
-    val getPlaylistVideos: GetPlaylistVideosUseCase,
+class ArtistSongsViewModel @Inject constructor(
+    private val getArtistSongs: GetArtistSongsUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -28,9 +28,9 @@ class GenreSongsViewModel @Inject constructor(
     val tracks: LiveData<Resource<List<DisplayedVideoItem>>>
         get() = _tracks
 
-    fun loadTopTracks(topTracksPlaylist: String) = uiCoroutine {
+    fun loadArtistTracks(channelId: String) = uiCoroutine {
         _tracks.value = Resource.Loading
-        val result = getPlaylistVideos(topTracksPlaylist)
+        val result = getArtistSongs(channelId)
         _tracks.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()

@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.genres.list
+package com.cas.musicplayer.ui.genres
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

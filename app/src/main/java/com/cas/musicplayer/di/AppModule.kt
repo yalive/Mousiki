@@ -11,6 +11,7 @@ import com.cas.musicplayer.utils.Constants
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
+import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -25,7 +26,9 @@ import javax.inject.Singleton
  * Created by Abdelhadi on 2019-06-09.
  ***************************************
  */
-@Module
+
+@AssistedModule
+@Module(includes = [AssistedInject_AppModule::class])
 object AppModule {
 
     @Singleton
@@ -73,17 +76,20 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesDataBase(context: Context): MusicTrackRoomDatabase = MusicTrackRoomDatabase.getDatabase(context)
+    fun providesDataBase(context: Context): MusicTrackRoomDatabase =
+        MusicTrackRoomDatabase.getDatabase(context)
 
     @Singleton
     @JvmStatic
     @Provides
-    fun providesTrendingSongsDao(db: MusicTrackRoomDatabase): TrendingSongsDao = db.trendingSongsDao()
+    fun providesTrendingSongsDao(db: MusicTrackRoomDatabase): TrendingSongsDao =
+        db.trendingSongsDao()
 
     @Singleton
     @JvmStatic
     @Provides
-    fun providesFavouriteSongsDao(db: MusicTrackRoomDatabase): FavouriteTracksDao = db.favouriteTracksDao()
+    fun providesFavouriteSongsDao(db: MusicTrackRoomDatabase): FavouriteTracksDao =
+        db.favouriteTracksDao()
 
     @Singleton
     @JvmStatic
@@ -98,12 +104,14 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesChannelPlaylistsDao(db: MusicTrackRoomDatabase): ChannelPlaylistsDao = db.channelPlaylistsDao()
+    fun providesChannelPlaylistsDao(db: MusicTrackRoomDatabase): ChannelPlaylistsDao =
+        db.channelPlaylistsDao()
 
     @Singleton
     @JvmStatic
     @Provides
-    fun providesPlaylistSongsDao(db: MusicTrackRoomDatabase): PlaylistSongsDao = db.playlistSongsDao()
+    fun providesPlaylistSongsDao(db: MusicTrackRoomDatabase): PlaylistSongsDao =
+        db.playlistSongsDao()
 
     @Singleton
     @JvmStatic
@@ -113,12 +121,14 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesRecentlyPlayedTracksDao(db: MusicTrackRoomDatabase): RecentlyPlayedTracksDao = db.recentlyPlayedTracksDao()
+    fun providesRecentlyPlayedTracksDao(db: MusicTrackRoomDatabase): RecentlyPlayedTracksDao =
+        db.recentlyPlayedTracksDao()
 
     @Singleton
     @JvmStatic
     @Provides
-    fun providesHistoricTracksDao(db: MusicTrackRoomDatabase): HistoricTracksDao = db.historicTracksDao()
+    fun providesHistoricTracksDao(db: MusicTrackRoomDatabase): HistoricTracksDao =
+        db.historicTracksDao()
 
     @Singleton
     @JvmStatic
@@ -133,10 +143,12 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesSearchPlaylistsDao(db: MusicTrackRoomDatabase): SearchPlaylistsDao = db.searchPlaylistsDao()
+    fun providesSearchPlaylistsDao(db: MusicTrackRoomDatabase): SearchPlaylistsDao =
+        db.searchPlaylistsDao()
 
     @Singleton
     @JvmStatic
     @Provides
-    fun providesSearchChannelDao(db: MusicTrackRoomDatabase): SearchChannelDao = db.searchSearchChannelDao()
+    fun providesSearchChannelDao(db: MusicTrackRoomDatabase): SearchChannelDao =
+        db.searchSearchChannelDao()
 }

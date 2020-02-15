@@ -8,7 +8,7 @@ import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.observe
 import com.cas.common.resource.Resource
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.list.ArtistListAdapter
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
 
@@ -20,8 +20,8 @@ class ResultSearchArtistsFragment : BaseSearchResultFragment(), PageableFragment
     private val adapter by lazy {
         ArtistListAdapter { artist ->
             val bundle = Bundle()
-            bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
-            findNavController().navigate(R.id.artistFragment, bundle)
+            bundle.putParcelable(EXTRAS_ARTIST, artist)
+            findNavController().navigate(R.id.artistSongsFragment, bundle)
         }
     }
 

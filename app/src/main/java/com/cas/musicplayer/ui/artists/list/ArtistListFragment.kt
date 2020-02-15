@@ -3,7 +3,6 @@ package com.cas.musicplayer.ui.artists.list
 
 import android.os.Bundle
 import android.view.View
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,9 +15,8 @@ import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.sidebar.SideBar
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_artists.*
 
 
@@ -45,8 +43,8 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
     private fun setupRecyclerView() {
         adapter = ArtistListAdapter(onClickArtist = {
             val bundle = Bundle()
-            bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, it)
-            findNavController().navigate(R.id.artistFragment, bundle)
+            bundle.putParcelable(EXTRAS_ARTIST, it)
+            findNavController().navigate(R.id.artistSongsFragment, bundle)
         })
         recyclerView.adapter = adapter
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager

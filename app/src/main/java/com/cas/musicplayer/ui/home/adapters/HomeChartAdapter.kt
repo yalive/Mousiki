@@ -9,7 +9,7 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
-import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
@@ -31,7 +31,8 @@ class HomeChartAdapter : SimpleBaseAdapter<ChartModel, HomeChartViewHolder>() {
     }
 }
 
-class HomeChartViewHolder(val view: View, val items: List<ChartModel>) : SimpleBaseViewHolder<ChartModel>(view) {
+class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
+    SimpleBaseViewHolder<ChartModel>(view) {
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
     init {
@@ -41,7 +42,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) : SimpleB
                 val bundle = Bundle()
                 bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.playlistId)
                 val artist = Artist(item.title, "US", item.playlistId)
-                bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
+                bundle.putParcelable(EXTRAS_ARTIST, artist)
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
 
                 if (!Utils.hasShownAdsOneTime) {

@@ -25,7 +25,7 @@
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/background"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
 
         <Constraint
             android:id="@+id/txtPrimaryTitle"
@@ -35,7 +35,7 @@
             android:scaleY="0.8"
             app:layout_constraintBottom_toBottomOf="@+id/background"
             app:layout_constraintStart_toEndOf="@id/imgArtist"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
         <Constraint
             android:id="@+id/txtNumberOfSongs"
             android:layout_width="wrap_content"

@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
+import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
@@ -39,8 +38,8 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
         }
         view.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(ArtistFragment.EXTRAS_ARTIST, artist)
-            itemView.findNavController().navigate(R.id.artistFragment, bundle)
+            bundle.putParcelable(EXTRAS_ARTIST, artist)
+            itemView.findNavController().navigate(R.id.artistSongsFragment, bundle)
 
             if (!Utils.hasShownAdsOneTime) {
                 Utils.hasShownAdsOneTime = true
