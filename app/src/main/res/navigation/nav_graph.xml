@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/artistSongsFragment"
         android:name="com.cas.musicplayer.ui.artists.songs.ArtistSongsFragment"
-        android:label="ArtistSongsFragment">
+        android:label="@string/app_name">
         <action
             android:id="@+id/action_artistFragment_to_playlistVideosFragment"
             app:destination="@id/playlistVideosFragment" />
@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/playlistVideosFragment"
         android:name="com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment"
-        android:label="PlaylistVideosFragment" />
+        android:label="@string/app_name" />
     <fragment
         android:id="@+id/artistsFragment"
         android:name="com.cas.musicplayer.ui.artists.list.ArtistListFragment"
@@ -71,5 +71,5 @@
     <fragment
         android:id="@+id/chartsFragment"
         android:name="com.cas.musicplayer.ui.charts.ChartsFragment"
-        android:label="Charts" />
+        android:label="@string/app_name" />
 </navigation>
