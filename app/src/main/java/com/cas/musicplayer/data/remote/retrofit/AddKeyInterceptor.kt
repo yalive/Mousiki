@@ -12,9 +12,9 @@ import okhttp3.Response
 class AddKeyInterceptor : Interceptor {
 
     private val keys = mutableListOf(
+        "AIzaSyC1kFDwpC9FTJfHolxXHd_2Lo9cD3Yd2WQ",
         "AIzaSyAzLo5mV0ciK_Rhn5uzlsDouDieJA8FYNM",
-        "AIzaSyCRvpp4fPTwFbLRLf9D9Z8K85tu8Dj9NCE",
-        "AIzaSyABJ_DecXWPIkB8R80i3pDJMcmkcnPLuwk"
+        "AIzaSyCRvpp4fPTwFbLRLf9D9Z8K85tu8Dj9NCE"
     )
 
     private var currentKey = keys[0]

@@ -3,78 +3,43 @@ package com.cas.musicplayer.ui.playlistvideos
 
 import android.os.Bundle
 import android.view.View
-import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
-import com.cas.common.extensions.visible
-import com.cas.common.fragment.BaseFragment
-import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.viewModel
-import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.artists.artistdetail.ArtistFragment
-import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.ui.common.songs.SongsAdapter
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import kotlinx.android.synthetic.main.fragment_genre_videos.*
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 
 
-class PlaylistSongsFragment : BaseFragment<PlaylistSongsViewModel>() {
+class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
 
-    override val layoutResourceId: Int = R.layout.fragment_artist_videos
-    override val viewModel by viewModel { injector.playlistVideosViewModel }
-
-    private val adapter by lazy {
-        SongsAdapter(
-            onVideoSelected = { track ->
-                val mainActivity = requireActivity() as MainActivity
-                mainActivity.collapseBottomPanel()
-                viewModel.onClickTrack(track)
-            },
-            onClickMore = { track ->
-                val bottomSheetFragment = FvaBottomSheetFragment()
-                val bundle = Bundle()
-                bundle.putString("MUSIC_TRACK", injector.gson.toJson(track))
-                bottomSheetFragment.arguments = bundle
-                bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
-            }
-        )
+    override val viewModel: PlaylistSongsViewModel by viewModel {
+        val playlistId = arguments?.getString(EXTRAS_PLAYLIST_ID)!!
+        injector.playlistVideosViewModelFactory.create(playlistId)
     }
 
     private lateinit var artist: Artist
-    private lateinit var playlistId: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val parcelableGenre = arguments?.getParcelable<Artist>(ArtistFragment.EXTRAS_ARTIST)
-        playlistId = arguments?.getString(EXTRAS_PLAYLIST_ID)!!
+        val parcelableGenre = arguments?.getParcelable<Artist>(EXTRAS_ARTIST)
         if (parcelableGenre == null) {
             requireActivity().onBackPressed()
             return
         }
         artist = parcelableGenre
-        recyclerView.adapter = adapter
         observe(viewModel.songs, this::updateUI)
-        viewModel.getPlaylistSongs(playlistId)
-        requireActivity().title = artist.name
+        txtPrimaryTitle.text = artist.name
     }
 
-    private fun updateUI(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
-        is Resource.Success -> {
-            adapter.dataItems = resource.data.toMutableList()
-            recyclerView.visible()
-            progressBar.gone()
-            txtError.gone()
-        }
-        is Resource.Failure -> {
-            progressBar.gone()
-            txtError.visible()
-        }
-        is Resource.Loading -> {
-            progressBar.visible()
-            txtError.gone()
-        }
+    override fun onClickTrack(track: MusicTrack) {
+        viewModel.onClickTrack(track)
+    }
+
+    override fun onClickTrackPlayAll() {
+        viewModel.onClickTrackPlayAll()
     }
 
     companion object {

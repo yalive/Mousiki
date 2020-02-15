@@ -20,7 +20,7 @@ class GenresRepository @Inject constructor(
                     "Pop Music",
                     R.drawable.img_genres_0,
                     "UCE80FOXpJydkkMo-BYoJdEg",
-                    "PLDcnymzs18LWLKtkNrKYzPpHLbnXRu4nN"
+                    "PLDcnymzs18LU4Kexrs91TVdfnplU3I5zs"
                 )
             )
             add(
@@ -28,7 +28,7 @@ class GenresRepository @Inject constructor(
                     "Hip Hop Music",
                     R.drawable.img_genres_1,
                     "UCUnSTiCHiHgZA9NQUG6lZkQ",
-                    "PLH6pfBXQXHEANvXkdNlaofmN-2dOpGTHZ"
+                    "PLxhnpe8pN3TlMilD9JLcwNmjqf2J47cRU"
                 )
             )
             add(
@@ -63,7 +63,14 @@ class GenresRepository @Inject constructor(
                     "PLfY-m4YMsF-OM1zG80pMguej_Ufm8t0VC"
                 )
             )
-            add(GenreMusic("K-Pop", R.drawable.img_genres_6, "UCsEonk9fs_9jmtw9PwER9yg", "PLTDluH66q5mqwAXTBhU0IbgRzXedQE4FW"))
+            add(
+                GenreMusic(
+                    "K-Pop",
+                    R.drawable.img_genres_6,
+                    "UCsEonk9fs_9jmtw9PwER9yg",
+                    "PLTDluH66q5mqwAXTBhU0IbgRzXedQE4FW"
+                )
+            )
             add(
                 GenreMusic(
                     "Electronic Music",
@@ -114,7 +121,14 @@ class GenresRepository @Inject constructor(
                 )
             )
 
-            add(GenreMusic("Jazz", R.drawable.img_genre_jaz, "UC7KZmdQxhcajZSEFLJr3gCg", "PLMcThd22goGYit-NKu2O8b4YMtwSTK9b9"))
+            add(
+                GenreMusic(
+                    "Jazz",
+                    R.drawable.img_genre_jaz,
+                    "UC7KZmdQxhcajZSEFLJr3gCg",
+                    "PLMcThd22goGYit-NKu2O8b4YMtwSTK9b9"
+                )
+            )
             add(
                 GenreMusic(
                     "Music of Asia",

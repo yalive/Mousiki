@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.genres.list
+package com.cas.musicplayer.ui.genres
 
 import android.graphics.Rect
 import android.view.View

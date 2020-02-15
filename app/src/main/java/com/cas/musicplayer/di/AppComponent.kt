@@ -2,19 +2,15 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import com.cas.musicplayer.ui.MainViewModel
-import com.cas.musicplayer.ui.artists.artistdetail.playlists.ArtistPlaylistsViewModel
-import com.cas.musicplayer.ui.artists.artistdetail.videos.ArtistSongsViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
+import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
 import com.cas.musicplayer.ui.bottompanel.BottomPanelViewModel
 import com.cas.musicplayer.ui.bottompanel.SlideUpPlaylistViewModel
 import com.cas.musicplayer.ui.bottomsheet.FavBottomSheetViewModel
 import com.cas.musicplayer.ui.charts.ChartsViewModel
 import com.cas.musicplayer.ui.common.PlaySongDelegateModule
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
-import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreViewModel
-import com.cas.musicplayer.ui.genres.detailgenre.playlists.GenrePlaylistsViewModel
-import com.cas.musicplayer.ui.genres.detailgenre.videos.GenreSongsViewModel
-import com.cas.musicplayer.ui.genres.list.GenresViewModel
+import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsViewModel
@@ -54,19 +50,11 @@ interface AppComponent {
 
     val chartsViewModel: ChartsViewModel
 
-    val detailGenreViewModel: DetailGenreViewModel
-
-    val genreVideosViewModel: GenreSongsViewModel
-
-    val genrePlaylistsViewModel: GenrePlaylistsViewModel
-
     val artistListViewModel: ArtistListViewModel
 
     val artistVideosViewModel: ArtistSongsViewModel
 
-    val artistPlaylistsViewModel: ArtistPlaylistsViewModel
-
-    val playlistVideosViewModel: PlaylistSongsViewModel
+    val playlistVideosViewModelFactory: PlaylistSongsViewModel.Factory
 
     val searchYoutubeViewModel: SearchYoutubeViewModel
 

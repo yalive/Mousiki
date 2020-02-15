@@ -2,6 +2,8 @@ package com.cas.musicplayer.ui.home.adapters
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,9 +11,13 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.scaleDown
+import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.GenreMusic
-import com.cas.musicplayer.ui.genres.detailgenre.DetailGenreFragment
+import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
+import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
@@ -41,15 +47,24 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
         backgroundCategory.setBackgroundColor(color())
         view.findViewById<ViewGroup>(R.id.cardView).setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(DetailGenreFragment.EXTRAS_GENRE, genreMusic)
-            itemView.findNavController().navigate(
-                R.id.detailGenreFragment,
-                bundle
-            )
+            bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, genreMusic.topTracksPlaylist)
+            val artist = Artist(genreMusic.title, "US", genreMusic.topTracksPlaylist)
+            bundle.putParcelable(EXTRAS_ARTIST, artist)
+            itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
             if (!Utils.hasShownAdsOneTime) {
                 Utils.hasShownAdsOneTime = true
                 RequestAdsLiveData.value = AdsOrigin("genre")
             }
+        }
+
+        view.setOnTouchListener { v, event ->
+            Log.d("setOnTouchListener", "Action:$event")
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                v.scaleDown(to = 0.97f)
+            } else if (event.action != MotionEvent.ACTION_MOVE) {
+                v.scaleOriginal()
+            }
+            return@setOnTouchListener false
         }
     }
 
