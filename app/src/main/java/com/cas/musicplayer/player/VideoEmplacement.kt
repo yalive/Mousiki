@@ -30,12 +30,16 @@ sealed class VideoEmplacement {
     companion object {
         fun bottom(): EmplacementBottom =
             EmplacementBottom()
+
         fun center(): EmplacementCenter =
             EmplacementCenter()
+
         fun playlist(): EmplacementPlaylist =
             EmplacementPlaylist()
+
         fun fullscreen(): EmplacementFullScreen =
             EmplacementFullScreen()
+
         fun out(): EmplacementOut =
             EmplacementOut()
     }
