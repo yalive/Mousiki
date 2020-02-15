@@ -231,7 +231,7 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
         val paramsTitle = txtTitleVideoCenter.layoutParams as RelativeLayout.LayoutParams
         val horizontalMargin = emplacementCenter.x
 
-        paramsTitle.topMargin = emplacementCenter.y - requireActivity().dpToPixel(40f)
+        paramsTitle.topMargin = emplacementCenter.y - requireActivity().dpToPixel(80f)
         paramsTitle.marginStart = horizontalMargin
         paramsTitle.leftMargin = horizontalMargin
         paramsTitle.marginEnd = horizontalMargin

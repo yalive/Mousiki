@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.common.songs
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.FirstItemMarginDecoration
 import com.cas.common.resource.Resource
@@ -57,7 +58,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     }
 
     fun updateHeader(track: DisplayedVideoItem) {
-        imgArtist.loadImage(track.songImagePath)
+        imgArtist.loadImage(track.songImagePath, R.mipmap.ic_launcher)
         background.loadAndBlurImage(track.songImagePath)
     }
 

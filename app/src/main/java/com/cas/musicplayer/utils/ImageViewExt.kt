@@ -3,6 +3,7 @@ package com.cas.musicplayer.utils
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 
@@ -15,6 +16,15 @@ import com.squareup.picasso.Target
 fun ImageView.loadImage(urlImage: String) {
     if (urlImage.isNotEmpty()) {
         Picasso.get().load(urlImage)
+            .fit()
+            .into(this)
+    }
+}
+
+fun ImageView.loadImage(urlImage: String, @DrawableRes placeHolder: Int) {
+    if (urlImage.isNotEmpty()) {
+        Picasso.get().load(urlImage)
+            .placeholder(placeHolder)
             .fit()
             .into(this)
     }
