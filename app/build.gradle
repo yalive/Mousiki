@@ -32,13 +32,13 @@ android {
             storePassword 'yabahddou'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 10
-        versionName "1.64"
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0.0"
         testInstrumentationRunner "com.cas.musicplayer.testing.TestRunner"
         signingConfig signingConfigs.releaseConfig
     }
