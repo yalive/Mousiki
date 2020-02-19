@@ -12,9 +12,16 @@ import okhttp3.Response
 class AddKeyInterceptor : Interceptor {
 
     private val keys = mutableListOf(
-        "AIzaSyC1kFDwpC9FTJfHolxXHd_2Lo9cD3Yd2WQ",
-        "AIzaSyAzLo5mV0ciK_Rhn5uzlsDouDieJA8FYNM",
-        "AIzaSyCRvpp4fPTwFbLRLf9D9Z8K85tu8Dj9NCE"
+        "AIzaSyC1kFDwpC9FTJfHolxXHd_2Lo9cD3Yd2WQ",//mousiki project api key
+        "AIzaSyBbEnTCM6ZQiyZIiYO98usu3gjhFIPSrmA",//appodeal project api key
+        "AIzaSyC_yUoi7wGn3tGH3oXjTszPXOI-jQWsipg",//CAStudio project api key
+        "AIzaSyBqhHieeAMC79qmGm67df6vm8kMQoTpnog",//chatApp project api key
+        "AIzaSyAKBQe0h6RcLTERmnFsuBTnkR85q96afMg",//chatApplication project api key
+        "AIzaSyD6zBfCgaiLihDNkN3qqjR6jMBgVmEcXcE",//FireBaseExample project api key
+        "AIzaSyC0EY97Ub0plnZICfJ7D-7X9oNTyo-pHXU",//pushNotificationDemo project api key
+        "AIzaSyDgsObSiocd0oY-EMKQakzPeHy6QU9hjsU",//quickstart project api key
+        "AIzaSyC40U4MYSqEjNnNp8c1389vU3g7kJ1WGCo",//RingtoneApp project api key
+        "AIzaSyC4bPPdqk3VL4Gy78hYFU-dnFgtbfa77Fc"//RingtoneApp project api key
     )
 
     private var currentKey = keys[0]
