@@ -28,11 +28,12 @@ class AdapterDelegatesManager<T> {
                 return key
             }
         }
-        throw NullPointerException("No AdapterDelegate added that matches position= $position in data source")
+        throw NullPointerException("No AdapterDelegate added that matches position= $position in data source for item ${(items as List<*>)[position]}")
     }
 
     fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val delegate = delegates.get(viewType) ?: throw NullPointerException("No AdapterDelegate added for ViewType $viewType")
+        val delegate = delegates.get(viewType)
+            ?: throw NullPointerException("No AdapterDelegate added for ViewType $viewType")
         return delegate.onCreateViewHolder(parent)
     }
 
