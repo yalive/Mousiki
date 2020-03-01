@@ -105,31 +105,26 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     private fun getNextTrack(): MusicTrack? {
-        if (queue == null) {
-            return null
-        }
-
-        val mValue = this.value ?: return null
-        val mQueue = queue!!
+        val mQueue = queue ?: return null
+        if (mQueue.isEmpty()) return null
+        val currentTrack = this.value ?: return null
         return when (getPlaySort()) {
-            PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(mValue) + 1)
-            PlaySort.LOOP_ONE -> mValue
-            PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(mValue) + 1) { mQueue[0] }
-            PlaySort.RANDOM -> mQueue.filter { it != mValue }.random()
+            PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) + 1)
+            PlaySort.LOOP_ONE -> currentTrack
+            PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) + 1) { mQueue[0] }
+            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.random()
         }
     }
 
     private fun getPreviousTrack(): MusicTrack? {
-        if (queue == null) {
-            return null
-        }
-        val mValue = this.value ?: return null
-        val mQueue = queue!!
+        val mQueue = queue ?: return null
+        if (mQueue.isEmpty()) return null
+        val currentTrack = this.value ?: return null
         return when (getPlaySort()) {
-            PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(mValue) - 1)
-            PlaySort.LOOP_ONE -> mValue
-            PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(mValue) - 1) { mQueue[mQueue.size - 1] }
-            PlaySort.RANDOM -> mQueue.filter { it != mValue }.random()
+            PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) - 1)
+            PlaySort.LOOP_ONE -> currentTrack
+            PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) - 1) { mQueue[mQueue.size - 1] }
+            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.random()
         }
     }
 
