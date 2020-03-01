@@ -124,23 +124,18 @@ class MainActivity : BaseActivity() {
 
         } else if (isFromService) {
             isFromService = false
-
             if (emplacement is EmplacementPlaylist) {
                 VideoEmplacementLiveData.playlist()
             } else {
                 expandBottomPanel()
                 VideoEmplacementLiveData.center()
+                bottomPanelFragment()?.onPanelSlide(slidingPaneLayout, 1f)
             }
 
         } else {
             // Restore old video state if any
             restoreOldVideoState()
         }
-
-        /*if (slidingMenu.isMenuOpened) {
-            slidingMenu.closeMenu()
-        }*/
-
         ViewCompat.requestApplyInsets(cordinator)
     }
 
@@ -153,13 +148,18 @@ class MainActivity : BaseActivity() {
         VideoEmplacementLiveData.out()
     }
 
+    private fun bottomPanelFragment(): BottomPanelFragment? {
+        return supportFragmentManager.findFragmentById(R.id.bottomPanelContent) as? BottomPanelFragment
+    }
+
     private fun setupBottomPanelFragment() {
 
         var fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.bottomPanelContent)
         if (fragment == null) {
             fragment = BottomPanelFragment()
         }
-        supportFragmentManager.beginTransaction().replace(R.id.bottomPanelContent, fragment)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.bottomPanelContent, fragment)
             .commit()
 
         hideBottomPanel()
