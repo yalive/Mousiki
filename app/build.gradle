@@ -37,8 +37,8 @@ android {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.2.0"
+        versionCode 5
+        versionName "1.2.3"
         testInstrumentationRunner "com.cas.musicplayer.testing.TestRunner"
         signingConfig signingConfigs.releaseConfig
     }
