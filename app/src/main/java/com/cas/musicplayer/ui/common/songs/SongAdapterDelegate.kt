@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
@@ -34,7 +33,11 @@ class SongAdapterDelegate(
         return PopularSongsViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val viewHolder = holder as PopularSongsViewHolder
         viewHolder.bind(items[position] as DisplayedVideoItem)
     }
@@ -48,8 +51,6 @@ class SongAdapterDelegate(
         private val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
         private val txtDuration: TextView = itemView.findViewById(R.id.txtDuration)
         private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
-        private val txtPlaying: TextView = itemView.findViewById(R.id.txtPlaying)
-
 
         fun bind(item: DisplayedVideoItem) {
             imgSong.loadImage(item.songImagePath)
@@ -62,7 +63,6 @@ class SongAdapterDelegate(
             itemView.setOnClickListener {
                 onVideoSelected(item.track)
             }
-            txtPlaying.isVisible = item.isPlaying
         }
     }
 }

@@ -4,13 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
+import androidx.core.view.get
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -38,7 +36,6 @@ class MainActivity : BaseActivity() {
 
     lateinit var slidingPaneLayout: InsetSlidingPanelView
     private val viewModel by viewModel { injector.mainViewModel }
-    private var isInHome = true
     var isLocked = false
     private lateinit var navController: NavController
     private var isFromService = false
@@ -54,14 +51,10 @@ class MainActivity : BaseActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(toolbar, navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.dashboardFragment) {
-                isInHome = true
+            if (destination.id == R.id.homeFragment) {
                 toolbar.title = getString(R.string.app_name)
-                searchItem?.isVisible = true
-            } else {
-                isInHome = false
-                searchItem?.isVisible = false
             }
+            updateBottomNavigationMenu(destination.id)
         }
 
         if (!canDrawOverApps()) {
@@ -97,6 +90,43 @@ class MainActivity : BaseActivity() {
         DeviceInset.observe(this, Observer { inset ->
             sliding_layout.updatePadding(top = inset.top)
         })
+
+        bottomNavView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navHome -> handleClickMenuHome()
+                R.id.navLibrary -> handleClickMenuLibrary()
+                R.id.navSearch -> handleClickMenuSearch()
+                else -> {
+                }
+            }
+            true
+        }
+    }
+
+    private fun updateBottomNavigationMenu(destinationId: Int) {
+        when (destinationId) {
+            R.id.homeFragment -> {
+                bottomNavView.menu[0].isChecked = true
+            }
+            R.id.libraryFragment -> {
+                bottomNavView.menu[1].isChecked = true
+            }
+        }
+    }
+
+    private fun handleClickMenuSearch() {
+        if (navController.currentDestination?.id == R.id.searchYoutubeFragment) return
+        appbar.setExpanded(true, true)
+        navController.navigate(R.id.searchYoutubeFragment)
+    }
+
+    private fun handleClickMenuHome() {
+        navController.popBackStack(R.id.homeFragment, false)
+    }
+
+    private fun handleClickMenuLibrary() {
+        if (navController.currentDestination?.id == R.id.libraryFragment) return
+        navController.navigate(R.id.libraryFragment)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -153,7 +183,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupBottomPanelFragment() {
-
         var fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.bottomPanelContent)
         if (fragment == null) {
             fragment = BottomPanelFragment()
@@ -163,18 +192,15 @@ class MainActivity : BaseActivity() {
             .commit()
 
         hideBottomPanel()
-
         slidingPaneLayout.addPanelSlideListener(object :
             SlidingUpPanelLayout.SimplePanelSlideListener() {
-            override fun onPanelSlide(panel: View?, slideOffset: Float) {
-                panel?.y?.let { y ->
-                    DragBottomPanelLiveData.value = DragPanelInfo(y, slideOffset)
-                }
+            override fun onPanelSlide(panel: View, slideOffset: Float) {
+                DragBottomPanelLiveData.value = DragPanelInfo(panel.y, slideOffset)
             }
 
             override fun onPanelStateChanged(
-                panel: View?,
-                previousState: SlidingUpPanelLayout.PanelState?,
+                panel: View,
+                previousState: SlidingUpPanelLayout.PanelState,
                 newState: SlidingUpPanelLayout.PanelState?
             ) {
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
@@ -191,39 +217,6 @@ class MainActivity : BaseActivity() {
             }
         })
 
-    }
-
-    private fun isHome() = navController.currentDestination?.id == R.id.dashboardFragment
-
-    var searchView: SearchView? = null
-    var searchItem: MenuItem? = null
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        searchItem = menu.findItem(R.id.searchYoutubeFragment)
-        searchView = searchItem?.actionView as SearchView
-
-        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                if (!isHome()) {
-                    navController.popBackStack()
-                }
-                return true
-            }
-        })
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.searchYoutubeFragment && navController.currentDestination?.id != R.id.searchYoutubeFragment) {
-            navController.navigate(R.id.searchYoutubeFragment)
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
@@ -248,17 +241,13 @@ class MainActivity : BaseActivity() {
      * Restore state: Not from service
      */
     private fun restoreOldVideoState() {
-
         val playBackState = PlaybackLiveData.value
         val lastVideoEmplacement = viewModel.lastVideoEmplacement
-
         if (lastVideoEmplacement != null && playBackState != null && playBackState != PlayerConstants.PlayerState.UNKNOWN) {
-
             // Usually for coming from background
             if (lastVideoEmplacement !is EmplacementOut) {
                 VideoEmplacementLiveData.value = lastVideoEmplacement
             }
-
         } else {
             hideBottomPanel()
         }

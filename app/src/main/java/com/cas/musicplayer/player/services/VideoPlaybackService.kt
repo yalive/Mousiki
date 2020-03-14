@@ -9,17 +9,17 @@ import android.view.*
 import android.widget.TextView
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.cas.common.event.EventObserver
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.visible
 import com.cas.musicplayer.player.*
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.*
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 
 /**
@@ -141,9 +141,11 @@ class VideoPlaybackService : LifecycleService() {
 
     private fun preparePlayerView() {
         videoContainerView =
-            LayoutInflater.from(this).inflate(com.cas.musicplayer.R.layout.view_floating_video, null)
+            LayoutInflater.from(this)
+                .inflate(com.cas.musicplayer.R.layout.view_floating_video, null)
 
-        youTubePlayerView = videoContainerView.findViewById(com.cas.musicplayer.R.id.youtubePlayerView)
+        youTubePlayerView =
+            videoContainerView.findViewById(com.cas.musicplayer.R.id.youtubePlayerView)
         lifecycle.addObserver(youTubePlayerView)
 
 
@@ -168,7 +170,8 @@ class VideoPlaybackService : LifecycleService() {
 
 
         //Drag and move chat head using user's touch action.
-        draggableView = videoContainerView.findViewById<View>(com.cas.musicplayer.R.id.draggableView)
+        draggableView =
+            videoContainerView.findViewById<View>(com.cas.musicplayer.R.id.draggableView)
         draggableView?.setOnTouchListener(object : View.OnTouchListener {
             private var lastAction: Int = 0
             private var initialX: Int = 0
@@ -255,7 +258,10 @@ class VideoPlaybackService : LifecycleService() {
 
             }
 
-            override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+            override fun onStateChange(
+                youTubePlayer: YouTubePlayer,
+                state: PlayerConstants.PlayerState
+            ) {
                 super.onStateChange(youTubePlayer, state)
                 PlaybackLiveData.value = state
                 if (state == PlayerConstants.PlayerState.ENDED) {
@@ -411,7 +417,8 @@ class VideoPlaybackService : LifecycleService() {
     private fun addBottomView() {
 
         bottomView =
-            LayoutInflater.from(this).inflate(com.cas.musicplayer.R.layout.bottom_floating_player, null)
+            LayoutInflater.from(this)
+                .inflate(com.cas.musicplayer.R.layout.bottom_floating_player, null)
         bottomView.visibility = View.GONE
 
         val type = when {
@@ -442,7 +449,8 @@ class VideoPlaybackService : LifecycleService() {
     private fun addDebugView() {
 
         debugView =
-            LayoutInflater.from(this).inflate(com.cas.musicplayer.R.layout.view_debug_floating_player, null)
+            LayoutInflater.from(this)
+                .inflate(com.cas.musicplayer.R.layout.view_debug_floating_player, null)
 
         val debugTextView = debugView?.findViewById<TextView>(com.cas.musicplayer.R.id.txtDebug)
         val type = when {

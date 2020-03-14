@@ -84,13 +84,6 @@
             tools:text="Hello Test" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtPlaying"
-        android:layout_width="@dimen/sixteen_16dp"
-        android:layout_height="@dimen/sixteen_16dp"
-        android:layout_gravity="center_vertical"
-        android:background="#F00" />
-
     <ImageButton
         android:id="@+id/btnMore"
         android:layout_width="wrap_content"

@@ -19,6 +19,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.utils.loadAndBlurImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.squareup.picasso.Picasso
 
@@ -48,26 +49,39 @@ class NotificationHelper(var service: VideoPlaybackService) {
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("WrongConstant")
     fun init() {
-        notificationManager = MusicApp.get().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager =
+            MusicApp.get().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= 26) {
             notificationManager.createNotificationChannel(
-                NotificationChannel(NOTIFY_CHANNEL_ID, NOTIFY_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+                NotificationChannel(
+                    NOTIFY_CHANNEL_ID,
+                    NOTIFY_CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_LOW
+                )
             )
         }
-
-        this.notificationLayout = RemoteViews(MusicApp.get().packageName, R.layout.notification_playback)
+        this.notificationLayout =
+            RemoteViews(MusicApp.get().packageName, R.layout.notification_playback)
 
         val intent = Intent(MusicApp.get(), MainActivity::class.java)
         intent.setFlags(335544320)
-        notifBuilder = NotificationCompat.Builder(MusicApp.get(), NOTIFY_CHANNEL_ID).setSmallIcon(R.mipmap.ic_launcher)
+        notifBuilder = NotificationCompat.Builder(MusicApp.get(), NOTIFY_CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentIntent(
                 PendingIntent.getActivity(MusicApp.get(), 2000, intent, 134217728)
-            ).setCategory(NotificationCompat.CATEGORY_SERVICE).setPriority(Notification.PRIORITY_LOW)
+            ).setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setPriority(Notification.PRIORITY_LOW)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
             .setContent(this.notificationLayout)
         this.notification = notifBuilder.build()
         this.target =
-            NotificationTarget(MusicApp.get(), R.id.image, this.notificationLayout, this.notification, NOTIFY_ID)
+            NotificationTarget(
+                MusicApp.get(),
+                R.id.image,
+                this.notificationLayout,
+                this.notification,
+                NOTIFY_ID
+            )
 
         prepareButtons()
 
@@ -91,17 +105,16 @@ class NotificationHelper(var service: VideoPlaybackService) {
             notificationLayout.setTextViewText(R.id.title, track.title)
             Picasso.get().load(track.imgUrl)
                 .into(notificationLayout, R.id.image, NOTIFY_ID, notification)
+            notificationLayout.loadAndBlurImage(R.id.imgBgNotification, track.imgUrl)
         })
 
     }
 
     private fun prepareButtons() {
-
         addActionToButton(R.id.action_prev, 1)
         addActionToButton(R.id.action_next, 2)
         addActionToButton(R.id.action_play_pause, 3)
         addActionToButton(R.id.action_quit, 4)
-
     }
 
     private fun addActionToButton(idRes: Int, buttonIndex: Int) {
