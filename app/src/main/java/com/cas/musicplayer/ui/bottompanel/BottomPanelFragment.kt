@@ -243,7 +243,7 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
         txtTitleVideoCenter.layoutParams = paramsTitle
 
         val paramsTxtYoutubeCopy = btnYoutube.layoutParams as RelativeLayout.LayoutParams
-        paramsTxtYoutubeCopy.topMargin = paramsTitle.topMargin - requireActivity().dpToPixel(40f)
+        paramsTxtYoutubeCopy.topMargin = paramsTitle.topMargin - requireActivity().dpToPixel(20f)
         paramsTxtYoutubeCopy.marginStart = paramsTitle.marginStart
         paramsTxtYoutubeCopy.leftMargin = paramsTitle.leftMargin
         paramsTxtYoutubeCopy.marginEnd = paramsTitle.marginEnd

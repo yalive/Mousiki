@@ -3,6 +3,7 @@ package com.cas.musicplayer.utils
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import android.widget.RemoteViews
 import androidx.annotation.DrawableRes
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -45,5 +46,28 @@ fun ImageView.loadAndBlurImage(urlImage: String, scale: Float = 0.3f, radius: In
         }
     }
     this.tag = target
+    Picasso.get().load(urlImage).into(target)
+}
+
+fun RemoteViews.loadAndBlurImage(
+    idImageView: Int,
+    urlImage: String,
+    scale: Float = 0.3f,
+    radius: Int = 45
+) {
+    val target = object : Target {
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            // Nothing
+        }
+
+        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+            // Nothing
+        }
+
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            setImageViewBitmap(idImageView, BlurImage.fastblur(bitmap, scale, radius))
+        }
+    }
+    //this.tag = target
     Picasso.get().load(urlImage).into(target)
 }
