@@ -36,7 +36,11 @@ open class HorizontalListSongsAdapterDelegate(
         return SongsListViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val songs = songsFromItem(items[position])
         (holder as SongsListViewHolder).bind(songs)
     }

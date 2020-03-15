@@ -29,7 +29,11 @@ class SongsHeaderDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val headerItem = items.get(position) as SongsHeaderItem
         (holder as ViewHolder).bind(headerItem.track)
     }

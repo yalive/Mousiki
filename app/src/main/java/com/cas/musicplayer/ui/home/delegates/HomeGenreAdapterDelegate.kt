@@ -29,7 +29,11 @@ class HomeGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return GenreViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val genreItem = items[position] as HomeItem.GenreItem
         (holder as GenreViewHolder).bind(genreItem.genres)
     }

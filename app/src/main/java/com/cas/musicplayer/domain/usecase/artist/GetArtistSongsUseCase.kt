@@ -1,8 +1,8 @@
 package com.cas.musicplayer.domain.usecase.artist
 
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.common.result.Result
 import com.cas.musicplayer.data.repositories.ArtistsRepository
+import com.cas.musicplayer.domain.model.MusicTrack
 import javax.inject.Inject
 
 /**

@@ -24,7 +24,11 @@ class RemoteSongsDataSource @Inject constructor(
 
     suspend fun getTrendingSongs(max: Int): Result<List<MusicTrack>> {
         return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            val resource = youtubeService.trending(max, getCurrentLocale(), preferences.mostPopularNextPageToken())
+            val resource = youtubeService.trending(
+                max,
+                getCurrentLocale(),
+                preferences.mostPopularNextPageToken()
+            )
             val nextPageToken = resource.nextPageToken ?: ""
             preferences.setMostPopularNextPageToken(nextPageToken)
             resource.items ?: emptyList()

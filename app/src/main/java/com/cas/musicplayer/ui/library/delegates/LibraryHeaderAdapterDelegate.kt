@@ -29,7 +29,11 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return HeaderViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val headerItem = items[position] as LibraryHeaderItem
         (holder as HeaderViewHolder).bind(headerItem)
     }

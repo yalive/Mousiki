@@ -24,15 +24,16 @@ class ChannelSongsLocalDataSource @Inject constructor(
         }
     }
 
-    suspend fun saveChannelSongs(channelId: String, tracks: List<MusicTrack>) = withContext(bgContext) {
-        val channelSongs = tracks.map {
-            ChannelSongEntity(
-                youtubeId = it.youtubeId,
-                channelId = channelId,
-                title = it.title,
-                duration = it.duration
-            )
+    suspend fun saveChannelSongs(channelId: String, tracks: List<MusicTrack>) =
+        withContext(bgContext) {
+            val channelSongs = tracks.map {
+                ChannelSongEntity(
+                    youtubeId = it.youtubeId,
+                    channelId = channelId,
+                    title = it.title,
+                    duration = it.duration
+                )
+            }
+            channelSongsDao.insert(channelSongs)
         }
-        channelSongsDao.insert(channelSongs)
-    }
 }

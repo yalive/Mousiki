@@ -11,7 +11,10 @@ import com.cas.musicplayer.domain.model.MusicTrack
  * Created by Abdelhadi on 2019-12-09.
  ***************************************
  */
-@Entity(tableName = "songs_search_result", indices = [Index(unique = true, value = arrayOf("youtube_id"))])
+@Entity(
+    tableName = "songs_search_result",
+    indices = [Index(unique = true, value = arrayOf("youtube_id"))]
+)
 data class SearchSongEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

@@ -48,9 +48,10 @@ class PlaylistRepository @Inject constructor(
         if (localTracks.isNotEmpty()) {
             return Success(localTracks)
         }
-        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId).alsoWhenSuccess { tracks ->
-            playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, tracks)
-        }
+        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId)
+            .alsoWhenSuccess { tracks ->
+                playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, tracks)
+            }
     }
 
     suspend fun getPlaylists(channelId: String): Result<List<Playlist>> {

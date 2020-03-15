@@ -7,7 +7,10 @@ import androidx.room.PrimaryKey
 import com.cas.musicplayer.domain.model.MusicTrack
 
 
-@Entity(tableName = "trending_tracks", indices = [Index(unique = true, value = arrayOf("youtube_id"))])
+@Entity(
+    tableName = "trending_tracks",
+    indices = [Index(unique = true, value = arrayOf("youtube_id"))]
+)
 data class TrendingSongEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

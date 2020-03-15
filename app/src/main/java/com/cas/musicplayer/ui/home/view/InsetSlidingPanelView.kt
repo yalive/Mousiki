@@ -31,6 +31,7 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
     override fun setOnApplyWindowInsetsListener(listener: OnApplyWindowInsetsListener?) {
         super.setOnApplyWindowInsetsListener(listener)
     }
+
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
         val childCount = childCount
         for (index in 0 until childCount)

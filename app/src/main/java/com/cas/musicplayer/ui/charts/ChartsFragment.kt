@@ -4,17 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.musicplayer.R
-import com.cas.musicplayer.di.injector.injector
-import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.viewmodel.viewModel
-import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.cas.musicplayer.R
+import com.cas.musicplayer.di.injector.injector
 import kotlinx.android.synthetic.main.fragment_charts.*
 import kotlinx.android.synthetic.main.fragment_charts.view.*
 
@@ -27,9 +24,18 @@ open class ChartsFragment : Fragment() {
 
     open val viewModel by viewModel { injector.chartsViewModel }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_charts, container, false)
-        view.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+        view.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                RecyclerView.VERTICAL
+            )
+        )
         return view
     }
 

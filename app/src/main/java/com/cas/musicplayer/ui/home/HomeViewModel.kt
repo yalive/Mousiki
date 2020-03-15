@@ -60,7 +60,8 @@ class HomeViewModel @Inject constructor(
 
 
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
-        val tracks = (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+        val tracks =
+            (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
         playTrackFromQueue(track, tracks)
     }
 

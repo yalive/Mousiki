@@ -2,9 +2,7 @@ package com.cas.musicplayer.ui.home
 
 
 import android.os.Bundle
-import android.widget.RelativeLayout
 import com.cas.common.adapter.PageableFragment
-import com.cas.common.extensions.gone
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
@@ -13,7 +11,6 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
 

@@ -1,8 +1,8 @@
 package com.cas.musicplayer.data.remote.mappers
 
-import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.data.remote.models.YTBPlaylist
 import com.cas.musicplayer.data.remote.models.urlOrEmpty
+import com.cas.musicplayer.domain.model.Playlist
 import javax.inject.Inject
 import javax.inject.Singleton
 

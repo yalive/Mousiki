@@ -31,7 +31,11 @@ class HomeChartAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return HomeListChartViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val chartItem = items[position] as HomeItem.ChartItem
         (holder as HomeListChartViewHolder).bind(chartItem.charts)
     }
@@ -39,7 +43,13 @@ class HomeChartAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
     inner class HomeListChartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-            recyclerView.addItemDecoration(MarginItemDecoration(horizontalMargin = view.context.dpToPixel(8f)))
+            recyclerView.addItemDecoration(
+                MarginItemDecoration(
+                    horizontalMargin = view.context.dpToPixel(
+                        8f
+                    )
+                )
+            )
             recyclerView.adapter = adapter
         }
 

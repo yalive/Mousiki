@@ -11,11 +11,11 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.cas.musicplayer.R
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import com.cas.musicplayer.R
 import kotlinx.android.synthetic.main.fragment_video_player.*
 
 
@@ -26,8 +26,8 @@ class VideoPlayerFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_video_player, container, false)
     }
@@ -53,24 +53,25 @@ class VideoPlayerFragment : Fragment() {
     private fun initPictureInPicture(youTubePlayerView: YouTubePlayerView) {
         val pictureInPictureIcon = ImageView(requireContext())
         pictureInPictureIcon.setImageDrawable(
-                ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.ic_picture_in_picture
-                )
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_picture_in_picture
+            )
         )
 
         pictureInPictureIcon.setOnClickListener { view ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val supportsPIP =
-                        requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+                    requireContext().getPackageManager()
+                        .hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
                 if (supportsPIP) {
                     requireActivity().enterPictureInPictureMode()
                 }
             } else {
                 AlertDialog.Builder(requireContext())
-                        .setTitle("Can't enter picture in picture mode")
-                        .setMessage("In order to enter picture in picture mode you need a SDK version >= N.")
-                        .show()
+                    .setTitle("Can't enter picture in picture mode")
+                    .setMessage("In order to enter picture in picture mode you need a SDK version >= N.")
+                    .show()
             }
         }
 

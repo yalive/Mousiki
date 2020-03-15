@@ -39,7 +39,8 @@ data class MusicTrack(
                 return duration
             }
 
-            val result = duration.replace("PT", "").replace("H", ":").replace("M", ":").replace("S", "")
+            val result =
+                duration.replace("PT", "").replace("H", ":").replace("M", ":").replace("S", "")
             val arr = result.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             var timeString = ""
@@ -78,7 +79,8 @@ data class MusicTrack(
         }
 }
 
-val LENGTH_PATTERN = Pattern.compile("^PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?$", Pattern.CASE_INSENSITIVE)
+val LENGTH_PATTERN =
+    Pattern.compile("^PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?$", Pattern.CASE_INSENSITIVE)
 
 fun MusicTrack.durationToSeconds(): Long {
     val m = LENGTH_PATTERN.matcher(duration)

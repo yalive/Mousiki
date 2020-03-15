@@ -12,7 +12,11 @@ import android.widget.TextView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.utils.color
 
-class SideBar @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, i: Int = 0) :
+class SideBar @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null,
+    i: Int = 0
+) :
     View(context, attributeSet, i) {
 
     private var choose: Int = 0
@@ -69,7 +73,8 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
     private fun changeTextDialogPos(i: Int, z: Boolean) {
         if (this.mTvDialog != null) {
             val height = height / this.letters.size
-            this.mTvDialog!!.translationY = (height * i - this.mTvDialog!!.height).toFloat() + height.toFloat() / 2.0f
+            this.mTvDialog!!.translationY =
+                (height * i - this.mTvDialog!!.height).toFloat() + height.toFloat() / 2.0f
             this.mTvDialog!!.text = this.letters[i]
             this.mTvDialog!!.visibility = if (z) View.VISIBLE else View.INVISIBLE
             this.mTvDialog?.setTextColor(Color.BLACK)

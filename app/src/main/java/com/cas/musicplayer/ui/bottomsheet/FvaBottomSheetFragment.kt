@@ -28,7 +28,11 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val viewModel by lazy { injector.favBottomSheetViewModel }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_bottom_sheet_dialog, container, false)
     }
 
