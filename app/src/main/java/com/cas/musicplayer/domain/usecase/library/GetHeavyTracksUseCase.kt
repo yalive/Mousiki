@@ -16,12 +16,13 @@ import javax.inject.Inject
 class GetHeavyTracksUseCase @Inject constructor(
     private val statisticsRepository: StatisticsRepository
 ) {
-    suspend operator fun invoke(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
-        return@withContext Transformations.map(statisticsRepository.getHeavyListLive(max)) { tracks ->
-            if (tracks.size < 3) {
-                return@map emptyList<MusicTrack>()
+    suspend operator fun invoke(max: Int = 10): LiveData<List<MusicTrack>> =
+        withContext(bgContext) {
+            return@withContext Transformations.map(statisticsRepository.getHeavyListLive(max)) { tracks ->
+                if (tracks.size < 3) {
+                    return@map emptyList<MusicTrack>()
+                }
+                return@map tracks
             }
-            return@map tracks
         }
-    }
 }

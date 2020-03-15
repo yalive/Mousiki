@@ -28,7 +28,10 @@ class SongsRepository @Inject constructor(
     private val favouriteTracksDao: FavouriteTracksDao,
     private val networkUtils: NetworkUtils
 ) {
-    suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): Result<List<MusicTrack>> {
+    suspend fun getTrendingSongs(
+        max: Int,
+        lastKnown: MusicTrack? = null
+    ): Result<List<MusicTrack>> {
         if (lastKnown == null) {
             // First load
             if (localDataSource.numberOfSongs() > 0 && localDataSource.expired() && networkUtils.hasNetworkConnection()) {
@@ -48,11 +51,12 @@ class SongsRepository @Inject constructor(
         }
     }
 
-    suspend fun getFavouriteSongsLive(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
-        return@withContext Transformations.map(favouriteTracksDao.getSongsLive(max)) { input ->
-            input.map { it.toMusicTrack() }
+    suspend fun getFavouriteSongsLive(max: Int = 10): LiveData<List<MusicTrack>> =
+        withContext(bgContext) {
+            return@withContext Transformations.map(favouriteTracksDao.getSongsLive(max)) { input ->
+                input.map { it.toMusicTrack() }
+            }
         }
-    }
 
     suspend fun addSongToFavourite(track: MusicTrack) = withContext(bgContext) {
         favouriteTracksDao.insertMusicTrack(

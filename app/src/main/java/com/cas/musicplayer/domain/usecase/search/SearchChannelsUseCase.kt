@@ -1,8 +1,8 @@
 package com.cas.musicplayer.domain.usecase.search
 
-import com.cas.musicplayer.domain.model.Channel
 import com.cas.common.result.Result
 import com.cas.musicplayer.data.repositories.SearchRepository
+import com.cas.musicplayer.domain.model.Channel
 import javax.inject.Inject
 
 /**

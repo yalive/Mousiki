@@ -57,7 +57,9 @@ class EmplacementBottom : VideoEmplacement() {
 
             val notch = if (DeviceInset.hasNotch()) dpToPixel(24f) else 0
 
-            return screenHeightPx - height - dpToPixel(28f) + DeviceInset.get().top + notch - dpToPixel(56f)
+            return screenHeightPx - height - dpToPixel(28f) + DeviceInset.get().top + notch - dpToPixel(
+                56f
+            )
         }
 
     override val width: Int

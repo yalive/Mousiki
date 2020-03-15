@@ -51,7 +51,10 @@ class HomeAdapter(
             updateItemAtIndex(index, HomeItem.PopularsItem(resource))
         }
         if (indexOfHeader != -1) {
-            updateItemAtIndex(indexOfHeader, HeaderItem.PopularsHeader(resource is Resource.Loading))
+            updateItemAtIndex(
+                indexOfHeader,
+                HeaderItem.PopularsHeader(resource is Resource.Loading)
+            )
         }
     }
 

@@ -138,7 +138,10 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun hideStatusBar() {
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
     }
 
     fun showStatusBar() {

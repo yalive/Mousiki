@@ -39,7 +39,7 @@ class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
 
     private val viewModel by viewModel { injector.slideUpPlaylistViewModel }
 
-    private val adapter: SongsAdapter  by lazy {
+    private val adapter: SongsAdapter by lazy {
         SongsAdapter(
             onVideoSelected = { track ->
                 viewModel.onClickTrack(track)
@@ -54,7 +54,11 @@ class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
         )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(com.cas.musicplayer.R.layout.fragment_bottom_shet, container, false)
     }
 

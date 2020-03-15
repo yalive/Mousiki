@@ -20,14 +20,15 @@ class LocalSongsDataSource @Inject constructor(
     private val preferences: PreferencesHelper
 ) {
 
-    suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): List<MusicTrack> = withContext(bgContext) {
-        if (lastKnown != null) {
-            val songEntity = trendingSongsDao.getByYoutubeId(lastKnown.youtubeId)
-            val songs = trendingSongsDao.getSongsStartingFrom(songEntity.id, max)
-            return@withContext songs.map { it.toMusicTrack() }
+    suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): List<MusicTrack> =
+        withContext(bgContext) {
+            if (lastKnown != null) {
+                val songEntity = trendingSongsDao.getByYoutubeId(lastKnown.youtubeId)
+                val songs = trendingSongsDao.getSongsStartingFrom(songEntity.id, max)
+                return@withContext songs.map { it.toMusicTrack() }
+            }
+            return@withContext trendingSongsDao.getSongs(max).map { it.toMusicTrack() }
         }
-        return@withContext trendingSongsDao.getSongs(max).map { it.toMusicTrack() }
-    }
 
     suspend fun saveTrendingSongs(tracks: List<MusicTrack>) = withContext(bgContext) {
         if (numberOfSongs() == 0) {

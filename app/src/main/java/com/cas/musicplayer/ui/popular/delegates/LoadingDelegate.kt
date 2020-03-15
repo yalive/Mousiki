@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.R
 import com.cas.delegatedadapter.LoadingItem
+import com.cas.musicplayer.R
 
 /**
  ***************************************
@@ -25,7 +25,11 @@ class LoadingDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return LoadingViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
     }
 
     inner class LoadingViewHolder(

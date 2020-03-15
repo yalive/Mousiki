@@ -30,37 +30,40 @@ class PlaylistSongsLocalDataSource @Inject constructor(
         }
     }
 
-    suspend fun savePlaylistSongs(playlistId: String, tracks: List<MusicTrack>) = withContext(bgContext) {
-        val channelSongs = tracks.map {
-            PlaylistSongEntity(
-                youtubeId = it.youtubeId,
-                playlistId = playlistId,
-                title = it.title,
-                duration = it.duration
-            )
+    suspend fun savePlaylistSongs(playlistId: String, tracks: List<MusicTrack>) =
+        withContext(bgContext) {
+            val channelSongs = tracks.map {
+                PlaylistSongEntity(
+                    youtubeId = it.youtubeId,
+                    playlistId = playlistId,
+                    title = it.title,
+                    duration = it.duration
+                )
+            }
+            playlistSongsDao.insert(channelSongs)
         }
-        playlistSongsDao.insert(channelSongs)
-    }
 
-    suspend fun getPlaylistLightSongs(playlistId: String): List<MusicTrack> = withContext(bgContext) {
-        return@withContext lightSongDao.getPlaylistSongs(playlistId).map {
-            it.toMusicTrack()
+    suspend fun getPlaylistLightSongs(playlistId: String): List<MusicTrack> =
+        withContext(bgContext) {
+            return@withContext lightSongDao.getPlaylistSongs(playlistId).map {
+                it.toMusicTrack()
+            }
         }
-    }
 
-    suspend fun savePlaylistLightSongs(playlistId: String, tracks: List<MusicTrack>) = withContext(bgContext) {
-        if (numberOfRows() == 0) {
-            preferences.setChartsUpdateDate()
+    suspend fun savePlaylistLightSongs(playlistId: String, tracks: List<MusicTrack>) =
+        withContext(bgContext) {
+            if (numberOfRows() == 0) {
+                preferences.setChartsUpdateDate()
+            }
+            val channelSongs = tracks.map {
+                LightSongEntity(
+                    playlistId = playlistId,
+                    title = it.title,
+                    youtubeId = it.youtubeId
+                )
+            }
+            lightSongDao.insert(channelSongs)
         }
-        val channelSongs = tracks.map {
-            LightSongEntity(
-                playlistId = playlistId,
-                title = it.title,
-                youtubeId = it.youtubeId
-            )
-        }
-        lightSongDao.insert(channelSongs)
-    }
 
     suspend fun numberOfRows(): Int = withContext(bgContext) {
         return@withContext lightSongDao.count()

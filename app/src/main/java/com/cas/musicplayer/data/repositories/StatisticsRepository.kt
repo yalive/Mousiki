@@ -47,11 +47,12 @@ class StatisticsRepository @Inject constructor(
         }
     }
 
-    suspend fun getRecentlyPlayedTracksLive(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
-        return@withContext Transformations.map(recentlyPlayedTracksDao.getSongsLive(max)) { input ->
-            input.map { it.toMusicTrack() }
+    suspend fun getRecentlyPlayedTracksLive(max: Int = 10): LiveData<List<MusicTrack>> =
+        withContext(bgContext) {
+            return@withContext Transformations.map(recentlyPlayedTracksDao.getSongsLive(max)) { input ->
+                input.map { it.toMusicTrack() }
+            }
         }
-    }
 
     suspend fun getHeavyList(max: Int = 10): List<MusicTrack> {
         return historicTracksDao.getHeavyList(max).map {
@@ -59,9 +60,10 @@ class StatisticsRepository @Inject constructor(
         }
     }
 
-    suspend fun getHeavyListLive(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
-        return@withContext Transformations.map(historicTracksDao.getHeavyListLive(max)) { input ->
-            input.map { it.toMusicTrack() }
+    suspend fun getHeavyListLive(max: Int = 10): LiveData<List<MusicTrack>> =
+        withContext(bgContext) {
+            return@withContext Transformations.map(historicTracksDao.getHeavyListLive(max)) { input ->
+                input.map { it.toMusicTrack() }
+            }
         }
-    }
 }

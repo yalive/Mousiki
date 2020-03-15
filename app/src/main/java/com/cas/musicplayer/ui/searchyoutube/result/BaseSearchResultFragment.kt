@@ -3,14 +3,11 @@ package com.cas.musicplayer.ui.searchyoutube.result
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.common.extensions.gone
 import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.musicplayer.R
 import com.cas.musicplayer.utils.NoViewModelFragment
-import com.google.android.material.appbar.CollapsingToolbarLayout
 
 /**
  ***************************************

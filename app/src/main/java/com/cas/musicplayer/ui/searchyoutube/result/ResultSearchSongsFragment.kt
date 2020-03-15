@@ -21,7 +21,7 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(), PageableFragment {
 
     override val layoutResourceId: Int = R.layout.fragment_yt_search_videos
 
-    private val adapter: SongsAdapter  by lazy {
+    private val adapter: SongsAdapter by lazy {
         SongsAdapter(
             onVideoSelected = { track ->
                 val mainActivity = requireActivity() as MainActivity

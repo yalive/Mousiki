@@ -2,13 +2,13 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.readystatesoftware.chuck.ChuckInterceptor
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.ui.charts.ChartsViewModel
 import com.cas.musicplayer.utils.Constants
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

@@ -15,7 +15,10 @@ class PopularSongsAdapter(
     onVideoSelected: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
     listOf(
-        SongAdapterDelegate(onClickMoreOptions = onClickMoreOptions, onVideoSelected = onVideoSelected),
+        SongAdapterDelegate(
+            onClickMoreOptions = onClickMoreOptions,
+            onVideoSelected = onVideoSelected
+        ),
         LoadingDelegate(),
         SongsHeaderDelegate()
     )

@@ -7,7 +7,10 @@ import androidx.room.PrimaryKey
 import com.cas.musicplayer.domain.model.MusicTrack
 
 
-@Entity(tableName = "favourite_tracks", indices = [Index(unique = true, value = arrayOf("youtube_id"))])
+@Entity(
+    tableName = "favourite_tracks",
+    indices = [Index(unique = true, value = arrayOf("youtube_id"))]
+)
 data class FavouriteSongEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

@@ -1,9 +1,9 @@
 package com.cas.musicplayer.utils
 
-import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.fragment.BaseFragment
-import com.cas.musicplayer.di.injector.injector
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.viewmodel.activityViewModel
+import com.cas.musicplayer.di.injector.injector
 import javax.inject.Inject
 
 /**

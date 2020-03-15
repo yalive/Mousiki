@@ -143,7 +143,8 @@ object Utils {
     }
 
     fun rateApp(context: Context) {
-        val view = LayoutInflater.from(context).inflate(com.cas.musicplayer.R.layout.dialog_rate, null)
+        val view =
+            LayoutInflater.from(context).inflate(com.cas.musicplayer.R.layout.dialog_rate, null)
         val btnRate = view.findViewById<Button>(com.cas.musicplayer.R.id.btnRate)
         val btnRemindMe = view.findViewById<Button>(com.cas.musicplayer.R.id.btnRemindMe)
         val btnNoThanks = view.findViewById<Button>(com.cas.musicplayer.R.id.btnNoThanks)

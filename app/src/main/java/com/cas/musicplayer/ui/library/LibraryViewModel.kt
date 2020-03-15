@@ -67,5 +67,6 @@ class LibraryViewModel @Inject constructor(
         playTrackFromQueue(track, tracks)
     }
 
-    private fun tracksToDisplayableItems(songs: List<MusicTrack>) = songs.map { it.toDisplayedVideoItem() }
+    private fun tracksToDisplayableItems(songs: List<MusicTrack>) =
+        songs.map { it.toDisplayedVideoItem() }
 }
