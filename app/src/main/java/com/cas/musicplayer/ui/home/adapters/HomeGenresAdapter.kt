@@ -50,7 +50,8 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
             bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, genreMusic.topTracksPlaylist)
             val artist = Artist(genreMusic.title, "US", genreMusic.topTracksPlaylist)
             bundle.putParcelable(EXTRAS_ARTIST, artist)
-            itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
+            itemView.findNavController()
+                .navigate(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
             if (!Utils.hasShownAdsOneTime) {
                 Utils.hasShownAdsOneTime = true
                 RequestAdsLiveData.value = AdsOrigin("genre")

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.cas.musicplayer.ui.charts.ChartsViewModel
 import com.cas.musicplayer.utils.Constants
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -13,7 +12,6 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.mockito.Mockito
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -65,10 +63,4 @@ object TestAppModule {
     fun providesSharedPref(context: Context): SharedPreferences =
         context.getSharedPreferences("music.app", Context.MODE_PRIVATE)
 
-
-    @Singleton
-    @Provides
-    fun providesChartsViewModel(): ChartsViewModel {
-        return Mockito.mock(ChartsViewModel::class.java)
-    }
 }

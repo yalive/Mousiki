@@ -64,10 +64,10 @@ class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
 
         private fun showMore(headerItem: HeaderItem) {
             val destination = when (headerItem) {
-                HeaderItem.ArtistsHeader -> R.id.artistsFragment
-                is HeaderItem.PopularsHeader -> R.id.newReleaseFragment
-                HeaderItem.ChartsHeader -> R.id.chartsFragment
-                HeaderItem.GenresHeader -> R.id.genresFragment
+                HeaderItem.ArtistsHeader -> R.id.action_homeFragment_to_artistsFragment
+                is HeaderItem.PopularsHeader -> R.id.action_homeFragment_to_newReleaseFragment
+                HeaderItem.ChartsHeader -> R.id.genresFragment // Just for code to compile
+                HeaderItem.GenresHeader -> R.id.action_homeFragment_to_genresFragment
             }
             itemView.findNavController().navigate(destination)
         }

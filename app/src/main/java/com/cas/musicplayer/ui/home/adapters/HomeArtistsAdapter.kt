@@ -39,7 +39,8 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
         view.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, artist)
-            itemView.findNavController().navigate(R.id.artistSongsFragment, bundle)
+            itemView.findNavController()
+                .navigate(R.id.action_homeFragment_to_artistSongsFragment, bundle)
 
             if (!Utils.hasShownAdsOneTime) {
                 Utils.hasShownAdsOneTime = true
