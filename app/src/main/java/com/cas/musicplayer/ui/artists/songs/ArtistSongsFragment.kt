@@ -10,6 +10,7 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 
 
 class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
@@ -24,6 +25,7 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         observe(viewModel.tracks, this::updateUI)
         viewModel.loadArtistTracks(artist.channelId)
+        txtPlaylistName.text = artist.name
     }
 
     override fun onClickTrack(track: MusicTrack) {
@@ -31,9 +33,6 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
     }
 
     override fun onClickTrackPlayAll() {
-    }
-
-    override fun withToolbar(): Boolean {
-        return true
+        viewModel.onClickTrackPlayAll()
     }
 }

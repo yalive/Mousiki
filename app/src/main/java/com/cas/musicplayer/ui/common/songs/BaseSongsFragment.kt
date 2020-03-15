@@ -58,7 +58,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     fun updateHeader(track: DisplayedVideoItem) {
         imgArtist.loadImage(track.songImagePath, R.mipmap.ic_launcher)
-        background.loadAndBlurImage(track.songImagePath)
+        imgBackground.loadAndBlurImage(track.songImagePath)
     }
 
     protected fun updateUI(resource: Resource<List<DisplayableItem>>) {
@@ -76,7 +76,10 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
                 txtNumberOfSongs.text = "${newList.size} Songs"
+                progressBar.alpha = 0f
             }
+            Resource.Loading -> progressBar.alpha = 1f
+            is Resource.Failure -> progressBar.alpha = 0f
         }
     }
 

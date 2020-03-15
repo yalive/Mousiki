@@ -21,7 +21,7 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
         recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
             viewModel.loadMoreSongs()
         })
-        txtPrimaryTitle.text = "New Releases"
+        txtPlaylistName.text = "New Releases"
     }
 
     override fun onClickTrack(track: MusicTrack) {
