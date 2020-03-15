@@ -49,7 +49,8 @@ class GenresViewHolder(itemView: View) : SimpleBaseViewHolder<GenreMusic>(itemVi
             bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.topTracksPlaylist)
             val artist = Artist(item.title, "US", item.topTracksPlaylist)
             bundle.putParcelable(EXTRAS_ARTIST, artist)
-            itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
+            itemView.findNavController()
+                .navigate(R.id.action_genresFragment_to_playlistVideosFragment, bundle)
         }
     }
 }

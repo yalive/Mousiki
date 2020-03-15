@@ -51,6 +51,7 @@ class MainActivity : BaseActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(toolbar, navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            appbar.setExpanded(true, true)
             if (destination.id == R.id.homeFragment) {
                 toolbar.title = getString(R.string.app_name)
             }

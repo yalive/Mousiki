@@ -43,7 +43,8 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
                 bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.playlistId)
                 val artist = Artist(item.title, "US", item.playlistId)
                 bundle.putParcelable(EXTRAS_ARTIST, artist)
-                itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
+                itemView.findNavController()
+                    .navigate(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
 
                 if (!Utils.hasShownAdsOneTime) {
                     Utils.hasShownAdsOneTime = true

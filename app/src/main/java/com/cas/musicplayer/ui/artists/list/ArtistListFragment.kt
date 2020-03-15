@@ -44,7 +44,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
         adapter = ArtistListAdapter(onClickArtist = {
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, it)
-            findNavController().navigate(R.id.artistSongsFragment, bundle)
+            findNavController().navigate(R.id.action_artistsFragment_to_artistSongsFragment, bundle)
         })
         recyclerView.adapter = adapter
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
