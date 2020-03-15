@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.artists.songs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.result.map
@@ -39,5 +40,13 @@ class ArtistSongsViewModel @Inject constructor(
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
         val tracks = (_tracks.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
         playTrackFromQueue(track, tracks)
+    }
+
+    fun onClickTrackPlayAll() {
+        uiCoroutine {
+            val allSongs = _tracks.valueOrNull() ?: emptyList()
+            if (allSongs.isEmpty()) return@uiCoroutine
+            playTrackFromQueue(allSongs.first().track, allSongs.map { it.track })
+        }
     }
 }

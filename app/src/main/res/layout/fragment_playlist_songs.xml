@@ -6,17 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    app:layoutDescription="@xml/scene">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topGuideline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="0dp" />
+    app:layoutDescription="@xml/songs_list_scene">
 
     <ImageView
-        android:id="@+id/background"
+        android:id="@+id/imgBackground"
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:background="@color/colorPrimary"
@@ -33,10 +26,10 @@
         android:src="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtPrimaryTitle"
+        android:id="@+id/txtPlaylistName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -57,7 +50,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtPrimaryTitle"
+        app:layout_constraintTop_toBottomOf="@id/txtPlaylistName"
         tools:text="@tools:sample/full_names" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -68,9 +61,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/background"
+        app:layout_constraintTop_toBottomOf="@id/imgBackground"
         tools:itemCount="20"
         tools:listitem="@layout/item_new_release_video" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBackground" />
 
     <ImageButton
         android:id="@+id/btnPlayAll"
@@ -78,9 +80,9 @@
         android:layout_height="56dp"
         android:background="@drawable/bg_big_play_button"
         android:backgroundTint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintBottom_toBottomOf="@+id/imgBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background"
+        app:layout_constraintTop_toBottomOf="@+id/imgBackground"
         app:srcCompat="@drawable/ic_play" />
 </androidx.constraintlayout.motion.widget.MotionLayout>
