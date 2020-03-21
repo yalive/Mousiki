@@ -75,11 +75,16 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 }
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
-                txtNumberOfSongs.text = "${newList.size} Songs"
+                txtNumberOfSongs.text = String.format("%d Songs", newList.size)
                 progressBar.alpha = 0f
             }
             Resource.Loading -> progressBar.alpha = 1f
-            is Resource.Failure -> progressBar.alpha = 0f
+            is Resource.Failure -> {
+                progressBar.alpha = 0f
+                if (adapter.dataItems.isEmpty()) {
+                    txtNumberOfSongs.setText(R.string.error_while_loading_song_list)
+                }
+            }
         }
     }
 
