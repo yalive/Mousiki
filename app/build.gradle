@@ -83,8 +83,8 @@ android {
         }
 
         dev {
-            versionCode 23
-            versionName "1.23"
+            versionCode 24
+            versionName "1.24"
             applicationIdSuffix ".dev"
         }
     }
@@ -112,6 +112,7 @@ dependencies {
     def nav_version = "2.1.0-alpha02"
 
     // Optional -- Mockito framework
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation "org.mockito:mockito-core:3.0.0"
     androidTestImplementation "org.mockito:mockito-core:3.0.0"
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.25.0'

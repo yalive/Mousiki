@@ -27,7 +27,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
  * Created by Abdelhadi on 4/9/19.
  **********************************
  */
-class VideoPlaybackService : LifecycleService() {
+class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
     val TAG = "VideoPlaybackService"
 
@@ -39,6 +39,7 @@ class VideoPlaybackService : LifecycleService() {
         val COMMAND_SEEK_TO_FROM_FULL_SCREEN = "seek-to-from-fullscreen"
         val COMMAND_HIDE_VIDEO = "hide-video"
         val COMMAND_SHOW_VIDEO = "show-video"
+        val COMMAND_SCHEDULE_TIMER = "schedule-timer"
 
         val CLICK_ACTION_THRESHOLD = 160
     }
@@ -107,6 +108,12 @@ class VideoPlaybackService : LifecycleService() {
                 videoViewParams.width = videoEmplacement.width
                 videoViewParams.height = videoEmplacement.height
                 windowManager.updateViewLayout(videoContainerView, videoViewParams)
+            }
+        }
+
+        intent?.getIntExtra(COMMAND_SCHEDULE_TIMER, -1)?.let { duration ->
+            if (duration > 0) {
+                stopPlayer(afterDuration = duration)
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -496,11 +503,9 @@ class VideoPlaybackService : LifecycleService() {
         }
     }
 
-
     /* Used to build and start foreground service. */
     private fun startForegroundService() {
         val helper = NotificationHelper(this)
         helper.init()
-
     }
 }

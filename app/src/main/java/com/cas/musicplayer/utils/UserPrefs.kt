@@ -17,6 +17,7 @@ object UserPrefs {
     val KEY_LAUNCH_COUNT = "launch-count"
     val CLICK_TRACK_COUNT = "click-track-count"
     val KEY_RATED_APP = "has-rated-app"
+    val KEY_SLEEP_TIMER_VALUE = "sleep-timer-value"
 
     fun saveFav(videoId: String?, isAdd: Boolean) {
         val pref = getPrefs()
@@ -75,4 +76,11 @@ object UserPrefs {
         return getPrefs().getInt(CLICK_TRACK_COUNT, 0)
     }
 
+    fun setSleepTimerValue(duration: Int) {
+        getPrefs().edit().putInt(KEY_SLEEP_TIMER_VALUE, duration).apply()
+    }
+
+    fun getSleepTimerValue(): Int {
+        return getPrefs().getInt(KEY_SLEEP_TIMER_VALUE, 10)
+    }
 }

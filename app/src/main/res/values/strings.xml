@@ -27,5 +27,11 @@
 
     <!-- Common -->
     <string name="common_empty_song_list">No song found</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_button_set_timer">Set</string>
+    <string name="sleep_timer">Sleep Timer</string>
 
 </resources>

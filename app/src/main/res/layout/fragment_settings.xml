@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cas.musicplayer.ui.settings.SettingsFragment">
+
+    <Button
+        android:id="@+id/btnTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:background="?selectableItemBackground"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:drawableTint="@color/colorBlack"
+        android:gravity="start|center_vertical"
+        android:text="@string/sleep_timer"
+        android:textAllCaps="false" />
+</FrameLayout>
