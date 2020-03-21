@@ -87,6 +87,16 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         seekTrackTo(to, comeFromFullScreen)
     }
 
+    fun scheduleStopMusic(duration: Int) {
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
+        if (value == null) return
+        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
+        intent.putExtra(VideoPlaybackService.COMMAND_SCHEDULE_TIMER, duration)
+        MusicApp.get().startService(intent)
+    }
+
     fun isCurrentTrack(musicTrack: MusicTrack): Boolean {
         val currentTrack = value ?: return false
         return currentTrack.youtubeId == musicTrack.youtubeId

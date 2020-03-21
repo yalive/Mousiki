@@ -15,6 +15,7 @@ import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
+import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
 import com.google.gson.Gson
 import dagger.BindsInstance
@@ -68,6 +69,8 @@ interface AppComponent {
     val slideUpPlaylistViewModel: SlideUpPlaylistViewModel
 
     val emptyViewModel: EmptyViewModel
+
+    val settingsViewModel: SettingsViewModel
 
     val gson: Gson
 }

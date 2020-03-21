@@ -2,6 +2,10 @@ package com.cas.musicplayer.ui.home
 
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.navigation.fragment.findNavController
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
@@ -25,6 +29,11 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
         VideoEmplacementLiveData.bottom()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerView.addItemDecoration(HomeMarginItemDecoration())
@@ -33,6 +42,19 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
     }
 
     override fun getPageTitle(): String = "Discover"
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_home, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menuSetting) {
+            findNavController().navigate(R.id.settingsFragment)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun observeViewModel() {
         observe(viewModel.newReleases, homeAdapter::updatePopularSongs)
