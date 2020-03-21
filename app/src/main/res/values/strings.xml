@@ -33,5 +33,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_button_set_timer">Set</string>
     <string name="sleep_timer">Sleep Timer</string>
+    <string name="loading">Loading…</string>
+    <string name="error_while_loading_song_list">Error while loading songs list</string>
 
 </resources>
