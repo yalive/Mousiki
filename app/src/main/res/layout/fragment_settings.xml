@@ -17,7 +17,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/sleep_timer"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorIconSettings" />
 
     <View
         android:layout_width="match_parent"
@@ -35,7 +36,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/settings_share_app"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorIconSettings" />
 
     <View
         android:layout_width="match_parent"
@@ -53,7 +55,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/settings_rate_app"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorIconSettings" />
 
     <View
         android:layout_width="match_parent"
@@ -71,7 +74,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/settings_facebook_like"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorIconSettings" />
 
     <View
         android:layout_width="match_parent"
@@ -89,7 +93,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/settings_feedback"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorIconSettings" />
 
     <View
         android:layout_width="match_parent"
@@ -107,7 +112,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/settings_policy"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="@color/colorIconSettings" />
 
     <View
         android:layout_width="match_parent"

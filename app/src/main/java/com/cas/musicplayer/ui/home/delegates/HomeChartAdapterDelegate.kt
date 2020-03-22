@@ -2,16 +2,16 @@ package com.cas.musicplayer.ui.home.delegates
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.common.recyclerview.MarginItemDecoration
+import com.cas.common.recyclerview.PagerIndicatorView
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.ui.home.adapters.HomeChartAdapter
-import com.cas.musicplayer.utils.dpToPixel
 
 /**
  ***************************************
@@ -27,7 +27,7 @@ class HomeChartAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.horizontal_songs_list)
+        val view = parent.inflate(R.layout.home_chart_view)
         return HomeListChartViewHolder(view)
     }
 
@@ -43,14 +43,10 @@ class HomeChartAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
     inner class HomeListChartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-            recyclerView.addItemDecoration(
-                MarginItemDecoration(
-                    horizontalMargin = view.context.dpToPixel(
-                        8f
-                    )
-                )
-            )
+            val pagerIndicator: PagerIndicatorView = view.findViewById(R.id.pagerIndicator)
             recyclerView.adapter = adapter
+            PagerSnapHelper().attachToRecyclerView(recyclerView)
+            pagerIndicator.withRecyclerView(recyclerView)
         }
 
         fun bind(charts: List<ChartModel>) {

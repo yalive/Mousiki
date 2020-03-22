@@ -23,9 +23,9 @@ class HomeMarginItemDecoration(
         val first = position == 0
         with(outRect) {
             if (first) {
-                top = context.dpToPixel(16f)
+                top = context.dpToPixel(0f)
             } else if (position == 1) {
-                top = context.dpToPixel(4f)
+                top = context.dpToPixel(24f)
             } else if (position == 2) {
                 top = context.dpToPixel(16f)
             } else if (position == 3) {

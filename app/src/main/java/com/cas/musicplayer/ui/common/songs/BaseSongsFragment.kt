@@ -2,6 +2,9 @@ package com.cas.musicplayer.ui.common.songs
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePadding
+import androidx.lifecycle.Observer
+import com.cas.common.dpToPixel
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.FirstItemMarginDecoration
 import com.cas.common.resource.Resource
@@ -14,7 +17,7 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
-import com.cas.musicplayer.utils.dpToPixel
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.loadAndBlurImage
 import com.cas.musicplayer.utils.loadImage
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
@@ -47,6 +50,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lightStatusBar()
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
         btnPlayAll.setOnClickListener {
@@ -54,6 +58,10 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
             mainActivity.collapseBottomPanel()
             onClickTrackPlayAll()
         }
+
+        DeviceInset.observe(this, Observer { inset ->
+            motionLayout.updatePadding(top = inset.top)
+        })
     }
 
     fun updateHeader(track: DisplayedVideoItem) {

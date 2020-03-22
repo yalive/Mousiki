@@ -33,7 +33,6 @@ class HomeAdapter(
 ) {
     init {
         this.dataItems = mutableListOf(
-            HeaderItem.ChartsHeader,
             HomeItem.ChartItem(emptyList()),
             HeaderItem.PopularsHeader(),
             HomeItem.PopularsItem(Resource.Loading),

@@ -17,5 +17,6 @@
     <dimen name="list_item_spacing_half">8dp</dimen>
 
     <dimen name="fast_scroll_bar_width">5dp</dimen>
+    <dimen name="home_chart_height">320dp</dimen>
 
 </resources>

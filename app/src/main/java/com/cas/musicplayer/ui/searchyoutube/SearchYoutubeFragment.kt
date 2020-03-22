@@ -114,6 +114,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
             )
         )
         observeViewModel()
+        lightStatusBar()
     }
 
     private fun removeQueryListener() {
