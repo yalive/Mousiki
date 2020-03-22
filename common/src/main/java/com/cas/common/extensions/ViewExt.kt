@@ -57,3 +57,7 @@ fun View.scaleDown(to: Float = 0.9f) {
     scaleDown.play(scaleDownX).with(scaleDownY)
     scaleDown.start()
 }
+
+fun <T : View> T.onClick(listener: (T) -> Unit) {
+    setOnClickListener { listener(it as T) }
+}

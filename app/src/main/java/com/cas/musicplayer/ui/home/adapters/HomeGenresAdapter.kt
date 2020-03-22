@@ -1,8 +1,6 @@
 package com.cas.musicplayer.ui.home.adapters
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +16,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
-import com.cas.musicplayer.utils.AdsOrigin
-import com.cas.musicplayer.utils.RequestAdsLiveData
-import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.drawable
-import java.util.*
+import com.cas.musicplayer.utils.*
 
 /**
  ***************************************
@@ -31,12 +25,24 @@ import java.util.*
  */
 internal class HomeGenresAdapter : SimpleBaseAdapter<GenreMusic, HomeGenreViewHolder>() {
     override val cellResId: Int = R.layout.item_home_genre
+    private val genreColors by lazy {
+        mutableListOf(
+            R.color.colorGenre1,
+            R.color.colorGenre2,
+            R.color.colorGenre3,
+            R.color.colorGenre4,
+            R.color.colorGenre5,
+            R.color.colorGenre6
+        ).shuffled()
+    }
+
     override fun createViewHolder(view: View): HomeGenreViewHolder {
-        return HomeGenreViewHolder(view)
+        return HomeGenreViewHolder(view, genreColors)
     }
 }
 
-internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreMusic>(view) {
+internal class HomeGenreViewHolder(val view: View, val colors: List<Int>) :
+    SimpleBaseViewHolder<GenreMusic>(view) {
     private val imgCategory: ImageView = view.findViewById(R.id.imgCategory)
     private val backgroundCategory: ImageView = view.findViewById(R.id.backgroundCategory)
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
@@ -44,7 +50,7 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
     override fun bind(genreMusic: GenreMusic) {
         txtTitle.text = genreMusic.title
         imgCategory.setImageDrawable(itemView.context.drawable(genreMusic.img))
-        backgroundCategory.setBackgroundColor(color())
+        backgroundCategory.setBackgroundColor(itemView.context.color(colors[adapterPosition]))
         view.findViewById<ViewGroup>(R.id.cardView).setOnClickListener {
             val bundle = Bundle()
             bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, genreMusic.topTracksPlaylist)
@@ -59,7 +65,6 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
         }
 
         view.setOnTouchListener { v, event ->
-            Log.d("setOnTouchListener", "Action:$event")
             if (event.action == MotionEvent.ACTION_DOWN) {
                 v.scaleDown(to = 0.97f)
             } else if (event.action != MotionEvent.ACTION_MOVE) {
@@ -67,10 +72,5 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
             }
             return@setOnTouchListener false
         }
-    }
-
-    fun color(): Int {
-        val rnd = Random()
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
     }
 }

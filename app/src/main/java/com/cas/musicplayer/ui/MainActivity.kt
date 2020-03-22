@@ -4,17 +4,19 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
@@ -49,13 +51,14 @@ class MainActivity : BaseActivity() {
         slidingPaneLayout = findViewById(R.id.sliding_layout)
         setSupportActionBar(toolbar)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        NavigationUI.setupWithNavController(toolbar, navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             appbar.setExpanded(true, true)
             if (destination.id == R.id.homeFragment) {
                 toolbar.title = getString(R.string.app_name)
             }
             updateBottomNavigationMenu(destination.id)
+            val showBack = showBackForDestination(destination)
+            supportActionBar?.setDisplayHomeAsUpEnabled(showBack)
         }
 
         if (!canDrawOverApps()) {
@@ -104,6 +107,21 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showBackForDestination(destination: NavDestination): Boolean {
+        return destination.id == R.id.favouriteSongsFragment
+                || destination.id == R.id.settingsFragment
+                || destination.id == R.id.genresFragment
+                || destination.id == R.id.artistsFragment
+    }
+
     private fun updateBottomNavigationMenu(destinationId: Int) {
         when (destinationId) {
             R.id.homeFragment -> {
@@ -113,6 +131,9 @@ class MainActivity : BaseActivity() {
                 bottomNavView.menu[1].isChecked = true
             }
         }
+        bottomNavView.isVisible = destinationId == R.id.homeFragment
+                || destinationId == R.id.libraryFragment
+                || destinationId == R.id.searchYoutubeFragment
     }
 
     private fun handleClickMenuSearch() {

@@ -20,6 +20,9 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>() {
 
     override val layoutResourceId: Int = R.layout.fragment_play_list
     override val viewModel by viewModel { injector.favouriteTracksViewModel }
+    override val screenTitle: String by lazy {
+        getString(R.string.favourites)
+    }
 
     private val adapter by lazy {
         SongsAdapter(

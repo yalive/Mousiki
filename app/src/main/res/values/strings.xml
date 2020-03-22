@@ -11,9 +11,10 @@
     <string name="no_audio_ID">Play a song first, then try again.</string>
     <string name="favourites">Favourites</string>
     <string name="genres">Genres</string>
+    <string name="artists">Artists</string>
     <string name="sponsored">sponsored</string>
     <string name="label_share">Share</string>
-    <string name="label_add_to">Add to...</string>
+    <string name="label_add_to">Add to…</string>
     <string name="label_play_next">Play next</string>
     <string name="common_more">More</string>
 
@@ -29,11 +30,16 @@
     <string name="common_empty_song_list">No song found</string>
     <string name="menu_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_button_set_timer">Set</string>
-    <string name="sleep_timer">Sleep Timer</string>
     <string name="loading">Loading…</string>
     <string name="error_while_loading_song_list">Error while loading songs list</string>
+
+    <!-- Settings -->
+    <string name="sleep_timer">Sleep Timer</string>
+    <string name="settings_rate_app">Rate us</string>
+    <string name="settings_feedback">Feedback</string>
+    <string name="settings_facebook_like">Like Facebook page</string>
+    <string name="settings_policy">Privacy policy</string>
+    <string name="settings_share_app">Share app with friends</string>
 
 </resources>

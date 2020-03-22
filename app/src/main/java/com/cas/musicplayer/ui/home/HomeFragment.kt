@@ -22,6 +22,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
 
     override val viewModel by viewModel { injector.homeViewModel }
     override val layoutResourceId: Int = R.layout.fragment_home
+    override val screenTitle: String by lazy {
+        getString(R.string.app_name)
+    }
 
     private val homeAdapter = HomeAdapter { track ->
         (activity as? MainActivity)?.collapseBottomPanel()
@@ -50,7 +53,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuSetting) {
-            findNavController().navigate(R.id.settingsFragment)
+            findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
             return true
         }
         return super.onOptionsItemSelected(item)

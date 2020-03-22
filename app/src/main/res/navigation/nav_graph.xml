@@ -46,8 +46,12 @@
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
         <action
-            android:id="@+id/action_homeFragment_to_settingsFragment2"
-            app:destination="@id/settingsFragment" />
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/newReleaseFragment"
@@ -110,5 +114,15 @@
         android:id="@+id/settingsFragment"
         android:name="com.cas.musicplayer.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_timerDialog"
+            app:destination="@id/timerDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/timerDialog"
+        android:name="com.cas.musicplayer.ui.settings.TimerDialog"
+        android:label="TimerDialog"
+        tools:layout="@layout/timer_dialog" />
 </navigation>

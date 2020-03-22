@@ -43,8 +43,10 @@ object Utils {
             type = "text/plain"
         }
 
-        // TODO: Resolve intent first
-        mContext.startActivity(sendIntent)
+        val context = MusicApp.get()
+        if (sendIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(sendIntent)
+        }
     }
 
     fun shareAppVia() {
@@ -57,21 +59,21 @@ object Utils {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             type = "text/plain"
         }
-
-        // TODO: Resolve intent first
-        MusicApp.get().startActivity(sendIntent)
+        val context = MusicApp.get()
+        if (sendIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(sendIntent)
+        }
     }
 
     fun sendEmail(context: Context) {
         val emailIntent = Intent(
             Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", "fayssel.mp1993@gmail.com", null
+                "mailto", "memory.games.apps@gmail.com", null
             )
         )
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
         emailIntent.putExtra(Intent.EXTRA_TEXT, "")
         context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
-
     }
 
 
@@ -116,14 +118,12 @@ object Utils {
 
 
     fun openWebview(context: Context, url: String) {
-
         val webView = WebView(context)
         val dialog = MaterialDialog(context).show {
             customView(null, webView)
             negativeButton(text = "Close")
             cancelOnTouchOutside(false)
         }
-
         dialog.onShow {
             val settings = webView.settings
             settings.javaScriptEnabled = true
@@ -134,20 +134,18 @@ object Utils {
             webView.webViewClient = WebViewClient()
             webView.loadUrl(url)
         }
-
         dialog.onDismiss {
             webView.destroy()
         }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
     }
 
     fun rateApp(context: Context) {
         val view =
-            LayoutInflater.from(context).inflate(com.cas.musicplayer.R.layout.dialog_rate, null)
-        val btnRate = view.findViewById<Button>(com.cas.musicplayer.R.id.btnRate)
-        val btnRemindMe = view.findViewById<Button>(com.cas.musicplayer.R.id.btnRemindMe)
-        val btnNoThanks = view.findViewById<Button>(com.cas.musicplayer.R.id.btnNoThanks)
+            LayoutInflater.from(context).inflate(R.layout.dialog_rate, null)
+        val btnRate = view.findViewById<Button>(R.id.btnRate)
+        val btnRemindMe = view.findViewById<Button>(R.id.btnRemindMe)
+        val btnNoThanks = view.findViewById<Button>(R.id.btnNoThanks)
         val dialog = MaterialDialog(context).show {
             customView(null, view, false, true)
             cancelOnTouchOutside(false)

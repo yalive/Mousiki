@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.cas.common.R
 import com.cas.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,9 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
     @get:LayoutRes
     protected abstract val layoutResourceId: Int
     protected open val keepView = false
+    protected open val screenTitle by lazy {
+        getString(R.string.app_name)
+    }
 
     private val job = Job()
     override val coroutineContext = job + Dispatchers.Main
@@ -46,7 +50,9 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
 
     override fun onResume() {
         super.onResume()
-
+        if (withToolbar()) {
+            activity?.title = screenTitle
+        }
         val compatActivity = activity as? AppCompatActivity
         if (withToolbar()) {
             compatActivity?.supportActionBar?.show()
