@@ -10,6 +10,8 @@
 
     <color name="colorYellow">#F3CB45</color>
 
+    <color name="colorDividerSettings">#ECE9E9</color>
+    <color name="colorIconSettings">#2C2B2B</color>
 
     <color name="colorClosePlayerOn">#BCC7485B</color>
     <color name="colorClosePlayerOff">#45000000</color>
@@ -18,4 +20,11 @@
     <color name="colorSplash">#78909C</color>
     <color name="colorSidebarSelected">@color/colorAccent</color>
     <color name="colorPlaceholderImage">#454B45</color>
+
+    <color name="colorGenre1">#D03434</color>
+    <color name="colorGenre2">#A10DF1</color>
+    <color name="colorGenre3">#37C70F</color>
+    <color name="colorGenre4">#114FCC</color>
+    <color name="colorGenre5">#F6CF0B</color>
+    <color name="colorGenre6">#08E6E6</color>
 </resources>

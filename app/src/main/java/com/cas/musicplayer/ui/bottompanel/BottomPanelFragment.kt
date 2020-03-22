@@ -5,19 +5,21 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.WindowManager
+import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.SeekBar
+import androidx.core.os.postDelayed
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.invisible
 import com.cas.common.extensions.visible
-import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
@@ -37,21 +39,28 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fragment_bottom_panel.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 
-class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
+class BottomPanelFragment : Fragment(),
     SlidingUpPanelLayout.PanelSlideListener,
     SlideToActView.OnSlideCompleteListener,
     View.OnTouchListener {
-    override val layoutResourceId: Int = R.layout.fragment_bottom_panel
-    override val viewModel by viewModel { injector.bottomPanelViewModel }
 
     var dialogBottomShet: SlideUpPlaylistFragment? = null
     lateinit var mainActivity: MainActivity
     private var visible = true
+    private val viewModel by viewModel { injector.bottomPanelViewModel }
+    private val handler = Handler()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_bottom_panel, container, false)
+        return view
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -329,8 +338,7 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
             mainActivity.slidingPaneLayout.isTouchEnabled = false
             mainActivity.isLocked = true
 
-            launch {
-                delay(1_000)
+            handler.postDelayed(1_000) {
                 panelView.updatePadding(top = 0)
             }
         } else {
@@ -353,30 +361,15 @@ class BottomPanelFragment : BaseFragment<BottomPanelViewModel>(),
     }
 
     private fun setFullscreen(activity: Activity) {
-        if (Build.VERSION.SDK_INT > 10) {
-            var flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_FULLSCREEN
-
-            if (isImmersiveAvailable()) {
-                flags =
-                    flags or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-            }
-
-            activity.window.decorView.systemUiVisibility = flags
-        } else {
-            activity.window
-                .setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN
-                )
-        }
+        var flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_FULLSCREEN
+        flags = flags or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+        activity.window.decorView.systemUiVisibility = flags
     }
 
     private fun exitFullscreen(activity: Activity) {
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-    }
-
-    private fun isImmersiveAvailable(): Boolean {
-        return Build.VERSION.SDK_INT >= 19
     }
 }

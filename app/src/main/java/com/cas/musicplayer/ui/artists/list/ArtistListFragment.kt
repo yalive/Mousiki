@@ -24,7 +24,9 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
 
     override val layoutResourceId: Int = R.layout.fragment_artists
     override val viewModel by activityViewModel { injector.artistListViewModel }
-
+    override val screenTitle by lazy {
+        getString(R.string.artists)
+    }
     private lateinit var adapter: ArtistListAdapter
     private lateinit var sideBar: SideBar
     private lateinit var txtDialog: TextView
