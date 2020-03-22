@@ -1,6 +1,7 @@
 package com.cas.musicplayer.utils
 
 import androidx.lifecycle.MutableLiveData
+import com.cas.common.dpToPixel
 import com.cas.musicplayer.MusicApp
 
 /**
@@ -19,7 +20,8 @@ object DeviceInset : MutableLiveData<ScreenInset>() {
     }
 
     fun hasNotch(): Boolean {
-        val regularStatusBarHeight = dpToPixel(24f, MusicApp.get())
+        val regularStatusBarHeight =
+            dpToPixel(24f, MusicApp.get())
         val paddingTop = get().top
 
         if (paddingTop > regularStatusBarHeight + 10) { // 10 for approximation

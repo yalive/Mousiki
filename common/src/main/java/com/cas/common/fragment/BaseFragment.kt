@@ -1,5 +1,6 @@
 package com.cas.common.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -66,5 +67,26 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
     override fun onStop() {
         super.onStop()
         job.cancel()
+    }
+
+    fun lightStatusBar() {
+        val window = requireActivity().window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val flags = window.decorView.systemUiVisibility
+            window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        } else {
+            // window.statusBarColor = requireContext().color(android.color.)
+        }
+    }
+
+    fun darkStatusBar() {
+        val window = requireActivity().window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val flags = window.decorView.systemUiVisibility
+            window.decorView.systemUiVisibility =
+                flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+        } else {
+            // window.statusBarColor = color(R.color.colorPrimary)
+        }
     }
 }

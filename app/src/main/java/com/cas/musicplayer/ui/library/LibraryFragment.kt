@@ -2,6 +2,8 @@ package com.cas.musicplayer.ui.library
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePadding
+import androidx.lifecycle.Observer
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
@@ -10,6 +12,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
+import com.cas.musicplayer.utils.DeviceInset
 import kotlinx.android.synthetic.main.fragment_library.*
 
 /**
@@ -39,8 +42,12 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(), PageableFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lightStatusBar()
         recyclerView.adapter = adapter
         observeViewModel()
+        DeviceInset.observe(this, Observer { inset ->
+            recyclerView.updatePadding(top = inset.top)
+        })
     }
 
     private fun observeViewModel() {

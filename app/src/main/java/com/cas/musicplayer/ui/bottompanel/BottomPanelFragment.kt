@@ -17,6 +17,7 @@ import androidx.core.os.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.cas.common.dpToPixel
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.invisible
 import com.cas.common.extensions.visible

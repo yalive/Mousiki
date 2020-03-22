@@ -24,11 +24,11 @@ import androidx.lifecycle.LifecycleService
 data class ScreenSize(val widthPx: Int, val heightPx: Int)
 
 fun Context.dpToPixel(dp: Float): Int {
-    return dpToPixel(dp, this).toInt()
+    return com.cas.common.dpToPixel(dp, this).toInt()
 }
 
 fun Context.pixelsToDp(px: Float): Float {
-    return pixelsToDp(px, this)
+    return com.cas.common.pixelsToDp(px, this)
 }
 
 @ColorInt

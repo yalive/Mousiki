@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -45,6 +44,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        //fullScreenUi()
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
         setContentView(R.layout.activity_main)
@@ -91,10 +91,6 @@ class MainActivity : BaseActivity() {
             if (consumed) insets.consumeSystemWindowInsets() else insets
         }
 
-        DeviceInset.observe(this, Observer { inset ->
-            sliding_layout.updatePadding(top = inset.top)
-        })
-
         bottomNavView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navHome -> handleClickMenuHome()
@@ -105,6 +101,7 @@ class MainActivity : BaseActivity() {
             }
             true
         }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

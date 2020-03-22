@@ -1,4 +1,4 @@
-package com.cas.musicplayer.utils
+package com.cas.common
 
 import android.content.Context
 import android.util.DisplayMetrics
