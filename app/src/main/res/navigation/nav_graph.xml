@@ -46,12 +46,8 @@
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
         <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/custom_slide_in_right"
-            app:exitAnim="@anim/custom_slide_out_left"
-            app:popEnterAnim="@anim/custom_slide_in_left"
-            app:popExitAnim="@anim/custom_slide_out_right" />
+            android:id="@+id/action_homeFragment_to_libraryFragment"
+            app:destination="@id/libraryFragment" />
     </fragment>
     <fragment
         android:id="@+id/newReleaseFragment"
@@ -109,6 +105,13 @@
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_libraryFragment_to_settingsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

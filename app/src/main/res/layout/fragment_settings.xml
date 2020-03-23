@@ -9,7 +9,6 @@
         android:id="@+id/btnTimer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:background="?selectableItemBackground"
         android:drawableStart="@drawable/ic_clock_settings"
         android:drawablePadding="16dp"

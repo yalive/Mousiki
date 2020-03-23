@@ -4,11 +4,7 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.core.graphics.ColorUtils
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.adapter.PageableFragment
@@ -34,7 +30,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
     private val homeAdapter = HomeAdapter { track ->
         (activity as? MainActivity)?.collapseBottomPanel()
         viewModel.onClickTrack(track)
-        VideoEmplacementLiveData.bottom()
+        VideoEmplacementLiveData.bottom(true)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,19 +54,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
     }
 
     override fun getPageTitle(): String = "Discover"
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_home, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menuSetting) {
-            findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun withToolbar(): Boolean = false
 

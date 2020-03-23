@@ -23,10 +23,10 @@ object VideoEmplacementLiveData : MutableLiveData<VideoEmplacement>() {
         value = VideoEmplacement.center()
     }
 
-    fun bottom() {
+    fun bottom(bottomBarVisible: Boolean) {
         oldValue2 = oldValue1
         oldValue1 = value
-        value = VideoEmplacement.bottom()
+        value = VideoEmplacement.bottom(bottomBarVisible)
     }
 
     fun playlist() {

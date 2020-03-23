@@ -56,7 +56,7 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
 
     var youTubePlayer: YouTubePlayer? = null
 
-    var videoEmplacement: VideoEmplacement = VideoEmplacement.bottom()
+    var videoEmplacement: VideoEmplacement = VideoEmplacement.bottom(true)
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -369,7 +369,6 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
         })
     }
 
-    val bottomEmp = EmplacementBottom()
     val centerEmp = EmplacementCenter()
 
     private fun observeSlidePanelDragging() {
@@ -381,7 +380,7 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
                 videoViewParams.y = (centerEmp.y + progress * dpToPixel(20f)).toInt()
                 windowManager.updateViewLayout(videoContainerView, videoViewParams)
             } else if (videoEmplacement is EmplacementBottom) {
-
+                val bottomEmp = videoEmplacement
                 videoViewParams.x = (bottomEmp.x + progress * dpToPixel(280f)).toInt()
                 videoViewParams.y = (bottomEmp.y - progress * dpToPixel(56f)).toInt()
                 windowManager.updateViewLayout(videoContainerView, videoViewParams)
