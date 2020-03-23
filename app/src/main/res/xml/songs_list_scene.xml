@@ -19,7 +19,7 @@
             android:layout_marginTop="64dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
         <Constraint
             android:id="@id/txtPlaylistName"
             android:layout_width="0dp"
@@ -60,8 +60,9 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@id/imgBackground"
-            android:layout_height="56dp"
+            android:layout_height="0dp"
             android:alpha="0.5"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -71,9 +72,9 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/imgBackground"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
 
         <Constraint
             android:id="@id/txtPlaylistName"
@@ -82,7 +83,7 @@
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/txtNumberOfSongs"
             app:layout_constraintStart_toEndOf="@id/imgArtist"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topGuideline"
             app:layout_constraintVertical_chainStyle="packed">
             <CustomAttribute
                 app:attributeName="textSize"
@@ -93,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgBackground"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
             app:layout_constraintStart_toEndOf="@id/imgArtist"
             app:layout_constraintTop_toBottomOf="@+id/txtPlaylistName">
             <CustomAttribute
