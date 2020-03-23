@@ -40,6 +40,7 @@ object Utils {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, videoId)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             type = "text/plain"
         }
 
