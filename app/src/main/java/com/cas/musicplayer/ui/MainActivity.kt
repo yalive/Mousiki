@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -130,7 +131,8 @@ class MainActivity : BaseActivity() {
                 bottomNavView.menu[1].isChecked = true
             }
         }
-        bottomNavView.isVisible = showBottomBarForDestination(destinationId)
+        val showBottomBarForDestination = showBottomBarForDestination(destinationId)
+        bottomNavView.isVisible = showBottomBarForDestination
     }
 
     private fun showBottomBarForDestination(destinationId: Int): Boolean {
@@ -229,9 +231,12 @@ class MainActivity : BaseActivity() {
                 newState: SlidingUpPanelLayout.PanelState?
             ) {
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    window.statusBarColor = Color.TRANSPARENT
+                    darkStatusBar()
                     bottomNavView.isVisible = false
                     VideoEmplacementLiveData.center()
                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    adjustStatusBarWhenPanelCollapsed()
                     bottomNavView.isVisible =
                         showBottomBarForDestination(navController.currentDestination!!.id)
                     VideoEmplacementLiveData.bottom(bottomNavView.isVisible)
@@ -248,6 +253,23 @@ class MainActivity : BaseActivity() {
             }
         })
 
+    }
+
+    private fun adjustStatusBarWhenPanelCollapsed() {
+        val id = navController.currentDestination?.id
+        if (id == R.id.settingsFragment
+            || id == R.id.libraryFragment
+            || id == R.id.searchYoutubeFragment
+            || id == R.id.genresFragment
+            || id == R.id.favouriteSongsFragment
+            || id == R.id.artistsFragment
+        ) {
+            lightStatusBar()
+            window.statusBarColor = Color.WHITE
+        } else {
+            darkStatusBar()
+            window.statusBarColor = Color.TRANSPARENT
+        }
     }
 
     override fun onBackPressed() {

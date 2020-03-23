@@ -2,7 +2,6 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -14,9 +13,8 @@
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="colorPrimaryDark">@color/colorWhite</item>
-        <item name="android:statusBarColor">@android:color/holo_blue_bright</item>
-        <!-- <item name="android:statusBarColor">@color/colorWhite</item>-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 </resources>
