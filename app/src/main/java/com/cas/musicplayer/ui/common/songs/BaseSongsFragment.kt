@@ -1,8 +1,8 @@
 package com.cas.musicplayer.ui.common.songs
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import com.cas.common.dpToPixel
 import com.cas.common.fragment.BaseFragment
@@ -60,8 +60,11 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         }
 
         DeviceInset.observe(this, Observer { inset ->
-            motionLayout.updatePadding(top = inset.top)
+            topGuideline.setGuidelineBegin(inset.top)
+            bottomGuideline.setGuidelineBegin(inset.top + dpToPixel(56))
         })
+        requireActivity().window.statusBarColor = Color.TRANSPARENT
+        darkStatusBar()
     }
 
     fun updateHeader(track: DisplayedVideoItem) {
@@ -83,7 +86,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 }
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
-                txtNumberOfSongs.text = String.format("%d Songs", newList.size)
+                txtNumberOfSongs.text = String.format("%d Songs", newList.size - 3)
                 progressBar.alpha = 0f
             }
             Resource.Loading -> progressBar.alpha = 1f
