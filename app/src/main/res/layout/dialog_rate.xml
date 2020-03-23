@@ -1,75 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#FFB200"
-        android:gravity="center"
-        android:text="Did you like this app? Please we need your support."
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp" />
+        android:layout_height="60dp"
+        android:background="@color/colorAccent">
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/eight_8dp"
+            android:layout_marginEnd="@dimen/eight_8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/eight_8dp"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_close" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/sixteen_16dp"
+            android:layout_toStartOf="@+id/btnClose"
+            android:gravity="center"
+            android:text="@string/rate_app_dialo_title"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="@dimen/sixteen_16dp"
         android:gravity="center"
-        android:text="Rate the App Please"
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:gravity="center"
-        android:text="It wont take more than a minute. Thanks for your support!"
-        android:textColor="@color/colorBlack" />
+        android:text="@string/rate_app_dialog_message"
+        android:textColor="@color/progress_gray_dark"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:layout_marginTop="48dp"
         android:layout_marginBottom="@dimen/sixteen_16dp"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/thirty_two_32dp"
+            android:layout_height="@dimen/thirty_two_32dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_star_rate" />
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/thirty_two_32dp"
+            android:layout_height="@dimen/thirty_two_32dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_star_rate" />
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/thirty_two_32dp"
+            android:layout_height="@dimen/thirty_two_32dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_star_rate" />
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/thirty_two_32dp"
+            android:layout_height="@dimen/thirty_two_32dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_star_rate" />
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/thirty_two_32dp"
+            android:layout_height="@dimen/thirty_two_32dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_star_rate" />
     </LinearLayout>
@@ -77,33 +89,46 @@
     <Button
         android:id="@+id/btnRate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/thirty_two_32dp"
         android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:background="#FFB200"
-        android:text="RATE 5 STARS" />
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="@color/colorAccent"
+        android:stateListAnimator="@null"
+        android:text="@string/rate_app_give_rating"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/btnRemindMe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/thirty_two_32dp"
         android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginTop="@dimen/sixteen_16dp"
         android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:background="#726D6D"
-        android:text="REMIND ME LATER"
-        android:textColor="@color/colorBlack" />
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="#726D6D"
+        android:stateListAnimator="@null"
+        android:text="@string/rate_app_remind_me_later"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/btnNoThanks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/thirty_two_32dp"
         android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginTop="@dimen/sixteen_16dp"
         android:layout_marginEnd="@dimen/sixteen_16dp"
         android:layout_marginBottom="@dimen/sixteen_16dp"
-        android:background="#726D6D"
-        android:text="NO, THANKS"
-        android:textColor="@color/colorBlack" />
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="#726D6D"
+        android:stateListAnimator="@null"
+        android:text="@string/rate_app_no_thanks"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp" />
 </LinearLayout>

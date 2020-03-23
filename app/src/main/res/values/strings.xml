@@ -42,5 +42,10 @@
     <string name="settings_facebook_like">Like Facebook page</string>
     <string name="settings_policy">Privacy policy</string>
     <string name="settings_share_app">Share app with friends</string>
+    <string name="rate_app_give_rating">Rate 5 stars</string>
+    <string name="rate_app_remind_me_later">Remind me later</string>
+    <string name="rate_app_no_thanks">No, thanks</string>
+    <string name="rate_app_dialo_title">Did you like this app? Please we need your support.</string>
+    <string name="rate_app_dialog_message">It wont take more than a minute. Thanks for your support!</string>
 
 </resources>

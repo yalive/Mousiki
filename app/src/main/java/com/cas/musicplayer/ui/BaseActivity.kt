@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -169,5 +170,24 @@ open class BaseActivity : AppCompatActivity() {
                 showInterstitialAd()
             }
         })
+    }
+
+    fun lightStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val flags = window.decorView.systemUiVisibility
+            window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        } else {
+            // window.statusBarColor = requireContext().color(android.color.)
+        }
+    }
+
+    fun darkStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val flags = window.decorView.systemUiVisibility
+            window.decorView.systemUiVisibility =
+                flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+        } else {
+            // window.statusBarColor = color(R.color.colorPrimary)
+        }
     }
 }

@@ -16,12 +16,12 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.annotation.NonNull
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
-import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import java.io.IOException
@@ -54,7 +54,7 @@ object Utils {
             action = Intent.ACTION_SEND
             putExtra(
                 Intent.EXTRA_TEXT,
-                "Install Free Music App from: https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
+                "Install Free Music App from: https://play.google.com/store/apps/details?id=com.cas.musicplayer"
             )
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             type = "text/plain"
@@ -146,25 +146,26 @@ object Utils {
         val btnRate = view.findViewById<Button>(R.id.btnRate)
         val btnRemindMe = view.findViewById<Button>(R.id.btnRemindMe)
         val btnNoThanks = view.findViewById<Button>(R.id.btnNoThanks)
+        val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
         val dialog = MaterialDialog(context).show {
             customView(null, view, false, true)
             cancelOnTouchOutside(false)
         }
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-
         btnRate.setOnClickListener {
             dialog.dismiss()
             UserPrefs.setRatedApp()
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse(
-                    "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
+                    "https://play.google.com/store/apps/details?id=com.cas.musicplayer"
                 )
                 setPackage("com.android.vending")
             }
             context.startActivity(intent)
         }
-
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
         btnRemindMe.setOnClickListener {
             dialog.dismiss()
         }
