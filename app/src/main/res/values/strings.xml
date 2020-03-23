@@ -19,6 +19,7 @@
     <string name="common_more">More</string>
 
     <!-- Library -->
+    <string name="library">Library</string>
     <string name="library_recently_played">Recently played</string>
     <string name="library_favourites">Favourites</string>
     <string name="library_heavy">Mostly played songs</string>

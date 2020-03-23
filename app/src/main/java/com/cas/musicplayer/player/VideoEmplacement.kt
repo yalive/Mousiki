@@ -28,24 +28,20 @@ sealed class VideoEmplacement {
     }
 
     companion object {
-        fun bottom(): EmplacementBottom =
-            EmplacementBottom()
+        fun bottom(bottomBarVisible: Boolean): EmplacementBottom =
+            EmplacementBottom(bottomBarVisible)
 
-        fun center(): EmplacementCenter =
-            EmplacementCenter()
+        fun center(): EmplacementCenter = EmplacementCenter()
 
-        fun playlist(): EmplacementPlaylist =
-            EmplacementPlaylist()
+        fun playlist(): EmplacementPlaylist = EmplacementPlaylist()
 
-        fun fullscreen(): EmplacementFullScreen =
-            EmplacementFullScreen()
+        fun fullscreen(): EmplacementFullScreen = EmplacementFullScreen()
 
-        fun out(): EmplacementOut =
-            EmplacementOut()
+        fun out(): EmplacementOut = EmplacementOut()
     }
 }
 
-class EmplacementBottom : VideoEmplacement() {
+class EmplacementBottom(val bottomBarVisible: Boolean) : VideoEmplacement() {
 
     override val x: Int
         get() {
@@ -54,12 +50,13 @@ class EmplacementBottom : VideoEmplacement() {
 
     override val y: Int
         get() {
-
             val notch = if (DeviceInset.hasNotch()) dpToPixel(24f) else 0
-
-            return screenHeightPx - height - dpToPixel(28f) + DeviceInset.get().top + notch - dpToPixel(
-                56f
-            )
+            var bottomY =
+                screenHeightPx - height - dpToPixel(28f) + DeviceInset.get().top + notch
+            if (bottomBarVisible) {
+                bottomY -= dpToPixel(56f)
+            }
+            return bottomY
         }
 
     override val width: Int

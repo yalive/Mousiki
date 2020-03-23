@@ -19,9 +19,7 @@ import androidx.navigation.Navigation
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.player.EmplacementFullScreen
-import com.cas.musicplayer.player.EmplacementOut
-import com.cas.musicplayer.player.EmplacementPlaylist
+import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -59,6 +57,10 @@ class MainActivity : BaseActivity() {
             updateBottomNavigationMenu(destination.id)
             val showBack = showBackForDestination(destination)
             supportActionBar?.setDisplayHomeAsUpEnabled(showBack)
+            val currentEmplacement = VideoEmplacementLiveData.value
+            if (currentEmplacement != null && currentEmplacement is EmplacementBottom) {
+                VideoEmplacementLiveData.value = VideoEmplacement.bottom(bottomNavView.isVisible)
+            }
         }
 
         if (!canDrawOverApps()) {
@@ -128,9 +130,13 @@ class MainActivity : BaseActivity() {
                 bottomNavView.menu[1].isChecked = true
             }
         }
-        bottomNavView.isVisible = destinationId == R.id.homeFragment
+        bottomNavView.isVisible = showBottomBarForDestination(destinationId)
+    }
+
+    private fun showBottomBarForDestination(destinationId: Int): Boolean {
+        return (destinationId == R.id.homeFragment
                 || destinationId == R.id.libraryFragment
-                || destinationId == R.id.searchYoutubeFragment
+                || destinationId == R.id.searchYoutubeFragment)
     }
 
     private fun handleClickMenuSearch() {
@@ -223,9 +229,15 @@ class MainActivity : BaseActivity() {
                 newState: SlidingUpPanelLayout.PanelState?
             ) {
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    bottomNavView.isVisible = false
                     VideoEmplacementLiveData.center()
                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    VideoEmplacementLiveData.bottom()
+                    bottomNavView.isVisible =
+                        showBottomBarForDestination(navController.currentDestination!!.id)
+                    VideoEmplacementLiveData.bottom(bottomNavView.isVisible)
+                } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
+                    bottomNavView.isVisible =
+                        showBottomBarForDestination(navController.currentDestination!!.id)
                 }
             }
         })

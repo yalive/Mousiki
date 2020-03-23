@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.cas.common.extensions.gone
@@ -27,6 +28,7 @@ import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_bottom_shet.*
 
 
@@ -106,24 +108,23 @@ class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
         val oldPlace1 = VideoEmplacementLiveData.oldValue1
         val oldPlace2 = VideoEmplacementLiveData.oldValue2
 
-
         val mainActivity = requireActivity() as MainActivity
 
         if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED) {
             VideoEmplacementLiveData.center()
             return
         } else if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-            VideoEmplacementLiveData.bottom()
+            VideoEmplacementLiveData.bottom(mainActivity.bottomNavView.isVisible)
             return
         }
 
         if (oldPlace1 is EmplacementBottom) {
-            VideoEmplacementLiveData.bottom()
+            VideoEmplacementLiveData.bottom(mainActivity.bottomNavView.isVisible)
         } else if (oldPlace1 is EmplacementCenter) {
             VideoEmplacementLiveData.center()
         } else if (oldPlace1 is EmplacementPlaylist) {
             if (oldPlace2 is EmplacementBottom) {
-                VideoEmplacementLiveData.bottom()
+                VideoEmplacementLiveData.bottom(mainActivity.bottomNavView.isVisible)
             } else if (oldPlace2 is EmplacementCenter) {
                 VideoEmplacementLiveData.center()
             }
