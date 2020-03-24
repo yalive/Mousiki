@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import androidx.navigation.Navigation
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
@@ -27,6 +29,8 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.utils.*
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -105,6 +109,32 @@ class MainActivity : BaseActivity() {
             true
         }
 
+        handleDynamicLinks()
+    }
+
+    private fun handleDynamicLinks() {
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                    val videoId = deepLink?.getQueryParameter("videoId")
+                    val duration = deepLink?.getQueryParameter("duration")
+                    val title = deepLink?.getQueryParameter("title")
+                    if (videoId != null && title != null && duration != null) {
+                        val track = MusicTrack(videoId, title, duration)
+                        collapseBottomPanel()
+                        PlayerQueue.playTrack(track, listOf(track))
+                    }
+                } else {
+                    toast("Ooops")
+                }
+            }
+            .addOnFailureListener(this) { e ->
+                toast("Error")
+                Log.w(TAG, "getDynamicLink:onFailure", e)
+            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

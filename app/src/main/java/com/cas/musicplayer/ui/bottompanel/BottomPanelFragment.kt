@@ -80,7 +80,7 @@ class BottomPanelFragment : Fragment(),
         }
 
         btnShareVia.setOnClickListener {
-            Utils.shareVia(PlayerQueue.value?.shareVideoUrl, mContext = mainActivity)
+            Utils.shareWithDeepLink(PlayerQueue.value, mContext = mainActivity)
         }
 
         btnAddFav.setOnClickListener {

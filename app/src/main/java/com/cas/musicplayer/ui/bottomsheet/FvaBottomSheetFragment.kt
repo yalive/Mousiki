@@ -1,7 +1,6 @@
 package com.cas.musicplayer.ui.bottomsheet
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,8 +50,7 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         shareVia.setOnClickListener {
-            Log.d(TAG, musicTrack.shareVideoUrl)
-            Utils.shareVia(musicTrack.shareVideoUrl, context!!)
+            Utils.shareWithDeepLink(musicTrack, context!!)
             if (this.isVisible) {
                 this.dismiss()
             }
