@@ -6,6 +6,7 @@ import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.AttrRes
@@ -67,5 +68,7 @@ fun Context.screenSize(): ScreenSize {
 }
 
 fun Context.toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    val toast = Toast.makeText(this, message, Toast.LENGTH_LONG)
+    toast.setGravity(Gravity.CENTER, 0, 0)
+    toast.show()
 }

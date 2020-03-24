@@ -24,6 +24,13 @@ import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
+import com.cas.musicplayer.domain.model.MusicTrack
+import com.google.firebase.dynamiclinks.ShortDynamicLink
+import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.iosParameters
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
+import com.google.firebase.ktx.Firebase
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
@@ -47,6 +54,28 @@ object Utils {
         val context = MusicApp.get()
         if (sendIntent.resolveActivity(context.packageManager) != null) {
             context.startActivity(sendIntent)
+        }
+    }
+
+
+    fun shareWithDeepLink(track: MusicTrack?, mContext: Context) {
+        Firebase.dynamicLinks.shortLinkAsync(ShortDynamicLink.Suffix.SHORT) {
+            val uri = Uri.Builder()
+                .scheme("https")
+                .authority("www.mouziki.com")
+                .appendQueryParameter("videoId", track?.youtubeId)
+                .appendQueryParameter("title", track?.title)
+                .appendQueryParameter("duration", track?.duration)
+                .build()
+            link = uri
+            domainUriPrefix = "https://mouziki.page.link"
+            // Open links with this app on Android
+            androidParameters { }
+            // Open links with com.example.ios on iOS
+            iosParameters("com.example.ios") { }
+        }.addOnSuccessListener { result ->
+            val shortLink = result.shortLink
+            shareVia(shortLink.toString(), mContext)
         }
     }
 
