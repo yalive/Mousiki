@@ -22,7 +22,6 @@ import java.util.concurrent.Executors
  */
 class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
-    val TAG = "BottomSheetFragment"
     lateinit var musicTrack: MusicTrack
 
     private val viewModel by lazy { injector.favBottomSheetViewModel }

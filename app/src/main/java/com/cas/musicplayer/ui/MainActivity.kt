@@ -221,7 +221,9 @@ class MainActivity : BaseActivity() {
             restoreOldVideoState()
         }
         ViewCompat.requestApplyInsets(cordinator)
-        handleDynamicLinks()
+        if (canDrawOverApps()) {
+            handleDynamicLinks()
+        }
     }
 
 
