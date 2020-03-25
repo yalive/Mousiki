@@ -11,6 +11,7 @@ import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -72,9 +73,10 @@ object Utils {
             // Open links with this app on Android
             androidParameters { }
             // Open links with com.example.ios on iOS
-            iosParameters("com.example.ios") { }
+            iosParameters("com.mouziki.ios") { }
         }.addOnSuccessListener { result ->
             val shortLink = result.shortLink
+            Log.d("dynamicLinks", "Dynamic link:${shortLink.toString()}")
             shareVia(shortLink.toString(), mContext)
         }
     }

@@ -37,6 +37,9 @@
 
                 <data
                     android:host="mouziki.com"
+                    android:scheme="http" />
+                <data
+                    android:host="mouziki.com"
                     android:scheme="https" />
             </intent-filter>
         </activity>

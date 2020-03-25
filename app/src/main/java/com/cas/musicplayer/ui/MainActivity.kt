@@ -108,8 +108,6 @@ class MainActivity : BaseActivity() {
             }
             true
         }
-
-        handleDynamicLinks()
     }
 
     private fun handleDynamicLinks() {
@@ -119,6 +117,7 @@ class MainActivity : BaseActivity() {
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
+                    Log.d("dynamicLinks", "Goot deep link:${deepLink?.toString()}")
                     val videoId = deepLink?.getQueryParameter("videoId")
                     val duration = deepLink?.getQueryParameter("duration")
                     val title = deepLink?.getQueryParameter("title")
@@ -127,8 +126,6 @@ class MainActivity : BaseActivity() {
                         collapseBottomPanel()
                         PlayerQueue.playTrack(track, listOf(track))
                     }
-                } else {
-                    toast("Ooops")
                 }
             }
             .addOnFailureListener(this) { e ->
@@ -224,6 +221,7 @@ class MainActivity : BaseActivity() {
             restoreOldVideoState()
         }
         ViewCompat.requestApplyInsets(cordinator)
+        handleDynamicLinks()
     }
 
 
