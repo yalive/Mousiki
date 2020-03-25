@@ -27,10 +27,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.google.firebase.dynamiclinks.ShortDynamicLink
-import com.google.firebase.dynamiclinks.ktx.androidParameters
-import com.google.firebase.dynamiclinks.ktx.dynamicLinks
-import com.google.firebase.dynamiclinks.ktx.iosParameters
-import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
+import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
 import java.io.IOException
 import java.nio.charset.Charset
@@ -71,6 +68,11 @@ object Utils {
             domainUriPrefix = "https://mouziki.page.link"
             androidParameters { }
             iosParameters("com.mouziki.ios") { }
+            socialMetaTagParameters {
+                title = track?.title ?: ""
+                description = ""
+                imageUrl = Uri.parse(track?.imgUrl)
+            }
         }.addOnSuccessListener { result ->
             val shortLink = result.shortLink
             Log.d("dynamicLinks", "Dynamic link:${shortLink.toString()}")
