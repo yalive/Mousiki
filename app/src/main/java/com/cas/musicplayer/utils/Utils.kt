@@ -61,18 +61,15 @@ object Utils {
 
     fun shareWithDeepLink(track: MusicTrack?, mContext: Context) {
         Firebase.dynamicLinks.shortLinkAsync(ShortDynamicLink.Suffix.SHORT) {
-            val uri = Uri.Builder()
+            link = Uri.Builder()
                 .scheme("https")
                 .authority("www.mouziki.com")
                 .appendQueryParameter("videoId", track?.youtubeId)
                 .appendQueryParameter("title", track?.title)
                 .appendQueryParameter("duration", track?.duration)
                 .build()
-            link = uri
             domainUriPrefix = "https://mouziki.page.link"
-            // Open links with this app on Android
             androidParameters { }
-            // Open links with com.example.ios on iOS
             iosParameters("com.mouziki.ios") { }
         }.addOnSuccessListener { result ->
             val shortLink = result.shortLink
