@@ -52,6 +52,10 @@ class SearchYoutubeViewModel @Inject constructor(
 
     private var lastQuery = ""
 
+    init {
+        showHistoricSearch()
+    }
+
     fun search(query: String) = uiScope.launch(coroutineContext) {
         if (lastQuery == query && videos.value != null && channels.value != null && playlists.value != null) {
             return@launch
@@ -87,7 +91,12 @@ class SearchYoutubeViewModel @Inject constructor(
         _channels.value = resource.asResource()
     }
 
-    fun getSuggestions(keyword: String) = uiCoroutine {
+    fun getSuggestions(keyword: String?) = uiCoroutine {
+        if (keyword == null || keyword.isEmpty() || keyword.length <= 1) {
+            showHistoricSearch()
+            return@uiCoroutine
+        }
+
         val suggestionList = async {
             getGoogleSearchSuggestions(keyword).map { SearchSuggestion(it) }
         }
@@ -103,5 +112,12 @@ class SearchYoutubeViewModel @Inject constructor(
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
         val tracks = (_videos.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
         playTrackFromQueue(track, tracks)
+    }
+
+    fun showHistoricSearch() = uiCoroutine {
+        val historicSearch = getRecentSearchQueries("").map {
+            SearchSuggestion(it, true)
+        }
+        _searchSuggestions.value = historicSearch
     }
 }

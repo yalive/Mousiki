@@ -75,18 +75,14 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     protected fun updateUI(resource: Resource<List<DisplayableItem>>) {
         when (resource) {
             is Resource.Success -> {
-                val newList = resource.data.toMutableList().apply {
-                    add(EmptyCellItem)
-                    add(EmptyCellItem)
-                    add(EmptyCellItem)
-                }
+                val newList = resource.data
                 if (adapter.dataItems.isEmpty() && newList.isNotEmpty()) {
                     val videoItem = newList[0] as DisplayedVideoItem
                     updateHeader(videoItem)
                 }
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
-                txtNumberOfSongs.text = String.format("%d Songs", newList.size - 3)
+                txtNumberOfSongs.text = String.format("%d Songs", newList.size)
                 progressBar.alpha = 0f
             }
             Resource.Loading -> progressBar.alpha = 1f

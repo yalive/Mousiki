@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_homeFragment_to_libraryFragment"
             app:destination="@id/libraryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mainSearchFragment"
+            app:destination="@id/mainSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/newReleaseFragment"
@@ -107,11 +110,11 @@
             app:popExitAnim="@anim/custom_slide_out_right" />
         <action
             android:id="@+id/action_libraryFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
             app:enterAnim="@anim/custom_slide_in_right"
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
-            app:popExitAnim="@anim/custom_slide_out_right"
-            app:destination="@id/settingsFragment" />
+            app:popExitAnim="@anim/custom_slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -128,4 +131,23 @@
         android:name="com.cas.musicplayer.ui.settings.TimerDialog"
         android:label="TimerDialog"
         tools:layout="@layout/timer_dialog" />
+    <fragment
+        android:id="@+id/mainSearchFragment"
+        android:name="com.cas.musicplayer.ui.searchyoutube.MainSearchFragment"
+        android:label="MainSearchFragment">
+        <action
+            android:id="@+id/action_mainSearchFragment_to_searchYoutubeFragment"
+            app:destination="@id/searchYoutubeFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_mainSearchFragment_to_playlistVideosFragment"
+            app:destination="@id/playlistVideosFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+    </fragment>
 </navigation>

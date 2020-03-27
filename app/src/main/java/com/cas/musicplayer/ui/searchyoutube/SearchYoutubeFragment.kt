@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.searchyoutube
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -48,12 +49,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            val query = newText ?: ""
-            if (query.isNotEmpty() && query.length > 1) {
-                viewModel.getSuggestions(query)
-            } else if (query.isEmpty()) {
-                recyclerViewSuggestions?.gone()
-            }
+            viewModel.getSuggestions(newText)
             return false
         }
     }
@@ -82,13 +78,15 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         inflater.inflate(R.menu.menu_toolbar, menu)
         searchItem = menu.findItem(R.id.searchYoutubeFragment)
         searchView = searchItem?.actionView as SearchView
+        searchView?.queryHint = getString(R.string.search_button_title)
+
         searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                findNavController().popBackStack(R.id.homeFragment, false)
+                findNavController().popBackStack()
                 return true
             }
         })
@@ -115,6 +113,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         )
         observeViewModel()
         lightStatusBar()
+        requireActivity().window.statusBarColor = Color.WHITE
     }
 
     private fun removeQueryListener() {
