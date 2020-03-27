@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -117,20 +116,15 @@ class MainActivity : BaseActivity() {
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
-                    Log.d("dynamicLinks", "Goot deep link:${deepLink?.toString()}")
                     val videoId = deepLink?.getQueryParameter("videoId")
                     val duration = deepLink?.getQueryParameter("duration")
                     val title = deepLink?.getQueryParameter("title")
                     if (videoId != null && title != null && duration != null) {
                         val track = MusicTrack(videoId, title, duration)
                         collapseBottomPanel()
-                        PlayerQueue.playTrack(track, listOf(track))
+                        viewModel.playTrackFromDeepLink(track)
                     }
                 }
-            }
-            .addOnFailureListener(this) { e ->
-                toast("Error")
-                Log.w(TAG, "getDynamicLink:onFailure", e)
             }
     }
 
@@ -165,13 +159,13 @@ class MainActivity : BaseActivity() {
     private fun showBottomBarForDestination(destinationId: Int): Boolean {
         return (destinationId == R.id.homeFragment
                 || destinationId == R.id.libraryFragment
-                || destinationId == R.id.searchYoutubeFragment)
+                || destinationId == R.id.mainSearchFragment)
     }
 
     private fun handleClickMenuSearch() {
-        if (navController.currentDestination?.id == R.id.searchYoutubeFragment) return
+        if (navController.currentDestination?.id == R.id.mainSearchFragment) return
         appbar.setExpanded(true, true)
-        navController.navigate(R.id.searchYoutubeFragment)
+        navController.navigate(R.id.mainSearchFragment)
     }
 
     private fun handleClickMenuHome() {
@@ -289,7 +283,7 @@ class MainActivity : BaseActivity() {
         val id = navController.currentDestination?.id
         if (id == R.id.settingsFragment
             || id == R.id.libraryFragment
-            || id == R.id.searchYoutubeFragment
+            || id == R.id.mainSearchFragment
             || id == R.id.genresFragment
             || id == R.id.favouriteSongsFragment
             || id == R.id.artistsFragment

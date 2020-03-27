@@ -161,6 +161,76 @@ class GenresRepository @Inject constructor(
                     "PLQog_FHUHAFUDDQPOTeAWSHwzFV1Zz5PZ"
                 )
             )
+
+
+            // New
+            add(
+                GenreMusic(
+                    "Latest arabic",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PLqjy2IHnuqJuOQyEiobSVUSUNOa6TXLBd"
+                )
+            )
+            add(
+                GenreMusic(
+                    "SoundCloud",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PLzCxunOM5WFLNCSF0UEHZqFJJlmdeL71S"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Dance & Electronic Music",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PLzCxunOM5WFIBEfixsIWyqPpaABQ5S8HD"
+                )
+            )
+
+            add(
+                GenreMusic(
+                    "Happy Music",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PLzCxunOM5WFLOaTRCzeGrODz8TWaLrbhv"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Inspirational Music",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PLzCxunOM5WFJBZIubb6gE-osrl9vMbK7e"
+                )
+            )
+            add(
+                GenreMusic(
+                    "Calm Music",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PLzCxunOM5WFIRlYt5KJngVDXt9uIqX_1B"
+                )
+            )
+
+            add(
+                GenreMusic(
+                    "Workout music",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PLChOO_ZAB22Uq8Lmi0JqcgQBtTdWXKG0q"
+                )
+            )
+
+            add(
+                GenreMusic(
+                    "Relaxing music",
+                    R.drawable.img_genre_soul,
+                    "",
+                    "PL5DAB733F1999178F"
+                )
+            )
         }
     }
 }

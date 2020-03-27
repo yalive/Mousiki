@@ -8,6 +8,7 @@
         <item name="android:windowBackground">@color/colorWhite</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_long_arrow_left</item>
     </style>
 
     <style name="AppTheme.Launcher">

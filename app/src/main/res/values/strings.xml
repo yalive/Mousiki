@@ -1,7 +1,5 @@
 <resources>
 
-    <string name="search">Search</string>
-
     <string name="title_activity_fullscreen_player">FullscreenPlayerActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -46,5 +44,7 @@
     <string name="rate_app_no_thanks">No, thanks</string>
     <string name="rate_app_dialo_title">Did you like this app? Please we need your support.</string>
     <string name="rate_app_dialog_message">It wont take more than a minute. Thanks for your support!</string>
+    <string name="search">Search</string>
+    <string name="search_button_title">Artists, songs, or podcasts</string>
 
 </resources>

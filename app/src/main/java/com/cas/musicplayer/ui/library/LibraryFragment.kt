@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
@@ -24,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_library.*
  * Created by Abdelhadi on 2019-11-28.
  ***************************************
  */
-class LibraryFragment : BaseFragment<LibraryViewModel>(), PageableFragment {
+class LibraryFragment : BaseFragment<LibraryViewModel>() {
 
     override val layoutResourceId: Int = R.layout.fragment_library
     override val viewModel by viewModel { injector.libraryViewModel }
@@ -79,6 +78,4 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(), PageableFragment {
         observe(viewModel.heavySongs, adapter::updateHeavy)
         observe(viewModel.favouriteSongs, adapter::updateFavourite)
     }
-
-    override fun getPageTitle(): String = "Library"
 }
