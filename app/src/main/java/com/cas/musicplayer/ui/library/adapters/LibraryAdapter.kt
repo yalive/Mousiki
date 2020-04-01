@@ -33,7 +33,7 @@ class LibraryAdapter(
         dataItems = mutableListOf(
             LibraryHeaderItem.RecentHeader,
             LibraryItem.Recent(emptyList()),
-            LibraryHeaderItem.FavouriteHeader,
+            LibraryHeaderItem.FavouriteHeader(),
             LibraryItem.Favourite(emptyList())
         )
     }
@@ -61,6 +61,14 @@ class LibraryAdapter(
         val index = indexOfItem(LibraryItem.Favourite::class)
         if (index != -1) {
             updateItemAtIndex(index, LibraryItem.Favourite(songs))
+        }
+
+        // Show more
+        if (songs.size > 5) {
+            val indexHeader = indexOfItem(LibraryHeaderItem.FavouriteHeader::class)
+            if (indexHeader != -1) {
+                updateItemAtIndex(indexHeader, LibraryHeaderItem.FavouriteHeader(withMore = true))
+            }
         }
     }
 

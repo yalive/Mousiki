@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
+        android:fontFamily="@font/pangram_regular"
         android:text="@string/search"
         android:textColor="@color/colorBlack"
         android:textSize="36sp"
@@ -47,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
+            android:fontFamily="@font/pangram_regular"
             android:text="@string/search_button_title"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite" />

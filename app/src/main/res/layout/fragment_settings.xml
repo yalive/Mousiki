@@ -5,13 +5,15 @@
     android:orientation="vertical"
     tools:context="com.cas.musicplayer.ui.settings.SettingsFragment">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTimer"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:drawableStart="@drawable/ic_clock_settings"
         android:drawablePadding="16dp"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -24,13 +26,15 @@
         android:layout_height="0.5dp"
         android:background="@color/colorDividerSettings" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnShareApp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:drawableStart="@drawable/ic_share_settings"
         android:drawablePadding="16dp"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -43,13 +47,15 @@
         android:layout_height="0.5dp"
         android:background="@color/colorDividerSettings" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRateApp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:drawableStart="@drawable/ic_smile_settings"
         android:drawablePadding="16dp"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -62,13 +68,15 @@
         android:layout_height="0.5dp"
         android:background="@color/colorDividerSettings" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLikeFacebook"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:drawableStart="@drawable/ic_thumbs_up_settings"
         android:drawablePadding="16dp"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -81,13 +89,15 @@
         android:layout_height="0.5dp"
         android:background="@color/colorDividerSettings" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFeedback"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:drawableStart="@drawable/ic_comment_settings"
         android:drawablePadding="16dp"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -100,13 +110,15 @@
         android:layout_height="0.5dp"
         android:background="@color/colorDividerSettings" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPolicy"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:drawableStart="@drawable/ic_privacy_policy_settings"
         android:drawablePadding="16dp"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"

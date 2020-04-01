@@ -6,10 +6,46 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordGroup"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        app:boxBackgroundColor="@color/colorBgSearchArtist"
+        app:boxCollapsedPaddingTop="0dp"
+        app:boxCornerRadiusBottomEnd="@dimen/sixteen_16dp"
+        app:boxCornerRadiusBottomStart="@dimen/sixteen_16dp"
+        app:boxCornerRadiusTopEnd="@dimen/sixteen_16dp"
+        app:boxCornerRadiusTopStart="@dimen/sixteen_16dp"
+        app:boxStrokeColor="@color/psw_box_stroke_color"
+        app:boxStrokeWidthFocused="0.0dp"
+        app:endIconTint="@color/colorGrayPager"
+        app:hintEnabled="false"
+        app:startIconDrawable="@drawable/ic_search"
+        app:startIconTint="@color/colorGrayPager">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pangram_regular"
+            android:hint="@string/artists_find_an_artist"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingVertical="0dp"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <RelativeLayout
         android:id="@+id/listContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/twenty_four_24dp"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -39,6 +75,7 @@
             android:layout_toStartOf="@+id/sideBar"
             android:background="@drawable/bg_text_dialog"
             android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:textColor="#ffffff"
             android:textSize="22sp"
@@ -50,11 +87,12 @@
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="30dp"
+
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/eight_8dp"
         android:background="@drawable/bg_circle"
-        android:indeterminateTint="@color/colorYellow"
+        android:indeterminateTint="?colorPrimary"
         android:padding="@dimen/four_4dp"
         android:visibility="visible"
         tools:visibility="gone" />

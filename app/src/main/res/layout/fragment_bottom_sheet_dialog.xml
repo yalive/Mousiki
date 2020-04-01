@@ -33,6 +33,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="@string/label_share"
             android:textColor="@color/colorBlack"
@@ -67,6 +68,7 @@
             android:id="@+id/favLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="Unfavorite"
             android:textColor="@color/colorBlack"
@@ -98,6 +100,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="@string/label_add_to"
             android:textColor="@color/colorBlack"
@@ -131,6 +134,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="@string/label_play_next"
             android:textColor="@color/colorBlack"

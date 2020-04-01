@@ -1,13 +1,16 @@
 package com.cas.musicplayer.ui.artists.list
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.gone
+import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
 import com.cas.common.fragment.BaseFragment
@@ -33,6 +36,8 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lightStatusBar()
+        requireActivity().window.statusBarColor = Color.WHITE
         sideBar = view.findViewById(R.id.sideBar)
         txtDialog = view.findViewById(R.id.txtDialog)
 
@@ -40,10 +45,19 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
         observeViewModel()
         viewModel.loadAllArtists()
         setupSideBar()
+        editSearch.doAfterTextChanged {
+            filterArtists()
+        }
+        filterArtists()
+    }
+
+    private fun filterArtists() {
+        viewModel.filterArtists(editSearch.text?.toString() ?: "")
     }
 
     private fun setupRecyclerView() {
         adapter = ArtistListAdapter(onClickArtist = {
+            view?.hideSoftKeyboard()
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, it)
             findNavController().navigate(R.id.action_artistsFragment_to_artistSongsFragment, bundle)
@@ -56,15 +70,17 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
                 super.onScrolled(recyclerView, dx, dy)
                 val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
                 firstVisibleInListview = currentFirstVisible
-                val item = adapter.dataItems[firstVisibleInListview]
-                val char = item.name[0]
-                sideBar.setChooseLetter(char)
+                if (firstVisibleInListview < adapter.dataItems.size && firstVisibleInListview >= 0) {
+                    val item = adapter.dataItems[firstVisibleInListview]
+                    val char = item.name[0]
+                    sideBar.setChooseLetter(char)
+                }
             }
         })
     }
 
     private fun observeViewModel() {
-        observe(viewModel.artists) { resource ->
+        observe(viewModel.filteredArtists) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     adapter.dataItems = resource.data.toMutableList()

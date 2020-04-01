@@ -54,6 +54,7 @@
                 android:layout_weight="1"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
+                android:fontFamily="@font/pangram_regular"
                 android:gravity="center_vertical"
                 android:lines="2"
                 android:singleLine="true" />
@@ -66,6 +67,7 @@
                 android:layout_weight="1"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
+                android:fontFamily="@font/pangram_regular"
                 android:singleLine="true"
                 android:visibility="gone" />
         </LinearLayout>

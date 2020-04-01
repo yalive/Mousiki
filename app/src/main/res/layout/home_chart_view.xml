@@ -15,7 +15,7 @@
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="4"
-        tools:listitem="@layout/item_new_release" />
+        tools:listitem="@layout/item_home_chart" />
 
     <TextView
         android:id="@+id/txtEmpty"

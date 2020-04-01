@@ -9,7 +9,7 @@
     <color name="colorTransparent">#00000000</color>
 
     <color name="colorYellow">#F3CB45</color>
-
+    <color name="colorGrayText">#727272</color>
     <color name="colorDividerSettings">#ECE9E9</color>
     <color name="colorIconSettings">#2C2B2B</color>
 
@@ -20,6 +20,8 @@
     <color name="colorSplash">#78909C</color>
     <color name="colorSidebarSelected">@color/colorAccent</color>
     <color name="colorPlaceholderImage">#454B45</color>
+
+    <color name="colorBgSearchArtist">#F5F6FF</color>
 
     <color name="colorGenre1">#D03434</color>
     <color name="colorGenre2">#A10DF1</color>

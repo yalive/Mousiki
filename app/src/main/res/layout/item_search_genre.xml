@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ellipsize="end"
+            android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:lines="1"
             android:maxLines="1"
