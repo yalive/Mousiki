@@ -1,8 +1,10 @@
 package com.cas.musicplayer.ui.artists.list
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
+import com.cas.common.resource.doOnSuccess
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.result.Result
@@ -24,9 +26,12 @@ class ArtistListViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val _artists = MutableLiveData<Resource<List<Artist>>>()
-    val artists: LiveData<Resource<List<Artist>>>
-        get() = _artists
 
+    private val _filteredArtists = MutableLiveData<Resource<List<Artist>>>()
+    val filteredArtists: LiveData<Resource<List<Artist>>>
+        get() = _filteredArtists
+
+    private var filter = ""
 
     fun loadAllArtists() = uiCoroutine {
         if (_artists.hasItems() || _artists.isLoading()) {
@@ -63,6 +68,18 @@ class ArtistListViewModel @Inject constructor(
             _artists.value = Resource.Success(resource.data + artists)
         } else {
             _artists.value = Resource.Success(artists)
+        }
+        filterArtists(filter)
+    }
+
+    @SuppressLint("DefaultLocale")
+    fun filterArtists(filter: String) {
+        this.filter = filter
+        _artists.value?.doOnSuccess { allArtists ->
+            val filteredArtists = allArtists.filter {
+                it.name.toUpperCase().contains(filter.toUpperCase()) || filter == it.countryCode
+            }
+            _filteredArtists.value = Resource.Success(filteredArtists)
         }
     }
 

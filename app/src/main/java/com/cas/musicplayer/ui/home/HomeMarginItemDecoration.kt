@@ -27,13 +27,13 @@ class HomeMarginItemDecoration(
             } else if (position == 1) {
                 top = context.dpToPixel(24f)
             } else if (position == 2) {
-                top = context.dpToPixel(16f)
+                top = context.dpToPixel(0f)
             } else if (position == 3) {
-                top = context.dpToPixel(-4f)
+                top = context.dpToPixel(24f)
             } else if (position == 4) {
-                top = context.dpToPixel(16f)
+                top = context.dpToPixel(0f)
             } else if (position == 5) {
-                top = context.dpToPixel(-4f)
+                top = context.dpToPixel(24f)
             } else if (position == 6) {
                 top = context.dpToPixel(16f)
             } else if (position == 7) {

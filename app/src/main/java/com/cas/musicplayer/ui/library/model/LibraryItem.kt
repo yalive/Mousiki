@@ -16,6 +16,8 @@ sealed class LibraryItem : DisplayableItem {
 
 sealed class LibraryHeaderItem(val title: String, val showMore: Boolean = true) : LibraryItem() {
     object RecentHeader : LibraryHeaderItem("Recent", false)
-    object FavouriteHeader : LibraryHeaderItem("Favourites")
+    data class FavouriteHeader(val withMore: Boolean = false) :
+        LibraryHeaderItem("Favourites", withMore)
+
     object HeavyHeader : LibraryHeaderItem("Heavy songs", false)
 }

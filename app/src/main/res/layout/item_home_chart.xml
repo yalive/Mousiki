@@ -32,6 +32,7 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:ellipsize="end"
+            android:fontFamily="@font/pangram_bold"
             android:gravity="end|bottom"
             android:lines="2"
             android:maxLines="2"

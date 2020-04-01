@@ -41,7 +41,8 @@
                     android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:theme="@style/ThemeOverlay.AppCompat.Light"
                     app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|enterAlways" />
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:titleTextAppearance="@style/TextAppearance.Widget.Toolbar.Title" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <RelativeLayout
@@ -72,5 +73,9 @@
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:background="@color/colorWhite"
+        app:itemIconTint="@color/navigation_menu_icon_color"
+        app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+        app:itemTextAppearanceInactive="@style/BottomNavigationView"
+        app:itemTextColor="@color/navigation_menu_text_color"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

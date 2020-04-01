@@ -29,6 +29,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/eight_8dp"
         android:layout_weight="1"
+        android:fontFamily="@font/pangram_regular"
         android:textColor="@color/colorBlack"
         tools:text="Hello Test" />
 

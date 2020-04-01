@@ -46,5 +46,6 @@
     <string name="rate_app_dialog_message">It wont take more than a minute. Thanks for your support!</string>
     <string name="search">Search</string>
     <string name="search_button_title">Artists, songs, or podcasts</string>
+    <string name="artists_find_an_artist">Trouver un artist</string>
 
 </resources>

@@ -24,12 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:ellipsize="end"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="center"
         android:maxLines="2"
         android:padding="@dimen/four_4dp"
         android:textColor="@color/colorBlack"
         android:textSize="14sp"
-        android:textStyle="bold"
         android:visibility="visible"
         tools:text="Artist" />
 </LinearLayout>

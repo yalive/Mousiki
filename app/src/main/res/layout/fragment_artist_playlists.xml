@@ -21,9 +21,9 @@
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/eight_8dp"
-        android:padding="@dimen/four_4dp"
-        android:indeterminateTint="@color/colorYellow"
         android:background="@drawable/bg_circle"
+        android:indeterminateTint="@color/colorYellow"
+        android:padding="@dimen/four_4dp"
         android:visibility="visible"
         tools:visibility="gone" />
 
@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:fontFamily="@font/pangram_regular"
         android:text="Error"
         android:visibility="gone" />
 </FrameLayout>
