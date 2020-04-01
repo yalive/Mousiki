@@ -66,7 +66,7 @@
             android:layout_marginStart="@dimen/eight_8dp"
             android:layout_marginEnd="@dimen/eight_8dp"
             android:fontFamily="@font/pangram_regular"
-            android:textColor="@color/colorBlack"
+            android:textColor="?android:textColorPrimary"
             tools:text="Hello Test" />
 
         <TextView

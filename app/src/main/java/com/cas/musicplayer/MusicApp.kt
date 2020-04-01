@@ -27,9 +27,8 @@ class MusicApp : Application(), ComponentProvider {
 
     override fun onCreate() {
         super.onCreate()
-
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         if (AudienceNetworkAds.isInAdsProcess(this)) {
-
             return
         }
         instance = this

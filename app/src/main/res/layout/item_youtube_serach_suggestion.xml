@@ -20,7 +20,7 @@
         android:background="@null"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_search"
-        android:tint="@color/colorBlack" />
+        android:tint="?android:textColorPrimary" />
 
     <TextView
         android:id="@+id/txtTitle"
@@ -30,7 +30,7 @@
         android:layout_marginStart="@dimen/eight_8dp"
         android:layout_weight="1"
         android:fontFamily="@font/pangram_regular"
-        android:textColor="@color/colorBlack"
+        android:textColor="?android:textColorPrimary"
         tools:text="Hello Test" />
 
     <ImageButton
@@ -44,5 +44,5 @@
         android:contentDescription="@string/app_name"
         android:rotation="45"
         android:src="@drawable/ic_arrow_back"
-        android:tint="@color/colorBlack" />
+        android:tint="?android:textColorPrimary" />
 </LinearLayout>

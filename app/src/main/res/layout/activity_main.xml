@@ -30,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:fitsSystemWindows="true"
-                android:theme="@style/AppTheme.AppBarOverlay"
                 app:elevation="0dp">
 
                 <androidx.appcompat.widget.Toolbar
@@ -38,11 +37,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/colorTransparent"
-                    android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    android:theme="@style/ThemeOverlay.AppCompat.Light"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|enterAlways"
-                    app:titleTextAppearance="@style/TextAppearance.Widget.Toolbar.Title" />
+                    app:navigationIcon="@drawable/ic_arrow_left_light"
+                    app:titleTextAppearance="@style/TextAppearance.Mousiki.Toolbar.Title" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <RelativeLayout
@@ -72,7 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorWhite"
         app:itemIconTint="@color/navigation_menu_icon_color"
         app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
         app:itemTextAppearanceInactive="@style/BottomNavigationView"

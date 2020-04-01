@@ -1,5 +1,7 @@
 package com.cas.common.fragment
 
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -86,6 +88,27 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
                 flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         } else {
             // window.statusBarColor = color(R.color.colorPrimary)
+        }
+    }
+
+    fun darkStatusBarOnDarkMode() {
+        if (isDarkMode()) {
+            requireActivity().window.statusBarColor = Color.BLACK
+            darkStatusBar()
+        } else {
+            requireActivity().window.statusBarColor = Color.WHITE
+            lightStatusBar()
+        }
+    }
+
+    fun isDarkMode(): Boolean {
+        val nightModeFlags = requireContext().resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK
+        return when (nightModeFlags) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            Configuration.UI_MODE_NIGHT_NO -> false
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> false
+            else -> false
         }
     }
 }

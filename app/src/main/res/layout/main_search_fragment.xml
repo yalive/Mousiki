@@ -14,7 +14,7 @@
         android:layout_marginTop="56dp"
         android:fontFamily="@font/pangram_regular"
         android:text="@string/search"
-        android:textColor="@color/colorBlack"
+        android:textColor="?android:textColorPrimary"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginTop="@dimen/sixteen_16dp"
         android:layout_marginEnd="@dimen/sixteen_16dp"
         android:background="@drawable/bg_rounded_button"
-        android:backgroundTint="@color/colorBlack"
+        android:backgroundTint="?android:textColorPrimary"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"
@@ -41,7 +41,7 @@
             android:layout_width="@dimen/twenty_four_24dp"
             android:layout_height="@dimen/twenty_four_24dp"
             android:src="@drawable/ic_search"
-            android:tint="@color/colorWhite" />
+            android:tint="?colorSurface" />
 
         <TextView
             android:id="@+id/btnSearch"
@@ -51,14 +51,14 @@
             android:fontFamily="@font/pangram_regular"
             android:text="@string/search_button_title"
             android:textAllCaps="false"
-            android:textColor="@color/colorWhite" />
+            android:textColor="?colorSurface" />
     </LinearLayout>
 
     <View
         android:id="@+id/dividerView"
         android:layout_width="0dp"
         android:layout_height="@dimen/eight_8dp"
-        android:background="@color/colorWhite"
+        android:background="?colorSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBtnView" />
@@ -69,7 +69,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/eight_8dp"
         android:layout_marginEnd="@dimen/eight_8dp"
-        android:background="@color/colorWhite"
+        android:background="?colorSurface"
         android:clipToPadding="false"
         android:paddingTop="@dimen/sixteen_16dp"
         android:paddingBottom="64dp"

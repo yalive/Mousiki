@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.genres
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
@@ -53,8 +52,7 @@ class GenresFragment : BaseFragment<GenresViewModel>() {
         }
         viewModel.loadAllGenres()
         observeViewModel()
-        lightStatusBar()
-        requireActivity().window.statusBarColor = Color.WHITE
+        darkStatusBarOnDarkMode()
     }
 
     private fun observeViewModel() {

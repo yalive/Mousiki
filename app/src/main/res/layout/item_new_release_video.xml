@@ -69,7 +69,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/pangram_regular"
             android:maxLines="3"
-            android:textColor="@color/colorBlack"
+            android:textColor="?android:textColorPrimary"
             android:textSize="14sp"
             tools:text="Hello Test" />
 
@@ -94,6 +94,6 @@
         android:layout_gravity="center_vertical"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="8dp"
-        android:tint="@color/colorBlack"
+        android:tint="?colorControlNormal"
         app:srcCompat="@drawable/ic_more_vertical" />
 </LinearLayout>

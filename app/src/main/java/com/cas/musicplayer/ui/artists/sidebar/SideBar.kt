@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.utils.color
+import com.cas.musicplayer.utils.themeColor
 
 class SideBar @JvmOverloads constructor(
     context: Context,
@@ -110,7 +111,7 @@ class SideBar @JvmOverloads constructor(
         val width = width
         height /= this.letters.size
         for (i in this.letters.indices) {
-            this.paint.color = Color.BLACK
+            this.paint.color = context.themeColor(R.attr.colorOnSurface)
             this.paint.isAntiAlias = true
             this.paint.textSize = spToPx(9).toFloat()
             if (i == this.choose) {

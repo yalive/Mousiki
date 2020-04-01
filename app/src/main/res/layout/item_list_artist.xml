@@ -23,6 +23,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/eight_8dp"
         android:fontFamily="@font/pangram_regular"
-        android:textColor="@color/colorBlack"
+        android:textColor="?android:textColorPrimary"
         tools:text="Hello Test" />
 </LinearLayout>

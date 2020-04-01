@@ -25,6 +25,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/txtTitle"
             android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
             tools:src="@drawable/img_genres_0" />
 
         <TextView
@@ -51,14 +52,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="@color/colorWhite"
             android:ellipsize="end"
             android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:lines="2"
             android:maxLines="2"
             android:padding="@dimen/four_4dp"
-            android:textColor="@color/colorBlack"
             android:textSize="12sp"
             tools:text="Pop Music" />
     </RelativeLayout>
