@@ -182,7 +182,7 @@ object Utils {
             customView(null, view, false, true)
             cancelOnTouchOutside(false)
         }
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        //dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         btnRate.setOnClickListener {
             dialog.dismiss()
             UserPrefs.setRatedApp()

@@ -82,13 +82,13 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
         val rect = Rect()
         linearLayoutManager.findViewByPosition(firstVisiblePosition)?.getGlobalVisibleRect(rect)
         val visibleChartHeight = rect.bottom.toFloat()
-        val fillColor = Color.WHITE
+        val fillColor = if (isDarkMode()) Color.BLACK else Color.WHITE
         val color = when {
             firstVisiblePosition != 0 || visibleChartHeight < triggerFill -> fillColor.also {
-                lightStatusBar()
+                darkStatusBarOnDarkMode()
             }
             visibleChartHeight in triggerFill..triggerAlpha -> {
-                lightStatusBar()
+                darkStatusBarOnDarkMode()
                 val alpha = 255 * (visibleChartHeight - triggerAlpha) / (triggerFill - triggerAlpha)
                 ColorUtils.setAlphaComponent(fillColor, alpha.toInt())
             }

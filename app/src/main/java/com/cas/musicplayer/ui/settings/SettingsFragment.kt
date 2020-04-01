@@ -23,6 +23,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        darkStatusBarOnDarkMode()
         btnTimer.onClick {
             findNavController().navigate(R.id.action_settingsFragment_to_timerDialog)
         }

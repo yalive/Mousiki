@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.searchyoutube
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -112,8 +111,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
             )
         )
         observeViewModel()
-        lightStatusBar()
-        requireActivity().window.statusBarColor = Color.WHITE
+        darkStatusBarOnDarkMode()
     }
 
     private fun removeQueryListener() {

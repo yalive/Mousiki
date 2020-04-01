@@ -52,7 +52,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lightStatusBar()
+        darkStatusBarOnDarkMode()
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(

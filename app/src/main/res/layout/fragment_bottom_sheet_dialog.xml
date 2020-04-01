@@ -36,7 +36,7 @@
             android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="@string/label_share"
-            android:textColor="@color/colorBlack"
+            android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -71,7 +71,7 @@
             android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="Unfavorite"
-            android:textColor="@color/colorBlack"
+            android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -103,7 +103,7 @@
             android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="@string/label_add_to"
-            android:textColor="@color/colorBlack"
+            android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -137,7 +137,7 @@
             android:fontFamily="@font/pangram_regular"
             android:gravity="center"
             android:text="@string/label_play_next"
-            android:textColor="@color/colorBlack"
+            android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
 
     </LinearLayout>

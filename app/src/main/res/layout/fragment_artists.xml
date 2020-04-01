@@ -16,6 +16,7 @@
         android:layout_marginEnd="@dimen/sixteen_16dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Light"
         app:boxBackgroundColor="@color/colorBgSearchArtist"
         app:boxCollapsedPaddingTop="0dp"
         app:boxCornerRadiusBottomEnd="@dimen/sixteen_16dp"

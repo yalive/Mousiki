@@ -28,7 +28,7 @@
         android:gravity="center"
         android:maxLines="2"
         android:padding="@dimen/four_4dp"
-        android:textColor="@color/colorBlack"
+        android:textColor="?android:textColorPrimary"
         android:textSize="14sp"
         android:visibility="visible"
         tools:text="Artist" />
