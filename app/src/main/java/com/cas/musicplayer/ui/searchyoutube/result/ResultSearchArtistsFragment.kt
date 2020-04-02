@@ -10,6 +10,8 @@ import com.cas.common.resource.Resource
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.list.ArtistListAdapter
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.common.songs.FeaturedImage
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
 
 
@@ -21,6 +23,10 @@ class ResultSearchArtistsFragment : BaseSearchResultFragment(), PageableFragment
         ArtistListAdapter { artist ->
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, artist)
+            bundle.putParcelable(
+                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
+                FeaturedImage.FeaturedImageUrl(artist.urlImage)
+            )
             findNavController().navigate(R.id.artistSongsFragment, bundle)
         }
     }

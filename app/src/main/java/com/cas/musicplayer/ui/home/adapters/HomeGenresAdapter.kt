@@ -1,11 +1,11 @@
 package com.cas.musicplayer.ui.home.adapters
 
-import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
@@ -15,6 +15,8 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.common.songs.FeaturedImage
 import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
 import com.cas.musicplayer.utils.*
 
@@ -52,10 +54,14 @@ internal class HomeGenreViewHolder(val view: View, val colors: List<Int>) :
         imgCategory.setImageDrawable(itemView.context.drawable(genreMusic.img))
         backgroundCategory.setBackgroundColor(itemView.context.color(colors[adapterPosition]))
         view.findViewById<ViewGroup>(R.id.cardView).setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, genreMusic.topTracksPlaylist)
             val artist = Artist(genreMusic.title, "US", genreMusic.topTracksPlaylist)
-            bundle.putParcelable(EXTRAS_ARTIST, artist)
+            val bundle = bundleOf(
+                PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to genreMusic.topTracksPlaylist,
+                EXTRAS_ARTIST to artist,
+                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageRes(
+                    genreMusic.img
+                )
+            )
             itemView.findNavController()
                 .navigate(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
             if (!Utils.hasShownAdsOneTime) {

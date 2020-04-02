@@ -1,8 +1,8 @@
 package com.cas.musicplayer.ui.home.adapters
 
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
@@ -10,6 +10,8 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.common.songs.FeaturedImage
 import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
@@ -39,10 +41,16 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
         view.findViewById<View>(R.id.cardView).setOnClickListener {
             if (adapterPosition >= 0) {
                 val item = items[adapterPosition]
-                val bundle = Bundle()
-                bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.playlistId)
+                val firstTrackImageUrl = item.firstTracks.getOrNull(0)?.imgUrl ?: ""
                 val artist = Artist(item.title, "US", item.playlistId)
-                bundle.putParcelable(EXTRAS_ARTIST, artist)
+                val bundle = bundleOf(
+                    PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
+                    EXTRAS_ARTIST to artist,
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageUrl(
+                        firstTrackImageUrl
+                    )
+                )
+
                 itemView.findNavController()
                     .navigate(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
 

@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.resource.Resource
@@ -69,7 +68,6 @@ open class HorizontalListSongsAdapterDelegate(
 
         init {
             recyclerView.adapter = adapter
-            PagerSnapHelper().attachToRecyclerView(recyclerView)
         }
 
         fun bind(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {

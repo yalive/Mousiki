@@ -41,7 +41,7 @@
         android:fontFamily="@font/pangram_bold"
         android:text="@string/common_more"
         android:textAllCaps="true"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?colorOnSurface"
         android:textSize="12sp" />
 
     <ImageButton
@@ -52,9 +52,8 @@
         android:layout_alignBottom="@+id/txtMore"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/app_name"
-        android:tint="@color/colorPrimary"
+        android:tint="?colorOnSurface"
         app:srcCompat="@drawable/ic_arrow_right" />
 </RelativeLayout>
