@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.home.delegates
 
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -10,17 +11,23 @@ import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
+import com.cas.common.extensions.valueOrNull
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HeaderItem
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.home.HomeViewModel
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-12-04.
  ***************************************
  */
-class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
+class HomeHeaderAdapterDelegate(
+    private val viewModel: HomeViewModel
+) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is HeaderItem
@@ -63,13 +70,21 @@ class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         }
 
         private fun showMore(headerItem: HeaderItem) {
+            val bundle = Bundle()
             val destination = when (headerItem) {
                 HeaderItem.ArtistsHeader -> R.id.action_homeFragment_to_artistsFragment
-                is HeaderItem.PopularsHeader -> R.id.action_homeFragment_to_newReleaseFragment
+                is HeaderItem.PopularsHeader -> {
+                    val firstTrack = viewModel.newReleases.valueOrNull()?.getOrNull(0) ?: return
+                    bundle.putParcelable(
+                        BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
+                        FeaturedImage.FeaturedImageUrl(firstTrack.songImagePath)
+                    )
+                    R.id.action_homeFragment_to_newReleaseFragment
+                }
                 HeaderItem.ChartsHeader -> R.id.genresFragment // Just for code to compile
                 HeaderItem.GenresHeader -> R.id.action_homeFragment_to_genresFragment
             }
-            itemView.findNavController().navigate(destination)
+            itemView.findNavController().navigate(destination, bundle)
         }
     }
 }

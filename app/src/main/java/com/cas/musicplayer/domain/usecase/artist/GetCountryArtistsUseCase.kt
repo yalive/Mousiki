@@ -20,15 +20,21 @@ class GetCountryArtistsUseCase @Inject constructor(
         // Filter 6 artist by country
         var sixArtist = artists.filter {
             it.countryCode.equals(countryCode, true)
-        }.shuffled().take(6)
+        }.shuffled().take(MAX)
 
-        if (sixArtist.size < 6) {
+        if (sixArtist.size < MAX) {
             // Request US
-            sixArtist = artists.filter { it.countryCode.equals("US", true) }.shuffled().take(6)
+            sixArtist = artists.filter {
+                it.countryCode.equals("US", true)
+            }.shuffled().take(MAX)
         }
 
         // Get detail of artists
         val ids = sixArtist.map { it.channelId }
         return getArtistsThumbnails(ids)
+    }
+
+    companion object {
+        private const val MAX = 9
     }
 }

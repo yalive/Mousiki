@@ -27,10 +27,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
         getString(R.string.app_name)
     }
 
-    private val homeAdapter = HomeAdapter { track ->
-        (activity as? MainActivity)?.collapseBottomPanel()
-        viewModel.onClickTrack(track)
-        VideoEmplacementLiveData.bottom(true)
+    private val homeAdapter by lazy {
+        HomeAdapter(viewModel = viewModel) { track ->
+            (activity as? MainActivity)?.collapseBottomPanel()
+            viewModel.onClickTrack(track)
+            VideoEmplacementLiveData.bottom(true)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

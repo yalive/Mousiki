@@ -10,6 +10,8 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.common.songs.FeaturedImage
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
@@ -33,12 +35,14 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
 
     override fun bind(artist: Artist) {
         txtName.text = artist.name
-        if (artist.urlImage.isNotEmpty()) {
-            imgArtist.loadImage(artist.urlImage)
-        }
+        imgArtist.loadImage(artist.urlImage)
         view.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, artist)
+            bundle.putParcelable(
+                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
+                FeaturedImage.FeaturedImageUrl(artist.urlImage)
+            )
             itemView.findNavController()
                 .navigate(R.id.action_homeFragment_to_artistSongsFragment, bundle)
 

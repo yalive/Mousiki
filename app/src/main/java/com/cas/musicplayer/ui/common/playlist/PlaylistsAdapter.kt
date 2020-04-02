@@ -11,6 +11,8 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.common.songs.FeaturedImage
 import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
 import com.cas.musicplayer.utils.loadImage
 
@@ -38,6 +40,10 @@ class PlaylistsAdapter : SimpleBaseAdapter<Playlist, PlaylistsAdapter.ViewHolder
                 bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.id)
                 val artist = Artist(item.title, "US", item.id, item.urlImage)
                 bundle.putParcelable(EXTRAS_ARTIST, artist)
+                bundle.putParcelable(
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
+                    FeaturedImage.FeaturedImageUrl(artist.urlImage)
+                )
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
             }
         }

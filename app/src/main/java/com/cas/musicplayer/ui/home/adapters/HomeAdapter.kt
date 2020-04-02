@@ -7,6 +7,7 @@ import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.*
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
+import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.home.delegates.HomeArtistAdapterDelegate
 import com.cas.musicplayer.ui.home.delegates.HomeChartAdapterDelegate
 import com.cas.musicplayer.ui.home.delegates.HomeGenreAdapterDelegate
@@ -20,6 +21,7 @@ import kotlin.reflect.KClass
  **********************************
  */
 class HomeAdapter(
+    viewModel: HomeViewModel,
     private val chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
     onVideoSelected: (MusicTrack) -> Unit
 ) : BaseDelegationAdapter(
@@ -27,7 +29,7 @@ class HomeAdapter(
         HomeArtistAdapterDelegate(),
         chartDelegate,
         HomeGenreAdapterDelegate(),
-        HomeHeaderAdapterDelegate(),
+        HomeHeaderAdapterDelegate(viewModel),
         HorizontalListSongsAdapterDelegate(onVideoSelected)
     )
 ) {

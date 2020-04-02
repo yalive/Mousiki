@@ -6,7 +6,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!-- <item name="android:homeAsUpIndicator">@drawable/ic_arrow_left_regular</item>-->
     </style>
 
     <style name="AppTheme.Launcher">

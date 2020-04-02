@@ -38,7 +38,7 @@ class ArtistListViewModel @Inject constructor(
             return@uiCoroutine
         }
         _artists.value = Resource.Loading
-        val artistList = getArtistsFromAsset()
+        val artistList = getArtistsFromAsset(distinct = true)
         loadImages(artistList)
     }
 

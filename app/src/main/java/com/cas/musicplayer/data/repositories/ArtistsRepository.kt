@@ -42,12 +42,16 @@ class ArtistsRepository @Inject constructor(
         }
     }
 
-    suspend fun getArtistsFromFile(): List<Artist> = withContext(bgContext) {
-        val json = Utils.loadStringJSONFromAsset("artists.json")
-        val artists = gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
-        val distinctBy = artists.distinctBy { artist -> artist.channelId }
-        distinctBy.sortedBy { artist -> artist.name }
-    }
+    suspend fun getArtistsFromFile(distinct: Boolean = false): List<Artist> =
+        withContext(bgContext) {
+            val json = Utils.loadStringJSONFromAsset("artists.json")
+            val artistsFromFile =
+                gson.fromJson<List<Artist>>(json, object : TypeToken<List<Artist>>() {}.type)
+            val artists = if (distinct) {
+                artistsFromFile.distinctBy { artist -> artist.channelId }
+            } else artistsFromFile
+            artists.sortedBy { artist -> artist.name }
+        }
 
     suspend fun getArtistTracks(artistChannelId: String): Result<List<MusicTrack>> {
         val localChannelSongs = channelLocalDataSource.getChannelSongs(artistChannelId)

@@ -8,6 +8,7 @@ import androidx.annotation.DrawableRes
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 
+
 /**
  **********************************
  * Created by Abdelhadi on 2019-05-12.
@@ -22,10 +23,17 @@ fun ImageView.loadImage(urlImage: String) {
     }
 }
 
-fun ImageView.loadImage(urlImage: String, @DrawableRes placeHolder: Int) {
+fun ImageView.loadImage(
+    urlImage: String, @DrawableRes placeHolder: Int? = null
+) {
+
     if (urlImage.isNotEmpty()) {
         Picasso.get().load(urlImage)
-            .placeholder(placeHolder)
+            .apply {
+                if (placeHolder != null) {
+                    placeholder(placeHolder)
+                }
+            }
             .fit()
             .into(this)
     }
@@ -42,7 +50,10 @@ fun ImageView.loadAndBlurImage(urlImage: String, scale: Float = 0.3f, radius: In
         }
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            setImageBitmap(BlurImage.fastblur(bitmap, scale, radius))
+            try {
+                setImageBitmap(BlurImage.fastblur(bitmap, scale, radius))
+            } catch (e: OutOfMemoryError) {
+            }
         }
     }
     this.tag = target
@@ -65,7 +76,10 @@ fun RemoteViews.loadAndBlurImage(
         }
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            setImageViewBitmap(idImageView, BlurImage.fastblur(bitmap, scale, radius))
+            try {
+                setImageViewBitmap(idImageView, BlurImage.fastblur(bitmap, scale, radius))
+            } catch (e: OutOfMemoryError) {
+            }
         }
     }
     //this.tag = target

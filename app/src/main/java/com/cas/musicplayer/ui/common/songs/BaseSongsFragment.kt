@@ -2,8 +2,10 @@ package com.cas.musicplayer.ui.common.songs
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.cas.common.dpToPixel
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.FirstItemMarginDecoration
@@ -20,6 +22,7 @@ import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.loadAndBlurImage
 import com.cas.musicplayer.utils.loadImage
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 
 /**
@@ -57,17 +60,19 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
             mainActivity.collapseBottomPanel()
             onClickTrackPlayAll()
         }
-
+        btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
         DeviceInset.observe(this, Observer { inset ->
             topGuideline.setGuidelineBegin(inset.top)
             bottomGuideline.setGuidelineBegin(inset.top + dpToPixel(56))
         })
         requireActivity().window.statusBarColor = Color.TRANSPARENT
         darkStatusBar()
+        loadFeaturedImage()
     }
 
     fun updateHeader(track: DisplayedVideoItem) {
-        imgArtist.loadImage(track.songImagePath, R.mipmap.ic_launcher)
         imgBackground.loadAndBlurImage(track.songImagePath)
     }
 
@@ -96,6 +101,33 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     override fun withToolbar(): Boolean = false
 
+    private fun loadFeaturedImage() {
+        val featuredImage = featuredImage
+        when (featuredImage) {
+            is FeaturedImage.FeaturedImageRes -> imgArtist.setImageResource(featuredImage.resId)
+            is FeaturedImage.FeaturedImageUrl -> {
+                imgArtist.loadImage(featuredImage.url, R.mipmap.ic_launcher)
+            }
+        }
+    }
+
     abstract fun onClickTrack(track: MusicTrack)
     abstract fun onClickTrackPlayAll()
+
+    companion object {
+        val EXTRAS_ID_FEATURED_IMAGE = "extras.featured.image"
+    }
+}
+
+private val BaseSongsFragment<*>.featuredImage: FeaturedImage
+    get() = arguments?.getParcelable(BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE)
+        ?: throw IllegalArgumentException("No featured image found")
+
+
+sealed class FeaturedImage : Parcelable {
+    @Parcelize
+    data class FeaturedImageRes(val resId: Int) : FeaturedImage()
+
+    @Parcelize
+    data class FeaturedImageUrl(val url: String) : FeaturedImage()
 }

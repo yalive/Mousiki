@@ -58,7 +58,7 @@ class ArtistListAdapter(
 
         override fun bind(item: Artist) {
             val urlImage: String? = item.urlImage
-            if (urlImage != null && urlImage.isNotEmpty()) {
+            if (urlImage != null) {
                 imgSong.loadImage(urlImage)
             }
             txtTitle.text = item.name
