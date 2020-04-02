@@ -5,18 +5,19 @@
     android:id="@+id/cardView"
     android:layout_width="wrap_content"
     android:layout_height="148dp"
+    android:layout_margin="2dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
-    app:cardElevation="6dp"
+    app:cardElevation="0dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorPlaceholderImage"
+        android:background="@drawable/bg_navigation_view"
         android:orientation="vertical">
 
         <ImageView
@@ -25,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/txtTitle"
             android:layout_alignParentTop="true"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             tools:src="@drawable/img_genres_0" />
 
         <TextView

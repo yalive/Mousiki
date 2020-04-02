@@ -70,9 +70,10 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_navigation_view"
         app:itemIconTint="@color/navigation_menu_icon_color"
         app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
-        app:itemTextAppearanceInactive="@style/BottomNavigationView"
+        app:itemTextAppearanceInactive="@style/BottomNavigationView.Inactive"
         app:itemTextColor="@color/navigation_menu_text_color"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>
