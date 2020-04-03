@@ -1,11 +1,16 @@
 package com.cas.musicplayer.ui.common.songs
 
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
+import androidx.transition.TransitionManager
 import com.cas.common.dpToPixel
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.FirstItemMarginDecoration
@@ -17,13 +22,12 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
-import com.cas.musicplayer.utils.DeviceInset
-import com.cas.musicplayer.utils.loadAndBlurImage
-import com.cas.musicplayer.utils.loadImage
+import com.cas.musicplayer.utils.*
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
+import kotlinx.android.synthetic.main.layout_shimmer_loading_music_list.*
+
 
 /**
  ***************************************
@@ -72,26 +76,27 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         loadFeaturedImage()
     }
 
-    fun updateHeader(track: DisplayedVideoItem) {
-        imgBackground.loadAndBlurImage(track.songImagePath)
-    }
-
     protected fun updateUI(resource: Resource<List<DisplayableItem>>) {
         when (resource) {
             is Resource.Success -> {
-                val newList = resource.data
-                if (adapter.dataItems.isEmpty() && newList.isNotEmpty()) {
-                    val videoItem = newList[0] as DisplayedVideoItem
-                    updateHeader(videoItem)
+                (view as? ViewGroup)?.let { viewGroup ->
+                    TransitionManager.beginDelayedTransition(viewGroup)
                 }
+                btnPlayAll.alpha = 1f
+                loadingView.alpha = 0f
+                loadingView.stopShimmer()
+                val newList = resource.data
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
                 txtNumberOfSongs.text = String.format("%d Songs", newList.size)
-                progressBar.alpha = 0f
             }
-            Resource.Loading -> progressBar.alpha = 1f
+            Resource.Loading -> {
+                loadingView.alpha = 1f
+                btnPlayAll.alpha = 0f
+            }
             is Resource.Failure -> {
-                progressBar.alpha = 0f
+                loadingView.alpha = 0f
+                btnPlayAll.alpha = 0f
                 if (adapter.dataItems.isEmpty()) {
                     txtNumberOfSongs.setText(R.string.error_while_loading_song_list)
                 }
@@ -106,7 +111,33 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         when (featuredImage) {
             is FeaturedImage.FeaturedImageRes -> imgArtist.setImageResource(featuredImage.resId)
             is FeaturedImage.FeaturedImageUrl -> {
-                imgArtist.loadImage(featuredImage.url, R.mipmap.ic_launcher)
+                imgArtist.loadImage(featuredImage.url)
+            }
+        }
+
+        // Background
+        when (featuredImage) {
+            is FeaturedImage.FeaturedImageRes -> {
+                imgBackground.loadBitmap(featuredImage.resId, this::findDominantColors)
+            }
+            is FeaturedImage.FeaturedImageUrl -> {
+                imgBackground.loadBitmap(featuredImage.url, this::findDominantColors)
+            }
+        }
+    }
+
+    private fun findDominantColors(drawableBitmap: Bitmap) {
+        Palette.from(drawableBitmap).generate { palette ->
+            palette?.let {
+                val colorSurface = requireContext().themeColor(R.attr.colorSurface)
+                val dominantColor = palette.getMutedColor(
+                    requireContext().color(R.color.colorPrimary)
+                )
+                val colors = intArrayOf(dominantColor, colorSurface)
+                val gradient = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM, colors
+                )
+                imgBackground.setImageDrawable(gradient)
             }
         }
     }

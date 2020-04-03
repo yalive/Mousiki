@@ -40,7 +40,6 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
         darkStatusBarOnDarkMode()
         sideBar = view.findViewById(R.id.sideBar)
         txtDialog = view.findViewById(R.id.txtDialog)
-
         setupRecyclerView()
         observeViewModel()
         viewModel.loadAllArtists()
@@ -49,6 +48,11 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
             filterArtists()
         }
         filterArtists()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        view?.hideSoftKeyboard()
     }
 
     private fun filterArtists() {

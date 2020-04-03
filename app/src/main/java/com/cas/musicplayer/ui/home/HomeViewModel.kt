@@ -92,7 +92,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadGenres() = uiCoroutine {
-        val chartList = getGenres().take(6)
+        val chartList = getGenres().take(8)
         _genres.value = chartList
     }
 
