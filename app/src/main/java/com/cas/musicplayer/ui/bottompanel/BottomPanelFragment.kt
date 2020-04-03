@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.invisible
+import com.cas.common.extensions.onClick
 import com.cas.common.extensions.visible
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -184,6 +185,10 @@ class BottomPanelFragment : Fragment(),
             )
             adjustCenterViews()
         })
+
+        topBarView.onClick {
+            mainActivity.expandBottomPanel()
+        }
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {

@@ -34,7 +34,9 @@ internal class HomeGenresAdapter : SimpleBaseAdapter<GenreMusic, HomeGenreViewHo
             R.color.colorGenre3,
             R.color.colorGenre4,
             R.color.colorGenre5,
-            R.color.colorGenre6
+            R.color.colorGenre6,
+            R.color.colorGenre7,
+            R.color.colorGenre8
         ).shuffled()
     }
 
