@@ -67,7 +67,16 @@ fun Context.screenSize(): ScreenSize {
     return ScreenSize(w, h)
 }
 
+/* Toast */
 fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.longToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Context.toastCentred(message: String) {
     val toast = Toast.makeText(this, message, Toast.LENGTH_LONG)
     toast.setGravity(Gravity.CENTER, 0, 0)
     toast.show()

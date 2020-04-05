@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.playlistvideos
+package com.cas.musicplayer.ui.playlist.songs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

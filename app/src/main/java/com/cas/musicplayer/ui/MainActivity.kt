@@ -140,6 +140,8 @@ class MainActivity : BaseActivity() {
         return destination.id == R.id.favouriteSongsFragment
                 || destination.id == R.id.settingsFragment
                 || destination.id == R.id.genresFragment
+                || destination.id == R.id.addTrackToPlaylistFragment
+                || destination.id == R.id.createPlaylistFragment
                 || destination.id == R.id.artistsFragment
     }
 

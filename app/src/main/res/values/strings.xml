@@ -48,4 +48,12 @@
     <string name="search_button_title">Artists, songs, or podcasts</string>
     <string name="artists_find_an_artist">Find an artist</string>
 
+    <!-- Playlist -->
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="create_playlist">Create playlist</string>
+    <string name="playlist_name">Playlist name</string>
+    <string name="give_your_playlist_a_name">Give your playlist a name.</string>
+
+
 </resources>

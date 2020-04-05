@@ -91,10 +91,12 @@
         android:paddingRight="@dimen/sixteen_16dp"
         android:paddingBottom="8dp">
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/btnAddToPlaylist"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_playlist_add"
             android:tint="@color/colorAccent" />

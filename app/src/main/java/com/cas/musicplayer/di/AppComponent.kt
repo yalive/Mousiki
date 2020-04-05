@@ -12,7 +12,9 @@ import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.library.LibraryViewModel
-import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsViewModel
+import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
+import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
+import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
@@ -74,6 +76,10 @@ interface AppComponent {
     val emptyViewModel: EmptyViewModel
 
     val settingsViewModel: SettingsViewModel
+
+    val addTrackToPlaylistViewModelFactory: AddTrackToPlaylistViewModel.Factory
+
+    val createPlaylistViewModel: CreatePlaylistViewModel
 
     val gson: Gson
 }
