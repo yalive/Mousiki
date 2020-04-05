@@ -8,6 +8,7 @@ package com.cas.musicplayer.utils
 object Constants {
 
     const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
+    const val FAV_PLAYLIST_NAME = "Favourite"
 
     object Config {
         const val DEBUG_PLAYER = false

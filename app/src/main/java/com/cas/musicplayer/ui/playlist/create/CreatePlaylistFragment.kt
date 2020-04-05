@@ -1,7 +1,11 @@
 package com.cas.musicplayer.ui.playlist.create
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import androidx.navigation.fragment.findNavController
+import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.R
@@ -22,16 +26,29 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btnCreate.onClick {
-            val playlistName = editPlaylistName.text?.toString() ?: ""
-            if (playlistName.length < 2) {
-                return@onClick
-            }
-            viewModel.createPlaylist(track, playlistName)
-            requireContext().toast("Playlist created")
+            createPlaylist()
+        }
+        editPlaylistName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                createPlaylist()
+                true
+            } else false
         }
         editPlaylistName.requestFocus()
         editPlaylistName.showSoftInputOnFocus = true
-        darkStatusBarOnDarkMode()
+        darkStatusBar()
+        requireActivity().window.statusBarColor = Color.BLACK
+    }
+
+    private fun createPlaylist() {
+        val playlistName = editPlaylistName.text?.toString() ?: ""
+        if (playlistName.length < 2) {
+            return
+        }
+        viewModel.createPlaylist(track, playlistName)
+        requireContext().toast("Added to $playlistName")
+        view?.hideSoftKeyboard()
+        findNavController().popBackStack()
     }
 
     override fun withToolbar(): Boolean = false

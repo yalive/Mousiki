@@ -58,6 +58,7 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
                 LibraryHeaderItem.RecentHeader -> -1
                 is LibraryHeaderItem.FavouriteHeader -> R.id.action_libraryFragment_to_favouriteSongsFragment
                 LibraryHeaderItem.HeavyHeader -> -1
+                LibraryHeaderItem.PlaylistsHeader -> -1
             }
             if (destination != -1) {
                 itemView.findNavController().navigate(destination)

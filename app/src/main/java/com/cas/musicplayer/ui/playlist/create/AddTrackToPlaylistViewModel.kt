@@ -11,6 +11,7 @@ import com.cas.musicplayer.domain.usecase.customplaylist.AddTrackToCustomPlaylis
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
+import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -53,7 +54,7 @@ class AddTrackToPlaylistViewModel @AssistedInject constructor(
         savedPlaylists.add(
             0, Playlist(
                 id = "",
-                title = "Favourite",
+                title = Constants.FAV_PLAYLIST_NAME,
                 urlImage = favouriteTrack?.imgUrl ?: "",
                 itemCount = favouriteTracks.size
             )

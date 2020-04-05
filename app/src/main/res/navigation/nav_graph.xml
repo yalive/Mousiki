@@ -115,6 +115,13 @@
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right"
+            android:id="@+id/action_libraryFragment_to_customPlaylistSongsFragment"
+            app:destination="@id/customPlaylistSongsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -165,4 +172,9 @@
         android:name="com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment"
         android:label="CreatePlaylistDialog"
         tools:layout="@layout/fragment_create_palylist" />
+    <fragment
+        android:id="@+id/customPlaylistSongsFragment"
+        android:name="com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment"
+        tools:layout="@layout/fragment_playlist_songs"
+        android:label="CustomPlaylistSongsFragment" />
 </navigation>
