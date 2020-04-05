@@ -2,12 +2,10 @@ package com.cas.musicplayer.ui.library.adapters
 
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.library.delegates.LibraryFavouriteTracksAdapterDelegate
-import com.cas.musicplayer.ui.library.delegates.LibraryHeaderAdapterDelegate
-import com.cas.musicplayer.ui.library.delegates.LibraryHeavyTracksAdapterDelegate
-import com.cas.musicplayer.ui.library.delegates.LibraryRecentTracksAdapterDelegate
+import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.cas.musicplayer.ui.library.delegates.*
 import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
 import com.cas.musicplayer.ui.library.model.LibraryItem
 import kotlin.reflect.KClass
@@ -18,15 +16,20 @@ import kotlin.reflect.KClass
  ***************************************
  */
 class LibraryAdapter(
-    onRecentSongSelected: (MusicTrack) -> Unit,
-    onHeavySongSelected: (MusicTrack) -> Unit,
-    onFavouriteSongSelected: (MusicTrack) -> Unit
+    private val viewModel: LibraryViewModel
 ) : BaseDelegationAdapter(
     listOf(
-        LibraryRecentTracksAdapterDelegate(onRecentSongSelected),
-        LibraryHeavyTracksAdapterDelegate(onHeavySongSelected),
-        LibraryFavouriteTracksAdapterDelegate(onFavouriteSongSelected),
-        LibraryHeaderAdapterDelegate()
+        LibraryRecentTracksAdapterDelegate {
+            viewModel.onClickRecentTrack(it)
+        },
+        LibraryHeavyTracksAdapterDelegate {
+            viewModel.onClickHeavyTrack(it)
+        },
+        LibraryFavouriteTracksAdapterDelegate {
+            viewModel.onClickFavouriteTrack(it)
+        },
+        LibraryHeaderAdapterDelegate(),
+        LibraryPlaylistsDelegate(viewModel)
     )
 ) {
     init {
@@ -34,7 +37,9 @@ class LibraryAdapter(
             LibraryHeaderItem.RecentHeader,
             LibraryItem.Recent(emptyList()),
             LibraryHeaderItem.FavouriteHeader(),
-            LibraryItem.Favourite(emptyList())
+            LibraryItem.Favourite(emptyList()),
+            LibraryHeaderItem.PlaylistsHeader,
+            LibraryItem.Playlists(emptyList())
         )
     }
 
@@ -54,6 +59,13 @@ class LibraryAdapter(
             dataItems.add(LibraryHeaderItem.HeavyHeader)
             dataItems.add(LibraryItem.Heavy(songs))
             notifyItemRangeInserted(oldSize, 2)
+        }
+    }
+
+    fun updatePlaylists(playlists: List<Playlist>) {
+        val index = indexOfItem(LibraryItem.Playlists::class)
+        if (index != -1) {
+            updateItemAtIndex(index, LibraryItem.Playlists(playlists))
         }
     }
 

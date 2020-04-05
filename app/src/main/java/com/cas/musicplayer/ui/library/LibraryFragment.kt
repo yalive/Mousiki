@@ -6,15 +6,20 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.observe
+import com.cas.common.extensions.observeEvent
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.common.songs.FeaturedImage
 import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
+import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
 import kotlinx.android.synthetic.main.fragment_library.*
 
@@ -30,20 +35,9 @@ class LibraryFragment : BaseFragment<LibraryViewModel>() {
     override val screenTitle by lazy {
         getString(R.string.library)
     }
-    private val adapter = LibraryAdapter(
-        onRecentSongSelected = {
-            (activity as? MainActivity)?.collapseBottomPanel()
-            viewModel.onClickRecentTrack(it)
-        },
-        onHeavySongSelected = {
-            (activity as? MainActivity)?.collapseBottomPanel()
-            viewModel.onClickHeavyTrack(it)
-        },
-        onFavouriteSongSelected = {
-            (activity as? MainActivity)?.collapseBottomPanel()
-            viewModel.onClickFavouriteTrack(it)
-        }
-    )
+    private val adapter by lazy {
+        LibraryAdapter(viewModel)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +57,8 @@ class LibraryFragment : BaseFragment<LibraryViewModel>() {
                 val position = parent.getChildAdapterPosition(view)
                 with(outRect) {
                     if (position == 2) {
+                        top = context.dpToPixel(24f)
+                    } else if (position == 4) {
                         top = context.dpToPixel(24f)
                     }
                 }
@@ -88,5 +84,20 @@ class LibraryFragment : BaseFragment<LibraryViewModel>() {
         observe(viewModel.recentSongs, adapter::updateRecent)
         observe(viewModel.heavySongs, adapter::updateHeavy)
         observe(viewModel.favouriteSongs, adapter::updateFavourite)
+        observe(viewModel.playlists, adapter::updatePlaylists)
+        observeEvent(viewModel.onClickSong) {
+            (activity as? MainActivity)?.collapseBottomPanel()
+        }
+        observeEvent(viewModel.onClickPlaylist) { playList ->
+            findNavController().navigate(
+                R.id.action_libraryFragment_to_customPlaylistSongsFragment,
+                bundleOf(
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageUrl(
+                        playList.urlImage
+                    ),
+                    CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to playList
+                )
+            )
+        }
     }
 }
