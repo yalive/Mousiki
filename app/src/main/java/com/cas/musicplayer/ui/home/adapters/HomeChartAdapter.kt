@@ -12,7 +12,7 @@ import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.FeaturedImage
-import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
+import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils

@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -74,6 +79,22 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         btnAddAsNext.setOnClickListener {
             PlayerQueue.addAsNext(musicTrack)
             this.dismiss()
+        }
+
+        btnAddToPlaylist.onClick {
+            val navOptions = navOptions {
+                anim {
+                    enter = R.anim.fad_in
+                    exit = R.anim.fad_out
+                }
+            }
+            findNavController().navigate(
+                R.id.addTrackToPlaylistFragment, bundleOf(
+                    AddTrackToPlaylistFragment.EXTRAS_TRACK to musicTrack,
+                    AddTrackToPlaylistFragment.EXTRAS_CURRENT_DESTINATION to findNavController().currentDestination?.id
+                ), navOptions
+            )
+            dismiss()
         }
     }
 

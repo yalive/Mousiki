@@ -151,4 +151,10 @@ object AppModule {
     @Provides
     fun providesSearchChannelDao(db: MusicTrackRoomDatabase): SearchChannelDao =
         db.searchSearchChannelDao()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesCustomPlaylistTrackDao(db: MusicTrackRoomDatabase): CustomPlaylistTrackDao =
+        db.customPlaylistTrackDao()
 }

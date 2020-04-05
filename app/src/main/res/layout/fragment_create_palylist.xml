@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_create_playlist"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pangram_medium"
+        android:text="@string/give_your_playlist_a_name"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editPlaylistName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/bg_edit_playlist_name"
+        android:fontFamily="@font/pangram_bold"
+        android:gravity="center"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:paddingBottom="4dp"
+        android:textCursorDrawable="@null"
+        android:textSize="34sp"
+        tools:ignore="Autofill,LabelFor" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreate"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="48dp"
+        android:stateListAnimator="@null"
+        android:text="Create"
+        android:textColor="@color/colorWhite" />
+</LinearLayout>

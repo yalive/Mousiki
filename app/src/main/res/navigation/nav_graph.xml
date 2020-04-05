@@ -62,7 +62,7 @@
         android:label="@string/app_name" />
     <fragment
         android:id="@+id/playlistVideosFragment"
-        android:name="com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment"
+        android:name="com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment"
         android:label="@string/app_name" />
     <fragment
         android:id="@+id/artistsFragment"
@@ -150,4 +150,19 @@
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
     </fragment>
+    <fragment
+        android:id="@+id/addTrackToPlaylistFragment"
+        android:name="com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment"
+        android:label="AddTrackToPlaylistDialog"
+        tools:layout="@layout/fragment_add_track_playlist" >
+        <action
+            android:id="@+id/action_addTrackToPlaylistFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment"
+        android:label="CreatePlaylistDialog"
+        tools:layout="@layout/fragment_create_palylist" />
 </navigation>

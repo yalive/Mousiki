@@ -1,5 +1,7 @@
 package com.cas.musicplayer.domain.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.util.regex.Pattern
 
 /**
@@ -8,12 +10,12 @@ import java.util.regex.Pattern
  **********************************
  */
 
-
+@Parcelize
 data class MusicTrack(
     val youtubeId: String,
     val title: String,
     val duration: String
-) {
+) : Parcelable {
 
     var fullImageUrl = ""
 
