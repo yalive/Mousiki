@@ -13,10 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.SeekBar
+import androidx.core.os.bundleOf
 import androidx.core.os.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.invisible
@@ -34,6 +37,7 @@ import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
+import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
 import com.ncorti.slidetoact.SlideToActView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -84,6 +88,28 @@ class BottomPanelFragment : Fragment(),
             Utils.shareWithDeepLink(PlayerQueue.value, mContext = mainActivity)
         }
 
+        btnAddToPlaylist.onClick {
+            val musicTrack = PlayerQueue.value ?: return@onClick
+            (requireActivity() as? MainActivity)?.collapseBottomPanel()
+            val currentDestinationId = findNavController().currentDestination?.id
+            if (currentDestinationId == R.id.addTrackToPlaylistFragment
+                || currentDestinationId == R.id.createPlaylistFragment
+            ) return@onClick
+            handler.postDelayed(500) {
+                val navOptions = navOptions {
+                    anim {
+                        enter = R.anim.fad_in
+                        exit = R.anim.fad_out
+                    }
+                }
+                findNavController().navigate(
+                    R.id.addTrackToPlaylistFragment, bundleOf(
+                        AddTrackToPlaylistFragment.EXTRAS_TRACK to musicTrack,
+                        AddTrackToPlaylistFragment.EXTRAS_CURRENT_DESTINATION to currentDestinationId
+                    ), navOptions
+                )
+            }
+        }
         btnAddFav.setOnClickListener {
             if (!UserPrefs.isFav(PlayerQueue.value?.youtubeId)) {
                 Executors.newSingleThreadExecutor().execute {

@@ -57,7 +57,7 @@
             android:layout_alignParentEnd="true"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_more_vertical"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/txtTitle"

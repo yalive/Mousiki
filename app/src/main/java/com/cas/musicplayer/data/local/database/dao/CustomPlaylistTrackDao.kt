@@ -1,6 +1,9 @@
 package com.cas.musicplayer.data.local.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.cas.musicplayer.data.local.models.CustomPlaylistEntity
 
 /**
@@ -18,8 +21,8 @@ interface CustomPlaylistTrackDao {
     @Query("SELECT * from custom_playlist_track")
     suspend fun getAll(): List<CustomPlaylistEntity>
 
-    @Delete
-    suspend fun deleteTrackFromPlaylist(musicTrack: CustomPlaylistEntity)
+    @Query("DELETE  from custom_playlist_track WHERE playlist_name=:playlistName and youtube_id=:trackId ")
+    suspend fun deleteTrackFromPlaylist(playlistName: String, trackId: String)
 
     @Query("DELETE  from custom_playlist_track WHERE playlist_name=:playlistName")
     suspend fun clearCustomPlaylist(playlistName: String)

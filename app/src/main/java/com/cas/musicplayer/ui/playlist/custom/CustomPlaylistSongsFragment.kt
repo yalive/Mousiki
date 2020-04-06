@@ -7,6 +7,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
+import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 
@@ -35,6 +36,15 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
 
     override fun onClickTrackPlayAll() {
         viewModel.onClickTrackPlayAll()
+    }
+
+    override fun onBottomOptionsMenuDismissed() {
+        viewModel.refresh()
+    }
+
+    override fun addExtrasArgumentToBottomMenu(bundle: Bundle) {
+        bundle.putBoolean(FvaBottomSheetFragment.EXTRAS_IS_FROM_CUSTOM_PLAYLIST, true)
+        bundle.putParcelable(FvaBottomSheetFragment.EXTRAS_CUSTOM_PLAYLIST, viewModel.playlist)
     }
 
     companion object {

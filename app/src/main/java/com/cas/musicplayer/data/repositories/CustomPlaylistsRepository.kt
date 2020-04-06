@@ -58,12 +58,8 @@ class CustomPlaylistsRepository @Inject constructor(
 
     suspend fun deleteTrackFromCustomPlaylist(track: MusicTrack, playlistName: String) {
         customPlaylistTrackDao.deleteTrackFromPlaylist(
-            CustomPlaylistEntity(
-                youtubeId = track.youtubeId,
-                duration = track.duration,
-                title = track.title,
-                playlistName = playlistName
-            )
+            trackId = track.youtubeId,
+            playlistName = playlistName
         )
     }
 

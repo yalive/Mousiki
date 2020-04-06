@@ -67,4 +67,8 @@ class CustomPlaylistSongsViewModel @AssistedInject constructor(
             playTrackFromQueue(allSongs.first().track, allSongs.map { it.track })
         }
     }
+
+    fun refresh() {
+        getPlaylistSongs()
+    }
 }
