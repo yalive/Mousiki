@@ -9,6 +9,7 @@ import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
+import com.cas.musicplayer.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.domain.usecase.library.GetHeavyTracksUseCase
@@ -16,6 +17,7 @@ import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsLiveUseCa
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
+import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 
@@ -30,6 +32,7 @@ class LibraryViewModel @Inject constructor(
     private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val getCustomPlaylists: GetCustomPlaylistsUseCase,
+    private val removeCustomPlaylist: RemoveCustomPlaylistUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -65,8 +68,6 @@ class LibraryViewModel @Inject constructor(
             _heavySongs.addSource(getHeavyTracks(10)) { songs ->
                 _heavySongs.postValue(tracksToDisplayableItems(songs))
             }
-
-            loadCustomPlaylists()
         }
     }
 
@@ -93,14 +94,14 @@ class LibraryViewModel @Inject constructor(
         _onClickPlaylist.value = playlist.asEvent()
     }
 
-    private fun loadCustomPlaylists() = uiCoroutine {
+    fun loadCustomPlaylists() = uiCoroutine {
         val savedPlaylists = getCustomPlaylists().toMutableList()
         val favouriteTracks = getFavouriteTracks()
         val favouriteTrack = favouriteTracks.getOrNull(0)
         savedPlaylists.add(
             0, Playlist(
                 id = "",
-                title = "Favourite",
+                title = Constants.FAV_PLAYLIST_NAME,
                 urlImage = favouriteTrack?.imgUrl ?: "",
                 itemCount = favouriteTracks.size
             )
@@ -108,6 +109,12 @@ class LibraryViewModel @Inject constructor(
         _playlists.value = savedPlaylists
     }
 
+    fun deletePlaylist(playlist: Playlist) = uiCoroutine {
+        removeCustomPlaylist(playlist.title)
+        loadCustomPlaylists()
+    }
+
     private fun tracksToDisplayableItems(songs: List<MusicTrack>) =
         songs.map { it.toDisplayedVideoItem() }
+
 }

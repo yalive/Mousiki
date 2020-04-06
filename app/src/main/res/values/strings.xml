@@ -55,6 +55,7 @@
     <string name="playlist_name">Playlist name</string>
     <string name="give_your_playlist_a_name">Give your playlist a name.</string>
     <string name="create">Create</string>
+    <string name="remove_from_this_playlist">Remove from this playlist</string>
 
 
 </resources>

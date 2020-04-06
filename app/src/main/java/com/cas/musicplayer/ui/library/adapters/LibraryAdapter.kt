@@ -34,12 +34,12 @@ class LibraryAdapter(
 ) {
     init {
         dataItems = mutableListOf(
+            LibraryHeaderItem.PlaylistsHeader,
+            LibraryItem.Playlists(emptyList()),
             LibraryHeaderItem.RecentHeader,
             LibraryItem.Recent(emptyList()),
             LibraryHeaderItem.FavouriteHeader(),
-            LibraryItem.Favourite(emptyList()),
-            LibraryHeaderItem.PlaylistsHeader,
-            LibraryItem.Playlists(emptyList())
+            LibraryItem.Favourite(emptyList())
         )
     }
 

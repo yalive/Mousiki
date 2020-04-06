@@ -5,20 +5,18 @@
     android:background="@drawable/bg_navigation_view"
     android:baselineAligned="false"
     android:gravity="center"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:weightSum="4">
+    android:paddingBottom="8dp">
 
     <LinearLayout
         android:id="@+id/shareVia"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
         android:paddingRight="@dimen/sixteen_16dp"
@@ -35,8 +33,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/pangram_regular"
-            android:gravity="center"
             android:text="@string/label_share"
             android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
@@ -45,13 +44,12 @@
 
     <LinearLayout
         android:id="@+id/favController"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
         android:paddingRight="@dimen/sixteen_16dp"
@@ -70,8 +68,9 @@
             android:id="@+id/favLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/pangram_regular"
-            android:gravity="center"
             android:text="Unfavorite"
             android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
@@ -79,13 +78,48 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@+id/viewRemoveFromCurrentPlaylist"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/btnDeleteFromCurrentPlaylist"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_playlist_add"
+            android:tint="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/pangram_regular"
+            android:text="@string/remove_from_this_playlist"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewAddToPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
         android:paddingRight="@dimen/sixteen_16dp"
@@ -104,8 +138,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/pangram_regular"
-            android:gravity="center"
             android:text="@string/label_add_to"
             android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
@@ -113,13 +148,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@+id/viewAddToQuee"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical"
         android:paddingLeft="@dimen/sixteen_16dp"
         android:paddingTop="8dp"
         android:paddingRight="@dimen/sixteen_16dp"
@@ -138,12 +173,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/pangram_regular"
-            android:gravity="center"
             android:text="@string/label_play_next"
             android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
-
     </LinearLayout>
-
 </LinearLayout>

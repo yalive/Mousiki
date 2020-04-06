@@ -49,7 +49,11 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 val bottomSheetFragment = FvaBottomSheetFragment()
                 val bundle = Bundle()
                 bundle.putString("MUSIC_TRACK", injector.gson.toJson(track))
+                addExtrasArgumentToBottomMenu(bundle)
                 bottomSheetFragment.arguments = bundle
+                bottomSheetFragment.onDismissed = {
+                    onBottomOptionsMenuDismissed()
+                }
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
         )
@@ -140,6 +144,14 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 imgBackground.setImageDrawable(gradient)
             }
         }
+    }
+
+    open fun addExtrasArgumentToBottomMenu(bundle: Bundle) {
+
+    }
+
+    open fun onBottomOptionsMenuDismissed() {
+
     }
 
     abstract fun onClickTrack(track: MusicTrack)

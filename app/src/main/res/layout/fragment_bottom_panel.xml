@@ -155,6 +155,7 @@
                 app:srcCompat="@drawable/ic_share" />
 
             <ImageButton
+                android:id="@+id/btnAddToPlaylist"
                 android:layout_width="@dimen/thirty_two_32dp"
                 android:layout_height="@dimen/thirty_two_32dp"
                 android:layout_marginStart="@dimen/sixteen_16dp"

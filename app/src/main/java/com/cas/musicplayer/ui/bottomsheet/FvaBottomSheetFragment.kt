@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
@@ -27,6 +29,8 @@ import java.util.concurrent.Executors
  */
 class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
+    var onDismissed: (() -> Unit)? = null
+
     lateinit var musicTrack: MusicTrack
 
     private val viewModel by lazy { injector.favBottomSheetViewModel }
@@ -41,7 +45,6 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val json = arguments?.getString("MUSIC_TRACK")
         musicTrack = injector.gson.fromJson(json, MusicTrack::class.java)
 
@@ -76,12 +79,12 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        btnAddAsNext.setOnClickListener {
+        viewAddToQuee.setOnClickListener {
             PlayerQueue.addAsNext(musicTrack)
             this.dismiss()
         }
 
-        btnAddToPlaylist.onClick {
+        viewAddToPlaylist.onClick {
             val navOptions = navOptions {
                 anim {
                     enter = R.anim.fad_in
@@ -96,12 +99,23 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             )
             dismiss()
         }
+        viewRemoveFromCurrentPlaylist.onClick {
+            viewModel.removeSongFromPlaylist(musicTrack, customPlaylist)
+            onDismissed?.invoke()
+            dismiss()
+        }
+        viewRemoveFromCurrentPlaylist.isVisible = isFromCustomPlaylist
+        viewAddToPlaylist.isVisible = !isFromCustomPlaylist
     }
 
     override fun onResume() {
         super.onResume()
         if (PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
             PlayerQueue.hideVideo()
+        }
+
+        dialog?.setOnDismissListener {
+            onDismissed?.invoke()
         }
     }
 
@@ -113,4 +127,17 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             PlayerQueue.resume()
         }
     }
+
+    companion object {
+        const val EXTRAS_IS_FROM_CUSTOM_PLAYLIST = "extras.is.from.custom.playlist"
+        const val EXTRAS_CUSTOM_PLAYLIST = "extras.custom.playlist"
+    }
 }
+
+private val FvaBottomSheetFragment.customPlaylist
+    get() = arguments?.getParcelable<Playlist>(FvaBottomSheetFragment.EXTRAS_CUSTOM_PLAYLIST)
+        ?: throw IllegalStateException("Custom playlist not set")
+
+private val FvaBottomSheetFragment.isFromCustomPlaylist
+    get() = arguments?.getBoolean(FvaBottomSheetFragment.EXTRAS_IS_FROM_CUSTOM_PLAYLIST)
+        ?: false
