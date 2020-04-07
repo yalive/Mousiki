@@ -19,6 +19,7 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.loadImage
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_dialog.*
@@ -55,7 +56,8 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             favIcon.setImageResource(R.drawable.ic_favorite_added_yellow)
             favLabel.text = "Unfavorite"
         }
-
+        imgTrack.loadImage(musicTrack.imgUrl)
+        txtTrackTitle.text = musicTrack.title
         shareVia.setOnClickListener {
             Utils.shareWithDeepLink(musicTrack, context!!)
             if (this.isVisible) {

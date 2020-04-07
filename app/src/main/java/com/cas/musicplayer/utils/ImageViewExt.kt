@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.RemoteViews
 import androidx.annotation.DrawableRes
+import com.cas.musicplayer.R
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 
@@ -67,6 +68,7 @@ fun ImageView.loadBitmap(
 fun ImageView.loadImage(urlImage: String) {
     if (urlImage.isNotEmpty()) {
         Picasso.get().load(urlImage)
+            .placeholder(R.drawable.default_placeholder_image)
             .fit()
             .into(this)
     }
