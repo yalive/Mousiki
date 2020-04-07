@@ -24,7 +24,7 @@
         android:layout_marginStart="@dimen/sixteen_16dp"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="@dimen/eight_8dp"
-        android:tint="?colorOnSurface"
+        android:tint="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topGuideline"
@@ -75,6 +75,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
+        android:paddingTop="16dp"
         android:paddingBottom="56dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -92,7 +93,8 @@
         android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgBackground" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBackground"
+        tools:visibility="gone" />
 
     <ImageButton
         android:id="@+id/btnPlayAll"

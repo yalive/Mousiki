@@ -29,7 +29,7 @@ sealed class HeaderItem(val title: String, val showMore: Boolean = true) : HomeI
 data class ChartModel(
     val title: String,
     val playlistId: String,
-    var firstTracks: List<MusicTrack> = emptyList()
+    var featuredImageUrl: String
 )
 
 @Parcelize

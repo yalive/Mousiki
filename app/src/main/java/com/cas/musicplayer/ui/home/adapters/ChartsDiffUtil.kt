@@ -23,6 +23,6 @@ class ChartsDiffUtil(
         val newItem = newList[newItemPosition]
         return oldItem.playlistId == newItem.playlistId
                 && oldItem.title == newItem.title
-                && oldItem.firstTracks.size == newItem.firstTracks.size
+                && oldItem.featuredImageUrl == newItem.featuredImageUrl
     }
 }

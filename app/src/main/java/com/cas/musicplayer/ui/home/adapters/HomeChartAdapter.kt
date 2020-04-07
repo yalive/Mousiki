@@ -41,7 +41,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
         view.findViewById<View>(R.id.cardView).setOnClickListener {
             if (adapterPosition >= 0) {
                 val item = items[adapterPosition]
-                val firstTrackImageUrl = item.firstTracks.getOrNull(0)?.imgUrl ?: ""
+                val firstTrackImageUrl = item.featuredImageUrl
                 val artist = Artist(item.title, "US", item.playlistId)
                 val bundle = bundleOf(
                     PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
@@ -63,10 +63,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
     }
 
     override fun bind(item: ChartModel) {
-        val firstTrack = item.firstTracks.getOrNull(0)
-        if (firstTrack != null) {
-            itemView.imgChart.loadImage(firstTrack.imgUrl)
-        }
+        itemView.imgChart.loadImage(item.featuredImageUrl)
         txtTitle.text = item.title
     }
 }

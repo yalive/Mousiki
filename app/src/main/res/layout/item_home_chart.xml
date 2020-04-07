@@ -40,7 +40,7 @@
             android:paddingEnd="@dimen/sixteen_16dp"
             android:paddingBottom="@dimen/thirty_two_32dp"
             android:textColor="@color/colorWhite"
-            android:textSize="14sp"
+            android:textSize="24sp"
             tools:text="Pop Music" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -79,16 +79,6 @@ class HomeViewModel @Inject constructor(
     private fun loadCharts() = uiCoroutine {
         val chartList = getUserRelevantCharts(max = 6).shuffled()
         _charts.value = chartList
-        chartList.forEach { chart ->
-            val tracks = loadChartLastThreeTracks(chart)
-            val chartWithTracks = chart.copy(firstTracks = tracks)
-            val currentList = _charts.value?.toMutableList() ?: mutableListOf()
-            val indexOfChart = currentList.indexOf(chart)
-            if (indexOfChart >= 0) {
-                currentList[indexOfChart] = chartWithTracks
-            }
-            _charts.value = currentList
-        }
     }
 
     private fun loadGenres() = uiCoroutine {

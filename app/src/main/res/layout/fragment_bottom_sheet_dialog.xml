@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_navigation_view"
@@ -9,10 +10,32 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
+    <ImageView
+        android:id="@+id/imgTrack"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/img_genre_latin" />
+
+    <TextView
+        android:id="@+id/txtTrackTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="center"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="14sp"
+        tools:text="@string/app_name" />
+
     <LinearLayout
         android:id="@+id/shareVia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
@@ -23,22 +46,23 @@
         android:paddingBottom="8dp">
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
+            android:alpha="0.5"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_share"
-            android:tint="@color/colorAccent" />
+            android:tint="?android:textColorPrimary" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_regular"
+            android:fontFamily="@font/pangram_bold"
             android:text="@string/label_share"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -57,12 +81,13 @@
 
         <ImageView
             android:id="@+id/favIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
+            android:alpha="0.5"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_favorite_added_yellow"
-            android:tint="@color/colorAccent" />
+            android:tint="?android:textColorPrimary" />
 
         <TextView
             android:id="@+id/favLabel"
@@ -70,10 +95,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_regular"
+            android:fontFamily="@font/pangram_bold"
             android:text="Unfavorite"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -92,23 +117,24 @@
 
         <ImageButton
             android:id="@+id/btnDeleteFromCurrentPlaylist"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
+            android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_playlist_add"
-            android:tint="@color/colorAccent" />
+            android:src="@drawable/ic_remove_circle"
+            android:tint="?android:textColorPrimary" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_regular"
+            android:fontFamily="@font/pangram_bold"
             android:text="@string/remove_from_this_playlist"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -127,23 +153,24 @@
 
         <ImageButton
             android:id="@+id/btnAddToPlaylist"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
+            android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_playlist_add"
-            android:tint="@color/colorAccent" />
+            android:tint="?android:textColorPrimary" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_regular"
+            android:fontFamily="@font/pangram_bold"
             android:text="@string/label_add_to"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -151,6 +178,7 @@
         android:id="@+id/viewAddToQuee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
@@ -162,22 +190,23 @@
 
         <ImageButton
             android:id="@+id/btnAddAsNext"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
+            android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
             android:src="@drawable/ic_play"
-            android:tint="@color/colorAccent" />
+            android:tint="?android:textColorPrimary" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_regular"
+            android:fontFamily="@font/pangram_bold"
             android:text="@string/label_play_next"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>
