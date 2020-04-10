@@ -29,7 +29,7 @@ import com.cas.musicplayer.data.local.models.*
         FavouriteSongEntity::class,
         CustomPlaylistEntity::class
     ],
-    version = 5
+    version = 13
 )
 public abstract class MusicTrackRoomDatabase : RoomDatabase() {
 
@@ -77,31 +77,26 @@ public abstract class MusicTrackRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     MusicTrackRoomDatabase::class.java,
                     DATABASE_NAME
-                ).addMigrations(MIGRATION_39_5, MIGRATION_5_6).build()
+                ).addMigrations(MIGRATION_12_13, MIGRATION_5_13).build()
                 INSTANCE = instance
                 return instance
             }
         }
 
-        private val MIGRATION_5_6 = object : Migration(5, 6) {
+
+        private val MIGRATION_5_13 = object : Migration(5, 13) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL(
-                    "CREATE TABLE `custom_playlist_track` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `youtube_id` TEXT NOT NULL, `title` TEXT NOT NULL, `duration` TEXT NOT NULL,`playlist_name` TEXT NOT NULL)"
-                )
-                database.execSQL(
-                    "CREATE UNIQUE INDEX index_custom_playlist_track_youtube_id_playlist_name ON custom_playlist_track (`youtube_id`, `playlist_name`)"
-                )
             }
         }
 
-        private val MIGRATION_39_5 = object : Migration(39, 5) {
+        private val MIGRATION_12_13 = object : Migration(12, 13) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                /*database.execSQL(
+                database.execSQL(
                     "CREATE TABLE `custom_playlist_track` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `youtube_id` TEXT NOT NULL, `title` TEXT NOT NULL, `duration` TEXT NOT NULL,`playlist_name` TEXT NOT NULL)"
                 )
                 database.execSQL(
                     "CREATE UNIQUE INDEX index_custom_playlist_track_youtube_id_playlist_name ON custom_playlist_track (`youtube_id`, `playlist_name`)"
-                )*/
+                )
             }
         }
     }
