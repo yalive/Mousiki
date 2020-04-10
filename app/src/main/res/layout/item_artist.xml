@@ -84,5 +84,5 @@
         android:layout_gravity="center_vertical"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="@dimen/sixteen_16dp"
-        android:src="@drawable/ic_more_vertical" />
+        app:srcCompat="@drawable/ic_more_vertical" />
 </LinearLayout>

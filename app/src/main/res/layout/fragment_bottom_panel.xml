@@ -38,7 +38,7 @@
                 android:contentDescription="@string/app_name"
                 android:rotation="90"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_arrow_right" />
+                app:srcCompat="@drawable/ic_arrow_right" />
 
             <View
                 android:layout_width="0dp"
@@ -53,7 +53,7 @@
                 android:layout_marginEnd="@dimen/sixteen_16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_lock_screen" />
+                app:srcCompat="@drawable/ic_lock_screen" />
 
             <ImageButton
                 android:id="@+id/btnFullScreen"
@@ -64,7 +64,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/app_name"
                 android:rotation="90"
-                android:src="@drawable/ic_fullscreen" />
+                app:srcCompat="@drawable/ic_fullscreen" />
         </LinearLayout>
 
         <TextView
@@ -329,7 +329,7 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_pause" />
+            app:srcCompat="@drawable/ic_pause" />
 
         <ImageButton
             android:id="@+id/btnShowQueue"
@@ -339,7 +339,7 @@
             android:layout_marginEnd="@dimen/sixteen_16dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_queue_music" />
+            app:srcCompat="@drawable/ic_queue_music" />
 
     </LinearLayout>
 

@@ -61,7 +61,7 @@
         android:layout_alignEnd="@+id/cardView"
         android:layout_alignBottom="@+id/txtTitle"
         android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_more_vertical"
+        app:srcCompat="@drawable/ic_more_vertical"
         android:visibility="visible" />
 
     <TextView
