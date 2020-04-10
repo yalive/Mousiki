@@ -1,5 +1,7 @@
 package com.cas.musicplayer.data.config
 
+import android.content.Context
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import javax.inject.Inject
 
@@ -9,11 +11,17 @@ import javax.inject.Inject
  ***************************************
  */
 class RemoteAppConfig @Inject constructor(
-    private val firebaseRemoteConfig: FirebaseRemoteConfig
+    private val firebaseRemoteConfig: FirebaseRemoteConfig,
+    private val context: Context
 ) {
 
     init {
-        firebaseRemoteConfig.fetchAndActivate()
+        firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                val instance = FirebaseAnalytics.getInstance(context)
+                instance.logEvent("error_fetch_remote_config", null)
+            }
+        }
     }
 
     fun getYoutubeApiKeys(): List<String> {
