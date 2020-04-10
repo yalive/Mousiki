@@ -1,5 +1,6 @@
 package com.cas.musicplayer.di
 
+import android.content.Context
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.google.firebase.ktx.Firebase
@@ -22,9 +23,10 @@ object ConfigModule {
     @Provides
     @JvmStatic
     fun provideAppConfigDataSource(
-        remoteConfig: FirebaseRemoteConfig
+        remoteConfig: FirebaseRemoteConfig,
+        context: Context
     ): RemoteAppConfig {
-        return RemoteAppConfig(remoteConfig)
+        return RemoteAppConfig(remoteConfig, context)
     }
 
     @Singleton
@@ -33,7 +35,7 @@ object ConfigModule {
     fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
         val remoteConfig = Firebase.remoteConfig
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 0
+            minimumFetchIntervalInSeconds = 3600
         }
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         remoteConfig.setConfigSettingsAsync(configSettings)
