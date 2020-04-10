@@ -5,6 +5,7 @@ import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.audiofx.AudioEffect
@@ -149,7 +150,7 @@ object Utils {
 
 
     fun openWebview(context: Context, url: String) {
-        val webView = WebView(context)
+        val webView = WebView(context.applicationContext)
         val dialog = MaterialDialog(context).show {
             customView(null, webView)
             negativeButton(text = "Close")
@@ -203,6 +204,23 @@ object Utils {
 
         btnNoThanks.setOnClickListener {
             dialog.dismiss()
+        }
+    }
+
+    fun openFacebookPage(context: Context) {
+        val url = "https://www.facebook.com/mousiki2"
+        var uri = Uri.parse(url)
+        try {
+            val applicationInfo =
+                context.packageManager.getApplicationInfo("com.facebook.katana", 0);
+            if (applicationInfo.enabled) {
+                uri = Uri.parse("fb://facewebmodal/f?href=" + url);
+            }
+        } catch (ignored: PackageManager.NameNotFoundException) {
+        }
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        if (intent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(intent)
         }
     }
 }

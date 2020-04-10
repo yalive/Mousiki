@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_favorite_border" />
+                app:srcCompat="@drawable/ic_favorite_border" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -66,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_folder" />
+                app:srcCompat="@drawable/ic_folder" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -95,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_style" />
+                app:srcCompat="@drawable/ic_style" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -121,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_equalizer" />
+                app:srcCompat="@drawable/ic_equalizer" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -147,7 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_timer" />
+                app:srcCompat="@drawable/ic_timer" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -172,7 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_share" />
+                app:srcCompat="@drawable/ic_share" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -197,7 +198,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_feedback" />
+                app:srcCompat="@drawable/ic_feedback" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -229,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_attach_file" />
+                app:srcCompat="@drawable/ic_attach_file" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -255,7 +256,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_settings" />
+                app:srcCompat="@drawable/ic_settings" />
 
             <TextView
                 android:layout_width="match_parent"

@@ -343,7 +343,9 @@ class BottomPanelFragment : Fragment(),
 
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                 try {
-                    imgBlured.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
+                    bitmap?.let {
+                        imgBlured.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
+                    }
                 } catch (e: OutOfMemoryError) {
                 }
             }

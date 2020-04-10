@@ -1,7 +1,5 @@
 package com.cas.musicplayer.ui.settings
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -60,11 +58,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
             Utils.sendEmail(requireContext())
         }
         btnLikeFacebook.onClick {
-            val urlFacebookPage: Uri = Uri.parse("https://www.facebook.com/mousiki2")
-            val intent = Intent(Intent.ACTION_VIEW, urlFacebookPage)
-            if (intent.resolveActivity(requireContext().packageManager) != null) {
-                startActivity(intent)
-            }
+            Utils.openFacebookPage(requireContext())
         }
         btnPolicy.onClick {
             Utils.openWebview(requireContext(), "file:///android_asset/policy.html")

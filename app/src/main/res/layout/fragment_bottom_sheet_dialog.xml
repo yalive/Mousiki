@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -123,8 +124,8 @@
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_remove_circle"
-            android:tint="?android:textColorPrimary" />
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_remove_circle" />
 
         <TextView
             android:layout_width="match_parent"
@@ -159,7 +160,7 @@
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_playlist_add"
+            app:srcCompat="@drawable/ic_playlist_add"
             android:tint="?android:textColorPrimary" />
 
         <TextView
@@ -196,7 +197,7 @@
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_play"
+            app:srcCompat="@drawable/ic_play"
             android:tint="?android:textColorPrimary" />
 
         <TextView
