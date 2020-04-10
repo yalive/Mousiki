@@ -79,6 +79,8 @@ data class MusicTrack(
 
             return timeString
         }
+
+    companion object
 }
 
 val LENGTH_PATTERN =
@@ -102,3 +104,11 @@ fun MusicTrack.durationToSeconds(): Long {
     }
     return 0
 }
+
+val MusicTrack.Companion.EMPTY: MusicTrack
+    get() = MusicTrack(
+        youtubeId = "",
+        title = "",
+        duration = ""
+    )
+

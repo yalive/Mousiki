@@ -53,7 +53,11 @@ class SongAdapterDelegate(
         private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
 
         fun bind(item: DisplayedVideoItem) {
-            imgSong.loadImage(item.songImagePath)
+            imgSong.loadImage(
+                item.songImagePath,
+                placeHolder = R.drawable.default_placeholder_image_without_background,
+                errorImage = R.drawable.default_placeholder_image_without_background
+            )
             txtTitle.text = item.songTitle
             txtDuration.text = item.songDuration
             txtCategory.text = item.songTitle.split("-")[0]

@@ -2,12 +2,12 @@ package com.cas.musicplayer.ui.library.adapters
 
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.delegates.*
 import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
 import com.cas.musicplayer.ui.library.model.LibraryItem
+import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import kotlin.reflect.KClass
 
 /**
@@ -35,7 +35,7 @@ class LibraryAdapter(
     init {
         dataItems = mutableListOf(
             LibraryHeaderItem.PlaylistsHeader,
-            LibraryItem.Playlists(emptyList()),
+            LibraryItem.Playlists(listOf()),
             LibraryHeaderItem.RecentHeader,
             LibraryItem.Recent(emptyList()),
             LibraryHeaderItem.FavouriteHeader(),
@@ -62,7 +62,7 @@ class LibraryAdapter(
         }
     }
 
-    fun updatePlaylists(playlists: List<Playlist>) {
+    fun updatePlaylists(playlists: List<LibraryPlaylistItem>) {
         val index = indexOfItem(LibraryItem.Playlists::class)
         if (index != -1) {
             updateItemAtIndex(index, LibraryItem.Playlists(playlists))

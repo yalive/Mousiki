@@ -18,6 +18,7 @@ object UserPrefs {
     val CLICK_TRACK_COUNT = "click-track-count"
     val KEY_RATED_APP = "has-rated-app"
     val KEY_SLEEP_TIMER_VALUE = "sleep-timer-value"
+    val KEY_THEME = "key_theme_mode"
 
     fun saveFav(videoId: String?, isAdd: Boolean) {
         val pref = getPrefs()
@@ -83,4 +84,16 @@ object UserPrefs {
     fun getSleepTimerValue(): Int {
         return getPrefs().getInt(KEY_SLEEP_TIMER_VALUE, 10)
     }
+
+    fun setThemeModeValue(mode: Int) {
+        getPrefs().edit().putInt(KEY_THEME, mode).apply()
+    }
+
+    fun getThemeModeValue(): Int {
+        return getPrefs().getInt(KEY_THEME, THEME_DARK)
+    }
+
+    const val THEME_AUTOMATIC = 0
+    const val THEME_LIGHT = 1
+    const val THEME_DARK = 2
 }

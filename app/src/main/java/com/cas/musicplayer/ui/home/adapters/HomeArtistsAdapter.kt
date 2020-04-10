@@ -35,7 +35,7 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
 
     override fun bind(artist: Artist) {
         txtName.text = artist.name
-        imgArtist.loadImage(artist.urlImage)
+        imgArtist.loadImage(artist.urlImage, placeHolder = null)
         view.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, artist)

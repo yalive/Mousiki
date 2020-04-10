@@ -207,6 +207,7 @@ object Utils {
     }
 }
 
+
 fun isScreenLocked(): Boolean {
     val myKM = MusicApp.get().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
     return myKM.isKeyguardLocked

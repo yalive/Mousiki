@@ -64,6 +64,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
         btnPlayAll.setOnClickListener {
+            if (adapter.dataItems.isEmpty()) return@setOnClickListener
             val mainActivity = requireActivity() as MainActivity
             mainActivity.collapseBottomPanel()
             onClickTrackPlayAll()
@@ -92,7 +93,11 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 val newList = resource.data
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
-                txtNumberOfSongs.text = String.format("%d Songs", newList.size)
+                txtNumberOfSongs.text = requireContext().resources.getQuantityString(
+                    R.plurals.playlist_tracks_counts,
+                    newList.size,
+                    newList.size
+                )
             }
             Resource.Loading -> {
                 loadingView.alpha = 1f
@@ -115,7 +120,10 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         when (featuredImage) {
             is FeaturedImage.FeaturedImageRes -> imgArtist.setImageResource(featuredImage.resId)
             is FeaturedImage.FeaturedImageUrl -> {
-                imgArtist.loadImage(featuredImage.url)
+                imgArtist.loadImage(
+                    urlImage = featuredImage.url,
+                    errorImage = R.drawable.default_placeholder_image
+                )
             }
         }
 
