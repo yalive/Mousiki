@@ -1,6 +1,7 @@
 package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.remote.models.Artist
@@ -29,7 +30,7 @@ sealed class HeaderItem(val title: String, val showMore: Boolean = true) : HomeI
 data class ChartModel(
     val title: String,
     val playlistId: String,
-    var featuredImageUrl: String
+    @DrawableRes val featuredImageRes: Int
 )
 
 @Parcelize

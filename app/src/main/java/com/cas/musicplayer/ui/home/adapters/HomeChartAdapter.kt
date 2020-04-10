@@ -16,7 +16,6 @@ import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.loadImage
 import kotlinx.android.synthetic.main.item_home_chart.view.*
 
 
@@ -41,13 +40,12 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
         view.findViewById<View>(R.id.cardView).setOnClickListener {
             if (adapterPosition >= 0) {
                 val item = items[adapterPosition]
-                val firstTrackImageUrl = item.featuredImageUrl
                 val artist = Artist(item.title, "US", item.playlistId)
                 val bundle = bundleOf(
                     PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
                     EXTRAS_ARTIST to artist,
-                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageUrl(
-                        firstTrackImageUrl
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageRes(
+                        item.featuredImageRes
                     )
                 )
 
@@ -63,7 +61,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
     }
 
     override fun bind(item: ChartModel) {
-        itemView.imgChart.loadImage(item.featuredImageUrl, placeHolder = null)
+        itemView.imgChart.setImageResource(item.featuredImageRes)
         txtTitle.text = item.title
     }
 }
