@@ -13,16 +13,7 @@ class RemoteAppConfig @Inject constructor(
 ) {
 
     init {
-        val youtubeApiKeys = getYoutubeApiKeys()
         firebaseRemoteConfig.fetchAndActivate()
-        /*firebaseRemoteConfig.fetch(0).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val youtubeApiKeys1 = getYoutubeApiKeys()
-                print("")
-            } else {
-                print("")
-            }
-        }*/
     }
 
     fun getYoutubeApiKeys(): List<String> {
