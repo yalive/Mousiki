@@ -1,9 +1,11 @@
 package com.cas.musicplayer
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
+import com.cas.musicplayer.utils.UserPrefs
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.facebook.ads.AudienceNetworkAds
@@ -27,11 +29,11 @@ class MusicApp : Application(), ComponentProvider {
 
     override fun onCreate() {
         super.onCreate()
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        instance = this
+        configurePreferredTheme()
         if (AudienceNetworkAds.isInAdsProcess(this)) {
             return
         }
-        instance = this
         MobileAds.initialize(this, getString(R.string.admob_app_id))
         val crashlytics = Crashlytics.Builder()
             .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
@@ -45,6 +47,20 @@ class MusicApp : Application(), ComponentProvider {
 
         fun get(): MusicApp {
             return instance
+        }
+    }
+
+    private fun configurePreferredTheme() {
+        val preferredTheme = UserPrefs.getThemeModeValue()
+        if (preferredTheme == UserPrefs.THEME_AUTOMATIC) {
+            UserPrefs.setThemeModeValue(UserPrefs.THEME_AUTOMATIC)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        } else if (preferredTheme == UserPrefs.THEME_LIGHT) {
+            UserPrefs.setThemeModeValue(UserPrefs.THEME_LIGHT)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else if (preferredTheme == UserPrefs.THEME_DARK) {
+            UserPrefs.setThemeModeValue(UserPrefs.THEME_DARK)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 }

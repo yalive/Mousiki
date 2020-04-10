@@ -17,6 +17,7 @@ import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsLiveUseCa
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
+import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
@@ -45,8 +46,8 @@ class LibraryViewModel @Inject constructor(
     private val _favouriteSongs = MediatorLiveData<List<DisplayedVideoItem>>()
     val favouriteSongs: LiveData<List<DisplayedVideoItem>> = _favouriteSongs
 
-    private val _playlists = MediatorLiveData<List<Playlist>>()
-    val playlists: LiveData<List<Playlist>> = _playlists
+    private val _playlists = MediatorLiveData<List<LibraryPlaylistItem>>()
+    val playlists: LiveData<List<LibraryPlaylistItem>> = _playlists
 
     private val _onClickSong = MutableLiveData<Event<Unit>>()
     val onClickSong: LiveData<Event<Unit>> = _onClickSong
@@ -106,7 +107,11 @@ class LibraryViewModel @Inject constructor(
                 itemCount = favouriteTracks.size
             )
         )
-        _playlists.value = savedPlaylists
+        val items: MutableList<LibraryPlaylistItem> = savedPlaylists.map {
+            LibraryPlaylistItem.CustomPlaylist(it)
+        }.toMutableList()
+        items.add(0, LibraryPlaylistItem.NewPlaylist)
+        _playlists.value = items
     }
 
     fun deletePlaylist(playlist: Playlist) = uiCoroutine {

@@ -13,7 +13,12 @@ sealed class LibraryItem : DisplayableItem {
     data class Recent(val tracks: List<DisplayedVideoItem>) : LibraryItem()
     data class Favourite(val tracks: List<DisplayedVideoItem>) : LibraryItem()
     data class Heavy(val tracks: List<DisplayedVideoItem>) : LibraryItem()
-    data class Playlists(val playlists: List<Playlist>) : LibraryItem()
+    open class Playlists(val items: List<LibraryPlaylistItem>) : LibraryItem()
+}
+
+sealed class LibraryPlaylistItem : DisplayableItem {
+    data class CustomPlaylist(val item: Playlist) : LibraryPlaylistItem()
+    object NewPlaylist : LibraryPlaylistItem()
 }
 
 sealed class LibraryHeaderItem(val title: String, val showMore: Boolean = true) : LibraryItem() {

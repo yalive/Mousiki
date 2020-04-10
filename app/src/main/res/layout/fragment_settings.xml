@@ -6,6 +6,30 @@
     android:orientation="vertical"
     tools:context="com.cas.musicplayer.ui.settings.SettingsFragment">
 
+
+    <TextView
+        android:id="@+id/btnDarkMode"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_dark_mode_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/dark_mode"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/colorDividerSettings" />
+
     <TextView
         android:id="@+id/btnTimer"
         android:layout_width="match_parent"

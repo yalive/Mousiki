@@ -7,10 +7,10 @@ import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.adapters.LibraryPlaylistsAdapter
 import com.cas.musicplayer.ui.library.model.LibraryItem
+import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 
 /**
  ***************************************
@@ -36,19 +36,23 @@ class LibraryPlaylistsDelegate(
         holder: RecyclerView.ViewHolder
     ) {
         val itemPlaylists = items[position] as LibraryItem.Playlists
-        (holder as ViewHolder).bind(itemPlaylists.playlists)
+        (holder as ViewHolder).bind(itemPlaylists.items)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var adapter = LibraryPlaylistsAdapter(viewModel)
+        private var adapter =
+            LibraryPlaylistsAdapter(
+                viewModel
+            )
         private val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
         init {
             recyclerView.adapter = adapter
         }
 
-        fun bind(playlists: List<Playlist>) {
-            adapter.dataItems = playlists.toMutableList()
+        fun bind(items: List<LibraryPlaylistItem>) {
+            adapter.dataItems = items.toMutableList()
         }
     }
 }
+

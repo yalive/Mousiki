@@ -63,7 +63,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
     }
 
     override fun bind(item: ChartModel) {
-        itemView.imgChart.loadImage(item.featuredImageUrl)
+        itemView.imgChart.loadImage(item.featuredImageUrl, placeHolder = null)
         txtTitle.text = item.title
     }
 }

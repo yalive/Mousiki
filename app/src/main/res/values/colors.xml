@@ -31,4 +31,6 @@
     <color name="colorGenre6">#08E6E6</color>
     <color name="colorGenre7">#0852E6</color>
     <color name="colorGenre8">#E66808</color>
+    <color name="colorDarkNavigationView">#23232D</color>
+    <color name="colorBackgroundDialog">@color/colorWhite</color>
 </resources>

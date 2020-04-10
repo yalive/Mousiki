@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.cas.musicplayer.BuildConfig
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cas.musicplayer.data.local.database.dao.*
 import com.cas.musicplayer.data.local.models.*
 
@@ -28,7 +29,7 @@ import com.cas.musicplayer.data.local.models.*
         FavouriteSongEntity::class,
         CustomPlaylistEntity::class
     ],
-    version = BuildConfig.VERSION_CODE
+    version = 5
 )
 public abstract class MusicTrackRoomDatabase : RoomDatabase() {
 
@@ -76,9 +77,31 @@ public abstract class MusicTrackRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     MusicTrackRoomDatabase::class.java,
                     DATABASE_NAME
-                ).fallbackToDestructiveMigration().build()
+                ).addMigrations(MIGRATION_39_5, MIGRATION_5_6).build()
                 INSTANCE = instance
                 return instance
+            }
+        }
+
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "CREATE TABLE `custom_playlist_track` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `youtube_id` TEXT NOT NULL, `title` TEXT NOT NULL, `duration` TEXT NOT NULL,`playlist_name` TEXT NOT NULL)"
+                )
+                database.execSQL(
+                    "CREATE UNIQUE INDEX index_custom_playlist_track_youtube_id_playlist_name ON custom_playlist_track (`youtube_id`, `playlist_name`)"
+                )
+            }
+        }
+
+        private val MIGRATION_39_5 = object : Migration(39, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                /*database.execSQL(
+                    "CREATE TABLE `custom_playlist_track` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `youtube_id` TEXT NOT NULL, `title` TEXT NOT NULL, `duration` TEXT NOT NULL,`playlist_name` TEXT NOT NULL)"
+                )
+                database.execSQL(
+                    "CREATE UNIQUE INDEX index_custom_playlist_track_youtube_id_playlist_name ON custom_playlist_track (`youtube_id`, `playlist_name`)"
+                )*/
             }
         }
     }

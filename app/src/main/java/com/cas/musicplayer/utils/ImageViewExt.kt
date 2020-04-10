@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.RemoteViews
 import androidx.annotation.DrawableRes
 import com.cas.musicplayer.R
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 
@@ -65,28 +66,35 @@ fun ImageView.loadBitmap(
     Picasso.get().load(url).into(target)
 }
 
-fun ImageView.loadImage(urlImage: String) {
-    if (urlImage.isNotEmpty()) {
-        Picasso.get().load(urlImage)
-            .placeholder(R.drawable.default_placeholder_image)
-            .fit()
-            .into(this)
-    }
-}
-
 fun ImageView.loadImage(
-    urlImage: String, @DrawableRes placeHolder: Int? = null
+    urlImage: String,
+    @DrawableRes placeHolder: Int? = R.drawable.ic_music_note,
+    @DrawableRes errorImage: Int? = R.drawable.ic_music_note,
+    onError: (() -> Unit) = {}
 ) {
-
     if (urlImage.isNotEmpty()) {
         Picasso.get().load(urlImage)
             .apply {
-                if (placeHolder != null) {
+                placeHolder?.let {
                     placeholder(placeHolder)
+                }
+                errorImage?.let {
+                    error(errorImage)
                 }
             }
             .fit()
-            .into(this)
+            .into(this, object : Callback {
+                override fun onSuccess() {
+                }
+
+                override fun onError(e: java.lang.Exception?) {
+                    onError()
+                }
+            })
+    } else {
+        placeHolder?.let {
+            setImageResource(placeHolder)
+        }
     }
 }
 

@@ -36,7 +36,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
-        PlaySongDelegateModule::class
+        PlaySongDelegateModule::class,
+        ConfigModule::class
     ]
 )
 interface AppComponent {

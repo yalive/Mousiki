@@ -51,12 +51,12 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesOkHttp(): OkHttpClient {
+    fun providesOkHttp(addKeyInterceptor: AddKeyInterceptor): OkHttpClient {
         val client = OkHttpClient.Builder()
             .connectTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
             .writeTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
             .readTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
-            .addInterceptor(AddKeyInterceptor())
+            .addInterceptor(addKeyInterceptor)
 
         if (Constants.Config.DEBUG_NETWORK) {
             val logging = HttpLoggingInterceptor()

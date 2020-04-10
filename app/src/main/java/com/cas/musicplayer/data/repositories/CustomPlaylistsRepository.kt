@@ -18,14 +18,13 @@ class CustomPlaylistsRepository @Inject constructor(
     private val customPlaylistTrackDao: CustomPlaylistTrackDao
 ) {
 
-
     suspend fun getCustomPlaylists(): List<Playlist> {
         val allTracks = customPlaylistTrackDao.getAll()
         val groupedTracks = allTracks.groupBy { it.playlistName }
         return groupedTracks.map {
             Playlist(
                 id = it.key, // Label as id!!
-                itemCount = it.value.size,
+                itemCount = it.value.count { it.youtubeId.isNotEmpty() },
                 title = it.key,
                 urlImage = it.value[0].imgUrl
             )
@@ -35,7 +34,7 @@ class CustomPlaylistsRepository @Inject constructor(
     suspend fun getCustomPlaylistTracks(playlistName: String): List<MusicTrack> {
         val allTracks = customPlaylistTrackDao.getAll()
         return allTracks.filter {
-            it.playlistName == playlistName
+            it.playlistName == playlistName && it.youtubeId.isNotEmpty()
         }.map {
             MusicTrack(
                 youtubeId = it.youtubeId,
