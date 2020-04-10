@@ -167,7 +167,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "Latest arabic",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_latest_arabic,
                     "",
                     "PLqjy2IHnuqJuOQyEiobSVUSUNOa6TXLBd"
                 )
@@ -175,7 +175,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "SoundCloud",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_soundcloud,
                     "",
                     "PLzCxunOM5WFLNCSF0UEHZqFJJlmdeL71S"
                 )
@@ -183,7 +183,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "Dance & Electronic Music",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_electronic,
                     "",
                     "PLzCxunOM5WFIBEfixsIWyqPpaABQ5S8HD"
                 )
@@ -192,7 +192,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "Happy Music",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_happy,
                     "",
                     "PLzCxunOM5WFLOaTRCzeGrODz8TWaLrbhv"
                 )
@@ -200,7 +200,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "Inspirational Music",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_inspirational,
                     "",
                     "PLzCxunOM5WFJBZIubb6gE-osrl9vMbK7e"
                 )
@@ -208,7 +208,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "Calm Music",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_calm,
                     "",
                     "PLzCxunOM5WFIRlYt5KJngVDXt9uIqX_1B"
                 )
@@ -217,7 +217,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "Workout music",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_workout,
                     "",
                     "PLChOO_ZAB22Uq8Lmi0JqcgQBtTdWXKG0q"
                 )
@@ -226,7 +226,7 @@ class GenresRepository @Inject constructor(
             add(
                 GenreMusic(
                     "Relaxing music",
-                    R.drawable.img_genre_soul,
+                    R.drawable.img_genre_relax,
                     "",
                     "PL5DAB733F1999178F"
                 )
