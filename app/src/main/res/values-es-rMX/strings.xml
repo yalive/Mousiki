@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_equalizer">No se encontró ecualizador.</string>
+    <string name="no_audio_ID">Toca una canción primero, luego vuelve a intentarlo.</string>
+    <string name="favourites">Favoritas</string>
+    <string name="genres">Géneros</string>
+    <string name="artists">Artistas</string>
+    <string name="sponsored">patrocinado</string>
+    <string name="label_share">Compartir</string>
+    <string name="label_add_to">Añadir…</string>
+    <string name="label_play_next">Juega siguiente</string>
+    <string name="common_more">Más</string>
+
+    <!-- Library -->
+    <string name="library">Biblioteca</string>
+    <string name="library_recently_played">Recientemente jugado</string>
+    <string name="library_favourites">Favoritas</string>
+    <string name="library_recent">Reciente</string>
+    <string name="library_heavy_songs">Canciones pesadas</string>
+    <string name="library_heavy">Canciones más reproducidas</string>
+    <string name="library_empty_recent_list">¡Simplemente comienza a reproducir \n canciones para ver tus pistas recientes aquí!</string>
+    <string name="library_empty_heavy_list">La lista esta vacía</string>
+    <string name="library_empty_favourite_list">Puedes hacer cualquier canción como favorita,\n y puedes acceder a ella desde aquí.</string>
+
+    <!-- Common -->
+    <string name="common_empty_song_list">No se encontró ninguna canción</string>
+    <string name="menu_settings">Configuraciones</string>
+    <string name="message_enable_draw">Habilite el permiso "Dibujar sobre otras aplicaciones" para iniciar la ventana flotante del reproductor.</string>
+    <string name="title_button_set_timer">establecer</string>
+    <string name="loading">Cargando…</string>
+    <string name="error_while_loading_song_list">Error al cargar la lista de canciones</string>
+
+    <!-- Settings -->
+    <string name="sleep_timer">Tiempo de dormir</string>
+    <string name="settings_rate_app">Nos califica</string>
+    <string name="settings_feedback">Retroalimentación</string>
+    <string name="settings_facebook_like">Me gusta en la página de Facebook</string>
+    <string name="settings_policy">Política de privacidad</string>
+    <string name="settings_share_app">Compartir aplicación</string>
+    <string name="rate_app_give_rating">Puntuar 5 estrellas</string>
+    <string name="rate_app_remind_me_later">Recuérdame más tarde</string>
+    <string name="rate_app_no_thanks">No, gracias</string>
+    <string name="rate_app_dialo_title">¿Te gustó esta aplicación? Por favor necesitamos tu apoyo.</string>
+    <string name="rate_app_dialog_message">No tomará más de un minuto. Gracias por su apoyo!</string>
+    <string name="search">Buscar</string>
+    <string name="search_button_title">Artistas, canciones o podcasts</string>
+    <string name="artists_find_an_artist">Encuentra artista</string>
+
+    <!-- Playlist -->
+    <string name="add_to_playlist">Agregar a la lista de reproducción</string>
+    <string name="new_playlist">Nueva lista de reproducción</string>
+    <string name="create_playlist">Crear lista de reproducción</string>
+    <string name="playlist_name">Nombre de la lista de reproducción</string>
+    <string name="give_your_playlist_a_name">Dale un nombre a tu lista de reproducción.</string>
+    <string name="create">Crear</string>
+    <string name="remove_from_this_playlist">Eliminar de esta lista de reproducción</string>
+    <string name="playlist_favorite">Favorita</string>
+
+    <!-- Other -->
+    <string name="dark_mode">Modo oscuro</string>
+    <string name="light_mode">Modo de luz</string>
+    <string name="default_mode">Sistema por defecto</string>
+    <string name="done">Hecho</string>
+    <string name="ok">Okay</string>
+    <string name="cancel">Cancelar</string>
+    <string name="choose_dark_mode_theme">Escoge un tema</string>
+    <string name="label_error">Error</string>
+    <string name="btn_unfavorite">Desfavorecer</string>
+    <string name="label_no_songs">Ninguna canción</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="title_channels">Canales</string>
+    <string name="title_videos">Videos</string>
+    <string name="title_playlist">Listas de reproducción</string>
+    <string name="btn_favorite">Favorita</string>
+    <string name="btn_close">Cerrar</string>
+    <string name="title_discover">Descubrir</string>
+    <string name="title_home">Hogar</string>
+    <string name="btn_deny">NEGAR</string>
+    <string name="btn_agree">DE ACUERDO</string>
+    <string name="title_new_release">Nuevos lanzamientos</string>
+    <string name="title_top_charts">Mejores gráficos</string>
+
+</resources>

@@ -3,6 +3,6 @@
     <item
         android:id="@+id/btnActionDelete"
         android:icon="@drawable/ic_search"
-        android:title="Delete"
+        android:title="@string/action_delete"
         android:visible="true" />
 </menu>
