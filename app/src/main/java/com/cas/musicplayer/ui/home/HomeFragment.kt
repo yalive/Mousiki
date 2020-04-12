@@ -55,7 +55,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
         darkStatusBar()
     }
 
-    override fun getPageTitle(): String = "Discover"
+    override fun getPageTitle(): String = getString(R.string.title_discover)
 
     override fun withToolbar(): Boolean = false
 

@@ -386,9 +386,9 @@ class MainActivity : BaseActivity() {
 
     private fun requestDrawOverAppsPermission() {
         AlertDialog.Builder(this).setCancelable(false)
-            .setMessage("Please enable the \"Draw over other apps\" permission to start the floating player window.")
-            .setNegativeButton("DENY") { _, _ ->
-            }.setPositiveButton("AGREE") { _, _ ->
+            .setMessage(R.string.message_enable_draw)
+            .setNegativeButton(getString(R.string.btn_deny)) { _, _ ->
+            }.setPositiveButton(getString(R.string.btn_agree)) { _, _ ->
                 //If the draw over permission is not available open the settings screen
                 //to grant the permission.
                 val intent = Intent(
