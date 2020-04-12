@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui
 
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.VideoEmplacement
@@ -13,6 +14,7 @@ import javax.inject.Inject
  **********************************
  */
 class MainViewModel @Inject constructor(
+    val connectivityState: ConnectivityState,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 

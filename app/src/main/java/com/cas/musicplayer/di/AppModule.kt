@@ -2,6 +2,7 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.data.local.database.dao.*
@@ -67,11 +68,18 @@ object AppModule {
         return client.build()
     }
 
+
     @Singleton
     @JvmStatic
     @Provides
     fun providesSharedPref(context: Context): SharedPreferences =
         context.getSharedPreferences("music.app", Context.MODE_PRIVATE)
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesConnectivityState(context: Context): ConnectivityState =
+        ConnectivityState(context)
 
     @Singleton
     @JvmStatic

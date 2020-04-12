@@ -1,6 +1,7 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
@@ -46,6 +47,8 @@ interface AppComponent {
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): AppComponent
     }
+
+    val connectivityState: ConnectivityState
 
     val mainViewModel: MainViewModel
 

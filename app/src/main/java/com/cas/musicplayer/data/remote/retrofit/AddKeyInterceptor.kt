@@ -1,7 +1,10 @@
 package com.cas.musicplayer.data.remote.retrofit
 
 import android.content.Context
+import android.os.Bundle
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.data.config.RemoteAppConfig
+import com.cas.musicplayer.utils.getCurrentLocale
 import com.google.firebase.analytics.FirebaseAnalytics
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -17,7 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class AddKeyInterceptor @Inject constructor(
     private val context: Context,
-    private val remoteConfig: RemoteAppConfig
+    private val remoteConfig: RemoteAppConfig,
+    private val connectivityState: ConnectivityState
 ) : Interceptor {
 
     private var currentKey = ""
@@ -58,8 +62,11 @@ class AddKeyInterceptor @Inject constructor(
             currentKey = youtubeApiKeys.firstOrNull() ?: ""
         }
         if (count >= MAX_RETRY_GET_KEYS && currentKey.isEmpty()) {
-            val instance = FirebaseAnalytics.getInstance(context)
-            instance.logEvent("cannot_get_ytb_api_keys", null)
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+            val bundle = Bundle()
+            bundle.putBoolean("isConnected", connectivityState.isConnected())
+            bundle.putString("local", getCurrentLocale())
+            firebaseAnalytics.logEvent("cannot_get_ytb_api_keys", bundle)
         }
     }
 
