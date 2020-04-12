@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
@@ -19,7 +18,7 @@ import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
+class HomeFragment : BaseFragment<HomeViewModel>() {
 
     override val viewModel by viewModel { injector.homeViewModel }
     override val layoutResourceId: Int = R.layout.fragment_home
@@ -54,8 +53,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PageableFragment {
         adjustStatusBar()
         darkStatusBar()
     }
-
-    override fun getPageTitle(): String = getString(R.string.title_discover)
 
     override fun withToolbar(): Boolean = false
 

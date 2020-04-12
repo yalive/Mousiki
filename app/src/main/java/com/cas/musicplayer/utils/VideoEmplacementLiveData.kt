@@ -49,6 +49,9 @@ object VideoEmplacementLiveData : MutableLiveData<VideoEmplacement>() {
     }
 
     fun forceUpdate() {
-        this.value = value
+        val currentValue = value
+        if (currentValue != null) {
+            this.value = value
+        }
     }
 }

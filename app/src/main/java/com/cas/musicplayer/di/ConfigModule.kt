@@ -4,6 +4,7 @@ import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.RemoteAppConfig
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -42,5 +43,12 @@ object ConfigModule {
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         remoteConfig.setConfigSettingsAsync(configSettings)
         return remoteConfig
+    }
+
+    @Singleton
+    @Provides
+    @JvmStatic
+    fun provideFirebaseAnalytics(context: Context): FirebaseAnalytics {
+        return FirebaseAnalytics.getInstance(context)
     }
 }

@@ -20,6 +20,9 @@ import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
 class ResultSearchSongsFragment : BaseSearchResultFragment(), PageableFragment {
 
     override val layoutResourceId: Int = R.layout.fragment_yt_search_videos
+    override val pageTitle: String by lazy {
+        getString(R.string.title_videos)
+    }
 
     private val adapter: SongsAdapter by lazy {
         SongsAdapter(
@@ -44,8 +47,6 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(), PageableFragment {
         recyclerView?.adapter = adapter
         observeViseModel()
     }
-
-    override fun getPageTitle() = getString(R.string.title_videos)
 
     private fun observeViseModel() {
         val parentFragment = parentFragment as SearchYoutubeFragment
