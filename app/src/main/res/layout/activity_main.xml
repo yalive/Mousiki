@@ -87,9 +87,14 @@
             android:id="@+id/txtConnectivityState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorDarkNavigationView"
             android:elevation="32dp"
             android:gravity="center"
-            android:text="No connection"
-            android:textSize="12sp" />
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="@string/no_connection"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>
