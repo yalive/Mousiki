@@ -101,7 +101,13 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
             ResultSearchArtistsFragment(),
             ResultSearchPlaylistsFragment()
         )
-        viewPager.adapter = FragmentPageAdapter(childFragmentManager, fragments)
+        viewPager.adapter = FragmentPageAdapter(
+            childFragmentManager, fragments, mutableListOf(
+                getString(R.string.title_videos),
+                getString(R.string.title_channels),
+                getString(R.string.title_playlist)
+            )
+        )
         tabLayout.setupWithViewPager(viewPager)
         recyclerViewSuggestions?.adapter = searchSuggestionsAdapter
         recyclerViewSuggestions?.addItemDecoration(

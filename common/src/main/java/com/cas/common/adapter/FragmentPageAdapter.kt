@@ -11,11 +11,13 @@ import androidx.fragment.app.FragmentPagerAdapter
  */
 class FragmentPageAdapter(
     fm: FragmentManager,
-    private val fragments: List<PageableFragment>
-) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    private val fragments: List<PageableFragment>,
+    val titles: MutableList<String>
+    ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
     override fun getItem(position: Int): Fragment = fragments[position] as Fragment
     override fun getCount() = fragments.size
-    override fun getPageTitle(position: Int) = fragments[position].pageTitle
+    override fun getPageTitle(position: Int) = titles[position]
 }
 
 interface PageableFragment {
