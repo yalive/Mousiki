@@ -22,10 +22,14 @@ sealed class LibraryPlaylistItem : DisplayableItem {
 }
 
 sealed class LibraryHeaderItem(val title: String, val showMore: Boolean = true) : LibraryItem() {
+    // TODO replace Recent by the id > R.String.library_recent
     object RecentHeader : LibraryHeaderItem("Recent", false)
+    // TODO replace Playlists by the id > R.String.title_playlist
     object PlaylistsHeader : LibraryHeaderItem("Playlists", false)
+    // TODO replace Favourites by the id > R.String.library_favourites
     data class FavouriteHeader(val withMore: Boolean = false) :
         LibraryHeaderItem("Favourites", withMore)
+    // TODO replace Heavy songs by the id > R.String.library_heavy_songs
 
     object HeavyHeader : LibraryHeaderItem("Heavy songs", false)
 }

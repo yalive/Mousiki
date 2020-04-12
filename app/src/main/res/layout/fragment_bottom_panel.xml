@@ -111,7 +111,7 @@
             android:contentDescription="@string/app_name"
             android:drawableEnd="@drawable/ic_arrow_right"
             android:src="@drawable/ic_youtube_copyright"
-            android:text="Developed with Youtube"
+            android:text="@string/label_developed_with_youtube"
             android:textAllCaps="false" />
 
         <com.ncorti.slidetoact.SlideToActView

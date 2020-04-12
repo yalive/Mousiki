@@ -51,10 +51,10 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
         if (!UserPrefs.isFav(musicTrack.youtubeId)) {
             favIcon.setImageResource(R.drawable.ic_favorite_border_yellow)
-            favLabel.text = "Favorite"
+            favLabel.text = getString(R.string.btn_favorite)
         } else {
             favIcon.setImageResource(R.drawable.ic_favorite_added_yellow)
-            favLabel.text = "Unfavorite"
+            favLabel.text = getString(R.string.favourites)
         }
         imgTrack.loadImage(musicTrack.imgUrl)
         txtTrackTitle.text = musicTrack.title

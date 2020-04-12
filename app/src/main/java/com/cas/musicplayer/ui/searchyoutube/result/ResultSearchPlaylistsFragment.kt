@@ -25,7 +25,7 @@ class ResultSearchPlaylistsFragment : BaseSearchResultFragment(), PageableFragme
         observeViseModel()
     }
 
-    override fun getPageTitle() = "Playlists"
+    override fun getPageTitle() = getString(R.string.title_playlist)
 
     private fun observeViseModel() {
         val parentFragment = parentFragment as SearchYoutubeFragment
