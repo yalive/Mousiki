@@ -1,6 +1,9 @@
 package com.cas.musicplayer.data.config
 
 import android.content.Context
+import android.os.Bundle
+import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.utils.getCurrentLocale
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import javax.inject.Inject
@@ -12,14 +15,20 @@ import javax.inject.Inject
  */
 class RemoteAppConfig @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
+    private val connectivityState: ConnectivityState,
     private val context: Context
 ) {
 
     init {
+        val connectedBefore = connectivityState.isConnected()
         firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                val instance = FirebaseAnalytics.getInstance(context)
-                instance.logEvent("error_fetch_remote_config", null)
+                val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+                val bundle = Bundle()
+                bundle.putBoolean("isConnected", connectivityState.isConnected())
+                bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
+                bundle.putString("local", getCurrentLocale())
+                firebaseAnalytics.logEvent("error_fetch_remote_config", bundle)
             }
         }
     }

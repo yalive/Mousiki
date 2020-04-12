@@ -47,4 +47,8 @@ object VideoEmplacementLiveData : MutableLiveData<VideoEmplacement>() {
         oldValue1 = value
         value = VideoEmplacement.out()
     }
+
+    fun forceUpdate() {
+        this.value = value
+    }
 }

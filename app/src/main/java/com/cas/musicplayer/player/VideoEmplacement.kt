@@ -2,6 +2,7 @@ package com.cas.musicplayer.player
 
 import android.view.WindowManager
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.screenSize
@@ -50,11 +51,15 @@ class EmplacementBottom(val bottomBarVisible: Boolean) : VideoEmplacement() {
 
     override val y: Int
         get() {
+            val connectivityState = (app as ComponentProvider).component.connectivityState
             val notch = if (DeviceInset.hasNotch()) dpToPixel(24f) else 0
             var bottomY =
                 screenHeightPx - height - dpToPixel(28f) + DeviceInset.get().top + notch
             if (bottomBarVisible) {
                 bottomY -= dpToPixel(56f)
+            }
+            if (!connectivityState.isConnected()) {
+                bottomY -= dpToPixel(16f)
             }
             return bottomY
         }

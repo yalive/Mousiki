@@ -11,12 +11,15 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
+import androidx.transition.TransitionManager
+import com.cas.common.extensions.observe
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
@@ -106,6 +109,12 @@ class MainActivity : BaseActivity() {
                 }
             }
             true
+        }
+
+        observe(viewModel.connectivityState) { state ->
+            TransitionManager.beginDelayedTransition(bottomView)
+            txtConnectivityState.isGone = state.isConnected
+            VideoEmplacementLiveData.forceUpdate()
         }
     }
 

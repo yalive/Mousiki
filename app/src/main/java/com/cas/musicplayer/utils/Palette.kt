@@ -10,7 +10,7 @@ import kotlin.coroutines.suspendCoroutine
  * Created by Y.Abdelhadi on 4/12/20.
  ***************************************
  */
-suspend fun Bitmap.getPallet(): Palette? = suspendCoroutine { continuation ->
+suspend fun Bitmap.getPalette(): Palette? = suspendCoroutine { continuation ->
     Palette.from(this).generate { palette ->
         continuation.resume(palette)
     }

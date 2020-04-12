@@ -10,7 +10,7 @@
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomNavView"
+        android:layout_above="@+id/bottomView"
         android:layout_alignParentTop="true"
         android:fitsSystemWindows="true"
         android:gravity="bottom"
@@ -65,15 +65,31 @@
             android:layout_height="match_parent" />
     </com.cas.musicplayer.ui.home.view.InsetSlidingPanelView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavView"
+    <LinearLayout
+        android:id="@+id/bottomView"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_navigation_view"
-        app:itemIconTint="@color/navigation_menu_icon_color"
-        app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
-        app:itemTextAppearanceInactive="@style/BottomNavigationView.Inactive"
-        app:itemTextColor="@color/navigation_menu_text_color"
-        app:menu="@menu/bottom_nav_menu" />
+        android:orientation="vertical">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavView"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_navigation_view"
+            app:itemIconTint="@color/navigation_menu_icon_color"
+            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+            app:itemTextAppearanceInactive="@style/BottomNavigationView.Inactive"
+            app:itemTextColor="@color/navigation_menu_text_color"
+            app:menu="@menu/bottom_nav_menu" />
+
+        <TextView
+            android:id="@+id/txtConnectivityState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="32dp"
+            android:gravity="center"
+            android:text="No connection"
+            android:textSize="12sp" />
+    </LinearLayout>
 </RelativeLayout>

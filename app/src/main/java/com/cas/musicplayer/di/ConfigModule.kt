@@ -1,6 +1,7 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.google.firebase.ktx.Firebase
@@ -24,9 +25,10 @@ object ConfigModule {
     @JvmStatic
     fun provideAppConfigDataSource(
         remoteConfig: FirebaseRemoteConfig,
+        connectivityState: ConnectivityState,
         context: Context
     ): RemoteAppConfig {
-        return RemoteAppConfig(remoteConfig, context)
+        return RemoteAppConfig(remoteConfig, connectivityState, context)
     }
 
     @Singleton
