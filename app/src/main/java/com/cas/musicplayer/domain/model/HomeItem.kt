@@ -2,8 +2,10 @@ package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.android.parcel.Parcelize
@@ -20,15 +22,11 @@ sealed class HomeItem : DisplayableItem {
     data class GenreItem(val genres: List<GenreMusic>) : HomeItem()
 }
 
-sealed class HeaderItem(val title: String, val showMore: Boolean = true) : HomeItem() {
-    // TODO replace New Releases by the id > R.String.title_new_release
-    data class PopularsHeader(var loading: Boolean = false) : HeaderItem("New Releases")
-    // TODO replace Top charts by the id > R.String.title_top_charts
-    object ChartsHeader : HeaderItem("Top charts", false)
-    // TODO replace Artists by the id > R.String.artists
-    object ArtistsHeader : HeaderItem("Artists")
-    // TODO replace Genres by the id > R.String.genres
-    object GenresHeader : HeaderItem("Genres")
+sealed class HeaderItem(@StringRes val title: Int, val showMore: Boolean = true) : HomeItem() {
+    data class PopularsHeader(var loading: Boolean = false) : HeaderItem(R.string.title_new_release)
+    object ChartsHeader : HeaderItem(R.string.title_top_charts, false)
+    object ArtistsHeader : HeaderItem(R.string.artists)
+    object GenresHeader : HeaderItem(R.string.genres)
 }
 
 data class ChartModel(

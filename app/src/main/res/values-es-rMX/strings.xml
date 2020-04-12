@@ -79,5 +79,7 @@
     <string name="btn_agree">DE ACUERDO</string>
     <string name="title_new_release">Nuevos lanzamientos</string>
     <string name="title_top_charts">Mejores gráficos</string>
+    <string name="no_connection">Sin conexión</string>
+    <string name="connection_back">De nuevo en línea</string>
 
 </resources>

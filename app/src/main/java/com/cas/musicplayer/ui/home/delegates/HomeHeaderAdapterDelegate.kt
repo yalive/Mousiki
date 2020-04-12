@@ -54,7 +54,7 @@ class HomeHeaderAdapterDelegate(
         private val progressBar: ProgressBar = view.findViewById(R.id.progressBar)
 
         fun bind(headerItem: HeaderItem) {
-            txtTitle.text = headerItem.title
+            txtTitle.setText(headerItem.title)
             if (headerItem.showMore) {
                 view.setOnClickListener { showMore(headerItem) }
                 showAll.setOnClickListener { showMore(headerItem) }

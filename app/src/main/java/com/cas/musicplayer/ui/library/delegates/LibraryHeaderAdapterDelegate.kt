@@ -44,7 +44,7 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         private val txtMore: TextView = view.findViewById(R.id.txtMore)
 
         fun bind(headerItem: LibraryHeaderItem) {
-            txtTitle.text = headerItem.title
+            txtTitle.setText(headerItem.title)
             if (headerItem.showMore) {
                 view.setOnClickListener { showMore(headerItem) }
                 showAll.setOnClickListener { showMore(headerItem) }
