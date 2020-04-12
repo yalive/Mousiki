@@ -12,6 +12,7 @@
     <color name="colorGrayText">#727272</color>
     <color name="colorDividerSettings">#F8F5F5</color>
     <color name="colorIconSettings">#2C2B2B</color>
+    <color name="colorGreenState">#2CA540</color>
 
     <color name="colorClosePlayerOn">#BCC7485B</color>
     <color name="colorClosePlayerOff">#45000000</color>

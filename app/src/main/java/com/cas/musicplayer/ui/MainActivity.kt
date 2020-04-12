@@ -8,7 +8,9 @@ import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
 import androidx.core.view.isGone
@@ -46,6 +48,9 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
     private var isFromService = false
 
+    private var bottomView: ViewGroup? = null
+    private var txtConnectivityState: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
@@ -53,6 +58,8 @@ class MainActivity : BaseActivity() {
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
         setContentView(R.layout.activity_main)
+        bottomView = findViewById(R.id.bottomView)
+        txtConnectivityState = findViewById(R.id.txtConnectivityState)
         slidingPaneLayout = findViewById(R.id.sliding_layout)
         setSupportActionBar(toolbar)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
@@ -112,8 +119,19 @@ class MainActivity : BaseActivity() {
         }
 
         observe(viewModel.connectivityState) { state ->
-            TransitionManager.beginDelayedTransition(bottomView)
-            txtConnectivityState.isGone = state.isConnected
+            handler.postDelayed(if (state.isConnected) 500L else 0) {
+                bottomView?.let { viewGroup ->
+                    TransitionManager.beginDelayedTransition(viewGroup)
+                }
+                txtConnectivityState?.isGone = state.isConnected
+            }
+            if (state.isConnected) {
+                txtConnectivityState?.setBackgroundColor(color(R.color.colorGreenState))
+                txtConnectivityState?.setText(R.string.connection_back)
+            } else {
+                txtConnectivityState?.setBackgroundColor(color(R.color.colorDarkNavigationView))
+                txtConnectivityState?.setText(R.string.no_connection)
+            }
             VideoEmplacementLiveData.forceUpdate()
         }
     }

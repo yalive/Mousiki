@@ -64,6 +64,8 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="choose_dark_mode_theme">Choose theme</string>
+    <string name="no_connection">No connection</string>
+    <string name="connection_back">Back online</string>
 
 
 </resources>
