@@ -33,6 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/pangram_regular"
-        android:text="Error"
+        android:text="@string/label_error"
         android:visibility="gone" />
 </FrameLayout>

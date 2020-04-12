@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/pangram_regular"
-        android:text="No songs"
+        android:text="@string/label_no_songs"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone" />

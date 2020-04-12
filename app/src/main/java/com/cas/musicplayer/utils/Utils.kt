@@ -153,7 +153,7 @@ object Utils {
         val webView = WebView(context.applicationContext)
         val dialog = MaterialDialog(context).show {
             customView(null, webView)
-            negativeButton(text = "Close")
+            negativeButton(text = context.getString(R.string.btn_close))
             cancelOnTouchOutside(false)
         }
         dialog.onShow {

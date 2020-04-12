@@ -21,9 +21,13 @@ sealed class HomeItem : DisplayableItem {
 }
 
 sealed class HeaderItem(val title: String, val showMore: Boolean = true) : HomeItem() {
+    // TODO replace New Releases by the id > R.String.title_new_release
     data class PopularsHeader(var loading: Boolean = false) : HeaderItem("New Releases")
+    // TODO replace Top charts by the id > R.String.title_top_charts
     object ChartsHeader : HeaderItem("Top charts", false)
+    // TODO replace Artists by the id > R.String.artists
     object ArtistsHeader : HeaderItem("Artists")
+    // TODO replace Genres by the id > R.String.genres
     object GenresHeader : HeaderItem("Genres")
 }
 
