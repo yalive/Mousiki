@@ -16,6 +16,7 @@ import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_home_chart.view.*
 
 
@@ -61,7 +62,16 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
     }
 
     override fun bind(item: ChartModel) {
-        itemView.imgChart.setImageResource(item.featuredImageRes)
         txtTitle.text = item.title
+
+        // To be refactored
+        try {
+            itemView.imgChart.setImageResource(item.featuredImageRes)
+        } catch (e: OutOfMemoryError) {
+            try {
+                Picasso.get().load(item.featuredImageRes).into(itemView.imgChart)
+            } catch (e: OutOfMemoryError) {
+            }
+        }
     }
 }
