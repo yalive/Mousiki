@@ -103,8 +103,11 @@ class NotificationHelper(var service: VideoPlaybackService) {
 
         PlayerQueue.observe(service, Observer { track ->
             notificationLayout.setTextViewText(R.id.title, track.title)
-            Picasso.get().load(track.imgUrl)
-                .into(notificationLayout, R.id.image, NOTIFY_ID, notification)
+            try {
+                Picasso.get().load(track.imgUrl)
+                    .into(notificationLayout, R.id.image, NOTIFY_ID, notification)
+            } catch (e: OutOfMemoryError) {
+            }
             notificationLayout.loadAndBlurImage(R.id.imgBgNotification, track.imgUrl)
         })
 

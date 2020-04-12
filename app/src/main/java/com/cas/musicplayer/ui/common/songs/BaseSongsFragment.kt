@@ -8,8 +8,8 @@ import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.palette.graphics.Palette
 import androidx.transition.TransitionManager
 import com.cas.common.dpToPixel
 import com.cas.common.fragment.BaseFragment
@@ -27,6 +27,7 @@ import com.cas.musicplayer.utils.*
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 import kotlinx.android.synthetic.main.layout_shimmer_loading_music_list.*
+import kotlinx.coroutines.launch
 
 
 /**
@@ -131,6 +132,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         when (featuredImage) {
             is FeaturedImage.FeaturedImageRes -> {
                 imgBackground.loadBitmap(featuredImage.resId, this::findDominantColors)
+
             }
             is FeaturedImage.FeaturedImageUrl -> {
                 imgBackground.loadBitmap(featuredImage.url, this::findDominantColors)
@@ -139,18 +141,17 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     }
 
     private fun findDominantColors(drawableBitmap: Bitmap) {
-        Palette.from(drawableBitmap).generate { palette ->
-            palette?.let {
-                val colorSurface = requireContext().themeColor(R.attr.colorSurface)
-                val dominantColor = palette.getMutedColor(
-                    requireContext().color(R.color.colorPrimary)
-                )
-                val colors = intArrayOf(dominantColor, colorSurface)
-                val gradient = GradientDrawable(
-                    GradientDrawable.Orientation.TOP_BOTTOM, colors
-                )
-                imgBackground.setImageDrawable(gradient)
-            }
+        lifecycleScope.launch(uiContext) {
+            val pallet = drawableBitmap.getPallet() ?: return@launch
+            val colorSurface = requireContext().themeColor(R.attr.colorSurface)
+            val dominantColor = pallet.getMutedColor(
+                requireContext().color(R.color.colorPrimary)
+            )
+            val colors = intArrayOf(dominantColor, colorSurface)
+            val gradient = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM, colors
+            )
+            imgBackground.setImageDrawable(gradient)
         }
     }
 
