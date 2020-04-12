@@ -1,6 +1,8 @@
 package com.cas.musicplayer.ui.library.model
 
+import androidx.annotation.StringRes
 import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 
@@ -21,15 +23,12 @@ sealed class LibraryPlaylistItem : DisplayableItem {
     object NewPlaylist : LibraryPlaylistItem()
 }
 
-sealed class LibraryHeaderItem(val title: String, val showMore: Boolean = true) : LibraryItem() {
-    // TODO replace Recent by the id > R.String.library_recent
-    object RecentHeader : LibraryHeaderItem("Recent", false)
-    // TODO replace Playlists by the id > R.String.title_playlist
-    object PlaylistsHeader : LibraryHeaderItem("Playlists", false)
-    // TODO replace Favourites by the id > R.String.library_favourites
+sealed class LibraryHeaderItem(@StringRes val title: Int, val showMore: Boolean = true) :
+    LibraryItem() {
+    object RecentHeader : LibraryHeaderItem(R.string.library_recent, false)
+    object PlaylistsHeader : LibraryHeaderItem(R.string.title_playlist, false)
     data class FavouriteHeader(val withMore: Boolean = false) :
-        LibraryHeaderItem("Favourites", withMore)
-    // TODO replace Heavy songs by the id > R.String.library_heavy_songs
+        LibraryHeaderItem(R.string.library_favourites, withMore)
 
-    object HeavyHeader : LibraryHeaderItem("Heavy songs", false)
+    object HeavyHeader : LibraryHeaderItem(R.string.library_heavy_songs, false)
 }

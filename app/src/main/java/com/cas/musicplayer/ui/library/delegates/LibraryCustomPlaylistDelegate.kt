@@ -59,16 +59,19 @@ class LibraryCustomPlaylistDelegate(
         private val btnMoreOptions: ImageButton = view.findViewById(R.id.btnMoreOptions)
 
         override fun bind(playlist: Playlist) {
+            if (playlist.title == Constants.FAV_PLAYLIST_NAME) {
+                txtTitle.setText(R.string.favourites)
+            } else {
+                txtTitle.text = playlist.title
+            }
 
-            txtTitle.text = playlist.title
             txtDuration.text = itemView.context.resources.getQuantityString(
                 R.plurals.playlist_tracks_counts,
                 playlist.itemCount,
                 playlist.itemCount
             )
-
             itemView.findViewById<View>(R.id.cardView).setOnClickListener {
-                viewModel.onClickPlaylist(playlist)
+                viewModel.onClickPlaylist(playlist.copy(title = txtTitle.text.toString())) // Hack!!!
             }
             btnMoreOptions.onClick {
                 showPopup(it, playlist)

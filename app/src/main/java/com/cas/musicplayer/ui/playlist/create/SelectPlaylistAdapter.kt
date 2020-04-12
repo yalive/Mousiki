@@ -13,6 +13,7 @@ import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.Playlist
+import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.loadImage
 
 /**
@@ -56,7 +57,11 @@ class SelectPlaylistAdapter(
         }
 
         override fun bind(data: Playlist) {
-            txtTitle.text = data.title
+            if (data.title == Constants.FAV_PLAYLIST_NAME) {
+                txtTitle.setText(R.string.favourites)
+            } else {
+                txtTitle.text = data.title
+            }
             txtTracksCount.text =
                 context.resources.getQuantityString(
                     R.plurals.playlist_tracks_counts,
