@@ -18,14 +18,15 @@ class ResultSearchPlaylistsFragment : BaseSearchResultFragment(), PageableFragme
 
     override val layoutResourceId: Int = R.layout.fragment_yt_search_videos
     private val adapter by lazy { PlaylistsAdapter() }
+    override val pageTitle: String by lazy {
+        getString(R.string.title_playlist)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView?.adapter = adapter
         observeViseModel()
     }
-
-    override fun getPageTitle() = getString(R.string.title_playlist)
 
     private fun observeViseModel() {
         val parentFragment = parentFragment as SearchYoutubeFragment

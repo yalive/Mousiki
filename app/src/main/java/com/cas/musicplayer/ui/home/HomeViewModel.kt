@@ -1,11 +1,14 @@
 package com.cas.musicplayer.ui.home
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
+import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
@@ -23,6 +26,7 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.cas.musicplayer.utils.uiCoroutine
+import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
 
 /**
@@ -36,6 +40,8 @@ class HomeViewModel @Inject constructor(
     private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
     private val loadChartLastThreeTracks: LoadChartLastThreeTracksUseCase,
     private val getGenres: GetGenresUseCase,
+    private val analytics: FirebaseAnalytics,
+    private val connectivityState: ConnectivityState,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -69,11 +75,21 @@ class HomeViewModel @Inject constructor(
         if (_newReleases.hasItems() || _newReleases.isLoading()) {
             return@uiCoroutine
         }
+        val connectedBefore = connectivityState.isConnected()
         _newReleases.loading()
         val result = getNewReleasedSongs(max = 10)
         _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
+        when (result) {
+            is Result.Error -> {
+                val bundle = Bundle()
+                bundle.putBoolean("isConnected", connectivityState.isConnected())
+                bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
+                bundle.putString("local", getCurrentLocale())
+                analytics.logEvent("cannot_load_trending_tracks", bundle)
+            }
+        }
     }
 
     private fun loadCharts() = uiCoroutine {
