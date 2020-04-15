@@ -14,13 +14,6 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-/* Open class for testing purpose*/
-apply plugin: "kotlin-allopen"
-allOpen {
-    // allows mocking for classes w/o directly opening them for release builds
-    annotation 'com.cas.musicplayer.OpenClass'
-}
-
 apply plugin: 'io.fabric'
 
 android {
@@ -83,8 +76,8 @@ android {
         }
 
         dev {
-            versionCode 45
-            versionName "1.45"
+            versionCode 46
+            versionName "1.46"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }

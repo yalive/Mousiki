@@ -1,9 +1,14 @@
 package com.cas.musicplayer.player.services
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.*
 import android.widget.TextView
@@ -57,6 +62,7 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
     var youTubePlayer: YouTubePlayer? = null
 
     var videoEmplacement: VideoEmplacement = VideoEmplacement.bottom(true)
+    private lateinit var musicIntentReceiver: MusicIntentReceiver
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -119,8 +125,28 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
         return super.onStartCommand(intent, flags, startId)
     }
 
+    var mediaSession: MediaSessionCompat? = null
+
     override fun onCreate() {
         super.onCreate()
+        val mediaSessionCallback = object : MediaSessionCompat.Callback() {
+            override fun onPlay() {
+                youTubePlayer?.play()
+            }
+
+            override fun onPause() {
+                youTubePlayer?.pause()
+            }
+        }
+        musicIntentReceiver = MusicIntentReceiver()
+        mediaSession = MediaSessionCompat(applicationContext, "Mousiki").apply {
+            setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
+                        or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
+            )
+            isActive = true
+            setCallback(mediaSessionCallback)
+        }
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
@@ -143,6 +169,10 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
         observeAdsVisibility()
 
         startForegroundService()
+
+        // register receiver for ACTION_HEADSET_PLUG
+        val musicReceiverFilter = IntentFilter(Intent.ACTION_HEADSET_PLUG)
+        registerReceiver(musicIntentReceiver, musicReceiverFilter)
     }
 
 
@@ -273,6 +303,16 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
                 PlaybackLiveData.value = state
                 if (state == PlayerConstants.PlayerState.ENDED) {
                     PlayerQueue.playNextTrack()
+                }
+                when (state) {
+                    PlayerConstants.PlayerState.PLAYING -> {
+                        setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING)
+                    }
+                    PlayerConstants.PlayerState.PAUSED -> {
+                        setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
+                    }
+                    else -> {
+                    }
                 }
             }
 
@@ -494,6 +534,7 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
 
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(musicIntentReceiver)
         PlaybackLiveData.value = PlayerConstants.PlayerState.UNKNOWN
         windowManager.removeView(videoContainerView)
         windowManager.removeView(bottomView)
@@ -502,9 +543,31 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
         }
     }
 
+    private fun setMediaPlaybackState(state: Int) {
+        val playbackstateBuilder = PlaybackStateCompat.Builder()
+        if (state == PlaybackStateCompat.STATE_PLAYING) {
+            playbackstateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE or PlaybackStateCompat.ACTION_PAUSE)
+        } else {
+            playbackstateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE or PlaybackStateCompat.ACTION_PLAY)
+        }
+        playbackstateBuilder.setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 0f)
+        mediaSession?.setPlaybackState(playbackstateBuilder.build())
+    }
+
     /* Used to build and start foreground service. */
     private fun startForegroundService() {
         val helper = NotificationHelper(this)
         helper.init()
+    }
+
+    inner class MusicIntentReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == Intent.ACTION_HEADSET_PLUG && !isInitialStickyBroadcast) {
+                val intExtra = intent.getIntExtra("state", -1)
+                if (intExtra == 0 && PlaybackLiveData.isPlaying()) {
+                    youTubePlayer?.pause()
+                }
+            }
+        }
     }
 }

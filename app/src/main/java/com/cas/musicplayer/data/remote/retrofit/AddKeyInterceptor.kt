@@ -81,7 +81,7 @@ class AddKeyInterceptor @Inject constructor(
                 .addQueryParameter(QUERY_KEY, currentKey)
                 .build()
             response = chain.proceed(request.newBuilder().url(urlWithNewKey).build())
-        } while ((response.code() == 403 || response.code() == 400) && retryCount < 4)
+        } while ((response.code() == 403 || response.code() == 400) && retryCount < 10)
         return response
     }
 
