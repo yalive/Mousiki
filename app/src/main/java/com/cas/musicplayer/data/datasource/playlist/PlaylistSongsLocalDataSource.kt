@@ -81,6 +81,6 @@ class PlaylistSongsLocalDataSource @Inject constructor(
 
     companion object {
         private const val ONE_DAY_SECONDS = 24 * 60 * 60
-        private const val CACHE_MAX_DURATION_SECONDS = 8 * ONE_DAY_SECONDS // 8 days
+        private const val CACHE_MAX_DURATION_SECONDS = 30 * ONE_DAY_SECONDS // 8 days
     }
 }

@@ -46,7 +46,6 @@ class NotificationHelper(var service: VideoPlaybackService) {
         val ACTION_BUTTON = "ACTION_BUTTON"
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("WrongConstant")
     fun init() {
         notificationManager =

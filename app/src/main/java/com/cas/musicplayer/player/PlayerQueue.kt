@@ -7,6 +7,7 @@ import com.cas.common.event.Event
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.player.services.VideoPlaybackService
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
@@ -189,6 +190,14 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO, to)
         intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO_FROM_FULL_SCREEN, comeFromFullScreen)
         MusicApp.get().startService(intent)
+    }
+
+    fun togglePlay() {
+        if (PlaybackLiveData.isPlaying()) {
+            pause()
+        } else if (PlaybackLiveData.isPause()) {
+            resume()
+        }
     }
 }
 

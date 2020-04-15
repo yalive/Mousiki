@@ -1,6 +1,9 @@
 package com.cas.musicplayer.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -50,6 +53,7 @@ class MainActivity : BaseActivity() {
 
     private var bottomView: ViewGroup? = null
     private var txtConnectivityState: TextView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -134,6 +138,10 @@ class MainActivity : BaseActivity() {
             }
             VideoEmplacementLiveData.forceUpdate()
         }
+
+
+        // Demo
+
     }
 
     private fun handleDynamicLinks() {
@@ -213,7 +221,6 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-
         if (!isFromService) {
             isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false)
         }
@@ -398,6 +405,7 @@ class MainActivity : BaseActivity() {
                 startActivityForResult(intent, 10)
             }.show()
     }
+
 
     companion object {
         const val EXTRAS_FROM_PLAY_SERVICE = "from_player_service"
