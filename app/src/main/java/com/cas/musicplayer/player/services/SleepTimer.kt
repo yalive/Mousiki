@@ -33,7 +33,7 @@ class MusicSleepTimer : SleepTimer {
                 val elapsedSeconds = (SystemClock.elapsedRealtime() - initialTime) / 1000
                 if (afterDuration * 60 - elapsedSeconds < 0) {
                     cancel() // Stop timer
-                    val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
+                    val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
                     MusicApp.get().stopService(intent)
                 }
             }

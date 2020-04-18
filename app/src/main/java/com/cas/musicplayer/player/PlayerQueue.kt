@@ -8,7 +8,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.player.services.VideoPlaybackService
+import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.isScreenLocked
@@ -93,8 +93,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             return
         }
         if (value == null) return
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_SCHEDULE_TIMER, duration)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_SCHEDULE_TIMER, duration)
         MusicApp.get().startService(intent)
     }
 
@@ -104,14 +104,14 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun hideVideo() {
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_HIDE_VIDEO, true)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_HIDE_VIDEO, true)
         MusicApp.get().startService(intent)
     }
 
     fun showVideo() {
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_SHOW_VIDEO, true)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_SHOW_VIDEO, true)
         MusicApp.get().startService(intent)
     }
 
@@ -151,8 +151,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             pauseVideo()
             return
         }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_PLAY_TRACK, videoId)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, videoId)
         MusicApp.get().startService(intent)
     }
 
@@ -160,8 +160,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_PAUSE, true)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_PAUSE, true)
         MusicApp.get().startService(intent)
     }
 
@@ -173,8 +173,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             pauseVideo()
             return
         }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_RESUME, true)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_RESUME, true)
         MusicApp.get().startService(intent)
     }
 
@@ -186,9 +186,9 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             pauseVideo()
             return
         }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO, to)
-        intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO_FROM_FULL_SCREEN, comeFromFullScreen)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
+        intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO_FROM_FULL_SCREEN, comeFromFullScreen)
         MusicApp.get().startService(intent)
     }
 

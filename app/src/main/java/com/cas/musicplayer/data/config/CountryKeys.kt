@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  ***************************************
  */
 data class CountryKeys(
-    @SerializedName("countries")
+    @SerializedName("countryCode")
     val countries: String,
     @SerializedName("keys")
     val keys: List<String>

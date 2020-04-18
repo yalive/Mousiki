@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
@@ -32,7 +33,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
  * Created by Abdelhadi on 4/9/19.
  **********************************
  */
-class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer() {
+class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
     val TAG = "VideoPlaybackService"
 
@@ -80,6 +81,17 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
 
         intent?.getStringExtra(COMMAND_PLAY_TRACK)?.let {
             PlayerQueue.value?.let { currentTrack ->
+                val builder = MediaMetadataCompat.Builder()
+                builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, "METADATA_KEY_TITLE")
+                builder.putString(
+                    MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE,
+                    "METADATA_KEY_DISPLAY_TITLE"
+                )
+                builder.putString(
+                    MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE,
+                    "METADATA_KEY_DISPLAY_SUBTITLE"
+                )
+                mediaSession?.setMetadata(builder.build())
                 youTubePlayer?.loadVideo(currentTrack.youtubeId, 0f)
             }
         }
@@ -247,7 +259,7 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
 
                         if (isAClick(initialTouchX, endX, initialTouchY, endY)) {
                             //Open app
-                            val intent = Intent(this@VideoPlaybackService, MainActivity::class.java)
+                            val intent = Intent(this@MusicPlayerService, MainActivity::class.java)
                             intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
@@ -291,7 +303,7 @@ class VideoPlaybackService : LifecycleService(), SleepTimer by MusicSleepTimer()
                 PlayerQueue.value?.let { currentTrack ->
                     youTubePlayer.loadVideo(currentTrack.youtubeId, 0f)
                 }
-                this@VideoPlaybackService.youTubePlayer = youTubePlayer
+                this@MusicPlayerService.youTubePlayer = youTubePlayer
 
             }
 

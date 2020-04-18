@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.cas.musicplayer.player.services.VideoPlaybackService" />
+        <service android:name="com.cas.musicplayer.player.services.MusicPlayerService" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

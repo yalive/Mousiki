@@ -54,7 +54,7 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
         val isTopTrackOfGenre = genresRepository.isTopTrackOfGenre(playlistId)
         val isChart = chartsRepository.isChart(playlistId)
         if ((appConfig.loadChartSongsFromFirebase() && isChart)
-            || (appConfig.loadChartSongsFromFirebase() && isTopTrackOfGenre)
+            || (appConfig.loadGenreSongsFromFirebase() && isTopTrackOfGenre)
         ) {
             // Load from firebase
             val firebaseTracks = withContext(bgContext) {
