@@ -67,6 +67,7 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getBoolean(LOAD_GENRE_SONGS_FROM_FIREBASE)
     }
 
+
     companion object {
         const val YOUTUBE_API_KEYS = "youtube_api_keys"
         const val LOAD_CHART_SONGS_FROM_FIREBASE = "chart_songs_from_firebase"

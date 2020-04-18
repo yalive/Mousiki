@@ -51,7 +51,6 @@ class MainActivity : BaseActivity() {
     private var bottomView: ViewGroup? = null
     private var txtConnectivityState: TextView? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)

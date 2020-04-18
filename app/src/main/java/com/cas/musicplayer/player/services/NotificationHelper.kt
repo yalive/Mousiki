@@ -11,7 +11,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.widget.RemoteViews
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.target.NotificationTarget
@@ -28,7 +27,7 @@ import com.squareup.picasso.Picasso
  * Created by Abdelhadi on 4/20/19.
  **********************************
  */
-class NotificationHelper(var service: VideoPlaybackService) {
+class NotificationHelper(var serviceMusic: MusicPlayerService) {
     val NOTIFY_CHANNEL_ID = "channel_youtube"
     val NOTIFY_CHANNEL_NAME = "channel_youtube_service"
     val NOTIFY_ID = 123
@@ -88,9 +87,9 @@ class NotificationHelper(var service: VideoPlaybackService) {
 
         registerNotificationReceiver()
 
-        service.startForeground(NOTIFY_ID, notification)
+        serviceMusic.startForeground(NOTIFY_ID, notification)
 
-        PlaybackLiveData.observe(service, Observer {
+        PlaybackLiveData.observe(serviceMusic, Observer {
             if (it == PlayerConstants.PlayerState.PAUSED) {
                 notificationLayout.setImageViewResource(R.id.action_play_pause, R.drawable.ic_play)
             } else if (it == PlayerConstants.PlayerState.PLAYING) {
@@ -100,7 +99,7 @@ class NotificationHelper(var service: VideoPlaybackService) {
             notificationManager.notify(NOTIFY_ID, notification);
         })
 
-        PlayerQueue.observe(service, Observer { track ->
+        PlayerQueue.observe(serviceMusic, Observer { track ->
             notificationLayout.setTextViewText(R.id.title, track.title)
             try {
                 Picasso.get().load(track.imgUrl)
@@ -149,8 +148,8 @@ class NotificationHelper(var service: VideoPlaybackService) {
                     }
 
                 } else if (intExtra == R.id.action_quit) {
-                    service.stopForeground(true)
-                    service.stopSelf()
+                    serviceMusic.stopForeground(true)
+                    serviceMusic.stopSelf()
                 }
 
             }
