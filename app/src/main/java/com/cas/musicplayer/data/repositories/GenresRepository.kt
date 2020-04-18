@@ -68,7 +68,7 @@ class GenresRepository @Inject constructor(
                     "K-Pop",
                     R.drawable.img_genres_6,
                     "UCsEonk9fs_9jmtw9PwER9yg",
-                    "PLTDluH66q5mqwAXTBhU0IbgRzXedQE4FW"
+                    "PLTDluH66q5mpm-Bsq3GlwjMOHITt2bwXE"
                 )
             )
             add(
@@ -232,5 +232,11 @@ class GenresRepository @Inject constructor(
                 )
             )
         }
+    }
+
+    fun isTopTrackOfGenre(playlistId: String): Boolean {
+        return loadGenres().firstOrNull {
+            it.topTracksPlaylist == playlistId
+        } != null
     }
 }

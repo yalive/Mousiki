@@ -9,6 +9,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,9 +21,9 @@ import javax.inject.Singleton
  ***************************************
  */
 @Module
-object ConfigModule {
+object FirebaseModule {
 
-    @Singleton
+/*    @Singleton
     @Provides
     @JvmStatic
     fun provideAppConfigDataSource(
@@ -30,7 +32,7 @@ object ConfigModule {
         context: Context
     ): RemoteAppConfig {
         return RemoteAppConfig(remoteConfig, connectivityState, context)
-    }
+    }*/
 
     @Singleton
     @Provides
@@ -50,5 +52,12 @@ object ConfigModule {
     @JvmStatic
     fun provideFirebaseAnalytics(context: Context): FirebaseAnalytics {
         return FirebaseAnalytics.getInstance(context)
+    }
+
+    @Singleton
+    @Provides
+    @JvmStatic
+    fun provideFirebaseStorage(context: Context): FirebaseStorage {
+        return Firebase.storage
     }
 }

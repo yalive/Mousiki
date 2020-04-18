@@ -35,13 +35,13 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
 
     override fun bind(artist: Artist) {
         txtName.text = artist.name
-        imgArtist.loadImage(artist.urlImage, placeHolder = null)
+        imgArtist.loadImage(artist.imageFullPath, placeHolder = null)
         view.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, artist)
             bundle.putParcelable(
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                FeaturedImage.FeaturedImageUrl(artist.urlImage)
+                FeaturedImage.FeaturedImageUrl(artist.imageFullPath)
             )
             itemView.findNavController()
                 .navigate(R.id.action_homeFragment_to_artistSongsFragment, bundle)

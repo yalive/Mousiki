@@ -38,7 +38,7 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         PlaySongDelegateModule::class,
-        ConfigModule::class
+        FirebaseModule::class
     ]
 )
 interface AppComponent {

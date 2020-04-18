@@ -57,7 +57,7 @@ class ArtistListAdapter(
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
         override fun bind(item: Artist) {
-            imgSong.loadImage(item.urlImage, placeHolder = null, errorImage = null)
+            imgSong.loadImage(item.imageFullPath, placeHolder = null, errorImage = null)
             txtTitle.text = item.name
             itemView.setOnClickListener {
                 if (adapterPosition >= 0) {

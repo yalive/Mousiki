@@ -18,7 +18,6 @@ import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.domain.usecase.chart.GetUserRelevantChartsUseCase
-import com.cas.musicplayer.domain.usecase.chart.LoadChartLastThreeTracksUseCase
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
@@ -38,7 +37,6 @@ class HomeViewModel @Inject constructor(
     private val getNewReleasedSongs: GetPopularSongsUseCase,
     private val getCountryArtists: GetCountryArtistsUseCase,
     private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
-    private val loadChartLastThreeTracks: LoadChartLastThreeTracksUseCase,
     private val getGenres: GetGenresUseCase,
     private val analytics: FirebaseAnalytics,
     private val connectivityState: ConnectivityState,
