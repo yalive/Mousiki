@@ -10,11 +10,11 @@ import javax.inject.Inject
  *
  *********************************************
  */
-class GetArtistsFromAssetUseCase @Inject constructor(
+class GetAllArtistsUseCase @Inject constructor(
     private val repository: ArtistsRepository
 ) {
 
-    suspend operator fun invoke(distinct: Boolean): List<Artist> {
-        return repository.getArtistsFromFile(distinct)
+    suspend operator fun invoke(): List<Artist> {
+        return repository.getAllArtists()
     }
 }

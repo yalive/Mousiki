@@ -56,6 +56,10 @@ interface YoutubeService {
         @Query("id") ids: String
     ): Channels
 
+    @GET("up")
+    suspend fun page(
+    ): ResponseBody
+
     @GET("videos?part=snippet,contentDetails&chart=mostPopular&videoCategoryId=10$TRENDING_ITEMS")
     suspend fun trending(
         @Query("maxResults") maxResults: Int,

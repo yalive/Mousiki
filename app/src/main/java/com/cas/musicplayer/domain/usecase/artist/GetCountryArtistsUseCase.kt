@@ -11,27 +11,18 @@ import javax.inject.Inject
  ***************************************
  */
 class GetCountryArtistsUseCase @Inject constructor(
-    private val repository: ArtistsRepository,
-    private val getArtistsThumbnails: GetArtistsThumbnailsUseCase
+    private val repository: ArtistsRepository
 ) {
 
     suspend operator fun invoke(countryCode: String): Result<List<Artist>> {
-        val artists = repository.getArtistsFromFile()
-        // Filter 6 artist by country
-        var sixArtist = artists.filter {
-            it.countryCode.equals(countryCode, true)
-        }.shuffled().take(MAX)
-
+        val artists = repository.getArtistsByCountry(countryCode)
+        var sixArtist = artists.shuffled().take(MAX)
         if (sixArtist.size < MAX) {
-            // Request US
-            sixArtist = artists.filter {
-                it.countryCode.equals("US", true)
-            }.shuffled().take(MAX)
+            // Request Global
+            val globalArtists = repository.getArtistsByCountry("GLOBAL")
+            sixArtist = globalArtists.shuffled().take(MAX)
         }
-
-        // Get detail of artists
-        val ids = sixArtist.map { it.channelId }
-        return getArtistsThumbnails(ids)
+        return Result.Success(sixArtist)
     }
 
     companion object {

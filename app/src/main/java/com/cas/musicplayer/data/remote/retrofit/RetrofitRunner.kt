@@ -34,5 +34,14 @@ class RetrofitRunner @Inject constructor() {
     } catch (e: Exception) {
         Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
     }
+
+    suspend fun <T> executeNetworkCall(
+        request: suspend () -> T
+    ): Result<T> = try {
+        val response = request()
+        Result.Success(response)
+    } catch (e: Exception) {
+        Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
+    }
 }
 

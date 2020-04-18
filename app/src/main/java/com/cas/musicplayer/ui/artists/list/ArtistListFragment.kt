@@ -66,7 +66,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
             bundle.putParcelable(EXTRAS_ARTIST, it)
             bundle.putParcelable(
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                FeaturedImage.FeaturedImageUrl(it.urlImage)
+                FeaturedImage.FeaturedImageUrl(it.imageFullPath)
             )
             findNavController().navigate(R.id.action_artistsFragment_to_artistSongsFragment, bundle)
         })

@@ -15,13 +15,18 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Artist(
     @Expose
-    @SerializedName("name")
+    @SerializedName("title")
     val name: String,
     @Expose
     @SerializedName("country")
     val countryCode: String,
     @Expose
-    @SerializedName("channel")
+    @SerializedName("channelId")
     val channelId: String,
+    @Expose
+    @SerializedName("thumbUrl")
     val urlImage: String = ""
-) : Parcelable
+) : Parcelable {
+    val imageFullPath: String
+        get() = "https://yt3.ggpht.com/-$urlImage"
+}

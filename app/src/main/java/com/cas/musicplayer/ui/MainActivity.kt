@@ -1,9 +1,6 @@
 package com.cas.musicplayer.ui
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -138,10 +135,6 @@ class MainActivity : BaseActivity() {
             }
             VideoEmplacementLiveData.forceUpdate()
         }
-
-
-        // Demo
-
     }
 
     private fun handleDynamicLinks() {

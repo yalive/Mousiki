@@ -1,6 +1,5 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.common.result.Result
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -14,7 +13,6 @@ import javax.inject.Singleton
  */
 @Singleton
 class ChartsRepository @Inject constructor(
-    private val repository: PlaylistRepository
 ) {
 
     fun getUserMostRelevantCharts(): List<ChartModel> {
@@ -113,9 +111,12 @@ class ChartsRepository @Inject constructor(
         }
     }
 
+    fun isChart(playlistId: String): Boolean {
+        return getUserMostRelevantCharts().firstOrNull {
+            it.playlistId == playlistId
+        } != null
+    }
+
     suspend fun loadChartLightTracks(chart: ChartModel): List<MusicTrack> =
-        when (val result = repository.firstThreeVideo(chart.playlistId)) {
-            is Result.Success -> result.data
-            is Result.Error -> emptyList()
-        }
+        emptyList()
 }

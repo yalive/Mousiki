@@ -49,6 +49,14 @@ class PlaylistSongsViewModel @AssistedInject constructor(
         }.asResource()
     }
 
+    private fun getChartSongs() = uiCoroutine {
+        _songs.value = Resource.Loading
+        val result = getPlaylistVideosUseCase(playlistId)
+        _songs.value = result.map { tracks ->
+            tracks.map { it.toDisplayedVideoItem() }
+        }.asResource()
+    }
+
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
         val tracks = (_songs.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
         playTrackFromQueue(track, tracks)

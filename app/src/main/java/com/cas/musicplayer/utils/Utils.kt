@@ -30,8 +30,7 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
-import java.io.IOException
-import java.nio.charset.Charset
+import java.io.File
 import java.util.*
 
 
@@ -108,28 +107,6 @@ object Utils {
         context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
     }
 
-
-    /**
-     * Load json from asset file
-     *
-     * [assetFileName] File name
-     * @return Json as String
-     */
-    fun loadStringJSONFromAsset(assetFileName: String): String {
-        try {
-            val inputStream = MusicApp.get().assets.open(assetFileName)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            return String(buffer, Charset.forName("UTF-8"))
-
-        } catch (ignored: IOException) {
-            // Ignore
-        }
-        return "{}"
-    }
-
     fun openEqualizer(@NonNull activity: Activity) {
         /*MusicPlayerRemote.getAudioSessionId()*/
         val audioSessionId = 0
@@ -147,7 +124,6 @@ object Utils {
             }
         }
     }
-
 
     fun openWebview(context: Context, url: String) {
         val webView = WebView(context.applicationContext)
@@ -223,6 +199,8 @@ object Utils {
             context.startActivity(intent)
         }
     }
+
+    fun fileContent(file: File) = file.inputStream().bufferedReader().use { it.readText() }
 }
 
 
