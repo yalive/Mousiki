@@ -83,5 +83,17 @@
     <string name="no_connection">No connection</string>
     <string name="connection_back">Back online</string>
 
+    <!-- Rating -->
+    <string name="question_feeling_about_app">How do you feel about using the Mousik app ?</string>
+    <string name="rate_app_happy">Happy</string>
+    <string name="rate_app_mixed_feeling">Mixed feelings</string>
+    <string name="rate_app_not_happy">Not happy</string>
+
+    <string name="rate_app_message_play_store">So, you\'re pretty happy with Mousiki.\n\nWould you mind taking 1 minute to rate the app? We would love you forever if you give us 5 stars!</string>
+    <string name="comment_about_app_dialog_title">How can we make you happy?</string>
+    <string name="comment_about_app_dialog_subtitle">We would love to know how we can improve your experience.</string>
+    <string name="common_later">Later</string>
+    <string name="hint_your_comments">Your comments…</string>
+    <string name="message_feedback_sent">Thank your for your feedback!.\nYour message is sent to our support team.</string>
 
 </resources>

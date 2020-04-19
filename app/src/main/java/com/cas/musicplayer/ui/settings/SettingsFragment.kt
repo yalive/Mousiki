@@ -10,6 +10,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -65,7 +66,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
         }
 
         btnRateApp.onClick {
-            Utils.rateApp(requireContext())
+            context?.askUserForFeelingAboutApp()
         }
         btnShareApp.onClick {
             Utils.shareAppVia()

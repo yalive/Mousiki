@@ -1,9 +1,7 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
-import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -57,7 +55,7 @@ object FirebaseModule {
     @Singleton
     @Provides
     @JvmStatic
-    fun provideFirebaseStorage(context: Context): FirebaseStorage {
+    fun provideFirebaseStorage(): FirebaseStorage {
         return Firebase.storage
     }
 }

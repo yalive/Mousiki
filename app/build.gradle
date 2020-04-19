@@ -76,8 +76,8 @@ android {
         }
 
         dev {
-            versionCode 47
-            versionName "1.47"
+            versionCode 48
+            versionName "1.48"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }
@@ -128,7 +128,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0-rc01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
-    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     testImplementation 'junit:junit:4.12'
     // Sliding menu
@@ -156,7 +156,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
-    implementation 'com.afollestad.material-dialogs:core:2.8.1'
+    implementation 'com.afollestad.material-dialogs:core:3.2.1'
 
 
     // Firebase
