@@ -9,6 +9,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
+import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.longToast
 import com.google.android.material.textfield.TextInputEditText
@@ -53,6 +54,7 @@ fun Context.askUserToRateApp() {
         dialog.dismiss()
     }
     dialog.view.findViewById<Button>(R.id.btnOk).onClick {
+        UserPrefs.setRatedApp()
         analytics.logEvent(ANALYTICS_KEY_CLICK_OK_RATE, null)
         Utils.openInPlayStore(this)
         dialog.dismiss()

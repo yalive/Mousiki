@@ -17,6 +17,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
@@ -32,12 +33,14 @@ import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
+import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.delay
 
 
 class MainActivity : BaseActivity() {
@@ -133,6 +136,14 @@ class MainActivity : BaseActivity() {
                 txtConnectivityState?.setText(R.string.no_connection)
             }
             VideoEmplacementLiveData.forceUpdate()
+        }
+
+        val launchCount = UserPrefs.getLaunchCount()
+        if (!UserPrefs.hasRatedApp() && launchCount % 3 == 0) {
+            lifecycleScope.launchWhenResumed {
+                delay(500)
+                askUserForFeelingAboutApp()
+            }
         }
     }
 
