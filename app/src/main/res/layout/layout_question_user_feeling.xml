@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/rate_app_message_play_store"
+        android:gravity="center"
+        android:text="@string/question_feeling_about_app"
         android:textColor="?android:textColorPrimary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,28 +31,39 @@
         app:layout_constraintTop_toBottomOf="@+id/btnCloseDialog" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCancel"
-        style="@style/DialogSecondaryButtonStyle"
+        android:id="@+id/btnHappy"
+        style="@style/DialogPrimaryButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btnOk"
+        android:layout_marginEnd="16dp"
+        android:text="@string/rate_app_happy"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtQuestion" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnOk"
-        style="@style/DialogPrimaryButtonStyle"
+        android:id="@+id/btnMixedFeelings"
+        style="@style/DialogSecondaryButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/ok"
+        android:text="@string/rate_app_mixed_feeling"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnCancel"
-        app:layout_constraintTop_toBottomOf="@+id/txtQuestion" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHappy" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNotHappy"
+        style="@style/DialogSecondaryButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/rate_app_not_happy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMixedFeelings" />
 </androidx.constraintlayout.widget.ConstraintLayout>

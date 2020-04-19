@@ -13,12 +13,9 @@ import android.net.Uri
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
-import android.view.LayoutInflater
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.annotation.NonNull
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
@@ -148,41 +145,6 @@ object Utils {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
     }
 
-    fun rateApp(context: Context) {
-        val view =
-            LayoutInflater.from(context).inflate(R.layout.dialog_rate, null)
-        val btnRate = view.findViewById<Button>(R.id.btnRate)
-        val btnRemindMe = view.findViewById<Button>(R.id.btnRemindMe)
-        val btnNoThanks = view.findViewById<Button>(R.id.btnNoThanks)
-        val btnClose = view.findViewById<ImageButton>(R.id.btnClose)
-        val dialog = MaterialDialog(context).show {
-            customView(null, view, false, true)
-            cancelOnTouchOutside(false)
-        }
-        //dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-        btnRate.setOnClickListener {
-            dialog.dismiss()
-            UserPrefs.setRatedApp()
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(
-                    "https://play.google.com/store/apps/details?id=com.cas.musicplayer"
-                )
-                setPackage("com.android.vending")
-            }
-            context.startActivity(intent)
-        }
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-        btnRemindMe.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        btnNoThanks.setOnClickListener {
-            dialog.dismiss()
-        }
-    }
-
     fun openFacebookPage(context: Context) {
         val url = "https://www.facebook.com/mousiki2"
         var uri = Uri.parse(url)
@@ -201,6 +163,18 @@ object Utils {
     }
 
     fun fileContent(file: File) = file.inputStream().bufferedReader().use { it.readText() }
+
+    fun openInPlayStore(context: Context) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(
+                "https://play.google.com/store/apps/details?id=com.cas.musicplayer"
+            )
+            setPackage("com.android.vending")
+        }
+        if (intent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(intent)
+        }
+    }
 }
 
 

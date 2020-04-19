@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@android:color/transparent</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
+    <!--    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+            <item name="colorPrimary">@color/colorPrimary</item>
+            <item name="colorPrimaryDark">@android:color/transparent</item>
+            <item name="colorAccent">@color/colorAccent</item>
+            <item name="android:windowTranslucentStatus">false</item>
+            <item name="android:statusBarColor">@android:color/transparent</item>
+            <item name="md_background_color">@color/colorBackgroundDialog</item>
+        </style>-->
 
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/bg_splash</item>
