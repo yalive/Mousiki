@@ -9,6 +9,8 @@ import com.cas.musicplayer.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 
 /**
@@ -149,4 +151,21 @@ fun RemoteViews.loadAndBlurImage(
     }
     //this.tag = target
     Picasso.get().load(urlImage).into(target)
+}
+
+suspend fun Picasso.loadBitmap(url: String): Bitmap? = suspendCancellableCoroutine { continuation ->
+    val target = object : Target {
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            // Nop
+        }
+
+        override fun onBitmapFailed(e: java.lang.Exception?, errorDrawable: Drawable?) {
+            continuation.resume(null)
+        }
+
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            continuation.resume(bitmap)
+        }
+    }
+    load(url).into(target)
 }

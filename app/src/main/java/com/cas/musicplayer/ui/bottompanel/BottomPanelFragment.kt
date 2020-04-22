@@ -21,10 +21,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.cas.common.dpToPixel
-import com.cas.common.extensions.gone
-import com.cas.common.extensions.invisible
-import com.cas.common.extensions.onClick
-import com.cas.common.extensions.visible
+import com.cas.common.extensions.*
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
@@ -33,6 +30,7 @@ import com.cas.musicplayer.domain.model.durationToSeconds
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.VideoEmplacement
+import com.cas.musicplayer.player.services.FavouriteReceiver
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
@@ -111,23 +109,23 @@ class BottomPanelFragment : Fragment(),
             }
         }
         btnAddFav.setOnClickListener {
-            if (!UserPrefs.isFav(PlayerQueue.value?.youtubeId)) {
+            val isFav = UserPrefs.isFav(PlayerQueue.value?.youtubeId)
+            if (!isFav) {
                 Executors.newSingleThreadExecutor().execute {
                     val musicTrack = PlayerQueue.value
                     musicTrack?.let {
                         viewModel.makeSongAsFavourite(it)
                     }
                 }
-                UserPrefs.saveFav(PlayerQueue.value?.youtubeId, true)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
             } else {
                 val musicTrack = PlayerQueue.value
                 musicTrack?.let {
                     viewModel.removeSongFromFavourite(it)
                 }
-                UserPrefs.saveFav(PlayerQueue.value?.youtubeId, false)
                 btnAddFav.setImageResource(R.drawable.ic_favorite_border)
             }
+            FavouriteReceiver.broadcast(requireContext().applicationContext, !isFav)
         }
 
         btnLockScreen.setOnClickListener {
@@ -214,6 +212,13 @@ class BottomPanelFragment : Fragment(),
 
         topBarView.onClick {
             mainActivity.expandBottomPanel()
+        }
+        observe(viewModel.isLiked) { isLiked ->
+            if (isLiked) {
+                btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+            } else {
+                btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+            }
         }
     }
 
@@ -325,7 +330,7 @@ class BottomPanelFragment : Fragment(),
                 seekBar?.progress?.let { progress ->
                     // Map from  (0,100) to (0,duration)
                     val seconds = progress * video.durationToSeconds() / 100
-                    PlayerQueue.seekTo(seconds)
+                    PlayerQueue.seekTo(seconds * 1000)
                 }
             }
         })

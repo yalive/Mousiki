@@ -139,7 +139,7 @@ class MainActivity : BaseActivity() {
         }
 
         val launchCount = UserPrefs.getLaunchCount()
-        if (!UserPrefs.hasRatedApp() && launchCount % 3 == 0) {
+        if (!UserPrefs.hasRatedApp() && launchCount % 5 == 0) {
             lifecycleScope.launchWhenResumed {
                 delay(500)
                 askUserForFeelingAboutApp()

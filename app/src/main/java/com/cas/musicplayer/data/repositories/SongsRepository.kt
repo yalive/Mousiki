@@ -11,6 +11,7 @@ import com.cas.musicplayer.data.local.models.FavouriteSongEntity
 import com.cas.musicplayer.data.local.models.toMusicTrack
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.NetworkUtils
+import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -66,9 +67,11 @@ class SongsRepository @Inject constructor(
                 duration = track.duration
             )
         )
+        UserPrefs.saveFav(track.youtubeId, true)
     }
 
-    suspend fun removeSongFromFavourite(track: MusicTrack) = withContext(bgContext) {
-        favouriteTracksDao.deleteSong(track.youtubeId)
+    suspend fun removeSongFromFavourite(trackId: String) = withContext(bgContext) {
+        favouriteTracksDao.deleteSong(trackId)
+        UserPrefs.saveFav(trackId, false)
     }
 }
