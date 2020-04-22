@@ -2,6 +2,8 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
+import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
@@ -87,6 +89,10 @@ interface AppComponent {
     val customPlaylistSongsViewModelFactory: CustomPlaylistSongsViewModel.Factory
 
     val createPlaylistViewModel: CreatePlaylistViewModel
+
+    val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase
+
+    val addSongToFavourite: AddSongToFavouriteUseCase
 
     val gson: Gson
 }

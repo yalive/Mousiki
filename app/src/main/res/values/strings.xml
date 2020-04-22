@@ -96,4 +96,15 @@
     <string name="hint_your_comments">Your comments…</string>
     <string name="message_feedback_sent">Thank your for your feedback!.\nYour message is sent to our support team.</string>
 
+    <string name="notification_channel">Now Playing</string>
+    <string name="notification_channel_description">Shows what music is currently playing in Mousiki</string>
+
+    <!-- Player Notification -->
+    <string name="player_notification_skip_to_previous">Skip to previous</string>
+    <string name="player_notification_play">Play</string>
+    <string name="player_notification_pause">Pause</string>
+    <string name="player_notification_skip_to_next">Skip to next</string>
+    <string name="player_add_to_favourite">Add to favourite</string>
+    <string name="player_remove_from_favourite">Remove from favourite</string>
+
 </resources>

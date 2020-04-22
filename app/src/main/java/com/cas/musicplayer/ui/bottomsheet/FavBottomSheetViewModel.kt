@@ -25,7 +25,7 @@ class FavBottomSheetViewModel @Inject constructor(
     }
 
     fun removeSongFromFavourite(musicTrack: MusicTrack) = uiCoroutine {
-        removeSongFromFavouriteList(musicTrack)
+        removeSongFromFavouriteList(musicTrack.youtubeId)
     }
 
     fun removeSongFromPlaylist(musicTrack: MusicTrack, playlist: Playlist) = uiCoroutine {

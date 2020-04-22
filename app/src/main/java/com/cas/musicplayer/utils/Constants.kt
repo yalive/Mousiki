@@ -11,7 +11,6 @@ object Constants {
     const val FAV_PLAYLIST_NAME = "Favourite"
 
     object Config {
-        const val DEBUG_PLAYER = false
         const val DEBUG_NETWORK = true
     }
 }

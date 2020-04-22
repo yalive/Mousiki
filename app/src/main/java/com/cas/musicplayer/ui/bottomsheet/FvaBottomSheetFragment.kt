@@ -69,10 +69,8 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             Executors.newSingleThreadExecutor().execute {
                 if (UserPrefs.isFav(musicTrack.youtubeId)) {
                     viewModel.removeSongFromFavourite(musicTrack)
-                    UserPrefs.saveFav(musicTrack.youtubeId, false)
                 } else {
                     viewModel.makeSongAsFavourite(musicTrack)
-                    UserPrefs.saveFav(musicTrack.youtubeId, true)
                 }
             }
 

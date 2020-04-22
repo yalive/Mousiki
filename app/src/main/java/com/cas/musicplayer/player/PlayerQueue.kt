@@ -84,8 +84,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         resumeVideo()
     }
 
-    fun seekTo(to: Long, comeFromFullScreen: Boolean = false) {
-        seekTrackTo(to, comeFromFullScreen)
+    fun seekTo(to: Long) {
+        seekTrackTo(to)
     }
 
     fun scheduleStopMusic(duration: Int) {
@@ -178,7 +178,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         MusicApp.get().startService(intent)
     }
 
-    private fun seekTrackTo(to: Long, comeFromFullScreen: Boolean) {
+    private fun seekTrackTo(to: Long) {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
@@ -188,7 +188,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
-        intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO_FROM_FULL_SCREEN, comeFromFullScreen)
         MusicApp.get().startService(intent)
     }
 

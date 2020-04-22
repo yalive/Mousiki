@@ -82,4 +82,8 @@
     <string name="no_connection">Sin conexión</string>
     <string name="connection_back">De nuevo en línea</string>
 
+    <!-- TODO: Transalation missing-->
+    <string name="player_add_to_favourite">Add to favourite</string>
+    <string name="player_remove_from_favourite">Remove from favourite</string>
+
 </resources>
