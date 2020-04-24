@@ -84,7 +84,7 @@
     <string name="connection_back">Back online</string>
 
     <!-- Rating -->
-    <string name="question_feeling_about_app">How do you feel about using the Mousik app ?</string>
+    <string name="question_feeling_about_app">How do you feel about using the Mousiki app ?</string>
     <string name="rate_app_happy">Happy</string>
     <string name="rate_app_mixed_feeling">Mixed feelings</string>
     <string name="rate_app_not_happy">Not happy</string>
