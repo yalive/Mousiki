@@ -18,6 +18,7 @@ import com.cas.musicplayer.player.extensions.isPlayEnabled
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.isSkipToNextEnabled
 import com.cas.musicplayer.player.extensions.isSkipToPreviousEnabled
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.loadBitmap
 import com.squareup.picasso.Picasso
@@ -81,12 +82,12 @@ class NotificationBuilder(private val context: Context) {
         }
 
         val controller = MediaControllerCompat(context, sessionToken)
-        val description = controller.metadata.description
+        val description = controller.metadata?.description
         val playbackState = controller.playbackState
 
         val builder = NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL)
 
-        if (UserPrefs.isFav(description.mediaId)) {
+        if (UserPrefs.isFav(description?.mediaId)) {
             builder.addAction(
                 R.drawable.ic_favorite_added_24dp,
                 context.getString(R.string.player_remove_from_favourite),
@@ -115,23 +116,20 @@ class NotificationBuilder(private val context: Context) {
             builder.addAction(skipToNextAction)
         }
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
-            .setCancelButtonIntent(stopPendingIntent)
             .setMediaSession(sessionToken)
-            .setShowActionsInCompactView(0, 1, 2)
-            .setShowCancelButton(true)
+            .setShowActionsInCompactView(1, 2, 3)
 
-        val largeIconBitmap = description.mediaUri?.toString()?.let {
+        val largeIconBitmap = description?.mediaUri?.toString()?.let {
             Picasso.get().loadBitmap(it)
         }
 
         return builder.setContentIntent(controller.sessionActivity)
-            .setContentText(description.subtitle)
-            .setContentTitle(description.title)
-            .setDeleteIntent(stopPendingIntent)
+            .setContentText(description?.subtitle)
+            .setContentTitle(description?.title)
+            .setContentIntent(contentIntent())
             .setLargeIcon(largeIconBitmap)
             .setOnlyAlertOnce(true)
-            .setOngoing(playbackState.state == PlaybackStateCompat.STATE_PLAYING)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_app_player_notification)
             .setStyle(mediaStyle)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .build()
@@ -141,7 +139,7 @@ class NotificationBuilder(private val context: Context) {
         val intentFav = Intent(FavouriteReceiver.ACTION_FAVOURITE)
         intentFav.putExtra(FavouriteReceiver.EXTRAS_ADD_TO_FAVOURITE, addToFav)
         return PendingIntent.getBroadcast(
-            context, 19, intentFav, PendingIntent.FLAG_UPDATE_CURRENT
+            context, 0, intentFav, PendingIntent.FLAG_UPDATE_CURRENT
         )
     }
 
@@ -164,5 +162,19 @@ class NotificationBuilder(private val context: Context) {
             }
 
         platformNotificationManager.createNotificationChannel(notificationChannel)
+    }
+
+    private fun contentIntent(): PendingIntent {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+            action = Intent.ACTION_MAIN
+            addCategory(Intent.CATEGORY_LAUNCHER)
+        }
+        return PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 }

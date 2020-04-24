@@ -36,3 +36,14 @@ inline val PlaybackStateCompat.isSkipToNextEnabled
 
 inline val PlaybackStateCompat.isSkipToPreviousEnabled
     get() = actions and PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS != 0L
+
+fun PlaybackStateCompat.toText(): String = when (this.state) {
+    PlaybackStateCompat.STATE_BUFFERING -> "STATE_BUFFERING"
+    PlaybackStateCompat.STATE_PAUSED -> "STATE_PAUSED"
+    PlaybackStateCompat.STATE_PLAYING -> "STATE_PLAYING"
+    PlaybackStateCompat.STATE_STOPPED -> "STATE_STOPPED"
+    PlaybackStateCompat.STATE_NONE -> "STATE_NONE"
+    PlaybackStateCompat.STATE_ERROR -> "STATE_ERROR"
+    PlaybackStateCompat.STATE_CONNECTING -> "STATE_CONNECTING"
+    else -> "State not mapped"
+}
