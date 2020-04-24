@@ -197,12 +197,14 @@
                 android:textSize="12sp"
                 tools:text="02:22" />
 
-            <SeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/seekBarDuration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:max="100"
+                android:progressTint="@color/colorAccent"
+                android:thumbTint="@color/colorAccent"
                 tools:progress="25" />
 
             <TextView

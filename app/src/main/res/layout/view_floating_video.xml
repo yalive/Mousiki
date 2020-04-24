@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/chat_head_root"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/floating_video_width"
     android:layout_height="@dimen/floating_video_height"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    tools:parentTag="androidx.cardview.widget.CardView">
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
         android:id="@+id/youtubePlayerView"
@@ -24,4 +25,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#16000000" />
-</androidx.cardview.widget.CardView>
+</merge>

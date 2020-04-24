@@ -143,6 +143,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     private fun findDominantColors(drawableBitmap: Bitmap) {
         lifecycleScope.launch(uiContext) {
             val palette = drawableBitmap.getPalette() ?: return@launch
+            
             val colorSurface = requireContext().themeColor(R.attr.colorSurface)
             val dominantColor = palette.getMutedColor(
                 requireContext().color(R.color.colorPrimary)
