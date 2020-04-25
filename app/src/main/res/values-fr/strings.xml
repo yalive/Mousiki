@@ -106,4 +106,10 @@
     <string name="player_notification_skip_to_next">Passer au suivant</string>
     <string name="player_add_to_favourite">Ajouter aux favoris</string>
     <string name="player_remove_from_favourite">Supprimer du favori</string>
+
+    <!-- Feedback -->
+    <string name="send">Send</string>
+    <string name="hint_your_feedback">Vos réactions…</string>
+    <string name="feedback_about_app_dialog_title">Donnez-nous vos commentaires sur une fonctionnalité Mousiki?</string>
+    <string name="feedback_about_app_dialog_message">Faites-nous savoir comment nous pouvons améliorer votre expérience Mousiki.</string>
 </resources>
