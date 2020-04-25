@@ -31,9 +31,7 @@ platform :android do
             app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
             groups: "qa-team",
             release_notes: "
-            - Improve player notification.
-            - Player respond to media buttons (Bluetooth, headphones ...)
-            - Refactoring
+            - Send feedback
             "
         )
     end
