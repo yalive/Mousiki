@@ -23,6 +23,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 fun Context.askUserForFeelingAboutApp() {
     val dialog = MaterialDialog(this)
     dialog.show {
+        cancelOnTouchOutside(false)
+        cancelable(false)
         customView(viewRes = R.layout.layout_question_user_feeling, noVerticalPadding = true)
     }
     dialog.view.findViewById<ImageButton>(R.id.btnCloseDialog).onClick {
@@ -43,14 +45,18 @@ fun Context.askUserForFeelingAboutApp() {
         letUserWriteComment()
         dialog.dismiss()
     }
+    analytics.logEvent(ANALYTICS_KEY_OPEN_RATE_DIALOG, null)
 }
 
 fun Context.askUserToRateApp() {
     val dialog = MaterialDialog(this)
     dialog.show {
+        cancelOnTouchOutside(false)
+        cancelable(false)
         customView(viewRes = R.layout.dialog_rate, noVerticalPadding = true)
     }
     dialog.view.findViewById<ImageButton>(R.id.btnCloseDialog).onClick {
+        analytics.logEvent(ANALYTICS_KEY_CLICK_CANCEL_RATE, null)
         dialog.dismiss()
     }
     dialog.view.findViewById<Button>(R.id.btnOk).onClick {
@@ -68,6 +74,8 @@ fun Context.askUserToRateApp() {
 fun Context.letUserWriteComment() {
     val dialog = MaterialDialog(this)
     dialog.show {
+        cancelOnTouchOutside(false)
+        cancelable(false)
         customView(viewRes = R.layout.layout_write_comment, noVerticalPadding = true)
     }
     val btnSend = dialog.view.findViewById<Button>(R.id.btnOk)
@@ -77,6 +85,7 @@ fun Context.letUserWriteComment() {
         btnSend.isEnabled = editComment.text?.isNotEmpty() ?: false
     }
     dialog.view.findViewById<ImageButton>(R.id.btnCloseDialog).onClick {
+        analytics.logEvent(ANALYTICS_KEY_CLICK_COMMENT_LATER, null)
         dialog.dismiss()
     }
     btnSend.onClick {
@@ -97,6 +106,7 @@ private val Context.analytics: FirebaseAnalytics
     get() = FirebaseAnalytics.getInstance(this.applicationContext)
 
 // Question
+private val ANALYTICS_KEY_OPEN_RATE_DIALOG = "initiate_rate_process"
 private val ANALYTICS_KEY_CLICK_HAPPY = "rate_click_happy"
 private val ANALYTICS_KEY_CLICK_MIXED_FEELING = "rate_click_mixed_feeling"
 private val ANALYTICS_KEY_CLICK_NOT_HAPPY = "rate_click_not_happy"

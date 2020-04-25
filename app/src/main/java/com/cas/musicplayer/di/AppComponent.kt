@@ -4,6 +4,7 @@ import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
@@ -24,6 +25,7 @@ import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
 import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import dagger.BindsInstance
 import dagger.Component
@@ -93,6 +95,10 @@ interface AppComponent {
     val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase
 
     val addSongToFavourite: AddSongToFavouriteUseCase
+
+    val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase
+
+    val analytics: FirebaseAnalytics
 
     val gson: Gson
 }

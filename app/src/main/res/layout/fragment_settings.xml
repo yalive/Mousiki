@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/btnDarkMode"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:drawableStart="@drawable/ic_dark_mode_settings"
@@ -28,12 +28,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/colorDividerSettings" />
+        android:background="@color/dividerColor" />
 
     <TextView
         android:id="@+id/btnTimer"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:drawableStart="@drawable/ic_clock_settings"
@@ -51,12 +51,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/colorDividerSettings" />
+        android:background="@color/dividerColor" />
 
     <TextView
         android:id="@+id/btnShareApp"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:drawableStart="@drawable/ic_share_settings"
@@ -74,12 +74,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/colorDividerSettings" />
+        android:background="@color/dividerColor" />
 
     <TextView
         android:id="@+id/btnRateApp"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:drawableStart="@drawable/ic_smile_settings"
@@ -97,12 +97,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/colorDividerSettings" />
+        android:background="@color/dividerColor" />
 
     <TextView
         android:id="@+id/btnLikeFacebook"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:drawableStart="@drawable/ic_thumbs_up_settings"
@@ -120,12 +120,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/colorDividerSettings" />
+        android:background="@color/dividerColor" />
 
     <TextView
         android:id="@+id/btnFeedback"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:drawableStart="@drawable/ic_comment_settings"
@@ -143,12 +143,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/colorDividerSettings" />
+        android:background="@color/dividerColor" />
 
     <TextView
         android:id="@+id/btnPolicy"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:drawableStart="@drawable/ic_privacy_policy_settings"
@@ -166,5 +166,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/colorDividerSettings" />
+        android:background="@color/dividerColor" />
 </LinearLayout>

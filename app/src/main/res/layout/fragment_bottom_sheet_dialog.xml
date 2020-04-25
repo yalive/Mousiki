@@ -42,9 +42,9 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageView
             android:layout_width="24dp"
@@ -76,9 +76,9 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/favIcon"
@@ -112,9 +112,9 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageButton
             android:id="@+id/btnDeleteFromCurrentPlaylist"
@@ -148,9 +148,9 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageButton
             android:id="@+id/btnAddToPlaylist"
@@ -160,8 +160,8 @@
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
-            app:srcCompat="@drawable/ic_playlist_add"
-            android:tint="?android:textColorPrimary" />
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_playlist_add" />
 
         <TextView
             android:layout_width="match_parent"
@@ -185,9 +185,9 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageButton
             android:id="@+id/btnAddAsNext"
@@ -197,8 +197,8 @@
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
-            app:srcCompat="@drawable/ic_play"
-            android:tint="?android:textColorPrimary" />
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_play" />
 
         <TextView
             android:layout_width="match_parent"

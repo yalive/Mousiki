@@ -1,3 +1,5 @@
+-repackageclasses
 -dontwarn com.sothree.slidinguppanel.SlidingUpPanelLayout
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+-keep class com.cas.musicplayer.data.local.models.** { *; }
