@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.media.session.MediaButtonReceiver
 import com.cas.common.event.EventObserver
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.OnShowAdsListener
 import com.cas.musicplayer.player.PlayerQueue
@@ -32,6 +33,7 @@ import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.loadBitmap
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -54,6 +56,9 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private val handler = Handler()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
+            handleLastSessionSysMediaButton()
+        }
         if (intent?.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
             MediaButtonReceiver.handleIntent(mediaSession, intent)
         }
@@ -173,7 +178,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
-                val component = MusicApp.get().component
                 if (action == CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE) {
                     lifecycleScope.launch {
                         val metadata = mediaSession.controller.metadata
@@ -186,7 +190,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                                 title = title.toString(),
                                 duration = duration
                             )
-                            component.addSongToFavourite(track)
+                            injector.addSongToFavourite(track)
                         }
                     }
                 } else if (action == CustomAction.REMOVE_CURRENT_MEDIA_FROM_FAVOURITE) {
@@ -194,7 +198,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                         val metadata = mediaSession.controller.metadata
                         val mediaId = metadata.description.mediaId
                         mediaId?.let {
-                            component.removeSongFromFavouriteList(mediaId)
+                            injector.removeSongFromFavouriteList(mediaId)
                         }
                     }
                 }
@@ -373,6 +377,19 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
     }
 
+    private fun handleLastSessionSysMediaButton() {
+        lifecycleScope.launch {
+            injector.analytics.logEvent(START_PLAYER_FORM_LAST_SESSION, null)
+            val recentlyPlayedSongs = injector.getRecentlyPlayedSongs
+            val recentTracks = recentlyPlayedSongs()
+            if (recentTracks.isNotEmpty()) {
+                PlayerQueue.playTrack(recentTracks[0], recentTracks)
+                delay(500)
+                VideoEmplacementLiveData.out()
+            }
+        }
+    }
+
     companion object {
         private val TAG = "VideoPlaybackService"
         val COMMAND_PLAY_TRACK = "video-id"
@@ -389,5 +406,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
     }
 }
+
+private val MusicPlayerService.injector: AppComponent
+    get() = (application as MusicApp).component
+
+
+// Analytics
+private const val START_PLAYER_FORM_LAST_SESSION = "player_started_by_last_session"
 
 

@@ -101,7 +101,7 @@ class LibraryViewModel @Inject constructor(
         val favouriteTrack = favouriteTracks.getOrNull(0)
         savedPlaylists.add(
             0, Playlist(
-                id = "",
+                id = Constants.FAV_PLAYLIST_NAME,
                 title = Constants.FAV_PLAYLIST_NAME,
                 urlImage = favouriteTrack?.imgUrl ?: "",
                 itemCount = favouriteTracks.size

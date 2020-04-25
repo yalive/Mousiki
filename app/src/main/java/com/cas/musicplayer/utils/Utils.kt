@@ -93,15 +93,18 @@ object Utils {
         }
     }
 
-    fun sendEmail(context: Context) {
-        val emailIntent = Intent(
-            Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", "memory.games.apps@gmail.com", null
-            )
-        )
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "")
-        context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
+    fun sendEmail(context: Context, text: String) {
+        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("memory.games.apps@gmail.com"))
+            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+        if (emailIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
+        } else {
+            // No app found
+        }
     }
 
     fun openEqualizer(@NonNull activity: Activity) {

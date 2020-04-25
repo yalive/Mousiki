@@ -45,7 +45,7 @@ class CustomPlaylistSongsViewModel @AssistedInject constructor(
 
     private fun getPlaylistSongs() = uiCoroutine {
         _songs.value = Resource.Loading
-        val tracks = when (playlist.title) {
+        val tracks = when (playlist.id) {
             Constants.FAV_PLAYLIST_NAME -> getFavouriteTracks(100)
             else -> getCustomPlaylistTracks(playlist.title)
         }

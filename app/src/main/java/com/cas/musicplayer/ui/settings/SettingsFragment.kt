@@ -11,6 +11,8 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
+import com.cas.musicplayer.ui.settings.rate.letUserWriteComment
+import com.cas.musicplayer.ui.settings.rate.writeFeedback
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -56,7 +58,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
             findNavController().navigate(R.id.action_settingsFragment_to_timerDialog)
         }
         btnFeedback.onClick {
-            Utils.sendEmail(requireContext())
+            context?.writeFeedback()
         }
         btnLikeFacebook.onClick {
             Utils.openFacebookPage(requireContext())

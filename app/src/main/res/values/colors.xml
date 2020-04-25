@@ -10,7 +10,7 @@
 
     <color name="colorYellow">#F3CB45</color>
     <color name="colorGrayText">#727272</color>
-    <color name="colorDividerSettings">#F8F5F5</color>
+    <color name="dividerColor">#1f000000</color>
     <color name="colorIconSettings">#2C2B2B</color>
     <color name="colorGreenState">#2CA540</color>
 
