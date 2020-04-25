@@ -82,8 +82,28 @@
     <string name="no_connection">Sin conexión</string>
     <string name="connection_back">De nuevo en línea</string>
 
-    <!-- TODO: Transalation missing-->
-    <string name="player_add_to_favourite">Add to favourite</string>
-    <string name="player_remove_from_favourite">Remove from favourite</string>
+    <!-- Rating -->
+    <string name="question_feeling_about_app">¿Cómo te sientes al usar la aplicación Mousiki?</string>
+    <string name="rate_app_happy">Contenido</string>
+    <string name="rate_app_mixed_feeling">Sentimientos encontrados</string>
+    <string name="rate_app_not_happy">No feliz</string>
+
+    <string name="rate_app_message_play_store">Entonces, estás bastante contento con Mousiki. \n\n¿Te importaría tomar 1 minuto para calificar la aplicación? ¡Nos encantaría para siempre si nos das 5 estrellas!</string>
+    <string name="comment_about_app_dialog_title">¿Cómo podemos hacerte feliz?</string>
+    <string name="comment_about_app_dialog_subtitle">Nos encantaría saber cómo podemos mejorar su experiencia.</string>
+    <string name="common_later">Más tarde</string>
+    <string name="hint_your_comments">Tus comentarios…</string>
+    <string name="message_feedback_sent">¡Gracias por tus comentarios! \n Su mensaje se envía a nuestro equipo de soporte.</string>
+
+    <string name="notification_channel">Jugando ahora</string>
+    <string name="notification_channel_description">Muestra qué música se está reproduciendo actualmente en Mousiki</string>
+
+    <!-- Player Notification -->
+    <string name="player_notification_skip_to_previous">Saltar a la anterior</string>
+    <string name="player_notification_play">Reproducir</string>
+    <string name="player_notification_pause">Pausa</string>
+    <string name="player_notification_skip_to_next">Saltar al siguiente</string>
+    <string name="player_add_to_favourite">Añadir a favoritos</string>
+    <string name="player_remove_from_favourite">Eliminar de favoritos</string>
 
 </resources>
