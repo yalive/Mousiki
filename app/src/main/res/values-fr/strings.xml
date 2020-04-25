@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_equalizer">Aucun égaliseur trouvé.</string>
+    <string name="no_audio_ID">Écoutez d\'abord une chanson, puis réessayez.</string>
+    <string name="favourites">Favoris</string>
+    <string name="genres">Genres</string>
+    <string name="artists">Artistes</string>
+    <string name="sponsored">Sponsorisé</string>
+    <string name="label_share">Partager</string>
+    <string name="label_add_to">Ajouter à…</string>
+    <string name="label_play_next">Jouer la chanson suivante</string>
+    <string name="common_more">Plus</string>
+
+    <!-- Library -->
+    <string name="library">Bibliothèque</string>
+    <string name="library_recently_played">Joué récemment</string>
+    <string name="library_favourites">Favoris</string>
+    <string name="library_recent">Récent</string>
+    <string name="library_heavy_songs">Chansons lourdes</string>
+    <string name="library_heavy">Chansons les plus jouées</string>
+    <string name="library_empty_recent_list">Commencez simplement à jouer des chansons \n pour voir vos morceaux récents ici!</string>
+    <string name="library_empty_heavy_list">La liste est vide</string>
+    <string name="library_empty_favourite_list">Vous pouvez créer n\'importe quelle chanson comme favori, \n et vous pouvez y accéder à partir d\'ici.</string>
+
+    <!-- Common -->
+    <string name="common_empty_song_list">Aucune chanson trouvée</string>
+    <string name="menu_settings">Réglages</string>
+    <string name="message_enable_draw">Veuillez activer l\'autorisation "Dessiner sur d\'autres applications" pour démarrer la fenêtre flottante du lecteur.</string>
+    <string name="title_button_set_timer">Régler</string>
+    <string name="loading">Chargement…</string>
+    <string name="error_while_loading_song_list">Erreur lors du chargement de la liste des chansons</string>
+
+    <!-- Settings -->
+    <string name="sleep_timer">Minuterie de sommeil</string>
+    <string name="settings_rate_app">Évaluez nous</string>
+    <string name="settings_feedback">Rétroactions</string>
+    <string name="settings_facebook_like">J\'aime la page Facebook</string>
+    <string name="settings_policy">Politique de confidentialité</string>
+    <string name="settings_share_app">Partager l\'application avec des amis</string>
+    <string name="rate_app_give_rating">Note 5 étoiles</string>
+    <string name="rate_app_remind_me_later">Rappelle-moi plus tard</string>
+    <string name="rate_app_no_thanks">Non, merci</string>
+    <string name="rate_app_dialo_title">Avez-vous aimé cette application?Nous avons besoin de votre soutien.</string>
+    <string name="rate_app_dialog_message">Cela ne prendra pas plus d\'une minute. Merci pour votre aide!</string>
+    <string name="search">Chercher</string>
+    <string name="search_button_title">Artistes, chansons ou podcasts</string>
+    <string name="artists_find_an_artist">Trouvez un artiste</string>
+
+    <!-- Playlist -->
+    <string name="add_to_playlist">Ajouter à la playlist</string>
+    <string name="new_playlist">Nouvelle playlist</string>
+    <string name="create_playlist">Créer une playlist</string>
+    <string name="playlist_name">Nom de la playlist</string>
+    <string name="give_your_playlist_a_name">Donnez un nom à votre playlist.</string>
+    <string name="create">Créer</string>
+    <string name="remove_from_this_playlist">Supprimer de cette playlist</string>
+    <string name="playlist_favorite">Favourite</string>
+
+
+    <!-- Other -->
+    <string name="dark_mode">Mode sombre</string>
+    <string name="light_mode">Light mode</string>
+    <string name="default_mode">Valeur par défaut du système</string>
+    <string name="done">Terminé</string>
+    <string name="ok">D\'accord</string>
+    <string name="cancel">Annuler</string>
+    <string name="choose_dark_mode_theme">Choisissez le thème</string>
+    <string name="label_error">Erreur</string>
+    <string name="btn_unfavorite">Non favori</string>
+    <string name="label_no_songs">Pas de chanson</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="title_channels">Chaînes</string>
+    <string name="title_videos">Vidéos</string>
+    <string name="title_playlist">Playlists</string>
+    <string name="btn_favorite">Préférée</string>
+    <string name="btn_close">Fermer</string>
+    <string name="title_discover">Découvrir</string>
+    <string name="title_home">Accueil</string>
+    <string name="btn_deny">NIER</string>
+    <string name="btn_agree">D\'ACCORD</string>
+    <string name="title_new_release">Nouvelles sorties</string>
+    <string name="title_top_charts">Le hit-parade</string>
+    <string name="no_connection">Pas de connection</string>
+    <string name="connection_back">Retour en ligne</string>
+
+    <!-- Rating -->
+    <string name="question_feeling_about_app">Que pensez-vous de l\'utilisation de l\'application Mousiki?</string>
+    <string name="rate_app_happy">Content</string>
+    <string name="rate_app_mixed_feeling">Sentiments partagés</string>
+    <string name="rate_app_not_happy">Pas heureux</string>
+
+    <string name="rate_app_message_play_store">Donc, vous êtes plutôt satisfait de Mousiki. \n\n Cela vous dérangerait-il de prendre 1 minute pour évaluer l\'application? Nous vous aimerions pour toujours si vous nous donnez 5 étoiles!</string>
+    <string name="comment_about_app_dialog_title">Comment pouvons-nous vous rendre heureux?</string>
+    <string name="comment_about_app_dialog_subtitle">Nous aimerions savoir comment nous pouvons améliorer votre expérience.</string>
+    <string name="common_later">Plus tard</string>
+    <string name="hint_your_comments">Vos commentaires…</string>
+    <string name="message_feedback_sent">Merci pour vos commentaires!.\n Votre message est envoyé à notre équipe d\'assistance.</string>
+
+    <string name="notification_channel">Lecture en cours</string>
+    <string name="notification_channel_description">Montre quelle musique joue actuellement sur Mousiki</string>
+
+    <!-- Player Notification -->
+    <string name="player_notification_skip_to_previous">Passer au précédent</string>
+    <string name="player_notification_play">Jouer</string>
+    <string name="player_notification_pause">Pause</string>
+    <string name="player_notification_skip_to_next">Passer au suivant</string>
+    <string name="player_add_to_favourite">Ajouter aux favoris</string>
+    <string name="player_remove_from_favourite">Supprimer du favori</string>
+</resources>
