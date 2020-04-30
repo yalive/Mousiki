@@ -24,6 +24,7 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 import kotlinx.android.synthetic.main.layout_shimmer_loading_music_list.*
@@ -129,31 +130,28 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         }
 
         // Background
-        when (featuredImage) {
-            is FeaturedImage.FeaturedImageRes -> {
-                imgBackground.loadBitmap(featuredImage.resId, this::findDominantColors)
-
-            }
-            is FeaturedImage.FeaturedImageUrl -> {
-                imgBackground.loadBitmap(featuredImage.url, this::findDominantColors)
+        lifecycleScope.launch {
+            val picasso = Picasso.get()
+            when (featuredImage) {
+                is FeaturedImage.FeaturedImageRes -> picasso.loadBitmap(featuredImage.resId)
+                is FeaturedImage.FeaturedImageUrl -> picasso.loadBitmap(featuredImage.url)
+            }?.let { bitmap ->
+                findDominantColors(bitmap)
             }
         }
     }
 
-    private fun findDominantColors(drawableBitmap: Bitmap) {
-        lifecycleScope.launch(uiContext) {
-            val palette = drawableBitmap.getPalette() ?: return@launch
-            
-            val colorSurface = requireContext().themeColor(R.attr.colorSurface)
-            val dominantColor = palette.getMutedColor(
-                requireContext().color(R.color.colorPrimary)
-            )
-            val colors = intArrayOf(dominantColor, colorSurface)
-            val gradient = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM, colors
-            )
-            imgBackground.setImageDrawable(gradient)
-        }
+    private suspend fun findDominantColors(drawableBitmap: Bitmap) {
+        val palette = drawableBitmap.getPalette() ?: return
+        val colorSurface = requireContext().themeColor(R.attr.colorSurface)
+        val dominantColor = palette.getMutedColor(
+            requireContext().color(R.color.colorPrimary)
+        )
+        val colors = intArrayOf(dominantColor, colorSurface)
+        val gradient = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM, colors
+        )
+        imgBackground.setImageDrawable(gradient)
     }
 
     open fun addExtrasArgumentToBottomMenu(bundle: Bundle) {

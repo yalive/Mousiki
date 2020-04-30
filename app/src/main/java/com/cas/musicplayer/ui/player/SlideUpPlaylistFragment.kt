@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.bottompanel
+package com.cas.musicplayer.ui.player
 
 
 import android.os.Bundle

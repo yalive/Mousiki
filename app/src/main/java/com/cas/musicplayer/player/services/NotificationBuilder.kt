@@ -21,6 +21,7 @@ import com.cas.musicplayer.player.extensions.isSkipToPreviousEnabled
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.loadBitmap
+import com.cas.musicplayer.utils.toast
 import com.squareup.picasso.Picasso
 
 /**
@@ -70,11 +71,22 @@ class NotificationBuilder(private val context: Context) {
             PlaybackStateCompat.ACTION_SKIP_TO_NEXT
         )
     )
-    private val stopPendingIntent =
-        MediaButtonReceiver.buildMediaButtonPendingIntent(
-            context,
-            PlaybackStateCompat.ACTION_STOP
-        )
+
+    private val stopPendingIntent = PendingIntent.getBroadcast(
+        context,
+        0,
+        Intent(DeleteNotificationReceiver.ACTION_DELETE_NOTIFICATION),
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
+
+    private val stopIntentReceiver =
+        Intent(context, DeleteNotificationReceiver::class.java)
+    private val stopPendingIntent2 = PendingIntent.getBroadcast(
+        context,
+        0,
+        stopIntentReceiver,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
     suspend fun buildNotification(sessionToken: MediaSessionCompat.Token): Notification {
         if (shouldCreateNowPlayingChannel()) {
@@ -127,6 +139,7 @@ class NotificationBuilder(private val context: Context) {
             .setContentText(description?.subtitle)
             .setContentTitle(description?.title)
             .setContentIntent(contentIntent())
+            .setDeleteIntent(stopPendingIntent)
             .setLargeIcon(largeIconBitmap)
             .setOnlyAlertOnce(true)
             .setSmallIcon(R.drawable.ic_app_player_notification)

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.event.Event
+import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -123,7 +124,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) + 1)
             PlaySort.LOOP_ONE -> currentTrack
             PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) + 1) { mQueue[0] }
-            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.random()
+            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.randomOrNull()
         }
     }
 
@@ -135,7 +136,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) - 1)
             PlaySort.LOOP_ONE -> currentTrack
             PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) - 1) { mQueue[mQueue.size - 1] }
-            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.random()
+            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.randomOrNull()
         }
     }
 

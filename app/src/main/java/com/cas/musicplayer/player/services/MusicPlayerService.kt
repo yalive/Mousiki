@@ -5,9 +5,10 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.media.AudioManager
-import android.os.Build
+import android.os.Binder
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -17,20 +18,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.media.session.MediaButtonReceiver
 import com.cas.common.event.EventObserver
+import com.cas.common.extensions.doOnExtrasTrue
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.R
 import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.OnShowAdsListener
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
+import com.cas.musicplayer.player.extensions.albumArt
+import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.loadBitmap
+import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
@@ -43,17 +50,28 @@ import kotlinx.coroutines.launch
  **********************************
  */
 class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
+
+    lateinit var mediaSession: MediaSessionCompat
+
     private lateinit var windowManager: WindowManager
     private lateinit var bottomView: View
-    private lateinit var mediaSession: MediaSessionCompat
+    private lateinit var batterySaverView: View
     private lateinit var mediaController: MediaControllerCompat
     private lateinit var becomingNoisyReceiver: BecomingNoisyReceiver
+    private lateinit var deleteNotificationReceiver: DeleteNotificationReceiver
+    private lateinit var lockScreenReceiver: LockScreenReceiver
     private lateinit var favouriteReceiver: FavouriteReceiver
     private val metadataBuilder = MediaMetadataCompat.Builder()
     private lateinit var notificationBuilder: NotificationBuilder
     private lateinit var notificationManager: NotificationManagerCompat
     private lateinit var floatingPlayerView: YoutubeFloatingPlayerView
     private val handler = Handler()
+    private val binder = ServiceBinder()
+
+    override fun onBind(intent: Intent?): IBinder? {
+        super.onBind(intent)
+        return binder
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
@@ -62,46 +80,21 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         if (intent?.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
             MediaButtonReceiver.handleIntent(mediaSession, intent)
         }
-        intent?.getBooleanExtra(COMMAND_RESUME, false)?.let { resume ->
-            if (resume) {
-                mediaController.transportControls.play()
+        intent?.doOnExtrasTrue(COMMAND_RESUME) {
+            PlayerQueue.value?.let { currentTrack ->
+                metadataBuilder.musicTrack = currentTrack
+                mediaSession.setMetadata(metadataBuilder.build())
             }
+            mediaController.transportControls.play()
         }
 
-        intent?.getBooleanExtra(COMMAND_PAUSE, false)?.let { pause ->
-            if (pause) {
-                mediaController.transportControls.pause()
-            }
+        intent?.doOnExtrasTrue(COMMAND_PAUSE) {
+            mediaController.transportControls.pause()
         }
 
         intent?.getStringExtra(COMMAND_PLAY_TRACK)?.let {
             PlayerQueue.value?.let { currentTrack ->
-                metadataBuilder.putString(
-                    MediaMetadataCompat.METADATA_KEY_TITLE,
-                    currentTrack.title
-                )
-                metadataBuilder.putString(
-                    MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE,
-                    currentTrack.title
-                )
-                metadataBuilder.putString(
-                    MediaMetadataCompat.METADATA_KEY_MEDIA_URI,
-                    currentTrack.imgUrl
-                )
-                metadataBuilder.putString(
-                    MediaMetadataCompat.METADATA_KEY_ART_URI,
-                    currentTrack.imgUrl
-                )
-                metadataBuilder.putString(
-                    MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI,
-                    currentTrack.imgUrl
-                )
-
-                metadataBuilder.putString(
-                    MediaMetadataCompat.METADATA_KEY_MEDIA_ID,
-                    currentTrack.youtubeId
-                )
-
+                metadataBuilder.musicTrack = currentTrack
                 mediaSession.setMetadata(metadataBuilder.build())
                 mediaController.transportControls.playFromMediaId(
                     currentTrack.youtubeId,
@@ -109,10 +102,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 )
                 lifecycleScope.launch {
                     val loadBitmap = Picasso.get().loadBitmap(currentTrack.imgUrl)
-                    metadataBuilder.putBitmap(
-                        MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
-                        loadBitmap
-                    )
+                    metadataBuilder.albumArt = loadBitmap
                     mediaSession.setMetadata(metadataBuilder.build())
                 }
             }
@@ -126,16 +116,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
         }
 
-        intent?.getBooleanExtra(COMMAND_HIDE_VIDEO, false)?.let { hideVideo ->
-            if (hideVideo) {
-                floatingPlayerView.hide()
-            }
+        intent?.doOnExtrasTrue(COMMAND_HIDE_VIDEO) {
+            floatingPlayerView.hide()
         }
 
-        intent?.getBooleanExtra(COMMAND_SHOW_VIDEO, false)?.let { showVideo ->
-            if (showVideo) {
-                floatingPlayerView.show()
-            }
+        intent?.doOnExtrasTrue(COMMAND_SHOW_VIDEO) {
+            floatingPlayerView.show()
         }
 
         intent?.getIntExtra(COMMAND_SCHEDULE_TIMER, -1)?.let { duration ->
@@ -159,6 +145,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 youtubePlayerManager.pause()
             }
 
+            override fun onStop() {
+                // youtubePlayerManager.stop()
+                stopSelf()
+            }
+
             override fun onSeekTo(pos: Long) {
                 youtubePlayerManager.seekTo(pos.toFloat() / 1000)
             }
@@ -178,9 +169,9 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
+                val metadata: MediaMetadataCompat = mediaSession.controller.metadata ?: return
                 if (action == CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE) {
                     lifecycleScope.launch {
-                        val metadata = mediaSession.controller.metadata
                         val mediaId = metadata.description.mediaId
                         val title = metadata.description.title
                         val duration = PlayerQueue.value?.duration
@@ -195,7 +186,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                     }
                 } else if (action == CustomAction.REMOVE_CURRENT_MEDIA_FROM_FAVOURITE) {
                     lifecycleScope.launch {
-                        val metadata = mediaSession.controller.metadata
                         val mediaId = metadata.description.mediaId
                         mediaId?.let {
                             injector.removeSongFromFavouriteList(mediaId)
@@ -231,16 +221,27 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         notificationBuilder = NotificationBuilder(this)
         notificationManager = NotificationManagerCompat.from(this)
         becomingNoisyReceiver = BecomingNoisyReceiver(this, mediaSession.sessionToken)
+        deleteNotificationReceiver = DeleteNotificationReceiver(this, mediaSession.sessionToken)
+            .apply {
+                register()
+            }
+
+        lockScreenReceiver = LockScreenReceiver(this, mediaSession.sessionToken)
+            .apply {
+                register()
+            }
         favouriteReceiver = FavouriteReceiver(this, mediaSession.sessionToken)
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
         addBottomView()
+        createBatterySaverView()
 
         floatingPlayerView = YoutubeFloatingPlayerView(this)
         floatingPlayerView.preparePlayerView(
             service = this,
             youtubePlayerManager = youtubePlayerManager,
-            bottomView = bottomView
+            bottomView = bottomView,
+            batterySaverView = batterySaverView
         )
         observeForegroundToggle()
 
@@ -280,18 +281,13 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
     private fun addBottomView() {
         bottomView = LayoutInflater.from(this)
-            .inflate(com.cas.musicplayer.R.layout.bottom_floating_player, null)
-        bottomView.visibility = View.GONE
-
-        val type = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            else -> WindowManager.LayoutParams.TYPE_PHONE
-        }
-
+            .inflate(R.layout.bottom_floating_player, null).apply {
+                isVisible = false
+            }
         val bottomViewParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            dpToPixel(60f),
-            type,
+            dpToPixel(56f),
+            windowOverlayTypeOrPhone,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
@@ -303,8 +299,30 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         windowManager.addView(bottomView, bottomViewParams)
     }
 
+    private fun createBatterySaverView() {
+        batterySaverView = LayoutInflater.from(this)
+            .inflate(R.layout.battery_saver_floating_view, null).apply {
+                isVisible = false
+            }
+        val batterySaverViewParams = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            dpToPixel(56f),
+            windowOverlayTypeOrPhone,
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            PixelFormat.TRANSLUCENT
+        )
+
+        batterySaverViewParams.gravity = Gravity.TOP or Gravity.START
+        batterySaverViewParams.x = 0
+        batterySaverViewParams.y = 0
+
+        windowManager.addView(batterySaverView, batterySaverViewParams)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        deleteNotificationReceiver.unregister()
+        lockScreenReceiver.unregister()
         mediaSession.release()
         becomingNoisyReceiver.unregister()
         favouriteReceiver.unregister()
@@ -388,6 +406,10 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 VideoEmplacementLiveData.out()
             }
         }
+    }
+
+    inner class ServiceBinder : Binder() {
+        fun service() = this@MusicPlayerService
     }
 
     companion object {

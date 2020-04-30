@@ -19,3 +19,10 @@ fun Intent.dumpData(): String {
     }
     return "$categoryData\n$actionData$packageData\n$typeData\n$extrasData"
 }
+
+fun Intent.doOnExtrasTrue(booleanExtras: String, block: () -> Unit) {
+    val isTrue = getBooleanExtra(booleanExtras, false)
+    if (isTrue) {
+        block()
+    }
+}

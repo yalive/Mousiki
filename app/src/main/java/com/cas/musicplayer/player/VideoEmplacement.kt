@@ -138,7 +138,7 @@ class EmplacementOut : VideoEmplacement() {
 
     override val y: Int
         get() {
-            return dpToPixel(64f)
+            return dpToPixel(96f)
         }
 
     override val width: Int

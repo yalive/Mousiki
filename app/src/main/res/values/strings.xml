@@ -9,6 +9,8 @@
     <string name="label_add_to">Add to…</string>
     <string name="label_play_next">Play next</string>
     <string name="common_more">More</string>
+    <string name="common_turn_on">TURN ON</string>
+    <string name="share_track_link_message">Here\'s a new song for you on <b>Mousiki</b> 🎧❀ヅ❤♫…%s.\n%s</string>
 
     <!-- Library -->
     <string name="library">Library</string>
@@ -113,4 +115,7 @@
     <string name="feedback_about_app_dialog_title">Give us feedback about a Mousiki feature?</string>
     <string name="feedback_about_app_dialog_message">Let us know how we can improve your Mousiki experience.</string>
 
+    <!-- Battery saver mode -->
+    <string name="battery_saver_mode_request_change_settings">The Power Saving Mode needs the permission "modify system settings" to reduce the screen brightness. Please enable it on settings.</string>
+    <string name="battery_saver_mode_instead_of_lock_screen">To meet YouTube Terms of Service, Mousiki cannot play music video in background. You can turn on the power saving mode to lock your screen.</string>
 </resources>

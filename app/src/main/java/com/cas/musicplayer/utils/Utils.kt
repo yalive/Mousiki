@@ -12,7 +12,6 @@ import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.os.Build
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -21,9 +20,11 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
+import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
@@ -38,17 +39,17 @@ object Utils {
 
     var hasShownAdsOneTime = false
 
-    fun shareVia(videoId: String?, mContext: Context) {
+    fun shareTrackLink(link: String?, track: MusicTrack?, context: Context) {
+        val text = context.getString(R.string.share_track_link_message, track?.title, link)
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, videoId)
+            putExtra(Intent.EXTRA_TEXT, text)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             type = "text/plain"
         }
-
-        val context = MusicApp.get()
         if (sendIntent.resolveActivity(context.packageManager) != null) {
             context.startActivity(sendIntent)
+            context.analytics.logEvent(ANALYTICS_CREATE_TRACK_DYNAMIC_LINK, null)
         }
     }
 
@@ -63,17 +64,18 @@ object Utils {
                 .appendQueryParameter("duration", track?.duration)
                 .build()
             domainUriPrefix = "https://mouziki.page.link"
-            androidParameters { }
+            androidParameters {
+            }
             iosParameters("com.mouziki.ios") { }
             socialMetaTagParameters {
                 title = track?.title ?: ""
                 description = ""
                 imageUrl = Uri.parse(track?.imgUrl)
+
             }
         }.addOnSuccessListener { result ->
             val shortLink = result.shortLink
-            Log.d("dynamicLinks", "Dynamic link:${shortLink.toString()}")
-            shareVia(shortLink.toString(), mContext)
+            shareTrackLink(shortLink.toString(), track, mContext)
         }
     }
 
@@ -90,6 +92,7 @@ object Utils {
         val context = MusicApp.get()
         if (sendIntent.resolveActivity(context.packageManager) != null) {
             context.startActivity(sendIntent)
+            context.analytics.logEvent(ANALYTICS_SHARE_APP_VIA, null)
         }
     }
 
@@ -162,6 +165,7 @@ object Utils {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
+            context.analytics.logEvent(ANALYTICS_OPEN_FACEBOOK_PAGE, null)
         }
     }
 
@@ -187,6 +191,9 @@ fun isScreenLocked(): Boolean {
 }
 
 fun getCurrentLocale(): String {
+    if (BuildConfig.DEBUG) {
+        return "MX"
+    }
     val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
     val countryCodeValue: String? = tm?.networkCountryIso
 
@@ -195,10 +202,11 @@ fun getCurrentLocale(): String {
     }
 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        MusicApp.get().resources.configuration.locales.get(0).country
+        val locales = MusicApp.get().resources.configuration.locales
+        if (locales.isEmpty) "US" else locales.get(0).country
     } else {
-
-        MusicApp.get().resources.configuration.locale.country
+        val country = MusicApp.get().resources.configuration?.locale?.country
+        if (country != null && country.isNotEmpty()) country else "US"
     }
 }
 
@@ -209,3 +217,9 @@ fun getLanguage(): String {
     }
     return language
 }
+
+private const val ANALYTICS_CREATE_TRACK_DYNAMIC_LINK = "create_track_dynamic_link"
+private const val ANALYTICS_OPEN_FACEBOOK_PAGE = "open_facebook_page"
+private const val ANALYTICS_SHARE_APP_VIA = "share_app_with_via"
+private val Context.analytics: FirebaseAnalytics
+    get() = FirebaseAnalytics.getInstance(this.applicationContext)

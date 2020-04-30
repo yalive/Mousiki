@@ -1,16 +1,16 @@
 package com.cas.musicplayer.player
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
-import android.os.Build
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
-import android.view.WindowManager
+import android.util.Log
+import android.view.*
 import androidx.cardview.widget.CardView
+import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleService
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.visible
@@ -21,6 +21,7 @@ import com.cas.musicplayer.player.services.YoutubePlayerManager
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.screenSize
+import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 /**
@@ -35,6 +36,10 @@ class YoutubeFloatingPlayerView : CardView {
     private var draggableView: View? = null
     private lateinit var windowManager: WindowManager
     private var videoEmplacement: VideoEmplacement = VideoEmplacement.bottom(true)
+
+    private val screenSize by lazy {
+        context.screenSize()
+    }
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -69,114 +74,126 @@ class YoutubeFloatingPlayerView : CardView {
     fun preparePlayerView(
         service: MusicPlayerService,
         youtubePlayerManager: YoutubePlayerManager,
-        bottomView: View
+        bottomView: View,
+        batterySaverView: View
     ) {
         youTubePlayerView = findViewById(R.id.youtubePlayerView)
-
-        //Add the view to the window.
-        val type = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            else -> WindowManager.LayoutParams.TYPE_PHONE
-        }
-
         videoViewParams = WindowManager.LayoutParams(
             videoEmplacement.width,
             videoEmplacement.height,
-            type,
+            windowOverlayTypeOrPhone,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
             PixelFormat.TRANSLUCENT
         )
-
         videoViewParams.gravity = Gravity.TOP or Gravity.START
         videoViewParams.x = videoEmplacement.x
         videoViewParams.y = videoEmplacement.y
 
+        draggableView = findViewById(R.id.draggableView)
 
-        draggableView = findViewById<View>(R.id.draggableView)
-        draggableView?.setOnTouchListener(object : View.OnTouchListener {
-            private var lastAction: Int = 0
+        val gestureDetector = object : GestureDetector.SimpleOnGestureListener() {
             private var initialX: Int = 0
             private var initialY: Int = 0
             private var initialTouchX: Float = 0.toFloat()
             private var initialTouchY: Float = 0.toFloat()
 
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
+            override fun onDown(event: MotionEvent): Boolean {
+                bottomView.isVisible = true
+                batterySaverView.isVisible = true
 
+                //remember the initial position.
+                initialX = videoViewParams.x
+                initialY = videoViewParams.y
+
+                //get the touch location
+                initialTouchX = event.rawX
+                initialTouchY = event.rawY
+
+                return super.onDown(event)
+            }
+
+            override fun onScroll(
+                event0: MotionEvent,
+                event: MotionEvent,
+                distanceX: Float,
+                distanceY: Float
+            ): Boolean {
+                //Calculate the X and Y coordinates of the view.
+                videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
+                videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
+
+                //Update the layout with new X & Y coordinate
+                windowManager.updateViewLayout(
+                    this@YoutubeFloatingPlayerView,
+                    videoViewParams
+                )
+                // lastAction = event.action
+
+                bottomView.isActivated = (screenSize.heightPx - videoViewParams.y -
+                        youTubePlayerView.height - bottomView.height) <= 0
+
+                batterySaverView.isActivated = videoViewParams.y < batterySaverView.height
+                return super.onScroll(event0, event, distanceX, distanceY)
+            }
+
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent?,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                bottomView.isVisible = false
+                batterySaverView.isVisible = false
+
+                if (bottomView.isActivated) {
+                    service.stopSelf()
+                } else if (batterySaverView.isActivated) {
+                    // Save energy mode
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                    intent.putExtra(MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE, true)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                }
+
+                return super.onFling(e1, e2, velocityX, velocityY)
+            }
+
+            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+                bottomView.isVisible = false
+                batterySaverView.isVisible = false
+
+                val intent = Intent(context, MainActivity::class.java)
+                intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+                try {
+                    pendingIntent.send()
+                } catch (e: Exception) {
+                }
+                return super.onSingleTapConfirmed(e)
+            }
+        }
+        val gestureDetectorCompat = GestureDetectorCompat(context, gestureDetector)
+        val gestureDetectorCompat2 = GestureDetectorCompat(context, ClickGestureListener {})
+
+        draggableView?.setOnTouchListener(object : OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
                 if (videoEmplacement !is EmplacementOut) {
                     return true
                 }
-
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-
-                        bottomView.visibility = View.VISIBLE
-
-                        //remember the initial position.
-                        initialX = videoViewParams.x
-                        initialY = videoViewParams.y
-
-                        //get the touch location
-                        initialTouchX = event.rawX
-                        initialTouchY = event.rawY
-
-                        lastAction = event.action
-                        return true
-                    }
-
-                    MotionEvent.ACTION_UP -> {
-                        bottomView.visibility = View.GONE
-
-                        val endX = event.rawX
-                        val endY = event.rawY
-
-                        if (isAClick(initialTouchX, endX, initialTouchY, endY)) {
-                            //Open app
-                            val intent = Intent(context, MainActivity::class.java)
-                            intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            context.startActivity(intent)
-                        } else if (bottomView.isActivated) {
-                            service.stopSelf()
-                        }
-
-                        lastAction = event.action
-                        return true
-                    }
-
-                    MotionEvent.ACTION_MOVE -> {
-
-                        //Calculate the X and Y coordinates of the view.
-                        videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
-                        videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
-
-                        //Update the layout with new X & Y coordinate
-                        windowManager.updateViewLayout(
-                            this@YoutubeFloatingPlayerView,
-                            videoViewParams
-                        )
-                        lastAction = event.action
-
-
-                        val y = videoViewParams.y
-
-                        bottomView.isActivated =
-                            context.screenSize().heightPx - y - youTubePlayerView.height - bottomView.height <= 0
-
-                        return true
-                    }
+                gestureDetectorCompat.onTouchEvent(event)
+                gestureDetectorCompat2.onTouchEvent(event)
+                if (event.action == MotionEvent.ACTION_UP) {
+                    bottomView.isVisible = false
+                    batterySaverView.isVisible = false
                 }
-                return false
+                return true
             }
         })
 
         windowManager.addView(this, videoViewParams)
         youTubePlayerView.addYouTubePlayerListener(youtubePlayerManager)
-    }
-
-    private fun isAClick(startX: Float, endX: Float, startY: Float, endY: Float): Boolean {
-        val differenceX = Math.abs(startX - endX)
-        val differenceY = Math.abs(startY - endY)
-        return !(differenceX > CLICK_ACTION_THRESHOLD || differenceY > CLICK_ACTION_THRESHOLD)
     }
 
     fun hide() {
@@ -263,8 +280,70 @@ class YoutubeFloatingPlayerView : CardView {
             draggableView?.visible()
         }
     }
+}
 
-    companion object {
-        private const val CLICK_ACTION_THRESHOLD = 160
+private class ClickGestureListener(
+    val onClick: () -> Unit
+) : GestureDetector.SimpleOnGestureListener() {
+    val TAG = "ClickGestureListener"
+    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        Log.d(TAG, "onSingleTapConfirmed: ${Thread.currentThread().name}")
+        onClick()
+        return super.onSingleTapConfirmed(e)
+    }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        Log.d(TAG, "onSingleTapUp: ${Thread.currentThread().name}")
+        return super.onSingleTapUp(e)
+    }
+
+    override fun onDown(e: MotionEvent?): Boolean {
+        Log.d(TAG, "onDown: ${Thread.currentThread().name}")
+        return super.onDown(e)
+    }
+
+    override fun onFling(
+        e1: MotionEvent?,
+        e2: MotionEvent?,
+        velocityX: Float,
+        velocityY: Float
+    ): Boolean {
+        Log.d(TAG, "onFling: ${Thread.currentThread().name}")
+        return super.onFling(e1, e2, velocityX, velocityY)
+    }
+
+    override fun onDoubleTap(e: MotionEvent?): Boolean {
+        Log.d(TAG, "onDoubleTap: ${Thread.currentThread().name}")
+        return super.onDoubleTap(e)
+    }
+
+    override fun onScroll(
+        e1: MotionEvent?,
+        e2: MotionEvent?,
+        distanceX: Float,
+        distanceY: Float
+    ): Boolean {
+        Log.d(TAG, "onScroll: ${Thread.currentThread().name}")
+        return super.onScroll(e1, e2, distanceX, distanceY)
+    }
+
+    override fun onContextClick(e: MotionEvent?): Boolean {
+        Log.d(TAG, "onContextClick: ${Thread.currentThread().name}")
+        return super.onContextClick(e)
+    }
+
+    override fun onShowPress(e: MotionEvent?) {
+        Log.d(TAG, "onShowPress: ${Thread.currentThread().name}")
+        super.onShowPress(e)
+    }
+
+    override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
+        Log.d(TAG, "onDoubleTapEvent: ${Thread.currentThread().name}")
+        return super.onDoubleTapEvent(e)
+    }
+
+    override fun onLongPress(e: MotionEvent?) {
+        Log.d(TAG, "onLongPress: ${Thread.currentThread().name}")
+        super.onLongPress(e)
     }
 }
