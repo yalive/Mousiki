@@ -21,6 +21,12 @@ fun CoroutineScope.uiCoroutine(blockToRun: suspend () -> Unit) = uiScope.launch(
     blockToRun()
 }
 
+fun CoroutineScope.launchDelayed(mills: Long, block: () -> Unit) =
+    uiScope.launch(coroutineContext) {
+        delay(mills)
+        block()
+    }
+
 fun CoroutineContext.launchDelayed(mills: Long, block: () -> Unit) = uiScope.launch(this) {
     delay(mills)
     block()

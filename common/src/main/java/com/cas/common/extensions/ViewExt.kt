@@ -2,7 +2,9 @@ package com.cas.common.extensions
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
@@ -61,3 +63,15 @@ fun View.scaleDown(to: Float = 0.9f) {
 fun <T : View> T.onClick(listener: (T) -> Unit) {
     setOnClickListener { listener(it as T) }
 }
+
+val View.activity: Activity?
+    get() {
+        var contextWrapper = context
+        while (contextWrapper is ContextWrapper) {
+            if (contextWrapper is Activity) {
+                return contextWrapper
+            }
+            contextWrapper = contextWrapper.baseContext
+        }
+        return null
+    }

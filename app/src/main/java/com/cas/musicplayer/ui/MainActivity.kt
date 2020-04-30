@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.get
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -31,8 +30,8 @@ import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.ui.bottompanel.BottomPanelFragment
 import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
+import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -46,13 +45,19 @@ import kotlinx.coroutines.delay
 class MainActivity : BaseActivity() {
 
     lateinit var slidingPaneLayout: InsetSlidingPanelView
-    private val viewModel by viewModel { injector.mainViewModel }
     var isLocked = false
+        set(value) {
+            field = value
+            onLockChanged(value)
+        }
+
+    private val viewModel by viewModel { injector.mainViewModel }
     private lateinit var navController: NavController
     private var isFromService = false
 
     private var bottomView: ViewGroup? = null
     private var txtConnectivityState: TextView? = null
+    private lateinit var playerFragment: PlayerFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -139,7 +144,7 @@ class MainActivity : BaseActivity() {
         }
 
         val launchCount = UserPrefs.getLaunchCount()
-        if (!UserPrefs.hasRatedApp() && launchCount % 5 == 0) {
+        if (!UserPrefs.hasRatedApp() && launchCount % 3 == 0) {
             lifecycleScope.launchWhenResumed {
                 delay(500)
                 askUserForFeelingAboutApp()
@@ -159,7 +164,7 @@ class MainActivity : BaseActivity() {
                     val title = deepLink?.getQueryParameter("title")
                     if (videoId != null && title != null && duration != null) {
                         val track = MusicTrack(videoId, title, duration)
-                        collapseBottomPanel()
+                        expandBottomPanel()
                         viewModel.playTrackFromDeepLink(track)
                     }
                 }
@@ -217,13 +222,16 @@ class MainActivity : BaseActivity() {
         navController.navigate(R.id.libraryFragment)
     }
 
+    private var openBatterySaver = false
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         isFromService = intent?.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false) ?: false
+        openBatterySaver = intent?.getBooleanExtra(EXTRAS_OPEN_BATTERY_SAVER_MODE, false) ?: false
     }
 
     override fun onResume() {
         super.onResume()
+        val value = PlaybackLiveData.value
         if (!isFromService) {
             isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false)
         }
@@ -249,6 +257,12 @@ class MainActivity : BaseActivity() {
                 bottomPanelFragment()?.onPanelSlide(slidingPaneLayout, 1f)
             }
 
+            if (openBatterySaver) {
+                expandBottomPanel()
+                VideoEmplacementLiveData.center()
+                playerFragment.openBatterySaverMode()
+                openBatterySaver = false
+            }
         } else {
             // Restore old video state if any
             restoreOldVideoState()
@@ -268,17 +282,16 @@ class MainActivity : BaseActivity() {
         VideoEmplacementLiveData.out()
     }
 
-    private fun bottomPanelFragment(): BottomPanelFragment? {
-        return supportFragmentManager.findFragmentById(R.id.bottomPanelContent) as? BottomPanelFragment
+    private fun bottomPanelFragment(): PlayerFragment? {
+        return supportFragmentManager.findFragmentById(R.id.bottomPanelContent) as? PlayerFragment
     }
 
     private fun setupBottomPanelFragment() {
-        var fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.bottomPanelContent)
-        if (fragment == null) {
-            fragment = BottomPanelFragment()
-        }
+        playerFragment =
+            supportFragmentManager.findFragmentById(R.id.bottomPanelContent) as? PlayerFragment
+                ?: PlayerFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.bottomPanelContent, fragment)
+            .replace(R.id.bottomPanelContent, playerFragment)
             .commit()
 
         hideBottomPanel()
@@ -409,8 +422,12 @@ class MainActivity : BaseActivity() {
             }.show()
     }
 
+    private fun onLockChanged(locked: Boolean) {
+        slidingPaneLayout.isTouchEnabled = !locked
+    }
 
     companion object {
         const val EXTRAS_FROM_PLAY_SERVICE = "from_player_service"
+        const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
     }
 }

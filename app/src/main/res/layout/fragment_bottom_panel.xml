@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-    tools:context=".ui.bottompanel.BottomPanelFragment">
+    tools:context=".ui.player.PlayerFragment">
 
     <RelativeLayout
         android:id="@+id/mainView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0"
-        android:background="#303F9F"
+        android:background="#0F1537"
+        android:elevation="20dp"
         tools:alpha="1">
 
         <ImageView
@@ -79,24 +80,6 @@
             android:gravity="center"
             android:lines="2"
             android:textColor="@color/colorWhite"
-            tools:background="#f00"
-            tools:text="Video title" />
-
-        <TextView
-            android:id="@+id/txtTitleVideoLock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtTitleVideoCenter"
-            android:layout_marginStart="@dimen/twenty_four_24dp"
-            android:layout_marginTop="168dp"
-            android:layout_marginEnd="@dimen/twenty_four_24dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/pangram_regular"
-            android:gravity="center"
-            android:lines="2"
-            android:textColor="@color/colorWhite"
-            android:visibility="gone"
-            tools:background="#f00"
             tools:text="Video title" />
 
         <ImageButton
@@ -113,26 +96,6 @@
             android:src="@drawable/ic_youtube_copyright"
             android:text="@string/label_developed_with_youtube"
             android:textAllCaps="false" />
-
-        <com.ncorti.slidetoact.SlideToActView
-            android:id="@+id/slideToUnlock"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/playbackControlsView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:elevation="6dp"
-            android:visibility="gone"
-            app:animate_completion="true"
-            app:inner_color="@color/white"
-            app:outer_color="@color/colorBlack"
-            app:rotate_icon="true"
-            app:slider_height="60dp"
-            app:slider_icon="@drawable/ic_arrow_unlock"
-            app:slider_locked="false"
-            app:text="Slide to unlock"
-            app:text_color="@color/white"
-            app:text_size="12sp" />
 
         <LinearLayout
             android:id="@+id/favView"
@@ -344,5 +307,11 @@
             app:srcCompat="@drawable/ic_queue_music" />
 
     </LinearLayout>
+
+    <com.cas.musicplayer.ui.player.LockScreenView
+        android:id="@+id/lockScreenView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </FrameLayout>

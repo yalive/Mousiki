@@ -15,6 +15,7 @@
     <color name="colorGreenState">#2CA540</color>
 
     <color name="colorClosePlayerOn">#BCC7485B</color>
+    <color name="colorBlack_80">#80000000</color>
     <color name="colorClosePlayerOff">#45000000</color>
 
     <color name="black_overlay">#66000000</color>

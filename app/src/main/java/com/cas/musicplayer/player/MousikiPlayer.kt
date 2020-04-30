@@ -18,6 +18,8 @@ interface MousikiPlayer {
 
     fun pause()
 
+    fun stop()
+
     /**
      *
      * @param time The absolute time in seconds to seek to

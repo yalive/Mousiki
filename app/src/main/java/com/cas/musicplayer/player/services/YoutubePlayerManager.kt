@@ -99,6 +99,10 @@ class YoutubePlayerManager(
         youTubePlayer?.pause()
     }
 
+    override fun stop() {
+        setMediaPlaybackState(PlaybackStateCompat.STATE_STOPPED)
+    }
+
     override fun seekTo(time: Float) {
         youTubePlayer?.seekTo(time)
     }

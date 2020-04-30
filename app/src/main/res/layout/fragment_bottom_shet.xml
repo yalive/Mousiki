@@ -13,7 +13,7 @@
         android:orientation="vertical"
         app:behavior_peekHeight="350dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        tools:context=".ui.bottompanel.SlideUpPlaylistFragment">
+        tools:context=".ui.player.SlideUpPlaylistFragment">
 
         <include layout="@layout/item_new_release_video" />
 

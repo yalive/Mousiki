@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.bottompanel
+package com.cas.musicplayer.ui.player
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -17,7 +17,7 @@ import javax.inject.Inject
  ***************************************
  */
 
-class BottomPanelViewModel @Inject constructor(
+class PlayerViewModel @Inject constructor(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
     private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase

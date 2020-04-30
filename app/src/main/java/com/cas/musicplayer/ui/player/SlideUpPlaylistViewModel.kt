@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.bottompanel
+package com.cas.musicplayer.ui.player
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

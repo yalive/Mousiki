@@ -52,6 +52,17 @@ fun Context.canDrawOverApps() =
         this
     ))
 
+val windowOverlayTypeOrPhone: Int
+    get() = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        else -> WindowManager.LayoutParams.TYPE_PHONE
+    }
+
+val windowOverlayTypeOrSysAlert: Int
+    get() = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        else -> WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+    }
 
 fun Context.screenSize(): ScreenSize {
 

@@ -1,27 +1,36 @@
-package com.cas.musicplayer.ui.bottompanel
+package com.cas.musicplayer.ui.player
 
 
-import android.app.Activity
-import android.graphics.Bitmap
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
+import android.support.v4.media.session.MediaControllerCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.core.os.bundleOf
 import androidx.core.os.postDelayed
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
 import com.cas.common.dpToPixel
-import com.cas.common.extensions.*
+import com.cas.common.extensions.observe
+import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
@@ -31,31 +40,61 @@ import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.VideoEmplacement
 import com.cas.musicplayer.player.services.FavouriteReceiver
+import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
-import com.ncorti.slidetoact.SlideToActView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fragment_bottom_panel.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 
-class BottomPanelFragment : Fragment(),
-    SlidingUpPanelLayout.PanelSlideListener,
-    SlideToActView.OnSlideCompleteListener,
-    View.OnTouchListener {
+class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
-    var dialogBottomShet: SlideUpPlaylistFragment? = null
     lateinit var mainActivity: MainActivity
-    private var visible = true
-    private val viewModel by viewModel { injector.bottomPanelViewModel }
+    private val viewModel by viewModel { injector.playerViewModel }
     private val handler = Handler()
+    private var mediaController: MediaControllerCompat? = null
+    private var btnFullScreen: ImageButton? = null
+    private var btnPlayPause: ImageButton? = null
+    private var btnPlayPauseMain: ImageButton? = null
+    private var lockScreenView: LockScreenView? = null
+    private var queueFragment: SlideUpPlaylistFragment? = null
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+        }
+
+        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+            if (binder is MusicPlayerService.ServiceBinder) {
+                val service = binder.service()
+                mediaController = MediaControllerCompat(requireContext(), service.mediaSession)
+                mediaController?.registerCallback(mediaControllerCallback)
+                mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
+            }
+        }
+    }
+
+    private val mediaControllerCallback = object : MediaControllerCompat.Callback() {
+        override fun binderDied() {
+            super.binderDied()
+            mainActivity.hideBottomPanel()
+        }
+
+        override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
+            state?.let { onPlayMusicStateChanged(state) }
+        }
+
+        override fun onSessionDestroyed() {
+            mainActivity.hideBottomPanel()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,19 +105,43 @@ class BottomPanelFragment : Fragment(),
         return view
     }
 
+    override fun onStart() {
+        super.onStart()
+        val intent = Intent(requireContext(), MusicPlayerService::class.java)
+        activity?.bindService(intent, serviceConnection, 0)
+        mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
+        val serviceRunning = context?.isServiceRunning(MusicPlayerService::class.java) ?: false
+        if (!serviceRunning) {
+            mainActivity.hideBottomPanel()
+            queueFragment?.dismiss()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mediaController?.unregisterCallback(mediaControllerCallback)
+        activity?.unbindService(serviceConnection)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        btnFullScreen = view?.findViewById(R.id.btnFullScreen)
+        btnPlayPause = view?.findViewById(R.id.btnPlayPause)
+        btnPlayPauseMain = view?.findViewById(R.id.btnPlayPauseMain)
+        lockScreenView = view?.findViewById(R.id.lockScreenView)
+
         mainActivity = requireActivity() as MainActivity
         mainActivity.slidingPaneLayout.addPanelSlideListener(this)
         PlayerQueue.observe(this, Observer { video ->
             onVideoChanged(video)
+            lockScreenView?.setCurrentTrack(video)
         })
 
-        btnPlayPause.setOnClickListener {
+        btnPlayPause?.setOnClickListener {
             onClickPlayPause()
         }
 
-        btnPlayPauseMain.setOnClickListener {
+        btnPlayPauseMain?.setOnClickListener {
             onClickPlayPause()
         }
 
@@ -129,19 +192,8 @@ class BottomPanelFragment : Fragment(),
         }
 
         btnLockScreen.setOnClickListener {
-            lockScreen(true)
+            openBatterySaverMode()
         }
-
-        slideToUnlock.onSlideCompleteListener = this
-        PlaybackLiveData.observe(this, Observer {
-            if (it == PlayerConstants.PlayerState.PAUSED) {
-                btnPlayPause.setImageResource(R.drawable.ic_play)
-                btnPlayPauseMain.setImageResource(R.drawable.ic_play)
-            } else if (it == PlayerConstants.PlayerState.PLAYING) {
-                btnPlayPause.setImageResource(R.drawable.ic_pause)
-                btnPlayPauseMain.setImageResource(R.drawable.ic_pause)
-            }
-        })
 
         btnClosePanel.setOnClickListener {
             mainActivity.collapseBottomPanel()
@@ -154,8 +206,6 @@ class BottomPanelFragment : Fragment(),
         btnPlayPrevious.setOnClickListener {
             PlayerQueue.playPreviousTrack()
         }
-
-        mainView.setOnTouchListener(this)
 
         adjustCenterViews()
 
@@ -194,7 +244,7 @@ class BottomPanelFragment : Fragment(),
             UserPrefs.saveSort(nextSort)
         }
 
-        btnFullScreen.setOnClickListener {
+        btnFullScreen?.setOnClickListener {
             (requireActivity() as MainActivity).switchToLandscape()
             (requireActivity() as MainActivity).hideStatusBar()
             VideoEmplacementLiveData.fullscreen()
@@ -220,27 +270,27 @@ class BottomPanelFragment : Fragment(),
                 btnAddFav.setImageResource(R.drawable.ic_favorite_border)
             }
         }
-    }
-
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        if (event!!.action == MotionEvent.ACTION_DOWN) {
-            if (visible && mainActivity.isLocked) {
-                playbackControlsView.invisible()
-                slideToUnlock.invisible()
-                txtTitleVideoLock.invisible()
-                visible = false
-            } else if (!visible && mainActivity.isLocked) {
-                playbackControlsView.visible()
-                slideToUnlock.visible()
-                txtTitleVideoLock.visible()
-                visible = true
-            }
+        lockScreenView?.doOnSlideComplete {
+            lockScreen(false)
         }
-        return true
     }
 
-    override fun onSlideComplete(view: SlideToActView) {
-        lockScreen(false)
+    fun openBatterySaverMode() {
+        val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
+        if (!canWriteSettings) {
+            // Show popup
+            MaterialDialog(requireContext()).show {
+                message(R.string.battery_saver_mode_request_change_settings)
+                positiveButton(R.string.ok) {
+                    SystemSettings.enableSettingModification(requireActivity())
+                }
+                negativeButton(R.string.cancel)
+                getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
+                window?.setType(windowOverlayTypeOrPhone)
+            }
+            return
+        }
+        lockScreen(true)
     }
 
     override fun onPanelSlide(panel: View?, slideOffset: Float) {
@@ -253,12 +303,12 @@ class BottomPanelFragment : Fragment(),
         previousState: SlidingUpPanelLayout.PanelState?,
         newState: SlidingUpPanelLayout.PanelState?
     ) {
-        btnFullScreen.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
+        btnFullScreen?.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
     }
 
     private fun showQueue() {
-        dialogBottomShet = SlideUpPlaylistFragment()
-        dialogBottomShet?.show(childFragmentManager, "BottomSheetFragment")
+        queueFragment = SlideUpPlaylistFragment()
+        queueFragment?.show(childFragmentManager, "BottomSheetFragment")
     }
 
     private fun onClickPlayPause() {
@@ -296,13 +346,11 @@ class BottomPanelFragment : Fragment(),
         paramsTxtYoutubeCopy.rightMargin = paramsTitle.rightMargin
 
         btnYoutube.layoutParams = paramsTxtYoutubeCopy
-
     }
 
     private fun onVideoChanged(video: MusicTrack) {
         txtTitle.text = video.title
         txtTitleVideoCenter.text = video.title
-        txtTitleVideoLock.text = video.title
 
         if (UserPrefs.isFav(video.youtubeId)) {
             btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
@@ -337,81 +385,31 @@ class BottomPanelFragment : Fragment(),
     }
 
     private fun loadAndBlureImage(video: MusicTrack) {
-        val target = object : Target {
-            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                // Nothing
-            }
-
-            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                // Nothing
-            }
-
-            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                try {
-                    bitmap?.let {
-                        imgBlured.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
-                    }
-                } catch (e: OutOfMemoryError) {
-                }
-            }
+        lifecycleScope.launch(uiContext) {
+            // TODO: Convert to normal coroutine
+            val bitmap = async { Picasso.get().loadBitmap(video.imgUrl) }.await() ?: return@launch
+            imgBlured.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
         }
-
-        imgBlured.tag = target
-        Picasso.get().load(video.imgUrl).into(target)
     }
 
     private fun lockScreen(lock: Boolean) {
-        if (lock) {
-            val panelView =
-                requireActivity().findViewById<InsetSlidingPanelView>(R.id.sliding_layout)
-            panelView.updatePadding(top = 0)
-            setFullscreen(mainActivity)
-            fullScreenSwitchView.gone()
-            btnYoutube.gone()
-            favView.gone()
-            seekBarView.gone()
-            btnShowQueueFull.gone()
-            btnPlayOption.gone()
-            imgBlured.gone()
-            slideToUnlock.visible()
-            txtTitleVideoLock.visible()
-            txtTitleVideoCenter.gone()
-            mainView.setBackgroundColor(Color.parseColor("#000000"))
-            mainActivity.slidingPaneLayout.isTouchEnabled = false
-            mainActivity.isLocked = true
+        mainView.isVisible = !lock
+        mainActivity.isLocked = lock
+        lockScreenView?.toggle(lock)
+    }
 
-            handler.postDelayed(1_000) {
-                panelView.updatePadding(top = 0)
-            }
-        } else {
-            exitFullscreen(mainActivity)
-            fullScreenSwitchView.visible()
-            btnYoutube.visible()
-            favView.visible()
-            seekBarView.visible()
-            btnShowQueueFull.visible()
-            btnPlayOption.visible()
-            imgBlured.visible()
-            slideToUnlock.gone()
-            txtTitleVideoLock.gone()
-            txtTitleVideoCenter.visible()
-            slideToUnlock.resetSlider()
-            mainView.setBackgroundColor(resources.getColor(android.R.color.transparent))
-            mainActivity.slidingPaneLayout.isTouchEnabled = true
-            mainActivity.isLocked = false
+    private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
+        val state = stateCompat.state
+        if (state == PlaybackStateCompat.STATE_PLAYING || state == PlaybackStateCompat.STATE_BUFFERING) {
+            btnPlayPause?.setImageResource(R.drawable.ic_pause)
+            btnPlayPauseMain?.setImageResource(R.drawable.ic_pause)
+            lockScreenView?.onPlayBackStateChanged()
+        } else if (state == PlaybackStateCompat.STATE_PAUSED) {
+            btnPlayPause?.setImageResource(R.drawable.ic_play)
+            btnPlayPauseMain?.setImageResource(R.drawable.ic_play)
+            lockScreenView?.onPlayBackStateChanged()
+        } else if (state == PlaybackStateCompat.STATE_STOPPED) {
+            mainActivity.hideBottomPanel()
         }
-    }
-
-    private fun setFullscreen(activity: Activity) {
-        var flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_FULLSCREEN
-        flags = flags or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-        activity.window.decorView.systemUiVisibility = flags
-    }
-
-    private fun exitFullscreen(activity: Activity) {
-        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
     }
 }
