@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.extensions.isPlaying
+import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomCommand
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
@@ -30,6 +31,7 @@ class LockScreenReceiver(
     private val intentFilter = IntentFilter(Intent.ACTION_SCREEN_ON).apply {
         addAction(Intent.ACTION_SCREEN_OFF)
         addAction(Intent.ACTION_ANSWER)
+        addAction(Intent.ACTION_USER_PRESENT)
     }
     private var registered = false
     private val mediaController = MediaControllerCompat(context, sessionToken)
@@ -43,7 +45,10 @@ class LockScreenReceiver(
                 shouldShowPopup = true
                 mediaController.transportControls.pause()
             }
-        } else if (intent.action == Intent.ACTION_SCREEN_ON) {
+
+            // Disable notification buttons
+            mediaController.sendCommand(CustomCommand.DISABLE_NOTIFICATION_ACTIONS, null, null)
+        } else if (intent.action == Intent.ACTION_USER_PRESENT) {
             if (shouldShowPopup) {
                 shouldShowPopup = false
                 MaterialDialog(context).show {
@@ -72,8 +77,9 @@ class LockScreenReceiver(
                     window?.setType(windowOverlayTypeOrPhone)
                 }
             }
-        } else if (intent.action == Intent.ACTION_ANSWER) {
-            print("")
+
+            // Enable notification buttons
+            mediaController.sendCommand(CustomCommand.ENABLE_NOTIFICATION_ACTIONS, null, null)
         }
     }
 

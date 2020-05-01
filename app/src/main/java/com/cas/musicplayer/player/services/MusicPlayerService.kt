@@ -5,10 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.media.AudioManager
-import android.os.Binder
-import android.os.Bundle
-import android.os.Handler
-import android.os.IBinder
+import android.os.*
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -34,10 +31,7 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
 import com.cas.musicplayer.player.extensions.musicTrack
-import com.cas.musicplayer.utils.VideoEmplacementLiveData
-import com.cas.musicplayer.utils.dpToPixel
-import com.cas.musicplayer.utils.loadBitmap
-import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
+import com.cas.musicplayer.utils.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
@@ -138,7 +132,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         super.onCreate()
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
-                youtubePlayerManager.play()
+                if (isScreenLocked()) {
+                    youtubePlayerManager.pause()
+                } else {
+                    youtubePlayerManager.play()
+                }
             }
 
             override fun onPause() {
@@ -146,7 +144,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onStop() {
-                // youtubePlayerManager.stop()
                 stopSelf()
             }
 
@@ -161,11 +158,27 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onSkipToNext() {
-                PlayerQueue.playNextTrack()
+                if (isScreenLocked()) {
+                    youtubePlayerManager.pause()
+                } else {
+                    PlayerQueue.playNextTrack()
+                }
             }
 
             override fun onSkipToPrevious() {
-                PlayerQueue.playPreviousTrack()
+                if (isScreenLocked()) {
+                    youtubePlayerManager.pause()
+                } else {
+                    PlayerQueue.playPreviousTrack()
+                }
+            }
+
+            override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
+                if (command == CustomCommand.ENABLE_NOTIFICATION_ACTIONS) {
+                    youtubePlayerManager.onScreenUnlocked()
+                } else if (command == CustomCommand.DISABLE_NOTIFICATION_ACTIONS) {
+                    youtubePlayerManager.onScreenLocked()
+                }
             }
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
@@ -425,6 +438,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         object CustomAction {
             const val ADD_CURRENT_MEDIA_TO_FAVOURITE = "add_current_media_to_Favourite"
             const val REMOVE_CURRENT_MEDIA_FROM_FAVOURITE = "remove_current_media_from_Favourite"
+        }
+
+        object CustomCommand {
+            const val DISABLE_NOTIFICATION_ACTIONS = "disable_notification_actions"
+            const val ENABLE_NOTIFICATION_ACTIONS = "enable_notification_actions"
         }
     }
 }
