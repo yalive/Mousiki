@@ -88,7 +88,6 @@ class YoutubeFloatingPlayerView : CardView {
         videoViewParams.gravity = Gravity.TOP or Gravity.START
         videoViewParams.x = videoEmplacement.x
         videoViewParams.y = videoEmplacement.y
-
         draggableView = findViewById(R.id.draggableView)
 
         val gestureDetector = object : GestureDetector.SimpleOnGestureListener() {
