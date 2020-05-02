@@ -17,7 +17,7 @@ import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.home.HomeViewModel
 
 /**
@@ -77,7 +77,7 @@ class HomeHeaderAdapterDelegate(
                     val firstTrack = viewModel.newReleases.valueOrNull()?.getOrNull(0) ?: return
                     bundle.putParcelable(
                         BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                        FeaturedImage.FeaturedImageUrl(firstTrack.songImagePath)
+                        AppImage.AppImageUrl(firstTrack.songImagePath)
                     )
                     R.id.action_homeFragment_to_newReleaseFragment
                 }

@@ -5,9 +5,11 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.cas.musicplayer.R
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
+import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -77,8 +79,31 @@ fun ImageView.loadAndBlurImage(
     Picasso.get().load(urlImage).into(target)
 }
 
-suspend fun Picasso.loadBitmap(url: String): Bitmap? = suspendCoroutine { continuation ->
-    val target = object : Target {
+suspend fun Picasso.getBitmap(url: String): Bitmap? = suspendCoroutine { continuation ->
+    val target = createTargetWith(continuation)
+    load(url).into(target)
+}
+
+suspend fun ImageView.getBitmap(url: String): Bitmap? =
+    suspendCoroutine { continuation ->
+        val target = createTargetWith(continuation)
+        this.tag = target
+        Picasso.get().load(url).into(target)
+    }
+
+suspend fun ImageView.getBitmap(appImage: AppImage): Bitmap? =
+    suspendCoroutine { continuation ->
+        val target = createTargetWith(continuation)
+        this.tag = target
+        val picasso = Picasso.get()
+        when (appImage) {
+            is AppImage.AppImageRes -> picasso.load(appImage.resId).into(target)
+            is AppImage.AppImageUrl -> picasso.load(appImage.url).into(target)
+        }
+    }
+
+private fun createTargetWith(continuation: Continuation<Bitmap?>): Target {
+    return object : Target {
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             // Nop
         }
@@ -91,23 +116,4 @@ suspend fun Picasso.loadBitmap(url: String): Bitmap? = suspendCoroutine { contin
             continuation.resume(bitmap)
         }
     }
-    load(url).into(target)
 }
-
-suspend fun Picasso.loadBitmap(@DrawableRes resId: Int): Bitmap? =
-    suspendCoroutine { continuation ->
-        val target = object : Target {
-            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                // Nop
-            }
-
-            override fun onBitmapFailed(e: java.lang.Exception?, errorDrawable: Drawable?) {
-                continuation.resume(null)
-            }
-
-            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                continuation.resume(bitmap)
-            }
-        }
-        load(resId).into(target)
-    }

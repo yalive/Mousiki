@@ -13,7 +13,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.drawable
@@ -51,7 +51,7 @@ class GenresViewHolder(itemView: View) : SimpleBaseViewHolder<GenreMusic>(itemVi
             val bundle = bundleOf(
                 PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.topTracksPlaylist,
                 EXTRAS_ARTIST to artist,
-                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageRes(item.img)
+                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageRes(item.img)
             )
             itemView.findNavController()
                 .navigate(R.id.action_genresFragment_to_playlistVideosFragment, bundle)

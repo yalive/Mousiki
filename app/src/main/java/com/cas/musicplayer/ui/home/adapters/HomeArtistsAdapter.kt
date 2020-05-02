@@ -11,7 +11,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
@@ -41,7 +41,7 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
             bundle.putParcelable(EXTRAS_ARTIST, artist)
             bundle.putParcelable(
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                FeaturedImage.FeaturedImageUrl(artist.imageFullPath)
+                AppImage.AppImageUrl(artist.imageFullPath)
             )
             itemView.findNavController()
                 .navigate(R.id.action_homeFragment_to_artistSongsFragment, bundle)
