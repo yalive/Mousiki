@@ -59,13 +59,7 @@ class RemoteSongsDataSource @Inject constructor(
     }
 
     private suspend fun downloadTrendingFile(): File {
-        val countryCode = getCurrentLocale().toLowerCase()
-        val fileName = "$countryCode.json"
-        val fileDirPath =
-            appContext.filesDir.absolutePath + File.separator + STORAGE_TRENDING_DIR + File.separator
-        val directory = File(fileDirPath)
-        if (!directory.exists()) directory.mkdirs()
-        val localFile = File(fileDirPath, fileName)
+        val localFile = trendingLocalFile()
         if (!localFile.exists()) {
             val connectedBeforeCall = connectivityState.isConnected()
             var retryCount = 0
@@ -75,7 +69,7 @@ class RemoteSongsDataSource @Inject constructor(
                 retryCount++
                 fileDownloaded = suspendCoroutine { continuation ->
                     val ref =
-                        storage.getReferenceFromUrl("${BASE_URL_STORAGE}$STORAGE_TRENDING_DIR/$fileName")
+                        storage.getReferenceFromUrl("${BASE_URL_STORAGE}$STORAGE_TRENDING_DIR/${localFile.name}")
                     ref.getFile(localFile).addOnSuccessListener {
                         continuation.resume(true)
                     }.addOnFailureListener {
@@ -89,7 +83,7 @@ class RemoteSongsDataSource @Inject constructor(
             if (!fileDownloaded) {
                 // Log error
                 Crashlytics.log(
-                    "Cannot load $countryCode trending songs file from firebase after $retryCount retries," +
+                    "Cannot load ${getCurrentLocale()} trending songs file from firebase after $retryCount retries," +
                             "\n Is Connected before call: $connectedBeforeCall" +
                             "\n Is Connected after call:${connectivityState.isConnected()}"
                 )
@@ -98,6 +92,19 @@ class RemoteSongsDataSource @Inject constructor(
         return localFile
     }
 
+    fun deleteLocalTrendingFile() {
+        trendingLocalFile().delete()
+    }
+
+    private fun trendingLocalFile(): File {
+        val countryCode = getCurrentLocale().toLowerCase()
+        val fileName = "$countryCode.json"
+        val fileDirPath =
+            appContext.filesDir.absolutePath + File.separator + STORAGE_TRENDING_DIR + File.separator
+        val directory = File(fileDirPath)
+        if (!directory.exists()) directory.mkdirs()
+        return File(fileDirPath, fileName)
+    }
 
     companion object {
         private const val BASE_URL_STORAGE = "gs://mousiki-e3e22.appspot.com/"

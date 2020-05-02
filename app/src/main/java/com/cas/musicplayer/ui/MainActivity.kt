@@ -16,12 +16,12 @@ import androidx.core.view.get
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.transition.TransitionManager
 import com.cas.common.extensions.observe
+import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
@@ -39,7 +39,6 @@ import com.google.firebase.ktx.Firebase
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.delay
 
 
 class MainActivity : BaseActivity() {
@@ -143,12 +142,9 @@ class MainActivity : BaseActivity() {
             VideoEmplacementLiveData.forceUpdate()
         }
 
-        val launchCount = UserPrefs.getLaunchCount()
-        if (!UserPrefs.hasRatedApp() && launchCount % 3 == 0) {
-            lifecycleScope.launchWhenResumed {
-                delay(500)
-                askUserForFeelingAboutApp()
-            }
+        viewModel.checkToRateApp()
+        observeEvent(viewModel.rateApp) {
+            askUserForFeelingAboutApp()
         }
     }
 

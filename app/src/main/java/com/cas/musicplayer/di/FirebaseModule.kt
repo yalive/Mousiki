@@ -21,17 +21,6 @@ import javax.inject.Singleton
 @Module
 object FirebaseModule {
 
-/*    @Singleton
-    @Provides
-    @JvmStatic
-    fun provideAppConfigDataSource(
-        remoteConfig: FirebaseRemoteConfig,
-        connectivityState: ConnectivityState,
-        context: Context
-    ): RemoteAppConfig {
-        return RemoteAppConfig(remoteConfig, connectivityState, context)
-    }*/
-
     @Singleton
     @Provides
     @JvmStatic

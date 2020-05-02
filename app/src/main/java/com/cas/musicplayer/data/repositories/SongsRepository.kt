@@ -37,6 +37,7 @@ class SongsRepository @Inject constructor(
             // First load
             if (localDataSource.numberOfSongs() > 0 && localDataSource.expired() && networkUtils.hasNetworkConnection()) {
                 localDataSource.clear()
+                remoteDataSource.deleteLocalTrendingFile()
             }
         }
         val cachedTracks = localDataSource.getTrendingSongs(max, lastKnown)
