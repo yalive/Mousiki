@@ -20,7 +20,7 @@ import com.cas.musicplayer.player.extensions.isSkipToNextEnabled
 import com.cas.musicplayer.player.extensions.isSkipToPreviousEnabled
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.UserPrefs
-import com.cas.musicplayer.utils.loadBitmap
+import com.cas.musicplayer.utils.getBitmap
 import com.squareup.picasso.Picasso
 
 /**
@@ -159,9 +159,8 @@ class NotificationBuilder(private val context: Context) {
             .setShowActionsInCompactView(1, 2, 3)
 
         val largeIconBitmap = description?.mediaUri?.toString()?.let {
-            Picasso.get().loadBitmap(it)
+            Picasso.get().getBitmap(it)
         }
-
         return builder.setContentIntent(controller.sessionActivity)
             .setContentText(description?.subtitle)
             .setContentTitle(description?.title)

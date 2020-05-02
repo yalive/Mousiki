@@ -67,11 +67,18 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getBoolean(LOAD_GENRE_SONGS_FROM_FIREBASE)
     }
 
+    fun getOffsetListAds(): Int {
+        val offset = firebaseRemoteConfig.getLong(LIST_ADS_OFFSET).toInt()
+        if (offset <= 0) return DEF_ADS_OFFSET
+        return offset
+    }
 
     companion object {
+        private const val DEF_ADS_OFFSET = 6
         const val YOUTUBE_API_KEYS = "youtube_api_keys"
         const val LOAD_CHART_SONGS_FROM_FIREBASE = "chart_songs_from_firebase"
         const val LOAD_GENRE_SONGS_FROM_FIREBASE = "genre_songs_from_firebase"
+        const val LIST_ADS_OFFSET = "list_ads_offset"
         const val YOUTUBE_API_KEYS_BY_COUNTRY = "youtube_api_keys_by_country"
     }
 }

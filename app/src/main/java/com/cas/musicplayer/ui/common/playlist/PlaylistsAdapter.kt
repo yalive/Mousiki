@@ -12,7 +12,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.loadImage
 
@@ -42,7 +42,7 @@ class PlaylistsAdapter : SimpleBaseAdapter<Playlist, PlaylistsAdapter.ViewHolder
                 bundle.putParcelable(EXTRAS_ARTIST, artist)
                 bundle.putParcelable(
                     BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                    FeaturedImage.FeaturedImageUrl(artist.urlImage)
+                    AppImage.AppImageUrl(artist.urlImage)
                 )
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
             }

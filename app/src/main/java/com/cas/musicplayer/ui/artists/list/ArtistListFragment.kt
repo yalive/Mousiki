@@ -20,7 +20,7 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.sidebar.SideBar
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import kotlinx.android.synthetic.main.fragment_artists.*
 
 
@@ -66,7 +66,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
             bundle.putParcelable(EXTRAS_ARTIST, it)
             bundle.putParcelable(
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                FeaturedImage.FeaturedImageUrl(it.imageFullPath)
+                AppImage.AppImageUrl(it.imageFullPath)
             )
             findNavController().navigate(R.id.action_artistsFragment_to_artistSongsFragment, bundle)
         })
