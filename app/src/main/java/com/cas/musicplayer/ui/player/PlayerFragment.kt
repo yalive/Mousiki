@@ -48,9 +48,7 @@ import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_bottom_panel.*
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
@@ -385,9 +383,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     }
 
     private fun loadAndBlureImage(video: MusicTrack) {
-        lifecycleScope.launch(uiContext) {
-            // TODO: Convert to normal coroutine
-            val bitmap = async { Picasso.get().loadBitmap(video.imgUrl) }.await() ?: return@launch
+        lifecycleScope.launch {
+            val bitmap = imgBlured.getBitmap(video.imgUrl) ?: return@launch
             imgBlured.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
         }
     }

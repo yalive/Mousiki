@@ -192,7 +192,7 @@ fun isScreenLocked(): Boolean {
 
 fun getCurrentLocale(): String {
     if (BuildConfig.DEBUG) {
-        return "MX"
+        return "MA"
     }
     val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
     val countryCodeValue: String? = tm?.networkCountryIso

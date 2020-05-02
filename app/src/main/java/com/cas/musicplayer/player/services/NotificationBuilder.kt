@@ -20,8 +20,7 @@ import com.cas.musicplayer.player.extensions.isSkipToNextEnabled
 import com.cas.musicplayer.player.extensions.isSkipToPreviousEnabled
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.UserPrefs
-import com.cas.musicplayer.utils.loadBitmap
-import com.cas.musicplayer.utils.toast
+import com.cas.musicplayer.utils.getBitmap
 import com.squareup.picasso.Picasso
 
 /**
@@ -46,6 +45,13 @@ class NotificationBuilder(private val context: Context) {
             PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
         )
     )
+
+    private val skipToPreviousActionDisabled = NotificationCompat.Action(
+        R.drawable.ic_skip_previous,
+        context.getString(R.string.player_notification_skip_to_previous),
+        null
+    )
+
     private val playAction = NotificationCompat.Action(
         R.drawable.ic_play,
         context.getString(R.string.player_notification_play),
@@ -53,6 +59,12 @@ class NotificationBuilder(private val context: Context) {
             context,
             PlaybackStateCompat.ACTION_PLAY
         )
+    )
+
+    private val playActionDisabled = NotificationCompat.Action(
+        R.drawable.ic_play,
+        context.getString(R.string.player_notification_play),
+        null
     )
 
     private val pauseAction = NotificationCompat.Action(
@@ -63,6 +75,13 @@ class NotificationBuilder(private val context: Context) {
             PlaybackStateCompat.ACTION_PAUSE
         )
     )
+
+    private val pauseActionDisabled = NotificationCompat.Action(
+        R.drawable.ic_pause,
+        context.getString(R.string.player_notification_pause),
+        null
+    )
+
     private val skipToNextAction = NotificationCompat.Action(
         R.drawable.ic_skip_next,
         context.getString(R.string.player_notification_skip_to_next),
@@ -70,6 +89,12 @@ class NotificationBuilder(private val context: Context) {
             context,
             PlaybackStateCompat.ACTION_SKIP_TO_NEXT
         )
+    )
+
+    private val skipToNextActionDisabled = NotificationCompat.Action(
+        R.drawable.ic_skip_next,
+        context.getString(R.string.player_notification_skip_to_next),
+        null
     )
 
     private val stopPendingIntent = PendingIntent.getBroadcast(
@@ -96,8 +121,10 @@ class NotificationBuilder(private val context: Context) {
         val controller = MediaControllerCompat(context, sessionToken)
         val description = controller.metadata?.description
         val playbackState = controller.playbackState
-
         val builder = NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL)
+
+        val screenLocked =
+            false /*playbackState?.extras?.getBoolean("screenLocked") ?: isScreenLocked()*/
 
         if (UserPrefs.isFav(description?.mediaId)) {
             builder.addAction(
@@ -116,25 +143,24 @@ class NotificationBuilder(private val context: Context) {
         // Only add actions for skip back, play/pause, skip forward, based on what's enabled.
         var playPauseIndex = 0
         if (playbackState.isSkipToPreviousEnabled) {
-            builder.addAction(skipToPreviousAction)
+            builder.addAction(if (screenLocked) skipToPreviousActionDisabled else skipToPreviousAction)
             ++playPauseIndex
         }
         if (playbackState.isPlaying) {
-            builder.addAction(pauseAction)
+            builder.addAction(if (screenLocked) pauseActionDisabled else pauseAction)
         } else if (playbackState.isPlayEnabled) {
-            builder.addAction(playAction)
+            builder.addAction(if (screenLocked) playActionDisabled else playAction)
         }
         if (playbackState.isSkipToNextEnabled) {
-            builder.addAction(skipToNextAction)
+            builder.addAction(if (screenLocked) skipToNextActionDisabled else skipToNextAction)
         }
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
             .setMediaSession(sessionToken)
             .setShowActionsInCompactView(1, 2, 3)
 
         val largeIconBitmap = description?.mediaUri?.toString()?.let {
-            Picasso.get().loadBitmap(it)
+            Picasso.get().getBitmap(it)
         }
-
         return builder.setContentIntent(controller.sessionActivity)
             .setContentText(description?.subtitle)
             .setContentTitle(description?.title)

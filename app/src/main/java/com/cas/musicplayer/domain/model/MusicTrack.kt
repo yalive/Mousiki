@@ -29,10 +29,8 @@ data class MusicTrack(
             return "https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg"
         }
 
-    val shareVideoUrl: String
-        get() {
-            return "https://www.youtube.com/watch?v=$youtubeId"
-        }
+    val imgUrlDef0: String
+        get() = "https://img.youtube.com/vi/$youtubeId/0.jpg"
 
     val durationFormatted: String
         get() {

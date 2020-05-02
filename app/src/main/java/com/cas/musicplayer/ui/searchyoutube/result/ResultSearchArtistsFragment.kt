@@ -11,7 +11,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.list.ArtistListAdapter
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
 
 
@@ -28,7 +28,7 @@ class ResultSearchArtistsFragment : BaseSearchResultFragment(), PageableFragment
             bundle.putParcelable(EXTRAS_ARTIST, artist)
             bundle.putParcelable(
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                FeaturedImage.FeaturedImageUrl(artist.urlImage)
+                AppImage.AppImageUrl(artist.urlImage)
             )
             findNavController().navigate(R.id.artistSongsFragment, bundle)
         }

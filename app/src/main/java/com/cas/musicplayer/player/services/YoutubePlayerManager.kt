@@ -3,6 +3,7 @@ package com.cas.musicplayer.player.services
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.core.os.bundleOf
 import com.cas.musicplayer.player.MousikiPlayer
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.isScreenLocked
@@ -51,10 +52,10 @@ class YoutubePlayerManager(
     }
 
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-        if (isScreenLocked()) {
+        /*if (isScreenLocked()) {
             PlayerQueue.pause()
             return
-        }
+        }*/
         PlaybackDuration.value = second
     }
 
@@ -105,5 +106,25 @@ class YoutubePlayerManager(
 
     override fun seekTo(time: Float) {
         youTubePlayer?.seekTo(time)
+    }
+
+    fun onScreenLocked() {
+        val newBuilder = playbackstateBuilder
+        newBuilder.setExtras(
+            bundleOf(
+                "screenLocked" to true
+            )
+        )
+        mediaSession.setPlaybackState(newBuilder.build())
+    }
+
+    fun onScreenUnlocked() {
+        val newBuilder = playbackstateBuilder
+        newBuilder.setExtras(
+            bundleOf(
+                "screenLocked" to false
+            )
+        )
+        mediaSession.setPlaybackState(newBuilder.build())
     }
 }
