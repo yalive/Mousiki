@@ -106,7 +106,7 @@
         app:slider_height="60dp"
         app:slider_icon="@drawable/ic_arrow_unlock"
         app:slider_locked="false"
-        app:text="Slide to unlock"
+        app:text="@string/label_slide_unlock"
         app:text_color="@color/white"
         app:text_size="12sp" />
 </merge>

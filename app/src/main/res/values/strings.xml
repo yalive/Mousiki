@@ -122,4 +122,5 @@
     <!-- Battery saver mode -->
     <string name="battery_saver_mode_request_change_settings">The Power Saving Mode needs the permission "modify system settings" to reduce the screen brightness. Please enable it on settings.</string>
     <string name="battery_saver_mode_instead_of_lock_screen">To meet YouTube Terms of Service, Mousiki cannot play music video in background. You can turn on the power saving mode to lock your screen.</string>
+    <string name="label_slide_unlock">Slide to unlock</string>
 </resources>
