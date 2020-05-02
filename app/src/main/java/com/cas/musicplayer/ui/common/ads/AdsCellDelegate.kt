@@ -11,10 +11,10 @@ import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.formats.*
+import com.google.android.gms.ads.formats.MediaView
+import com.google.android.gms.ads.formats.NativeAd
+import com.google.android.gms.ads.formats.UnifiedNativeAd
+import com.google.android.gms.ads.formats.UnifiedNativeAdView
 
 
 /**
@@ -38,15 +38,17 @@ class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         position: Int,
         holder: RecyclerView.ViewHolder
     ) {
-        (holder as AdsViewHolder).bind()
+        val adsItem = items[position] as AdsItem
+        (holder as AdsViewHolder).bind(adsItem.ad)
     }
 
     inner class AdsViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
+
         private val adView: UnifiedNativeAdView = itemView.findViewById(R.id.ad_view)
 
-        fun bind() {
+        fun bind(ad: UnifiedNativeAd) {
             adView.mediaView = adView.findViewById<View>(R.id.ad_media) as MediaView
 
             // Register the view used for each individual asset.
@@ -60,31 +62,7 @@ class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
             adView.storeView = adView.findViewById(R.id.ad_store)
             adView.advertiserView = adView.findViewById(R.id.ad_advertiser)
 
-            val adLoader = AdLoader.Builder(
-                itemView.context,
-                itemView.context.getString(R.string.admob_native_id)
-            )
-                .forUnifiedNativeAd {
-                    // Show the native ad.
-                    println()
-                    populateNativeAdView(it, adView)
-                }
-                .withAdListener(object : AdListener() {
-                    override fun onAdFailedToLoad(errorCode: Int) { // Handle the failure by logging, altering the UI, and so on.
-                        println()
-                    }
-
-                    override fun onAdLoaded() {
-                        super.onAdLoaded()
-                    }
-                })
-                .withNativeAdOptions(
-                    NativeAdOptions.Builder() // Methods in the NativeAdOptions.Builder class can be
-                        // used here to specify individual options settings.
-                        .build()
-                )
-                .build()
-            adLoader.loadAds(AdRequest.Builder().build(), 3)
+            populateNativeAdView(ad, adView)
         }
 
         private fun populateNativeAdView(

@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.playlist
 
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
+import com.cas.musicplayer.utils.toastCentred
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
@@ -29,6 +30,7 @@ suspend fun loadAds(count: Int) =
             }
         }.withAdListener(object : AdListener() {
             override fun onAdFailedToLoad(errorCode: Int) {
+                MusicApp.get().toastCentred("Failed ads code:$errorCode")
                 if (!adLoader.isLoading) {
                     continuation.resume(ads)
                 }
