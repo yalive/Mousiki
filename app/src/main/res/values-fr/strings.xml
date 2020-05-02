@@ -10,6 +10,8 @@
     <string name="label_add_to">Ajouter à…</string>
     <string name="label_play_next">Jouer la chanson suivante</string>
     <string name="common_more">Plus</string>
+    <string name="common_turn_on">ALLUMER</string>
+    <string name="share_track_link_message">Voici une nouvelle chanson pour vous sur <b>Mousiki</b> 🎧❀ヅ❤♫…%s.\n%s</string>
 
     <!-- Library -->
     <string name="library">Bibliothèque</string>
@@ -108,8 +110,13 @@
     <string name="player_remove_from_favourite">Supprimer du favori</string>
 
     <!-- Feedback -->
-    <string name="send">Send</string>
+    <string name="send">Envoyer</string>
     <string name="hint_your_feedback">Vos réactions…</string>
     <string name="feedback_about_app_dialog_title">Donnez-nous vos commentaires sur une fonctionnalité Mousiki?</string>
     <string name="feedback_about_app_dialog_message">Faites-nous savoir comment nous pouvons améliorer votre expérience Mousiki.</string>
+
+    <!-- Battery saver mode -->
+    <string name="battery_saver_mode_request_change_settings">Le mode d\'économie d\'énergie a besoin de l\'autorisation «modifier les paramètres du système» pour réduire la luminosité de l\'écran. Veuillez l\'activer dans les paramètres.</string>
+    <string name="battery_saver_mode_instead_of_lock_screen">Pour respecter les conditions d\'utilisation de YouTube, Mousiki ne peut pas lire de vidéo musicale en arrière-plan. Vous pouvez activer le mode d\'économie d\'énergie pour verrouiller votre écran.</string>
+    <string name="label_slide_unlock">Glisser pour déverouiller</string>
 </resources>
