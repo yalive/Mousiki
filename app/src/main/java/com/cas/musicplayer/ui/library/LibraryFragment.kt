@@ -17,7 +17,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
@@ -97,7 +97,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>() {
             findNavController().navigate(
                 R.id.action_libraryFragment_to_customPlaylistSongsFragment,
                 bundleOf(
-                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageUrl(
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
                         playList.urlImage
                     ),
                     CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to playList

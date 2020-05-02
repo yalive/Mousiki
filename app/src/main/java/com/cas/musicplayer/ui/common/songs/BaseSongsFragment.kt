@@ -22,9 +22,11 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.common.songs.AppImage.AppImageRes
+import com.cas.musicplayer.ui.common.songs.AppImage.AppImageUrl
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
-import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 import kotlinx.android.synthetic.main.layout_shimmer_loading_music_list.*
@@ -95,10 +97,11 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 val newList = resource.data
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
+                val size = newList.filterIsInstance<DisplayedVideoItem>().size
                 txtNumberOfSongs.text = requireContext().resources.getQuantityString(
                     R.plurals.playlist_tracks_counts,
-                    newList.size,
-                    newList.size
+                    size,
+                    size
                 )
             }
             Resource.Loading -> {
@@ -120,8 +123,8 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     private fun loadFeaturedImage() {
         val featuredImage = featuredImage
         when (featuredImage) {
-            is FeaturedImage.FeaturedImageRes -> imgArtist.setImageResource(featuredImage.resId)
-            is FeaturedImage.FeaturedImageUrl -> {
+            is AppImageRes -> imgArtist.setImageResource(featuredImage.resId)
+            is AppImageUrl -> {
                 imgArtist.loadImage(
                     urlImage = featuredImage.url,
                     errorImage = R.drawable.default_placeholder_image
@@ -131,11 +134,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
         // Background
         lifecycleScope.launch {
-            val picasso = Picasso.get()
-            when (featuredImage) {
-                is FeaturedImage.FeaturedImageRes -> picasso.loadBitmap(featuredImage.resId)
-                is FeaturedImage.FeaturedImageUrl -> picasso.loadBitmap(featuredImage.url)
-            }?.let { bitmap ->
+            imgBackground.getBitmap(featuredImage)?.let { bitmap ->
                 findDominantColors(bitmap)
             }
         }
@@ -170,15 +169,15 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     }
 }
 
-private val BaseSongsFragment<*>.featuredImage: FeaturedImage
+private val BaseSongsFragment<*>.featuredImage: AppImage
     get() = arguments?.getParcelable(BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE)
         ?: throw IllegalArgumentException("No featured image found")
 
 
-sealed class FeaturedImage : Parcelable {
+sealed class AppImage : Parcelable {
     @Parcelize
-    data class FeaturedImageRes(val resId: Int) : FeaturedImage()
+    data class AppImageRes(val resId: Int) : AppImage()
 
     @Parcelize
-    data class FeaturedImageUrl(val url: String) : FeaturedImage()
+    data class AppImageUrl(val url: String) : AppImage()
 }

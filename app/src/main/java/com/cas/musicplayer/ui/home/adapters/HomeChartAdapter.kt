@@ -11,7 +11,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.ui.common.songs.FeaturedImage
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
@@ -45,7 +45,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
                 val bundle = bundleOf(
                     PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
                     EXTRAS_ARTIST to artist,
-                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to FeaturedImage.FeaturedImageRes(
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageRes(
                         item.featuredImageRes
                     )
                 )
