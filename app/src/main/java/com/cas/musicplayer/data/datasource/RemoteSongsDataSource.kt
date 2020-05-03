@@ -113,7 +113,7 @@ class RemoteSongsDataSource @Inject constructor(
     }
 }
 
-private fun File.musicTracks(gson: Gson): List<MusicTrack> = if (exists()) {
+fun File.musicTracks(gson: Gson): List<MusicTrack> = if (exists()) {
     val tracksFromFile: List<MusicTrack> = try {
         val fileContent = Utils.fileContent(this@musicTracks)
         val typeTokenTracks = object : TypeToken<List<TrackDto>>() {}.type

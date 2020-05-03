@@ -171,6 +171,8 @@ object Utils {
     }
 
     fun fileContent(file: File) = file.inputStream().bufferedReader().use { it.readText() }
+    fun writeToFile(content: String, file: File) =
+        file.outputStream().bufferedWriter().use { it.write(content) }
 
     fun openInPlayStore(context: Context) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -193,7 +195,7 @@ fun isScreenLocked(): Boolean {
 
 fun getCurrentLocale(): String {
     if (BuildConfig.DEBUG) {
-        return "MA"
+        return "MX"
     }
     val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
     val countryCodeValue: String? = tm?.networkCountryIso

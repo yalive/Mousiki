@@ -67,7 +67,8 @@ class ArtistsRepository @Inject constructor(
                         val typeTokenArtists = object : TypeToken<List<Artist>>() {}.type
                         val countryArtists =
                             gson.fromJson<List<Artist>>(jsonArray, typeTokenArtists)
-                        artists.addAll(countryArtists)
+                        val map = countryArtists.map { it.copy(countryCode = code) }
+                        artists.addAll(map)
                     }
                     val distinctBy = artists.distinctBy { it.channelId }
                     return@withContext distinctBy
@@ -89,7 +90,9 @@ class ArtistsRepository @Inject constructor(
                     val artistsJsonArray = JSONObject(fileContent)
                         .getJSONArray(countryCode.toUpperCase()).toString()
                     val typeTokenArtists = object : TypeToken<List<Artist>>() {}.type
-                    gson.fromJson<List<Artist>>(artistsJsonArray, typeTokenArtists)
+                    val countryArtists =
+                        gson.fromJson<List<Artist>>(artistsJsonArray, typeTokenArtists)
+                    countryArtists.map { it.copy(countryCode = countryCode) }
                 } catch (e: Exception) {
                     Crashlytics.logException(e)
                     emptyList<Artist>()
@@ -97,13 +100,13 @@ class ArtistsRepository @Inject constructor(
             } else emptyList()
         }
 
-    suspend fun getArtistTracks(artistChannelId: String): Result<List<MusicTrack>> {
-        val localChannelSongs = channelLocalDataSource.getChannelSongs(artistChannelId)
+    suspend fun getArtistTracks(artist: Artist): Result<List<MusicTrack>> {
+        val localChannelSongs = channelLocalDataSource.getChannelSongs(artist.channelId)
         if (localChannelSongs.isNotEmpty()) {
             return Success(localChannelSongs)
         }
-        return channelRemoteDataSource.getChannelSongs(artistChannelId).alsoWhenSuccess {
-            channelLocalDataSource.saveChannelSongs(artistChannelId, it)
+        return channelRemoteDataSource.getChannelSongs(artist).alsoWhenSuccess {
+            channelLocalDataSource.saveChannelSongs(artist.channelId, it)
         }
     }
 
