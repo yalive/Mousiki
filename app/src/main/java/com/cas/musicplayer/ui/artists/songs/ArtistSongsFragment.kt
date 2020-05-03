@@ -24,7 +24,7 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe(viewModel.tracks, this::updateUI)
-        viewModel.loadArtistTracks(artist.channelId)
+        viewModel.loadArtistTracks(artist)
         txtPlaylistName.text = artist.name
     }
 

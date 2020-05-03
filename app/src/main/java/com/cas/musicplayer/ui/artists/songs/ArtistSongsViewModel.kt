@@ -7,6 +7,7 @@ import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.artist.GetArtistSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
@@ -31,9 +32,9 @@ class ArtistSongsViewModel @Inject constructor(
     val tracks: LiveData<Resource<List<DisplayableItem>>>
         get() = _tracks
 
-    fun loadArtistTracks(channelId: String) = uiCoroutine {
+    fun loadArtistTracks(artist: Artist) = uiCoroutine {
         _tracks.value = Resource.Loading
-        val result = getArtistSongs(channelId)
+        val result = getArtistSongs(artist)
         _tracks.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
