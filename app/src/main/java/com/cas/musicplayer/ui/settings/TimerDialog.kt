@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.settings
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.UserPrefs
@@ -40,7 +41,7 @@ class TimerDialog : BaseDialogFragment() {
 
         seekbar.progress = UserPrefs.getSleepTimerValue()
         txtCurrentValue.text = formatDuration(UserPrefs.getSleepTimerValue())
-        btnSetTimer.setOnClickListener {
+        btnSetTimer.onClick {
             val progress = seekbar.progress
             UserPrefs.setSleepTimerValue(progress)
             PlayerQueue.scheduleStopMusic(progress)

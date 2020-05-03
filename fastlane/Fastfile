@@ -35,4 +35,19 @@ platform :android do
             "
         )
     end
+
+    lane :betaMe do
+            gradle(
+              task: "assemble",
+              build_type: "DevRelease"
+            )
+            firebase_app_distribution(
+                app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
+                testers: "abdelhadibahddou@gmail.com",
+                firebase_cli_path: "/Users/macbook/Firebase/firebase",
+                release_notes: "
+                - Check ads.
+                "
+            )
+        end
 end

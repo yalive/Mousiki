@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
@@ -39,7 +40,7 @@ class HorizontalSongsAdapter(
             txtTitle.text = item.songTitle
             txtDuration.text = item.songDuration
 
-            itemView.findViewById<View>(R.id.cardView).setOnClickListener {
+            itemView.findViewById<View>(R.id.cardView).onClick {
                 onVideoSelected(item.track)
             }
         }

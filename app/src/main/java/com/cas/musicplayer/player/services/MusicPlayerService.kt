@@ -309,7 +309,9 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         bottomViewParams.x = 0
         bottomViewParams.y = 0
 
-        windowManager.addView(bottomView, bottomViewParams)
+        if (canDrawOverApps()) {
+            windowManager.addView(bottomView, bottomViewParams)
+        }
     }
 
     private fun createBatterySaverView() {
@@ -329,7 +331,9 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         batterySaverViewParams.x = 0
         batterySaverViewParams.y = 0
 
-        windowManager.addView(batterySaverView, batterySaverViewParams)
+        if (canDrawOverApps()) {
+            windowManager.addView(batterySaverView, batterySaverViewParams)
+        }
     }
 
     override fun onDestroy() {

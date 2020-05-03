@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.cas.common.dpToPixel
+import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.FirstItemMarginDecoration
 import com.cas.common.resource.Resource
@@ -67,13 +68,13 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
-        btnPlayAll.setOnClickListener {
-            if (adapter.dataItems.isEmpty()) return@setOnClickListener
+        btnPlayAll.onClick {
+            if (adapter.dataItems.isEmpty()) return@onClick
             val mainActivity = requireActivity() as MainActivity
             mainActivity.collapseBottomPanel()
             onClickTrackPlayAll()
         }
-        btnBack.setOnClickListener {
+        btnBack.onClick {
             findNavController().popBackStack()
         }
         DeviceInset.observe(this, Observer { inset ->

@@ -7,11 +7,12 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
@@ -36,7 +37,7 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
     override fun bind(artist: Artist) {
         txtName.text = artist.name
         imgArtist.loadImage(artist.imageFullPath, placeHolder = null)
-        view.setOnClickListener {
+        view.onClick {
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, artist)
             bundle.putParcelable(

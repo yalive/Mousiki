@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.cas.common.listener.SingleClickListener
 
 /**
  **********************************
@@ -60,8 +61,8 @@ fun View.scaleDown(to: Float = 0.9f) {
     scaleDown.start()
 }
 
-fun <T : View> T.onClick(listener: (T) -> Unit) {
-    setOnClickListener { listener(it as T) }
+fun View.onClick(listener: (View) -> Unit) {
+    setOnClickListener(SingleClickListener(listener))
 }
 
 val View.activity: Activity?

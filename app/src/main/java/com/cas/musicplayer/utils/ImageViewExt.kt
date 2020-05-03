@@ -80,12 +80,20 @@ fun ImageView.loadAndBlurImage(
 }
 
 suspend fun Picasso.getBitmap(url: String): Bitmap? = suspendCoroutine { continuation ->
+    if (url.isEmpty()) {
+        continuation.resume(null)
+        return@suspendCoroutine
+    }
     val target = createTargetWith(continuation)
     load(url).into(target)
 }
 
 suspend fun ImageView.getBitmap(url: String): Bitmap? =
     suspendCoroutine { continuation ->
+        if (url.isEmpty()) {
+            continuation.resume(null)
+            return@suspendCoroutine
+        }
         val target = createTargetWith(continuation)
         this.tag = target
         Picasso.get().load(url).into(target)
@@ -93,6 +101,10 @@ suspend fun ImageView.getBitmap(url: String): Bitmap? =
 
 suspend fun ImageView.getBitmap(appImage: AppImage): Bitmap? =
     suspendCoroutine { continuation ->
+        if (appImage is AppImage.AppImageUrl && appImage.url.isEmpty()) {
+            continuation.resume(null)
+            return@suspendCoroutine
+        }
         val target = createTargetWith(continuation)
         this.tag = target
         val picasso = Picasso.get()

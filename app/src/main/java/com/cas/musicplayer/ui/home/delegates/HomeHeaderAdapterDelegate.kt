@@ -11,13 +11,14 @@ import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
+import com.cas.common.extensions.onClick
 import com.cas.common.extensions.valueOrNull
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HeaderItem
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.home.HomeViewModel
 
 /**
@@ -56,8 +57,8 @@ class HomeHeaderAdapterDelegate(
         fun bind(headerItem: HeaderItem) {
             txtTitle.setText(headerItem.title)
             if (headerItem.showMore) {
-                view.setOnClickListener { showMore(headerItem) }
-                showAll.setOnClickListener { showMore(headerItem) }
+                view.onClick { showMore(headerItem) }
+                showAll.onClick { showMore(headerItem) }
             }
             if (headerItem is HeaderItem.PopularsHeader) {
                 progressBar.isVisible = headerItem.loading

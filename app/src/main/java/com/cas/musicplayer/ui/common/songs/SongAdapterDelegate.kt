@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
+import com.cas.common.extensions.onClick
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
@@ -68,10 +69,10 @@ class SongAdapterDelegate(
             txtTitle.text = item.songTitle
             txtDuration.text = item.songDuration
             txtCategory.text = item.songTitle.split("-")[0]
-            btnMore.setOnClickListener {
+            btnMore.onClick {
                 onClickMoreOptions(item.track)
             }
-            itemView.setOnClickListener {
+            itemView.onClick {
                 onVideoSelected(item.track)
             }
         }

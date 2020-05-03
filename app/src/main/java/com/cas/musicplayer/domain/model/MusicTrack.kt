@@ -32,6 +32,9 @@ data class MusicTrack(
     val imgUrlDef0: String
         get() = "https://img.youtube.com/vi/$youtubeId/0.jpg"
 
+    val imgUrlDefault: String
+        get() = "https://img.youtube.com/vi/$youtubeId/default.jpg"
+
     val durationFormatted: String
         get() {
 

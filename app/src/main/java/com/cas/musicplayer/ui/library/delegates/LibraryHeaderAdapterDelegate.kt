@@ -8,6 +8,7 @@ import androidx.core.view.isInvisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
+import com.cas.common.extensions.onClick
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
@@ -46,8 +47,8 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         fun bind(headerItem: LibraryHeaderItem) {
             txtTitle.setText(headerItem.title)
             if (headerItem.showMore) {
-                view.setOnClickListener { showMore(headerItem) }
-                showAll.setOnClickListener { showMore(headerItem) }
+                view.onClick { showMore(headerItem) }
+                showAll.onClick { showMore(headerItem) }
             }
             showAll.isInvisible = !headerItem.showMore
             txtMore.isInvisible = !headerItem.showMore
