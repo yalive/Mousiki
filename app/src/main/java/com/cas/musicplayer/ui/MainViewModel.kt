@@ -9,6 +9,7 @@ import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.result.Result
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.artist.GetAllCountryArtistsUseCase
@@ -62,8 +63,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun loadArtistsSongs() = uiCoroutine {
+        if (!BuildConfig.DEBUG) return@uiCoroutine
         val artists =
-            getAllCountryArtistsUseCase("SE")
+            getAllCountryArtistsUseCase("MA")
 
         println()
         for (i in 0 until artists.size) {
