@@ -6,12 +6,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
@@ -38,7 +39,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
     init {
-        view.findViewById<View>(R.id.cardView).setOnClickListener {
+        view.findViewById<View>(R.id.cardView).onClick {
             if (adapterPosition >= 0) {
                 val item = items[adapterPosition]
                 val artist = Artist(item.title, "US", item.playlistId)

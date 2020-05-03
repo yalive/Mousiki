@@ -8,12 +8,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.drawable
@@ -46,7 +47,7 @@ class GenresViewHolder(itemView: View) : SimpleBaseViewHolder<GenreMusic>(itemVi
 
         imgCategory.setImageDrawable(itemView.context.drawable(item.img))
         txtTitle.text = item.title
-        cardView.setOnClickListener {
+        cardView.onClick {
             val artist = Artist(item.title, "US", item.topTracksPlaylist)
             val bundle = bundleOf(
                 PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.topTracksPlaylist,

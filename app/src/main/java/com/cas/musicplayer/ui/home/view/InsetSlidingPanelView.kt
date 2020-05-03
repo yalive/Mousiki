@@ -13,11 +13,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 class InsetSlidingPanelView : SlidingUpPanelLayout {
 
     constructor(context: Context) : super(context) {
-        print("")
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        print("")
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
@@ -25,7 +23,6 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
         attrs,
         defStyleAttr
     ) {
-        print("")
     }
 
     override fun setOnApplyWindowInsetsListener(listener: OnApplyWindowInsetsListener?) {

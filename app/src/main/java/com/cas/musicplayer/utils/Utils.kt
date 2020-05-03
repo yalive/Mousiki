@@ -39,7 +39,7 @@ object Utils {
 
     var hasShownAdsOneTime = false
 
-    fun shareTrackLink(link: String?, track: MusicTrack?, context: Context) {
+    fun shareTrackLink(link: String?, track: MusicTrack, context: Context) {
         val text = context.getString(R.string.share_track_link_message, track?.title, link)
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -55,22 +55,23 @@ object Utils {
 
 
     fun shareWithDeepLink(track: MusicTrack?, mContext: Context) {
+        if (track == null) return
         Firebase.dynamicLinks.shortLinkAsync(ShortDynamicLink.Suffix.SHORT) {
             link = Uri.Builder()
                 .scheme("https")
                 .authority("www.mouziki.com")
-                .appendQueryParameter("videoId", track?.youtubeId)
-                .appendQueryParameter("title", track?.title)
-                .appendQueryParameter("duration", track?.duration)
+                .appendQueryParameter("videoId", track.youtubeId)
+                .appendQueryParameter("title", track.title)
+                .appendQueryParameter("duration", track.duration)
                 .build()
             domainUriPrefix = "https://mouziki.page.link"
             androidParameters {
             }
             iosParameters("com.mouziki.ios") { }
             socialMetaTagParameters {
-                title = track?.title ?: ""
+                title = track.title
                 description = ""
-                imageUrl = Uri.parse(track?.imgUrl)
+                imageUrl = Uri.parse(track.imgUrl)
 
             }
         }.addOnSuccessListener { result ->
@@ -99,7 +100,7 @@ object Utils {
     fun sendEmail(context: Context, text: String) {
         val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("memory.games.apps@gmail.com"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("contact.mousiki@gmail.com"))
             putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
             putExtra(Intent.EXTRA_TEXT, text)
         }

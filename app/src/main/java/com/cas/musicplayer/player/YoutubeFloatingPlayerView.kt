@@ -19,6 +19,7 @@ import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.YoutubePlayerManager
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.screenSize
 import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
@@ -112,11 +113,14 @@ class YoutubeFloatingPlayerView : CardView {
             }
 
             override fun onScroll(
-                event0: MotionEvent,
-                event: MotionEvent,
+                event0: MotionEvent?,
+                event: MotionEvent?,
                 distanceX: Float,
                 distanceY: Float
             ): Boolean {
+                if (event == null) {
+                    return super.onScroll(event0, event, distanceX, distanceY)
+                }
                 //Calculate the X and Y coordinates of the view.
                 videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
                 videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
@@ -190,8 +194,9 @@ class YoutubeFloatingPlayerView : CardView {
                 return true
             }
         })
-
-        windowManager.addView(this, videoViewParams)
+        if (context.canDrawOverApps()) {
+            windowManager.addView(this, videoViewParams)
+        }
         youTubePlayerView.addYouTubePlayerListener(youtubePlayerManager)
     }
 

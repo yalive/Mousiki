@@ -58,14 +58,14 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         }
         imgTrack.loadImage(musicTrack.imgUrl)
         txtTrackTitle.text = musicTrack.title
-        shareVia.setOnClickListener {
+        shareVia.onClick {
             Utils.shareWithDeepLink(musicTrack, context!!)
             if (this.isVisible) {
                 this.dismiss()
             }
         }
 
-        favController.setOnClickListener {
+        favController.onClick {
             Executors.newSingleThreadExecutor().execute {
                 if (UserPrefs.isFav(musicTrack.youtubeId)) {
                     viewModel.removeSongFromFavourite(musicTrack)
@@ -79,7 +79,7 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        viewAddToQuee.setOnClickListener {
+        viewAddToQuee.onClick {
             PlayerQueue.addAsNext(musicTrack)
             this.dismiss()
         }

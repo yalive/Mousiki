@@ -135,15 +135,15 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             lockScreenView?.setCurrentTrack(video)
         })
 
-        btnPlayPause?.setOnClickListener {
+        btnPlayPause?.onClick {
             onClickPlayPause()
         }
 
-        btnPlayPauseMain?.setOnClickListener {
+        btnPlayPauseMain?.onClick {
             onClickPlayPause()
         }
 
-        btnShareVia.setOnClickListener {
+        btnShareVia.onClick {
             Utils.shareWithDeepLink(PlayerQueue.value, mContext = mainActivity)
         }
 
@@ -169,7 +169,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 )
             }
         }
-        btnAddFav.setOnClickListener {
+        btnAddFav.onClick {
             val isFav = UserPrefs.isFav(PlayerQueue.value?.youtubeId)
             if (!isFav) {
                 Executors.newSingleThreadExecutor().execute {
@@ -189,19 +189,19 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             FavouriteReceiver.broadcast(requireContext().applicationContext, !isFav)
         }
 
-        btnLockScreen.setOnClickListener {
+        btnLockScreen.onClick {
             openBatterySaverMode()
         }
 
-        btnClosePanel.setOnClickListener {
+        btnClosePanel.onClick {
             mainActivity.collapseBottomPanel()
         }
 
-        btnPlayNext.setOnClickListener {
+        btnPlayNext.onClick {
             PlayerQueue.playNextTrack()
         }
 
-        btnPlayPrevious.setOnClickListener {
+        btnPlayPrevious.onClick {
             PlayerQueue.playPreviousTrack()
         }
 
@@ -219,15 +219,15 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
         })
 
-        btnShowQueue.setOnClickListener {
+        btnShowQueue.onClick {
             showQueue()
         }
 
-        btnShowQueueFull.setOnClickListener {
+        btnShowQueueFull.onClick {
             showQueue()
         }
 
-        antiDrag.setOnClickListener {
+        antiDrag.onClick {
             if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                 mainActivity.expandBottomPanel()
             }
@@ -235,14 +235,14 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
         btnPlayOption.setImageResource(UserPrefs.getSort().icon)
 
-        btnPlayOption.setOnClickListener {
+        btnPlayOption.onClick {
             // Get next state
             val nextSort = UserPrefs.getSort().next()
             btnPlayOption.setImageResource(nextSort.icon)
             UserPrefs.saveSort(nextSort)
         }
 
-        btnFullScreen?.setOnClickListener {
+        btnFullScreen?.onClick {
             (requireActivity() as MainActivity).switchToLandscape()
             (requireActivity() as MainActivity).hideStatusBar()
             VideoEmplacementLiveData.fullscreen()
@@ -384,7 +384,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     private fun loadAndBlureImage(video: MusicTrack) {
         lifecycleScope.launch {
-            val bitmap = imgBlured.getBitmap(video.imgUrl) ?: return@launch
+            val bitmap = imgBlured.getBitmap(video.imgUrlDefault) ?: return@launch
             imgBlured.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
         }
     }

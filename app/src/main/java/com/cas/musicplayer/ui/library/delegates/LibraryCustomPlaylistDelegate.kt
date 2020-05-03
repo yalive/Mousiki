@@ -70,7 +70,7 @@ class LibraryCustomPlaylistDelegate(
                 playlist.itemCount,
                 playlist.itemCount
             )
-            itemView.findViewById<View>(R.id.cardView).setOnClickListener {
+            itemView.findViewById<View>(R.id.cardView).onClick {
                 viewModel.onClickPlaylist(playlist.copy(title = txtTitle.text.toString())) // Hack!!!
             }
             btnMoreOptions.onClick {

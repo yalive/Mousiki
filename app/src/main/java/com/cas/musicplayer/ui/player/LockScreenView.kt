@@ -81,7 +81,7 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
         inflate(context, R.layout.lock_screen_layout, this)
         setBackgroundColor(context.color(R.color.colorBlack))
         slideToUnlock.onSlideCompleteListener = this
-        setOnClickListener {
+        onClick {
             currentJob?.cancel()
             if (textVisible()) {
                 hideSubViews()
@@ -90,11 +90,11 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
                 scheduleHideViews()
             }
         }
-        btnPlayPrevious.setOnClickListener {
+        btnPlayPrevious.onClick {
             scheduleHideViews()
             PlayerQueue.playPreviousTrack()
         }
-        btnPlayPause.setOnClickListener {
+        btnPlayPause.onClick {
             scheduleHideViews()
             val oldState = PlaybackLiveData.value
             oldState?.let { playerState ->
@@ -105,7 +105,7 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
                 }
             }
         }
-        btnPlayNext.setOnClickListener {
+        btnPlayNext.onClick {
             scheduleHideViews()
             PlayerQueue.playNextTrack()
         }

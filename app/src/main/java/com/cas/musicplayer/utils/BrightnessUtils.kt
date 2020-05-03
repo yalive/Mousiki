@@ -18,6 +18,7 @@ object BrightnessUtils {
     }
 
     fun setSystemScreenBrightness(context: Context, value: Int) {
+        if (!SystemSettings.canWriteSettings(context)) return
         Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS, value)
     }
 
@@ -30,6 +31,7 @@ object BrightnessUtils {
     }
 
     fun stopAutoBrightness(context: Context) {
+        if (!SystemSettings.canWriteSettings(context)) return
         Settings.System.putInt(
             context.contentResolver,
             Settings.System.SCREEN_BRIGHTNESS_MODE,
@@ -38,6 +40,7 @@ object BrightnessUtils {
     }
 
     fun startAutoBrightness(context: Context) {
+        if (!SystemSettings.canWriteSettings(context)) return
         Settings.System.putInt(
             context.contentResolver,
             Settings.System.SCREEN_BRIGHTNESS_MODE,
