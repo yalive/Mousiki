@@ -2,24 +2,20 @@ package com.cas.musicplayer.ui.playlist.songs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.song.GetPlaylistVideosUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.ui.common.ads.AdsItem
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
+import com.cas.musicplayer.ui.common.songList
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.ui.playlist.loadAds
 import com.cas.musicplayer.utils.uiCoroutine
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import kotlin.math.min
 
 /**
  **********************************
@@ -28,10 +24,10 @@ import kotlin.math.min
  */
 class PlaylistSongsViewModel @AssistedInject constructor(
     private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase,
-    private val config: RemoteAppConfig,
     @Assisted private val playlistId: String,
-    delegate: PlaySongDelegate
-) : BaseViewModel(), PlaySongDelegate by delegate {
+    playDelegate: PlaySongDelegate,
+    getListAdsDelegate: GetListAdsDelegate
+) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
 
 
     @AssistedInject.Factory
@@ -53,39 +49,18 @@ class PlaylistSongsViewModel @AssistedInject constructor(
         _songs.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
-        _songs.valueOrNull()?.let {
-            prepareAds(it.size)
-        }
-    }
-
-    private suspend fun prepareAds(size: Int) {
-        val offset = config.getOffsetListAds()
-        val adsCount = min(5, size / offset)
-        if (adsCount > 0) {
-            val ads = loadAds(adsCount).map { AdsItem(it) }
-            val songsList = _songs.valueOrNull()?.toMutableList() ?: return
-            var index = offset
-            ads.forEach { nativeAd ->
-                songsList.add(index, nativeAd)
-                index += offset + 1
-            }
-            _songs.value = Resource.Success(songsList)
-        }
+        insertAds(_songs)
     }
 
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
-        val tracks =
-            (_songs.value as? Resource.Success)?.data?.filterIsInstance<DisplayedVideoItem>()?.map { it.track }
-                ?: emptyList()
-        playTrackFromQueue(track, tracks)
+        playTrackFromQueue(track, _songs.songList())
     }
 
     fun onClickTrackPlayAll() {
         uiCoroutine {
-            val allSongs =
-                _songs.valueOrNull()?.filterIsInstance<DisplayedVideoItem>() ?: emptyList()
+            val allSongs = _songs.songList()
             if (allSongs.isEmpty()) return@uiCoroutine
-            playTrackFromQueue(allSongs.first().track, allSongs.map { it.track })
+            playTrackFromQueue(allSongs.first(), allSongs)
         }
     }
 }

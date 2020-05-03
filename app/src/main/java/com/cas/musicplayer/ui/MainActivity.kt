@@ -61,7 +61,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        //fullScreenUi()
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
         setContentView(R.layout.activity_main)
@@ -142,7 +141,9 @@ class MainActivity : BaseActivity() {
             VideoEmplacementLiveData.forceUpdate()
         }
 
-        viewModel.checkToRateApp()
+        if (savedInstanceState == null) {
+            viewModel.checkToRateApp()
+        }
         observeEvent(viewModel.rateApp) {
             askUserForFeelingAboutApp()
         }
