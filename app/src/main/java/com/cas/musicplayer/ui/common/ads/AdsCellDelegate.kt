@@ -46,12 +46,13 @@ class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private val adView: UnifiedNativeAdView = itemView.findViewById(R.id.ad_view)
+        private val adView: UnifiedNativeAdView = itemView.findViewById<UnifiedNativeAdView>(R.id.ad_view).apply{
+
+        }
 
         fun bind(ad: UnifiedNativeAd) {
             adView.mediaView = adView.findViewById<View>(R.id.ad_media) as MediaView
 
-            // Register the view used for each individual asset.
             // Register the view used for each individual asset.
             adView.headlineView = adView.findViewById(R.id.ad_headline)
             adView.bodyView = adView.findViewById(R.id.ad_body)
@@ -71,7 +72,7 @@ class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         ) { // Some assets are guaranteed to be in every UnifiedNativeAd.
             (adView.headlineView as TextView).text = nativeAd.headline
             (adView.bodyView as TextView).text = nativeAd.body
-            (adView.callToActionView as Button).setText(nativeAd.callToAction)
+            (adView.callToActionView as Button).text = nativeAd.callToAction
             // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
             // check before trying to display them.
             val icon: NativeAd.Image? = nativeAd.icon

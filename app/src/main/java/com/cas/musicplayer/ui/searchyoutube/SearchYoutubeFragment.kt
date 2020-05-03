@@ -19,8 +19,6 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchArtistsFragment
-import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchPlaylistsFragment
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import kotlinx.android.synthetic.main.fragment_search_youtube.*
 
@@ -97,9 +95,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         recyclerViewSuggestions = view.findViewById(R.id.recyclerViewSuggestions)
         val fragments = listOf<PageableFragment>(
-            ResultSearchSongsFragment(),
-            ResultSearchArtistsFragment(),
-            ResultSearchPlaylistsFragment()
+            ResultSearchSongsFragment()
         )
         viewPager.adapter = FragmentPageAdapter(
             childFragmentManager, fragments, mutableListOf(
@@ -108,7 +104,6 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
                 getString(R.string.title_playlist)
             )
         )
-        tabLayout.setupWithViewPager(viewPager)
         recyclerViewSuggestions?.adapter = searchSuggestionsAdapter
         recyclerViewSuggestions?.addItemDecoration(
             DividerItemDecoration(

@@ -6,12 +6,14 @@ import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.domain.usecase.search.*
 import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
+import com.cas.musicplayer.ui.common.songList
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.cas.musicplayer.utils.uiScope
@@ -31,11 +33,12 @@ class SearchYoutubeViewModel @Inject constructor(
     private val getGoogleSearchSuggestions: GetGoogleSearchSuggestionsUseCase,
     private val saveSearchQuery: SaveSearchQueryUseCase,
     private val getRecentSearchQueries: GetRecentSearchQueriesUseCase,
-    delegate: PlaySongDelegate
-) : BaseViewModel(), PlaySongDelegate by delegate {
+    playDelegate: PlaySongDelegate,
+    getListAdsDelegate: GetListAdsDelegate
+) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
 
-    private val _videos = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
-    val videos: LiveData<Resource<List<DisplayedVideoItem>>>
+    private val _videos = MutableLiveData<Resource<List<DisplayableItem>>>()
+    val videos: LiveData<Resource<List<DisplayableItem>>>
         get() = _videos
 
     private val _playlists = MutableLiveData<Resource<List<Playlist>>>()
@@ -57,13 +60,11 @@ class SearchYoutubeViewModel @Inject constructor(
     }
 
     fun search(query: String) = uiScope.launch(coroutineContext) {
-        if (lastQuery == query && videos.value != null && channels.value != null && playlists.value != null) {
+        if (lastQuery == query && videos.value != null) {
             return@launch
         }
         lastQuery = query
         launch { loadVideos(query) }
-        launch { loadPlaylists(query) }
-        launch { loadChannels(query) }
         saveSearchQuery(query)
     }
 
@@ -73,6 +74,7 @@ class SearchYoutubeViewModel @Inject constructor(
         _videos.value = resource.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
+        insertAds(_videos)
     }
 
     private suspend fun loadPlaylists(query: String) {
@@ -110,7 +112,7 @@ class SearchYoutubeViewModel @Inject constructor(
     }
 
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
-        val tracks = (_videos.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+        val tracks = _videos.songList()
         playTrackFromQueue(track, tracks)
     }
 

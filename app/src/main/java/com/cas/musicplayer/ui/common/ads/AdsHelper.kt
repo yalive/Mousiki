@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.playlist
+package com.cas.musicplayer.ui.common.ads
 
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R

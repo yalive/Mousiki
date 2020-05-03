@@ -212,7 +212,7 @@ fun getCurrentLocale(): String {
 }
 
 fun getLanguage(): String {
-    val language = Locale.getDefault().language.toLowerCase()
+    val language = Locale.getDefault().language.toLowerCase(Locale.getDefault())
     if (language.isEmpty()) {
         return "en"
     }

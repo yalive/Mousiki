@@ -8,14 +8,15 @@ import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
-import com.cas.musicplayer.ui.player.PlayerViewModel
-import com.cas.musicplayer.ui.player.SlideUpPlaylistViewModel
 import com.cas.musicplayer.ui.bottomsheet.FavBottomSheetViewModel
 import com.cas.musicplayer.ui.common.PlaySongDelegateModule
+import com.cas.musicplayer.ui.common.ads.GetListAdsDelegateModule
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.cas.musicplayer.ui.player.PlayerViewModel
+import com.cas.musicplayer.ui.player.SlideUpPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
@@ -42,6 +43,7 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         PlaySongDelegateModule::class,
+        GetListAdsDelegateModule::class,
         FirebaseModule::class
     ]
 )

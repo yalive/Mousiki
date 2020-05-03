@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.core.os.bundleOf
@@ -62,6 +63,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private var btnFullScreen: ImageButton? = null
     private var btnPlayPause: ImageButton? = null
     private var btnPlayPauseMain: ImageButton? = null
+    private var imgBlured: ImageView? = null
     private var lockScreenView: LockScreenView? = null
     private var queueFragment: SlideUpPlaylistFragment? = null
 
@@ -127,6 +129,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         btnPlayPause = view?.findViewById(R.id.btnPlayPause)
         btnPlayPauseMain = view?.findViewById(R.id.btnPlayPauseMain)
         lockScreenView = view?.findViewById(R.id.lockScreenView)
+        imgBlured = view?.findViewById(R.id.imgBlured)
 
         mainActivity = requireActivity() as MainActivity
         mainActivity.slidingPaneLayout.addPanelSlideListener(this)
@@ -384,8 +387,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     private fun loadAndBlureImage(video: MusicTrack) {
         lifecycleScope.launch {
-            val bitmap = imgBlured.getBitmap(video.imgUrlDefault) ?: return@launch
-            imgBlured.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
+            val bitmap = imgBlured?.getBitmap(video.imgUrlDefault) ?: return@launch
+            imgBlured?.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
         }
     }
 

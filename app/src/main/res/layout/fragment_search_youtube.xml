@@ -26,21 +26,6 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabIndicatorAnimationDuration="400"
-            app:tabIndicatorColor="@color/colorYellow"
-            app:tabIndicatorHeight="@dimen/two_2dp"
-            app:tabMaxWidth="200dp"
-            app:tabMinWidth="120dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="?android:textColorPrimary"
-            app:tabTextAppearance="?android:textAppearanceLargePopupMenu"
-            app:tabTextColor="?android:textColorPrimary" />
-
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
