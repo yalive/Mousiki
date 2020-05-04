@@ -17,7 +17,6 @@ data class MusicTrack(
     val duration: String
 ) : Parcelable {
 
-    @Transient
     var fullImageUrl = ""
 
     val imgUrl: String
