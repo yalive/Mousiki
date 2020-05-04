@@ -46,23 +46,21 @@ class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private val adView: UnifiedNativeAdView = itemView.findViewById<UnifiedNativeAdView>(R.id.ad_view).apply{
-
-        }
+        private val adView: UnifiedNativeAdView =
+            itemView.findViewById<UnifiedNativeAdView>(R.id.ad_view).apply {
+                mediaView = findViewById<View>(R.id.ad_media) as MediaView
+                // Register the view used for each individual asset.
+                headlineView = findViewById(R.id.ad_headline)
+                bodyView = findViewById(R.id.ad_body)
+                callToActionView = findViewById(R.id.ad_call_to_action)
+                iconView = findViewById(R.id.ad_icon)
+                priceView = findViewById(R.id.ad_price)
+                starRatingView = findViewById(R.id.ad_stars)
+                storeView = findViewById(R.id.ad_store)
+                advertiserView = findViewById(R.id.ad_advertiser)
+            }
 
         fun bind(ad: UnifiedNativeAd) {
-            adView.mediaView = adView.findViewById<View>(R.id.ad_media) as MediaView
-
-            // Register the view used for each individual asset.
-            adView.headlineView = adView.findViewById(R.id.ad_headline)
-            adView.bodyView = adView.findViewById(R.id.ad_body)
-            adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
-            adView.iconView = adView.findViewById(R.id.ad_icon)
-            adView.priceView = adView.findViewById(R.id.ad_price)
-            adView.starRatingView = adView.findViewById(R.id.ad_stars)
-            adView.storeView = adView.findViewById(R.id.ad_store)
-            adView.advertiserView = adView.findViewById(R.id.ad_advertiser)
-
             populateNativeAdView(ad, adView)
         }
 

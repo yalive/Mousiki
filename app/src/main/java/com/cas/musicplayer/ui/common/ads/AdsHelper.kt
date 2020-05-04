@@ -24,12 +24,12 @@ suspend fun loadAds(count: Int) =
             MusicApp.get(), MusicApp.get().getString(R.string.admob_native_id)
         ).forUnifiedNativeAd {
             ads.add(it)
-            if (!adLoader.isLoading) {
+            if (!adLoader.isLoading && continuation.isActive) {
                 continuation.resume(ads)
             }
         }.withAdListener(object : AdListener() {
             override fun onAdFailedToLoad(errorCode: Int) {
-                if (!adLoader.isLoading) {
+                if (!adLoader.isLoading && continuation.isActive) {
                     continuation.resume(ads)
                 }
             }

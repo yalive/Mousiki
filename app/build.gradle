@@ -210,6 +210,8 @@ dependencies {
 
     // Palette
     implementation 'androidx.palette:palette:1.0.0'
+
+    implementation project(':nativetemplates')
 }
 
 apply plugin: 'com.google.gms.google-services'
