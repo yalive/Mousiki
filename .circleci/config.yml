@@ -17,8 +17,8 @@ jobs:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - run:
-         name: Install Firebase CLI
-         command: sudo npm install -g firebase-tools
+          name: Install Firebase CLI
+          command: sudo npm install -g firebase-tools
       - save_cache:
           paths:
             - ~/.gradle
@@ -30,10 +30,22 @@ jobs:
           name: Run Tests
           command: ./gradlew lint test
       - run:
-           name: Distribute app
-           command: bundle exec fastlane beta
+          name: Distribute app
+          command: bundle exec fastlane beta
       - store_artifacts:
           path: app/build/reports
           destination: reports
       - store_test_results:
           path: app/build/test-results
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
