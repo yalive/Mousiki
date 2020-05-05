@@ -7,5 +7,5 @@ package com.cas.common.extensions
  */
 
 fun <T> Collection<T>.randomOrNull(): T? {
-    return if (isEmpty()) null else random()
+    return if (isNotEmpty()) random() else null
 }

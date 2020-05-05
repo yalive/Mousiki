@@ -15,6 +15,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
+import com.crashlytics.android.Crashlytics
 
 /**
  **********************************
@@ -38,7 +39,12 @@ fun Context.color(@ColorRes id: Int): Int {
 }
 
 fun Context.drawable(@DrawableRes id: Int): Drawable? {
-    return ContextCompat.getDrawable(this, id)
+    return try {
+        ContextCompat.getDrawable(this, id)
+    } catch (e: Exception) {
+        Crashlytics.logException(e)
+        null
+    }
 }
 
 fun Context.themeColor(@AttrRes attrRes: Int): Int {

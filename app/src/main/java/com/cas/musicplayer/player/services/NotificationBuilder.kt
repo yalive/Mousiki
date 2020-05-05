@@ -46,12 +46,6 @@ class NotificationBuilder(private val context: Context) {
         )
     )
 
-    private val skipToPreviousActionDisabled = NotificationCompat.Action(
-        R.drawable.ic_skip_previous,
-        context.getString(R.string.player_notification_skip_to_previous),
-        null
-    )
-
     private val playAction = NotificationCompat.Action(
         R.drawable.ic_play,
         context.getString(R.string.player_notification_play),
@@ -59,12 +53,6 @@ class NotificationBuilder(private val context: Context) {
             context,
             PlaybackStateCompat.ACTION_PLAY
         )
-    )
-
-    private val playActionDisabled = NotificationCompat.Action(
-        R.drawable.ic_play,
-        context.getString(R.string.player_notification_play),
-        null
     )
 
     private val pauseAction = NotificationCompat.Action(
@@ -76,12 +64,6 @@ class NotificationBuilder(private val context: Context) {
         )
     )
 
-    private val pauseActionDisabled = NotificationCompat.Action(
-        R.drawable.ic_pause,
-        context.getString(R.string.player_notification_pause),
-        null
-    )
-
     private val skipToNextAction = NotificationCompat.Action(
         R.drawable.ic_skip_next,
         context.getString(R.string.player_notification_skip_to_next),
@@ -89,12 +71,6 @@ class NotificationBuilder(private val context: Context) {
             context,
             PlaybackStateCompat.ACTION_SKIP_TO_NEXT
         )
-    )
-
-    private val skipToNextActionDisabled = NotificationCompat.Action(
-        R.drawable.ic_skip_next,
-        context.getString(R.string.player_notification_skip_to_next),
-        null
     )
 
     private val stopPendingIntent = PendingIntent.getBroadcast(
@@ -123,9 +99,6 @@ class NotificationBuilder(private val context: Context) {
         val playbackState = controller.playbackState
         val builder = NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL)
 
-        val screenLocked =
-            false /*playbackState?.extras?.getBoolean("screenLocked") ?: isScreenLocked()*/
-
         if (UserPrefs.isFav(description?.mediaId)) {
             builder.addAction(
                 R.drawable.ic_heart_solid,
@@ -143,16 +116,16 @@ class NotificationBuilder(private val context: Context) {
         // Only add actions for skip back, play/pause, skip forward, based on what's enabled.
         var playPauseIndex = 0
         if (playbackState.isSkipToPreviousEnabled) {
-            builder.addAction(if (screenLocked) skipToPreviousActionDisabled else skipToPreviousAction)
+            builder.addAction(skipToPreviousAction)
             ++playPauseIndex
         }
         if (playbackState.isPlaying) {
-            builder.addAction(if (screenLocked) pauseActionDisabled else pauseAction)
+            builder.addAction(pauseAction)
         } else if (playbackState.isPlayEnabled) {
-            builder.addAction(if (screenLocked) playActionDisabled else playAction)
+            builder.addAction(playAction)
         }
         if (playbackState.isSkipToNextEnabled) {
-            builder.addAction(if (screenLocked) skipToNextActionDisabled else skipToNextAction)
+            builder.addAction(skipToNextAction)
         }
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
             .setMediaSession(sessionToken)
