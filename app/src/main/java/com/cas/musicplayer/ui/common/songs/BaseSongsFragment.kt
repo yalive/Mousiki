@@ -49,6 +49,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
                 onClickTrack(track)
+                VideoEmplacementLiveData.bottom(false)
             },
             onClickMore = { track ->
                 val bottomSheetFragment = FvaBottomSheetFragment()

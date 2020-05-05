@@ -128,13 +128,13 @@ class NotificationBuilder(private val context: Context) {
 
         if (UserPrefs.isFav(description?.mediaId)) {
             builder.addAction(
-                R.drawable.ic_favorite_added_24dp,
+                R.drawable.ic_heart_solid,
                 context.getString(R.string.player_remove_from_favourite),
                 createFavouriteIntent(false)
             )
         } else {
             builder.addAction(
-                R.drawable.ic_favorite_border,
+                R.drawable.ic_heart_light,
                 context.getString(R.string.player_add_to_favourite),
                 createFavouriteIntent(true)
             )

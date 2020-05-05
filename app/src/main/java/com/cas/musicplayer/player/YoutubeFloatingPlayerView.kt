@@ -19,10 +19,8 @@ import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.YoutubePlayerManager
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.utils.canDrawOverApps
-import com.cas.musicplayer.utils.dpToPixel
-import com.cas.musicplayer.utils.screenSize
-import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
+import com.cas.musicplayer.utils.*
+import com.crashlytics.android.Crashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 /**
@@ -36,7 +34,8 @@ class YoutubeFloatingPlayerView : CardView {
     private lateinit var youTubePlayerView: YouTubePlayerView
     private var draggableView: View? = null
     private lateinit var windowManager: WindowManager
-    private var videoEmplacement: VideoEmplacement = VideoEmplacement.bottom(true)
+    private var videoEmplacement: VideoEmplacement =
+        VideoEmplacementLiveData.value ?: VideoEmplacement.out()
 
     private val screenSize by lazy {
         context.screenSize()
@@ -112,6 +111,10 @@ class YoutubeFloatingPlayerView : CardView {
                 return super.onDown(event)
             }
 
+            override fun onLongPress(e: MotionEvent?) {
+                super.onLongPress(e)
+            }
+
             override fun onScroll(
                 event0: MotionEvent?,
                 event: MotionEvent?,
@@ -125,12 +128,7 @@ class YoutubeFloatingPlayerView : CardView {
                 videoViewParams.x = initialX + (event.rawX - initialTouchX).toInt()
                 videoViewParams.y = initialY + (event.rawY - initialTouchY).toInt()
 
-                //Update the layout with new X & Y coordinate
-                windowManager.updateViewLayout(
-                    this@YoutubeFloatingPlayerView,
-                    videoViewParams
-                )
-                // lastAction = event.action
+                updateLayout()
 
                 bottomView.isActivated = (screenSize.heightPx - videoViewParams.y -
                         youTubePlayerView.height - bottomView.height) <= 0
@@ -203,14 +201,14 @@ class YoutubeFloatingPlayerView : CardView {
     fun hide() {
         videoViewParams.width = 0
         videoViewParams.height = 0
-        windowManager.updateViewLayout(this, videoViewParams)
+        updateLayout()
     }
 
     fun show() {
         this.visible()
         videoViewParams.width = videoEmplacement.width
         videoViewParams.height = videoEmplacement.height
-        windowManager.updateViewLayout(this, videoViewParams)
+        updateLayout()
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
@@ -236,7 +234,7 @@ class YoutubeFloatingPlayerView : CardView {
         videoViewParams.width = emplacement.width
         videoViewParams.height = emplacement.height
         //Update the layout with new X & Y coordinate
-        windowManager.updateViewLayout(this, videoViewParams)
+        updateLayout()
 
         this.alpha = 1f
     }
@@ -244,11 +242,11 @@ class YoutubeFloatingPlayerView : CardView {
     fun onDragBottomPanel(dragPanelInfo: DragPanelInfo) {
         if (videoEmplacement is EmplacementCenter) {
             videoViewParams.y = dragPanelInfo.pannelY.toInt() + videoEmplacement.y
-            windowManager.updateViewLayout(this, videoViewParams)
+            updateLayout()
         } else if (videoEmplacement is EmplacementBottom) {
             videoViewParams.y =
                 dragPanelInfo.pannelY.toInt() - context.dpToPixel(18f) // -minus is workaround: To be fixed todo
-            windowManager.updateViewLayout(this, videoViewParams)
+            updateLayout()
             this.alpha = 1 - dragPanelInfo.slideOffset
         }
     }
@@ -262,7 +260,11 @@ class YoutubeFloatingPlayerView : CardView {
     }
 
     fun removeFromWindow() {
-        windowManager.removeView(this)
+        try {
+            windowManager.removeView(this)
+        } catch (e: Exception) {
+            Crashlytics.logException(e)
+        }
     }
 
     private fun toggleFullScreenVideoPlayer(fullScreen: Boolean) {
@@ -282,6 +284,12 @@ class YoutubeFloatingPlayerView : CardView {
                 youTubePlayerView.exitFullScreen()
             }
             draggableView?.visible()
+        }
+    }
+
+    private fun updateLayout() {
+        if (windowToken != null) {
+            windowManager.updateViewLayout(this, videoViewParams)
         }
     }
 }

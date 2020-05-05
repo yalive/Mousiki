@@ -23,13 +23,14 @@ class GetListAdsDelegateImp @Inject constructor(
 ) : GetListAdsDelegate {
 
     override suspend fun insertAds(items: MutableLiveData<Resource<List<DisplayableItem>>>) {
-        val size = items.valueOrNull()?.size ?: return
+        val displayedItems = items.valueOrNull() ?: return
+        val size = displayedItems.size
         if (size <= 2) return
         val offset = config.getOffsetListAds()
         val adsCount = min(5, size / offset)
         if (adsCount > 0) {
             val ads = loadAds(adsCount).map { AdsItem(it) }
-            val songsList = items.valueOrNull()?.toMutableList() ?: return
+            val songsList = displayedItems.toMutableList()
             var index = offset
             ads.forEach { adsItem ->
                 songsList.add(index, adsItem)

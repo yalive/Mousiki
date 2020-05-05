@@ -14,6 +14,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomCommand
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
 
@@ -48,7 +49,7 @@ class LockScreenReceiver(
 
             // Disable notification buttons
             mediaController.sendCommand(CustomCommand.DISABLE_NOTIFICATION_ACTIONS, null, null)
-        } else if (intent.action == Intent.ACTION_USER_PRESENT) {
+        } else if (intent.action == Intent.ACTION_USER_PRESENT && context.canDrawOverApps()) {
             if (shouldShowPopup) {
                 shouldShowPopup = false
                 MaterialDialog(context).show {
