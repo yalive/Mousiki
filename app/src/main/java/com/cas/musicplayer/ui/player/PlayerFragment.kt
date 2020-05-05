@@ -46,6 +46,7 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
+import com.crashlytics.android.Crashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -352,7 +353,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         } else {
             btnAddFav.setImageResource(R.drawable.ic_heart_light)
         }
-        loadAndBlureImage(video)
+        loadAndBlurImage(video)
         configureSeekBar(video)
     }
 
@@ -379,10 +380,14 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         })
     }
 
-    private fun loadAndBlureImage(video: MusicTrack) {
+    private fun loadAndBlurImage(video: MusicTrack) {
         lifecycleScope.launch {
-            val bitmap = imgBlured?.getBitmap(video.imgUrlDefault) ?: return@launch
-            imgBlured?.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
+            try {
+                val bitmap = imgBlured?.getBitmap(video.imgUrlDefault) ?: return@launch
+                imgBlured?.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
+            } catch (e: Exception) {
+                Crashlytics.logException(e)
+            }
         }
     }
 

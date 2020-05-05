@@ -52,10 +52,10 @@ class YoutubePlayerManager(
     }
 
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-        /*if (isScreenLocked()) {
+        if (isScreenLocked() && second.toInt() % 3 == 0) {
             PlayerQueue.pause()
             return
-        }*/
+        }
         PlaybackDuration.value = second
     }
 

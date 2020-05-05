@@ -133,11 +133,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         super.onCreate()
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
-                if (isScreenLocked()) {
-                    youtubePlayerManager.pause()
-                } else {
-                    youtubePlayerManager.play()
-                }
+                youtubePlayerManager.play()
             }
 
             override fun onPause() {
@@ -159,19 +155,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onSkipToNext() {
-                if (isScreenLocked()) {
-                    youtubePlayerManager.pause()
-                } else {
-                    PlayerQueue.playNextTrack()
-                }
+                PlayerQueue.playNextTrack()
             }
 
             override fun onSkipToPrevious() {
-                if (isScreenLocked()) {
-                    youtubePlayerManager.pause()
-                } else {
-                    PlayerQueue.playPreviousTrack()
-                }
+                PlayerQueue.playPreviousTrack()
             }
 
             override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
