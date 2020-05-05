@@ -50,10 +50,10 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         musicTrack = injector.gson.fromJson(json, MusicTrack::class.java)
 
         if (!UserPrefs.isFav(musicTrack.youtubeId)) {
-            favIcon.setImageResource(R.drawable.ic_favorite_border_yellow)
+            favIcon.setImageResource(R.drawable.ic_heart_light)
             favLabel.text = getString(R.string.btn_favorite)
         } else {
-            favIcon.setImageResource(R.drawable.ic_favorite_added_yellow)
+            favIcon.setImageResource(R.drawable.ic_heart_solid)
             favLabel.text = getString(R.string.favourites)
         }
         imgTrack.loadImage(musicTrack.imgUrl)

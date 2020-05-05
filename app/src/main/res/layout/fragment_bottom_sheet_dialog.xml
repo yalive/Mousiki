@@ -52,7 +52,7 @@
             android:layout_gravity="center"
             android:alpha="0.5"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_share"
+            android:src="@drawable/ic_share_light"
             android:tint="?android:textColorPrimary" />
 
         <TextView
@@ -87,7 +87,7 @@
             android:layout_gravity="center"
             android:alpha="0.5"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_favorite_added_yellow"
+            android:src="@drawable/ic_heart_solid"
             android:tint="?android:textColorPrimary" />
 
         <TextView
@@ -161,7 +161,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/two_2dp"
             android:tint="?android:textColorPrimary"
-            app:srcCompat="@drawable/ic_playlist_add" />
+            app:srcCompat="@drawable/ic_playlist_add_rounded" />
 
         <TextView
             android:layout_width="match_parent"

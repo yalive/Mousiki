@@ -202,10 +202,10 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 }
 
 enum class PlaySort(@DrawableRes val icon: Int) {
-    RANDOM(R.drawable.ic_shuffle),
+    RANDOM(R.drawable.ic_random),
     LOOP_ONE(R.drawable.ic_repeat_one),
-    LOOP_ALL(R.drawable.ic_repeat_all),
-    SEQUENCE(R.drawable.ic_sequence);
+    LOOP_ALL(R.drawable.ic_repeat),
+    SEQUENCE(R.drawable.ic_arrow_alt_to_right);
 
     fun next(): PlaySort = when {
         this == RANDOM -> LOOP_ONE

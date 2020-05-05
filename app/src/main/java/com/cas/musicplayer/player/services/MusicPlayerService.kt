@@ -32,6 +32,7 @@ import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
 import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.utils.*
+import com.crashlytics.android.Crashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
@@ -345,7 +346,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         favouriteReceiver.unregister()
         PlaybackLiveData.value = PlayerConstants.PlayerState.UNKNOWN
         floatingPlayerView.removeFromWindow()
-        windowManager.removeView(bottomView)
+        try {
+            windowManager.removeView(bottomView)
+        } catch (e: Exception) {
+            Crashlytics.logException(e)
+        }
     }
 
 

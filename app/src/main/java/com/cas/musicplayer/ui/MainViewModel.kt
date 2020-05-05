@@ -54,6 +54,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun checkToRateApp() = uiCoroutine {
+        if (BuildConfig.DEBUG) return@uiCoroutine
         val launchCount = UserPrefs.getLaunchCount()
         val frequencyRateAppPopup = remoteAppConfig.getFrequencyRateAppPopup()
         if (!UserPrefs.hasRatedApp() && launchCount % frequencyRateAppPopup == 0) {

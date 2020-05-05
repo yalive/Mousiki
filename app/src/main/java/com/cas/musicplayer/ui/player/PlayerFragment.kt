@@ -29,7 +29,6 @@ import androidx.navigation.navOptions
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
-import com.cas.common.dpToPixel
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
@@ -49,7 +48,7 @@ import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import kotlinx.android.synthetic.main.fragment_bottom_panel.*
+import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
@@ -101,7 +100,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_bottom_panel, container, false)
+        val view = inflater.inflate(R.layout.fragment_player, container, false)
         return view
     }
 
@@ -181,13 +180,13 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                         viewModel.makeSongAsFavourite(it)
                     }
                 }
-                btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+                btnAddFav.setImageResource(R.drawable.ic_heart_solid)
             } else {
                 val musicTrack = PlayerQueue.value
                 musicTrack?.let {
                     viewModel.removeSongFromFavourite(it)
                 }
-                btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+                btnAddFav.setImageResource(R.drawable.ic_heart_light)
             }
             FavouriteReceiver.broadcast(requireContext().applicationContext, !isFav)
         }
@@ -252,12 +251,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
 
         DeviceInset.observe(this, Observer { inset ->
-            fullScreenSwitchView.updatePadding(
-                top = inset.top + dpToPixel(
-                    8f,
-                    requireContext()
-                ).toInt()
-            )
+            fullScreenSwitchView.updatePadding(top = inset.top)
             adjustCenterViews()
         })
 
@@ -266,9 +260,9 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
         observe(viewModel.isLiked) { isLiked ->
             if (isLiked) {
-                btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+                btnAddFav.setImageResource(R.drawable.ic_heart_solid)
             } else {
-                btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+                btnAddFav.setImageResource(R.drawable.ic_heart_light)
             }
         }
         lockScreenView?.doOnSlideComplete {
@@ -354,9 +348,9 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         txtTitleVideoCenter.text = video.title
 
         if (UserPrefs.isFav(video.youtubeId)) {
-            btnAddFav.setImageResource(R.drawable.ic_favorite_added_24dp)
+            btnAddFav.setImageResource(R.drawable.ic_heart_solid)
         } else {
-            btnAddFav.setImageResource(R.drawable.ic_favorite_border)
+            btnAddFav.setImageResource(R.drawable.ic_heart_light)
         }
         loadAndBlureImage(video)
         configureSeekBar(video)
