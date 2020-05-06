@@ -67,6 +67,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter.setHasStableIds(true)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
         btnPlayAll.onClick {
@@ -97,8 +98,10 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 loadingView.alpha = 0f
                 loadingView.stopShimmer()
                 val newList = resource.data
+
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
+
                 val size = newList.filterIsInstance<DisplayedVideoItem>().size
                 txtNumberOfSongs.text = requireContext().resources.getQuantityString(
                     R.plurals.playlist_tracks_counts,

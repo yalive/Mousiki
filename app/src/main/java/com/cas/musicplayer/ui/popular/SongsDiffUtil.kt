@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.popular
 import androidx.recyclerview.widget.DiffUtil
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.delegatedadapter.LoadingItem
+import com.cas.musicplayer.ui.common.ads.AdsItem
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.model.SongsHeaderItem
 
@@ -17,6 +18,13 @@ class SongsDiffUtil(
         if (oldItem is DisplayedVideoItem && newItem is DisplayedVideoItem) {
             return oldItem.track.youtubeId == newItem.track.youtubeId
         }
+
+        if (oldItem is AdsItem && newItem is AdsItem) {
+            return oldItem.ad.headline == newItem.ad.headline
+                    && oldItem.ad.body == newItem.ad.body
+                    && oldItem.ad.callToAction == newItem.ad.callToAction
+        }
+
         if (oldItem is SongsHeaderItem && newItem is SongsHeaderItem) {
             return true
         }
@@ -39,6 +47,16 @@ class SongsDiffUtil(
                     && oldItem.isPlaying == newItem.isPlaying
                     && oldItem.songTitle == newItem.songTitle
         }
+
+        if (oldItem is AdsItem && newItem is AdsItem) {
+            return oldItem.ad.headline == newItem.ad.headline
+                    && oldItem.ad.body == newItem.ad.body
+                    && oldItem.ad.callToAction == newItem.ad.callToAction
+                    && oldItem.ad.price == newItem.ad.price
+                    && oldItem.ad.advertiser == newItem.ad.advertiser
+                    && oldItem.ad.store == newItem.ad.store
+        }
+
         if (oldItem is SongsHeaderItem && newItem is SongsHeaderItem) {
             return true
         }
