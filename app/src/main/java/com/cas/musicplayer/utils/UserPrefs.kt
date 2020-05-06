@@ -60,7 +60,7 @@ object UserPrefs {
         getPrefs().edit().putBoolean(KEY_RATED_APP, true).apply()
     }
 
-    private fun getPrefs(): SharedPreferences {
+    fun getPrefs(): SharedPreferences {
         return MusicApp.get().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
