@@ -1,9 +1,12 @@
 package com.cas.musicplayer.utils
 
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.squareup.picasso.Callback
@@ -19,6 +22,16 @@ import kotlin.coroutines.suspendCoroutine
  * Created by Abdelhadi on 2019-05-12.
  **********************************
  */
+
+
+fun ImageView.tint(@ColorRes colorId: Int) {
+    val color = context.color(colorId)
+    tintColor(color)
+}
+
+fun ImageView.tintColor(color: Int) {
+    ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(color))
+}
 
 fun ImageView.loadImage(
     urlImage: String,

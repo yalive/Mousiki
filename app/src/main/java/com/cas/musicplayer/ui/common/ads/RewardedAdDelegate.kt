@@ -3,10 +3,13 @@ package com.cas.musicplayer.ui.common.ads
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
+import com.cas.musicplayer.data.config.EnvConfig
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.UserPrefs
+import com.cas.musicplayer.utils.toastCentred
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
@@ -28,7 +31,8 @@ interface RewardedAdDelegate {
 class RewardedAdDelegateImp(
     private val context: Context,
     private val analytics: FirebaseAnalytics,
-    private val appConfig: RemoteAppConfig
+    private val appConfig: RemoteAppConfig,
+    private val envConfig: EnvConfig
 ) : RewardedAdDelegate {
 
     private lateinit var rewardedAd: RewardedAd
@@ -83,12 +87,13 @@ class RewardedAdDelegateImp(
     private fun loadAd() {
         rewardedAd = RewardedAd(context, context.getString(R.string.admob_rewarded_ad_id))
         rewardedAd.loadAd(AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
-            override fun onRewardedAdFailedToLoad(p0: Int) {
-                super.onRewardedAdFailedToLoad(p0)
+            override fun onRewardedAdFailedToLoad(errorCode: Int) {
+                if (envConfig.isDev()) {
+                    MusicApp.get().toastCentred("Error load ad: $errorCode")
+                }
             }
 
             override fun onRewardedAdLoaded() {
-                super.onRewardedAdLoaded()
             }
         })
     }
