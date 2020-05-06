@@ -1,0 +1,40 @@
+package com.cas.musicplayer.ui.common.ads
+
+import android.content.Context
+import com.cas.musicplayer.data.config.RemoteAppConfig
+import com.google.firebase.analytics.FirebaseAnalytics
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
+
+/**
+ ***************************************
+ * Created by Y.Abdelhadi on 5/3/20.
+ ***************************************
+ */
+@Module(includes = [RewardedAdDelegateModule::class])
+interface AdsDelegateModule {
+
+    @Singleton
+    @Binds
+    fun bindsNativeAdsDelegate(delegate: GetListAdsDelegateImp): GetListAdsDelegate
+}
+
+@Module
+class RewardedAdDelegateModule {
+
+    @Provides
+    @Singleton
+    fun providesRewardedAdDelegate(
+        context: Context,
+        appConfig: RemoteAppConfig,
+        analytics: FirebaseAnalytics
+    ): RewardedAdDelegate {
+        return if (appConfig.rewardAdOn()) {
+            RewardedAdDelegateImp(context, analytics, appConfig)
+        } else {
+            NoRewardedAdDelegate()
+        }
+    }
+}

@@ -36,10 +36,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         this.queue = queue
         this.value = currentTrack
         notifyService(currentTrack.youtubeId)
-
-        // For Ads
-        UserPrefs.onClickTrack()
-        ClickVideoListener.value = Event(currentTrack)
     }
 
     fun playNextTrack() {

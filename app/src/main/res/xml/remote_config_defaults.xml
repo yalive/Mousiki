@@ -26,4 +26,15 @@
         <key>genre_songs_from_firebase</key>
         <value>true</value>
     </entry>
+
+    <entry>
+        <key>turn_on_reward_ad</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>show_reward_after_x_click</key>
+        <value>3</value>
+    </entry>
+
 </defaultsMap>

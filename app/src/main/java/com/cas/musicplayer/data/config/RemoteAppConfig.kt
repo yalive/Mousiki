@@ -69,7 +69,7 @@ class RemoteAppConfig @Inject constructor(
 
     fun getOffsetListAds(): Int {
         val offset = firebaseRemoteConfig.getLong(LIST_ADS_OFFSET).toInt()
-        if (offset <= 0) return DEF_ADS_OFFSET
+        if (offset <= 0) return DEF_ADS_LIST_OFFSET
         return offset
     }
 
@@ -79,14 +79,27 @@ class RemoteAppConfig @Inject constructor(
         return offset
     }
 
+    fun rewardAdOn(): Boolean {
+        return firebaseRemoteConfig.getBoolean(TURN_ON_REWARD_AD)
+    }
+
+    fun getClickCountToShowReward(): Int {
+        val offset = firebaseRemoteConfig.getLong(SHOW_REWARD_AFTER_X_CLICK).toInt()
+        if (offset <= 0) return DEF_CLICK_TO_SHOW_REWARD
+        return offset
+    }
+
     companion object {
-        private const val DEF_ADS_OFFSET = 6
+        private const val DEF_ADS_LIST_OFFSET = 6
         private const val DEF_FREQ_POPUP_RATE = 3
+        private const val DEF_CLICK_TO_SHOW_REWARD = 7
         const val YOUTUBE_API_KEYS = "youtube_api_keys"
         const val LOAD_CHART_SONGS_FROM_FIREBASE = "chart_songs_from_firebase"
         const val LOAD_GENRE_SONGS_FROM_FIREBASE = "genre_songs_from_firebase"
         const val LIST_ADS_OFFSET = "list_ads_offset"
         const val RATE_APP_DIALOG_FREQUENCY = "rate_app_dialog_frequency"
         const val YOUTUBE_API_KEYS_BY_COUNTRY = "youtube_api_keys_by_country"
+        const val TURN_ON_REWARD_AD = "turn_on_reward_ad"
+        const val SHOW_REWARD_AFTER_X_CLICK = "show_reward_after_x_click"
     }
 }

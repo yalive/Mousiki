@@ -9,6 +9,7 @@ import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.loadImage
 
 
@@ -41,6 +42,7 @@ class HorizontalSongsAdapter(
             txtDuration.text = item.songDuration
 
             itemView.findViewById<View>(R.id.cardView).onClick {
+                UserPrefs.onClickTrack()
                 onVideoSelected(item.track)
             }
         }

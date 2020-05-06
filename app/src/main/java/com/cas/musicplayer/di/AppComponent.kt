@@ -2,6 +2,7 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
@@ -10,7 +11,8 @@ import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
 import com.cas.musicplayer.ui.bottomsheet.FavBottomSheetViewModel
 import com.cas.musicplayer.ui.common.PlaySongDelegateModule
-import com.cas.musicplayer.ui.common.ads.GetListAdsDelegateModule
+import com.cas.musicplayer.ui.common.ads.AdsDelegateModule
+import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.home.HomeViewModel
@@ -43,7 +45,7 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         PlaySongDelegateModule::class,
-        GetListAdsDelegateModule::class,
+        AdsDelegateModule::class,
         FirebaseModule::class
     ]
 )
@@ -103,4 +105,8 @@ interface AppComponent {
     val analytics: FirebaseAnalytics
 
     val gson: Gson
+
+    val rewardedAdDelegate: RewardedAdDelegate
+
+    val appConfig: RemoteAppConfig
 }
