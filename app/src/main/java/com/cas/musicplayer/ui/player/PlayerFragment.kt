@@ -182,12 +182,14 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                     }
                 }
                 btnAddFav.setImageResource(R.drawable.ic_heart_solid)
+                btnAddFav.tint(R.color.colorAccent)
             } else {
                 val musicTrack = PlayerQueue.value
                 musicTrack?.let {
                     viewModel.removeSongFromFavourite(it)
                 }
                 btnAddFav.setImageResource(R.drawable.ic_heart_light)
+                btnAddFav.tint(R.color.colorWhite)
             }
             FavouriteReceiver.broadcast(requireContext().applicationContext, !isFav)
         }

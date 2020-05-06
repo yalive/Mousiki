@@ -67,7 +67,6 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter.setHasStableIds(true)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
         btnPlayAll.onClick {
