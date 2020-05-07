@@ -58,7 +58,18 @@ class HorizontalSongsAdapter(
         }
 
         override fun bind(item: DisplayedVideoItem) {
-            imgSong.loadImage(item.songImagePath)
+            // TODO: Make it generic
+            imgSong.loadImage(
+                item.songImagePath,
+                placeHolder = R.drawable.default_placeholder_image_without_background,
+                errorImage = R.drawable.default_placeholder_image_without_background
+            ) {
+                imgSong.loadImage(
+                    item.track.imgUrlDef0,
+                    placeHolder = R.drawable.default_placeholder_image_without_background,
+                    errorImage = R.drawable.default_placeholder_image_without_background
+                )
+            }
             txtTitle.text = item.songTitle
             txtDuration.text = item.songDuration
 

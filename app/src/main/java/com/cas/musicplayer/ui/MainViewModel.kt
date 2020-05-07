@@ -53,6 +53,10 @@ class MainViewModel @Inject constructor(
         playTrackFromQueue(track, listOf(track))
     }
 
+    fun playTrackFromPushNotification(track: MusicTrack) = uiCoroutine {
+        playTrackFromQueue(track, listOf(track))
+    }
+
     fun checkToRateApp() = uiCoroutine {
         if (BuildConfig.DEBUG) return@uiCoroutine
         val launchCount = UserPrefs.getLaunchCount()

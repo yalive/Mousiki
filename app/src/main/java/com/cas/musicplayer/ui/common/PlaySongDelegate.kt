@@ -20,6 +20,5 @@ class PlaySongDelegateImpl @Inject constructor(
 
     override suspend fun playTrackFromQueue(track: MusicTrack, queue: List<MusicTrack>) {
         PlayerQueue.playTrack(track, queue)
-        addTrackToRecentlyPlayed(track)
     }
 }

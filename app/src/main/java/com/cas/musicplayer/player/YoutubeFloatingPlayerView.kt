@@ -111,6 +111,12 @@ class YoutubeFloatingPlayerView : CardView {
                 return super.onDown(event)
             }
 
+            override fun onSingleTapUp(e: MotionEvent?): Boolean {
+                bottomView.isVisible = false
+                batterySaverView.isVisible = false
+                return super.onSingleTapUp(e)
+            }
+
             override fun onLongPress(e: MotionEvent?) {
                 super.onLongPress(e)
             }
