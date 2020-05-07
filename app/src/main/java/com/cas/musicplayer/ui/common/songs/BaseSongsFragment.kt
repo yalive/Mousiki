@@ -167,7 +167,8 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
             is AppImageUrl -> {
                 imgArtist.loadImage(
                     urlImage = featuredImage.url,
-                    errorImage = R.drawable.default_placeholder_image
+                    errorImage = R.drawable.app_icon_placeholder,
+                    placeHolder = R.drawable.app_icon_placeholder
                 )
             }
         }

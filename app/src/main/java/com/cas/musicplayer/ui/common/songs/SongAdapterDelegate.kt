@@ -84,13 +84,13 @@ class SongAdapterDelegate(
             // TODO: Make it generic
             imgSong.loadImage(
                 item.songImagePath,
-                placeHolder = R.drawable.default_placeholder_image_without_background,
-                errorImage = R.drawable.default_placeholder_image_without_background
+                placeHolder = R.drawable.app_icon_placeholder,
+                errorImage = R.drawable.app_icon_placeholder
             ) {
                 imgSong.loadImage(
                     item.track.imgUrlDef0,
-                    placeHolder = R.drawable.default_placeholder_image_without_background,
-                    errorImage = R.drawable.default_placeholder_image_without_background
+                    placeHolder = R.drawable.app_icon_placeholder,
+                    errorImage = R.drawable.app_icon_placeholder
                 )
             }
             txtTitle.text = item.songTitle

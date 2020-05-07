@@ -18,7 +18,9 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.UserPrefs
+import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.loadImage
+import com.cas.musicplayer.utils.themeColor
 
 
 /**
@@ -61,13 +63,13 @@ class HorizontalSongsAdapter(
             // TODO: Make it generic
             imgSong.loadImage(
                 item.songImagePath,
-                placeHolder = R.drawable.default_placeholder_image_without_background,
-                errorImage = R.drawable.default_placeholder_image_without_background
+                placeHolder = R.drawable.app_icon_placeholder,
+                errorImage = R.drawable.app_icon_placeholder
             ) {
                 imgSong.loadImage(
                     item.track.imgUrlDef0,
-                    placeHolder = R.drawable.default_placeholder_image_without_background,
-                    errorImage = R.drawable.default_placeholder_image_without_background
+                    placeHolder = R.drawable.app_icon_placeholder,
+                    errorImage = R.drawable.app_icon_placeholder
                 )
             }
             txtTitle.text = item.songTitle
@@ -84,6 +86,10 @@ class HorizontalSongsAdapter(
             } else {
                 txtTitle.gravity = Gravity.CENTER
             }
+            val colorAccent = itemView.context.color(R.color.colorAccent)
+            val colorText = if (item.isCurrent) colorAccent
+            else itemView.context.themeColor(R.attr.colorOnSurface)
+            txtTitle.setTextColor(colorText)
         }
     }
 }
