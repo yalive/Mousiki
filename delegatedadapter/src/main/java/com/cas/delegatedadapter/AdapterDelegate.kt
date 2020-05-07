@@ -15,4 +15,8 @@ abstract class AdapterDelegate<T> {
     abstract fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
 
     abstract fun onBindViewHolder(items: T, position: Int, holder: RecyclerView.ViewHolder)
+
+    open fun getItemId(items: T, position: Int): Long {
+        return position.toLong()
+    }
 }

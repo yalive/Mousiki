@@ -52,7 +52,8 @@ class PopularSongsViewModel @Inject constructor(
         val result = getPopularSongs(25)
         _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }.toMutableList()
-        }.map { insertAdsIn(it) }.asResource()
+        }.asResource()
+        populateAdsIn(_newReleases)
         loadingMore = false
     }
 

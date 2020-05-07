@@ -9,7 +9,6 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.services.MusicPlayerService
-import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
 
@@ -171,14 +170,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
         MusicApp.get().startService(intent)
-    }
-
-    fun togglePlay() {
-        if (PlaybackLiveData.isPlaying()) {
-            pause()
-        } else if (PlaybackLiveData.isPause()) {
-            resume()
-        }
     }
 }
 

@@ -33,7 +33,7 @@ open class HorizontalListSongsAdapterDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = parent.inflate(R.layout.horizontal_songs_list)
-        return SongsListViewHolder(view)
+        return HorizontalSongsListViewHolder(view)
     }
 
     override fun onBindViewHolder(
@@ -42,7 +42,7 @@ open class HorizontalListSongsAdapterDelegate(
         holder: RecyclerView.ViewHolder
     ) {
         val songs = songsFromItem(items[position])
-        (holder as SongsListViewHolder).bind(songs)
+        (holder as HorizontalSongsListViewHolder).bind(songs)
     }
 
     protected open fun songsFromItem(
@@ -56,8 +56,8 @@ open class HorizontalListSongsAdapterDelegate(
         return R.string.common_empty_song_list
     }
 
-    private inner class SongsListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var adapter = HorizontalSongsAdapter(onVideoSelected)
+    inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val adapter = HorizontalSongsAdapter(onVideoSelected)
         private val txtEmpty = itemView.findViewById<TextView>(R.id.txtEmpty)
         private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
         private val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)

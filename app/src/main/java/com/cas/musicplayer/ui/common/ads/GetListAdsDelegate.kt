@@ -1,5 +1,8 @@
 package com.cas.musicplayer.ui.common.ads
 
+import androidx.lifecycle.MutableLiveData
+import com.cas.common.extensions.valueOrNull
+import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import javax.inject.Inject
@@ -10,6 +13,7 @@ import javax.inject.Inject
  ***************************************
  */
 interface GetListAdsDelegate {
+    suspend fun populateAdsIn(resource: MutableLiveData<Resource<List<DisplayableItem>>>)
     suspend fun insertAdsIn(items: List<DisplayableItem>): List<DisplayableItem>
 }
 
@@ -17,6 +21,13 @@ class GetListAdsDelegateImp @Inject constructor(
     private val config: RemoteAppConfig
 ) : GetListAdsDelegate {
 
+
+    override suspend fun populateAdsIn(resource: MutableLiveData<Resource<List<DisplayableItem>>>) {
+        val items = resource.valueOrNull() ?: return
+        if (items.isEmpty()) return
+        val itemsWithAd = insertAdsIn(items)
+        resource.value = Resource.Success(itemsWithAd)
+    }
 
     override suspend fun insertAdsIn(items: List<DisplayableItem>): List<DisplayableItem> {
         val size = items.size

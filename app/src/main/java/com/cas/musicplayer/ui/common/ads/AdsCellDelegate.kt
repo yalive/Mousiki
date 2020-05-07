@@ -42,6 +42,11 @@ class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         (holder as AdsViewHolder).bind(adsItem.ad)
     }
 
+    /* override fun getItemId(items: List<DisplayableItem>, position: Int): Long {
+         val ad = (items[position] as AdsItem).ad
+         return "${ad.headline}${ad.body}${ad.callToAction}".hashCode().toLong()
+     }*/
+
     inner class AdsViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
