@@ -13,6 +13,7 @@ data class DisplayedVideoItem(
     val songTitle: String,
     val songDuration: String,
     val songImagePath: String,
+    val isCurrent: Boolean = false,
     val isPlaying: Boolean = false
 ) : DisplayableItem
 

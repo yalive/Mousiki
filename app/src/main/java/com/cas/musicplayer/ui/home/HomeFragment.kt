@@ -8,13 +8,19 @@ import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.observe
+import com.cas.common.extensions.valueOrNull
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
+import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -52,6 +58,37 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         })
         adjustStatusBar()
         darkStatusBar()
+        observe(PlaybackLiveData) { state ->
+            if (state == PlayerConstants.PlayerState.PLAYING
+                || state == PlayerConstants.PlayerState.BUFFERING
+                || state == PlayerConstants.PlayerState.PAUSED
+                || state == PlayerConstants.PlayerState.ENDED
+            ) {
+                updateCurrentPlayingItem(state)
+            }
+        }
+    }
+
+    private fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
+        viewModel.newReleases.valueOrNull()?.let { items ->
+            val updatedList = items.map { item ->
+                val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
+                item.copy(
+                    isCurrent = isCurrent,
+                    isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)
+                )
+            }
+
+            recyclerView.post {
+                val holder = recyclerView.findViewHolderForAdapterPosition(2)
+                        as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder
+                if (holder != null) {
+                    val adapter = holder.adapter
+                    val diffCallback = SongsDiffUtil(adapter.dataItems, updatedList)
+                    adapter.submitList(updatedList, diffCallback)
+                }
+            }
+        }
     }
 
     override fun withToolbar(): Boolean = false
@@ -98,5 +135,5 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         requireActivity().window.statusBarColor = color
 
     }
-    //endregion
+//endregion
 }

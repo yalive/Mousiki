@@ -47,12 +47,25 @@
             tools:ignore="SmallSp"
             tools:text="03:14" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/indicatorPlaying"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignTop="@+id/txtTitle"
+            android:layout_alignBottom="@+id/txtTitle"
+            android:scaleType="centerInside"
+            app:lottie_colorFilter="@color/colorAccent"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/playing_animation" />
+
+        <!-- start|center_vertical -->
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
+            android:layout_toEndOf="@+id/indicatorPlaying"
             android:ellipsize="end"
             android:fontFamily="@font/pangram_regular"
             android:gravity="center"

@@ -17,7 +17,6 @@ class SongsAdapter(
     listOf(
         SongAdapterDelegate(onClickMoreOptions = onClickMore, onVideoSelected = onVideoSelected),
         AdsCellDelegate(),
-        EmptyCellDelegate(),
         LoadingDelegate()
     )
 )
