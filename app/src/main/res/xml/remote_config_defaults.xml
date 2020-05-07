@@ -29,12 +29,12 @@
 
     <entry>
         <key>turn_on_reward_ad</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
 
     <entry>
         <key>show_reward_after_x_click</key>
-        <value>3</value>
+        <value>7</value>
     </entry>
 
 </defaultsMap>
