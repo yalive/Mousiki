@@ -5,6 +5,7 @@ import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
@@ -107,6 +108,8 @@ interface AppComponent {
     val gson: Gson
 
     val rewardedAdDelegate: RewardedAdDelegate
+
+    val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
 
     val appConfig: RemoteAppConfig
 }

@@ -16,6 +16,7 @@ import androidx.core.view.get
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
@@ -26,6 +27,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.toYoutubeDuration
 import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
@@ -39,6 +41,7 @@ import com.google.firebase.ktx.Firebase
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.delay
 
 
 class MainActivity : BaseActivity() {
@@ -147,25 +150,8 @@ class MainActivity : BaseActivity() {
         observeEvent(viewModel.rateApp) {
             askUserForFeelingAboutApp()
         }
-    }
 
-    private fun handleDynamicLinks() {
-        Firebase.dynamicLinks
-            .getDynamicLink(intent)
-            .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                var deepLink: Uri? = null
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                    val videoId = deepLink?.getQueryParameter("videoId")
-                    val duration = deepLink?.getQueryParameter("duration")
-                    val title = deepLink?.getQueryParameter("title")
-                    if (videoId != null && title != null && duration != null) {
-                        val track = MusicTrack(videoId, title, duration)
-                        expandBottomPanel()
-                        viewModel.playTrackFromDeepLink(track)
-                    }
-                }
-            }
+        checkPushNotificationTrack()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -421,6 +407,39 @@ class MainActivity : BaseActivity() {
 
     private fun onLockChanged(locked: Boolean) {
         slidingPaneLayout.isTouchEnabled = !locked
+    }
+
+    private fun handleDynamicLinks() {
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                    val videoId = deepLink?.getQueryParameter("videoId")
+                    val duration = deepLink?.getQueryParameter("duration")
+                    val title = deepLink?.getQueryParameter("title")
+                    if (videoId != null && title != null && duration != null) {
+                        val track = MusicTrack(videoId, title, duration)
+                        expandBottomPanel()
+                        viewModel.playTrackFromDeepLink(track)
+                    }
+                }
+            }
+    }
+
+    private fun checkPushNotificationTrack() {
+        lifecycleScope.launchWhenResumed {
+            delay(100)
+            val videoId = intent.extras?.getString("videoId")
+            val duration = intent.extras?.getString("duration")
+            val title = intent.extras?.getString("title")
+            if (videoId != null && title != null && duration != null) {
+                val track = MusicTrack(videoId, title, MusicTrack.toYoutubeDuration(duration))
+                expandBottomPanel()
+                viewModel.playTrackFromPushNotification(track)
+            }
+        }
     }
 
     companion object {

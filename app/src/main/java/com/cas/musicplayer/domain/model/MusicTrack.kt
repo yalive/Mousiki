@@ -1,6 +1,7 @@
 package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
+import com.crashlytics.android.Crashlytics
 import kotlinx.android.parcel.Parcelize
 import java.util.regex.Pattern
 
@@ -104,6 +105,30 @@ fun MusicTrack.durationToSeconds(): Long {
         return duration
     }
     return 0
+}
+
+fun MusicTrack.Companion.toYoutubeDuration(notificationDuration: String): String {
+    val parts = notificationDuration.split(":")
+    if (parts.size < 2) return ""
+    if (parts.size == 2) {
+        val minute = parseDurationPart(parts[0])
+        val second = parseDurationPart(parts[1])
+        return "PT${minute}M${second}S"
+    } else {
+        val hour = parseDurationPart(parts[0])
+        val minute = parseDurationPart(parts[1])
+        val second = parseDurationPart(parts[2])
+        return "PT${hour}H${minute}M${second}S"
+    }
+}
+
+private fun parseDurationPart(part: String): Int {
+    return try {
+        part.toInt()
+    } catch (e: Exception) {
+        Crashlytics.logException(Exception("Unable to parse custom duration part: $part", e))
+        0
+    }
 }
 
 val MusicTrack.Companion.EMPTY: MusicTrack
