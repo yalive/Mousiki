@@ -72,6 +72,7 @@
                 android:id="@+id/indicatorPlaying"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:scaleType="centerInside"
                 app:lottie_colorFilter="@color/colorAccent"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/playing_animation" />

@@ -60,7 +60,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         darkStatusBar()
         observe(PlaybackLiveData) { state ->
             if (state == PlayerConstants.PlayerState.PLAYING
-                || state == PlayerConstants.PlayerState.BUFFERING
                 || state == PlayerConstants.PlayerState.PAUSED
                 || state == PlayerConstants.PlayerState.ENDED
             ) {
