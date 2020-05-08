@@ -75,6 +75,15 @@
                 app:srcCompat="@drawable/ic_fullscreen" />
         </LinearLayout>
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/bannerAdView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fullScreenSwitchView"
+            android:layout_centerHorizontal="true"
+            app:adSize="BANNER"
+            app:adUnitId="@string/admob_banner_id" />
+
         <TextView
             android:id="@+id/txtTitleVideoCenter"
             android:layout_width="match_parent"
