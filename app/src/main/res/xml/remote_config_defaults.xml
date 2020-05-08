@@ -33,6 +33,11 @@
     </entry>
 
     <entry>
+        <key>turn_on_banner_ad</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
         <key>show_reward_after_x_click</key>
         <value>7</value>
     </entry>

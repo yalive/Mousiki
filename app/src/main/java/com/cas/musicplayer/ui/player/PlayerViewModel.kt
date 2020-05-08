@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.player
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
-    private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase
+    private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase,
+    private val appConfig: RemoteAppConfig
 ) : BaseViewModel() {
 
     private val _isLiked = MediatorLiveData<Boolean>()
@@ -41,4 +43,6 @@ class PlayerViewModel @Inject constructor(
     fun removeSongFromFavourite(musicTrack: MusicTrack) = uiCoroutine {
         removeSongFromFavouriteList(musicTrack.youtubeId)
     }
+
+    fun bannerAdOn() = appConfig.bannerAdOn()
 }

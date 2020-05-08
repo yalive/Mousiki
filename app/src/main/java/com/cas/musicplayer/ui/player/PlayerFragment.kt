@@ -47,6 +47,7 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.ads.AdRequest
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -272,6 +273,12 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
         lockScreenView?.doOnSlideComplete {
             lockScreen(false)
+        }
+
+        if (viewModel.bannerAdOn()) {
+            bannerAdView.loadAd(AdRequest.Builder().build())
+        } else {
+            bannerAdView.isVisible = false
         }
     }
 

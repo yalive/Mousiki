@@ -83,6 +83,10 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getBoolean(TURN_ON_REWARD_AD)
     }
 
+    fun bannerAdOn(): Boolean {
+        return firebaseRemoteConfig.getBoolean(BANNER_AD_TURNED_ON)
+    }
+
     fun getClickCountToShowReward(): Int {
         val offset = firebaseRemoteConfig.getLong(SHOW_REWARD_AFTER_X_CLICK).toInt()
         if (offset <= 0) return DEF_CLICK_TO_SHOW_REWARD
@@ -100,6 +104,7 @@ class RemoteAppConfig @Inject constructor(
         const val RATE_APP_DIALOG_FREQUENCY = "rate_app_dialog_frequency"
         const val YOUTUBE_API_KEYS_BY_COUNTRY = "youtube_api_keys_by_country"
         const val TURN_ON_REWARD_AD = "turn_on_reward_ad"
+        const val BANNER_AD_TURNED_ON = "turn_on_banner_ad"
         const val SHOW_REWARD_AFTER_X_CLICK = "show_reward_after_x_click"
     }
 }
