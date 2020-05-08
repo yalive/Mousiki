@@ -85,7 +85,9 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         viewAddToPlaylist.onClick {
-            (activity as MainActivity).collapseBottomPanel()
+            if ((activity as MainActivity).isBottomPanelExpanded()) {
+                (activity as MainActivity).collapseBottomPanel()
+            }
             val navOptions = navOptions {
                 anim {
                     enter = R.anim.fad_in
