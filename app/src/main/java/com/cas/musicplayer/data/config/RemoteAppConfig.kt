@@ -74,9 +74,9 @@ class RemoteAppConfig @Inject constructor(
     }
 
     fun getFrequencyRateAppPopup(): Int {
-        val offset = firebaseRemoteConfig.getLong(RATE_APP_DIALOG_FREQUENCY).toInt()
-        if (offset <= 0) return DEF_FREQ_POPUP_RATE
-        return offset
+        val rateFrequency = firebaseRemoteConfig.getLong(RATE_APP_DIALOG_FREQUENCY).toInt()
+        if (rateFrequency <= 0) return DEF_FREQ_POPUP_RATE
+        return rateFrequency
     }
 
     fun rewardAdOn(): Boolean {

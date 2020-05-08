@@ -147,11 +147,14 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState == null) {
             viewModel.checkToRateApp()
         }
-        observeEvent(viewModel.rateApp) {
-            askUserForFeelingAboutApp()
-        }
 
-        checkPushNotificationTrack()
+        if (isFromPushNotification()) {
+            checkPushNotificationTrack()
+        } else {
+            observeEvent(viewModel.rateApp) {
+                askUserForFeelingAboutApp()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -429,6 +432,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun checkPushNotificationTrack() {
+        if (!canDrawOverApps()) return
         lifecycleScope.launchWhenResumed {
             delay(100)
             val videoId = intent.extras?.getString("videoId")
@@ -440,6 +444,13 @@ class MainActivity : BaseActivity() {
                 viewModel.playTrackFromPushNotification(track)
             }
         }
+    }
+
+    private fun isFromPushNotification(): Boolean {
+        val videoId = intent.extras?.getString("videoId")
+        val duration = intent.extras?.getString("duration")
+        val title = intent.extras?.getString("title")
+        return videoId != null && title != null && duration != null
     }
 
     companion object {
