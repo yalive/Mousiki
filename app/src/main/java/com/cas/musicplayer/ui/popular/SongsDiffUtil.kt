@@ -45,6 +45,8 @@ class SongsDiffUtil(
         if (oldItem is DisplayedVideoItem && newItem is DisplayedVideoItem) {
             return oldItem.track.youtubeId == newItem.track.youtubeId
                     && oldItem.isCurrent == newItem.isCurrent
+                    && oldItem.track == newItem.track
+                    && oldItem.songDuration == newItem.songDuration
                     && oldItem.isPlaying == newItem.isPlaying
                     && oldItem.songTitle == newItem.songTitle
         }
