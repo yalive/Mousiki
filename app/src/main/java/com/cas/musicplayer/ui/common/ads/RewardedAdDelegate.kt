@@ -24,8 +24,8 @@ import javax.inject.Inject
  ***************************************
  */
 interface RewardedAdDelegate {
-    fun start(activity: Activity)
-    fun stop()
+    fun register(activity: Activity)
+    fun unregister()
 }
 
 class RewardedAdDelegateImp(
@@ -50,12 +50,12 @@ class RewardedAdDelegateImp(
         loadAd()
     }
 
-    override fun start(activity: Activity) {
+    override fun register(activity: Activity) {
         this.activity = activity
         UserPrefs.getPrefs().registerOnSharedPreferenceChangeListener(preferencesListener)
     }
 
-    override fun stop() {
+    override fun unregister() {
         this.activity = null
         UserPrefs.getPrefs().unregisterOnSharedPreferenceChangeListener(preferencesListener)
     }
@@ -106,11 +106,11 @@ class RewardedAdDelegateImp(
 
 class NoRewardedAdDelegate @Inject constructor() : RewardedAdDelegate {
 
-    override fun start(activity: Activity) {
+    override fun register(activity: Activity) {
         // no-op
     }
 
-    override fun stop() {
+    override fun unregister() {
         // no-op
     }
 }

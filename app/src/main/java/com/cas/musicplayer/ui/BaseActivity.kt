@@ -11,6 +11,9 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.AudienceNetworkInitializeHelper
+import com.cas.musicplayer.utils.getCurrentLocale
+import com.google.firebase.messaging.FirebaseMessaging
+import java.util.*
 
 
 /**
@@ -30,17 +33,18 @@ open class BaseActivity : AppCompatActivity() {
         // Otherwise call initialize() onCreate() of getSongs Activities that contain ads or
         // from onCreate() of your Splash Activity.
         AudienceNetworkInitializeHelper.initialize(this)
+        subscribeToTopic()
     }
 
     override fun onResume() {
         super.onResume()
-        injector.rewardedAdDelegate.start(this)
+        injector.rewardedAdDelegate.register(this)
     }
 
 
     override fun onPause() {
         super.onPause()
-        injector.rewardedAdDelegate.stop()
+        injector.rewardedAdDelegate.unregister()
     }
 
     fun hideStatusBar() {
@@ -86,5 +90,15 @@ open class BaseActivity : AppCompatActivity() {
         } else {
             // window.statusBarColor = color(R.color.colorPrimary)
         }
+    }
+
+    private fun subscribeToTopic() {
+        FirebaseMessaging.getInstance()
+            .subscribeToTopic(getCurrentLocale().toLowerCase(Locale.getDefault()))
+    }
+
+    private fun unsubscribeFromTopic() {
+        FirebaseMessaging.getInstance()
+            .unsubscribeFromTopic(getCurrentLocale().toLowerCase(Locale.getDefault()))
     }
 }
