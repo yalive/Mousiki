@@ -66,12 +66,13 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 }
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
-        )
+        ).apply {
+            setHasStableIds(true)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter.setHasStableIds(true)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
         btnPlayAll.onClick {
