@@ -264,8 +264,10 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         observe(viewModel.isLiked) { isLiked ->
             if (isLiked) {
                 btnAddFav.setImageResource(R.drawable.ic_heart_solid)
+                btnAddFav.tint(R.color.colorAccent)
             } else {
                 btnAddFav.setImageResource(R.drawable.ic_heart_light)
+                btnAddFav.tint(R.color.colorWhite)
             }
         }
         lockScreenView?.doOnSlideComplete {
@@ -352,8 +354,10 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
         if (UserPrefs.isFav(video.youtubeId)) {
             btnAddFav.setImageResource(R.drawable.ic_heart_solid)
+            btnAddFav.tint(R.color.colorAccent)
         } else {
             btnAddFav.setImageResource(R.drawable.ic_heart_light)
+            btnAddFav.tint(R.color.colorWhite)
         }
         loadAndBlurImage(video)
         configureSeekBar(video)
