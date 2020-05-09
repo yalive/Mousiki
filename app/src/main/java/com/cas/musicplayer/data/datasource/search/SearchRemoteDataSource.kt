@@ -4,11 +4,14 @@ import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.*
+import com.cas.musicplayer.data.remote.models.toMusicTrack
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
+import com.cas.musicplayer.data.remote.retrofit.ScrapService
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.domain.model.Channel
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
+import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
 
 /**
@@ -18,6 +21,7 @@ import javax.inject.Inject
  */
 class SearchRemoteDataSource @Inject constructor(
     private var youtubeService: YoutubeService,
+    private var scrapService: ScrapService,
     private val retrofitRunner: RetrofitRunner,
     private val trackMapper: YTBVideoToTrack,
     private val playlistMapper: YTBPlaylistToPlaylist,
@@ -25,10 +29,22 @@ class SearchRemoteDataSource @Inject constructor(
     private val videoIdMapper: YTBSearchResultToVideoId,
     private val channelIdMapper: YTBSearchResultToChannelId,
     private val playlistIdMapper: YTBSearchResultToPlaylistId,
-    private val preferences: PreferencesHelper
+    private val preferences: PreferencesHelper,
+    private val analytics: FirebaseAnalytics
 ) {
 
     suspend fun searchTracks(query: String): Result<List<MusicTrack>> {
+        analytics.logEvent(EVENT_START_SEARCH, null)
+        val resultScrap = retrofitRunner.executeNetworkCall {
+            scrapService.search(query).results
+                ?.mapNotNull { it.video?.toMusicTrack() }
+                ?.filter { it.duration.isNotEmpty() && it.youtubeId.isNotEmpty() }
+                ?: emptyList()
+        }
+        if (resultScrap is Result.Success && resultScrap.data.isNotEmpty()) {
+            return resultScrap
+        }
+        analytics.logEvent(EVENT_SCRAP_NOT_WORKING, null)
         val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
             youtubeService.searchVideoIdsByQuery(query, 50).items ?: emptyList()
         } as? Result.Success ?: return NO_RESULT
@@ -65,3 +81,6 @@ class SearchRemoteDataSource @Inject constructor(
         }
     }
 }
+
+private val EVENT_SCRAP_NOT_WORKING = "search_by_scrap_down"
+private val EVENT_START_SEARCH = "start_search_by_query"
