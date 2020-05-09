@@ -200,16 +200,20 @@ fun getCurrentLocale(): String {
     val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
     val countryCodeValue: String? = tm?.networkCountryIso
 
-    if (countryCodeValue != null) {
+    if (countryCodeValue != null && countryCodeValue.length == 2) {
         return countryCodeValue
     }
 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         val locales = MusicApp.get().resources.configuration.locales
-        if (locales.isEmpty) "US" else locales.get(0).country
+        when {
+            locales.isEmpty -> "US"
+            locales.get(0)?.country != null && locales.get(0).country.length == 2 -> "US"
+            else -> "US"
+        }
     } else {
         val country = MusicApp.get().resources.configuration?.locale?.country
-        if (country != null && country.isNotEmpty()) country else "US"
+        if (country != null && country.isNotEmpty() && country.length == 2) country else "US"
     }
 }
 
