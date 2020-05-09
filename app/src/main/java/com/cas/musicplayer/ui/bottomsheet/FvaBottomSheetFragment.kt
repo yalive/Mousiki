@@ -119,15 +119,12 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
         dialog?.setOnDismissListener {
             onDismissed?.invoke()
-        }
-    }
 
-    override fun onPause() {
-        super.onPause()
-        val mainActivity = requireActivity() as MainActivity
-        if (mainActivity.isBottomPanelCollapsed() && PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
-            PlayerQueue.showVideo()
-            PlayerQueue.resume()
+            val mainActivity = activity as? MainActivity ?: return@setOnDismissListener
+            if (mainActivity.isBottomPanelCollapsed() && PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
+                PlayerQueue.showVideo()
+                PlayerQueue.resume()
+            }
         }
     }
 

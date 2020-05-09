@@ -17,6 +17,7 @@ import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.navigateSafeAction
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_home_chart.view.*
 
@@ -52,7 +53,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
                 )
 
                 itemView.findNavController()
-                    .navigate(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
+                    .navigateSafeAction(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
 
                 if (!Utils.hasShownAdsOneTime) {
                     Utils.hasShownAdsOneTime = true

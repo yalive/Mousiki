@@ -13,10 +13,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.cas.musicplayer.utils.AdsOrigin
-import com.cas.musicplayer.utils.RequestAdsLiveData
-import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.loadImage
+import com.cas.musicplayer.utils.*
 
 /**
  ***************************************
@@ -45,7 +42,7 @@ internal class HomeArtistViewHolder(val view: View) : SimpleBaseViewHolder<Artis
                 AppImage.AppImageUrl(artist.imageFullPath)
             )
             itemView.findNavController()
-                .navigate(R.id.action_homeFragment_to_artistSongsFragment, bundle)
+                .navigateSafeAction(R.id.action_homeFragment_to_artistSongsFragment, bundle)
 
             if (!Utils.hasShownAdsOneTime) {
                 Utils.hasShownAdsOneTime = true

@@ -18,6 +18,7 @@ import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.drawable
+import com.cas.musicplayer.utils.navigateSafeAction
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
@@ -55,7 +56,7 @@ class GenresViewHolder(itemView: View) : SimpleBaseViewHolder<GenreMusic>(itemVi
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageRes(item.img)
             )
             itemView.findNavController()
-                .navigate(R.id.action_genresFragment_to_playlistVideosFragment, bundle)
+                .navigateSafeAction(R.id.action_genresFragment_to_playlistVideosFragment, bundle)
         }
     }
 }
