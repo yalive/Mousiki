@@ -15,12 +15,14 @@ import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.crashlytics.android.Crashlytics
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -37,6 +39,7 @@ class RemoteSongsDataSource @Inject constructor(
     private val preferences: PreferencesHelper,
     private val appContext: Context,
     private val gson: Gson,
+    private val analytics: FirebaseAnalytics,
     private val connectivityState: ConnectivityState,
     private val storage: FirebaseStorage
 ) {
@@ -46,6 +49,9 @@ class RemoteSongsDataSource @Inject constructor(
             downloadTrendingFile().musicTracks(gson)
         }
         if (firebaseTracks.isNotEmpty()) return Result.Success(firebaseTracks)
+        if (getCurrentLocale().toLowerCase(Locale.getDefault()) == "mx") {
+            analytics.logEvent(ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING, null)
+        }
         return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
             val resource = youtubeService.trending(
                 max,
@@ -112,6 +118,8 @@ class RemoteSongsDataSource @Inject constructor(
         private const val MAX_RETRY_FIREBASE_STORAGE = 4
     }
 }
+
+private val ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING = "mexico_cannot_load_trending"
 
 fun File.musicTracks(gson: Gson): List<MusicTrack> = if (exists()) {
     val tracksFromFile: List<MusicTrack> = try {
