@@ -35,6 +35,9 @@ class RewardedAdDelegateImp(
     private val envConfig: EnvConfig
 ) : RewardedAdDelegate {
 
+    private val MAX_RETRIES = 5
+    private var retriesCount = 0
+
     private lateinit var rewardedAd: RewardedAd
     private var activity: Activity? = null
     private var errorLoadingAd = false
@@ -63,6 +66,7 @@ class RewardedAdDelegateImp(
 
     private fun showReward(activity: Activity) {
         if (errorLoadingAd) {
+            retriesCount = 0
             loadAd()
         }
         if (!rewardedAd.isLoaded) {
@@ -81,6 +85,7 @@ class RewardedAdDelegateImp(
             }
 
             override fun onRewardedAdClosed() {
+                retriesCount = 0
                 loadAd()
                 PlayerQueue.resume()
                 PlayerQueue.showVideo()
@@ -96,9 +101,16 @@ class RewardedAdDelegateImp(
                 if (envConfig.isDev()) {
                     MusicApp.get().toastCentred("Error load ad: $errorCode")
                 }
+                retriesCount++
+                if (retriesCount < MAX_RETRIES) {
+                    loadAd()
+                } else {
+                    analytics.logEvent(ANALYTICS_ERROR_LOAD_AD_RETRY, null)
+                }
             }
 
             override fun onRewardedAdLoaded() {
+                retriesCount = 0
                 errorLoadingAd = false
             }
         })
@@ -106,6 +118,7 @@ class RewardedAdDelegateImp(
 
     companion object {
         private const val ANALYTICS_ERROR_LOAD_AD = "rewarded_ad_not_ready_yet"
+        private const val ANALYTICS_ERROR_LOAD_AD_RETRY = "rewarded_ad_error_after_retries"
     }
 
 }
