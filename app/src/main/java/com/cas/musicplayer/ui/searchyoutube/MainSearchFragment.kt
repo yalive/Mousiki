@@ -12,6 +12,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.utils.navigateSafeAction
 import kotlinx.android.synthetic.main.main_search_fragment.*
 
 /**
@@ -37,7 +38,7 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
         darkStatusBarOnDarkMode()
         observeViewModel()
         searchBtnView.onClick {
-            findNavController().navigate(R.id.action_mainSearchFragment_to_searchYoutubeFragment)
+            findNavController().navigateSafeAction(R.id.action_mainSearchFragment_to_searchYoutubeFragment)
         }
     }
 

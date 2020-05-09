@@ -21,7 +21,6 @@ import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseFragment<HomeViewModel>() {
@@ -31,6 +30,8 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     override val screenTitle: String by lazy {
         getString(R.string.app_name)
     }
+
+    private var recyclerView: RecyclerView? = null
 
     private val homeAdapter by lazy {
         HomeAdapter(viewModel = viewModel) { track ->
@@ -47,10 +48,11 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        recyclerView.addItemDecoration(HomeMarginItemDecoration())
-        recyclerView.adapter = homeAdapter
+        recyclerView = view?.findViewById(R.id.recyclerView)
+        recyclerView?.addItemDecoration(HomeMarginItemDecoration())
+        recyclerView?.adapter = homeAdapter
         observeViewModel()
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 adjustStatusBar()
@@ -78,8 +80,8 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                 )
             }
 
-            recyclerView.post {
-                val holder = recyclerView.findViewHolderForAdapterPosition(2)
+            recyclerView?.post {
+                val holder = recyclerView?.findViewHolderForAdapterPosition(2)
                         as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder
                 if (holder != null) {
                     val adapter = holder.adapter
@@ -112,7 +114,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private fun adjustStatusBar() {
-        val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+        val linearLayoutManager = recyclerView?.layoutManager as LinearLayoutManager
         val firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition()
         val rect = Rect()
         linearLayoutManager.findViewByPosition(firstVisiblePosition)?.getGlobalVisibleRect(rect)
