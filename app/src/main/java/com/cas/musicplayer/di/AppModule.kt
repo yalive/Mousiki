@@ -7,6 +7,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.data.local.database.dao.*
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
+import com.cas.musicplayer.data.remote.retrofit.ScrapService
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.utils.Constants
 import com.google.gson.Gson
@@ -35,13 +36,27 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesYoutubeService(gson: Gson, client: OkHttpClient): YoutubeService {
+    fun providesRetrofit(gson: Gson, client: OkHttpClient): Retrofit {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
+        return retrofit
+    }
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYoutubeService(retrofit: Retrofit): YoutubeService {
         return retrofit.create(YoutubeService::class.java)
+    }
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesScrapper(retrofit: Retrofit): ScrapService {
+        return retrofit.create(ScrapService::class.java)
     }
 
     @Singleton
