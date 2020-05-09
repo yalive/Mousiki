@@ -3,7 +3,6 @@ package com.cas.musicplayer.player
 import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.event.Event
 import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
@@ -18,10 +17,6 @@ import com.cas.musicplayer.utils.canDrawOverApps
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
-
-object ClickVideoListener : MutableLiveData<Event<MusicTrack>>()
-
-object OnShowAdsListener : MutableLiveData<Event<Boolean>>()
 
 object PlayerQueue : MutableLiveData<MusicTrack>() {
 
