@@ -20,13 +20,11 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.media.session.MediaButtonReceiver
-import com.cas.common.event.EventObserver
 import com.cas.common.extensions.doOnExtrasTrue
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.player.OnShowAdsListener
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
@@ -37,7 +35,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 
 /**
  **********************************
@@ -250,8 +247,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
         observeBottomPanelDragging()
 
-        observeAdsVisibility()
-
         favouriteReceiver.register()
     }
 
@@ -264,21 +259,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private fun observeBottomPanelDragging() {
         DragBottomPanelLiveData.observe(this, Observer { dragPanelInfo ->
             floatingPlayerView.onDragBottomPanel(dragPanelInfo)
-        })
-    }
-
-    private fun observeAdsVisibility() {
-        OnShowAdsListener.observe(this, EventObserver { shown ->
-            floatingPlayerView.onAdsVisible(shown)
-            if (shown) {
-                handler.postDelayed({
-                    mediaController.transportControls.pause()
-                }, 1000)
-            } else {
-                handler.postDelayed({
-                    mediaController.transportControls.play()
-                }, 1000)
-            }
         })
     }
 
