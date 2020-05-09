@@ -19,8 +19,9 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.sidebar.SideBar
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.utils.navigateSafeAction
 import kotlinx.android.synthetic.main.fragment_artists.*
 
 
@@ -68,7 +69,10 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
                 AppImage.AppImageUrl(it.imageFullPath)
             )
-            findNavController().navigate(R.id.action_artistsFragment_to_artistSongsFragment, bundle)
+            findNavController().navigateSafeAction(
+                R.id.action_artistsFragment_to_artistSongsFragment,
+                bundle
+            )
         })
         recyclerView.adapter = adapter
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager

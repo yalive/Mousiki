@@ -37,6 +37,7 @@ class RewardedAdDelegateImp(
 
     private lateinit var rewardedAd: RewardedAd
     private var activity: Activity? = null
+    private var errorLoadingAd = false
     private val preferencesListener: SharedPreferences.OnSharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { p0, key ->
             val clickTrackCount = UserPrefs.getClickTrackCount()
@@ -61,6 +62,9 @@ class RewardedAdDelegateImp(
     }
 
     private fun showReward(activity: Activity) {
+        if (errorLoadingAd) {
+            loadAd()
+        }
         if (!rewardedAd.isLoaded) {
             analytics.logEvent(ANALYTICS_ERROR_LOAD_AD, null)
             return
@@ -88,12 +92,14 @@ class RewardedAdDelegateImp(
         rewardedAd = RewardedAd(context, context.getString(R.string.admob_rewarded_ad_id))
         rewardedAd.loadAd(AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
             override fun onRewardedAdFailedToLoad(errorCode: Int) {
+                errorLoadingAd = true
                 if (envConfig.isDev()) {
                     MusicApp.get().toastCentred("Error load ad: $errorCode")
                 }
             }
 
             override fun onRewardedAdLoaded() {
+                errorLoadingAd = false
             }
         })
     }

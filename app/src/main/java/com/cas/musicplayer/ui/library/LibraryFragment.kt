@@ -16,11 +16,12 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
+import com.cas.musicplayer.utils.navigateSafeAction
 import kotlinx.android.synthetic.main.fragment_library.*
 
 /**
@@ -79,7 +80,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuSetting) {
-            findNavController().navigate(R.id.action_libraryFragment_to_settingsFragment)
+            findNavController().navigateSafeAction(R.id.action_libraryFragment_to_settingsFragment)
             return true
         }
         return super.onOptionsItemSelected(item)

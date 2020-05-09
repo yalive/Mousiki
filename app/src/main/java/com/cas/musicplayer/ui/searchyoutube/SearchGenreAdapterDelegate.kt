@@ -81,7 +81,10 @@ class SearchGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
                     )
                 )
                 itemView.findNavController()
-                    .navigate(R.id.action_mainSearchFragment_to_playlistVideosFragment, bundle)
+                    .navigateSafeAction(
+                        R.id.action_mainSearchFragment_to_playlistVideosFragment,
+                        bundle
+                    )
                 if (!Utils.hasShownAdsOneTime) {
                     Utils.hasShownAdsOneTime = true
                     RequestAdsLiveData.value = AdsOrigin("genre")
