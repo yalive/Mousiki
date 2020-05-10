@@ -3,13 +3,11 @@ package com.cas.musicplayer.ui.common.ads
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.EnvConfig
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.UserPrefs
-import com.cas.musicplayer.utils.toastCentred
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
@@ -98,9 +96,6 @@ class RewardedAdDelegateImp(
         rewardedAd.loadAd(AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
             override fun onRewardedAdFailedToLoad(errorCode: Int) {
                 errorLoadingAd = true
-                if (envConfig.isDev()) {
-                    MusicApp.get().toastCentred("Error load ad: $errorCode")
-                }
                 retriesCount++
                 if (retriesCount < MAX_RETRIES) {
                     loadAd()
