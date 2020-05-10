@@ -21,37 +21,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/searchBtnView"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/sixteen_16dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:background="@drawable/bg_search_button"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitle">
 
-        <ImageView
-            android:layout_width="@dimen/twenty_four_24dp"
-            android:layout_height="@dimen/twenty_four_24dp"
-            android:src="@drawable/ic_search"
-            android:tint="?colorSurface" />
-
-        <TextView
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:fontFamily="@font/pangram_regular"
-            android:text="@string/search_button_title"
-            android:textAllCaps="false"
-            android:textColor="?colorSurface" />
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStartSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/search_button_title"
+        android:textAllCaps="false"
+        app:backgroundTint="?android:textColorPrimary"
+        app:icon="@drawable/ic_search"
+        app:iconGravity="textStart" />
 
     <View
         android:id="@+id/dividerView"
@@ -60,7 +41,7 @@
         android:background="?colorSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBtnView" />
+        app:layout_constraintTop_toBottomOf="@+id/btnStartSearch" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

@@ -41,7 +41,7 @@ fun Context.color(@ColorRes id: Int): Int {
 fun Context.drawable(@DrawableRes id: Int): Drawable? {
     return try {
         ContextCompat.getDrawable(this, id)
-    } catch (e: Exception) {
+    } catch (e: OutOfMemoryError) {
         Crashlytics.logException(e)
         null
     }

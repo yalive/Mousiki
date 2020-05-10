@@ -98,20 +98,45 @@
             android:textColor="@color/colorWhite"
             tools:text="Video title" />
 
-        <ImageButton
+        <LinearLayout
             android:id="@+id/btnYoutube"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtTitleVideoCenter"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="168dp"
-            android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:contentDescription="@string/app_name"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:src="@drawable/ic_youtube_copyright"
-            android:text="@string/label_developed_with_youtube"
-            android:textAllCaps="false" />
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="3dp"
+                android:alpha="0.6"
+                android:background="@null"
+                android:fontFamily="sans-serif-light"
+                android:letterSpacing="0"
+                android:text="@string/label_developed_with_youtube_part1"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:alpha="0.9"
+                android:background="@null"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="bottom"
+                android:letterSpacing="0"
+                android:text="@string/label_developed_with_youtube_part2"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/favView"

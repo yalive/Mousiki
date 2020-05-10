@@ -5,6 +5,7 @@ import com.cas.common.result.Result
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.mappers.Mapper
 import com.cas.musicplayer.utils.bgContext
+import com.crashlytics.android.Crashlytics
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,6 +33,7 @@ class RetrofitRunner @Inject constructor() {
         }
         Result.Success(mappedResponse)
     } catch (e: Exception) {
+        Crashlytics.logException(e)
         Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
     }
 
@@ -41,6 +43,7 @@ class RetrofitRunner @Inject constructor() {
         val response = request()
         Result.Success(response)
     } catch (e: Exception) {
+        Crashlytics.logException(e)
         Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
     }
 }

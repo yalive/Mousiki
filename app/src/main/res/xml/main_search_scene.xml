@@ -4,7 +4,7 @@
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:id="@id/searchBtnView"
+            android:id="@id/btnStartSearch"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="@dimen/sixteen_16dp"
@@ -36,7 +36,7 @@
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@id/searchBtnView"
+            android:id="@id/btnStartSearch"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="@dimen/sixteen_16dp"
