@@ -9,10 +9,10 @@ import javax.inject.Singleton
 @Singleton
 class YTBPlaylistToPlaylist @Inject constructor() : Mapper<YTBPlaylist, Playlist> {
     override suspend fun map(from: YTBPlaylist): Playlist {
-        val id = from.id ?: ""
-        val title = from.snippet?.title ?: ""
+        val id = from.id.orEmpty()
+        val title = from.snippet?.title.orEmpty()
         val itemCount = from.contentDetails?.itemCount ?: 0
-        val urlImage = from.snippet?.thumbnails?.urlOrEmpty() ?: ""
+        val urlImage = from.snippet?.thumbnails?.urlOrEmpty().orEmpty()
 
         val playlist = Playlist(id, title, itemCount, urlImage)
 

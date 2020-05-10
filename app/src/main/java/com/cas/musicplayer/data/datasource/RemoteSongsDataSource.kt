@@ -58,7 +58,7 @@ class RemoteSongsDataSource @Inject constructor(
                 getCurrentLocale(),
                 preferences.mostPopularNextPageToken()
             )
-            val nextPageToken = resource.nextPageToken ?: ""
+            val nextPageToken = resource.nextPageToken.orEmpty()
             preferences.setMostPopularNextPageToken(nextPageToken)
             resource.items ?: emptyList()
         }

@@ -32,8 +32,8 @@ data class ScrapedTrackDto(
 
 fun ScrapedTrackDto.toMusicTrack(): MusicTrack {
     return MusicTrack(
-        youtubeId = id ?: "",
-        duration = MusicTrack.toYoutubeDuration(duration ?: ""),
-        title = title ?: ""
+        youtubeId = id.orEmpty(),
+        duration = MusicTrack.toYoutubeDuration(duration.orEmpty()),
+        title = title.orEmpty()
     )
 }
