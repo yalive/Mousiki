@@ -19,6 +19,7 @@ import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.drawable
 import com.cas.musicplayer.utils.navigateSafeAction
+import com.crashlytics.android.Crashlytics
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
@@ -46,7 +47,11 @@ class GenresViewHolder(itemView: View) : SimpleBaseViewHolder<GenreMusic>(itemVi
             )
         }
 
-        imgCategory.setImageDrawable(itemView.context.drawable(item.img))
+        try {
+            imgCategory.setImageDrawable(itemView.context.drawable(item.img))
+        } catch (e: OutOfMemoryError) {
+            Crashlytics.logException(e)
+        }
         txtTitle.text = item.title
         cardView.onClick {
             val artist = Artist(item.title, "US", item.topTracksPlaylist)
