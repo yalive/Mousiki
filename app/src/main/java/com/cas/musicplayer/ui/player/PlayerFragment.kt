@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.player
 
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
@@ -67,6 +68,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private var imgBlured: ImageView? = null
     private var lockScreenView: LockScreenView? = null
     private var queueFragment: SlideUpPlaylistFragment? = null
+    private var userSeekDuration = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -218,11 +220,12 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             val seconds = (elapsedSeconds % 60).toInt()
             txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
 
-            PlayerQueue.value?.let { currentTrack ->
-                val progress = elapsedSeconds * 100 / currentTrack.durationToSeconds()
-                seekBarDuration.progress = progress.toInt()
+            if (!userSeekDuration) {
+                PlayerQueue.value?.let { currentTrack ->
+                    val progress = elapsedSeconds * 100 / currentTrack.durationToSeconds()
+                    seekBarDuration.progress = progress.toInt()
+                }
             }
-
         })
 
         btnShowQueue.onClick {
@@ -372,6 +375,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         configureSeekBar(video)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun configureSeekBar(video: MusicTrack) {
         txtDuration.text = video.durationFormatted
         txtElapsedTime.text = "00:00"
@@ -379,17 +383,20 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         seekBarDuration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 // Nothing
+                userSeekDuration = true
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 // Nothing
+                userSeekDuration = true
             }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                seekBar?.progress?.let { progress ->
-                    // Map from  (0,100) to (0,duration)
-                    val seconds = progress * video.durationToSeconds() / 100
-                    PlayerQueue.seekTo(seconds * 1000)
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                val progress = seekBar.progress
+                val seconds = progress * video.durationToSeconds() / 100
+                PlayerQueue.seekTo(seconds * 1000)
+                handler.postDelayed(800) {
+                    userSeekDuration = false
                 }
             }
         })
