@@ -1,5 +1,6 @@
 package com.cas.musicplayer.data.remote.models
 
+import androidx.annotation.Keep
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
 import com.google.gson.annotations.SerializedName
@@ -9,6 +10,7 @@ import com.google.gson.annotations.SerializedName
  * Created by Y.Abdelhadi on 5/9/20.
  ***************************************
  */
+@Keep
 data class ScrapedTrackDto(
     @SerializedName("id")
     val id: String?,
