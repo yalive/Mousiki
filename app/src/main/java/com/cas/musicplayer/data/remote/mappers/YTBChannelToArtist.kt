@@ -9,9 +9,9 @@ import javax.inject.Singleton
 @Singleton
 class YTBChannelToArtist @Inject constructor() : Mapper<YTBChannel, Artist> {
     override suspend fun map(from: YTBChannel): Artist {
-        val channelId = from.id ?: ""
-        val title = from.snippet?.title ?: ""
-        val urlImage = from.snippet?.thumbnails?.urlOrEmpty() ?: ""
+        val channelId = from.id.orEmpty()
+        val title = from.snippet?.title.orEmpty()
+        val urlImage = from.snippet?.thumbnails?.urlOrEmpty().orEmpty()
         return Artist(title, "", channelId, urlImage)
     }
 }

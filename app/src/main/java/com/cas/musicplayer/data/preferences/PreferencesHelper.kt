@@ -17,7 +17,7 @@ class PreferencesHelper @Inject constructor(
 ) {
 
     fun mostPopularNextPageToken(): String {
-        return preferences().getString(EXTRAS_POPULAR_NEXT_PAGE, "") ?: ""
+        return preferences().getString(EXTRAS_POPULAR_NEXT_PAGE, "").orEmpty()
     }
 
     fun setMostPopularNextPageToken(nextPageToken: String) {

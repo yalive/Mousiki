@@ -103,7 +103,7 @@ class LibraryViewModel @Inject constructor(
             0, Playlist(
                 id = Constants.FAV_PLAYLIST_NAME,
                 title = Constants.FAV_PLAYLIST_NAME,
-                urlImage = favouriteTrack?.imgUrl ?: "",
+                urlImage = favouriteTrack?.imgUrl.orEmpty(),
                 itemCount = favouriteTracks.size
             )
         )

@@ -57,7 +57,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
     }
 
     private fun filterArtists() {
-        viewModel.filterArtists(editSearch.text?.toString() ?: "")
+        viewModel.filterArtists(editSearch.text?.toString().orEmpty())
     }
 
     private fun setupRecyclerView() {

@@ -15,10 +15,10 @@ import javax.inject.Singleton
 class YTBChannelToChannel @Inject constructor() : Mapper<YTBChannel, Channel> {
     override suspend fun map(from: YTBChannel): Channel {
         return Channel(
-            from.id ?: "",
-            from.snippet?.title ?: "",
+            from.id.orEmpty(),
+            from.snippet?.title.orEmpty(),
             "",
-            from.snippet?.thumbnails?.urlOrEmpty() ?: ""
+            from.snippet?.thumbnails?.urlOrEmpty().orEmpty()
         )
     }
 }

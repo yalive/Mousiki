@@ -9,9 +9,9 @@ import javax.inject.Singleton
 @Singleton
 class YTBVideoToTrack @Inject constructor() : Mapper<YTBVideo, MusicTrack> {
     override suspend fun map(from: YTBVideo): MusicTrack {
-        val id = from.id ?: ""
-        val title = from.snippet?.title ?: ""
-        val duration = from.contentDetails?.duration ?: ""
+        val id = from.id.orEmpty()
+        val title = from.snippet?.title.orEmpty()
+        val duration = from.contentDetails?.duration.orEmpty()
         val track = MusicTrack(id, title, duration)
         from.snippet?.thumbnails?.urlOrEmpty()?.let { url ->
             track.fullImageUrl = url
