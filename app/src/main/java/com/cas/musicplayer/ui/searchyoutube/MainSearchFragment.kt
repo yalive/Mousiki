@@ -37,7 +37,7 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
         )
         darkStatusBarOnDarkMode()
         observeViewModel()
-        searchBtnView.onClick {
+        btnStartSearch.onClick {
             findNavController().navigateSafeAction(R.id.action_mainSearchFragment_to_searchYoutubeFragment)
         }
     }

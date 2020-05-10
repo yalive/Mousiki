@@ -289,7 +289,9 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             MaterialDialog(requireContext()).show {
                 message(R.string.battery_saver_mode_request_change_settings)
                 positiveButton(R.string.ok) {
-                    SystemSettings.enableSettingModification(requireActivity())
+                    activity?.let { activity ->
+                        SystemSettings.enableSettingModification(activity)
+                    }
                 }
                 negativeButton(R.string.cancel)
                 getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
