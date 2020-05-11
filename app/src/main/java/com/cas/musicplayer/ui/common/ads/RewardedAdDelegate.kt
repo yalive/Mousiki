@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.common.ads
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.os.bundleOf
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.EnvConfig
 import com.cas.musicplayer.data.config.RemoteAppConfig
@@ -105,6 +106,13 @@ class RewardedAdDelegateImp(
             }
 
             override fun onRewardedAdLoaded() {
+                if (retriesCount > 0) {
+                    analytics.logEvent(
+                        ANALYTICS_GOT_REWARD_AFTER_RETRIES, bundleOf(
+                            "retries" to retriesCount
+                        )
+                    )
+                }
                 retriesCount = 0
                 errorLoadingAd = false
             }
@@ -114,6 +122,7 @@ class RewardedAdDelegateImp(
     companion object {
         private const val ANALYTICS_ERROR_LOAD_AD = "rewarded_ad_not_ready_yet"
         private const val ANALYTICS_ERROR_LOAD_AD_RETRY = "rewarded_ad_error_after_retries"
+        private const val ANALYTICS_GOT_REWARD_AFTER_RETRIES = "got_rewarded_ad_after_x_retries"
     }
 
 }

@@ -17,4 +17,9 @@ interface MousikiSearchApi {
         @Path(value = "url", encoded = true) url: String,
         @Query("q") query: String
     ): MousikiSearchApiRS
+
+    @GET("https://mousikiapp.herokuapp.com/api/{channelId}/songs")
+    suspend fun searchChannel(
+        @Path(value = "channelId") channelId: String
+    ): MousikiSearchApiRS
 }
