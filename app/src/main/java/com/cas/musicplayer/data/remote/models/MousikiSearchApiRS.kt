@@ -9,13 +9,13 @@ import com.google.gson.annotations.SerializedName
  ***************************************
  */
 @Keep
-data class ScrappedResponse(
+data class MousikiSearchApiRS(
     @SerializedName("results")
-    val results: List<ScrappedResult>?
+    val results: List<MousikiSearchApiResult>?
 )
 
 @Keep
-data class ScrappedResult(
+data class MousikiSearchApiResult(
     @SerializedName("video")
-    val video: ScrapedTrackDto?
+    val video: MousikiSearchVideoItem?
 )

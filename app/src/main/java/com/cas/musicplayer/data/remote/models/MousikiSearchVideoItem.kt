@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName
  ***************************************
  */
 @Keep
-data class ScrapedTrackDto(
+data class MousikiSearchVideoItem(
     @SerializedName("id")
     val id: String?,
     @SerializedName("title")
@@ -30,7 +30,7 @@ data class ScrapedTrackDto(
     val views: String?
 )
 
-fun ScrapedTrackDto.toMusicTrack(): MusicTrack {
+fun MousikiSearchVideoItem.toMusicTrack(): MusicTrack {
     return MusicTrack(
         youtubeId = id.orEmpty(),
         duration = MusicTrack.toYoutubeDuration(duration.orEmpty()),
