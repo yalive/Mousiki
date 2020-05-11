@@ -35,7 +35,7 @@ class NotificationBuilder(private val context: Context) {
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     private val skipToPreviousAction = NotificationCompat.Action(
-        R.drawable.ic_skip_previous,
+        R.drawable.ic_notif_skip_to_previous,
         context.getString(R.string.player_notification_skip_to_previous),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             context,
@@ -44,7 +44,7 @@ class NotificationBuilder(private val context: Context) {
     )
 
     private val playAction = NotificationCompat.Action(
-        R.drawable.ic_play,
+        R.drawable.ic_notif_play,
         context.getString(R.string.player_notification_play),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             context,
@@ -53,7 +53,7 @@ class NotificationBuilder(private val context: Context) {
     )
 
     private val pauseAction = NotificationCompat.Action(
-        R.drawable.ic_pause,
+        R.drawable.ic_notif_pause,
         context.getString(R.string.player_notification_pause),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             context,
@@ -62,7 +62,7 @@ class NotificationBuilder(private val context: Context) {
     )
 
     private val skipToNextAction = NotificationCompat.Action(
-        R.drawable.ic_skip_next,
+        R.drawable.ic_notif_skip_to_next,
         context.getString(R.string.player_notification_skip_to_next),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
             context,
@@ -98,13 +98,13 @@ class NotificationBuilder(private val context: Context) {
 
         if (UserPrefs.isFav(description?.mediaId)) {
             builder.addAction(
-                R.drawable.ic_heart_solid,
+                R.drawable.ic_notif_favourite_full,
                 context.getString(R.string.player_remove_from_favourite),
                 createFavouriteIntent(false)
             )
         } else {
             builder.addAction(
-                R.drawable.ic_heart_light,
+                R.drawable.ic_notif_favourite_empty,
                 context.getString(R.string.player_add_to_favourite),
                 createFavouriteIntent(true)
             )
