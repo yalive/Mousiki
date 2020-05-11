@@ -1,7 +1,9 @@
 package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
+import android.util.Log
 import com.crashlytics.android.Crashlytics
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.util.regex.Pattern
 
@@ -82,13 +84,17 @@ data class MusicTrack(
             return timeString
         }
 
+    @IgnoredOnParcel
+    @delegate:Transient
+    val totalSeconds: Long by lazy { durationToSeconds() }
+
     companion object
 }
 
 val LENGTH_PATTERN =
     Pattern.compile("^PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?$", Pattern.CASE_INSENSITIVE)
 
-fun MusicTrack.durationToSeconds(): Long {
+private fun MusicTrack.durationToSeconds(): Long {
     val m = LENGTH_PATTERN.matcher(duration)
     if (m.matches()) {
         val hr = m.group(1)

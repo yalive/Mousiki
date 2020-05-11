@@ -52,11 +52,16 @@ class YoutubePlayerManager(
     }
 
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-        if (isScreenLocked() && second.toInt() % 3 == 0) {
+        val seconds = second.toInt()
+        if (seconds % 3 == 0 && isScreenLocked()) {
             PlayerQueue.pause()
             return
         }
-        PlaybackDuration.value = second
+
+        val duration = PlaybackDuration.value ?: 0
+        if (seconds != duration) {
+            PlaybackDuration.value = seconds
+        }
     }
 
     private fun setMediaPlaybackState(state: Int) {
