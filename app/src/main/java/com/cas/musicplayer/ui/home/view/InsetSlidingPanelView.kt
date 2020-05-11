@@ -1,8 +1,10 @@
 package com.cas.musicplayer.ui.home.view
 
 import android.content.Context
+import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.WindowInsets
+import com.crashlytics.android.Crashlytics
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 /**
@@ -35,4 +37,13 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
             getChildAt(index).dispatchApplyWindowInsets(insets)
         return insets
     }
+
+    override fun draw(c: Canvas?) {
+        try {
+            super.draw(c)
+        } catch (e: OutOfMemoryError) {
+            Crashlytics.logException(Exception("Catch SlidingUpPanelLayout out of memory issue", e))
+        }
+    }
+
 }

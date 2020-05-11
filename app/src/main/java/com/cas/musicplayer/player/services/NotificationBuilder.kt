@@ -14,10 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
 import com.cas.musicplayer.R
-import com.cas.musicplayer.player.extensions.isPlayEnabled
 import com.cas.musicplayer.player.extensions.isPlaying
-import com.cas.musicplayer.player.extensions.isSkipToNextEnabled
-import com.cas.musicplayer.player.extensions.isSkipToPreviousEnabled
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.getBitmap
@@ -114,19 +111,13 @@ class NotificationBuilder(private val context: Context) {
         }
 
         // Only add actions for skip back, play/pause, skip forward, based on what's enabled.
-        var playPauseIndex = 0
-        if (playbackState.isSkipToPreviousEnabled) {
-            builder.addAction(skipToPreviousAction)
-            ++playPauseIndex
-        }
+        builder.addAction(skipToPreviousAction)
         if (playbackState.isPlaying) {
             builder.addAction(pauseAction)
-        } else if (playbackState.isPlayEnabled) {
+        } else {
             builder.addAction(playAction)
         }
-        if (playbackState.isSkipToNextEnabled) {
-            builder.addAction(skipToNextAction)
-        }
+        builder.addAction(skipToNextAction)
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
             .setMediaSession(sessionToken)
             .setShowActionsInCompactView(1, 2, 3)

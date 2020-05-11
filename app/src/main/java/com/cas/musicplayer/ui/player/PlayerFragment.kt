@@ -406,6 +406,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 imgBlured?.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
             } catch (e: Exception) {
                 Crashlytics.logException(e)
+            } catch (error: OutOfMemoryError) {
+                Crashlytics.logException(error)
             }
         }
     }
