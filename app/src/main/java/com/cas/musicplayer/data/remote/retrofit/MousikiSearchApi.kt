@@ -1,7 +1,8 @@
 package com.cas.musicplayer.data.remote.retrofit
 
-import com.cas.musicplayer.data.remote.models.ScrappedResponse
+import com.cas.musicplayer.data.remote.models.MousikiSearchApiRS
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -9,10 +10,11 @@ import retrofit2.http.Query
  * Created by Y.Abdelhadi on 5/9/20.
  ***************************************
  */
-interface ScrapService {
+interface MousikiSearchApi {
 
-    @GET("https://youtube-scrape.herokuapp.com/api/search")
+    @GET("{url}")
     suspend fun search(
+        @Path(value = "url", encoded = true) url: String,
         @Query("q") query: String
-    ): ScrappedResponse
+    ): MousikiSearchApiRS
 }
