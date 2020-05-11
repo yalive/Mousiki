@@ -36,7 +36,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.durationToSeconds
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.VideoEmplacement
@@ -63,12 +62,11 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private val handler = Handler()
     private var mediaController: MediaControllerCompat? = null
     private var btnFullScreen: ImageButton? = null
-    private var btnPlayPause: ImageButton? = null
     private var btnPlayPauseMain: ImageButton? = null
     private var imgBlured: ImageView? = null
     private var lockScreenView: LockScreenView? = null
     private var queueFragment: SlideUpPlaylistFragment? = null
-    private var userSeekDuration = false
+    private var seekingDuration = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -129,21 +127,16 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         btnFullScreen = view?.findViewById(R.id.btnFullScreen)
-        btnPlayPause = view?.findViewById(R.id.btnPlayPause)
         btnPlayPauseMain = view?.findViewById(R.id.btnPlayPauseMain)
         lockScreenView = view?.findViewById(R.id.lockScreenView)
         imgBlured = view?.findViewById(R.id.imgBlured)
 
         mainActivity = requireActivity() as MainActivity
         mainActivity.slidingPaneLayout.addPanelSlideListener(this)
-        PlayerQueue.observe(this, Observer { video ->
+        PlayerQueue.observe(viewLifecycleOwner, Observer { video ->
             onVideoChanged(video)
             lockScreenView?.setCurrentTrack(video)
         })
-
-        btnPlayPause?.onClick {
-            onClickPlayPause()
-        }
 
         btnPlayPauseMain?.onClick {
             onClickPlayPause()
@@ -215,22 +208,19 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
         adjustCenterViews()
 
-        PlaybackDuration.observe(this, Observer { elapsedSeconds ->
-            val minutes = (elapsedSeconds / 60).toInt()
-            val seconds = (elapsedSeconds % 60).toInt()
+        PlaybackDuration.observe(viewLifecycleOwner, Observer { elapsedSeconds ->
+            val minutes = elapsedSeconds / 60
+            val seconds = elapsedSeconds % 60
             txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
 
-            if (!userSeekDuration) {
+            if (!seekingDuration) {
                 PlayerQueue.value?.let { currentTrack ->
-                    val progress = elapsedSeconds * 100 / currentTrack.durationToSeconds()
-                    seekBarDuration.progress = progress.toInt()
+                    val progress = (elapsedSeconds * 100 / currentTrack.totalSeconds).toInt()
+                    seekBarDuration.animateProgress(progress)
+                    miniPlayerView.updateProgress(progress)
                 }
             }
         })
-
-        btnShowQueue.onClick {
-            showQueue()
-        }
 
         btnShowQueueFull.onClick {
             showQueue()
@@ -257,13 +247,19 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             VideoEmplacementLiveData.fullscreen()
         }
 
-        DeviceInset.observe(this, Observer { inset ->
+        DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
             fullScreenSwitchView.updatePadding(top = inset.top)
             adjustCenterViews()
         })
 
-        topBarView.onClick {
+        miniPlayerView.onClick {
             mainActivity.expandBottomPanel()
+        }
+        miniPlayerView.doOnClickPlayPause {
+            onClickPlayPause()
+        }
+        miniPlayerView.doOnClickShowQueue {
+            showQueue()
         }
         observe(viewModel.isLiked) { isLiked ->
             if (isLiked) {
@@ -307,7 +303,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     override fun onPanelSlide(panel: View?, slideOffset: Float) {
         mainView.alpha = slideOffset
-        topBarView.alpha = 1 - slideOffset
+        miniPlayerView.alpha = 1 - slideOffset
     }
 
     override fun onPanelStateChanged(
@@ -360,19 +356,19 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         btnYoutube.layoutParams = paramsTxtYoutubeCopy
     }
 
-    private fun onVideoChanged(video: MusicTrack) {
-        txtTitle.text = video.title
-        txtTitleVideoCenter.text = video.title
+    private fun onVideoChanged(track: MusicTrack) {
+        miniPlayerView.onTrackChanged(track)
+        txtTitleVideoCenter.text = track.title
 
-        if (UserPrefs.isFav(video.youtubeId)) {
+        if (UserPrefs.isFav(track.youtubeId)) {
             btnAddFav.setImageResource(R.drawable.ic_heart_solid)
             btnAddFav.tint(R.color.colorAccent)
         } else {
             btnAddFav.setImageResource(R.drawable.ic_heart_light)
             btnAddFav.tint(R.color.colorWhite)
         }
-        loadAndBlurImage(video)
-        configureSeekBar(video)
+        loadAndBlurImage(track)
+        configureSeekBar(track)
     }
 
     @SuppressLint("SetTextI18n")
@@ -380,23 +376,24 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         txtDuration.text = video.durationFormatted
         txtElapsedTime.text = "00:00"
         seekBarDuration.progress = 0
+        miniPlayerView.updateProgress(0)
         seekBarDuration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                // Nothing
-                userSeekDuration = true
+                if (fromUser) {
+                    seekingDuration = true
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                // Nothing
-                userSeekDuration = true
+                seekingDuration = true
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 val progress = seekBar.progress
-                val seconds = progress * video.durationToSeconds() / 100
+                val seconds = progress * video.totalSeconds / 100
                 PlayerQueue.seekTo(seconds * 1000)
-                handler.postDelayed(800) {
-                    userSeekDuration = false
+                handler.postDelayed(500) {
+                    seekingDuration = false
                 }
             }
         })
@@ -420,13 +417,12 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     }
 
     private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
+        miniPlayerView.onPlayMusicStateChanged(stateCompat)
         val state = stateCompat.state
         if (state == PlaybackStateCompat.STATE_PLAYING || state == PlaybackStateCompat.STATE_BUFFERING) {
-            btnPlayPause?.setImageResource(R.drawable.ic_pause)
             btnPlayPauseMain?.setImageResource(R.drawable.ic_pause)
             lockScreenView?.onPlayBackStateChanged()
         } else if (state == PlaybackStateCompat.STATE_PAUSED) {
-            btnPlayPause?.setImageResource(R.drawable.ic_play)
             btnPlayPauseMain?.setImageResource(R.drawable.ic_play)
             lockScreenView?.onPlayBackStateChanged()
         } else if (state == PlaybackStateCompat.STATE_STOPPED) {

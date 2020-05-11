@@ -8,6 +8,7 @@
     android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
     tools:context=".ui.player.PlayerFragment">
 
+    <!-- Expanded player -->
     <RelativeLayout
         android:id="@+id/mainView"
         android:layout_width="match_parent"
@@ -321,61 +322,15 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <!-- Top Bar-->
-    <LinearLayout
-        android:id="@+id/topBarView"
+    <com.cas.musicplayer.ui.player.MiniPlayerView
+        android:id="@+id/miniPlayerView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_pannel_height"
-        android:background="@drawable/bg_mini_player"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        tools:visibility="gone">
-
-        <View
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:fontFamily="@font/pangram_regular"
-            android:maxLines="2"
-            android:text=""
-            android:textColor="@color/colorWhite" />
-
-        <ImageButton
-            android:id="@+id/btnPlayPause"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/app_name"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_pause" />
-
-        <ImageButton
-            android:id="@+id/btnShowQueue"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/app_name"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_queue_music" />
-
-    </LinearLayout>
+        android:background="@drawable/bg_mini_player" />
 
     <com.cas.musicplayer.ui.player.LockScreenView
         android:id="@+id/lockScreenView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
-
 </FrameLayout>
