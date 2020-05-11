@@ -1,6 +1,7 @@
 package com.cas.musicplayer.data.remote.models
 
 import androidx.annotation.Keep
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -19,3 +20,9 @@ data class MousikiSearchApiResult(
     @SerializedName("video")
     val video: MousikiSearchVideoItem?
 )
+
+fun MousikiSearchApiRS.tracks(): List<MusicTrack> {
+    return results?.mapNotNull { it.video?.toMusicTrack() }
+        ?.filter { it.duration.isNotEmpty() && it.youtubeId.isNotEmpty() }
+        ?: emptyList()
+}

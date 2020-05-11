@@ -87,6 +87,10 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getBoolean(BANNER_AD_TURNED_ON)
     }
 
+    fun searchArtistTracksFromMousikiApi(): Boolean {
+        return firebaseRemoteConfig.getBoolean(SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API)
+    }
+
     fun getClickCountToShowReward(): Int {
         val offset = firebaseRemoteConfig.getLong(SHOW_REWARD_AFTER_X_CLICK).toInt()
         if (offset <= 0) return DEF_CLICK_TO_SHOW_REWARD
@@ -106,5 +110,6 @@ class RemoteAppConfig @Inject constructor(
         const val TURN_ON_REWARD_AD = "turn_on_reward_ad"
         const val BANNER_AD_TURNED_ON = "turn_on_banner_ad"
         const val SHOW_REWARD_AFTER_X_CLICK = "show_reward_after_x_click"
+        const val SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API = "search_artist_tracks_from_mousiki_api"
     }
 }

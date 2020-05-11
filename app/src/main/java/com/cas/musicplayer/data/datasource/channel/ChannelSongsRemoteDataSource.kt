@@ -4,11 +4,14 @@ import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
+import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.datasource.musicTracks
 import com.cas.musicplayer.data.remote.mappers.YTBSearchResultToVideoId
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
 import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.data.remote.models.tracks
+import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -32,16 +35,27 @@ import kotlin.coroutines.suspendCoroutine
  */
 class ChannelSongsRemoteDataSource @Inject constructor(
     private var youtubeService: YoutubeService,
+    private var mousikiSearchApi: MousikiSearchApi,
     private val retrofitRunner: RetrofitRunner,
     private val searchMapper: YTBSearchResultToVideoId,
     private val trackMapper: YTBVideoToTrack,
     private val appContext: Context,
     private val gson: Gson,
     private val connectivityState: ConnectivityState,
-    private val storage: FirebaseStorage
+    private val storage: FirebaseStorage,
+    private val appConfig: RemoteAppConfig
 ) {
 
     suspend fun getChannelSongs(artist: Artist): Result<List<MusicTrack>> {
+        if (appConfig.searchArtistTracksFromMousikiApi()) {
+            val resultSearch = retrofitRunner.executeNetworkCall {
+                mousikiSearchApi.searchChannel(artist.channelId).tracks()
+            }
+
+            if (resultSearch is Result.Success && resultSearch.data.isNotEmpty()) {
+                return resultSearch
+            }
+        }
         val firebaseTracks = withContext(bgContext) {
             downloadArtistTracksFile(artist).musicTracks(gson)
         }
