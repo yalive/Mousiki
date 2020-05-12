@@ -7,7 +7,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.data.local.database.dao.*
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
-import com.cas.musicplayer.data.remote.retrofit.ScrapService
+import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.utils.Constants
 import com.google.gson.Gson
@@ -55,8 +55,8 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesScrapper(retrofit: Retrofit): ScrapService {
-        return retrofit.create(ScrapService::class.java)
+    fun providesMousikiSearchApi(retrofit: Retrofit): MousikiSearchApi {
+        return retrofit.create(MousikiSearchApi::class.java)
     }
 
     @Singleton

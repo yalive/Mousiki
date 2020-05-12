@@ -4,9 +4,9 @@ import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.*
-import com.cas.musicplayer.data.remote.models.toMusicTrack
+import com.cas.musicplayer.data.remote.models.tracks
+import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
-import com.cas.musicplayer.data.remote.retrofit.ScrapService
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.domain.model.Channel
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 class SearchRemoteDataSource @Inject constructor(
     private var youtubeService: YoutubeService,
-    private var scrapService: ScrapService,
+    private var mousikiSearchApi: MousikiSearchApi,
     private val retrofitRunner: RetrofitRunner,
     private val trackMapper: YTBVideoToTrack,
     private val playlistMapper: YTBPlaylistToPlaylist,
@@ -34,16 +34,24 @@ class SearchRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun searchTracks(query: String): Result<List<MusicTrack>> {
+        // First API
         analytics.logEvent(EVENT_START_SEARCH, null)
-        val resultScrap = retrofitRunner.executeNetworkCall {
-            scrapService.search(query).results
-                ?.mapNotNull { it.video?.toMusicTrack() }
-                ?.filter { it.duration.isNotEmpty() && it.youtubeId.isNotEmpty() }
-                ?: emptyList()
+        val resultSearch1 = retrofitRunner.executeNetworkCall {
+            mousikiSearchApi.search(URL1, query).tracks()
         }
-        if (resultScrap is Result.Success && resultScrap.data.isNotEmpty()) {
-            return resultScrap
+        if (resultSearch1 is Result.Success && resultSearch1.data.isNotEmpty()) {
+            return resultSearch1
         }
+
+        // Second API
+        val resultSearch2 = retrofitRunner.executeNetworkCall {
+            mousikiSearchApi.search(URL2, query).tracks()
+        }
+        if (resultSearch2 is Result.Success && resultSearch2.data.isNotEmpty()) {
+            return resultSearch2
+        }
+
+        // Youtube search
         analytics.logEvent(EVENT_SCRAP_NOT_WORKING, null)
         val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
             youtubeService.searchVideoIdsByQuery(query, 50).items ?: emptyList()
@@ -79,6 +87,11 @@ class SearchRemoteDataSource @Inject constructor(
         return retrofitRunner.executeNetworkCall(channelMapper.toListMapper()) {
             youtubeService.channels(ids).items ?: emptyList()
         }
+    }
+
+    companion object {
+        private const val URL1 = "https://youtube-scrape.herokuapp.com/api/search"
+        private const val URL2 = "https://mousikiapp.herokuapp.com/api/search"
     }
 }
 

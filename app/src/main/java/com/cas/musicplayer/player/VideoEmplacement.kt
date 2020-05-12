@@ -59,7 +59,7 @@ class EmplacementBottom(val bottomBarVisible: Boolean) : VideoEmplacement() {
                 bottomY -= dpToPixel(56f)
             }
             if (!connectivityState.isConnected()) {
-                bottomY -= dpToPixel(16f)
+                bottomY -= dpToPixel(20f)
             }
             return bottomY
         }

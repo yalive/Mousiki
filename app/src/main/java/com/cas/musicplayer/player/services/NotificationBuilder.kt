@@ -118,6 +118,7 @@ class NotificationBuilder(private val context: Context) {
             builder.addAction(playAction)
         }
         builder.addAction(skipToNextAction)
+
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
             .setMediaSession(sessionToken)
             .setShowActionsInCompactView(1, 2, 3)
@@ -133,7 +134,11 @@ class NotificationBuilder(private val context: Context) {
             .setLargeIcon(largeIconBitmap)
             .setOnlyAlertOnce(true)
             .setSmallIcon(R.drawable.ic_app_player_notification)
-            .setStyle(mediaStyle)
+            .apply {
+                if (!isLollipopHuawei()) {
+                    setStyle(mediaStyle)
+                }
+            }
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .build()
     }
@@ -179,5 +184,11 @@ class NotificationBuilder(private val context: Context) {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
+    }
+
+    private fun isLollipopHuawei(): Boolean {
+        return (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1
+                || Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP)
+                && "HUAWEI".equals(Build.MANUFACTURER, true)
     }
 }
