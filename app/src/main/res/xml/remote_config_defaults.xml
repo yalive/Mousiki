@@ -38,6 +38,11 @@
     </entry>
 
     <entry>
+        <key>search_artist_tracks_from_mousiki_api</key>
+        <value>false</value>
+    </entry>
+
+    <entry>
         <key>show_reward_after_x_click</key>
         <value>7</value>
     </entry>
