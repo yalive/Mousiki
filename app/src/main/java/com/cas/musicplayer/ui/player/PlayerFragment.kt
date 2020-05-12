@@ -209,11 +209,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         adjustCenterViews()
 
         PlaybackDuration.observe(viewLifecycleOwner, Observer { elapsedSeconds ->
-            val minutes = elapsedSeconds / 60
-            val seconds = elapsedSeconds % 60
-            txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
-
             if (!seekingDuration) {
+                updateCurrentTrackTime(elapsedSeconds)
                 PlayerQueue.value?.let { currentTrack ->
                     val progress = (elapsedSeconds * 100 / currentTrack.totalSeconds).toInt()
                     seekBarDuration.animateProgress(progress)
@@ -381,6 +378,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     seekingDuration = true
+                    val seconds = progress * video.totalSeconds.toInt() / 100
+                    updateCurrentTrackTime(seconds)
                 }
             }
 
@@ -397,6 +396,12 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 }
             }
         })
+    }
+
+    private fun updateCurrentTrackTime(elapsedSeconds: Int) {
+        val minutes = elapsedSeconds / 60
+        val seconds = elapsedSeconds % 60
+        txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
     }
 
     private fun loadAndBlurImage(video: MusicTrack) {
