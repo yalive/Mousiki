@@ -14,4 +14,4 @@ object PlaybackLiveData : MutableLiveData<PlayerConstants.PlayerState>() {
     fun isPause() = value == PlayerConstants.PlayerState.PAUSED
 }
 
-object PlaybackDuration : MutableLiveData<Float>()
+object PlaybackDuration : MutableLiveData<Int>()

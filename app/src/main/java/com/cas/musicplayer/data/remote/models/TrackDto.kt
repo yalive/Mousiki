@@ -18,7 +18,7 @@ data class TrackDto(
 )
 
 fun TrackDto.toDomainModel() = MusicTrack(
-    youtubeId = youtubeId ?: "",
-    duration = duration ?: "",
-    title = title ?: ""
+    youtubeId = youtubeId.orEmpty(),
+    duration = duration.orEmpty(),
+    title = title.orEmpty()
 )

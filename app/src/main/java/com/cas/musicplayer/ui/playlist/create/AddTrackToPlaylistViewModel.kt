@@ -55,7 +55,7 @@ class AddTrackToPlaylistViewModel @AssistedInject constructor(
             0, Playlist(
                 id = "",
                 title = Constants.FAV_PLAYLIST_NAME,
-                urlImage = favouriteTrack?.imgUrl ?: "",
+                urlImage = favouriteTrack?.imgUrl.orEmpty(),
                 itemCount = favouriteTracks.size
             )
         )

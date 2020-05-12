@@ -31,6 +31,7 @@ import com.cas.musicplayer.ui.common.songs.AppImage.AppImageUrl
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
+import com.crashlytics.android.Crashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_playlist_songs.*
@@ -90,7 +91,11 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         })
         requireActivity().window.statusBarColor = Color.TRANSPARENT
         darkStatusBar()
-        loadFeaturedImage()
+        try {
+            loadFeaturedImage()
+        } catch (e: OutOfMemoryError) {
+            Crashlytics.logException(e)
+        }
 
         observe(PlaybackLiveData) { state ->
             if (state == PlayerConstants.PlayerState.PLAYING

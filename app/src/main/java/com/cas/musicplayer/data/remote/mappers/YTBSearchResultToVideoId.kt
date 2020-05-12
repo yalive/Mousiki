@@ -13,6 +13,6 @@ import javax.inject.Singleton
 @Singleton
 class YTBSearchResultToVideoId @Inject constructor() : Mapper<YTBSearchResult, VideoId> {
     override suspend fun map(from: YTBSearchResult): VideoId {
-        return VideoId(from.id?.videoId ?: "")
+        return VideoId(from.id?.videoId.orEmpty())
     }
 }
