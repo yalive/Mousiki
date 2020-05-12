@@ -62,7 +62,7 @@ class AddKeyInterceptor @Inject constructor(
             } catch (e: Exception) {
             }
             val youtubeApiKeys = remoteConfig.getYoutubeApiKeys()
-            currentKey = youtubeApiKeys.firstOrNull() ?: ""
+            currentKey = youtubeApiKeys.firstOrNull().orEmpty()
         }
         if (count >= MAX_RETRY_GET_KEYS && currentKey.isEmpty()) {
             val firebaseAnalytics = FirebaseAnalytics.getInstance(context)

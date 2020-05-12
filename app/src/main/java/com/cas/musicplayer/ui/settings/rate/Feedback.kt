@@ -36,7 +36,7 @@ fun Context.writeFeedback() {
         dialog.dismiss()
     }
     btnSend.onClick {
-        val feedback = editFeedback.text?.toString() ?: ""
+        val feedback = editFeedback.text?.toString().orEmpty()
         analytics.logEvent(ANALYTICS_KEY_CLICK_SEND_FEEDBACK, null)
         dialog.dismiss()
         Utils.sendEmail(this, feedback)

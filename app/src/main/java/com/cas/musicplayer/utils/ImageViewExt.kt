@@ -65,33 +65,6 @@ fun ImageView.loadImage(
     }
 }
 
-fun ImageView.loadAndBlurImage(
-    urlImage: String,
-    scale: Float = 0.3f,
-    radius: Int = 45,
-    onGetBitmap: ((Bitmap) -> Unit) = {}
-) {
-    val target = object : Target {
-        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-            // Nothing
-        }
-
-        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            // Nothing
-        }
-
-        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            try {
-                setImageBitmap(BlurImage.fastblur(bitmap, scale, radius))
-                bitmap?.let(onGetBitmap)
-            } catch (e: OutOfMemoryError) {
-            }
-        }
-    }
-    this.tag = target
-    Picasso.get().load(urlImage).into(target)
-}
-
 suspend fun Picasso.getBitmap(url: String): Bitmap? = suspendCoroutine { continuation ->
     if (url.isEmpty()) {
         continuation.resume(null)

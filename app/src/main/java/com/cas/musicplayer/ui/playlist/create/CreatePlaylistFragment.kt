@@ -41,7 +41,7 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>() {
     }
 
     private fun createPlaylist() {
-        val playlistName = editPlaylistName.text?.toString() ?: ""
+        val playlistName = editPlaylistName.text?.toString().orEmpty()
         if (playlistName.length < 2) {
             return
         }
