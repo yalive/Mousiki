@@ -27,6 +27,7 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
+
 class PopularSongsViewModel @Inject constructor(
     private val getPopularSongs: GetPopularSongsUseCase,
     delegate: PlaySongDelegate,
@@ -49,12 +50,16 @@ class PopularSongsViewModel @Inject constructor(
         }
         loadingMore = true
         _newReleases.loading()
-        val result = getPopularSongs(25)
+        val result = getPopularSongs(PAGE_SIZE)
         _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }.toMutableList()
         }.asResource()
+
         populateAdsIn(_newReleases)
         loadingMore = false
+        if (result is Result.Success && result.data.size < PAGE_SIZE) {
+            loadMoreSongs()
+        }
     }
 
     fun loadMoreSongs() = uiCoroutine {
@@ -63,7 +68,7 @@ class PopularSongsViewModel @Inject constructor(
         if (allSongs.isNotEmpty() && allSongs.size < MAX_VIDEOS) {
             loadingMore = true
             _newReleases.appendItems(listOf(LoadingItem), false)
-            val result = getPopularSongs(25, allSongs.lastOrNull())
+            val result = getPopularSongs(PAGE_SIZE, allSongs.lastOrNull())
             if (result is Result.Success) {
                 val newPageMapped = result.data.map { it.toDisplayedVideoItem() }
                 val itemsWithAds = insertAdsIn(newPageMapped)
@@ -87,6 +92,7 @@ class PopularSongsViewModel @Inject constructor(
 
     companion object {
         private const val MAX_VIDEOS = 200
+        private const val PAGE_SIZE = 25
     }
 }
 
