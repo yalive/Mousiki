@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import androidx.cardview.widget.CardView
 import androidx.core.view.GestureDetectorCompat
@@ -182,7 +181,6 @@ class YoutubeFloatingPlayerView : CardView {
             }
         }
         val gestureDetectorCompat = GestureDetectorCompat(context, gestureDetector)
-        val gestureDetectorCompat2 = GestureDetectorCompat(context, ClickGestureListener {})
 
         draggableView?.setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
@@ -190,7 +188,6 @@ class YoutubeFloatingPlayerView : CardView {
                     return true
                 }
                 gestureDetectorCompat.onTouchEvent(event)
-                gestureDetectorCompat2.onTouchEvent(event)
                 if (event.action == MotionEvent.ACTION_UP) {
                     bottomView.isVisible = false
                     batterySaverView.isVisible = false
@@ -257,16 +254,9 @@ class YoutubeFloatingPlayerView : CardView {
         }
     }
 
-    fun onAdsVisible(shown: Boolean) {
-        if (shown) {
-            this.gone()
-        } else {
-            this.visible()
-        }
-    }
-
     fun removeFromWindow() {
         try {
+            youTubePlayerView.release()
             windowManager.removeView(this)
         } catch (e: Exception) {
             Crashlytics.logException(e)
@@ -297,71 +287,5 @@ class YoutubeFloatingPlayerView : CardView {
         if (windowToken != null) {
             windowManager.updateViewLayout(this, videoViewParams)
         }
-    }
-}
-
-private class ClickGestureListener(
-    val onClick: () -> Unit
-) : GestureDetector.SimpleOnGestureListener() {
-    val TAG = "ClickGestureListener"
-    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-        Log.d(TAG, "onSingleTapConfirmed: ${Thread.currentThread().name}")
-        onClick()
-        return super.onSingleTapConfirmed(e)
-    }
-
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        Log.d(TAG, "onSingleTapUp: ${Thread.currentThread().name}")
-        return super.onSingleTapUp(e)
-    }
-
-    override fun onDown(e: MotionEvent?): Boolean {
-        Log.d(TAG, "onDown: ${Thread.currentThread().name}")
-        return super.onDown(e)
-    }
-
-    override fun onFling(
-        e1: MotionEvent?,
-        e2: MotionEvent?,
-        velocityX: Float,
-        velocityY: Float
-    ): Boolean {
-        Log.d(TAG, "onFling: ${Thread.currentThread().name}")
-        return super.onFling(e1, e2, velocityX, velocityY)
-    }
-
-    override fun onDoubleTap(e: MotionEvent?): Boolean {
-        Log.d(TAG, "onDoubleTap: ${Thread.currentThread().name}")
-        return super.onDoubleTap(e)
-    }
-
-    override fun onScroll(
-        e1: MotionEvent?,
-        e2: MotionEvent?,
-        distanceX: Float,
-        distanceY: Float
-    ): Boolean {
-        Log.d(TAG, "onScroll: ${Thread.currentThread().name}")
-        return super.onScroll(e1, e2, distanceX, distanceY)
-    }
-
-    override fun onContextClick(e: MotionEvent?): Boolean {
-        Log.d(TAG, "onContextClick: ${Thread.currentThread().name}")
-        return super.onContextClick(e)
-    }
-
-    override fun onShowPress(e: MotionEvent?) {
-        Log.d(TAG, "onShowPress: ${Thread.currentThread().name}")
-        super.onShowPress(e)
-    }
-
-    override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
-        Log.d(TAG, "onDoubleTapEvent: ${Thread.currentThread().name}")
-        return super.onDoubleTapEvent(e)
-    }
-
-    override fun onLongPress(e: MotionEvent?) {
-        Log.d(TAG, "onLongPress: ${Thread.currentThread().name}")
-        super.onLongPress(e)
     }
 }
