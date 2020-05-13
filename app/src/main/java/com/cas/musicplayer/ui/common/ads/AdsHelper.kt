@@ -29,13 +29,10 @@ suspend fun loadAds(count: Int) =
             }
         }.withAdListener(object : AdListener() {
             override fun onAdFailedToLoad(errorCode: Int) {
-                if (!adLoader.isLoading && continuation.isActive) {
+                if ((!adLoader.isLoading || count == 1) && continuation.isActive) {
                     continuation.resume(ads)
                 }
             }
-        }).withNativeAdOptions(
-            NativeAdOptions.Builder()
-                .build()
-        ).build()
+        }).withNativeAdOptions(NativeAdOptions.Builder().build()).build()
         adLoader.loadAds(AdRequest.Builder().build(), count)
     }
