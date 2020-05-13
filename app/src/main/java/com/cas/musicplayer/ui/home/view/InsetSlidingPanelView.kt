@@ -28,6 +28,10 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
     ) {
     }
 
+    override fun setOnApplyWindowInsetsListener(listener: OnApplyWindowInsetsListener?) {
+        super.setOnApplyWindowInsetsListener(listener)
+    }
+
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
         val childCount = childCount
         for (index in 0 until childCount)
@@ -42,6 +46,12 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
         } catch (e: Exception) {
             false
         } catch (e: OutOfMemoryError) {
+            Crashlytics.logException(
+                Exception(
+                    "Catch SlidingUpPanelLayout out of memory issue in drawChild function",
+                    e
+                )
+            )
             false
         }
     }
@@ -50,7 +60,12 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
         try {
             super.draw(c)
         } catch (e: OutOfMemoryError) {
-            Crashlytics.logException(Exception("Catch SlidingUpPanelLayout out of memory issue", e))
+            Crashlytics.logException(
+                Exception(
+                    "Catch SlidingUpPanelLayout out of memory issue in draw function",
+                    e
+                )
+            )
         }
     }
 
