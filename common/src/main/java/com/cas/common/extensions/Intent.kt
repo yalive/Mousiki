@@ -26,3 +26,7 @@ fun Intent.doOnExtrasTrue(booleanExtras: String, block: () -> Unit) {
         block()
     }
 }
+
+fun Intent.fromDynamicLink(): Boolean {
+    return hasExtra("com.google.firebase.dynamiclinks.DYNAMIC_LINK_DATA")
+}

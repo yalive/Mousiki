@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.transition.TransitionManager
+import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
@@ -150,7 +151,7 @@ class MainActivity : BaseActivity() {
 
         if (isFromPushNotification()) {
             checkPushNotificationTrack()
-        } else {
+        } else if (!intent.fromDynamicLink()) {
             observeEvent(viewModel.rateApp) {
                 askUserForFeelingAboutApp()
             }
@@ -217,7 +218,6 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        val value = PlaybackLiveData.value
         if (!isFromService) {
             isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false)
         }
