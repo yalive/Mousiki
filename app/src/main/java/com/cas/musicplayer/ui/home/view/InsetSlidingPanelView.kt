@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.home.view
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import android.view.View
 import android.view.WindowInsets
 import com.crashlytics.android.Crashlytics
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -27,15 +28,22 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
     ) {
     }
 
-    override fun setOnApplyWindowInsetsListener(listener: OnApplyWindowInsetsListener?) {
-        super.setOnApplyWindowInsetsListener(listener)
-    }
-
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
         val childCount = childCount
         for (index in 0 until childCount)
             getChildAt(index).dispatchApplyWindowInsets(insets)
         return insets
+    }
+
+    override fun drawChild(canvas: Canvas?, child: View?, drawingTime: Long): Boolean {
+        // workaround
+        return try {
+            super.drawChild(canvas, child, drawingTime)
+        } catch (e: Exception) {
+            false
+        } catch (e: OutOfMemoryError) {
+            false
+        }
     }
 
     override fun draw(c: Canvas?) {
