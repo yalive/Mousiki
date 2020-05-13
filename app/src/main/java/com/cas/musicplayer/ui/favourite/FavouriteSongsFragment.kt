@@ -13,7 +13,7 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
-import com.google.gson.Gson
+import com.cas.musicplayer.utils.Constants
 import kotlinx.android.synthetic.main.fragment_play_list.*
 
 class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>() {
@@ -34,7 +34,7 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>() {
             onClickMore = { track ->
                 val bottomSheetFragment = FvaBottomSheetFragment()
                 val bundle = Bundle()
-                bundle.putString("MUSIC_TRACK", Gson().toJson(track))
+                bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 bottomSheetFragment.arguments = bundle
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }

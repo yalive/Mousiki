@@ -24,6 +24,7 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
+import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -49,7 +50,7 @@ class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
             onClickMore = { track ->
                 val bottomSheetFragment = FvaBottomSheetFragment()
                 val bundle = Bundle()
-                bundle.putString("MUSIC_TRACK", injector.gson.toJson(track))
+                bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 bottomSheetFragment.arguments = bundle
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
