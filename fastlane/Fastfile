@@ -47,7 +47,8 @@ platform :android do
                 testers: "abdelhadibahddou@gmail.com",
                 firebase_cli_path: "/Users/macbook/Firebase/firebase",
                 release_notes: "
-                - Check ads.
+                - Recognize when app started from a dynamic link.
+                - Bug fixes.
                 "
             )
         end
