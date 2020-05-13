@@ -280,6 +280,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     fun openBatterySaverMode() {
         val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
+                && SystemSettings.canDrawOverApps(requireContext())
         if (!canWriteSettings) {
             // Show popup
             MaterialDialog(requireContext()).show {
