@@ -151,7 +151,7 @@ class MainActivity : BaseActivity() {
 
         if (isFromPushNotification()) {
             checkPushNotificationTrack()
-        } else if (!intent.fromDynamicLink()) {
+        } else if (!intent.fromDynamicLink() && !comeFromPlayerService()) {
             observeEvent(viewModel.rateApp) {
                 askUserForFeelingAboutApp()
             }
@@ -452,6 +452,8 @@ class MainActivity : BaseActivity() {
         val title = intent.extras?.getString("title")
         return videoId != null && title != null && duration != null
     }
+
+    private fun comeFromPlayerService() = intent.hasExtra(EXTRAS_FROM_PLAY_SERVICE)
 
     companion object {
         const val EXTRAS_FROM_PLAY_SERVICE = "from_player_service"

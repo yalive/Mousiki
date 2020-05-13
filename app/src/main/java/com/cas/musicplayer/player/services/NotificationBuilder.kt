@@ -77,14 +77,7 @@ class NotificationBuilder(private val context: Context) {
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    private val stopIntentReceiver =
-        Intent(context, DeleteNotificationReceiver::class.java)
-    private val stopPendingIntent2 = PendingIntent.getBroadcast(
-        context,
-        0,
-        stopIntentReceiver,
-        PendingIntent.FLAG_UPDATE_CURRENT
-    )
+    private val stopIntentReceiver = Intent(context, DeleteNotificationReceiver::class.java)
 
     suspend fun buildNotification(sessionToken: MediaSessionCompat.Token): Notification {
         if (shouldCreateNowPlayingChannel()) {
