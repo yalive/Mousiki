@@ -17,6 +17,7 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
+import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.loadImage
@@ -46,9 +47,7 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val json = arguments?.getString("MUSIC_TRACK")
-        musicTrack = injector.gson.fromJson(json, MusicTrack::class.java)
-
+        musicTrack = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
         if (!UserPrefs.isFav(musicTrack.youtubeId)) {
             favIcon.setImageResource(R.drawable.ic_heart_light)
             favLabel.text = getString(R.string.btn_favorite)
@@ -111,6 +110,11 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
         viewAddToPlaylist.isVisible = !isFromCustomPlaylist
     }
 
+    override fun dismiss() {
+        restorePlayer()
+        super.dismiss()
+    }
+
     override fun onResume() {
         super.onResume()
         if (PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
@@ -119,12 +123,15 @@ class FvaBottomSheetFragment : BottomSheetDialogFragment() {
 
         dialog?.setOnDismissListener {
             onDismissed?.invoke()
+            restorePlayer()
+        }
+    }
 
-            val mainActivity = activity as? MainActivity ?: return@setOnDismissListener
-            if (mainActivity.isBottomPanelCollapsed() && PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
-                PlayerQueue.showVideo()
-                PlayerQueue.resume()
-            }
+    private fun restorePlayer() {
+        val mainActivity = activity as? MainActivity ?: return
+        if (mainActivity.isBottomPanelCollapsed() && PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
+            PlayerQueue.showVideo()
+            PlayerQueue.resume()
         }
     }
 

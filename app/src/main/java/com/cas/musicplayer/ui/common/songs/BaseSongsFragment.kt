@@ -20,7 +20,6 @@ import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -59,7 +58,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
             onClickMore = { track ->
                 val bottomSheetFragment = FvaBottomSheetFragment()
                 val bundle = Bundle()
-                bundle.putString("MUSIC_TRACK", injector.gson.toJson(track))
+                bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 addExtrasArgumentToBottomMenu(bundle)
                 bottomSheetFragment.arguments = bundle
                 bottomSheetFragment.onDismissed = {

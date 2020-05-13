@@ -6,11 +6,11 @@ import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.observe
 import com.cas.common.resource.Resource
 import com.cas.musicplayer.R
-import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
+import com.cas.musicplayer.utils.Constants
 
 /**
  **********************************
@@ -35,7 +35,7 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(), PageableFragment {
             onClickMore = { track ->
                 val bottomSheetFragment = FvaBottomSheetFragment()
                 val bundle = Bundle()
-                bundle.putString("MUSIC_TRACK", injector.gson.toJson(track))
+                bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 bottomSheetFragment.arguments = bundle
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
