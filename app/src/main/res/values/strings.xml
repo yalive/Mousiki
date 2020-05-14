@@ -130,5 +130,5 @@
 
     <!-- Shortcuts -->
     <string name="app_shortcut_search">Search</string>
-    <string name="app_shortcut_new_releases">New Releases</string>
+    <string name="app_shortcut_new_releases">Trending</string>
 </resources>
