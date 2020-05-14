@@ -41,6 +41,8 @@
     <string name="settings_feedback">Feedback</string>
     <string name="settings_facebook_like">Like Facebook page</string>
     <string name="settings_policy">Privacy policy</string>
+    <string name="settings_size_out_video">Video size</string>
+    <string name="settings_choose_out_video_size">Choose video size</string>
     <string name="settings_share_app">Share app with friends</string>
     <string name="rate_app_give_rating">Rate 5 stars</string>
     <string name="rate_app_remind_me_later">Remind me later</string>
@@ -131,4 +133,9 @@
     <!-- Shortcuts -->
     <string name="app_shortcut_search">Search</string>
     <string name="app_shortcut_new_releases">New Releases</string>
+
+    <!-- Video sizes -->
+    <string name="video_size_small">Small</string>
+    <string name="video_size_normal">Normal</string>
+    <string name="video_size_large">Large</string>
 </resources>
