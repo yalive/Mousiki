@@ -127,4 +127,8 @@
 
     <!-- Error playing youtube video -->
     <string name="error_cannot_play_youtube_video">Sorry, this video cannot be played!</string>
+
+    <!-- Shortcuts -->
+    <string name="app_shortcut_search">Search</string>
+    <string name="app_shortcut_new_releases">New Releases</string>
 </resources>

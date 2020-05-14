@@ -91,7 +91,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         requireActivity().window.statusBarColor = Color.TRANSPARENT
         darkStatusBar()
         try {
-            loadFeaturedImage()
+            featuredImage?.let { loadFeaturedImage(it) }
         } catch (e: OutOfMemoryError) {
             Crashlytics.logException(e)
         }
@@ -164,8 +164,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     override fun withToolbar(): Boolean = false
 
-    private fun loadFeaturedImage() {
-        val featuredImage = featuredImage
+    protected fun loadFeaturedImage(featuredImage: AppImage) {
         when (featuredImage) {
             is AppImageRes -> imgArtist.setImageResource(featuredImage.resId)
             is AppImageUrl -> {
@@ -214,9 +213,8 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
     }
 }
 
-private val BaseSongsFragment<*>.featuredImage: AppImage
+val BaseSongsFragment<*>.featuredImage: AppImage?
     get() = arguments?.getParcelable(BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE)
-        ?: throw IllegalArgumentException("No featured image found")
 
 
 sealed class AppImage : Parcelable {

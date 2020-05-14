@@ -5,9 +5,11 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.observe
+import com.cas.common.extensions.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
+import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
@@ -23,8 +25,9 @@ import kotlinx.android.synthetic.main.main_search_fragment.*
 class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
     override val viewModel by viewModel { injector.mainSearchViewModel }
     override val layoutResourceId: Int = R.layout.main_search_fragment
-
     private val searchGenresAdapter by lazy { SearchGenresAdapter() }
+
+    private val mainViewModel by activityViewModel { injector.mainViewModel }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,7 +41,10 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
         adjustStatusBarWithTheme()
         observeViewModel()
         btnStartSearch.onClick {
-            findNavController().navigateSafeAction(R.id.action_mainSearchFragment_to_searchYoutubeFragment)
+            startSearch()
+        }
+        observeEvent(mainViewModel.doubleClickSearch) {
+            startSearch()
         }
     }
 
@@ -48,6 +54,10 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
         observe(viewModel.genres) { genres ->
             searchGenresAdapter.dataItems = genres.toMutableList()
         }
+    }
+
+    private fun startSearch() {
+        findNavController().navigateSafeAction(R.id.action_mainSearchFragment_to_searchYoutubeFragment)
     }
 }
 

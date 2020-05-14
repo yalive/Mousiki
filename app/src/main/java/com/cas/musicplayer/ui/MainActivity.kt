@@ -157,6 +157,7 @@ class MainActivity : BaseActivity() {
                 askUserForFeelingAboutApp()
             }
         }
+        viewModel.checkStartFromShortcut(intent.data?.toString())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -196,7 +197,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleClickMenuSearch() {
-        if (navController.currentDestination?.id == R.id.mainSearchFragment) return
+        if (navController.currentDestination?.id == R.id.mainSearchFragment) {
+            viewModel.onDoubleClickSearchNavigation()
+            return
+        }
         appbar.setExpanded(true, true)
         navController.navigate(R.id.mainSearchFragment)
     }
