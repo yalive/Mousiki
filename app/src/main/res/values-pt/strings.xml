@@ -118,4 +118,11 @@
     <string name="battery_saver_mode_request_change_settings">O Modo de economia de energia precisa da permissão "modificar configurações do sistema" para reduzir o brilho da tela. Ative-o nas configurações.</string>
     <string name="battery_saver_mode_instead_of_lock_screen">Para atender aos Termos de Serviço do YouTube, o Mousiki não pode reproduzir videoclipes em segundo plano. Você pode ativar o modo de economia de energia para bloquear sua tela.</string>
     <string name="label_slide_unlock">Desbloquear</string>
+
+    <!-- Error playing youtube video -->
+    <string name="error_cannot_play_youtube_video">Desculpe, este vídeo não pode ser reproduzido!</string>
+
+    <!-- Shortcuts -->
+    <string name="app_shortcut_search">Procurar</string>
+    <string name="app_shortcut_new_releases">Tendendo</string>
 </resources>
