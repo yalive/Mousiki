@@ -2,6 +2,7 @@ package com.cas.musicplayer.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.player.PlaySort
 
@@ -19,6 +20,7 @@ object UserPrefs {
     val KEY_RATED_APP = "has-rated-app"
     val KEY_SLEEP_TIMER_VALUE = "sleep-timer-value"
     val KEY_THEME = "key_theme_mode"
+    val KEY_OUT_VIDEO_SIZE = "key_out_video_size"
 
     fun saveFav(videoId: String?, isAdd: Boolean) {
         val pref = getPrefs()
@@ -93,7 +95,35 @@ object UserPrefs {
         return getPrefs().getInt(KEY_THEME, THEME_DARK)
     }
 
+    fun outVideoSize(): OutVideoSize {
+        return when (getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 1)) {
+            0 -> OutVideoSize.SMALL
+            1 -> OutVideoSize.NORMAL
+            2 -> OutVideoSize.LARGE
+            else -> OutVideoSize.NORMAL
+        }
+    }
+
+    fun setOutVideoSize(size: OutVideoSize) {
+        val newSize = when (size) {
+            OutVideoSize.SMALL -> 0
+            OutVideoSize.NORMAL -> 1
+            OutVideoSize.LARGE -> 2
+        }
+        getPrefs().edit {
+            putInt(KEY_OUT_VIDEO_SIZE, newSize)
+        }
+    }
+
+    fun getOutVideoSizeValue(): Int {
+        return getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 1)
+    }
+
     const val THEME_AUTOMATIC = 0
     const val THEME_LIGHT = 1
     const val THEME_DARK = 2
+
+    enum class OutVideoSize {
+        SMALL, NORMAL, LARGE
+    }
 }

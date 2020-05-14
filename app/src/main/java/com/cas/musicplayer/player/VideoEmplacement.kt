@@ -4,6 +4,7 @@ import android.view.WindowManager
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.utils.DeviceInset
+import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.screenSize
 
@@ -143,11 +144,21 @@ class EmplacementOut : VideoEmplacement() {
 
     override val width: Int
         get() {
-            return dpToPixel(120f)
+            val w = when (UserPrefs.outVideoSize()) {
+                UserPrefs.OutVideoSize.SMALL -> 70f
+                UserPrefs.OutVideoSize.NORMAL -> 120f
+                UserPrefs.OutVideoSize.LARGE -> 200f
+            }
+            return dpToPixel(w)
         }
 
     override val height: Int
         get() {
-            return dpToPixel(70f)
+            val h = when (UserPrefs.outVideoSize()) {
+                UserPrefs.OutVideoSize.SMALL -> 40f
+                UserPrefs.OutVideoSize.NORMAL -> 70f
+                UserPrefs.OutVideoSize.LARGE -> 120f
+            }
+            return dpToPixel(h)
         }
 }

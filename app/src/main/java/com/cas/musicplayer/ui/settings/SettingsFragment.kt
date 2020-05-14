@@ -73,5 +73,31 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
         btnShareApp.onClick {
             Utils.shareAppVia()
         }
+
+        btnOutVideoSize.onClick {
+            AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
+                .setSingleChoiceItems(
+                    R.array.out_video_size_values,
+                    UserPrefs.getOutVideoSizeValue(),
+                    null
+                )
+                .setTitle(R.string.settings_choose_out_video_size)
+                .setNegativeButton(R.string.cancel, { dialog, whichButton -> })
+                .setPositiveButton(
+                    R.string.ok
+                ) { dialog, whichButton ->
+                    dialog.dismiss()
+                    val selectedPosition: Int =
+                        (dialog as AlertDialog).getListView().getCheckedItemPosition()
+                    val size = when (selectedPosition) {
+                        0 -> UserPrefs.OutVideoSize.SMALL
+                        1 -> UserPrefs.OutVideoSize.NORMAL
+                        2 -> UserPrefs.OutVideoSize.LARGE
+                        else -> UserPrefs.OutVideoSize.NORMAL
+                    }
+                    UserPrefs.setOutVideoSize(size)
+                }
+                .show()
+        }
     }
 }
