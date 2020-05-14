@@ -8,7 +8,7 @@
             android:action="mousiki.intent.action.START_SEARCH"
             android:data="mousiki://start_search"
             android:targetClass="com.cas.musicplayer.ui.MainActivity"
-            android:targetPackage="com.cas.musicplayer" />
+            android:targetPackage="com.cas.musicplayer.dev" />
     </shortcut>
 
     <shortcut
@@ -19,6 +19,6 @@
             android:action="mousiki.intent.action.OPEN_NEW_RELEASES"
             android:data="mousiki://open_new_releases"
             android:targetClass="com.cas.musicplayer.ui.MainActivity"
-            android:targetPackage="com.cas.musicplayer" />
+            android:targetPackage="com.cas.musicplayer.dev" />
     </shortcut>
 </shortcuts>
