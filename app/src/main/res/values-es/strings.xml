@@ -118,4 +118,11 @@
     <string name="battery_saver_mode_request_change_settings">El modo de ahorro de energía necesita el permiso "modificar la configuración del sistema" para reducir el brillo de la pantalla. Habilítelo en la configuración.</string>
     <string name="battery_saver_mode_instead_of_lock_screen">Para cumplir con los Términos de servicio de YouTube, Mousiki no puede reproducir videos musicales en segundo plano. Puede activar el modo de ahorro de energía para bloquear su pantalla.</string>
     <string name="label_slide_unlock">Deslice para desbloquear</string>
+
+    <!-- Error playing youtube video -->
+    <string name="error_cannot_play_youtube_video">¡Lo sentimos, este vídeo no puede ser reproducido!</string>
+
+    <!-- Shortcuts -->
+    <string name="app_shortcut_search">Buscar</string>
+    <string name="app_shortcut_new_releases">Tendencias</string>
 </resources>
