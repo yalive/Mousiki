@@ -52,7 +52,7 @@ class GenresFragment : BaseFragment<GenresViewModel>() {
         }
         viewModel.loadAllGenres()
         observeViewModel()
-        darkStatusBarOnDarkMode()
+        adjustStatusBarWithTheme()
     }
 
     private fun observeViewModel() {

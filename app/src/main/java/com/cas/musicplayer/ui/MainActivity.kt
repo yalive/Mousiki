@@ -22,6 +22,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.transition.TransitionManager
 import com.cas.common.extensions.fromDynamicLink
+import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
@@ -322,12 +323,18 @@ class MainActivity : BaseActivity() {
         if (id == R.id.settingsFragment
             || id == R.id.libraryFragment
             || id == R.id.mainSearchFragment
+            || id == R.id.createPlaylistFragment
             || id == R.id.genresFragment
             || id == R.id.favouriteSongsFragment
             || id == R.id.artistsFragment
         ) {
-            lightStatusBar()
-            window.statusBarColor = Color.WHITE
+            if (isDarkMode() || id == R.id.createPlaylistFragment) {
+                window.statusBarColor = Color.BLACK
+                darkStatusBar()
+            } else {
+                window.statusBarColor = Color.WHITE
+                lightStatusBar()
+            }
         } else {
             darkStatusBar()
             window.statusBarColor = Color.TRANSPARENT

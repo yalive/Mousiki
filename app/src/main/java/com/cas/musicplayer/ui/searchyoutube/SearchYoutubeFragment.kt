@@ -112,7 +112,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
             )
         )
         observeViewModel()
-        darkStatusBarOnDarkMode()
+        adjustStatusBarWithTheme()
     }
 
     private fun removeQueryListener() {

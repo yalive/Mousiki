@@ -63,7 +63,7 @@ class AddTrackToPlaylistFragment(
                 ), navOptions
             )
         }
-        darkStatusBarOnDarkMode()
+        adjustStatusBarWithTheme()
     }
 
     override fun withToolbar(): Boolean = true

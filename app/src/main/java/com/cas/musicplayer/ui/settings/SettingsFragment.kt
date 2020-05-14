@@ -28,7 +28,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        darkStatusBarOnDarkMode()
+        adjustStatusBarWithTheme()
         btnDarkMode.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
                 .setSingleChoiceItems(R.array.dark_mode_values, UserPrefs.getThemeModeValue(), null)
