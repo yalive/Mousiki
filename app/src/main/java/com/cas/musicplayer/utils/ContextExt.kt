@@ -9,10 +9,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import com.crashlytics.android.Crashlytics
@@ -87,6 +84,10 @@ fun Context.screenSize(): ScreenSize {
 /* Toast */
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.toast(@StringRes stringRes: Int) {
+    Toast.makeText(this, stringRes, Toast.LENGTH_SHORT).show()
 }
 
 fun Context.longToast(message: String) {
