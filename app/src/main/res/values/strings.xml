@@ -103,7 +103,7 @@
     <string name="comment_about_app_dialog_subtitle">We would love to know how we can improve your experience.</string>
     <string name="common_later">Later</string>
     <string name="hint_your_comments">Your comments…</string>
-    <string name="message_feedback_sent">Thank your for your feedback!.\nYour message has been sent to our support team.</string>
+    <string name="message_feedback_sent">Thank you for your feedback!.\nYour message has been sent to our support team.</string>
 
     <string name="notification_channel">Now Playing</string>
     <string name="notification_channel_description">Shows what music is currently playing in Mousiki</string>
@@ -132,7 +132,7 @@
 
     <!-- Shortcuts -->
     <string name="app_shortcut_search">Search</string>
-    <string name="app_shortcut_new_releases">New Releases</string>
+    <string name="app_shortcut_new_releases">Trending</string>
 
     <!-- Video sizes -->
     <string name="video_size_small">Small</string>

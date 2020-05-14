@@ -119,4 +119,11 @@
     <string name="battery_saver_mode_request_change_settings">Le mode d\'économie d\'énergie a besoin de l\'autorisation «modifier les paramètres du système» pour réduire la luminosité de l\'écran. Veuillez l\'activer dans les paramètres.</string>
     <string name="battery_saver_mode_instead_of_lock_screen">Pour respecter les conditions d\'utilisation de YouTube, Mousiki ne peut pas lire de vidéo musicale en arrière-plan. Vous pouvez activer le mode d\'économie d\'énergie pour verrouiller votre écran.</string>
     <string name="label_slide_unlock">Glisser pour déverouiller</string>
+
+    <!-- Error playing youtube video -->
+    <string name="error_cannot_play_youtube_video">Désolé, cette vidéo ne peut être lue!</string>
+
+    <!-- Shortcuts -->
+    <string name="app_shortcut_search">Chercher</string>
+    <string name="app_shortcut_new_releases">Tendance</string>
 </resources>
