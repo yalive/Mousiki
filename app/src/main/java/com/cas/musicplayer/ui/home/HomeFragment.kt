@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.valueOrNull
 import com.cas.common.fragment.BaseFragment
@@ -119,13 +120,13 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         val rect = Rect()
         linearLayoutManager.findViewByPosition(firstVisiblePosition)?.getGlobalVisibleRect(rect)
         val visibleChartHeight = rect.bottom.toFloat()
-        val fillColor = if (isDarkMode()) Color.BLACK else Color.WHITE
+        val fillColor = if (requireContext().isDarkMode()) Color.BLACK else Color.WHITE
         val color = when {
             firstVisiblePosition != 0 || visibleChartHeight < triggerFill -> fillColor.also {
-                darkStatusBarOnDarkMode()
+                adjustStatusBarWithTheme()
             }
             visibleChartHeight in triggerFill..triggerAlpha -> {
-                darkStatusBarOnDarkMode()
+                adjustStatusBarWithTheme()
                 val alpha = 255 * (visibleChartHeight - triggerAlpha) / (triggerFill - triggerAlpha)
                 ColorUtils.setAlphaComponent(fillColor, alpha.toInt())
             }
@@ -134,7 +135,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             }
         }
         requireActivity().window.statusBarColor = color
-
     }
 //endregion
 }

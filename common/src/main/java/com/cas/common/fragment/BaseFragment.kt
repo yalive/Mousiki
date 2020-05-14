@@ -1,6 +1,5 @@
 package com.cas.common.fragment
 
-import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.cas.common.extensions.isDarkMode
 import com.cas.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -75,8 +75,6 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val flags = window.decorView.systemUiVisibility
             window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } else {
-            // window.statusBarColor = requireContext().color(android.color.)
         }
     }
 
@@ -86,29 +84,16 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
             val flags = window.decorView.systemUiVisibility
             window.decorView.systemUiVisibility =
                 flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-        } else {
-            // window.statusBarColor = color(R.color.colorPrimary)
         }
     }
 
-    fun darkStatusBarOnDarkMode() {
-        if (isDarkMode()) {
+    fun adjustStatusBarWithTheme() {
+        if (requireContext().isDarkMode()) {
             requireActivity().window.statusBarColor = Color.BLACK
             darkStatusBar()
         } else {
             requireActivity().window.statusBarColor = Color.WHITE
             lightStatusBar()
-        }
-    }
-
-    fun isDarkMode(): Boolean {
-        val nightModeFlags = requireContext().resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK
-        return when (nightModeFlags) {
-            Configuration.UI_MODE_NIGHT_YES -> true
-            Configuration.UI_MODE_NIGHT_NO -> false
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> false
-            else -> false
         }
     }
 }

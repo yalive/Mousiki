@@ -38,7 +38,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        darkStatusBarOnDarkMode()
+        adjustStatusBarWithTheme()
         sideBar = view.findViewById(R.id.sideBar)
         txtDialog = view.findViewById(R.id.txtDialog)
         setupRecyclerView()
