@@ -4,9 +4,12 @@ import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.os.bundleOf
+import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.R
 import com.cas.musicplayer.player.MousikiPlayer
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.isScreenLocked
+import com.cas.musicplayer.utils.toast
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -32,6 +35,10 @@ class YoutubePlayerManager(
                 null
             )
         }
+    }
+
+    override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
+        MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
     }
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
