@@ -12,9 +12,9 @@ import com.cas.musicplayer.ui.common.songs.AppImage
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
-import kotlin.coroutines.Continuation
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 
 /**
@@ -65,20 +65,20 @@ fun ImageView.loadImage(
     }
 }
 
-suspend fun Picasso.getBitmap(url: String): Bitmap? = suspendCoroutine { continuation ->
+suspend fun Picasso.getBitmap(url: String): Bitmap? = suspendCancellableCoroutine { continuation ->
     if (url.isEmpty()) {
         continuation.resume(null)
-        return@suspendCoroutine
+        return@suspendCancellableCoroutine
     }
     val target = createTargetWith(continuation)
     load(url).into(target)
 }
 
 suspend fun ImageView.getBitmap(url: String): Bitmap? =
-    suspendCoroutine { continuation ->
+    suspendCancellableCoroutine { continuation ->
         if (url.isEmpty()) {
             continuation.resume(null)
-            return@suspendCoroutine
+            return@suspendCancellableCoroutine
         }
         val target = createTargetWith(continuation)
         this.tag = target
@@ -86,10 +86,10 @@ suspend fun ImageView.getBitmap(url: String): Bitmap? =
     }
 
 suspend fun ImageView.getBitmap(appImage: AppImage): Bitmap? =
-    suspendCoroutine { continuation ->
+    suspendCancellableCoroutine { continuation ->
         if (appImage is AppImage.AppImageUrl && appImage.url.isEmpty()) {
             continuation.resume(null)
-            return@suspendCoroutine
+            return@suspendCancellableCoroutine
         }
         val target = createTargetWith(continuation)
         this.tag = target
@@ -100,18 +100,22 @@ suspend fun ImageView.getBitmap(appImage: AppImage): Bitmap? =
         }
     }
 
-private fun createTargetWith(continuation: Continuation<Bitmap?>): Target {
+private fun createTargetWith(continuation: CancellableContinuation<Bitmap?>): Target {
     return object : Target {
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             // Nop
         }
 
         override fun onBitmapFailed(e: java.lang.Exception?, errorDrawable: Drawable?) {
-            continuation.resume(null)
+            if (continuation.isActive) {
+                continuation.resume(null)
+            }
         }
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            continuation.resume(bitmap)
+            if (continuation.isActive) {
+                continuation.resume(bitmap)
+            }
         }
     }
 }

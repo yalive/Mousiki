@@ -196,7 +196,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
-    implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation project(path: ':delegatedadapter')
 
     implementation "dev.chrisbanes:insetter:0.2.0"

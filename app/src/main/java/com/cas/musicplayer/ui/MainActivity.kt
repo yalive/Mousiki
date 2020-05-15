@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -158,6 +159,12 @@ class MainActivity : BaseActivity() {
             }
         }
         viewModel.checkStartFromShortcut(intent.data?.toString())
+
+        observe(VideoEmplacementLiveData) { emplacement ->
+            if (emplacement is EmplacementBottom) {
+                collapseBottomPanel()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -374,6 +381,9 @@ class MainActivity : BaseActivity() {
             if (lastVideoEmplacement !is EmplacementOut) {
                 VideoEmplacementLiveData.value = lastVideoEmplacement
             }
+        } else if (playBackState != PlayerConstants.PlayerState.UNKNOWN && VideoEmplacementLiveData.value is EmplacementOut) {
+            collapseBottomPanel()
+            VideoEmplacementLiveData.bottom(true)
         } else {
             hideBottomPanel()
         }

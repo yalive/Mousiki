@@ -394,7 +394,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             if (recentTracks.isNotEmpty()) {
                 PlayerQueue.playTrack(recentTracks[0], recentTracks)
                 delay(500)
-                VideoEmplacementLiveData.out()
+                if (MusicApp.get().isInForeground) {
+                    VideoEmplacementLiveData.bottom(true)
+                } else {
+                    VideoEmplacementLiveData.out()
+                }
             }
         }
     }
