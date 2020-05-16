@@ -15,9 +15,9 @@ fun Intent.dumpData(): String {
     val keySet = extras?.keySet()
     val extrasData = StringBuilder("Extras:\n")
     keySet?.forEach { key ->
-        extrasData.append("- $key=${extras?.get(key)}")
+        extrasData.append("- $key=${extras?.get(key)}\n")
     }
-    return "$categoryData\n$actionData$packageData\n$typeData\n$extrasData"
+    return "\n$categoryData\n$actionData\n$packageData\n$typeData\n$extrasData\n "
 }
 
 fun Intent.doOnExtrasTrue(booleanExtras: String, block: () -> Unit) {

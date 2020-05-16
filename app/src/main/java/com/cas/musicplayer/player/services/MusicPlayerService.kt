@@ -139,7 +139,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onStop() {
-                stopSelf()
+                stopForeground(true)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    stopForeground(true);
+                } else {
+                    stopSelf();
+                }
             }
 
             override fun onSeekTo(pos: Long) {
