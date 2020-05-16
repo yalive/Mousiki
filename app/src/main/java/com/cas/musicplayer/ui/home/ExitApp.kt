@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.home
 
 import android.view.View
 import android.widget.*
+import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -14,6 +15,8 @@ import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  ***************************************
@@ -24,13 +27,17 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView
 fun MainActivity.showExitDialog() {
     val dialog = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
     dialog.show {
+        //setPeekHeight(literal = dpToPixel(600f))
         cancelOnTouchOutside(true)
         cancelable(true)
         customView(viewRes = R.layout.layout_exit_dialog, noVerticalPadding = true)
     }
     dialog.view.findViewById<ImageButton>(R.id.btnExit).onClick {
         dialog.dismiss()
-        finish()
+        lifecycleScope.launch {
+            delay(200)
+            finish()
+        }
     }
     dialog.onDismiss {
         if (!isFinishing) {
