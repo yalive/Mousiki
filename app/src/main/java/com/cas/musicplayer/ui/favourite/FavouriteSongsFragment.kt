@@ -11,7 +11,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.utils.Constants
 import kotlinx.android.synthetic.main.fragment_play_list.*
@@ -32,7 +32,7 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>() {
                 viewModel.onClickFavouriteTrack(track)
             },
             onClickMore = { track ->
-                val bottomSheetFragment = FvaBottomSheetFragment()
+                val bottomSheetFragment = TrackOptionsFragment()
                 val bundle = Bundle()
                 bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 bottomSheetFragment.arguments = bundle

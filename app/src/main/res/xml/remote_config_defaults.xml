@@ -47,4 +47,9 @@
         <value>7</value>
     </entry>
 
+    <entry>
+        <key>show_ad_for_track_options</key>
+        <value>true</value>
+    </entry>
+
 </defaultsMap>

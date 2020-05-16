@@ -24,7 +24,7 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageRes
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageUrl
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
@@ -56,7 +56,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 VideoEmplacementLiveData.bottom(false)
             },
             onClickMore = { track ->
-                val bottomSheetFragment = FvaBottomSheetFragment()
+                val bottomSheetFragment = TrackOptionsFragment()
                 val bundle = Bundle()
                 bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 addExtrasArgumentToBottomMenu(bundle)

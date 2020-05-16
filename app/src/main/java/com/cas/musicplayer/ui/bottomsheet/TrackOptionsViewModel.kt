@@ -14,7 +14,7 @@ import javax.inject.Inject
  * Created by Abdelhadi on 2019-12-06.
  ***************************************
  */
-class FavBottomSheetViewModel @Inject constructor(
+class TrackOptionsViewModel @Inject constructor(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
     private val deleteTrackFromCustomPlaylist: DeleteTrackFromCustomPlaylistUseCase

@@ -56,7 +56,8 @@ class MainActivity : BaseActivity() {
             onLockChanged(value)
         }
 
-    val viewModel by viewModel { injector.mainViewModel }
+    val adsViewModel by viewModel { injector.adsViewModel }
+    private val viewModel by viewModel { injector.mainViewModel }
     private lateinit var navController: NavController
     private var isFromService = false
 
@@ -92,7 +93,9 @@ class MainActivity : BaseActivity() {
         if (!canDrawOverApps()) {
             requestDrawOverAppsPermission()
         }
-
+        adsViewModel.apply {
+            // just to prepare ads
+        }
         setupBottomPanelFragment()
         ViewCompat.setOnApplyWindowInsetsListener(cordinator) { v, insets ->
             if (insets.systemWindowInsetTop > 0) {

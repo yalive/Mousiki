@@ -10,9 +10,10 @@ import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
-import com.cas.musicplayer.ui.bottomsheet.FavBottomSheetViewModel
+import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.PlaySongDelegateModule
 import com.cas.musicplayer.ui.common.ads.AdsDelegateModule
+import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
@@ -61,6 +62,8 @@ interface AppComponent {
 
     val mainViewModel: MainViewModel
 
+    val adsViewModel: CommonAdsViewModel
+
     val homeViewModel: HomeViewModel
 
     val popularSongsViewModel: PopularSongsViewModel
@@ -79,7 +82,7 @@ interface AppComponent {
 
     val favouriteTracksViewModel: FavouriteSongsViewModel
 
-    val favBottomSheetViewModel: FavBottomSheetViewModel
+    val trackOptionsViewModel: TrackOptionsViewModel
 
     val playerViewModel: PlayerViewModel
 
