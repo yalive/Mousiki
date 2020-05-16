@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +34,7 @@ import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
             onLockChanged(value)
         }
 
-    private val viewModel by viewModel { injector.mainViewModel }
+    val viewModel by viewModel { injector.mainViewModel }
     private lateinit var navController: NavController
     private var isFromService = false
 
@@ -364,10 +364,14 @@ class MainActivity : BaseActivity() {
             collapseBottomPanel()
             return
         } else if (isLocked) {
-
             return
         }
-        super.onBackPressed()
+
+        if (navController.isHome()) {
+            showExitDialog()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     /**
