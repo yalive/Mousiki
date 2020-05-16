@@ -77,8 +77,6 @@ class NotificationBuilder(private val context: Context) {
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    private val stopIntentReceiver = Intent(context, DeleteNotificationReceiver::class.java)
-
     suspend fun buildNotification(sessionToken: MediaSessionCompat.Token): Notification {
         if (shouldCreateNowPlayingChannel()) {
             createNowPlayingChannel()
@@ -86,7 +84,7 @@ class NotificationBuilder(private val context: Context) {
 
         val controller = MediaControllerCompat(context, sessionToken)
         val description = controller.metadata?.description
-        val playbackState = controller.playbackState
+        val playbackState: PlaybackStateCompat? = controller.playbackState
         val builder = NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL)
 
         if (UserPrefs.isFav(description?.mediaId)) {
@@ -105,7 +103,7 @@ class NotificationBuilder(private val context: Context) {
 
         // Only add actions for skip back, play/pause, skip forward, based on what's enabled.
         builder.addAction(skipToPreviousAction)
-        if (playbackState.isPlaying) {
+        if (playbackState?.isPlaying == true) {
             builder.addAction(pauseAction)
         } else {
             builder.addAction(playAction)

@@ -77,8 +77,8 @@ android {
         }
 
         dev {
-            versionCode 63
-            versionName "1.63"
+            versionCode 64
+            versionName "1.64"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }
