@@ -41,7 +41,7 @@ fun MainActivity.showExitDialog() {
     }
     dialog.onDismiss {
         if (!isFinishing) {
-            viewModel.loadExitAd()
+            adsViewModel.loadExitAd()
         }
     }
     val adView = dialog.view.findViewById<UnifiedNativeAdView>(R.id.ad_view)
@@ -57,7 +57,7 @@ fun MainActivity.showExitDialog() {
         storeView = findViewById(R.id.ad_store)
         advertiserView = findViewById(R.id.ad_advertiser)
     }
-    viewModel.exitAd?.let { ad ->
+    adsViewModel.exitAd?.let { ad ->
         populateNativeAdView(ad, adView)
     }
 }

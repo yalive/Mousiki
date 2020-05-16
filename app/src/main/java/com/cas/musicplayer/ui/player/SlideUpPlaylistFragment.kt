@@ -22,7 +22,7 @@ import com.cas.musicplayer.player.EmplacementCenter
 import com.cas.musicplayer.player.EmplacementPlaylist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
@@ -48,7 +48,7 @@ class SlideUpPlaylistFragment : BottomSheetDialogFragment() {
                 viewModel.onClickTrack(track)
             },
             onClickMore = { track ->
-                val bottomSheetFragment = FvaBottomSheetFragment()
+                val bottomSheetFragment = TrackOptionsFragment()
                 val bundle = Bundle()
                 bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 bottomSheetFragment.arguments = bundle
