@@ -164,7 +164,8 @@ class MainActivity : BaseActivity() {
         viewModel.checkStartFromShortcut(intent.data?.toString())
 
         observe(VideoEmplacementLiveData) { emplacement ->
-            if (emplacement is EmplacementBottom) {
+            val playBackState = PlaybackLiveData.value
+            if (emplacement is EmplacementBottom && playBackState != null && playBackState != PlayerConstants.PlayerState.UNKNOWN) {
                 collapseBottomPanel()
             }
         }
@@ -388,7 +389,7 @@ class MainActivity : BaseActivity() {
             if (lastVideoEmplacement !is EmplacementOut) {
                 VideoEmplacementLiveData.value = lastVideoEmplacement
             }
-        } else if (playBackState != PlayerConstants.PlayerState.UNKNOWN && VideoEmplacementLiveData.value is EmplacementOut) {
+        } else if (playBackState != null && playBackState != PlayerConstants.PlayerState.UNKNOWN && VideoEmplacementLiveData.value is EmplacementOut) {
             collapseBottomPanel()
             VideoEmplacementLiveData.bottom(true)
         } else {
