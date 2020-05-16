@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.home
 
 import android.view.View
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
@@ -59,6 +60,8 @@ fun MainActivity.showExitDialog() {
     }
     adsViewModel.exitAd?.let { ad ->
         populateNativeAdView(ad, adView)
+    } ?: run {
+        adView.isVisible = false
     }
 }
 
