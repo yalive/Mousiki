@@ -143,7 +143,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     stopForeground(true);
                 } else {
-                    stopSelf();
+                    stopSelf()
                 }
             }
 
@@ -253,6 +253,13 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         observeBottomPanelDragging()
 
         favouriteReceiver.register()
+
+        lifecycleScope.launch {
+            startForeground(
+                NOW_PLAYING_NOTIFICATION,
+                notificationBuilder.buildNotification(mediaSession.sessionToken)
+            )
+        }
     }
 
     private fun observeForegroundToggle() {
