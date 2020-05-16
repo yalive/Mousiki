@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
@@ -11,10 +12,13 @@ import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.VideoEmplacement
 import com.cas.musicplayer.ui.common.PlaySongDelegate
+import com.cas.musicplayer.ui.common.ads.loadSingleNativeAd
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.uiCoroutine
+import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -29,6 +33,8 @@ class MainViewModel @Inject constructor(
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
+    var exitAd: UnifiedNativeAd? = null
+
     var lastVideoEmplacement: VideoEmplacement? = null
 
     private val _rateApp = MutableLiveData<Event<Unit>>()
@@ -38,6 +44,10 @@ class MainViewModel @Inject constructor(
     private val _doubleClickSearch = MutableLiveData<Event<Unit>>()
     val doubleClickSearch: LiveData<Event<Unit>>
         get() = _doubleClickSearch
+
+    init {
+        loadExitAd()
+    }
 
     fun playTrackFromDeepLink(track: MusicTrack) = uiCoroutine {
         playTrackFromQueue(track, listOf(track))
@@ -67,6 +77,10 @@ class MainViewModel @Inject constructor(
         } else if (data == DEEP_LINK_TRENDING) {
             analytics.logEvent(EVENT_OPEN_APP_SHORTCUT_TRENDING, null)
         }
+    }
+
+    fun loadExitAd() = viewModelScope.launch {
+        exitAd = loadSingleNativeAd()
     }
 
     companion object {

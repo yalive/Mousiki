@@ -5,6 +5,7 @@ import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import com.cas.musicplayer.R
 
 /**
  ***************************************
@@ -23,3 +24,5 @@ fun NavController.navigateSafeAction(
         navigate(resId, args, navOptions, navExtras)
     }
 }
+
+fun NavController.isHome(): Boolean = currentDestination?.id == R.id.homeFragment
