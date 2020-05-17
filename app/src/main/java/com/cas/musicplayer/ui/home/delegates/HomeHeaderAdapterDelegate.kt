@@ -75,10 +75,13 @@ class HomeHeaderAdapterDelegate(
             val destination = when (headerItem) {
                 HeaderItem.ArtistsHeader -> R.id.action_homeFragment_to_artistsFragment
                 is HeaderItem.PopularsHeader -> {
-                    val firstTrack = viewModel.newReleases.valueOrNull()?.getOrNull(0) ?: return
+                    val firstTrackItem = viewModel.newReleases.valueOrNull()?.getOrNull(0) ?: return
                     bundle.putParcelable(
                         BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
-                        AppImage.AppImageUrl(firstTrack.songImagePath)
+                        AppImage.AppImageUrl(
+                            url = firstTrackItem.songImagePath,
+                            altUrl = firstTrackItem.track.imgUrlDef0
+                        )
                     )
                     R.id.action_homeFragment_to_newReleaseFragment
                 }
