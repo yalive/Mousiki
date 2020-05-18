@@ -8,6 +8,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 
 /**
  ***************************************
@@ -36,6 +37,17 @@ object SystemSettings {
             intent.data = "package:${context.packageName}".toUri()
             if (intent.resolveActivity(context.packageManager) != null) {
                 context.startActivity(intent)
+            }
+        }
+    }
+
+    fun enableSettingModification(fragment: Fragment, rqCode: Int) {
+        val context = fragment.context ?: return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+            intent.data = "package:${context.packageName}".toUri()
+            if (intent.resolveActivity(context.packageManager) != null) {
+                fragment.startActivityForResult(intent, rqCode)
             }
         }
     }

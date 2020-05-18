@@ -14,7 +14,8 @@ data class DisplayedVideoItem(
     val songDuration: String,
     val songImagePath: String,
     val isCurrent: Boolean = false,
-    val isPlaying: Boolean = false
+    val isPlaying: Boolean = false,
+    val beforeCurrent: Boolean = false
 ) : DisplayableItem
 
 fun MusicTrack.toDisplayedVideoItem() = DisplayedVideoItem(

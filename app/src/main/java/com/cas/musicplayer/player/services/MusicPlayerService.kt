@@ -57,7 +57,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private lateinit var notificationBuilder: NotificationBuilder
     private lateinit var notificationManager: NotificationManagerCompat
     private lateinit var floatingPlayerView: YoutubeFloatingPlayerView
-    private val handler = Handler()
     private val binder = ServiceBinder()
 
     override fun onBind(intent: Intent?): IBinder? {

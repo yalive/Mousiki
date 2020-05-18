@@ -172,13 +172,25 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                     urlImage = featuredImage.url,
                     errorImage = R.drawable.app_icon_placeholder,
                     placeHolder = R.drawable.app_icon_placeholder
-                )
+                ) {
+                    if (featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
+                        imgArtist.loadImage(
+                            urlImage = featuredImage.altUrl,
+                            errorImage = R.drawable.app_icon_placeholder,
+                            placeHolder = R.drawable.app_icon_placeholder
+                        )
+                    }
+                }
             }
         }
 
         // Background
         lifecycleScope.launch {
-            imgBackground.getBitmap(featuredImage)?.let { bitmap ->
+            var imageBitmap = imgBackground.getBitmap(featuredImage)
+            if (imageBitmap == null && featuredImage is AppImageUrl && featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
+                imageBitmap = imgBackground.getBitmap(featuredImage.altUrl)
+            }
+            imageBitmap?.let { bitmap ->
                 findDominantColors(bitmap)
             }
         }
@@ -222,5 +234,5 @@ sealed class AppImage : Parcelable {
     data class AppImageRes(val resId: Int) : AppImage()
 
     @Parcelize
-    data class AppImageUrl(val url: String) : AppImage()
+    data class AppImageUrl(val url: String, val altUrl: String? = null) : AppImage()
 }

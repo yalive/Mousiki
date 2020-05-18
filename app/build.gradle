@@ -77,8 +77,8 @@ android {
         }
 
         dev {
-            versionCode 64
-            versionName "1.64"
+            versionCode 65
+            versionName "1.65"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }
@@ -215,6 +215,9 @@ dependencies {
 
     // Lootie
     implementation 'com.airbnb.android:lottie:3.4.0'
+
+    // Tip
+    implementation 'com.github.sephiroth74:android-target-tooltip:2.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
