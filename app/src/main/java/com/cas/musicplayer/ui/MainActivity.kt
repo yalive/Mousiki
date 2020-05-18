@@ -45,6 +45,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class MainActivity : BaseActivity() {
@@ -96,7 +97,7 @@ class MainActivity : BaseActivity() {
         adsViewModel.apply {
             // just to prepare ads
         }
-        setupBottomPanelFragment()
+        setupPlayerFragment()
         ViewCompat.setOnApplyWindowInsetsListener(cordinator) { v, insets ->
             if (insets.systemWindowInsetTop > 0) {
                 DeviceInset.value = ScreenInset(
@@ -273,6 +274,13 @@ class MainActivity : BaseActivity() {
         if (canDrawOverApps()) {
             handleDynamicLinks()
         }
+
+        lifecycleScope.launch {
+            delay(200)
+            if (queueFragmentContainer.isVisible) {
+                PlayerQueue.hideVideo()
+            }
+        }
     }
 
 
@@ -285,15 +293,15 @@ class MainActivity : BaseActivity() {
     }
 
     private fun bottomPanelFragment(): PlayerFragment? {
-        return supportFragmentManager.findFragmentById(R.id.bottomPanelContent) as? PlayerFragment
+        return supportFragmentManager.findFragmentById(R.id.playerFragment) as? PlayerFragment
     }
 
-    private fun setupBottomPanelFragment() {
+    private fun setupPlayerFragment() {
         playerFragment =
-            supportFragmentManager.findFragmentById(R.id.bottomPanelContent) as? PlayerFragment
+            supportFragmentManager.findFragmentById(R.id.playerFragment) as? PlayerFragment
                 ?: PlayerFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.bottomPanelContent, playerFragment)
+            .replace(R.id.playerFragment, playerFragment)
             .commit()
 
         hideBottomPanel()
@@ -357,6 +365,11 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
+        if (queueFragmentContainer.isVisible) {
+            PlayerQueue.showVideo()
+            queueFragmentContainer.isVisible = false
+            return
+        }
         if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
             showStatusBar()
             switchToPortrait()

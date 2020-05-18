@@ -44,6 +44,7 @@ import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
 import com.crashlytics.android.Crashlytics
@@ -65,7 +66,6 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private var btnPlayPauseMain: ImageButton? = null
     private var imgBlured: ImageView? = null
     private var lockScreenView: LockScreenView? = null
-    private var queueFragment: SlideUpPlaylistFragment? = null
     private var seekingDuration = false
 
     private val serviceConnection = object : ServiceConnection {
@@ -114,7 +114,6 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         val serviceRunning = context?.isServiceRunning(MusicPlayerService::class.java) ?: false
         if (!serviceRunning) {
             mainActivity.hideBottomPanel()
-            queueFragment?.dismiss()
         }
     }
 
@@ -278,6 +277,17 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RQ_CODE_WRITE_SETTINGS) {
+            val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
+                    && SystemSettings.canDrawOverApps(requireContext())
+            if (canWriteSettings) {
+                openBatterySaverMode()
+            }
+        }
+    }
+
     fun openBatterySaverMode() {
         val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
                 && SystemSettings.canDrawOverApps(requireContext())
@@ -287,7 +297,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 message(R.string.battery_saver_mode_request_change_settings)
                 positiveButton(R.string.ok) {
                     activity?.let { activity ->
-                        SystemSettings.enableSettingModification(activity)
+                        SystemSettings.enableSettingModification(this@PlayerFragment, RQ_CODE_WRITE_SETTINGS)
                     }
                 }
                 negativeButton(R.string.cancel)
@@ -313,8 +323,12 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     }
 
     private fun showQueue() {
-        queueFragment = SlideUpPlaylistFragment()
-        queueFragment?.show(childFragmentManager, "BottomSheetFragment")
+        PlayerQueue.hideVideo()
+        activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = true
+        val fragment = activity?.supportFragmentManager
+            ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()
+        val fm = activity?.supportFragmentManager
+        fm?.beginTransaction()?.replace(R.id.queueFragmentContainer, fragment)?.commit()
     }
 
     private fun onClickPlayPause() {
@@ -436,5 +450,9 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         } else if (state == PlaybackStateCompat.STATE_STOPPED) {
             mainActivity.hideBottomPanel()
         }
+    }
+
+    companion object {
+        private const val RQ_CODE_WRITE_SETTINGS = 101
     }
 }

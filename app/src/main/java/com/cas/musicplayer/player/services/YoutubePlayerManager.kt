@@ -30,7 +30,7 @@ class YoutubePlayerManager(
     override fun onReady(youTubePlayer: YouTubePlayer) {
         this.youTubePlayer = youTubePlayer
         PlayerQueue.value?.let { currentTrack ->
-            mediaController.transportControls.playFromMediaId(
+            mediaController.transportControls?.playFromMediaId(
                 currentTrack.youtubeId,
                 null
             )
@@ -44,7 +44,7 @@ class YoutubePlayerManager(
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
         PlaybackLiveData.value = state
         if (state == PlayerConstants.PlayerState.ENDED) {
-            PlayerQueue.playNextTrack()
+            mediaController.transportControls?.skipToNext()
         }
         when (state) {
             PlayerConstants.PlayerState.PLAYING, PlayerConstants.PlayerState.BUFFERING -> {
