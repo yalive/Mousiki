@@ -41,7 +41,7 @@ object UserPrefs {
 
     fun getSort(): PlaySort {
         val pref = getPrefs()
-        val sort = pref.getString(KEY_CURRENT_SORT, PlaySort.SEQUENCE.toString())
+        val sort = pref.getString(KEY_CURRENT_SORT, PlaySort.LOOP_ALL.toString())
         return PlaySort.toEnum(sort!!)
     }
 

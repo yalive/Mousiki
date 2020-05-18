@@ -8,6 +8,8 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.services.MusicPlayerService
+import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.ui.popular.swapped
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
 
@@ -60,6 +62,19 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             }
 
             this.queue = newList
+        }
+    }
+
+    fun swapTracks(from: Int, to: Int) {
+        val swappedQueue = queue?.swapped(from, to)
+        queue = swappedQueue
+    }
+
+    fun togglePlayback() {
+        if (PlaybackLiveData.isPlaying()) {
+            pause()
+        } else {
+            resume()
         }
     }
 
@@ -187,7 +202,7 @@ enum class PlaySort(@DrawableRes val icon: Int) {
                 valueOf(enumString)
             } catch (ex: Exception) {
                 // For error cases
-                SEQUENCE
+                LOOP_ALL
             }
         }
     }

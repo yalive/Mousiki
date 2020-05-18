@@ -60,7 +60,7 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <FrameLayout
-            android:id="@+id/bottomPanelContent"
+            android:id="@+id/playerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.cas.musicplayer.ui.home.view.InsetSlidingPanelView>
@@ -97,4 +97,11 @@
             android:textSize="12sp"
             android:visibility="gone" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/queueFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="40dp"
+        android:visibility="gone" />
 </RelativeLayout>
