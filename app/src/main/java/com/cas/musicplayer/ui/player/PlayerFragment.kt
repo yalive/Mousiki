@@ -51,6 +51,8 @@ import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.AdRequest
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import it.sephiroth.android.library.xtooltip.ClosePolicy
+import it.sephiroth.android.library.xtooltip.Tooltip
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
@@ -63,6 +65,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private val handler = Handler()
     private var mediaController: MediaControllerCompat? = null
     private var btnFullScreen: ImageButton? = null
+    private var mainView: ViewGroup? = null
     private var btnPlayPauseMain: ImageButton? = null
     private var imgBlured: ImageView? = null
     private var lockScreenView: LockScreenView? = null
@@ -126,6 +129,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         btnFullScreen = view?.findViewById(R.id.btnFullScreen)
+        mainView = view?.findViewById(R.id.mainView)
         btnPlayPauseMain = view?.findViewById(R.id.btnPlayPauseMain)
         lockScreenView = view?.findViewById(R.id.lockScreenView)
         imgBlured = view?.findViewById(R.id.imgBlured)
@@ -297,7 +301,10 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 message(R.string.battery_saver_mode_request_change_settings)
                 positiveButton(R.string.ok) {
                     activity?.let { activity ->
-                        SystemSettings.enableSettingModification(this@PlayerFragment, RQ_CODE_WRITE_SETTINGS)
+                        SystemSettings.enableSettingModification(
+                            this@PlayerFragment,
+                            RQ_CODE_WRITE_SETTINGS
+                        )
                     }
                 }
                 negativeButton(R.string.cancel)
@@ -310,7 +317,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     }
 
     override fun onPanelSlide(panel: View?, slideOffset: Float) {
-        mainView.alpha = slideOffset
+        mainView?.alpha = slideOffset
         miniPlayerView.alpha = 1 - slideOffset
     }
 
@@ -320,6 +327,9 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         newState: SlidingUpPanelLayout.PanelState?
     ) {
         btnFullScreen?.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
+        if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            checkToShowTipBatterySaver()
+        }
     }
 
     private fun showQueue() {
@@ -433,7 +443,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     }
 
     private fun lockScreen(lock: Boolean) {
-        mainView.isVisible = !lock
+        mainView?.isVisible = !lock
         mainActivity.isLocked = lock
         lockScreenView?.toggle(lock)
     }
@@ -449,6 +459,27 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             lockScreenView?.onPlayBackStateChanged()
         } else if (state == PlaybackStateCompat.STATE_STOPPED) {
             mainActivity.hideBottomPanel()
+        }
+    }
+
+    private fun checkToShowTipBatterySaver() {
+        mainView?.let { parent ->
+            if (!UserPrefs.hasSeenToolTipBatterySaver() && mainActivity.isBottomPanelExpanded()) {
+                val tip = Tooltip.Builder(requireContext())
+                    .styleId(R.style.TooltipLayoutStyle)
+                    .anchor(btnLockScreen)
+                    .text(R.string.tool_tip_battery_saver)
+                    .arrow(true)
+                    .overlay(true)
+                    .closePolicy(ClosePolicy.TOUCH_ANYWHERE_CONSUME)
+                    .maxWidth(requireContext().dpToPixel(260f))
+                    .floatingAnimation(Tooltip.Animation.SLOW)
+                    .create()
+                tip.show(parent, Tooltip.Gravity.CENTER, true)
+                tip.doOnHidden {
+                    UserPrefs.setSeenToolTipBatterySaver()
+                }
+            }
         }
     }
 
