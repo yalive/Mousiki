@@ -21,6 +21,7 @@ object UserPrefs {
     val KEY_SLEEP_TIMER_VALUE = "sleep-timer-value"
     val KEY_THEME = "key_theme_mode"
     val KEY_OUT_VIDEO_SIZE = "key_out_video_size"
+    val KEY_TOOL_TIP_BATTERY_SAVER = "has_seen_tool_tip_battery_saver"
 
     fun saveFav(videoId: String?, isAdd: Boolean) {
         val pref = getPrefs()
@@ -117,6 +118,17 @@ object UserPrefs {
 
     fun getOutVideoSizeValue(): Int {
         return getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 1)
+    }
+
+    fun hasSeenToolTipBatterySaver(): Boolean {
+        val pref = getPrefs()
+        return pref.getBoolean(KEY_TOOL_TIP_BATTERY_SAVER, false)
+    }
+
+    fun setSeenToolTipBatterySaver() {
+        getPrefs().edit {
+            putBoolean(KEY_TOOL_TIP_BATTERY_SAVER, true)
+        }
     }
 
     const val THEME_AUTOMATIC = 0

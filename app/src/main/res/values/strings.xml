@@ -139,5 +139,6 @@
     <string name="video_size_normal">Normal</string>
     <string name="video_size_large">Large</string>
     <string name="exit">Exit</string>
+    <string name="tool_tip_battery_saver">Click here to enable battery saver mode</string>
 
 </resources>
