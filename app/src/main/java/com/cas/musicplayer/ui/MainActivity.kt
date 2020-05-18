@@ -276,7 +276,7 @@ class MainActivity : BaseActivity() {
         }
 
         lifecycleScope.launch {
-            delay(200)
+            delay(300)
             if (queueFragmentContainer.isVisible) {
                 PlayerQueue.hideVideo()
             }
