@@ -73,9 +73,22 @@ class QueueViewModel @Inject constructor(
         onQueueChanged()
     }
 
+    fun removeTrackFromQueue(position: Int) {
+        if (isCurrentTrack(position)) return
+        PlayerQueue.removeTrack(currentQueue[position].track)
+        onQueueChanged()
+    }
+
     private fun onQueueChanged() {
         val tracks = PlayerQueue.queue ?: listOf()
         currentQueue = tracks.map { it.toDisplayedVideoItem() }
         updateQueue(PlaybackLiveData.value)
+    }
+
+    fun isCurrentTrack(position: Int): Boolean {
+        val indexOfCurrent = currentQueue.indexOfFirst {
+            it.track.youtubeId == PlayerQueue.value?.youtubeId
+        }
+        return indexOfCurrent == position
     }
 }

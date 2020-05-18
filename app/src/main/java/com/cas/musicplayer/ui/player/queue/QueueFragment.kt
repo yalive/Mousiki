@@ -49,7 +49,7 @@ class QueueFragment : Fragment() {
     private val itemTouchHelper by lazy {
         val callback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-            0
+            ItemTouchHelper.START or ItemTouchHelper.END
         ) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -63,6 +63,17 @@ class QueueFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                viewModel.removeTrackFromQueue(position)
+            }
+
+            override fun getSwipeDirs(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                val position = viewHolder.adapterPosition
+                if (viewModel.isCurrentTrack(position)) return 0
+                return super.getSwipeDirs(recyclerView, viewHolder)
             }
 
             override fun isLongPressDragEnabled() = false
@@ -168,5 +179,4 @@ class QueueFragment : Fragment() {
             }
         }
     }
-
 }
