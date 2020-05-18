@@ -37,6 +37,8 @@
     <string name="settings_feedback">Comentários</string>
     <string name="settings_facebook_like">Curtir a página do Facebook</string>
     <string name="settings_policy">Política de Privacidade</string>
+    <string name="settings_size_out_video">Tamanho do vídeo</string>
+    <string name="settings_choose_out_video_size">Escolha o tamanho do vídeo</string>
     <string name="settings_share_app">Compartilhar aplicativo com amigos</string>
     <string name="rate_app_give_rating">Classifique 5 estrelas</string>
     <string name="rate_app_remind_me_later">Lembre-me mais tarde</string>
@@ -125,4 +127,10 @@
     <!-- Shortcuts -->
     <string name="app_shortcut_search">Procurar</string>
     <string name="app_shortcut_new_releases">Tendendo</string>
+
+    <!-- Video sizes -->
+    <string name="video_size_small">Pequeno</string>
+    <string name="video_size_normal">Normal</string>
+    <string name="video_size_large">Grand</string>
+    <string name="exit">Saída</string>
 </resources>
