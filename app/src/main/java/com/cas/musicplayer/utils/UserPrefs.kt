@@ -21,6 +21,7 @@ object UserPrefs {
     val KEY_SLEEP_TIMER_VALUE = "sleep-timer-value"
     val KEY_THEME = "key_theme_mode"
     val KEY_OUT_VIDEO_SIZE = "key_out_video_size"
+    val KEY_TOOL_TIP_BATTERY_SAVER = "has_seen_tool_tip_battery_saver"
 
     fun saveFav(videoId: String?, isAdd: Boolean) {
         val pref = getPrefs()
@@ -41,7 +42,7 @@ object UserPrefs {
 
     fun getSort(): PlaySort {
         val pref = getPrefs()
-        val sort = pref.getString(KEY_CURRENT_SORT, PlaySort.SEQUENCE.toString())
+        val sort = pref.getString(KEY_CURRENT_SORT, PlaySort.LOOP_ALL.toString())
         return PlaySort.toEnum(sort!!)
     }
 
@@ -96,11 +97,12 @@ object UserPrefs {
     }
 
     fun outVideoSize(): OutVideoSize {
-        return when (getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 1)) {
+        return when (getOutVideoSizeValue()) {
             0 -> OutVideoSize.SMALL
             1 -> OutVideoSize.NORMAL
             2 -> OutVideoSize.LARGE
-            else -> OutVideoSize.NORMAL
+            3 -> OutVideoSize.CIRCULAR
+            else -> OutVideoSize.CIRCULAR
         }
     }
 
@@ -109,6 +111,7 @@ object UserPrefs {
             OutVideoSize.SMALL -> 0
             OutVideoSize.NORMAL -> 1
             OutVideoSize.LARGE -> 2
+            OutVideoSize.CIRCULAR -> 3
         }
         getPrefs().edit {
             putInt(KEY_OUT_VIDEO_SIZE, newSize)
@@ -116,7 +119,18 @@ object UserPrefs {
     }
 
     fun getOutVideoSizeValue(): Int {
-        return getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 1)
+        return getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 3)
+    }
+
+    fun hasSeenToolTipBatterySaver(): Boolean {
+        val pref = getPrefs()
+        return pref.getBoolean(KEY_TOOL_TIP_BATTERY_SAVER, false)
+    }
+
+    fun setSeenToolTipBatterySaver() {
+        getPrefs().edit {
+            putBoolean(KEY_TOOL_TIP_BATTERY_SAVER, true)
+        }
     }
 
     const val THEME_AUTOMATIC = 0
@@ -124,6 +138,6 @@ object UserPrefs {
     const val THEME_DARK = 2
 
     enum class OutVideoSize {
-        SMALL, NORMAL, LARGE
+        SMALL, NORMAL, LARGE, CIRCULAR
     }
 }

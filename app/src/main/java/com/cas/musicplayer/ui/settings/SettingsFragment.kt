@@ -93,7 +93,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
                         0 -> UserPrefs.OutVideoSize.SMALL
                         1 -> UserPrefs.OutVideoSize.NORMAL
                         2 -> UserPrefs.OutVideoSize.LARGE
-                        else -> UserPrefs.OutVideoSize.NORMAL
+                        3 -> UserPrefs.OutVideoSize.CIRCULAR
+                        else -> UserPrefs.OutVideoSize.CIRCULAR
                     }
                     UserPrefs.setOutVideoSize(size)
                 }

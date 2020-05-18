@@ -10,5 +10,6 @@
         <item>@string/video_size_small</item>
         <item>@string/video_size_normal</item>
         <item>@string/video_size_large</item>
+        <item>@string/video_size_circular</item>
     </string-array>
 </resources>

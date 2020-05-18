@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,8 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import kotlinx.android.synthetic.main.fragment_search_youtube.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  **********************************
@@ -83,7 +86,11 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                findNavController().popBackStack()
+                view?.hideSoftKeyboard()
+                lifecycleScope.launch {
+                    delay(200)
+                    findNavController().popBackStack()
+                }
                 return true
             }
         })

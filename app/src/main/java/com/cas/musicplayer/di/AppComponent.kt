@@ -20,7 +20,7 @@ import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
-import com.cas.musicplayer.ui.player.SlideUpPlaylistViewModel
+import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
@@ -86,8 +86,6 @@ interface AppComponent {
 
     val playerViewModel: PlayerViewModel
 
-    val slideUpPlaylistViewModel: SlideUpPlaylistViewModel
-
     val mainSearchViewModel: MainSearchViewModel
 
     val emptyViewModel: EmptyViewModel
@@ -115,4 +113,6 @@ interface AppComponent {
     val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
 
     val appConfig: RemoteAppConfig
+
+    val queueViewModel: QueueViewModel
 }

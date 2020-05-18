@@ -48,6 +48,7 @@ class SongsDiffUtil(
                     && oldItem.track == newItem.track
                     && oldItem.songDuration == newItem.songDuration
                     && oldItem.isPlaying == newItem.isPlaying
+                    && oldItem.beforeCurrent == newItem.beforeCurrent
                     && oldItem.songTitle == newItem.songTitle
         }
 

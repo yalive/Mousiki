@@ -65,7 +65,7 @@ class YoutubeFloatingPlayerView : CardView {
         inflate(context, R.layout.view_floating_video, this)
         isClickable = true
         isFocusable = true
-        radius = context.dpToPixel(4f).toFloat()
+        radius = videoEmplacement.radius
         windowManager = context.getSystemService(LifecycleService.WINDOW_SERVICE) as WindowManager
     }
 
@@ -215,6 +215,7 @@ class YoutubeFloatingPlayerView : CardView {
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
+        radius = emplacement.radius
         this.videoEmplacement = emplacement
         if (emplacement is EmplacementFullScreen) {
             toggleFullScreenVideoPlayer(true)

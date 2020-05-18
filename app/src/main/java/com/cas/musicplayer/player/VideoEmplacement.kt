@@ -24,6 +24,7 @@ sealed class VideoEmplacement {
     abstract val y: Int
     abstract val width: Int
     abstract val height: Int
+    abstract val radius: Float
 
     fun dpToPixel(dp: Float): Int {
         return app.dpToPixel(dp)
@@ -74,6 +75,9 @@ class EmplacementBottom(val bottomBarVisible: Boolean) : VideoEmplacement() {
         get() {
             return dpToPixel(45f)
         }
+
+    override val radius: Float
+        get() = dpToPixel(4f).toFloat()
 }
 
 class EmplacementCenter : VideoEmplacement() {
@@ -96,6 +100,9 @@ class EmplacementCenter : VideoEmplacement() {
         get() {
             return dpToPixel(150f)
         }
+
+    override val radius: Float
+        get() = dpToPixel(4f).toFloat()
 }
 
 class EmplacementPlaylist : VideoEmplacement() {
@@ -119,6 +126,9 @@ class EmplacementPlaylist : VideoEmplacement() {
         get() {
             return dpToPixel(64f)
         }
+
+    override val radius: Float
+        get() = dpToPixel(4f).toFloat()
 }
 
 class EmplacementFullScreen : VideoEmplacement() {
@@ -129,6 +139,9 @@ class EmplacementFullScreen : VideoEmplacement() {
     override val width: Int = WindowManager.LayoutParams.MATCH_PARENT
 
     override val height: Int = WindowManager.LayoutParams.MATCH_PARENT
+
+    override val radius: Float
+        get() = dpToPixel(8f).toFloat()
 }
 
 class EmplacementOut : VideoEmplacement() {
@@ -148,6 +161,7 @@ class EmplacementOut : VideoEmplacement() {
                 UserPrefs.OutVideoSize.SMALL -> 70f
                 UserPrefs.OutVideoSize.NORMAL -> 120f
                 UserPrefs.OutVideoSize.LARGE -> 200f
+                UserPrefs.OutVideoSize.CIRCULAR -> 60f
             }
             return dpToPixel(w)
         }
@@ -158,7 +172,17 @@ class EmplacementOut : VideoEmplacement() {
                 UserPrefs.OutVideoSize.SMALL -> 40f
                 UserPrefs.OutVideoSize.NORMAL -> 70f
                 UserPrefs.OutVideoSize.LARGE -> 120f
+                UserPrefs.OutVideoSize.CIRCULAR -> 60f
             }
             return dpToPixel(h)
+        }
+
+    override val radius: Float
+        get() {
+            val radiusDp = when (UserPrefs.outVideoSize()) {
+                UserPrefs.OutVideoSize.CIRCULAR -> 30f
+                else -> 4f
+            }
+            return dpToPixel(radiusDp).toFloat()
         }
 }
