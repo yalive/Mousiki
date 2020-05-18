@@ -51,7 +51,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun addAsNext(track: MusicTrack) {
-
         val newList = mutableListOf<MusicTrack>()
         if (queue != null) {
             for (musicTrack in queue!!) {
@@ -63,6 +62,12 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
             this.queue = newList
         }
+    }
+
+    fun removeTrack(track: MusicTrack) {
+        val mutableQueue = queue?.toMutableList()
+        mutableQueue?.remove(track)
+        this.queue = mutableQueue
     }
 
     fun swapTracks(from: Int, to: Int) {
