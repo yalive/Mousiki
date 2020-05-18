@@ -97,11 +97,12 @@ object UserPrefs {
     }
 
     fun outVideoSize(): OutVideoSize {
-        return when (getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 1)) {
+        return when (getOutVideoSizeValue()) {
             0 -> OutVideoSize.SMALL
             1 -> OutVideoSize.NORMAL
             2 -> OutVideoSize.LARGE
-            else -> OutVideoSize.NORMAL
+            3 -> OutVideoSize.CIRCULAR
+            else -> OutVideoSize.CIRCULAR
         }
     }
 
@@ -110,6 +111,7 @@ object UserPrefs {
             OutVideoSize.SMALL -> 0
             OutVideoSize.NORMAL -> 1
             OutVideoSize.LARGE -> 2
+            OutVideoSize.CIRCULAR -> 3
         }
         getPrefs().edit {
             putInt(KEY_OUT_VIDEO_SIZE, newSize)
@@ -117,7 +119,7 @@ object UserPrefs {
     }
 
     fun getOutVideoSizeValue(): Int {
-        return getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 1)
+        return getPrefs().getInt(KEY_OUT_VIDEO_SIZE, 3)
     }
 
     fun hasSeenToolTipBatterySaver(): Boolean {
@@ -136,6 +138,6 @@ object UserPrefs {
     const val THEME_DARK = 2
 
     enum class OutVideoSize {
-        SMALL, NORMAL, LARGE
+        SMALL, NORMAL, LARGE, CIRCULAR
     }
 }
