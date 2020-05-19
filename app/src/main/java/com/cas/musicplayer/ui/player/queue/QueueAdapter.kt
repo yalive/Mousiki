@@ -3,12 +3,10 @@ package com.cas.musicplayer.ui.player.queue
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.transition.TransitionManager
 import com.airbnb.lottie.LottieAnimationView
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
@@ -75,7 +73,6 @@ class QueueAdapter(
             }
 
             // Configure playing track
-            TransitionManager.beginDelayedTransition(itemView as ViewGroup)
             val colorAccent = itemView.context.color(R.color.colorAccent)
             val colorText = if (item.isCurrent) colorAccent
             else itemView.context.themeColor(R.attr.colorOnSurface)
