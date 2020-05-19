@@ -463,21 +463,24 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     }
 
     private fun checkToShowTipBatterySaver() {
-        mainView?.let { parent ->
-            if (!UserPrefs.hasSeenToolTipBatterySaver() && mainActivity.isBottomPanelExpanded()) {
-                val tip = Tooltip.Builder(requireContext())
-                    .styleId(R.style.TooltipLayoutStyle)
-                    .anchor(btnLockScreen)
-                    .text(R.string.tool_tip_battery_saver)
-                    .arrow(true)
-                    .overlay(true)
-                    .closePolicy(ClosePolicy.TOUCH_ANYWHERE_CONSUME)
-                    .maxWidth(requireContext().dpToPixel(260f))
-                    .floatingAnimation(Tooltip.Animation.SLOW)
-                    .create()
-                tip.show(parent, Tooltip.Gravity.CENTER, true)
-                tip.doOnHidden {
-                    UserPrefs.setSeenToolTipBatterySaver()
+        val parent = mainView ?: return
+        parent.post {
+            if (parent.windowToken != null) {
+                if (!UserPrefs.hasSeenToolTipBatterySaver() && mainActivity.isBottomPanelExpanded()) {
+                    val tip = Tooltip.Builder(requireContext())
+                        .styleId(R.style.TooltipLayoutStyle)
+                        .anchor(btnLockScreen)
+                        .text(R.string.tool_tip_battery_saver)
+                        .arrow(true)
+                        .overlay(true)
+                        .closePolicy(ClosePolicy.TOUCH_ANYWHERE_CONSUME)
+                        .maxWidth(requireContext().dpToPixel(260f))
+                        .floatingAnimation(Tooltip.Animation.SLOW)
+                        .create()
+                    tip.show(parent, Tooltip.Gravity.CENTER, true)
+                    tip.doOnHidden {
+                        UserPrefs.setSeenToolTipBatterySaver()
+                    }
                 }
             }
         }

@@ -25,6 +25,8 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="@dimen/eight_8dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -32,8 +34,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -41,6 +41,7 @@
                 android:id="@+id/indicatorPlaying"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginEnd="4dp"
                 android:scaleType="centerInside"
                 app:lottie_colorFilter="@color/colorAccent"
                 app:lottie_loop="true"
@@ -51,7 +52,6 @@
                 android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/pangram_medium"
                 android:maxLines="3"
@@ -64,8 +64,6 @@
             android:id="@+id/txtCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
             android:ellipsize="end"
             android:fontFamily="@font/pangram_regular"
             android:lines="1"
