@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/four_4dp"
-    android:layout_marginBottom="@dimen/four_4dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
     android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
@@ -26,8 +26,8 @@
 
             <ImageView
                 android:id="@+id/imgSong"
-                android:layout_width="120dp"
-                android:layout_height="64dp" />
+                android:layout_width="100dp"
+                android:layout_height="54dp" />
 
             <TextView
                 android:id="@+id/txtDuration"
@@ -72,6 +72,7 @@
                 android:id="@+id/indicatorPlaying"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginEnd="4dp"
                 android:scaleType="centerInside"
                 app:lottie_colorFilter="@color/colorAccent"
                 app:lottie_loop="true"
@@ -81,7 +82,6 @@
                 android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/pangram_medium"
                 android:maxLines="3"
