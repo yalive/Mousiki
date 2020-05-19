@@ -132,5 +132,8 @@
     <string name="video_size_small">Pequeno</string>
     <string name="video_size_normal">Normal</string>
     <string name="video_size_large">Grand</string>
+    <string name="video_size_circular">Circular</string>
     <string name="exit">Saída</string>
+    <string name="tool_tip_battery_saver">Clique aqui para ativar o modo de economia de bateria</string>
+    <string name="queue">Fila</string>
 </resources>
