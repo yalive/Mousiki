@@ -38,6 +38,8 @@
     <string name="settings_feedback">Rétroactions</string>
     <string name="settings_facebook_like">J\'aime la page Facebook</string>
     <string name="settings_policy">Politique de confidentialité</string>
+    <string name="settings_size_out_video">Taille de la vidéo</string>
+    <string name="settings_choose_out_video_size">Choisissez la taille de la vidéo</string>
     <string name="settings_share_app">Partager l\'application avec des amis</string>
     <string name="rate_app_give_rating">Note 5 étoiles</string>
     <string name="rate_app_remind_me_later">Rappelle-moi plus tard</string>
@@ -126,4 +128,13 @@
     <!-- Shortcuts -->
     <string name="app_shortcut_search">Chercher</string>
     <string name="app_shortcut_new_releases">Tendance</string>
+
+    <!-- Video sizes -->
+    <string name="video_size_small">Petit</string>
+    <string name="video_size_normal">Normal</string>
+    <string name="video_size_large">Grand</string>
+    <string name="video_size_circular">Circulaire</string>
+    <string name="exit">Sortie</string>
+    <string name="tool_tip_battery_saver">Cliquez ici pour activer le mode économiseur de batterie</string>
+    <string name="queue">Queue</string>
 </resources>
