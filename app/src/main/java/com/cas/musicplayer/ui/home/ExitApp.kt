@@ -4,9 +4,7 @@ import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.customview.customView
 import com.cas.common.extensions.onClick
@@ -26,8 +24,8 @@ import kotlinx.coroutines.launch
  ***************************************
  */
 
-fun MainActivity.showExitDialog() {
-    val dialog = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
+fun MainActivity.showExitDialog(): MaterialDialog {
+    val dialog = MaterialDialog(this/*, BottomSheet(LayoutMode.WRAP_CONTENT)*/)
     dialog.show {
         //setPeekHeight(literal = dpToPixel(600f))
         cancelOnTouchOutside(true)
@@ -64,6 +62,7 @@ fun MainActivity.showExitDialog() {
     } ?: run {
         adView.isVisible = false
     }
+    return dialog
 }
 
 fun populateNativeAdView(

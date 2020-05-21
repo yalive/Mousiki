@@ -190,9 +190,9 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
         // Background
         lifecycleScope.launch {
-            var imageBitmap = imgBackground?.getBitmap(featuredImage)
+            var imageBitmap = imgBackground?.getBitmap(featuredImage, 400)
             if (imageBitmap == null && featuredImage is AppImageUrl && featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
-                imageBitmap = imgBackground?.getBitmap(featuredImage.altUrl)
+                imageBitmap = imgBackground?.getBitmap(featuredImage.altUrl, 400)
             }
             imageBitmap?.let { bitmap ->
                 findDominantColors(bitmap)

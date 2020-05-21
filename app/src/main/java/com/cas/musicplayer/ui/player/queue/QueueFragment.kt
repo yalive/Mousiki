@@ -167,9 +167,9 @@ class QueueFragment : Fragment() {
     private fun loadAndBlurImage(video: MusicTrack) {
         lifecycleScope.launch {
             try {
-                val bitmap = imgBlured?.getBitmap(video.imgUrlDefault) ?: return@launch
+                val bitmap = imgBlured?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
                 val blurredBitmap = withContext(Dispatchers.Default) {
-                    BlurImage.fastblur(bitmap, 0.1f, 30)
+                    BlurImage.fastblur(bitmap, 0.1f, 50)
                 }
                 imgBlured?.setImageBitmap(blurredBitmap)
             } catch (e: Exception) {

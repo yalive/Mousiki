@@ -1,7 +1,6 @@
 package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
-import android.util.Log
 import com.crashlytics.android.Crashlytics
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
@@ -24,11 +23,9 @@ data class MusicTrack(
 
     val imgUrl: String
         get() {
-
             if (fullImageUrl.startsWith("http")) {
                 return fullImageUrl
             }
-
             return "https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg"
         }
 
