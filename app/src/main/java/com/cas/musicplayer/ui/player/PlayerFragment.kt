@@ -215,7 +215,10 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             if (!seekingDuration) {
                 updateCurrentTrackTime(elapsedSeconds)
                 PlayerQueue.value?.let { currentTrack ->
-                    val progress = (elapsedSeconds * 100 / currentTrack.totalSeconds).toInt()
+                    val totalSeconds = currentTrack.totalSeconds.toInt()
+                    val progress =
+                        if (totalSeconds > 0) (elapsedSeconds * 100 / currentTrack.totalSeconds).toInt()
+                        else 0
                     seekBarDuration.animateProgress(progress)
                     miniPlayerView.updateProgress(progress)
                 }

@@ -65,7 +65,6 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
 
     override fun bind(item: ChartModel) {
         txtTitle.text = item.title
-
         // To be refactored
         try {
             itemView.imgChart.setImageResource(item.featuredImageRes)

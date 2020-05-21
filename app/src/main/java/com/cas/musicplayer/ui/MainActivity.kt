@@ -26,6 +26,7 @@ import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -39,6 +40,7 @@ import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -292,6 +294,11 @@ class MainActivity : BaseActivity() {
         VideoEmplacementLiveData.out()
     }
 
+    override fun onDestroy() {
+        dialogDrawOverApps?.dismiss()
+        super.onDestroy()
+    }
+
     private fun bottomPanelFragment(): PlayerFragment? {
         return supportFragmentManager.findFragmentById(R.id.playerFragment) as? PlayerFragment
     }
@@ -435,18 +442,23 @@ class MainActivity : BaseActivity() {
         return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
     }
 
+    var dialogDrawOverApps: AlertDialog? = null
+
     private fun requestDrawOverAppsPermission() {
-        AlertDialog.Builder(this).setCancelable(false)
+        dialogDrawOverApps = AlertDialog.Builder(this).setCancelable(false)
             .setMessage(R.string.message_enable_draw)
             .setNegativeButton(getString(R.string.btn_deny)) { _, _ ->
             }.setPositiveButton(getString(R.string.btn_agree)) { _, _ ->
-                //If the draw over permission is not available open the settings screen
-                //to grant the permission.
                 val intent = Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:$packageName")
                 )
-                startActivityForResult(intent, 10)
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivityForResult(intent, 10)
+                } else {
+                    MusicApp.get().toast(R.string.message_enable_draw_over_apps_manually)
+                    Crashlytics.log("requestDrawOverAppsPermission intent not resolved")
+                }
             }.show()
     }
 

@@ -20,7 +20,6 @@ abstract class BaseAdapter<DataType, ViewHolder : RecyclerView.ViewHolder> : Rec
     private var loadingMore = false
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d(TAG, "************** Bind position $position ****************")
         if (position >= itemCount - 5 && !loadingMore) {
             //onLoadMore()
         }
