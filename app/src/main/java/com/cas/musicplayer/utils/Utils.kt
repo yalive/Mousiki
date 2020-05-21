@@ -24,6 +24,7 @@ import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
@@ -170,7 +171,16 @@ object Utils {
         }
     }
 
-    fun fileContent(file: File) = file.inputStream().bufferedReader().use { it.readText() }
+    fun fileContent(file: File): String = try {
+        file.inputStream().bufferedReader().use { it.readText() }
+    } catch (e: Exception) {
+        Crashlytics.logException(e)
+        ""
+    } catch (error: OutOfMemoryError) {
+        Crashlytics.logException(error)
+        ""
+    }
+
     fun writeToFile(content: String, file: File) =
         file.outputStream().bufferedWriter().use { it.write(content) }
 

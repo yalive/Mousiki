@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -47,6 +48,9 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     override val layoutResourceId: Int = R.layout.fragment_playlist_songs
 
+    private var imgArtist: ImageView? = null
+    private var imgBackground: ImageView? = null
+
     protected val adapter by lazy {
         SongsAdapter(
             onVideoSelected = { track ->
@@ -66,13 +70,13 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
                 }
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
-        ).apply {
-            setHasStableIds(true)
-        }
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        imgArtist = view.findViewById(R.id.imgArtist)
+        imgBackground = view.findViewById(R.id.imgBackground)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
         btnPlayAll.onClick {
@@ -166,15 +170,15 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     protected fun loadFeaturedImage(featuredImage: AppImage) {
         when (featuredImage) {
-            is AppImageRes -> imgArtist.setImageResource(featuredImage.resId)
+            is AppImageRes -> imgArtist?.setImageResource(featuredImage.resId)
             is AppImageUrl -> {
-                imgArtist.loadImage(
+                imgArtist?.loadImage(
                     urlImage = featuredImage.url,
                     errorImage = R.drawable.app_icon_placeholder,
                     placeHolder = R.drawable.app_icon_placeholder
                 ) {
                     if (featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
-                        imgArtist.loadImage(
+                        imgArtist?.loadImage(
                             urlImage = featuredImage.altUrl,
                             errorImage = R.drawable.app_icon_placeholder,
                             placeHolder = R.drawable.app_icon_placeholder
@@ -186,9 +190,9 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
 
         // Background
         lifecycleScope.launch {
-            var imageBitmap = imgBackground.getBitmap(featuredImage)
+            var imageBitmap = imgBackground?.getBitmap(featuredImage)
             if (imageBitmap == null && featuredImage is AppImageUrl && featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
-                imageBitmap = imgBackground.getBitmap(featuredImage.altUrl)
+                imageBitmap = imgBackground?.getBitmap(featuredImage.altUrl)
             }
             imageBitmap?.let { bitmap ->
                 findDominantColors(bitmap)
@@ -206,7 +210,7 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         val gradient = GradientDrawable(
             GradientDrawable.Orientation.TOP_BOTTOM, colors
         )
-        imgBackground.setImageDrawable(gradient)
+        imgBackground?.setImageDrawable(gradient)
     }
 
     open fun addExtrasArgumentToBottomMenu(bundle: Bundle) {

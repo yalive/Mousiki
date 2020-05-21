@@ -20,6 +20,7 @@ import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.utils.navigateSafeAction
 
 /**
  ***************************************
@@ -88,7 +89,7 @@ class HomeHeaderAdapterDelegate(
                 HeaderItem.ChartsHeader -> R.id.genresFragment // Just for code to compile
                 HeaderItem.GenresHeader -> R.id.action_homeFragment_to_genresFragment
             }
-            itemView.findNavController().navigate(destination, bundle)
+            itemView.findNavController().navigateSafeAction(destination, bundle)
         }
     }
 }

@@ -31,6 +31,7 @@
     <string name="common_empty_song_list">No song found</string>
     <string name="menu_settings">Settings</string>
     <string name="message_enable_draw">Please enable the "Draw over other apps" permission to start the floating player window.</string>
+    <string name="message_enable_draw_over_apps_manually">Please go to settings and enable the "Draw over other apps" permission to start the floating player window.</string>
     <string name="title_button_set_timer">Set</string>
     <string name="loading">Loading…</string>
     <string name="error_while_loading_song_list">Error while loading songs list</string>

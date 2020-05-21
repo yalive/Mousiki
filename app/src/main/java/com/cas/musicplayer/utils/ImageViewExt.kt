@@ -65,14 +65,19 @@ fun ImageView.loadImage(
     }
 }
 
-suspend fun Picasso.getBitmap(url: String): Bitmap? = suspendCancellableCoroutine { continuation ->
-    if (url.isEmpty()) {
-        continuation.resume(null)
-        return@suspendCancellableCoroutine
+suspend fun Picasso.getBitmap(url: String, forMetadata: Boolean = false): Bitmap? =
+    suspendCancellableCoroutine { continuation ->
+        if (url.isEmpty()) {
+            continuation.resume(null)
+            return@suspendCancellableCoroutine
+        }
+        val target = createTargetWith(continuation)
+        load(url).apply {
+            if (forMetadata) {
+                resize(0, 320)
+            }
+        }.into(target)
     }
-    val target = createTargetWith(continuation)
-    load(url).into(target)
-}
 
 suspend fun ImageView.getBitmap(url: String): Bitmap? =
     suspendCancellableCoroutine { continuation ->
