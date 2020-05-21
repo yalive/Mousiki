@@ -435,8 +435,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private fun loadAndBlurImage(video: MusicTrack) {
         lifecycleScope.launch {
             try {
-                val bitmap = imgBlured?.getBitmap(video.imgUrlDefault) ?: return@launch
-                imgBlured?.setImageBitmap(BlurImage.fastblur(bitmap, 1f, 45))
+                val bitmap = imgBlured?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
+                imgBlured?.setImageBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
             } catch (e: Exception) {
                 Crashlytics.logException(e)
             } catch (error: OutOfMemoryError) {

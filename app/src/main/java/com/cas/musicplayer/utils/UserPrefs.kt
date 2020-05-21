@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlaySort
 
 /**
@@ -130,6 +131,17 @@ object UserPrefs {
     fun setSeenToolTipBatterySaver() {
         getPrefs().edit {
             putBoolean(KEY_TOOL_TIP_BATTERY_SAVER, true)
+        }
+    }
+
+    fun getTrackImageUrl(track: MusicTrack): String {
+        return getPrefs().getString("${track.youtubeId}_preferred_url", track.imgUrl)
+            ?: track.imgUrl
+    }
+
+    fun setTrackImageUrl(track: MusicTrack, url: String) {
+        getPrefs().edit {
+            putString("${track.youtubeId}_preferred_url", url)
         }
     }
 

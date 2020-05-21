@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -21,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.transition.TransitionManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
@@ -67,6 +69,7 @@ class MainActivity : BaseActivity() {
     private var bottomView: ViewGroup? = null
     private var txtConnectivityState: TextView? = null
     private lateinit var playerFragment: PlayerFragment
+    private var exitDialog: MaterialDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -172,6 +175,15 @@ class MainActivity : BaseActivity() {
                 collapseBottomPanel()
             }
         }
+
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        val decodeResource =
+            BitmapFactory.decodeResource(resources, R.drawable.image_chart_spotify, options)
+        val w = options.outWidth
+        val h = options.outHeight
+        val type = options.outMimeType
+        print("")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -295,6 +307,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        exitDialog?.dismiss()
         dialogDrawOverApps?.dismiss()
         super.onDestroy()
     }
@@ -392,7 +405,7 @@ class MainActivity : BaseActivity() {
         }
 
         if (navController.isHome()) {
-            showExitDialog()
+            exitDialog = showExitDialog()
         } else {
             super.onBackPressed()
         }

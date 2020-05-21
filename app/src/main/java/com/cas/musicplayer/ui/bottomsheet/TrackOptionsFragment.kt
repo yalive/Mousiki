@@ -24,7 +24,7 @@ import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.loadImage
+import com.cas.musicplayer.utils.loadTrackImage
 import com.google.android.gms.ads.formats.MediaView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -72,7 +72,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             favIcon.setImageResource(R.drawable.ic_heart_solid)
             favLabel.text = getString(R.string.favourites)
         }
-        imgTrack.loadImage(musicTrack.imgUrl)
+        imgTrack.loadTrackImage(musicTrack)
         txtTrackTitle.text = musicTrack.title
         shareVia.onClick {
             Utils.shareWithDeepLink(musicTrack, context!!)

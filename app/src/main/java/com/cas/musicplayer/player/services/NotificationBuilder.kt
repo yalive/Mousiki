@@ -115,7 +115,7 @@ class NotificationBuilder(private val context: Context) {
             .setShowActionsInCompactView(1, 2, 3)
 
         val largeIconBitmap = description?.mediaUri?.toString()?.let {
-            Picasso.get().getBitmap(it)
+            Picasso.get().getBitmap(it, 400)
         }
         return builder.setContentIntent(controller.sessionActivity)
             .setContentText(description?.subtitle)

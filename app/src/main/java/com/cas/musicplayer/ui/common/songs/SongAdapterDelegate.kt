@@ -21,7 +21,7 @@ import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.loadImage
+import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor
 
 /**
@@ -81,18 +81,7 @@ class SongAdapterDelegate(
         }
 
         fun bind(item: DisplayedVideoItem) {
-            // TODO: Make it generic
-            imgSong.loadImage(
-                item.songImagePath,
-                placeHolder = R.drawable.app_icon_placeholder,
-                errorImage = R.drawable.app_icon_placeholder
-            ) {
-                imgSong.loadImage(
-                    item.track.imgUrlDef0,
-                    placeHolder = R.drawable.app_icon_placeholder,
-                    errorImage = R.drawable.app_icon_placeholder
-                )
-            }
+            imgSong.loadTrackImage(item.track)
             txtTitle.text = item.songTitle
             txtDuration.text = item.songDuration
             txtCategory.text = item.songTitle.split("-")[0]

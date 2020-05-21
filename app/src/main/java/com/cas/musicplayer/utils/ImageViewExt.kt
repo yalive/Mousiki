@@ -8,6 +8,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -31,6 +32,32 @@ fun ImageView.tint(@ColorRes colorId: Int) {
 
 fun ImageView.tintColor(color: Int) {
     ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(color))
+}
+
+fun ImageView.loadTrackImage(
+    track: MusicTrack
+) {
+    val url = UserPrefs.getTrackImageUrl(track)
+    if (url.isNotEmpty()) {
+        Picasso.get().load(url)
+            .placeholder(R.drawable.app_icon_placeholder)
+            .fit()
+            .into(this, object : Callback {
+                override fun onSuccess() {
+                    UserPrefs.setTrackImageUrl(track, url)
+                }
+
+                override fun onError(e: java.lang.Exception?) {
+                    Picasso.get().load(track.imgUrlDef0)
+                        .error(R.drawable.app_icon_placeholder)
+                        .fit()
+                        .into(this@loadTrackImage)
+                    UserPrefs.setTrackImageUrl(track, track.imgUrlDef0)
+                }
+            })
+    } else {
+        setImageResource(R.drawable.app_icon_placeholder)
+    }
 }
 
 fun ImageView.loadImage(
@@ -65,7 +92,7 @@ fun ImageView.loadImage(
     }
 }
 
-suspend fun Picasso.getBitmap(url: String, forMetadata: Boolean = false): Bitmap? =
+suspend fun Picasso.getBitmap(url: String, maxHeight: Int): Bitmap? =
     suspendCancellableCoroutine { continuation ->
         if (url.isEmpty()) {
             continuation.resume(null)
@@ -73,13 +100,11 @@ suspend fun Picasso.getBitmap(url: String, forMetadata: Boolean = false): Bitmap
         }
         val target = createTargetWith(continuation)
         load(url).apply {
-            if (forMetadata) {
-                resize(0, 320)
-            }
+            resize(0, maxHeight)
         }.into(target)
     }
 
-suspend fun ImageView.getBitmap(url: String): Bitmap? =
+suspend fun ImageView.getBitmap(url: String, maxHeight: Int): Bitmap? =
     suspendCancellableCoroutine { continuation ->
         if (url.isEmpty()) {
             continuation.resume(null)
@@ -87,10 +112,10 @@ suspend fun ImageView.getBitmap(url: String): Bitmap? =
         }
         val target = createTargetWith(continuation)
         this.tag = target
-        Picasso.get().load(url).into(target)
+        Picasso.get().load(url).resize(0, maxHeight).into(target)
     }
 
-suspend fun ImageView.getBitmap(appImage: AppImage): Bitmap? =
+suspend fun ImageView.getBitmap(appImage: AppImage, maxHeight: Int): Bitmap? =
     suspendCancellableCoroutine { continuation ->
         if (appImage is AppImage.AppImageUrl && appImage.url.isEmpty()) {
             continuation.resume(null)
@@ -100,8 +125,12 @@ suspend fun ImageView.getBitmap(appImage: AppImage): Bitmap? =
         this.tag = target
         val picasso = Picasso.get()
         when (appImage) {
-            is AppImage.AppImageRes -> picasso.load(appImage.resId).into(target)
-            is AppImage.AppImageUrl -> picasso.load(appImage.url).into(target)
+            is AppImage.AppImageRes -> {
+                picasso.load(appImage.resId).resize(0, maxHeight).into(target)
+            }
+            is AppImage.AppImageUrl -> {
+                picasso.load(appImage.url).resize(0, maxHeight).into(target)
+            }
         }
     }
 

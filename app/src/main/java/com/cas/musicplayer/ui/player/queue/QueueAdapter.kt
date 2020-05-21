@@ -15,7 +15,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.loadImage
+import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor
 
 /**
@@ -52,17 +52,7 @@ class QueueAdapter(
         }
 
         override fun bind(item: DisplayedVideoItem) {
-            imgSong.loadImage(
-                item.songImagePath,
-                placeHolder = R.drawable.app_icon_placeholder,
-                errorImage = R.drawable.app_icon_placeholder
-            ) {
-                imgSong.loadImage(
-                    item.track.imgUrlDef0,
-                    placeHolder = R.drawable.app_icon_placeholder,
-                    errorImage = R.drawable.app_icon_placeholder
-                )
-            }
+            imgSong.loadTrackImage(item.track)
             txtTitle.text = item.songTitle
             txtCategory.text = item.songTitle.split("-")[0]
             btnMore.onClick {

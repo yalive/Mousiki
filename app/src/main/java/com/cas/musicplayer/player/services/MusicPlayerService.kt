@@ -94,7 +94,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 lifecycleScope.launch {
                     injector.addTrackToRecentlyPlayed(currentTrack)
                     val loadBitmap =
-                        Picasso.get().getBitmap(currentTrack.imgUrl, forMetadata = true)
+                        Picasso.get().getBitmap(currentTrack.imgUrl, 320)
                     metadataBuilder.albumArt = loadBitmap
                     mediaSession.setMetadata(metadataBuilder.build())
                 }
