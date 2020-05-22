@@ -60,7 +60,7 @@ import java.util.concurrent.Executors
 
 class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
-    lateinit var mainActivity: MainActivity
+    private lateinit var mainActivity: MainActivity
     private val viewModel by viewModel { injector.playerViewModel }
     private val handler = Handler()
     private var mediaController: MediaControllerCompat? = null
@@ -290,6 +290,11 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
                     && SystemSettings.canDrawOverApps(requireContext())
             if (canWriteSettings) {
+                handler.postDelayed(500) {
+                    // ensure video in center
+                    VideoEmplacementLiveData.center()
+                    (activity as? MainActivity)?.expandBottomPanel()
+                }
                 openBatterySaverMode()
             }
         }
