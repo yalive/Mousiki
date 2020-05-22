@@ -1,12 +1,15 @@
 package com.cas.musicplayer.ui.searchyoutube
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
@@ -22,6 +25,7 @@ import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.*
+import com.crashlytics.android.Crashlytics
 
 /**
  ***************************************
@@ -29,16 +33,6 @@ import com.cas.musicplayer.utils.*
  ***************************************
  */
 class SearchGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
-    private val genreColors by lazy {
-        mutableListOf(
-            R.color.colorGenre1,
-            R.color.colorGenre2,
-            R.color.colorGenre3,
-            R.color.colorGenre4,
-            R.color.colorGenre5,
-            R.color.colorGenre6
-        ).shuffled()
-    }
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is GenreMusic
@@ -61,12 +55,12 @@ class SearchGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
     private inner class GenreViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         private val imgCategory: ImageView = view.findViewById(R.id.imgCategory)
         private val backgroundCategory: ImageView = view.findViewById(R.id.backgroundCategory)
+        private val cardImgCategory: CardView = view.findViewById(R.id.cardImgCategory)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
         fun bind(genreMusic: GenreMusic) {
             txtTitle.text = genreMusic.title
             imgCategory.setImageDrawable(itemView.context.drawable(genreMusic.img))
-            backgroundCategory.setBackgroundColor(itemView.context.color(genreColors[adapterPosition % 6]))
             view.findViewById<ViewGroup>(R.id.cardView).onClick {
                 val bundle = Bundle()
                 bundle.putString(
@@ -98,6 +92,24 @@ class SearchGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
                     v.scaleOriginal()
                 }
                 return@setOnTouchListener false
+            }
+
+            try {
+                val bitmap =
+                    BitmapFactory.decodeResource(itemView.context.resources, genreMusic.img)
+                Palette.from(bitmap).generate { palette ->
+                    var color = palette?.getMutedColor(0) ?: 0
+                    if (color == 0) {
+                        val colorPrimary = itemView.context.color(R.color.colorPrimary)
+                        color = palette?.getDarkMutedColor(colorPrimary) ?: colorPrimary
+                    }
+                    backgroundCategory.setBackgroundColor(color)
+                    cardImgCategory.setCardBackgroundColor(color)
+                }
+            } catch (e: Exception) {
+                Crashlytics.logException(e)
+            } catch (e: OutOfMemoryError) {
+                Crashlytics.logException(e)
             }
         }
     }
