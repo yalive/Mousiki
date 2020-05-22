@@ -376,8 +376,12 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         if (queueFragmentContainer.isVisible) {
+            supportFragmentManager.findFragmentById(R.id.queueFragmentContainer)?.let {
+                supportFragmentManager.beginTransaction().remove(it).commit()
+            }
             PlayerQueue.showVideo()
             queueFragmentContainer.isVisible = false
+            playerFragment.onQueueClosed()
             return
         }
         if (VideoEmplacementLiveData.value is EmplacementFullScreen) {

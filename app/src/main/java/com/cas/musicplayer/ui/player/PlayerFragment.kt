@@ -65,6 +65,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private val handler = Handler()
     private var mediaController: MediaControllerCompat? = null
     private var btnFullScreen: ImageButton? = null
+    private var btnPlayOption: ImageButton? = null
     private var mainView: ViewGroup? = null
     private var btnPlayPauseMain: ImageButton? = null
     private var imgBlured: ImageView? = null
@@ -129,6 +130,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         btnFullScreen = view?.findViewById(R.id.btnFullScreen)
+        btnPlayOption = view?.findViewById(R.id.btnPlayOption)
         mainView = view?.findViewById(R.id.mainView)
         btnPlayPauseMain = view?.findViewById(R.id.btnPlayPauseMain)
         lockScreenView = view?.findViewById(R.id.lockScreenView)
@@ -235,12 +237,12 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             }
         }
 
-        btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+        btnPlayOption?.setImageResource(UserPrefs.getSort().icon)
 
-        btnPlayOption.onClick {
+        btnPlayOption?.onClick {
             // Get next state
             val nextSort = UserPrefs.getSort().next()
-            btnPlayOption.setImageResource(nextSort.icon)
+            btnPlayOption?.setImageResource(nextSort.icon)
             UserPrefs.saveSort(nextSort)
         }
 
@@ -347,6 +349,9 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()
         val fm = activity?.supportFragmentManager
         fm?.beginTransaction()?.replace(R.id.queueFragmentContainer, fragment)?.commit()
+        (fragment as? QueueFragment)?.doOnClose {
+            onQueueClosed()
+        }
     }
 
     private fun onClickPlayPause() {
@@ -492,6 +497,10 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 }
             }
         }
+    }
+
+    fun onQueueClosed() {
+        btnPlayOption?.setImageResource(UserPrefs.getSort().icon)
     }
 
     companion object {
