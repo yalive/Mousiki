@@ -1,7 +1,6 @@
 package com.cas.musicplayer.ui
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -175,15 +174,6 @@ class MainActivity : BaseActivity() {
                 collapseBottomPanel()
             }
         }
-
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        val decodeResource =
-            BitmapFactory.decodeResource(resources, R.drawable.image_chart_spotify, options)
-        val w = options.outWidth
-        val h = options.outHeight
-        val type = options.outMimeType
-        print("")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

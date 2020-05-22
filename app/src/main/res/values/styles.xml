@@ -49,7 +49,7 @@
 
     <style name="TextAppearance.Mousiki.HeaderTitle" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:fontFamily">@font/pangram_bold</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
