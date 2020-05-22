@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorDarkNavigationView"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:theme="@style/Theme.MaterialComponents"
     tools:context="com.cas.musicplayer.ui.player.queue.QueueFragment">

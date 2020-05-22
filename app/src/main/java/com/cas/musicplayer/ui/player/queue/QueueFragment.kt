@@ -39,13 +39,12 @@ class QueueFragment : Fragment() {
     private val viewModel: QueueViewModel by viewModel {
         injector.queueViewModel
     }
-
+    private var onCloseQueue: (() -> Unit)? = null
     private val adapter: QueueAdapter by lazy {
         QueueAdapter(viewModel) { holder ->
             itemTouchHelper.startDrag(holder)
         }
     }
-
     private val itemTouchHelper by lazy {
         val callback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -101,7 +100,11 @@ class QueueFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.queue_fragment, container, false)
+        return inflater.inflate(R.layout.queue_fragment, container, false).apply {
+            setOnClickListener {
+                // Just to prevent player slide trigger
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,6 +114,7 @@ class QueueFragment : Fragment() {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
             activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = false
             PlayerQueue.showVideo()
+            onCloseQueue?.invoke()
         }
         DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
             topBar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
@@ -178,5 +182,9 @@ class QueueFragment : Fragment() {
                 Crashlytics.logException(error)
             }
         }
+    }
+
+    fun doOnClose(callback: () -> Unit) {
+        this.onCloseQueue = callback
     }
 }
