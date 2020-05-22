@@ -15,19 +15,40 @@
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="4"
-        tools:listitem="@layout/item_new_release" />
+        tools:listitem="@layout/item_new_release"
+        tools:visibility="gone" />
 
-    <TextView
-        android:id="@+id/txtEmpty"
+    <LinearLayout
+        android:id="@+id/viewError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="@font/pangram_regular"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center"
         android:minHeight="100dp"
-        android:textColor="#D6D3D3"
-        android:textSize="12sp"
-        android:visibility="gone"
-        tools:text="No songs found" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
+            android:gravity="center"
+            android:textColor="#D6D3D3"
+            android:textSize="12sp"
+            tools:text="No songs found"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/btnRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="16dp"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_refresh" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
