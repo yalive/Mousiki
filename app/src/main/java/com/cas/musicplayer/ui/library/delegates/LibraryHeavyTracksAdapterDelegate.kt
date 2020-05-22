@@ -17,6 +17,8 @@ class LibraryHeavyTracksAdapterDelegate(
     onVideoSelected: (MusicTrack) -> Unit
 ) : HorizontalListSongsAdapterDelegate(onVideoSelected) {
 
+    override val showRetryButton: Boolean = false
+
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is LibraryItem.Heavy
     }

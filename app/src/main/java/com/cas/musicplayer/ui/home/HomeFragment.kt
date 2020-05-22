@@ -35,11 +35,13 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     private var recyclerView: RecyclerView? = null
 
     private val homeAdapter by lazy {
-        HomeAdapter(viewModel = viewModel) { track ->
+        HomeAdapter(viewModel = viewModel, onVideoSelected = { track ->
             (activity as? MainActivity)?.collapseBottomPanel()
             viewModel.onClickTrack(track)
             VideoEmplacementLiveData.bottom(true)
-        }
+        }, onClickRetryNewRelease = {
+            viewModel.onClickRetryNewRelease()
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

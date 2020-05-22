@@ -23,14 +23,18 @@ import kotlin.reflect.KClass
 class HomeAdapter(
     viewModel: HomeViewModel,
     private val chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
-    onVideoSelected: (MusicTrack) -> Unit
+    onVideoSelected: (MusicTrack) -> Unit,
+    onClickRetryNewRelease: () -> Unit
 ) : BaseDelegationAdapter(
     listOf(
         HomeArtistAdapterDelegate(),
         chartDelegate,
         HomeGenreAdapterDelegate(),
         HomeHeaderAdapterDelegate(viewModel),
-        HorizontalListSongsAdapterDelegate(onVideoSelected)
+        HorizontalListSongsAdapterDelegate(
+            onVideoSelected = onVideoSelected,
+            onClickRetry = onClickRetryNewRelease
+        )
     )
 ) {
     init {

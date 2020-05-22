@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.common.songs
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -9,6 +10,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
+import com.cas.common.extensions.onClick
 import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
@@ -24,8 +26,11 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
  */
 
 open class HorizontalListSongsAdapterDelegate(
-    private val onVideoSelected: (MusicTrack) -> Unit
+    private val onVideoSelected: (MusicTrack) -> Unit,
+    private val onClickRetry: () -> Unit = {}
 ) : AdapterDelegate<List<DisplayableItem>>() {
+
+    protected open val showRetryButton: Boolean = true
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is HomeItem.PopularsItem
@@ -59,11 +64,20 @@ open class HorizontalListSongsAdapterDelegate(
     inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val adapter = HorizontalSongsAdapter(onVideoSelected)
         private val txtEmpty = itemView.findViewById<TextView>(R.id.txtEmpty)
+        private val btnRetry = itemView.findViewById<ImageButton>(R.id.btnRetry)
         private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
         private val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        private val viewError = view.findViewById<ViewGroup>(R.id.viewError)
 
         init {
             txtEmpty.text = itemView.context.getText(getEmptyMessage())
+            btnRetry.isVisible = showRetryButton
+            btnRetry.onClick {
+                onClickRetry()
+            }
+            viewError.onClick {
+                onClickRetry()
+            }
         }
 
         init {
@@ -72,18 +86,18 @@ open class HorizontalListSongsAdapterDelegate(
 
         fun bind(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
             is Resource.Loading -> {
-                txtEmpty.isVisible = false
+                viewError.isVisible = false
                 recyclerView.isInvisible = true
                 progressBar.isVisible = true
             }
             is Resource.Success -> {
                 adapter.dataItems = resource.data.toMutableList()
-                txtEmpty.isVisible = resource.data.isEmpty()
+                viewError.isVisible = resource.data.isEmpty()
                 progressBar.isVisible = false
                 recyclerView.isInvisible = false
             }
             is Resource.Failure -> {
-                txtEmpty.isVisible = true
+                viewError.isVisible = true
                 progressBar.isVisible = false
                 recyclerView.isInvisible = true
             }

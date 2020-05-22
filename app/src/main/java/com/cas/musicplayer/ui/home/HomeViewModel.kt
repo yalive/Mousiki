@@ -69,6 +69,10 @@ class HomeViewModel @Inject constructor(
         playTrackFromQueue(track, tracks)
     }
 
+    fun onClickRetryNewRelease() {
+        loadTrending()
+    }
+
     private fun loadTrending() = uiCoroutine {
         if (_newReleases.hasItems() || _newReleases.isLoading()) {
             return@uiCoroutine
