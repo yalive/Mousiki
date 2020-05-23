@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.cas.common.extensions.isDarkMode
+import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,6 +62,9 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), CoroutineScope {
             compatActivity?.supportActionBar?.show()
         } else {
             compatActivity?.supportActionBar?.hide()
+        }
+        observeEvent(viewModel.toast) {
+            Toast.makeText(requireContext(), it.resMessage, Toast.LENGTH_LONG).show()
         }
     }
 

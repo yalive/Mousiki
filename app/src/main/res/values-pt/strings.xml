@@ -136,4 +136,5 @@
     <string name="exit">Saída</string>
     <string name="tool_tip_battery_saver">Clique aqui para ativar o modo de economia de bateria</string>
     <string name="queue">Fila</string>
+    <string name="empty_favourite_list">Nenhuma faixa favorita.</string>
 </resources>

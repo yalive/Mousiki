@@ -137,4 +137,5 @@
     <string name="exit">Sortie</string>
     <string name="tool_tip_battery_saver">Cliquez ici pour activer le mode économiseur de batterie</string>
     <string name="queue">Queue</string>
+    <string name="empty_favourite_list">Aucune chanson préférée.</string>
 </resources>

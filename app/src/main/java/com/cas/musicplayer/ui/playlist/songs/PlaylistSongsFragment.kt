@@ -32,6 +32,7 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
         artist = parcelableGenre
         observe(viewModel.songs, this::updateUI)
         txtPlaylistName.text = artist.name
+        txtScreenTitle.text = artist.name
     }
 
     override fun onClickTrack(track: MusicTrack) {

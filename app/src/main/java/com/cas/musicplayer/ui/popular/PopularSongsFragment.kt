@@ -31,6 +31,7 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
             viewModel.loadMoreSongs()
         })
         txtPlaylistName.text = getString(R.string.title_new_release)
+        txtScreenTitle.text = getString(R.string.title_new_release)
     }
 
     override fun onClickTrack(track: MusicTrack) {

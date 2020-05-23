@@ -28,6 +28,7 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
         super.onViewCreated(view, savedInstanceState)
         observe(viewModel.songs, this::updateUI)
         txtPlaylistName.text = viewModel.playlist.title
+        txtScreenTitle.text = viewModel.playlist.title
     }
 
     override fun onClickTrack(track: MusicTrack) {
