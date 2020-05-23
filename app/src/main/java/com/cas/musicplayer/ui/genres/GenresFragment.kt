@@ -3,12 +3,15 @@ package com.cas.musicplayer.ui.genres
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import com.cas.common.dpToPixel
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
+import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.viewmodel.viewModel
+import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.utils.dpToPixel
+import com.cas.musicplayer.ui.searchyoutube.GenreAdapterDelegate
 import kotlinx.android.synthetic.main.fragment_genres.*
 
 /**
@@ -22,34 +25,41 @@ class GenresFragment : BaseFragment<GenresViewModel>() {
     override val screenTitle: String by lazy {
         getString(R.string.genres)
     }
-    private val adapter = GenresAdapter()
+    private val adapter by lazy {
+        val delegates = listOf(
+            HeaderGenreDelegate(),
+            GenreAdapterDelegate(clickItemDestination = R.id.action_genresFragment_to_playlistVideosFragment)
+        )
+        object : BaseDelegationAdapter(delegates) {}
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.setTitle(R.string.genres)
-        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
-        recyclerView.layoutManager = gridLayoutManager
-        val spacingDp = requireActivity().dpToPixel(8f)
+        val eightDp = dpToPixel(8)
         recyclerView.addItemDecoration(
-            GenresItemSpacing(
-                3,
-                spacingDp,
-                true,
-                0
+            MarginItemDecoration(
+                horizontalMargin = eightDp,
+                verticalMargin = eightDp,
+                topMarginProvider = { position ->
+                    when {
+                        position == 0 -> eightDp
+                        viewModel.isHeader(position) -> eightDp * 6
+                        else -> eightDp
+                    }
+                }
             )
         )
         recyclerView.adapter = adapter
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                if (position == 0) {
-                    return 3
-                } else if (position == 1) {
-                    return 2
-                } else {
-                    return 1
+        (recyclerView.layoutManager as GridLayoutManager).spanSizeLookup =
+            object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when {
+                        viewModel.isHeader(position) -> 2
+                        else -> 1
+                    }
                 }
             }
-        }
         viewModel.loadAllGenres()
         observeViewModel()
         adjustStatusBarWithTheme()

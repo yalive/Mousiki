@@ -32,6 +32,7 @@ platform :android do
             groups: "qa-team",
             release_notes: "
             - Let user retry loading trending when error.
+            - List genres UI review.
             "
         )
     end
