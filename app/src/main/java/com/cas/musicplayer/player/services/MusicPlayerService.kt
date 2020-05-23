@@ -246,7 +246,8 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             service = this,
             youtubePlayerManager = youtubePlayerManager,
             bottomView = bottomView,
-            batterySaverView = batterySaverView
+            batterySaverView = batterySaverView,
+            sessionToken = mediaSession.sessionToken
         )
         observeForegroundToggle()
 
