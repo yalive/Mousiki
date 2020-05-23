@@ -62,5 +62,5 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
 }
 
 class SearchGenresAdapter : BaseDelegationAdapter(
-    listOf(SearchGenreAdapterDelegate())
+    listOf(GenreAdapterDelegate())
 )

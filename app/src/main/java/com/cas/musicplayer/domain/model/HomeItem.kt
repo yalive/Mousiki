@@ -40,5 +40,6 @@ data class GenreMusic(
     val title: String,
     val img: Int,
     val channelId: String,
-    val topTracksPlaylist: String
+    val topTracksPlaylist: String,
+    val isMood: Boolean
 ) : Parcelable, DisplayableItem

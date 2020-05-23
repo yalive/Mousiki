@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import androidx.palette.graphics.Palette
@@ -32,7 +33,9 @@ import com.crashlytics.android.Crashlytics
  * Created by Abdelhadi on 2019-12-04.
  ***************************************
  */
-class SearchGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
+class GenreAdapterDelegate(
+    @IdRes private val clickItemDestination: Int = R.id.action_mainSearchFragment_to_playlistVideosFragment
+) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is GenreMusic
@@ -76,8 +79,8 @@ class SearchGenreAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
                 )
                 itemView.findNavController()
                     .navigateSafeAction(
-                        R.id.action_mainSearchFragment_to_playlistVideosFragment,
-                        bundle
+                        resId = clickItemDestination,
+                        args = bundle
                     )
                 if (!Utils.hasShownAdsOneTime) {
                     Utils.hasShownAdsOneTime = true
