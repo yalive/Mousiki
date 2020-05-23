@@ -1,6 +1,6 @@
 package com.cas.musicplayer.ui.home.adapters
 
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
-import androidx.palette.graphics.Palette
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
@@ -72,20 +71,10 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
             return@setOnTouchListener false
         }
         try {
-            val bitmap =
-                BitmapFactory.decodeResource(itemView.context.resources, genreMusic.img)
-            Palette.from(bitmap).generate { palette ->
-                var color = palette?.getMutedColor(0) ?: 0
-                if (color == 0) {
-                    val colorPrimary = itemView.context.color(R.color.colorPrimary)
-                    color = palette?.getDarkMutedColor(colorPrimary) ?: colorPrimary
-                }
-                backgroundCategory.setBackgroundColor(color)
-                cardImgCategory.setCardBackgroundColor(color)
-            }
+            val color = Color.parseColor(genreMusic.backgroundColor)
+            backgroundCategory.setBackgroundColor(color)
+            cardImgCategory.setCardBackgroundColor(color)
         } catch (e: Exception) {
-            Crashlytics.logException(e)
-        } catch (e: OutOfMemoryError) {
             Crashlytics.logException(e)
         }
     }

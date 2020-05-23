@@ -22,6 +22,10 @@ class GenresViewModel @Inject constructor(
     val genres: LiveData<List<DisplayableItem>>
         get() = _genres
 
+    init {
+        loadAllGenres()
+    }
+
     fun loadAllGenres() = uiCoroutine {
         val listGenres = getGenres()
         val musicGenres = listGenres.filter { !it.isMood }
