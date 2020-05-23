@@ -1,6 +1,6 @@
 package com.cas.musicplayer.ui.searchyoutube
 
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
-import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
@@ -98,20 +97,10 @@ class GenreAdapterDelegate(
             }
 
             try {
-                val bitmap =
-                    BitmapFactory.decodeResource(itemView.context.resources, genreMusic.img)
-                Palette.from(bitmap).generate { palette ->
-                    var color = palette?.getMutedColor(0) ?: 0
-                    if (color == 0) {
-                        val colorPrimary = itemView.context.color(R.color.colorPrimary)
-                        color = palette?.getDarkMutedColor(colorPrimary) ?: colorPrimary
-                    }
-                    backgroundCategory.setBackgroundColor(color)
-                    cardImgCategory.setCardBackgroundColor(color)
-                }
+                val color = Color.parseColor(genreMusic.backgroundColor)
+                backgroundCategory.setBackgroundColor(color)
+                cardImgCategory.setCardBackgroundColor(color)
             } catch (e: Exception) {
-                Crashlytics.logException(e)
-            } catch (e: OutOfMemoryError) {
                 Crashlytics.logException(e)
             }
         }

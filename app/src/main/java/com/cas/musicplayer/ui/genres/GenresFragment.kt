@@ -7,6 +7,7 @@ import com.cas.common.dpToPixel
 import com.cas.common.extensions.observe
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
+import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.common.viewmodel.viewModel
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_genres.*
  **********************************
  */
 class GenresFragment : BaseFragment<GenresViewModel>() {
+    override val keepView: Boolean = true
     override val layoutResourceId: Int = R.layout.fragment_genres
     override val viewModel by viewModel { injector.genresViewModel }
     override val screenTitle: String by lazy {
@@ -37,19 +39,17 @@ class GenresFragment : BaseFragment<GenresViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         activity?.setTitle(R.string.genres)
         val eightDp = dpToPixel(8)
-        recyclerView.addItemDecoration(
-            MarginItemDecoration(
-                horizontalMargin = eightDp,
-                verticalMargin = eightDp,
-                topMarginProvider = { position ->
-                    when {
-                        position == 0 -> eightDp
-                        viewModel.isHeader(position) -> eightDp * 6
-                        else -> eightDp
-                    }
+        recyclerView.itemsMarginDecorator(MarginItemDecoration(
+            horizontalMargin = eightDp,
+            verticalMargin = eightDp,
+            topMarginProvider = { position ->
+                when {
+                    position == 0 -> eightDp
+                    viewModel.isHeader(position) -> eightDp * 6
+                    else -> eightDp
                 }
-            )
-        )
+            }
+        ))
         recyclerView.adapter = adapter
         (recyclerView.layoutManager as GridLayoutManager).spanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -60,9 +60,8 @@ class GenresFragment : BaseFragment<GenresViewModel>() {
                     }
                 }
             }
-        viewModel.loadAllGenres()
-        observeViewModel()
         adjustStatusBarWithTheme()
+        observeViewModel()
     }
 
     private fun observeViewModel() {
