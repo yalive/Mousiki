@@ -3,9 +3,11 @@ package com.cas.musicplayer.ui.library
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
@@ -20,6 +22,7 @@ import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -92,7 +95,13 @@ class LibraryViewModel @Inject constructor(
     }
 
     fun onClickPlaylist(playlist: Playlist) {
-        _onClickPlaylist.value = playlist.asEvent()
+        viewModelScope.launch {
+            if (playlist.id == Constants.FAV_PLAYLIST_NAME && getFavouriteTracks().isEmpty()) {
+                showToast(R.string.empty_favourite_list)
+            } else {
+                _onClickPlaylist.value = playlist.asEvent()
+            }
+        }
     }
 
     fun loadCustomPlaylists() = uiCoroutine {

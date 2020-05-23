@@ -26,6 +26,7 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
         observe(viewModel.tracks, this::updateUI)
         viewModel.loadArtistTracks(artist)
         txtPlaylistName.text = artist.name
+        txtScreenTitle.text = artist.name
     }
 
     override fun onClickTrack(track: MusicTrack) {

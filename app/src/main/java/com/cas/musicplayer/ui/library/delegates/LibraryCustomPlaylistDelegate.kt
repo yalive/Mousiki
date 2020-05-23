@@ -59,7 +59,7 @@ class LibraryCustomPlaylistDelegate(
         private val btnMoreOptions: ImageButton = view.findViewById(R.id.btnMoreOptions)
 
         override fun bind(playlist: Playlist) {
-            if (playlist.title == Constants.FAV_PLAYLIST_NAME) {
+            if (playlist.id == Constants.FAV_PLAYLIST_NAME) {
                 txtTitle.setText(R.string.favourites)
             } else {
                 txtTitle.text = playlist.title
