@@ -5,6 +5,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.support.v4.media.session.MediaControllerCompat
+import android.support.v4.media.session.MediaSessionCompat
 import android.util.AttributeSet
 import android.view.*
 import androidx.cardview.widget.CardView
@@ -16,6 +18,7 @@ import com.cas.common.extensions.visible
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.MusicPlayerService
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.player.services.YoutubePlayerManager
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.*
@@ -74,8 +77,10 @@ class YoutubeFloatingPlayerView : CardView {
         service: MusicPlayerService,
         youtubePlayerManager: YoutubePlayerManager,
         bottomView: View,
-        batterySaverView: View
+        batterySaverView: View,
+        sessionToken: MediaSessionCompat.Token
     ) {
+        val mediaController = MediaControllerCompat(context, sessionToken)
         youTubePlayerView = findViewById(R.id.youtubePlayerView)
         videoViewParams = WindowManager.LayoutParams(
             videoEmplacement.width,
@@ -114,10 +119,6 @@ class YoutubeFloatingPlayerView : CardView {
                 bottomView.isVisible = false
                 batterySaverView.isVisible = false
                 return super.onSingleTapUp(e)
-            }
-
-            override fun onLongPress(e: MotionEvent?) {
-                super.onLongPress(e)
             }
 
             override fun onScroll(
@@ -169,13 +170,17 @@ class YoutubeFloatingPlayerView : CardView {
                 bottomView.isVisible = false
                 batterySaverView.isVisible = false
 
-                val intent = Intent(context, MainActivity::class.java)
-                intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-                try {
-                    pendingIntent.send()
-                } catch (e: Exception) {
+                if (PlaybackLiveData.isPause()) {
+                    mediaController.transportControls.play()
+                } else {
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+                    try {
+                        pendingIntent.send()
+                    } catch (e: Exception) {
+                    }
                 }
                 return super.onSingleTapConfirmed(e)
             }
