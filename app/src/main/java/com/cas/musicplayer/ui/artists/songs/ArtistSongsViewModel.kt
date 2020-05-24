@@ -37,8 +37,7 @@ class ArtistSongsViewModel @Inject constructor(
         val result = getArtistSongs(artist)
         _tracks.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
-        }.asResource()
-        populateAdsIn(_tracks)
+        }.map { insertAdsIn(it) }.asResource()
     }
 
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
