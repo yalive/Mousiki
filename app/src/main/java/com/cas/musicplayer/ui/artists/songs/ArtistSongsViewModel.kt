@@ -15,14 +15,16 @@ import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
-import javax.inject.Inject
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/12/19.
  **********************************
  */
-class ArtistSongsViewModel @Inject constructor(
+class ArtistSongsViewModel @AssistedInject constructor(
+    @Assisted private val artist: Artist,
     private val getArtistSongs: GetArtistSongsUseCase,
     playDelegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate
@@ -31,6 +33,15 @@ class ArtistSongsViewModel @Inject constructor(
     private val _tracks = MutableLiveData<Resource<List<DisplayableItem>>>()
     val tracks: LiveData<Resource<List<DisplayableItem>>>
         get() = _tracks
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(artist: Artist): ArtistSongsViewModel
+    }
+
+    init {
+        loadArtistTracks(artist)
+    }
 
     fun loadArtistTracks(artist: Artist) = uiCoroutine {
         _tracks.value = Resource.Loading

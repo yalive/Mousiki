@@ -25,5 +25,5 @@ data class CustomPlaylistEntity(
 
 val CustomPlaylistEntity.imgUrl: String
     get() {
-        return "https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg"
+        return "https://img.youtube.com/vi/$youtubeId/0.jpg"
     }
