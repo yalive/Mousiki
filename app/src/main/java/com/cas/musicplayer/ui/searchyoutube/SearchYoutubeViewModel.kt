@@ -73,7 +73,8 @@ class SearchYoutubeViewModel @Inject constructor(
         val resource = searchSongs(query)
         _videos.value = resource.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
-        }.map { insertAdsIn(it) }.asResource()
+        }.asResource()
+        populateAdsIn(_videos)
     }
 
     private suspend fun loadPlaylists(query: String) {
