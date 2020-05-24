@@ -15,7 +15,9 @@ import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 
 class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
 
-    override val viewModel by viewModel { injector.artistVideosViewModel }
+    override val viewModel by viewModel {
+        injector.artistVideosViewModelFactory.create(artist)
+    }
 
     private val artist: Artist by lazy {
         arguments?.getParcelable<Artist>(EXTRAS_ARTIST)!!
@@ -24,7 +26,6 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe(viewModel.tracks, this::updateUI)
-        viewModel.loadArtistTracks(artist)
         txtPlaylistName.text = artist.name
         txtScreenTitle.text = artist.name
     }

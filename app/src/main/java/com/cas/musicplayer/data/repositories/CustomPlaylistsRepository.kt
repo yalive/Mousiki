@@ -22,11 +22,16 @@ class CustomPlaylistsRepository @Inject constructor(
         val allTracks = customPlaylistTrackDao.getAll()
         val groupedTracks = allTracks.groupBy { it.playlistName }
         return groupedTracks.map {
+            val urlImage = when {
+                it.value[0].youtubeId.isNotEmpty() -> it.value[0].imgUrl
+                it.value.size > 1 -> it.value[1].imgUrl
+                else -> ""
+            }
             Playlist(
                 id = it.key, // Label as id!!
                 itemCount = it.value.count { it.youtubeId.isNotEmpty() },
                 title = it.key,
-                urlImage = it.value[0].imgUrl
+                urlImage = urlImage
             )
         }
     }

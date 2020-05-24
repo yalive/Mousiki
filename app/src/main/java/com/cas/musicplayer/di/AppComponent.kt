@@ -70,7 +70,7 @@ interface AppComponent {
 
     val artistListViewModel: ArtistListViewModel
 
-    val artistVideosViewModel: ArtistSongsViewModel
+    val artistVideosViewModelFactory: ArtistSongsViewModel.Factory
 
     val playlistVideosViewModelFactory: PlaylistSongsViewModel.Factory
 
