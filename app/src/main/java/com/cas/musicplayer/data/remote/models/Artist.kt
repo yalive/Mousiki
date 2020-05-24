@@ -28,5 +28,5 @@ data class Artist(
     val urlImage: String = ""
 ) : Parcelable {
     val imageFullPath: String
-        get() = "https://yt3.ggpht.com/-$urlImage"
+        get() = if (urlImage.startsWith("http")) urlImage else "https://yt3.ggpht.com/-$urlImage"
 }
