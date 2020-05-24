@@ -48,7 +48,8 @@ class PlaylistSongsViewModel @AssistedInject constructor(
         val result = getPlaylistVideosUseCase(playlistId)
         _songs.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
-        }.map { insertAdsIn(it) }.asResource()
+        }.asResource()
+        populateAdsIn(_songs)
     }
 
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
