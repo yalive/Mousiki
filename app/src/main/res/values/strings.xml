@@ -26,7 +26,7 @@
     <string name="library_empty_recent_list">Just start playing songs to see\n your recent tracks here!</string>
     <string name="library_empty_heavy_list">List is empty</string>
     <string name="library_empty_favourite_list">You can make any song as favourite, \n and you can access to it from here.</string>
-    <string name="empty_favourite_list">No hay pista favorita.</string>
+    <string name="empty_favourite_list">No favourite track.</string>
 
     <!-- Common -->
     <string name="common_empty_song_list">No song found</string>

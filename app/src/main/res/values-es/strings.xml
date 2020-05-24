@@ -135,5 +135,5 @@
     <string name="exit">Salida</string>
     <string name="tool_tip_battery_saver">Haga clic aquí para habilitar el modo de ahorro de batería</string>
     <string name="queue">Cola</string>
-    <string name="empty_favourite_list">No favourite track.</string>
+    <string name="empty_favourite_list">No hay pista favorita.</string>
 </resources>
