@@ -48,14 +48,13 @@ class ChannelSongsRemoteDataSource @Inject constructor(
 
     suspend fun getChannelSongs(artist: Artist): Result<List<MusicTrack>> {
         if (appConfig.searchArtistTracksFromMousikiApi()) {
-            val resultSearch = retrofitRunner.executeNetworkCall {
-                mousikiSearchApi.searchChannel(artist.channelId).tracks()
-            }
-
+            val resultSearch = loadArtistTracksFromMousikiApi(artist)
             if (resultSearch is Result.Success && resultSearch.data.isNotEmpty()) {
                 return resultSearch
             }
         }
+
+        // Check firebase
         val firebaseTracks = withContext(bgContext) {
             downloadArtistTracksFile(artist).musicTracks(gson)
         }
@@ -69,8 +68,20 @@ class ChannelSongsRemoteDataSource @Inject constructor(
 
         // 2 - Get videos
         val ids = result.data.joinToString { it.id }
-        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
+        val resultYoutube = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
             youtubeService.videos(ids).items ?: emptyList()
+        }
+        if (resultYoutube is Result.Success && resultYoutube.data.size > 3) {
+            return resultYoutube
+        }
+
+        // Fallback to Mousiki api
+        return loadArtistTracksFromMousikiApi(artist)
+    }
+
+    private suspend fun loadArtistTracksFromMousikiApi(artist: Artist): Result<List<MusicTrack>> {
+        return retrofitRunner.executeNetworkCall {
+            mousikiSearchApi.searchChannel(artist.channelId).tracks()
         }
     }
 
