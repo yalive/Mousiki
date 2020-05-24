@@ -17,7 +17,8 @@ import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
-import com.cas.common.recyclerview.FirstItemMarginDecoration
+import com.cas.common.recyclerview.MarginItemDecoration
+import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.delegatedadapter.DisplayableItem
@@ -79,7 +80,20 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         imgArtist = view.findViewById(R.id.imgArtist)
         imgBackground = view.findViewById(R.id.imgBackground)
         recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(FirstItemMarginDecoration(verticalMargin = dpToPixel(32)))
+        recyclerView.itemsMarginDecorator(MarginItemDecoration(
+            topMarginProvider = { position ->
+                when (position) {
+                    0 -> dpToPixel(32)
+                    else -> 0
+                }
+            },
+            bottomMarginProvider = { position ->
+                when (position) {
+                    adapter.itemCount - 1 -> dpToPixel(100)
+                    else -> 0
+                }
+            }
+        ))
         btnPlayAll.onClick {
             if (adapter.dataItems.isEmpty()) return@onClick
             val mainActivity = requireActivity() as MainActivity

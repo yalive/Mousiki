@@ -32,6 +32,7 @@ platform :android do
             groups: "qa-team",
             release_notes: "
             - Improve playlist UI.
+            - Fix some margin issues
             "
         )
     end
