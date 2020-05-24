@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.cas.common.dpToPixel
+import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
@@ -206,11 +207,16 @@ abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
         val dominantColor = palette.getMutedColor(
             requireContext().color(R.color.colorPrimary)
         )
-        val colors = intArrayOf(dominantColor, colorSurface)
-        val gradient = GradientDrawable(
-            GradientDrawable.Orientation.TOP_BOTTOM, colors
-        )
-        imgBackground?.setImageDrawable(gradient)
+        val isDarkMode = context?.isDarkMode() ?: false
+        if (isDarkMode) {
+            val colors = intArrayOf(dominantColor, colorSurface)
+            val gradient = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM, colors
+            )
+            imgBackground?.setImageDrawable(gradient)
+        } else {
+            imgBackground?.setBackgroundColor(dominantColor)
+        }
     }
 
     open fun addExtrasArgumentToBottomMenu(bundle: Bundle) {
