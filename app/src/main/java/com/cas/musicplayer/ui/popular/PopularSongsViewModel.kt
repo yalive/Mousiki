@@ -53,9 +53,7 @@ class PopularSongsViewModel @Inject constructor(
         val result = getPopularSongs(PAGE_SIZE)
         _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }.toMutableList()
-        }.asResource()
-
-        populateAdsIn(_newReleases)
+        }.map { insertAdsIn(it) }.asResource()
         loadingMore = false
         if (result is Result.Success && result.data.size < PAGE_SIZE) {
             loadMoreSongs()
