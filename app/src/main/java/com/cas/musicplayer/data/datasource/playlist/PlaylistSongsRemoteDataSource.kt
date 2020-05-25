@@ -10,7 +10,9 @@ import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToVideoId
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
 import com.cas.musicplayer.data.remote.models.TrackDto
+import com.cas.musicplayer.data.remote.models.mousiki.musicTracks
 import com.cas.musicplayer.data.remote.models.toDomainModel
+import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.data.repositories.ChartsRepository
@@ -37,6 +39,7 @@ import kotlin.coroutines.suspendCoroutine
  */
 class PlaylistSongsRemoteDataSource @Inject constructor(
     private var youtubeService: YoutubeService,
+    private val mousikiSearchApi: MousikiSearchApi,
     private val retrofitRunner: RetrofitRunner,
     private val videoIdMapper: YTBPlaylistItemToVideoId,
     private val trackMapper: YTBVideoToTrack,
@@ -51,6 +54,13 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getPlaylistSongs(playlistId: String): Result<List<MusicTrack>> {
+        val tracksFromMousikiApi: List<MusicTrack> = try {
+            mousikiSearchApi.getPlaylistDetail(playlistId).musicTracks()
+        } catch (e: Exception) {
+            emptyList()
+        }
+        if (tracksFromMousikiApi.size > 3) return Result.Success(tracksFromMousikiApi)
+
         val isTopTrackOfGenre = genresRepository.isTopTrackOfGenre(playlistId)
         val isChart = chartsRepository.isChart(playlistId)
         if ((appConfig.loadChartSongsFromFirebase() && isChart)
