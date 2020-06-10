@@ -5,7 +5,7 @@ import com.cas.common.result.Result
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.*
-import com.cas.musicplayer.data.remote.models.tracks
+import com.cas.musicplayer.data.remote.models.mousiki.tracks
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
