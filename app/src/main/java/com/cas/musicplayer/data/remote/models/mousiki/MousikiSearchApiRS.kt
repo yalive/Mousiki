@@ -1,4 +1,4 @@
-package com.cas.musicplayer.data.remote.models
+package com.cas.musicplayer.data.remote.models.mousiki
 
 import androidx.annotation.Keep
 import com.cas.musicplayer.domain.model.MusicTrack

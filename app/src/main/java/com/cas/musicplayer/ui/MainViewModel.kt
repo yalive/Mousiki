@@ -69,6 +69,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun checkForUpdate() {
+
+    }
+
     companion object {
         private const val EVENT_OPEN_APP_SHORTCUT_SEARCH = "open_app_from_search_shortcut"
         private const val EVENT_OPEN_APP_SHORTCUT_TRENDING = "open_app_from_trending_shortcut"
