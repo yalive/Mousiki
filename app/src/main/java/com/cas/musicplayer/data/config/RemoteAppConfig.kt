@@ -74,6 +74,10 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getBoolean(LOAD_CHART_SONGS_FROM_FIREBASE)
     }
 
+    fun loadPlaylistSongsFromApi(): Boolean {
+        return firebaseRemoteConfig.getBoolean(LOAD_PLAYLIST_SONGS_FROM_API)
+    }
+
     fun loadGenreSongsFromFirebase(): Boolean {
         return firebaseRemoteConfig.getBoolean(LOAD_GENRE_SONGS_FROM_FIREBASE)
     }
@@ -119,6 +123,7 @@ class RemoteAppConfig @Inject constructor(
         const val YOUTUBE_API_KEYS = "youtube_api_keys"
         const val API_URLS = "api_urls"
         const val LOAD_CHART_SONGS_FROM_FIREBASE = "chart_songs_from_firebase"
+        const val LOAD_PLAYLIST_SONGS_FROM_API = "playlist_songs_from_api"
         const val LOAD_GENRE_SONGS_FROM_FIREBASE = "genre_songs_from_firebase"
         const val LIST_ADS_OFFSET = "list_ads_offset"
         const val RATE_APP_DIALOG_FREQUENCY = "rate_app_dialog_frequency"
