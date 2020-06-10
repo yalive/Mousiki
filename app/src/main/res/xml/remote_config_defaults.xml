@@ -52,4 +52,9 @@
         <value>true</value>
     </entry>
 
+    <entry>
+        <key>api_urls</key>
+        <value>{"search": {"apis": ["https://youtube-scrape.herokuapp.com", "https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1},"artistSongs": {"apis": ["https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1}, "playlists": {"apis": ["https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1}}</value>
+    </entry>
+
 </defaultsMap>

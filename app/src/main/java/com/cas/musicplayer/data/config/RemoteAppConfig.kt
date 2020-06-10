@@ -59,6 +59,17 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getString(YOUTUBE_API_KEYS).split("###")
     }
 
+    private fun getApiConfig(): ApiConfig {
+        val json = firebaseRemoteConfig.getString(API_URLS)
+        return gson.fromJson(json, ApiConfig::class.java)
+    }
+
+    fun searchConfig(): SearchConfig = getApiConfig().search
+
+    fun playlistApiConfig(): SearchConfig = getApiConfig().playlists
+
+    fun artistSongsApiConfig(): SearchConfig = getApiConfig().artistSongs
+
     fun loadChartSongsFromFirebase(): Boolean {
         return firebaseRemoteConfig.getBoolean(LOAD_CHART_SONGS_FROM_FIREBASE)
     }
@@ -106,6 +117,7 @@ class RemoteAppConfig @Inject constructor(
         private const val DEF_FREQ_POPUP_RATE = 3
         private const val DEF_CLICK_TO_SHOW_REWARD = 7
         const val YOUTUBE_API_KEYS = "youtube_api_keys"
+        const val API_URLS = "api_urls"
         const val LOAD_CHART_SONGS_FROM_FIREBASE = "chart_songs_from_firebase"
         const val LOAD_GENRE_SONGS_FROM_FIREBASE = "genre_songs_from_firebase"
         const val LIST_ADS_OFFSET = "list_ads_offset"
