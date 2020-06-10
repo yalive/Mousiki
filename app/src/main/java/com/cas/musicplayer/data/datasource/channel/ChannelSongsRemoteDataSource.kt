@@ -80,9 +80,12 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     }
 
     private suspend fun loadArtistTracksFromMousikiApi(artist: Artist): Result<List<MusicTrack>> {
-        return retrofitRunner.executeNetworkCall {
-            mousikiSearchApi.searchChannel(artist.channelId).tracks()
-        }
+        return retrofitRunner.getMusicTracks(
+            config = appConfig.artistSongsApiConfig(),
+            requestWithApi = { apiUrl ->
+                mousikiSearchApi.searchChannel(apiUrl, artist.channelId).tracks()
+            }
+        )
     }
 
 

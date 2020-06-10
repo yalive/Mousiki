@@ -1,9 +1,17 @@
 package com.cas.musicplayer.data.remote.retrofit
 
 import com.cas.common.result.AppMessage
+import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.musicplayer.R
+import com.cas.musicplayer.data.config.SearchConfig
+import com.cas.musicplayer.data.config.apiList
+import com.cas.musicplayer.data.config.maxApi
+import com.cas.musicplayer.data.config.retryCount
+import com.cas.musicplayer.data.datasource.search.getOrEmpty
+import com.cas.musicplayer.data.datasource.search.hasData
 import com.cas.musicplayer.data.remote.mappers.Mapper
+import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import com.crashlytics.android.Crashlytics
 import kotlinx.coroutines.withContext
@@ -45,6 +53,28 @@ class RetrofitRunner @Inject constructor() {
     } catch (e: Exception) {
         Crashlytics.logException(e)
         Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
+    }
+
+    suspend fun getMusicTracks(
+        config: SearchConfig,
+        requestWithApi: suspend (String) -> List<MusicTrack>
+    ): Result<List<MusicTrack>> {
+        val apiList = config.apiList()
+        val maxApis = config.maxApi()
+
+        var retries = 0
+        var tracksResult: Result<List<MusicTrack>> = NO_RESULT
+        do {
+            retries++
+            var apiIndex = 0
+            var api = apiList.getOrEmpty(apiIndex)
+            while (api.isNotEmpty() && !tracksResult.hasData()) {
+                tracksResult = executeNetworkCall { requestWithApi(api) }
+                apiIndex++
+                api = if (apiIndex < maxApis) apiList.getOrEmpty(apiIndex) else ""
+            }
+        } while (!tracksResult.hasData() && retries < config.retryCount())
+        return tracksResult
     }
 }
 

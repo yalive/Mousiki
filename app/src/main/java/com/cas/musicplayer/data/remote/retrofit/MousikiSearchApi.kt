@@ -12,14 +12,15 @@ import retrofit2.http.Query
  */
 interface MousikiSearchApi {
 
-    @GET("{url}")
+    @GET("{url}/api/search")
     suspend fun search(
         @Path(value = "url", encoded = true) url: String,
         @Query("q") query: String
     ): MousikiSearchApiRS
 
-    @GET("https://mousikiapp.herokuapp.com/api/{channelId}/songs")
+    @GET("{url}/api/{channelId}/songs")
     suspend fun searchChannel(
+        @Path(value = "url", encoded = true) apiUrl: String,
         @Path(value = "channelId") channelId: String
     ): MousikiSearchApiRS
 }
