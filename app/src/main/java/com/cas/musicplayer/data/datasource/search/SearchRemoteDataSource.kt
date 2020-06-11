@@ -2,9 +2,10 @@ package com.cas.musicplayer.data.datasource.search
 
 import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
+import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.*
-import com.cas.musicplayer.data.remote.models.tracks
+import com.cas.musicplayer.data.remote.models.mousiki.tracks
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
@@ -30,26 +31,21 @@ class SearchRemoteDataSource @Inject constructor(
     private val channelIdMapper: YTBSearchResultToChannelId,
     private val playlistIdMapper: YTBSearchResultToPlaylistId,
     private val preferences: PreferencesHelper,
-    private val analytics: FirebaseAnalytics
+    private val analytics: FirebaseAnalytics,
+    private val remoteConfig: RemoteAppConfig
 ) {
 
     suspend fun searchTracks(query: String): Result<List<MusicTrack>> {
         // First API
         analytics.logEvent(EVENT_START_SEARCH, null)
-        val resultSearch1 = retrofitRunner.executeNetworkCall {
-            mousikiSearchApi.search(URL1, query).tracks()
-        }
-        if (resultSearch1 is Result.Success && resultSearch1.data.isNotEmpty()) {
-            return resultSearch1
-        }
 
-        // Second API
-        val resultSearch2 = retrofitRunner.executeNetworkCall {
-            mousikiSearchApi.search(URL2, query).tracks()
-        }
-        if (resultSearch2 is Result.Success && resultSearch2.data.isNotEmpty()) {
-            return resultSearch2
-        }
+        val resultSearch = retrofitRunner.getMusicTracks(
+            config = remoteConfig.searchConfig(),
+            requestWithApi = { apiUrl ->
+                mousikiSearchApi.search(apiUrl, query).tracks()
+            }
+        )
+        if (resultSearch.hasData()) return resultSearch
 
         // Youtube search
         analytics.logEvent(EVENT_SCRAP_NOT_WORKING, null)
@@ -88,12 +84,15 @@ class SearchRemoteDataSource @Inject constructor(
             youtubeService.channels(ids).items ?: emptyList()
         }
     }
-
-    companion object {
-        private const val URL1 = "https://youtube-scrape.herokuapp.com/api/search"
-        private const val URL2 = "https://mousikiapp.herokuapp.com/api/search"
-    }
 }
 
 private val EVENT_SCRAP_NOT_WORKING = "search_by_scrap_down"
 private val EVENT_START_SEARCH = "start_search_by_query"
+
+fun <T> Result<List<T>>.hasData(): Boolean {
+    return (this is Result.Success && data.isNotEmpty())
+}
+
+fun List<String>.getOrEmpty(index: Int): String {
+    return getOrElse(index) { "" }
+}
