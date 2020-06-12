@@ -30,6 +30,7 @@
     <string name="title_button_set_timer">Conjunto</string>
     <string name="loading">Carregando…</string>
     <string name="error_while_loading_song_list">Erro ao carregar a lista de músicas</string>
+    <string name="message_enable_draw_over_apps_manually">Vá para configurações e ative a permissão "Desenhe sobre outros aplicativos" para iniciar a janela do player flutuante.</string>
 
     <!-- Settings -->
     <string name="sleep_timer">Despertador</string>
@@ -58,7 +59,7 @@
     <string name="create">Crio</string>
     <string name="remove_from_this_playlist">Remover desta lista de reprodução</string>
     <string name="playlist_favorite">Favorita</string>
-
+    <string name="shuffle_play">ALEATÓRIA</string>
 
     <!-- Other -->
     <string name="dark_mode">Modo escuro</string>
@@ -137,4 +138,8 @@
     <string name="tool_tip_battery_saver">Clique aqui para ativar o modo de economia de bateria</string>
     <string name="queue">Fila</string>
     <string name="empty_favourite_list">Nenhuma faixa favorita.</string>
+
+    <!-- Genres List -->
+    <string name="genre_music">Música</string>
+    <string name="genre_mood">Humor</string>
 </resources>
