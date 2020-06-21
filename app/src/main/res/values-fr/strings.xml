@@ -31,6 +31,7 @@
     <string name="title_button_set_timer">Régler</string>
     <string name="loading">Chargement…</string>
     <string name="error_while_loading_song_list">Erreur lors du chargement de la liste des chansons</string>
+    <string name="message_enable_draw_over_apps_manually">Veuillez accéder aux paramètres et activer l\'autorisation "Dessiner sur d\'autres applications" pour démarrer la fenêtre flottante du lecteur.</string>
 
     <!-- Settings -->
     <string name="sleep_timer">Minuterie de sommeil</string>
@@ -59,7 +60,7 @@
     <string name="create">Créer</string>
     <string name="remove_from_this_playlist">Supprimer de cette playlist</string>
     <string name="playlist_favorite">Favourite</string>
-
+    <string name="shuffle_play">ALÉATOIRE</string>
 
     <!-- Other -->
     <string name="dark_mode">Mode sombre</string>
@@ -138,4 +139,8 @@
     <string name="tool_tip_battery_saver">Cliquez ici pour activer le mode économiseur de batterie</string>
     <string name="queue">Queue</string>
     <string name="empty_favourite_list">Aucune chanson préférée.</string>
+
+    <!-- Genres List -->
+    <string name="genre_music">Musique</string>
+    <string name="genre_mood">Ambiance</string>
 </resources>

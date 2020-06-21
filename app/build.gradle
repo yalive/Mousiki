@@ -30,8 +30,8 @@ android {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 32
-        versionName "2.1.8"
+        versionCode 34
+        versionName "2.2.0"
         testInstrumentationRunner "com.cas.musicplayer.testing.TestRunner"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
@@ -186,6 +186,7 @@ dependencies {
     implementation 'com.ncorti:slidetoact:0.7.0'
 
     // facebook
+    implementation 'com.google.ads.mediation:unity:3.4.6.0'
     implementation 'com.google.ads.mediation:facebook:5.9.0.0'
     implementation 'com.facebook.android:audience-network-sdk:5.9.0'
     implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
