@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.transition.TransitionManager
+import com.adcolony.sdk.AdColony
 import com.afollestad.materialdialogs.MaterialDialog
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.extensions.isDarkMode
@@ -44,6 +45,8 @@ import com.cas.musicplayer.utils.*
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
+import com.mopub.common.MoPub
+import com.mopub.common.SdkConfiguration
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -73,6 +76,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        initMediationSDK()
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
         setContentView(R.layout.activity_main)
@@ -174,6 +178,16 @@ class MainActivity : BaseActivity() {
                 collapseBottomPanel()
             }
         }
+    }
+
+    private fun initMediationSDK() {
+        val sdkConfiguration = SdkConfiguration.Builder("bc645649938646db9030829e2d969ad8").build()
+        MoPub.initializeSdk(this, sdkConfiguration, null)
+        AdColony.configure(
+            this,
+            "appee158214620447b7ba",
+            "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
