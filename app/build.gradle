@@ -185,7 +185,7 @@ dependencies {
     kaptAndroidTest 'com.google.dagger:dagger-compiler:2.24'
 
     // slide to unlock button
-    implementation 'com.ncorti:slidetoact:0.7.0'
+    implementation 'com.ncorti:slidetoact:0.8.0'
 
     // facebook and mediation adapter
     implementation 'com.google.ads.mediation:adcolony:4.1.4.1'
