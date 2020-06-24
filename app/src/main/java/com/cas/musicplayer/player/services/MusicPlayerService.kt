@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleService
@@ -32,6 +33,7 @@ import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.utils.*
 import com.crashlytics.android.Crashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -241,7 +243,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         addBottomView()
         createBatterySaverView()
 
-        floatingPlayerView = YoutubeFloatingPlayerView(this)
+        floatingPlayerView = YoutubeFloatingPlayerView(
+            ContextThemeWrapper(
+                this,
+                R.style.Theme_MaterialComponents
+            )
+        )
         floatingPlayerView.preparePlayerView(
             service = this,
             youtubePlayerManager = youtubePlayerManager,
@@ -250,8 +257,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             sessionToken = mediaSession.sessionToken
         )
         observeForegroundToggle()
-
-        observeBottomPanelDragging()
 
         favouriteReceiver.register()
 
@@ -266,12 +271,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private fun observeForegroundToggle() {
         VideoEmplacementLiveData.observe(this, Observer { emplacement ->
             floatingPlayerView.onVideoEmplacementChanged(emplacement)
-        })
-    }
-
-    private fun observeBottomPanelDragging() {
-        DragBottomPanelLiveData.observe(this, Observer { dragPanelInfo ->
-            floatingPlayerView.onDragBottomPanel(dragPanelInfo)
         })
     }
 
@@ -407,13 +406,15 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             if (recentTracks.isNotEmpty()) {
                 PlayerQueue.playTrack(recentTracks[0], recentTracks)
                 delay(500)
-                if (MusicApp.get().isInForeground) {
-                    VideoEmplacementLiveData.bottom(true)
-                } else {
+                if (!MusicApp.get().isInForeground) {
                     VideoEmplacementLiveData.out()
                 }
             }
         }
+    }
+
+    fun getPlayerView(): YouTubePlayerView {
+        return floatingPlayerView.playerView()
     }
 
     inner class ServiceBinder : Binder() {

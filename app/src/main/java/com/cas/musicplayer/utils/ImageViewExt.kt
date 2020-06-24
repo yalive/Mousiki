@@ -3,6 +3,8 @@ package com.cas.musicplayer.utils
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -152,4 +154,25 @@ private fun createTargetWith(continuation: CancellableContinuation<Bitmap?>): Ta
             }
         }
     }
+}
+
+fun ImageView.updateBitmap(
+    new_image: Bitmap?
+) {
+    val animOut = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
+    val animIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
+    animOut.setAnimationListener(object : Animation.AnimationListener {
+        override fun onAnimationStart(animation: Animation?) {}
+        override fun onAnimationRepeat(animation: Animation?) {}
+        override fun onAnimationEnd(animation: Animation?) {
+            setImageBitmap(new_image)
+            animIn.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationRepeat(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) {}
+            })
+            startAnimation(animIn)
+        }
+    })
+    startAnimation(animOut)
 }

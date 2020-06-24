@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.AttributeSet
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -18,6 +19,7 @@ import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.launchDelayed
 import com.ncorti.slidetoact.SlideToActView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.android.synthetic.main.lock_screen_layout.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -176,6 +178,12 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
         unregisterClockReceiver()
         super.onDetachedFromWindow()
         mainJob.cancel() // Cancel any ongoing work
+    }
+
+    fun acquirePlayer(youTubePlayerView: YouTubePlayerView) {
+        val oldParent = youTubePlayerView.parent as? ViewGroup
+        oldParent?.removeView(youTubePlayerView)
+        frameVideo.addView(youTubePlayerView)
     }
 
     private fun registerClockReceiver() {

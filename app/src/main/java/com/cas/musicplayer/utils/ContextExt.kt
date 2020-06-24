@@ -1,12 +1,14 @@
 package com.cas.musicplayer.utils
 
 import android.content.Context
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.*
@@ -98,4 +100,22 @@ fun Context.toastCentred(message: String) {
     val toast = Toast.makeText(this, message, Toast.LENGTH_LONG)
     toast.setGravity(Gravity.CENTER, 0, 0)
     toast.show()
+}
+
+fun View?.visibleInScreen(): Boolean {
+    if (this == null) {
+        return false
+    }
+    if (!this.isShown) {
+        return false
+    }
+    val actualPosition = Rect()
+    this.getGlobalVisibleRect(actualPosition)
+    val screen = Rect(
+        0,
+        0,
+        this.context.screenSize().widthPx,
+        this.context.screenSize().heightPx
+    )
+    return actualPosition.intersect(screen)
 }

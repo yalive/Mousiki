@@ -16,17 +16,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.core.os.bundleOf
 import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
+import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -36,27 +37,30 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.VideoEmplacement
 import com.cas.musicplayer.player.services.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
+import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.AdRequest
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.COLLAPSED
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.EXPANDED
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
+const val TAG = "PlayerFragment.Log"
 
 class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
@@ -72,16 +76,22 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private var lockScreenView: LockScreenView? = null
     private var seekingDuration = false
 
+    private var playerService: MusicPlayerService? = null
+    private lateinit var playerVideosAdapter: PlayerVideosAdapter
+
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
+            playerService = null
         }
 
         override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
             if (binder is MusicPlayerService.ServiceBinder) {
+                playerService = binder.service()
                 val service = binder.service()
                 mediaController = MediaControllerCompat(requireContext(), service.mediaSession)
                 mediaController?.registerCallback(mediaControllerCallback)
                 mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
+                playerVideosAdapter.reusedPlayerView = service.getPlayerView()
             }
         }
     }
@@ -138,9 +148,18 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
         mainActivity = requireActivity() as MainActivity
         mainActivity.slidingPaneLayout.addPanelSlideListener(this)
+
+        setupCenterViewPager()
         PlayerQueue.observe(viewLifecycleOwner, Observer { video ->
             onVideoChanged(video)
             lockScreenView?.setCurrentTrack(video)
+
+            val newItems = PlayerQueue.queue?.map { it.toDisplayedVideoItem() } ?: emptyList()
+            val diffCallback = SongsDiffUtil(playerVideosAdapter.videos, newItems)
+            playerVideosAdapter.submitList(newItems, diffCallback)
+            viewPager.post {
+                viewPager.setCurrentItem(PlayerQueue.indexOfCurrent(), false)
+            }
         })
 
         btnPlayPauseMain?.onClick {
@@ -211,8 +230,6 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             PlayerQueue.playPreviousTrack()
         }
 
-        adjustCenterViews()
-
         PlaybackDuration.observe(viewLifecycleOwner, Observer { elapsedSeconds ->
             if (!seekingDuration) {
                 updateCurrentTrackTime(elapsedSeconds)
@@ -232,7 +249,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
 
         antiDrag.onClick {
-            if (mainActivity.slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            if (mainActivity.slidingPaneLayout.panelState == COLLAPSED) {
                 mainActivity.expandBottomPanel()
             }
         }
@@ -254,7 +271,6 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
         DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
             fullScreenSwitchView.updatePadding(top = inset.top)
-            adjustCenterViews()
         })
 
         miniPlayerView.onClick {
@@ -276,6 +292,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             }
         }
         lockScreenView?.doOnSlideComplete {
+            playerVideosAdapter.notifyItemChanged(viewPager.currentItem)
             lockScreen(false)
         }
 
@@ -286,6 +303,11 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        acquirePlayerIfNeeded()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RQ_CODE_WRITE_SETTINGS) {
@@ -294,7 +316,6 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             if (canWriteSettings) {
                 handler.postDelayed(500) {
                     // ensure video in center
-                    VideoEmplacementLiveData.center()
                     (activity as? MainActivity)?.expandBottomPanel()
                 }
                 openBatterySaverMode()
@@ -336,9 +357,15 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         previousState: SlidingUpPanelLayout.PanelState?,
         newState: SlidingUpPanelLayout.PanelState?
     ) {
-        btnFullScreen?.isEnabled = newState == SlidingUpPanelLayout.PanelState.EXPANDED
-        if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+        btnFullScreen?.isEnabled = newState == EXPANDED
+        if (newState == EXPANDED) {
             checkToShowTipBatterySaver()
+            playerVideosAdapter.notifyDataSetChanged()
+        } else if (newState == COLLAPSED) {
+            val reusedPlayerView = playerVideosAdapter.reusedPlayerView
+            reusedPlayerView?.let {
+                miniPlayerView.acquirePlayer(reusedPlayerView)
+            }
         }
     }
 
@@ -365,35 +392,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
     }
 
-    private fun adjustCenterViews() {
-        if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
-            return
-        }
-        val emplacementCenter = VideoEmplacement.center()
-        val paramsTitle = txtTitleVideoCenter.layoutParams as RelativeLayout.LayoutParams
-        val horizontalMargin = emplacementCenter.x
-
-        paramsTitle.topMargin = emplacementCenter.y - requireActivity().dpToPixel(80f)
-        paramsTitle.marginStart = horizontalMargin
-        paramsTitle.leftMargin = horizontalMargin
-        paramsTitle.marginEnd = horizontalMargin
-        paramsTitle.rightMargin = horizontalMargin
-
-        txtTitleVideoCenter.layoutParams = paramsTitle
-
-        val paramsTxtYoutubeCopy = btnYoutube.layoutParams as RelativeLayout.LayoutParams
-        paramsTxtYoutubeCopy.topMargin = paramsTitle.topMargin - requireActivity().dpToPixel(20f)
-        paramsTxtYoutubeCopy.marginStart = paramsTitle.marginStart
-        paramsTxtYoutubeCopy.leftMargin = paramsTitle.leftMargin
-        paramsTxtYoutubeCopy.marginEnd = paramsTitle.marginEnd
-        paramsTxtYoutubeCopy.rightMargin = paramsTitle.rightMargin
-
-        btnYoutube.layoutParams = paramsTxtYoutubeCopy
-    }
-
     private fun onVideoChanged(track: MusicTrack) {
         miniPlayerView.onTrackChanged(track)
-        txtTitleVideoCenter.text = track.title
 
         if (UserPrefs.isFav(track.youtubeId)) {
             btnAddFav.setImageResource(R.drawable.ic_heart_solid)
@@ -446,7 +446,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         lifecycleScope.launch {
             try {
                 val bitmap = imgBlured?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
-                imgBlured?.setImageBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
+                imgBlured?.updateBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
             } catch (e: Exception) {
                 Crashlytics.logException(e)
             } catch (error: OutOfMemoryError) {
@@ -459,6 +459,13 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         mainView?.isVisible = !lock
         mainActivity.isLocked = lock
         lockScreenView?.toggle(lock)
+        if (lock) {
+            playerService?.getPlayerView()?.let { playerView ->
+                lockScreenView?.postDelayed(300) {
+                    lockScreenView?.acquirePlayer(playerView)
+                }
+            }
+        }
     }
 
     private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
@@ -501,6 +508,54 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     fun onQueueClosed() {
         btnPlayOption?.setImageResource(UserPrefs.getSort().icon)
+    }
+
+    private fun acquirePlayerIfNeeded() {
+        val panelState = mainActivity.slidingPaneLayout.panelState
+        if (panelState == EXPANDED) {
+            val currentItem = viewPager.currentItem
+            if (currentItem >= 0) {
+                playerVideosAdapter.notifyItemChanged(currentItem)
+            }
+        } else if (panelState == COLLAPSED) {
+            val reusedPlayerView = playerVideosAdapter.reusedPlayerView
+            reusedPlayerView?.let {
+                miniPlayerView.post {
+                    miniPlayerView.acquirePlayer(reusedPlayerView)
+                }
+            }
+        }
+    }
+
+
+    /* Indicate if a swipe is initiated by user or programmatically */
+    private val scrollEvents = mutableListOf<Int>()
+    private fun setupCenterViewPager() {
+
+        playerVideosAdapter = PlayerVideosAdapter(viewPager)
+        viewPager.adapter = playerVideosAdapter
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                val swipeByUser =
+                    !(scrollEvents.isEmpty() || !scrollEvents.contains(ViewPager2.SCROLL_STATE_DRAGGING))
+                viewPager.postDelayed(300) {
+                    playerVideosAdapter.notifyItemChanged(position)
+                    playerVideosAdapter.notifyItemChanged(viewModel.currentPage)
+                    viewModel.currentPage = position
+
+                    if (swipeByUser) {
+                        PlayerQueue.playTrackAt(position)
+                    }
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                scrollEvents.add(state)
+                if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    scrollEvents.clear()
+                }
+            }
+        })
     }
 
     companion object {

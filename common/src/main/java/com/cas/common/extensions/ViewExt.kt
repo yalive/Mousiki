@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.graphics.Rect
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager

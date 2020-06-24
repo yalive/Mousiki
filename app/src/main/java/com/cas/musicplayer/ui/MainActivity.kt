@@ -33,7 +33,8 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
-import com.cas.musicplayer.player.*
+import com.cas.musicplayer.player.EmplacementFullScreen
+import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -51,7 +52,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 class MainActivity : BaseActivity() {
@@ -93,10 +93,6 @@ class MainActivity : BaseActivity() {
             updateBottomNavigationMenu(destination.id)
             val showBack = showBackForDestination(destination)
             supportActionBar?.setDisplayHomeAsUpEnabled(showBack)
-            val currentEmplacement = VideoEmplacementLiveData.value
-            if (currentEmplacement != null && currentEmplacement is EmplacementBottom) {
-                VideoEmplacementLiveData.value = VideoEmplacement.bottom(bottomNavView.isVisible)
-            }
         }
 
         if (!canDrawOverApps()) {
@@ -171,13 +167,6 @@ class MainActivity : BaseActivity() {
             }
         }
         viewModel.checkStartFromShortcut(intent.data?.toString())
-
-        observe(VideoEmplacementLiveData) { emplacement ->
-            val playBackState = PlaybackLiveData.value
-            if (emplacement is EmplacementBottom && playBackState != null && playBackState != PlayerConstants.PlayerState.UNKNOWN) {
-                collapseBottomPanel()
-            }
-        }
     }
 
     private fun initMediationSDK() {
@@ -256,49 +245,24 @@ class MainActivity : BaseActivity() {
         if (!isFromService) {
             isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false)
         }
-
-        val emplacement = VideoEmplacementLiveData.oldValue1
-
-        if (emplacement is EmplacementFullScreen || isLandscape()) {
-            showStatusBar()
-            switchToPortrait()
-            VideoEmplacementLiveData.center()
-            // To be sure
-            handler.postDelayed({
-                VideoEmplacementLiveData.center()
-            }, 1000)
-
-        } else if (isFromService) {
+        if (isFromService) {
             isFromService = false
-            if (emplacement is EmplacementPlaylist) {
-                VideoEmplacementLiveData.playlist()
-            } else {
-                expandBottomPanel()
-                VideoEmplacementLiveData.center()
-                bottomPanelFragment()?.onPanelSlide(slidingPaneLayout, 1f)
-            }
+
+            expandBottomPanel()
+            bottomPanelFragment()?.onPanelSlide(slidingPaneLayout, 1f)
 
             if (openBatterySaver) {
                 expandBottomPanel()
-                VideoEmplacementLiveData.center()
                 playerFragment.openBatterySaverMode()
                 openBatterySaver = false
             }
-        } else {
-            // Restore old video state if any
-            restoreOldVideoState()
         }
         ViewCompat.requestApplyInsets(cordinator)
         if (canDrawOverApps()) {
             handleDynamicLinks()
         }
 
-        lifecycleScope.launch {
-            delay(300)
-            if (queueFragmentContainer.isVisible) {
-                PlayerQueue.hideVideo()
-            }
-        }
+        VideoEmplacementLiveData.inApp()
     }
 
 
@@ -344,12 +308,10 @@ class MainActivity : BaseActivity() {
                     window.statusBarColor = Color.TRANSPARENT
                     darkStatusBar()
                     bottomNavView.isVisible = false
-                    VideoEmplacementLiveData.center()
                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     adjustStatusBarWhenPanelCollapsed()
                     bottomNavView.isVisible =
                         showBottomBarForDestination(navController.currentDestination!!.id)
-                    VideoEmplacementLiveData.bottom(bottomNavView.isVisible)
                 } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
                     bottomNavView.isVisible =
                         showBottomBarForDestination(navController.currentDestination!!.id)
@@ -401,7 +363,6 @@ class MainActivity : BaseActivity() {
         if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
             showStatusBar()
             switchToPortrait()
-            VideoEmplacementLiveData.center()
             return
         }
 
@@ -416,25 +377,6 @@ class MainActivity : BaseActivity() {
             exitDialog = showExitDialog()
         } else {
             super.onBackPressed()
-        }
-    }
-
-    /**
-     * Restore state: Not from service
-     */
-    private fun restoreOldVideoState() {
-        val playBackState = PlaybackLiveData.value
-        val lastVideoEmplacement = viewModel.lastVideoEmplacement
-        if (lastVideoEmplacement != null && playBackState != null && playBackState != PlayerConstants.PlayerState.UNKNOWN) {
-            // Usually for coming from background
-            if (lastVideoEmplacement !is EmplacementOut) {
-                VideoEmplacementLiveData.value = lastVideoEmplacement
-            }
-        } else if (playBackState != null && playBackState != PlayerConstants.PlayerState.UNKNOWN && VideoEmplacementLiveData.value is EmplacementOut) {
-            collapseBottomPanel()
-            VideoEmplacementLiveData.bottom(true)
-        } else {
-            hideBottomPanel()
         }
     }
 

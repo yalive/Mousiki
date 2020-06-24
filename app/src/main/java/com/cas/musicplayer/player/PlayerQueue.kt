@@ -186,6 +186,19 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
         MusicApp.get().startService(intent)
     }
+
+    fun size() = queue?.size ?: 0
+
+    fun indexOfCurrent(): Int {
+        val currentTrack = value ?: return -1
+        return queue?.indexOf(currentTrack) ?: -1
+    }
+
+    fun playTrackAt(position: Int) {
+        val currentQueue = queue ?: emptyList()
+        val track = currentQueue.getOrNull(position) ?: return
+        playTrack(track, currentQueue)
+    }
 }
 
 enum class PlaySort(@DrawableRes val icon: Int) {

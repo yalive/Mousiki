@@ -10,20 +10,26 @@
     app:cardCornerRadius="4dp"
     tools:parentTag="androidx.cardview.widget.CardView">
 
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-        android:id="@+id/youtubePlayerView"
+    <FrameLayout
+        android:id="@+id/videoContainerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:autoPlay="false"
-        app:showFullScreenButton="false"
-        app:showSeekBar="false"
-        app:showVideoCurrentTime="false"
-        app:showVideoDuration="false"
-        app:showYouTubeButton="false" />
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/draggableView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#16000000" />
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtubePlayerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:autoPlay="false"
+            app:showFullScreenButton="false"
+            app:showSeekBar="false"
+            app:showVideoCurrentTime="false"
+            app:showVideoDuration="false"
+            app:showYouTubeButton="false" />
+
+        <RelativeLayout
+            android:id="@+id/draggableView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#16000000" />
+    </FrameLayout>
 </merge>
