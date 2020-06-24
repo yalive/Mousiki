@@ -32,6 +32,22 @@
         tools:text="2020/04/28" />
 
 
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="260dp"
+        android:layout_height="160dp"
+        app:cardBackgroundColor="@color/colorBlack"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintBottom_toTopOf="@+id/txtTrackTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate">
+
+        <FrameLayout
+            android:id="@+id/frameVideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.card.MaterialCardView>
+
     <TextView
         android:id="@+id/txtTrackTitle"
         android:layout_width="0dp"

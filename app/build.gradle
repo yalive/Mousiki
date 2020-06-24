@@ -223,6 +223,9 @@ dependencies {
 
     // Tip
     implementation 'com.github.sephiroth74:android-target-tooltip:2.0.3'
+
+    // View pager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
 
 apply plugin: 'com.google.gms.google-services'

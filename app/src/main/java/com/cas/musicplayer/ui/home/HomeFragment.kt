@@ -38,7 +38,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         HomeAdapter(viewModel = viewModel, onVideoSelected = { track ->
             (activity as? MainActivity)?.collapseBottomPanel()
             viewModel.onClickTrack(track)
-            VideoEmplacementLiveData.bottom(true)
         }, onClickRetryNewRelease = {
             viewModel.onClickRetryNewRelease()
         })

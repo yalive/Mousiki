@@ -9,20 +9,22 @@ import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.AttributeSet
 import android.view.*
-import androidx.cardview.widget.CardView
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleService
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.visible
 import com.cas.musicplayer.R
-import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.player.services.YoutubePlayerManager
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.utils.*
+import com.cas.musicplayer.utils.VideoEmplacementLiveData
+import com.cas.musicplayer.utils.canDrawOverApps
+import com.cas.musicplayer.utils.screenSize
+import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
 import com.crashlytics.android.Crashlytics
+import com.google.android.material.card.MaterialCardView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 /**
@@ -30,7 +32,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
  * Created by Y.Abdelhadi on 4/23/20.
  ***************************************
  */
-class YoutubeFloatingPlayerView : CardView {
+class YoutubeFloatingPlayerView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : MaterialCardView(context, attrs, defStyleAttr) {
 
     private lateinit var videoViewParams: WindowManager.LayoutParams
     private lateinit var youTubePlayerView: YouTubePlayerView
@@ -43,19 +47,7 @@ class YoutubeFloatingPlayerView : CardView {
         context.screenSize()
     }
 
-    constructor(context: Context) : super(context) {
-        init(null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    init {
         init(attrs)
     }
 
@@ -245,18 +237,21 @@ class YoutubeFloatingPlayerView : CardView {
         //Update the layout with new X & Y coordinate
         updateLayout()
 
+
         this.alpha = 1f
+        if (emplacement !is EmplacementFullScreen && emplacement !is EmplacementOut) {
+            hide()
+        } else {
+            acquirePlayer()
+            show()
+        }
     }
 
-    fun onDragBottomPanel(dragPanelInfo: DragPanelInfo) {
-        if (videoEmplacement is EmplacementCenter) {
-            videoViewParams.y = dragPanelInfo.pannelY.toInt() + videoEmplacement.y
-            updateLayout()
-        } else if (videoEmplacement is EmplacementBottom) {
-            videoViewParams.y =
-                dragPanelInfo.pannelY.toInt() - context.dpToPixel(18f) // -minus is workaround: To be fixed todo
-            updateLayout()
-            this.alpha = 1 - dragPanelInfo.slideOffset
+    private fun acquirePlayer() {
+        val parent = youTubePlayerView.parent
+        if (parent != this) {
+            (parent as? ViewGroup)?.removeView(youTubePlayerView)
+            addView(youTubePlayerView, 0)
         }
     }
 
@@ -293,5 +288,9 @@ class YoutubeFloatingPlayerView : CardView {
         if (windowToken != null) {
             windowManager.updateViewLayout(this, videoViewParams)
         }
+    }
+
+    fun playerView(): YouTubePlayerView {
+        return youTubePlayerView
     }
 }

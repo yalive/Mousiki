@@ -30,11 +30,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressDuration">
 
-        <View
+        <FrameLayout
+            android:id="@+id/miniPlayerContainer"
             android:layout_width="90dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:visibility="visible"
-            tools:background="#000" />
+            tools:background="#000">
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/txtTitle"

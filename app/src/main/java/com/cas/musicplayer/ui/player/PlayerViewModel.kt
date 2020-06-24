@@ -28,6 +28,7 @@ class PlayerViewModel @Inject constructor(
     private val _isLiked = MediatorLiveData<Boolean>()
     val isLiked: LiveData<Boolean> = _isLiked
 
+    var currentPage = 0
     init {
         uiCoroutine {
             _isLiked.addSource(getFavouriteTracksLive(20)) { songs ->

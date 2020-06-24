@@ -3,10 +3,13 @@ package com.cas.musicplayer.ui.player
 import android.content.Context
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.AttributeSet
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.android.synthetic.main.mini_player_view.view.*
 
 /**
@@ -18,6 +21,8 @@ class MiniPlayerView : ConstraintLayout {
 
     private var onClickShowQueue: (() -> Unit)? = null
     private var onClickPlayPause: (() -> Unit)? = null
+
+    private lateinit var miniPlayerContainer: FrameLayout
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -37,6 +42,7 @@ class MiniPlayerView : ConstraintLayout {
 
     private fun init(attrs: AttributeSet?) {
         inflate(context, R.layout.mini_player_view, this)
+        miniPlayerContainer = findViewById(R.id.miniPlayerContainer)
 
         btnPlayPause.onClick {
             onClickPlayPause?.invoke()
@@ -70,5 +76,11 @@ class MiniPlayerView : ConstraintLayout {
 
     fun doOnClickPlayPause(callback: () -> Unit) {
         onClickPlayPause = callback
+    }
+
+    fun acquirePlayer(youTubePlayerView: YouTubePlayerView) {
+        val oldParent = youTubePlayerView.parent as? ViewGroup
+        oldParent?.removeView(youTubePlayerView)
+        miniPlayerContainer.addView(youTubePlayerView)
     }
 }
