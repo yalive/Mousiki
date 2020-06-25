@@ -558,6 +558,10 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         })
     }
 
+    fun onExitFullScreen() {
+        playerVideosAdapter.notifyDataSetChanged()
+    }
+
     companion object {
         private const val RQ_CODE_WRITE_SETTINGS = 101
     }

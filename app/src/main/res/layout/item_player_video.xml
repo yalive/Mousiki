@@ -4,29 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="32dp"
-    android:layout_marginEnd="32dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    tools:background="#0288D1"
+    tools:layout_marginEnd="0dp"
+    tools:layout_marginStart="0dp">
 
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:fontFamily="@font/pangram_bold"
+        android:fontFamily="@font/pangram_regular"
         android:gravity="center"
         android:lines="2"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/videoCardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Hamid El Kasri" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/videoCardView"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
         android:layout_marginTop="@dimen/spacing_small"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnYoutube"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle">
@@ -39,7 +46,10 @@
             <ImageView
                 android:id="@+id/imgTrack"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_chart_spotify" />
         </FrameLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -48,7 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/videoCardView"
         app:layout_constraintTop_toBottomOf="@+id/videoCardView">
 
         <TextView
