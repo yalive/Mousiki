@@ -6,14 +6,18 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.loadTrackImage
+import com.cas.musicplayer.utils.screenSize
 import com.cas.musicplayer.utils.visibleInScreen
+import com.google.android.material.card.MaterialCardView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import kotlin.math.min
 
 
 class PlayerVideosAdapter(
@@ -26,7 +30,7 @@ class PlayerVideosAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_player_video, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view).apply { adjustVideoSize() }
     }
 
     override fun getItemCount(): Int = videos.count()
@@ -38,6 +42,8 @@ class PlayerVideosAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val imgTrack: ImageView = view.findViewById(R.id.imgTrack)
         private val frameLayout: FrameLayout = view.findViewById(R.id.frameLayout)
+        private val youtubeCopyRightView: ViewGroup = view.findViewById(R.id.btnYoutube)
+        private val videoCardView: MaterialCardView = view.findViewById(R.id.videoCardView)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
         fun bind(video: DisplayedVideoItem) {
@@ -46,6 +52,7 @@ class PlayerVideosAdapter(
             if (viewPager.currentItem == adapterPosition) {
                 addPlayerIfNeeded()
             }
+            imgTrack.isInvisible = viewPager.currentItem == adapterPosition
         }
 
         private fun addPlayerIfNeeded() {
@@ -66,6 +73,18 @@ class PlayerVideosAdapter(
                     frameLayout.addView(reusedPlayerView)
                 }
             }
+        }
+
+        fun adjustVideoSize() {
+            val marginEnd = (itemView.layoutParams as ViewGroup.MarginLayoutParams).marginEnd
+            val screenSize = itemView.context.screenSize()
+            val widthPx = screenSize.widthPx - marginEnd * 2
+            val avHeight = viewPager.height - txtTitle.height - youtubeCopyRightView.height
+            val layoutParams = videoCardView.layoutParams
+            val videoSize = min(avHeight, widthPx)
+            layoutParams.width = videoSize
+            layoutParams.height = videoSize
+            videoCardView.layoutParams = layoutParams
         }
     }
 

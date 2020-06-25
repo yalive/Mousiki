@@ -91,24 +91,23 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/favView"
             android:layout_below="@+id/bannerAdView"
-            android:layout_marginTop="@dimen/spacing_large" />
+            android:layout_marginTop="@dimen/spacing_x_large" />
 
         <LinearLayout
             android:id="@+id/favView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/seekBarView"
-            android:layout_marginBottom="24dp"
             android:background="@color/colorTransparent"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
             <ImageButton
                 android:id="@+id/btnShareVia"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?selectableItemBackgroundBorderless"
@@ -120,8 +119,8 @@
 
             <ImageButton
                 android:id="@+id/btnAddToPlaylist"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?selectableItemBackgroundBorderless"
@@ -133,8 +132,8 @@
 
             <ImageButton
                 android:id="@+id/btnAddFav"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?selectableItemBackgroundBorderless"
@@ -152,7 +151,6 @@
             android:layout_above="@+id/playbackControlsView"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="@dimen/twenty_four_24dp"
             android:orientation="horizontal">
 
             <TextView
@@ -193,9 +191,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/colorTransparent"
+            android:clipToPadding="false"
             android:gravity="center_vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="@dimen/twenty_four_24dp">
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
 
             <ImageButton
                 android:id="@+id/btnPlayOption"

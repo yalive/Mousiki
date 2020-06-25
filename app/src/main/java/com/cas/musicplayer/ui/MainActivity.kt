@@ -363,6 +363,8 @@ class MainActivity : BaseActivity() {
         if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
             showStatusBar()
             switchToPortrait()
+            VideoEmplacementLiveData.inApp()
+            playerFragment.onExitFullScreen()
             return
         }
 
