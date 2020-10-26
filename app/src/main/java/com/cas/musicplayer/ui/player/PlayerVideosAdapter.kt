@@ -1,16 +1,19 @@
 package com.cas.musicplayer.ui.player
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isInvisible
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.cas.common.extensions.inflate
+import com.cas.delegatedadapter.AdapterDelegate
+import com.cas.delegatedadapter.BaseDelegationAdapter
+import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
+import com.cas.musicplayer.ui.common.ads.PagerAdsCellDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.screenSize
@@ -20,23 +23,40 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import kotlin.math.min
 
 
-class PlayerVideosAdapter(
-    private val viewPager: ViewPager2
-) : RecyclerView.Adapter<PlayerVideosAdapter.ViewHolder>() {
+class PlayerPagerAdapter(
+    viewPager: ViewPager2,
+    val videosDelegate: PlayerVideosDelegate = PlayerVideosDelegate(viewPager)
+) : BaseDelegationAdapter(
+    listOf(
+        videosDelegate,
+        PagerAdsCellDelegate()
+    )
+)
 
-    var videos: MutableList<DisplayedVideoItem> = mutableListOf()
+class PlayerVideosDelegate(
+    private val viewPager: ViewPager2
+) : AdapterDelegate<List<DisplayableItem>>() {
+
     var reusedPlayerView: YouTubePlayerView? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_player_video, parent, false)
-        return ViewHolder(view).apply { adjustVideoSize() }
+    override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
+        return items[position] is DisplayedVideoItem
     }
 
-    override fun getItemCount(): Int = videos.count()
+    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+        val view = parent.inflate(R.layout.item_player_video)
+        return ViewHolder(view).apply {
+            adjustVideoSize()
+        }
+    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(videos[position])
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
+        val video = items[position] as DisplayedVideoItem
+        (holder as ViewHolder).bind(video)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -88,10 +108,4 @@ class PlayerVideosAdapter(
         }
     }
 
-    fun submitList(newList: List<DisplayedVideoItem>, diffCallback: DiffUtil.Callback) {
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        videos.clear()
-        videos.addAll(newList)
-        diffResult.dispatchUpdatesTo(this)
-    }
 }

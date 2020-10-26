@@ -18,7 +18,7 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView
  * Created by Abdelhadi on 2019-12-01.
  ***************************************
  */
-class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
+open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is AdsItem

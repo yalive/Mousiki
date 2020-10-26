@@ -2,14 +2,26 @@ package com.cas.musicplayer.ui.player
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
+import com.cas.common.event.Event
+import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.ui.common.ads.AdsItem
+import com.cas.musicplayer.ui.common.ads.loadMultipleNativeAdWithMediation
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
+import com.google.android.gms.ads.formats.UnifiedNativeAd
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -25,15 +37,36 @@ class PlayerViewModel @Inject constructor(
     private val appConfig: RemoteAppConfig
 ) : BaseViewModel() {
 
+    private val _goToPosition = MediatorLiveData<Event<Int>>()
+    val goToPosition: LiveData<Event<Int>> = _goToPosition
+
+
     private val _isLiked = MediatorLiveData<Boolean>()
     val isLiked: LiveData<Boolean> = _isLiked
 
+    private val _currentVideo = MediatorLiveData<DisplayedVideoItem>()
+    val currentVideo: LiveData<DisplayedVideoItem> = _currentVideo
+
+    private val _queue = MediatorLiveData<List<DisplayableItem>>()
+    val queue: LiveData<List<DisplayableItem>> = _queue
+
     var currentPage = 0
+        private set
+
+    private val nativeAds = mutableListOf<UnifiedNativeAd>()
+    private val queueObserver = Observer<List<MusicTrack>?> { newQueue ->
+        newQueue?.let {
+            val videoItems = newQueue.map { it.toDisplayedVideoItem() }
+            _queue.value = getListWithAds(videoItems)
+        }
+    }
+
     init {
         uiCoroutine {
             _isLiked.addSource(getFavouriteTracksLive(20)) { songs ->
                 _isLiked.postValue(songs.contains(PlayerQueue.value))
             }
+            OnChangeQueue.observeForever(queueObserver)
         }
     }
 
@@ -46,4 +79,64 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun bannerAdOn() = appConfig.bannerAdOn()
+
+    fun prepareAds() {
+        viewModelScope.launch {
+            val ads = loadMultipleNativeAdWithMediation(3)
+            nativeAds.clear()
+            nativeAds.addAll(ads)
+        }
+    }
+
+    override fun onCleared() {
+        nativeAds.forEach { it.destroy() }
+        nativeAds.clear()
+        OnChangeQueue.removeObserver(queueObserver)
+        super.onCleared()
+    }
+
+    fun onPageSelected(position: Int, swipeByUser: Boolean) {
+        currentPage = position
+        val item = _queue.value?.getOrNull(position) ?: return
+        if (swipeByUser && item is DisplayedVideoItem) {
+            PlayerQueue.playTrackAt(position)
+        }
+    }
+
+    fun onClickPlayNext(currentPosition: Int) {
+        val nextItem = _queue.value?.getOrNull(currentPosition + 1)
+        if (nextItem is AdsItem) {
+            _goToPosition.value = (currentPosition + 1).asEvent()
+            return
+        }
+        PlayerQueue.playNextTrack()
+    }
+
+    fun onClickPlayPrevious(currentPosition: Int) {
+        val previousItem = _queue.value?.getOrNull(currentPosition - 1)
+        if (previousItem is AdsItem) {
+            _goToPosition.value = (currentPosition - 1).asEvent()
+            return
+        }
+        PlayerQueue.playPreviousTrack()
+    }
+
+    private fun getListWithAds(items: List<DisplayableItem>): List<DisplayableItem> {
+        val ads = getAdsToShowFor(items.size).map { AdsItem(it) }
+        val offset = if (ads.isNotEmpty()) items.size / ads.size else 0
+        if (offset < 3) return items
+        val songsList = items.toMutableList()
+        var index = offset
+        ads.forEach { adsItem ->
+            songsList.add(index, adsItem)
+            index += offset + 1
+        }
+        return songsList
+    }
+
+    private fun getAdsToShowFor(listSize: Int): List<UnifiedNativeAd> {
+        return if (listSize < 20 && nativeAds.size > 2) {
+            nativeAds.subList(0, 2)
+        } else nativeAds
+    }
 }
