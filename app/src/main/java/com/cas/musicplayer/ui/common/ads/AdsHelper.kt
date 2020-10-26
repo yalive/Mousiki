@@ -16,6 +16,7 @@ import kotlin.coroutines.resume
  ***************************************
  */
 
+@Deprecated("It doesn't use mediation ")
 suspend fun loadMultipleNativeAds(count: Int) =
     suspendCancellableCoroutine<List<UnifiedNativeAd>> { continuation ->
         val ads = mutableListOf<UnifiedNativeAd>()

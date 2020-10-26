@@ -29,9 +29,11 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             resume()
             return
         }
+        val oldQueue = this.queue.orEmpty()
         this.queue = queue
         this.value = currentTrack
         notifyService(currentTrack.youtubeId)
+        checkQueueChanged(oldQueue, queue)
     }
 
     fun playNextTrack() {
@@ -199,7 +201,20 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val track = currentQueue.getOrNull(position) ?: return
         playTrack(track, currentQueue)
     }
+
+    private fun checkQueueChanged(oldQueue: List<MusicTrack>, newQueue: List<MusicTrack>) {
+        if (oldQueue.size != newQueue.size) {
+            OnChangeQueue.value = newQueue
+            return
+        }
+
+        if (oldQueue != newQueue) {
+            OnChangeQueue.value = newQueue
+        }
+    }
 }
+
+object OnChangeQueue : MutableLiveData<List<MusicTrack>>()
 
 enum class PlaySort(@DrawableRes val icon: Int) {
     RANDOM(R.drawable.ic_random),
