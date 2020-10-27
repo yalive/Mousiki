@@ -25,7 +25,7 @@ import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.*
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 /**
  ***************************************
@@ -101,7 +101,7 @@ class GenreAdapterDelegate(
                 backgroundCategory.setBackgroundColor(color)
                 cardImgCategory.setCardBackgroundColor(color)
             } catch (e: Exception) {
-                Crashlytics.logException(e)
+                FirebaseCrashlytics.getInstance().recordException(e)
             }
         }
     }

@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.View
 import android.view.WindowInsets
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 /**
@@ -46,7 +46,7 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
         } catch (e: Exception) {
             false
         } catch (e: OutOfMemoryError) {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 Exception(
                     "Catch SlidingUpPanelLayout out of memory issue in drawChild function",
                     e
@@ -60,7 +60,7 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
         try {
             super.draw(c)
         } catch (e: OutOfMemoryError) {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 Exception(
                     "Catch SlidingUpPanelLayout out of memory issue in draw function",
                     e

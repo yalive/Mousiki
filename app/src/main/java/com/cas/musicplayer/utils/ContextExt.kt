@@ -14,7 +14,7 @@ import android.widget.Toast
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 /**
  **********************************
@@ -41,7 +41,7 @@ fun Context.drawable(@DrawableRes id: Int): Drawable? {
     return try {
         ContextCompat.getDrawable(this, id)
     } catch (e: OutOfMemoryError) {
-        Crashlytics.logException(e)
+        FirebaseCrashlytics.getInstance().recordException(e)
         null
     }
 }

@@ -48,8 +48,8 @@ import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.AdRequest
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.COLLAPSED
@@ -453,9 +453,9 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 val bitmap = imgBlured?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
                 imgBlured?.updateBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
             } catch (e: Exception) {
-                Crashlytics.logException(e)
+                FirebaseCrashlytics.getInstance().recordException(e)
             } catch (error: OutOfMemoryError) {
-                Crashlytics.logException(error)
+                FirebaseCrashlytics.getInstance().recordException(error)
             }
         }
     }

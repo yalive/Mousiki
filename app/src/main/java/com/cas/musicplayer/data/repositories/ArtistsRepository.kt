@@ -14,7 +14,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -73,7 +73,7 @@ class ArtistsRepository @Inject constructor(
                     val distinctBy = artists.distinctBy { it.channelId }
                     return@withContext distinctBy
                 } catch (e: Exception) {
-                    Crashlytics.logException(e)
+                    FirebaseCrashlytics.getInstance().recordException(e)
                 }
             }
             return@withContext emptyList<Artist>()
@@ -94,7 +94,7 @@ class ArtistsRepository @Inject constructor(
                         gson.fromJson<List<Artist>>(artistsJsonArray, typeTokenArtists)
                     countryArtists.map { it.copy(countryCode = countryCode) }
                 } catch (e: Exception) {
-                    Crashlytics.logException(e)
+                    FirebaseCrashlytics.getInstance().recordException(e)
                     emptyList<Artist>()
                 }
             } else emptyList()
@@ -129,7 +129,7 @@ class ArtistsRepository @Inject constructor(
             }
             if (!fileDownloaded) {
                 // Log error
-                Crashlytics.log(
+                FirebaseCrashlytics.getInstance().log(
                     "Cannot load artists file from firebase after $retryCount retries," +
                             "\n Is Connected before call: $connectedBeforeCall" +
                             "\n Is Connected after call:${connectivityState.isConnected()}"

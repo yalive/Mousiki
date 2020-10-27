@@ -1,7 +1,7 @@
 package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.util.regex.Pattern
@@ -129,7 +129,7 @@ private fun parseDurationPart(part: String): Int {
     return try {
         part.toInt()
     } catch (e: Exception) {
-        Crashlytics.logException(Exception("Unable to parse custom duration part: $part", e))
+        FirebaseCrashlytics.getInstance().recordException(Exception("Unable to parse custom duration part: $part", e))
         0
     }
 }

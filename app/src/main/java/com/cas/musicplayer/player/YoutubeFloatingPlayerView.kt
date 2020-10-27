@@ -23,8 +23,8 @@ import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.screenSize
 import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
-import com.crashlytics.android.Crashlytics
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 /**
@@ -260,7 +260,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
             youTubePlayerView.release()
             windowManager.removeView(this)
         } catch (e: Exception) {
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 

@@ -18,7 +18,7 @@ import com.cas.musicplayer.utils.AdsOrigin
 import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.navigateSafeAction
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_home_chart.view.*
 
@@ -72,9 +72,9 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
                 .resize(0, 360)
                 .into(itemView.imgChart)
         } catch (e: Exception) {
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().recordException(e)
         } catch (e: OutOfMemoryError) {
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 }

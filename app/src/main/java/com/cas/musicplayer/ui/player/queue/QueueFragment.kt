@@ -26,7 +26,7 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.synthetic.main.queue_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -177,9 +177,9 @@ class QueueFragment : Fragment() {
                 }
                 imgBlured?.setImageBitmap(blurredBitmap)
             } catch (e: Exception) {
-                Crashlytics.logException(e)
+                FirebaseCrashlytics.getInstance().recordException(e)
             } catch (error: OutOfMemoryError) {
-                Crashlytics.logException(error)
+                FirebaseCrashlytics.getInstance().recordException(error)
             }
         }
     }
