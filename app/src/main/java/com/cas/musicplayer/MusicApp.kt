@@ -10,11 +10,8 @@ import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
 import com.cas.musicplayer.utils.UserPrefs
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
-import io.fabric.sdk.android.Fabric
 
 
 /**
@@ -42,10 +39,6 @@ class MusicApp : Application(), ComponentProvider {
             return
         }
         MobileAds.initialize(this, getString(R.string.admob_app_id))
-        val crashlytics = Crashlytics.Builder()
-            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-            .build()
-        Fabric.with(this, crashlytics)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_START)

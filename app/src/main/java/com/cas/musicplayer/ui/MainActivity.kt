@@ -43,7 +43,7 @@ import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
@@ -422,7 +422,7 @@ class MainActivity : BaseActivity() {
                     startActivityForResult(intent, 10)
                 } else {
                     MusicApp.get().toast(R.string.message_enable_draw_over_apps_manually)
-                    Crashlytics.log("requestDrawOverAppsPermission intent not resolved")
+                    FirebaseCrashlytics.getInstance().log("requestDrawOverAppsPermission intent not resolved")
                 }
             }.show()
     }

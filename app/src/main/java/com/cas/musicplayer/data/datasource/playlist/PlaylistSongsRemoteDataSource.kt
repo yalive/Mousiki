@@ -20,7 +20,7 @@ import com.cas.musicplayer.data.repositories.GenresRepository
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import com.google.gson.Gson
@@ -86,7 +86,7 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
                         val musicTracks = trackDtos.map { it.toDomainModel() }
                         tracks.addAll(musicTracks)
                     } catch (e: Exception) {
-                        Crashlytics.logException(e)
+                        FirebaseCrashlytics.getInstance().recordException(e)
                     }
                 }
                 tracks
@@ -138,7 +138,7 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
             }
             if (!fileDownloaded) {
                 // Log error
-                Crashlytics.log(
+                FirebaseCrashlytics.getInstance().log(
                     "Cannot load $playlistId songs file from firebase after $retryCount retries," +
                             "\n Is Connected before call: $connectedBeforeCall" +
                             "\n Is Connected after call:${connectivityState.isConnected()}"

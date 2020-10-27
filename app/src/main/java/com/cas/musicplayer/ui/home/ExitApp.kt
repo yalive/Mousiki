@@ -10,11 +10,11 @@ import com.afollestad.materialdialogs.customview.customView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.MainActivity
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -109,6 +109,6 @@ fun populateNativeAdView(
     try {
         adView.setNativeAd(nativeAd)
     } catch (e: Exception) {
-        Crashlytics.logException(Exception("setNativeAd crash in showExitDialog", e))
+        FirebaseCrashlytics.getInstance().recordException(Exception("setNativeAd crash in showExitDialog", e))
     }
 }

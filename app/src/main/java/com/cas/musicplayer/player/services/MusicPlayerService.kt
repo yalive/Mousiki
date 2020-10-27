@@ -31,7 +31,7 @@ import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
 import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.utils.*
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
@@ -330,7 +330,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         try {
             windowManager.removeView(bottomView)
         } catch (e: Exception) {
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 
