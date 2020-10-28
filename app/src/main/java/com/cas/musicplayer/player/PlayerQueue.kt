@@ -1,6 +1,7 @@
 package com.cas.musicplayer.player
 
 import android.content.Intent
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.randomOrNull
@@ -104,7 +105,11 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (value == null) return
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SCHEDULE_TIMER, duration)
-        MusicApp.get().startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
+        }
     }
 
     fun isCurrentTrack(musicTrack: MusicTrack): Boolean {
@@ -115,13 +120,21 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     fun hideVideo() {
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_HIDE_VIDEO, true)
-        MusicApp.get().startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
+        }
     }
 
     fun showVideo() {
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SHOW_VIDEO, true)
-        MusicApp.get().startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
+        }
     }
 
     private fun getNextTrack(): MusicTrack? {
@@ -158,7 +171,11 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, videoId)
-        MusicApp.get().startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
+        }
     }
 
     private fun pauseVideo() {
@@ -167,7 +184,11 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_PAUSE, true)
-        MusicApp.get().startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
+        }
     }
 
     private fun resumeVideo() {
@@ -176,7 +197,11 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_RESUME, true)
-        MusicApp.get().startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
+        }
     }
 
     private fun seekTrackTo(to: Long) {
@@ -186,7 +211,11 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
-        MusicApp.get().startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
+        }
     }
 
     fun size() = queue?.size ?: 0

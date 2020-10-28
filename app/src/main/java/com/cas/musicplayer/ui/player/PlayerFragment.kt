@@ -60,8 +60,6 @@ import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
-const val TAG = "PlayerFragment.Log"
-
 class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     private lateinit var mainActivity: MainActivity
@@ -72,7 +70,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private var btnPlayOption: ImageButton? = null
     private var mainView: ViewGroup? = null
     private var btnPlayPauseMain: ImageButton? = null
-    private var imgBlured: ImageView? = null
+    private var imgBlurred: ImageView? = null
     private var lockScreenView: LockScreenView? = null
     private var seekingDuration = false
 
@@ -116,14 +114,14 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_player, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_player, container, false)
     }
 
     override fun onStart() {
         super.onStart()
         val intent = Intent(requireContext(), MusicPlayerService::class.java)
         activity?.bindService(intent, serviceConnection, 0)
+
         mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
         val serviceRunning = context?.isServiceRunning(MusicPlayerService::class.java) ?: false
         if (!serviceRunning) {
@@ -145,7 +143,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         mainView = view?.findViewById(R.id.mainView)
         btnPlayPauseMain = view?.findViewById(R.id.btnPlayPauseMain)
         lockScreenView = view?.findViewById(R.id.lockScreenView)
-        imgBlured = view?.findViewById(R.id.imgBlured)
+        imgBlurred = view?.findViewById(R.id.imgBlured)
 
         mainActivity = requireActivity() as MainActivity
         mainActivity.slidingPaneLayout.addPanelSlideListener(this)
@@ -450,8 +448,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private fun loadAndBlurImage(video: MusicTrack) {
         lifecycleScope.launch {
             try {
-                val bitmap = imgBlured?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
-                imgBlured?.updateBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
+                val bitmap = imgBlurred?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
+                imgBlurred?.updateBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
             } catch (error: OutOfMemoryError) {

@@ -149,7 +149,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
                 } else if (batterySaverView.isActivated) {
                     // Save energy mode
                     val intent = Intent(context, MainActivity::class.java)
-                    intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                    intent.putExtra(MainActivity.EXTRAS_FROM_PLAYER_SERVICE, true)
                     intent.putExtra(MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE, true)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context.startActivity(intent)
@@ -166,7 +166,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
                     mediaController.transportControls.play()
                 } else {
                     val intent = Intent(context, MainActivity::class.java)
-                    intent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                    intent.putExtra(MainActivity.EXTRAS_FROM_PLAYER_SERVICE, true)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
                     try {

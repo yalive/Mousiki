@@ -66,6 +66,7 @@ class MainActivity : BaseActivity() {
     val adsViewModel by viewModel { injector.adsViewModel }
     private val viewModel by viewModel { injector.mainViewModel }
     private lateinit var navController: NavController
+
     private var isFromService = false
 
     private var bottomView: ViewGroup? = null
@@ -205,11 +206,11 @@ class MainActivity : BaseActivity() {
                 bottomNavView.menu[1].isChecked = true
             }
         }
-        val showBottomBarForDestination = showBottomBarForDestination(destinationId)
+        val showBottomBarForDestination = isBottomBarVisibleFor(destinationId)
         bottomNavView.isVisible = showBottomBarForDestination
     }
 
-    private fun showBottomBarForDestination(destinationId: Int): Boolean {
+    private fun isBottomBarVisibleFor(destinationId: Int): Boolean {
         return (destinationId == R.id.homeFragment
                 || destinationId == R.id.libraryFragment
                 || destinationId == R.id.mainSearchFragment)
@@ -236,14 +237,14 @@ class MainActivity : BaseActivity() {
     private var openBatterySaver = false
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        isFromService = intent?.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false) ?: false
+        isFromService = intent?.getBooleanExtra(EXTRAS_FROM_PLAYER_SERVICE, false) ?: false
         openBatterySaver = intent?.getBooleanExtra(EXTRAS_OPEN_BATTERY_SAVER_MODE, false) ?: false
     }
 
     override fun onResume() {
         super.onResume()
         if (!isFromService) {
-            isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAY_SERVICE, false)
+            isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAYER_SERVICE, false)
         }
         if (isFromService) {
             isFromService = false
@@ -285,9 +286,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupPlayerFragment() {
-        playerFragment =
-            supportFragmentManager.findFragmentById(R.id.playerFragment) as? PlayerFragment
-                ?: PlayerFragment()
+        playerFragment = supportFragmentManager.findFragmentById(R.id.playerFragment)
+                as? PlayerFragment ?: PlayerFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.playerFragment, playerFragment)
             .commit()
@@ -311,10 +311,10 @@ class MainActivity : BaseActivity() {
                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     adjustStatusBarWhenPanelCollapsed()
                     bottomNavView.isVisible =
-                        showBottomBarForDestination(navController.currentDestination!!.id)
+                        isBottomBarVisibleFor(navController.currentDestination!!.id)
                 } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
                     bottomNavView.isVisible =
-                        showBottomBarForDestination(navController.currentDestination!!.id)
+                        isBottomBarVisibleFor(navController.currentDestination!!.id)
                 }
             }
         })
@@ -422,7 +422,8 @@ class MainActivity : BaseActivity() {
                     startActivityForResult(intent, 10)
                 } else {
                     MusicApp.get().toast(R.string.message_enable_draw_over_apps_manually)
-                    FirebaseCrashlytics.getInstance().log("requestDrawOverAppsPermission intent not resolved")
+                    FirebaseCrashlytics.getInstance()
+                        .log("requestDrawOverAppsPermission intent not resolved")
                 }
             }.show()
     }
@@ -472,10 +473,10 @@ class MainActivity : BaseActivity() {
         return videoId != null && title != null && duration != null
     }
 
-    private fun comeFromPlayerService() = intent.hasExtra(EXTRAS_FROM_PLAY_SERVICE)
+    private fun comeFromPlayerService() = intent.hasExtra(EXTRAS_FROM_PLAYER_SERVICE)
 
     companion object {
-        const val EXTRAS_FROM_PLAY_SERVICE = "from_player_service"
+        const val EXTRAS_FROM_PLAYER_SERVICE = "from_player_service"
         const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
     }
 }
