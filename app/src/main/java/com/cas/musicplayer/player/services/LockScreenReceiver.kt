@@ -63,7 +63,7 @@ class LockScreenReceiver(
                     positiveButton(R.string.common_turn_on) {
                         mediaController.transportControls.play()
                         val startLockScreenIntent = Intent(context, MainActivity::class.java)
-                        startLockScreenIntent.putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+                        startLockScreenIntent.putExtra(MainActivity.EXTRAS_FROM_PLAYER_SERVICE, true)
                         startLockScreenIntent.putExtra(
                             MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE,
                             true

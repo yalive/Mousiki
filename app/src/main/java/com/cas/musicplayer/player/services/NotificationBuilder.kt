@@ -165,7 +165,7 @@ class NotificationBuilder(private val context: Context) {
 
     private fun contentIntent(): PendingIntent {
         val intent = Intent(context, MainActivity::class.java).apply {
-            putExtra(MainActivity.EXTRAS_FROM_PLAY_SERVICE, true)
+            putExtra(MainActivity.EXTRAS_FROM_PLAYER_SERVICE, true)
             action = Intent.ACTION_MAIN
             addCategory(Intent.CATEGORY_LAUNCHER)
         }
