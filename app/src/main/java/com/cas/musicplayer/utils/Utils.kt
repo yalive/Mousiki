@@ -11,11 +11,14 @@ import android.graphics.drawable.ColorDrawable
 import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.NonNull
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
@@ -194,6 +197,30 @@ object Utils {
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
         }
+    }
+
+    fun requestDrawOverAppsPermission(context: Context): AlertDialog {
+        return AlertDialog.Builder(context).setCancelable(false)
+            .setMessage(R.string.message_enable_draw)
+            .setNegativeButton(context.getString(R.string.btn_deny)) { _, _ ->
+            }.setPositiveButton(context.getString(R.string.btn_agree)) { _, _ ->
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:${context.packageName}")
+                )
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    if (context is AppCompatActivity) {
+                        context.startActivityForResult(intent, 10)
+                    } else {
+                        context.startActivity(intent)
+                    }
+
+                } else {
+                    MusicApp.get().toast(R.string.message_enable_draw_over_apps_manually)
+                    FirebaseCrashlytics.getInstance()
+                        .log("requestDrawOverAppsPermission intent not resolved")
+                }
+            }.show()
     }
 }
 

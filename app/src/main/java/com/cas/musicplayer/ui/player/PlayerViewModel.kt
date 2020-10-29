@@ -121,6 +121,12 @@ class PlayerViewModel @Inject constructor(
         PlayerQueue.playPreviousTrack()
     }
 
+    fun currentTrackPosition(): Int {
+        return _queue.value?.indexOfFirst {
+            it is DisplayedVideoItem && it.track.youtubeId == PlayerQueue.value?.youtubeId
+        } ?: -1
+    }
+
     private fun getListWithAds(items: List<DisplayableItem>): List<DisplayableItem> {
         val ads = getAdsToShowFor(items.size).map { AdsItem(it) }
         val offset = if (ads.isNotEmpty()) items.size / ads.size else 0

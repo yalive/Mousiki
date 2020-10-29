@@ -152,12 +152,15 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         observe(viewModel.queue) { items ->
             val diffCallback = SongsDiffUtil(playerVideosAdapter.dataItems, items)
             playerVideosAdapter.submitList(items, diffCallback)
+            viewPager.post {
+                viewPager.setCurrentItem(viewModel.currentTrackPosition(), false)
+            }
         }
         PlayerQueue.observe(viewLifecycleOwner, Observer { video ->
             onVideoChanged(video)
             lockScreenView?.setCurrentTrack(video)
             viewPager.post {
-                viewPager.setCurrentItem(PlayerQueue.indexOfCurrent(), false)
+                viewPager.setCurrentItem(viewModel.currentTrackPosition(), false)
             }
         })
 
@@ -513,7 +516,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         btnPlayOption?.setImageResource(UserPrefs.getSort().icon)
     }
 
-    private fun acquirePlayerIfNeeded() {
+     fun acquirePlayerIfNeeded() {
         val panelState = mainActivity.slidingPaneLayout.panelState
         if (panelState == EXPANDED) {
             val currentItem = viewPager.currentItem
