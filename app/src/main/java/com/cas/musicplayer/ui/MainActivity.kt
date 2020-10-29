@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +27,8 @@ import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
-import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
@@ -37,26 +36,25 @@ import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.DragBottomPanelLiveData
 import com.cas.musicplayer.player.services.DragPanelInfo
+import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.delay
 
 
 class MainActivity : BaseActivity() {
 
-    lateinit var slidingPaneLayout: InsetSlidingPanelView
+    val slidingPaneLayout: InsetSlidingPanelView by lazy { binding.slidingLayout }
     var isLocked = false
         set(value) {
             field = value
@@ -68,11 +66,17 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
 
     private var isFromService = false
+    private var openBatterySaver = false
 
-    private var bottomView: ViewGroup? = null
-    private var txtConnectivityState: TextView? = null
+    private val bottomView: ViewGroup by lazy { binding.bottomView }
+    private val txtConnectivityState: TextView by lazy { binding.txtConnectivityState }
+
     private lateinit var playerFragment: PlayerFragment
     private var exitDialog: MaterialDialog? = null
+
+    private val binding by viewBinding(ActivityMainBinding::inflate)
+
+    private var dialogDrawOverApps: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -80,16 +84,14 @@ class MainActivity : BaseActivity() {
         initMediationSDK()
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
-        setContentView(R.layout.activity_main)
-        bottomView = findViewById(R.id.bottomView)
-        txtConnectivityState = findViewById(R.id.txtConnectivityState)
-        slidingPaneLayout = findViewById(R.id.sliding_layout)
-        setSupportActionBar(toolbar)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            appbar.setExpanded(true, true)
+            binding.appbar.setExpanded(true, true)
             if (destination.id == R.id.homeFragment) {
-                toolbar.title = getString(R.string.app_name)
+                binding.toolbar.title = getString(R.string.app_name)
             }
             updateBottomNavigationMenu(destination.id)
             val showBack = showBackForDestination(destination)
@@ -97,13 +99,16 @@ class MainActivity : BaseActivity() {
         }
 
         if (!canDrawOverApps()) {
-            requestDrawOverAppsPermission()
+            Utils.requestDrawOverAppsPermission(this).also {
+                dialogDrawOverApps = it
+            }
         }
         adsViewModel.apply {
             // just to prepare ads
         }
         setupPlayerFragment()
-        ViewCompat.setOnApplyWindowInsetsListener(cordinator) { v, insets ->
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.cordinator) { v, insets ->
             if (insets.systemWindowInsetTop > 0) {
                 DeviceInset.value = ScreenInset(
                     insets.systemWindowInsetLeft,
@@ -128,7 +133,7 @@ class MainActivity : BaseActivity() {
             if (consumed) insets.consumeSystemWindowInsets() else insets
         }
 
-        bottomNavView.setOnNavigationItemSelectedListener { item ->
+        binding.bottomNavView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navHome -> handleClickMenuHome()
                 R.id.navLibrary -> handleClickMenuLibrary()
@@ -139,22 +144,7 @@ class MainActivity : BaseActivity() {
             true
         }
 
-        observe(viewModel.connectivityState) { state ->
-            handler.postDelayed(if (state.isConnected) 500L else 0) {
-                bottomView?.let { viewGroup ->
-                    TransitionManager.beginDelayedTransition(viewGroup)
-                }
-                txtConnectivityState?.isGone = state.isConnected
-            }
-            if (state.isConnected) {
-                txtConnectivityState?.setBackgroundColor(color(R.color.colorGreenState))
-                txtConnectivityState?.setText(R.string.connection_back)
-            } else {
-                txtConnectivityState?.setBackgroundColor(color(R.color.colorDarkNavigationView))
-                txtConnectivityState?.setText(R.string.no_connection)
-            }
-            VideoEmplacementLiveData.forceUpdate()
-        }
+        observeViewModel()
 
         if (savedInstanceState == null) {
             viewModel.checkToRateApp()
@@ -170,14 +160,23 @@ class MainActivity : BaseActivity() {
         viewModel.checkStartFromShortcut(intent.data?.toString())
     }
 
-    private fun initMediationSDK() {
-        val sdkConfiguration = SdkConfiguration.Builder("bc645649938646db9030829e2d969ad8").build()
-        MoPub.initializeSdk(this, sdkConfiguration, null)
-        AdColony.configure(
-            this,
-            "appee158214620447b7ba",
-            "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
-        )
+    private fun observeViewModel() {
+        observe(viewModel.connectivityState) { state ->
+            handler.postDelayed(if (state.isConnected) 500L else 0) {
+                bottomView.let { viewGroup ->
+                    TransitionManager.beginDelayedTransition(viewGroup)
+                }
+                txtConnectivityState.isGone = state.isConnected
+            }
+            if (state.isConnected) {
+                txtConnectivityState.setBackgroundColor(color(R.color.colorGreenState))
+                txtConnectivityState.setText(R.string.connection_back)
+            } else {
+                txtConnectivityState.setBackgroundColor(color(R.color.colorDarkNavigationView))
+                txtConnectivityState.setText(R.string.no_connection)
+            }
+            VideoEmplacementLiveData.forceUpdate()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -200,14 +199,14 @@ class MainActivity : BaseActivity() {
     private fun updateBottomNavigationMenu(destinationId: Int) {
         when (destinationId) {
             R.id.homeFragment -> {
-                bottomNavView.menu[0].isChecked = true
+                binding.bottomNavView.menu[0].isChecked = true
             }
             R.id.libraryFragment -> {
-                bottomNavView.menu[1].isChecked = true
+                binding.bottomNavView.menu[1].isChecked = true
             }
         }
         val showBottomBarForDestination = isBottomBarVisibleFor(destinationId)
-        bottomNavView.isVisible = showBottomBarForDestination
+        binding.bottomNavView.isVisible = showBottomBarForDestination
     }
 
     private fun isBottomBarVisibleFor(destinationId: Int): Boolean {
@@ -221,7 +220,7 @@ class MainActivity : BaseActivity() {
             viewModel.onDoubleClickSearchNavigation()
             return
         }
-        appbar.setExpanded(true, true)
+        binding.appbar.setExpanded(true, true)
         navController.navigate(R.id.mainSearchFragment)
     }
 
@@ -234,7 +233,6 @@ class MainActivity : BaseActivity() {
         navController.navigate(R.id.libraryFragment)
     }
 
-    private var openBatterySaver = false
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         isFromService = intent?.getBooleanExtra(EXTRAS_FROM_PLAYER_SERVICE, false) ?: false
@@ -257,8 +255,14 @@ class MainActivity : BaseActivity() {
                 playerFragment.openBatterySaverMode()
                 openBatterySaver = false
             }
+        } else if (isServiceRunning(MusicPlayerService::class.java)) {
+            collapseBottomPanel()
+            handler.postDelayed(300) {
+                playerFragment.acquirePlayerIfNeeded()
+            }
         }
-        ViewCompat.requestApplyInsets(cordinator)
+
+        ViewCompat.requestApplyInsets(binding.cordinator)
         if (canDrawOverApps()) {
             handleDynamicLinks()
         }
@@ -307,13 +311,13 @@ class MainActivity : BaseActivity() {
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
                     window.statusBarColor = Color.TRANSPARENT
                     darkStatusBar()
-                    bottomNavView.isVisible = false
+                    binding.bottomNavView.isVisible = false
                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     adjustStatusBarWhenPanelCollapsed()
-                    bottomNavView.isVisible =
+                    binding.bottomNavView.isVisible =
                         isBottomBarVisibleFor(navController.currentDestination!!.id)
                 } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
-                    bottomNavView.isVisible =
+                    binding.bottomNavView.isVisible =
                         isBottomBarVisibleFor(navController.currentDestination!!.id)
                 }
             }
@@ -351,12 +355,12 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (queueFragmentContainer.isVisible) {
+        if (binding.queueFragmentContainer.isVisible) {
             supportFragmentManager.findFragmentById(R.id.queueFragmentContainer)?.let {
                 supportFragmentManager.beginTransaction().remove(it).commit()
             }
             PlayerQueue.showVideo()
-            queueFragmentContainer.isVisible = false
+            binding.queueFragmentContainer.isVisible = false
             playerFragment.onQueueClosed()
             return
         }
@@ -393,7 +397,9 @@ class MainActivity : BaseActivity() {
 
     fun collapseBottomPanel() {
         if (!canDrawOverApps()) {
-            requestDrawOverAppsPermission()
+            Utils.requestDrawOverAppsPermission(this).also {
+                dialogDrawOverApps = it
+            }
             return
         }
         slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
@@ -405,27 +411,6 @@ class MainActivity : BaseActivity() {
 
     fun isBottomPanelExpanded(): Boolean {
         return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
-    }
-
-    var dialogDrawOverApps: AlertDialog? = null
-
-    private fun requestDrawOverAppsPermission() {
-        dialogDrawOverApps = AlertDialog.Builder(this).setCancelable(false)
-            .setMessage(R.string.message_enable_draw)
-            .setNegativeButton(getString(R.string.btn_deny)) { _, _ ->
-            }.setPositiveButton(getString(R.string.btn_agree)) { _, _ ->
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:$packageName")
-                )
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivityForResult(intent, 10)
-                } else {
-                    MusicApp.get().toast(R.string.message_enable_draw_over_apps_manually)
-                    FirebaseCrashlytics.getInstance()
-                        .log("requestDrawOverAppsPermission intent not resolved")
-                }
-            }.show()
     }
 
     private fun onLockChanged(locked: Boolean) {
@@ -474,6 +459,16 @@ class MainActivity : BaseActivity() {
     }
 
     private fun comeFromPlayerService() = intent.hasExtra(EXTRAS_FROM_PLAYER_SERVICE)
+
+    private fun initMediationSDK() {
+        val sdkConfiguration = SdkConfiguration.Builder("bc645649938646db9030829e2d969ad8").build()
+        MoPub.initializeSdk(this, sdkConfiguration, null)
+        AdColony.configure(
+            this,
+            "appee158214620447b7ba",
+            "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
+        )
+    }
 
     companion object {
         const val EXTRAS_FROM_PLAYER_SERVICE = "from_player_service"

@@ -85,6 +85,10 @@ android {
             resValue("string", "app_name", "Mousiki β")
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 
