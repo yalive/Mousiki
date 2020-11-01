@@ -323,6 +323,7 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 handler.postDelayed(500) {
                     // ensure video in center
                     (activity as? MainActivity)?.expandBottomPanel()
+                    (activity as? MainActivity)?.hideBottomNavBar()
                 }
                 openBatterySaverMode()
             }

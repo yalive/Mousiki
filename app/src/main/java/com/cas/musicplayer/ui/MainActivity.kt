@@ -51,6 +51,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.delay
 
+private const val TAG = "MainActivity_check"
 
 class MainActivity : BaseActivity() {
 
@@ -311,7 +312,7 @@ class MainActivity : BaseActivity() {
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
                     window.statusBarColor = Color.TRANSPARENT
                     darkStatusBar()
-                    binding.bottomNavView.isVisible = false
+                    hideBottomNavBar()
                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     adjustStatusBarWhenPanelCollapsed()
                     binding.bottomNavView.isVisible =
@@ -468,6 +469,10 @@ class MainActivity : BaseActivity() {
             "appee158214620447b7ba",
             "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
         )
+    }
+
+    fun hideBottomNavBar() {
+        binding.bottomNavView.isVisible = false
     }
 
     companion object {
