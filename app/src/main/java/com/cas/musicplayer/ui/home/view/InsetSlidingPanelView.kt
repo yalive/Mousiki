@@ -32,6 +32,15 @@ class InsetSlidingPanelView : SlidingUpPanelLayout {
         super.setOnApplyWindowInsetsListener(listener)
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        // workaround
+        try {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+        }
+    }
+
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
         val childCount = childCount
         for (index in 0 until childCount)
