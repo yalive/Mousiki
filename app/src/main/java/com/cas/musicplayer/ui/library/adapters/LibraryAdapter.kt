@@ -36,9 +36,7 @@ class LibraryAdapter(
         dataItems = mutableListOf(
             LibraryHeaderItem.PlaylistsHeader,
             LibraryItem.Playlists(listOf()),
-            LibraryHeaderItem.RecentHeader,
             LibraryItem.Recent(emptyList()),
-            LibraryHeaderItem.FavouriteHeader(),
             LibraryItem.Favourite(emptyList())
         )
     }

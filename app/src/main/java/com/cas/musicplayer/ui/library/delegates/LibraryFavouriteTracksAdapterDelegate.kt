@@ -30,4 +30,8 @@ class LibraryFavouriteTracksAdapterDelegate(
     override fun getEmptyMessage(): Int {
         return R.string.library_empty_favourite_list
     }
+
+    override fun getHeaderTitle(items: List<DisplayableItem>, position: Int): String {
+        return "Favourites"
+    }
 }

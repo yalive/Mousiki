@@ -1,5 +1,6 @@
 package com.cas.musicplayer.data.remote.retrofit
 
+import com.cas.musicplayer.data.remote.models.mousiki.HomeRS
 import com.cas.musicplayer.data.remote.models.mousiki.MousikiPlaylistRS
 import com.cas.musicplayer.data.remote.models.mousiki.MousikiSearchApiRS
 import retrofit2.http.GET
@@ -30,4 +31,9 @@ interface MousikiSearchApi {
         @Path(value = "url", encoded = true) apiUrl: String,
         @Query(value = "id") playlistId: String
     ): MousikiPlaylistRS
+
+    @GET("{url}/api/home?gl=US")
+    suspend fun getHome(
+        @Path(value = "url", encoded = true) apiUrl: String
+    ): HomeRS
 }

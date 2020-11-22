@@ -7,6 +7,8 @@ import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.data.remote.models.mousiki.CompactPlaylist
+import com.cas.musicplayer.data.remote.models.mousiki.SimplePlaylist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.android.parcel.Parcelize
 
@@ -20,6 +22,17 @@ sealed class HomeItem : DisplayableItem {
     data class ChartItem(val charts: List<ChartModel>) : HomeItem()
     data class ArtistItem(val artists: List<Artist>) : HomeItem()
     data class GenreItem(val genres: List<GenreMusic>) : HomeItem()
+    data class CompactPlaylists(
+        val title: String, val playlists: List<CompactPlaylist>
+    ) : HomeItem()
+
+    data class SimplePlaylists(
+        val title: String, val playlists: List<SimplePlaylist>
+    ) : HomeItem()
+
+    data class VideoLists(
+        val title: String, val tracks: List<MusicTrack>
+    ) : HomeItem()
 }
 
 sealed class HeaderItem(@StringRes val title: Int, val showMore: Boolean = true) : HomeItem() {

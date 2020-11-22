@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.9"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="32sp"
+        tools:text="أجمل الأغاني اليوم" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitle"
         android:minHeight="100dp"
         android:orientation="horizontal"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="4"
         tools:listitem="@layout/item_new_release"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/viewError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/txtTitle"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"
@@ -54,8 +69,9 @@
         android:id="@+id/progressBar"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:indeterminateTint="@color/colorYellow"
         android:padding="@dimen/four_4dp"
         android:visibility="gone" />
-</FrameLayout>
+</RelativeLayout>

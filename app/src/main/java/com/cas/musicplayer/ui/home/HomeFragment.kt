@@ -9,18 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
-import com.cas.common.extensions.valueOrNull
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
-import com.cas.musicplayer.ui.popular.SongsDiffUtil
-import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
@@ -73,7 +68,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        viewModel.newReleases.valueOrNull()?.let { items ->
+        /*viewModel.newReleases.valueOrNull()?.let { items ->
             val updatedList = items.map { item ->
                 val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
                 item.copy(
@@ -91,16 +86,21 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                     adapter.submitList(updatedList, diffCallback)
                 }
             }
-        }
+        }*/
     }
 
     override fun withToolbar(): Boolean = false
 
     private fun observeViewModel() {
-        observe(viewModel.newReleases, homeAdapter::updatePopularSongs)
-        observe(viewModel.charts, homeAdapter::updateCharts)
+        /*
+         observe(viewModel.charts, homeAdapter::updateCharts)
+         */
+        observe(viewModel.homeItems) { items ->
+            homeAdapter.dataItems = items.toMutableList()
+        }
         observe(viewModel.genres, homeAdapter::updateGenres)
         observe(viewModel.artists, homeAdapter::updateArtists)
+        observe(viewModel.newReleases, homeAdapter::updatePopularSongs)
     }
 
     //region Status bar adjusment

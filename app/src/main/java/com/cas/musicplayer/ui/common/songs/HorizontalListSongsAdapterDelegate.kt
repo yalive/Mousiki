@@ -47,7 +47,8 @@ open class HorizontalListSongsAdapterDelegate(
         holder: RecyclerView.ViewHolder
     ) {
         val songs = songsFromItem(items[position])
-        (holder as HorizontalSongsListViewHolder).bind(songs)
+        val title = getHeaderTitle(items, position)
+        (holder as HorizontalSongsListViewHolder).bind(title, songs)
     }
 
     protected open fun songsFromItem(
@@ -61,8 +62,13 @@ open class HorizontalListSongsAdapterDelegate(
         return R.string.common_empty_song_list
     }
 
+    protected open fun getHeaderTitle(items: List<DisplayableItem>, position: Int): String {
+        return ""
+    }
+
     inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val adapter = HorizontalSongsAdapter(onVideoSelected)
+        private val txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
         private val txtEmpty = itemView.findViewById<TextView>(R.id.txtEmpty)
         private val btnRetry = itemView.findViewById<ImageButton>(R.id.btnRetry)
         private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
@@ -84,22 +90,25 @@ open class HorizontalListSongsAdapterDelegate(
             recyclerView.adapter = adapter
         }
 
-        fun bind(resource: Resource<List<DisplayedVideoItem>>) = when (resource) {
-            is Resource.Loading -> {
-                viewError.isVisible = false
-                recyclerView.isInvisible = true
-                progressBar.isVisible = true
-            }
-            is Resource.Success -> {
-                adapter.dataItems = resource.data.toMutableList()
-                viewError.isVisible = resource.data.isEmpty()
-                progressBar.isVisible = false
-                recyclerView.isInvisible = false
-            }
-            is Resource.Failure -> {
-                viewError.isVisible = true
-                progressBar.isVisible = false
-                recyclerView.isInvisible = true
+        fun bind(title: String, resource: Resource<List<DisplayedVideoItem>>) {
+            txtTitle.text = title
+            return when (resource) {
+                is Resource.Loading -> {
+                    viewError.isVisible = false
+                    recyclerView.isInvisible = true
+                    progressBar.isVisible = true
+                }
+                is Resource.Success -> {
+                    adapter.dataItems = resource.data.toMutableList()
+                    viewError.isVisible = resource.data.isEmpty()
+                    progressBar.isVisible = false
+                    recyclerView.isInvisible = false
+                }
+                is Resource.Failure -> {
+                    viewError.isVisible = true
+                    progressBar.isVisible = false
+                    recyclerView.isInvisible = true
+                }
             }
         }
     }
