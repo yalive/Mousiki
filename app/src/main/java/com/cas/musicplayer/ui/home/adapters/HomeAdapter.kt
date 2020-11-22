@@ -8,10 +8,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.*
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.HomeViewModel
-import com.cas.musicplayer.ui.home.delegates.HomeArtistAdapterDelegate
-import com.cas.musicplayer.ui.home.delegates.HomeChartAdapterDelegate
-import com.cas.musicplayer.ui.home.delegates.HomeGenreAdapterDelegate
-import com.cas.musicplayer.ui.home.delegates.HomeHeaderAdapterDelegate
+import com.cas.musicplayer.ui.home.delegates.*
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlin.reflect.KClass
 
@@ -27,6 +24,9 @@ class HomeAdapter(
     onClickRetryNewRelease: () -> Unit
 ) : BaseDelegationAdapter(
     listOf(
+        CompactPlaylistSectionDelegate(),
+        SimplePlaylistSectionDelegate(),
+        VideoListAdapterDelegate(onVideoSelected),
         HomeArtistAdapterDelegate(),
         chartDelegate,
         HomeGenreAdapterDelegate(),
@@ -38,7 +38,7 @@ class HomeAdapter(
     )
 ) {
     init {
-        this.dataItems = mutableListOf(
+        /*this.dataItems = mutableListOf(
             HomeItem.ChartItem(emptyList()),
             HeaderItem.PopularsHeader(),
             HomeItem.PopularsItem(Resource.Loading),
@@ -46,7 +46,7 @@ class HomeAdapter(
             HomeItem.GenreItem(emptyList()),
             HeaderItem.ArtistsHeader,
             HomeItem.ArtistItem(emptyList())
-        )
+        )*/
     }
 
     fun updatePopularSongs(resource: Resource<List<DisplayedVideoItem>>) {

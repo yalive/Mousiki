@@ -30,4 +30,8 @@ class LibraryRecentTracksAdapterDelegate(
     override fun getEmptyMessage(): Int {
         return R.string.library_empty_recent_list
     }
+
+    override fun getHeaderTitle(items: List<DisplayableItem>, position: Int): String {
+        return "Recent"
+    }
 }
