@@ -96,11 +96,13 @@
         app:layout_constraintTop_toBottomOf="@id/txtPlaylistName"
         tools:text="40 songs" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.cas.musicplayer.utils.AutoRefreshRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?colorSurface"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/padding_for_player_space"
         android:paddingTop="20dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

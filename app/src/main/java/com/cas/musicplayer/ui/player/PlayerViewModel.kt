@@ -50,7 +50,7 @@ class PlayerViewModel @Inject constructor(
     private val _queue = MediatorLiveData<List<DisplayableItem>>()
     val queue: LiveData<List<DisplayableItem>> = _queue
 
-    var currentPage = 0
+    var currentPage = -1
         private set
 
     private val nativeAds = mutableListOf<UnifiedNativeAd>()
@@ -99,7 +99,8 @@ class PlayerViewModel @Inject constructor(
         currentPage = position
         val item = _queue.value?.getOrNull(position) ?: return
         if (swipeByUser && item is DisplayedVideoItem) {
-            PlayerQueue.playTrackAt(position)
+            val index = PlayerQueue.queue.orEmpty().indexOf(item.track)
+            PlayerQueue.playTrackAt(index)
         }
     }
 
@@ -144,5 +145,9 @@ class PlayerViewModel @Inject constructor(
         return if (listSize < 20 && nativeAds.size > 2) {
             nativeAds.subList(0, 2)
         } else nativeAds
+    }
+
+    fun isAdsItem(position: Int): Boolean {
+        return _queue.value?.getOrNull(position) is AdsItem
     }
 }

@@ -62,7 +62,10 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
                 }
             }
 
+            val oldQueue = queue.orEmpty()
+
             this.queue = newList
+            checkQueueChanged(oldQueue, newList)
         }
     }
 

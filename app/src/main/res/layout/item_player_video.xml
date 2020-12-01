@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
-    tools:background="#0288D1"
+    tools:background="#751E3B"
     tools:layout_marginEnd="0dp"
     tools:layout_marginStart="0dp">
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:fontFamily="@font/pangram_regular"
+        android:fontFamily="@font/pangram_bold"
         android:gravity="center"
         android:lines="2"
         android:textColor="@color/colorWhite"
@@ -29,8 +29,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/videoCardView"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/spacing_small"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnYoutube"

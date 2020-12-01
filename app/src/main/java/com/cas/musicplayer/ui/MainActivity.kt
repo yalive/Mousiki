@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +13,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.get
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -34,12 +32,8 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.services.DragBottomPanelLiveData
-import com.cas.musicplayer.player.services.DragPanelInfo
 import com.cas.musicplayer.player.services.MusicPlayerService
-import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.home.showExitDialog
-import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
@@ -47,15 +41,12 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.delay
 
 private const val TAG = "MainActivity_check"
 
 class MainActivity : BaseActivity() {
 
-    val slidingPaneLayout: InsetSlidingPanelView by lazy { binding.slidingLayout }
     var isLocked = false
         set(value) {
             field = value
@@ -75,7 +66,7 @@ class MainActivity : BaseActivity() {
     private lateinit var playerFragment: PlayerFragment
     private var exitDialog: MaterialDialog? = null
 
-    private val binding by viewBinding(ActivityMainBinding::inflate)
+    val binding by viewBinding(ActivityMainBinding::inflate)
 
     private var dialogDrawOverApps: AlertDialog? = null
 
@@ -109,7 +100,7 @@ class MainActivity : BaseActivity() {
         }
         setupPlayerFragment()
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.cordinator) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.coordinator) { v, insets ->
             if (insets.systemWindowInsetTop > 0) {
                 DeviceInset.value = ScreenInset(
                     insets.systemWindowInsetLeft,
@@ -207,7 +198,7 @@ class MainActivity : BaseActivity() {
             }
         }
         val showBottomBarForDestination = isBottomBarVisibleFor(destinationId)
-        binding.bottomNavView.isVisible = showBottomBarForDestination
+        if (showBottomBarForDestination) showBottomNavBar() else hideBottomNavBar()
     }
 
     private fun isBottomBarVisibleFor(destinationId: Int): Boolean {
@@ -249,7 +240,6 @@ class MainActivity : BaseActivity() {
             isFromService = false
 
             expandBottomPanel()
-            bottomPanelFragment()?.onPanelSlide(slidingPaneLayout, 1f)
 
             if (openBatterySaver) {
                 expandBottomPanel()
@@ -259,11 +249,11 @@ class MainActivity : BaseActivity() {
         } else if (isServiceRunning(MusicPlayerService::class.java)) {
             collapseBottomPanel()
             handler.postDelayed(300) {
-                playerFragment.acquirePlayerIfNeeded()
+                playerFragment.adjustPlayerPosition()
             }
         }
 
-        ViewCompat.requestApplyInsets(binding.cordinator)
+        ViewCompat.requestApplyInsets(binding.coordinator)
         if (canDrawOverApps()) {
             handleDynamicLinks()
         }
@@ -286,50 +276,38 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
     }
 
-    private fun bottomPanelFragment(): PlayerFragment? {
-        return supportFragmentManager.findFragmentById(R.id.playerFragment) as? PlayerFragment
-    }
-
     private fun setupPlayerFragment() {
-        playerFragment = supportFragmentManager.findFragmentById(R.id.playerFragment)
+        playerFragment = supportFragmentManager.findFragmentById(R.id.playerContainer)
                 as? PlayerFragment ?: PlayerFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.playerFragment, playerFragment)
+            .replace(R.id.playerContainer, playerFragment)
             .commit()
 
-        hideBottomPanel()
-        slidingPaneLayout.addPanelSlideListener(object :
-            SlidingUpPanelLayout.SimplePanelSlideListener() {
-            override fun onPanelSlide(panel: View, slideOffset: Float) {
-                DragBottomPanelLiveData.value = DragPanelInfo(panel.y, slideOffset)
-            }
+        /* slidingPaneLayout.addPanelSlideListener(object :
+             SlidingUpPanelLayout.SimplePanelSlideListener() {
+             override fun onPanelSlide(panel: View, slideOffset: Float) {
+                 DragBottomPanelLiveData.value = DragPanelInfo(panel.y, slideOffset)
+             }
 
-            override fun onPanelStateChanged(
-                panel: View,
-                previousState: SlidingUpPanelLayout.PanelState,
-                newState: SlidingUpPanelLayout.PanelState?
-            ) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    window.statusBarColor = Color.TRANSPARENT
-                    darkStatusBar()
-                    hideBottomNavBar()
-                } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    adjustStatusBarWhenPanelCollapsed()
-                    binding.bottomNavView.isVisible =
-                        isBottomBarVisibleFor(navController.currentDestination!!.id)
-                } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
-                    binding.bottomNavView.isVisible =
-                        isBottomBarVisibleFor(navController.currentDestination!!.id)
-                }
-            }
-        })
-
-        PlaybackLiveData.observe(this, Observer {
-            if (it == PlayerConstants.PlayerState.UNKNOWN) {
-                hideBottomPanel()
-            }
-        })
-
+             override fun onPanelStateChanged(
+                 panel: View,
+                 previousState: SlidingUpPanelLayout.PanelState,
+                 newState: SlidingUpPanelLayout.PanelState?
+             ) {
+                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                     window.statusBarColor = Color.TRANSPARENT
+                     darkStatusBar()
+                     hideBottomNavBar()
+                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                     adjustStatusBarWhenPanelCollapsed()
+                     binding.bottomNavView.isVisible =
+                         isBottomBarVisibleFor(navController.currentDestination!!.id)
+                 } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
+                     binding.bottomNavView.isVisible =
+                         isBottomBarVisibleFor(navController.currentDestination!!.id)
+                 }
+             }
+         })*/
     }
 
     private fun adjustStatusBarWhenPanelCollapsed() {
@@ -387,13 +365,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-
-    fun hideBottomPanel() {
-        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-    }
-
     fun expandBottomPanel() {
-        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+        playerFragment.expandPlayer()
     }
 
     fun collapseBottomPanel() {
@@ -403,19 +376,21 @@ class MainActivity : BaseActivity() {
             }
             return
         }
-        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        playerFragment.collapsePlayer()
     }
 
     fun isBottomPanelCollapsed(): Boolean {
-        return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED
+        if (playerFragment.view == null) return false
+        return playerFragment.isCollapsed()
     }
 
     fun isBottomPanelExpanded(): Boolean {
-        return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
+        if (playerFragment.view == null) return false
+        return playerFragment.isExpanded()
     }
 
     private fun onLockChanged(locked: Boolean) {
-        slidingPaneLayout.isTouchEnabled = !locked
+        //slidingPaneLayout.isTouchEnabled = !locked
     }
 
     private fun handleDynamicLinks() {
@@ -471,8 +446,12 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    fun showBottomNavBar() {
+        binding.motionLayout.transitionToState(R.id.bottomBarVisible)
+    }
+
     fun hideBottomNavBar() {
-        binding.bottomNavView.isVisible = false
+        //binding.motionLayout.transitionToState(R.id.bottomBarHidden)
     }
 
     companion object {
