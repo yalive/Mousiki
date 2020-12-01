@@ -87,10 +87,18 @@ class LibraryFragment : BaseFragment<LibraryViewModel>() {
     }
 
     private fun observeViewModel() {
-        observe(viewModel.recentSongs, adapter::updateRecent)
-        observe(viewModel.heavySongs, adapter::updateHeavy)
-        observe(viewModel.favouriteSongs, adapter::updateFavourite)
-        observe(viewModel.playlists, adapter::updatePlaylists)
+        observe(viewModel.recentSongs) {
+            adapter.updateRecent(it)
+        }
+        observe(viewModel.heavySongs) {
+            adapter.updateHeavy(it)
+        }
+        observe(viewModel.favouriteSongs) {
+            adapter.updateFavourite(it)
+        }
+        observe(viewModel.playlists) {
+            adapter.updatePlaylists(it)
+        }
         observeEvent(viewModel.onClickSong) {
             (activity as? MainActivity)?.collapseBottomPanel()
         }

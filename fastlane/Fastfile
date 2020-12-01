@@ -31,7 +31,7 @@ platform :android do
             app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
             groups: "qa-team",
             release_notes: "
-            - Playlists/Search from API.
+            - Improve player..
             "
         )
     end
@@ -46,8 +46,7 @@ platform :android do
                 testers: "abdelhadibahddou@gmail.com",
                 firebase_cli_path: "/Users/macbook/Firebase/firebase",
                 release_notes: "
-                - Recognize when app started from a dynamic link.
-                - Bug fixes.
+                - Improve player.
                 "
             )
         end

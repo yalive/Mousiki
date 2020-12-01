@@ -17,26 +17,16 @@ import kotlinx.android.synthetic.main.mini_player_view.view.*
  * Created by Y.Abdelhadi on 5/11/20.
  ***************************************
  */
-class MiniPlayerView : ConstraintLayout {
+class MiniPlayerView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var onClickShowQueue: (() -> Unit)? = null
     private var onClickPlayPause: (() -> Unit)? = null
 
     private lateinit var miniPlayerContainer: FrameLayout
 
-    constructor(context: Context) : super(context) {
-        init(null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    init {
         init(attrs)
     }
 
@@ -79,6 +69,7 @@ class MiniPlayerView : ConstraintLayout {
     }
 
     fun acquirePlayer(youTubePlayerView: YouTubePlayerView) {
+        if (youTubePlayerView.parent == miniPlayerContainer) return
         val oldParent = youTubePlayerView.parent as? ViewGroup
         oldParent?.removeView(youTubePlayerView)
         miniPlayerContainer.addView(youTubePlayerView)

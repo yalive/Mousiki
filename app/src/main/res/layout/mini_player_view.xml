@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:background="@drawable/bg_mini_player"
-    tools:layout_height="@dimen/bottom_pannel_height"
+    tools:layout_height="@dimen/minimized_player_height"
     tools:layout_width="match_parent"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
@@ -36,6 +36,7 @@
             android:layout_height="match_parent"
             android:visibility="visible"
             tools:background="#000">
+
 
         </FrameLayout>
 

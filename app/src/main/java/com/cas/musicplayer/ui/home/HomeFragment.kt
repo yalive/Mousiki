@@ -4,6 +4,7 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,6 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
-import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
@@ -63,9 +63,11 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         adjustStatusBar()
         darkStatusBar()
         observe(PlaybackLiveData) { state ->
+            Log.d("PlayerFragment_pager", "state changed: $state")
             if (state == PlayerConstants.PlayerState.PLAYING
                 || state == PlayerConstants.PlayerState.PAUSED
                 || state == PlayerConstants.PlayerState.ENDED
+                || state == PlayerConstants.PlayerState.UNKNOWN
             ) {
                 updateCurrentPlayingItem(state)
             }
@@ -76,6 +78,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         viewModel.newReleases.valueOrNull()?.let { items ->
             val updatedList = items.map { item ->
                 val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
+                        && state != PlayerConstants.PlayerState.UNKNOWN
                 item.copy(
                     isCurrent = isCurrent,
                     isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)

@@ -5,7 +5,10 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.media.AudioManager
-import android.os.*
+import android.os.Binder
+import android.os.Bundle
+import android.os.IBinder
+import android.os.ResultReceiver
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -141,12 +144,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onStop() {
-                stopForeground(true)
+                /*stopForeground(true)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     stopForeground(true);
-                } else {
-                    stopSelf()
-                }
+                } else {*/
+                stopSelf()
+                // }
             }
 
             override fun onSeekTo(pos: Long) {

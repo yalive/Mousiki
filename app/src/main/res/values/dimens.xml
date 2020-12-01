@@ -12,7 +12,9 @@
 
     <dimen name="floating_video_height">70dp</dimen>
     <dimen name="floating_video_width">120dp</dimen>
-    <dimen name="bottom_pannel_height">54dp</dimen>
+    <dimen name="minimized_player_height">60dp</dimen>
+    <dimen name="padding_for_player_space">90dp</dimen>
+    <dimen name="bottom_nav_bar_height">56dp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
 

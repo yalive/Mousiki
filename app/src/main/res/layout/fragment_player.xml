@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cas.musicplayer.ui.player.SingleViewTouchableMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/antiDrag"
+    android:id="@+id/motionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+    app:layoutDescription="@xml/player_scene"
     tools:context=".ui.player.PlayerFragment">
 
-    <!-- Expanded player -->
-    <RelativeLayout
-        android:id="@+id/mainView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"
-        android:background="#0F1537"
-        tools:alpha="1">
+    <!-- Background of player-->
+    <FrameLayout
+        android:id="@+id/playerBgView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#0F1537">
 
         <ImageView
             android:id="@+id/imgBlured"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:visibility="visible" />
+    </FrameLayout>
+
+    <!-- Expanded player -->
+    <RelativeLayout
+        android:id="@+id/mainView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/fullScreenSwitchView"
@@ -277,14 +288,17 @@
 
     <com.cas.musicplayer.ui.player.MiniPlayerView
         android:id="@+id/miniPlayerView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_pannel_height"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/minimized_player_height"
         android:background="@drawable/bg_mini_player"
-        tools:visibility="gone" />
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.cas.musicplayer.ui.player.LockScreenView
         android:id="@+id/lockScreenView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
-</FrameLayout>
+</com.cas.musicplayer.ui.player.SingleViewTouchableMotionLayout>
