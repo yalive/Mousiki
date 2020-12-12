@@ -67,6 +67,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             if (state == PlayerConstants.PlayerState.PLAYING
                 || state == PlayerConstants.PlayerState.PAUSED
                 || state == PlayerConstants.PlayerState.ENDED
+                || state == PlayerConstants.PlayerState.BUFFERING
                 || state == PlayerConstants.PlayerState.UNKNOWN
             ) {
                 updateCurrentPlayingItem(state)
