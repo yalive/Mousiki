@@ -269,11 +269,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             UserPrefs.saveSort(nextSort)
         }
 
-        binding.btnFullScreen.onClick {
-            (requireActivity() as MainActivity).switchToLandscape()
-            (requireActivity() as MainActivity).hideStatusBar()
-            VideoEmplacementLiveData.fullscreen()
-        }
 
         binding.lockScreenView.doOnSlideComplete {
             playerVideosAdapter.notifyItemChanged(binding.viewPager.currentItem)
@@ -312,7 +307,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.playbackControlsView.alpha = alpha
         binding.seekBarView.alpha = alpha
         binding.favView.alpha = alpha
-        binding.btnFullScreen.alpha = alpha
         binding.btnLockScreen.alpha = alpha
     }
 
