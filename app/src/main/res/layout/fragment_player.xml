@@ -29,11 +29,7 @@
     <RelativeLayout
         android:id="@+id/mainView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="0dp">
 
         <LinearLayout
             android:id="@+id/fullScreenSwitchView"
@@ -274,15 +270,13 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <!-- Mini player -->
     <com.cas.musicplayer.ui.player.MiniPlayerView
         android:id="@+id/miniPlayerView"
         android:layout_width="0dp"
         android:layout_height="@dimen/minimized_player_height"
         android:background="@drawable/bg_mini_player"
-        android:elevation="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:elevation="8dp" />
 
     <com.cas.musicplayer.ui.player.LockScreenView
         android:id="@+id/lockScreenView"

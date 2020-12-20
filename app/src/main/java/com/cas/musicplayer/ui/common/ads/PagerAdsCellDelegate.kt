@@ -25,7 +25,7 @@ class PagerAdsCellDelegate : AdsCellDelegate() {
         position: Int,
         holder: RecyclerView.ViewHolder
     ) {
-        Log.d(TAG_PAGER, "bind ads: $position")
+        Log.d("PlayerFragment_pager", "onBindViewHolder: for normal item ads $position")
         super.onBindViewHolder(items, position, holder)
     }
 }

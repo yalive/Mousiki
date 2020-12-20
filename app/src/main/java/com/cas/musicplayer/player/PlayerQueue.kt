@@ -1,6 +1,7 @@
 package com.cas.musicplayer.player
 
 import android.content.Intent
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.randomOrNull
@@ -25,7 +26,9 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     var queue: List<MusicTrack>? = null
 
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
+        Log.d("PlayerFragment_pager", "playTrack: ${currentTrack.youtubeId}")
         if (value == currentTrack) {
+            Log.d("PlayerFragment_pager", "already playing: ${currentTrack.youtubeId}")
             resume()
             return
         }

@@ -42,8 +42,9 @@ import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-private const val TAG = "MainActivity_check"
+const val TAG_MAIN = "MainActivity_check"
 
 class MainActivity : BaseActivity() {
 
@@ -154,11 +155,12 @@ class MainActivity : BaseActivity() {
 
     private fun observeViewModel() {
         observe(viewModel.connectivityState) { state ->
-            handler.postDelayed(if (state.isConnected) 500L else 0) {
-                bottomView.let { viewGroup ->
-                    TransitionManager.beginDelayedTransition(viewGroup)
-                }
+            lifecycleScope.launch {
+                val delay = if (state.isConnected) 500L else 0
+                delay(delay)
+                TransitionManager.beginDelayedTransition(bottomView)
                 txtConnectivityState.isGone = state.isConnected
+                playerFragment.onConnectivityStateChanged(state)
             }
             if (state.isConnected) {
                 txtConnectivityState.setBackgroundColor(color(R.color.colorGreenState))
@@ -197,14 +199,6 @@ class MainActivity : BaseActivity() {
                 binding.bottomNavView.menu[1].isChecked = true
             }
         }
-        val showBottomBarForDestination = isBottomBarVisibleFor(destinationId)
-        if (showBottomBarForDestination) showBottomNavBar() else hideBottomNavBar()
-    }
-
-    private fun isBottomBarVisibleFor(destinationId: Int): Boolean {
-        return (destinationId == R.id.homeFragment
-                || destinationId == R.id.libraryFragment
-                || destinationId == R.id.mainSearchFragment)
     }
 
     private fun handleClickMenuSearch() {
@@ -444,14 +438,6 @@ class MainActivity : BaseActivity() {
             "appee158214620447b7ba",
             "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
         )
-    }
-
-    fun showBottomNavBar() {
-        binding.motionLayout.transitionToState(R.id.bottomBarVisible)
-    }
-
-    fun hideBottomNavBar() {
-        //binding.motionLayout.transitionToState(R.id.bottomBarHidden)
     }
 
     companion object {

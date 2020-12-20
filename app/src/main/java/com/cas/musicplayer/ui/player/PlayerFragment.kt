@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.os.bundleOf
 import androidx.core.os.postDelayed
 import androidx.core.view.get
@@ -30,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
+import com.cas.common.connectivity.ConnectionModel
+import com.cas.common.dpToPixel
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.observeEvent
 import com.cas.common.extensions.onClick
@@ -39,6 +42,7 @@ import com.cas.musicplayer.databinding.FragmentPlayerBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.extensions.toText
 import com.cas.musicplayer.player.services.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
@@ -54,7 +58,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
@@ -106,7 +109,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
-            Log.d(TAG, "onPlaybackStateChanged: ")
+            Log.d(TAG, "onPlaybackStateChanged: ${state?.toText()}")
             state?.let { onPlayMusicStateChanged(state) }
         }
 
@@ -132,10 +135,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         super.onStart()
         bindService()
         mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
-        val serviceRunning = context?.isServiceRunning(MusicPlayerService::class.java) ?: false
-        if (!serviceRunning) {
-            hidePlayer()
-        }
         viewModel.prepareAds()
     }
 
@@ -275,10 +274,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             lockScreen(false)
         }
 
-        /* binding.miniPlayerView.onClick {
-             expandPlayer()
-         }*/
-
         binding.miniPlayerView.doOnClickPlayPause {
             onClickPlayPause()
         }
@@ -291,9 +286,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun setupViewPager() = with(binding.viewPager) {
         adapter = playerVideosAdapter
         doOnPageSelected { position, fromUser ->
+            Log.d(TAG, "page $position selected fromUser:$fromUser ")
             postDelayed(300) {
                 if (position != viewModel.currentPage) {
                     adjustPlayerPosition()
+                    // Do not wary about performance
+                    // Only 1 or 2 will be refreshed
                     playerVideosAdapter.notifyDataSetChanged()
                     viewModel.onPageSelected(position, fromUser)
                 }
@@ -504,7 +502,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                         stateName(endId)
                     }) (${binding.motionLayout.currentState})"
                 )*/
-                if (endId != R.id.hidden) {
+                if (endId != R.id.hidden && startId != R.id.hidden) {
                     (activity as? MainActivity)?.binding?.motionLayout?.progress = progress
                     adjustPlayerPosition()
                 }
@@ -537,7 +535,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     fun adjustPlayerPosition() {
         //Log.d(TAG, "adjustPlayerPosition: ${currentState()}")
         val playerView = reusedPlayerView ?: return
-        if (binding.motionLayout.progress <= 0.4f) {
+        if (binding.motionLayout.progress <= 0.4f || isCollapsed()) {
             //Log.d(TAG, "will attach miniPlayerView")
             binding.miniPlayerView.post {
                 binding.miniPlayerView.acquirePlayer(playerView)
@@ -604,7 +602,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     fun collapsePlayer() {
         binding.motionLayout.transitionToState(R.id.collapsed)
-        //adjustPlayerPosition()
+        adjustPlayerPosition()
     }
 
     fun isExpanded(): Boolean {
@@ -621,9 +619,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     fun hidePlayer() {
         binding.motionLayout.transitionToState(R.id.hidden)
-        lifecycleScope.launch {
-            delay(1000)
-        }
     }
 
     private fun currentState(): String {
@@ -645,7 +640,16 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
+    fun onConnectivityStateChanged(state: ConnectionModel) {
+        val bottomMargin = if (state.isConnected) MINI_PLAYER_SIZE_DP
+        else MINI_PLAYER_SIZE_DP + INTERNET_STATUS_HEIGHT_DP
+        val constraintSet = binding.motionLayout.getConstraintSet(R.id.collapsed)
+        constraintSet.setMargin(R.id.miniPlayerView, ConstraintSet.BOTTOM, dpToPixel(bottomMargin))
+    }
+
     companion object {
         private const val RQ_CODE_WRITE_SETTINGS = 101
+        private const val MINI_PLAYER_SIZE_DP = 56
+        private const val INTERNET_STATUS_HEIGHT_DP = 20
     }
 }
