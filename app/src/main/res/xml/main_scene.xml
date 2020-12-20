@@ -24,6 +24,12 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/coordinator" />
+
+        <Constraint
+            android:id="@+id/queueFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            motion:visibilityMode="ignore" />
     </ConstraintSet>
     <ConstraintSet android:id="@+id/bottomBarVisible">
         <Constraint
@@ -42,6 +48,12 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/queueFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            motion:visibilityMode="ignore" />
     </ConstraintSet>
 
 </MotionScene>

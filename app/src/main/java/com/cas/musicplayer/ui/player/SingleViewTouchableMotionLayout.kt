@@ -24,10 +24,51 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
                 touchStarted = false
             }
+
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+                super.onTransitionStarted(motionLayout, startId, endId)
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+                super.onTransitionChange(motionLayout, startId, endId, progress)
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+                super.onTransitionTrigger(motionLayout, triggerId, positive, progress)
+            }
         })
     }
 
+/*
+    override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_MOVE) {
+            return super.onInterceptTouchEvent(event)
+        }
+        return false
+    }
+*/
+
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (startState == R.id.collapsed && endState == R.id.expanded && progress > 0.3f) {
+            // Consume touch on the whole screen
+            return super.onTouchEvent(event)
+        }
+
         when (event.actionMasked) {
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 touchStarted = false
@@ -38,6 +79,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
             viewToDetectTouch.getHitRect(viewRect)
             touchStarted = viewRect.contains(event.x.toInt(), event.y.toInt())
         }
-        return touchStarted && super.onTouchEvent(event)
+        return (touchStarted && super.onTouchEvent(event))
     }
+
 }

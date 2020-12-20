@@ -2,14 +2,25 @@
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- Initially player hidden -->
+    <Transition
+        android:id="@+id/initialState"
+        app:constraintSetEnd="@id/hidden"
+        app:constraintSetStart="@id/hidden" />
+
     <Transition
         app:constraintSetEnd="@id/expanded"
         app:constraintSetStart="@id/collapsed"
         app:duration="300"
-        app:motionInterpolator="easeInOut">
+        app:layoutDuringTransition="ignoreRequest"
+        app:motionInterpolator="easeIn">
         <OnSwipe
             app:dragDirection="dragUp"
-            app:maxAcceleration="100"
+            app:dragScale="3000"
+            app:dragThreshold="0"
+            app:maxAcceleration="30"
+            app:moveWhenScrollAtTop="true"
+            app:onTouchUp="decelerateAndComplete"
             app:touchAnchorId="@+id/miniPlayerView"
             app:touchAnchorSide="top" />
 
@@ -39,6 +50,7 @@
         <OnSwipe
             app:dragDirection="dragDown"
             app:maxAcceleration="100"
+            app:dragThreshold="20"
             app:touchAnchorId="@+id/miniPlayerView"
             app:touchAnchorSide="bottom" />
     </Transition>
@@ -79,9 +91,7 @@
         <Constraint
             android:id="@id/miniPlayerView"
             android:layout_height="60dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="65dp"
+            android:layout_marginBottom="56dp"
             android:alpha="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +105,9 @@
             app:layout_constraintBottom_toBottomOf="@id/miniPlayerView"
             app:layout_constraintEnd_toEndOf="@id/miniPlayerView"
             app:layout_constraintStart_toStartOf="@id/miniPlayerView"
-            app:layout_constraintTop_toTopOf="@id/miniPlayerView" />
+            app:layout_constraintTop_toTopOf="@id/miniPlayerView">
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
 
         <Constraint
             android:id="@id/playerBgView"
@@ -124,18 +136,16 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="0"
-            app:layout_constraintBottom_toBottomOf="@id/miniPlayerView"
-            app:layout_constraintEnd_toEndOf="@id/miniPlayerView"
-            app:layout_constraintStart_toStartOf="@id/miniPlayerView"
-            app:layout_constraintTop_toTopOf="@id/miniPlayerView" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
 
         <Constraint
             android:id="@id/playerBgView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/miniPlayerView"
-            app:layout_constraintEnd_toEndOf="@id/miniPlayerView"
-            app:layout_constraintStart_toStartOf="@id/miniPlayerView"
-            app:layout_constraintTop_toTopOf="@id/miniPlayerView" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
     </ConstraintSet>
 </MotionScene>
