@@ -6,6 +6,13 @@
         motion:constraintSetEnd="@+id/bottomBarHidden"
         motion:constraintSetStart="@+id/bottomBarVisible">
 
+        <KeyFrameSet>
+            <KeyPosition
+                motion:framePosition="20"
+                motion:keyPositionType="deltaRelative"
+                motion:motionTarget="@id/bottomView"
+                motion:percentY="0.65" />
+        </KeyFrameSet>
     </Transition>
 
     <ConstraintSet android:id="@+id/bottomBarHidden">

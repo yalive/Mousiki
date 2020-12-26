@@ -150,4 +150,12 @@ class PlayerViewModel @Inject constructor(
     fun isAdsItem(position: Int): Boolean {
         return _queue.value?.getOrNull(position) is AdsItem
     }
+
+    fun playNext() {
+        onClickPlayNext(currentTrackPosition())
+    }
+
+    fun playPrevious() {
+        onClickPlayPrevious(currentTrackPosition())
+    }
 }

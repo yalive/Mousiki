@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Swipe to left -->
+    <Transition
+        app:constraintSetEnd="@+id/swipedLeft"
+        app:constraintSetStart="@+id/idle"
+        app:duration="300">
+        <OnSwipe
+            app:dragDirection="dragStart"
+            app:maxAcceleration="30"
+            app:touchAnchorId="@id/cardPager"
+            app:touchRegionId="@id/cardPager" />
+    </Transition>
+
+    <Transition
+        app:autoTransition="jumpToEnd"
+        app:constraintSetEnd="@+id/comeFromRight"
+        app:constraintSetStart="@+id/swipedLeft"
+        app:duration="200" />
+
+    <Transition
+        app:autoTransition="animateToEnd"
+        app:constraintSetEnd="@+id/idle"
+        app:constraintSetStart="@+id/comeFromRight"
+        app:duration="200" />
+
+
+    <!-- Swipe to right -->
+    <Transition
+        app:constraintSetEnd="@+id/swipedRight"
+        app:constraintSetStart="@+id/idle"
+        app:duration="300">
+        <OnSwipe
+            app:dragDirection="dragEnd"
+            app:maxAcceleration="30"
+            app:touchAnchorId="@id/cardPager"
+            app:touchRegionId="@id/cardPager" />
+    </Transition>
+
+    <Transition
+        app:autoTransition="jumpToEnd"
+        app:constraintSetEnd="@+id/comeFromLeft"
+        app:constraintSetStart="@+id/swipedRight"
+        app:duration="200" />
+
+    <Transition
+        app:autoTransition="animateToEnd"
+        app:constraintSetEnd="@+id/idle"
+        app:constraintSetStart="@+id/comeFromLeft"
+        app:duration="200" />
+
+
+    <!-- Idle state -->
+    <ConstraintSet android:id="@+id/idle">
+        <Constraint
+            android:id="@+id/cardPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </Constraint>
+    </ConstraintSet>
+
+    <!-- Left -->
+    <ConstraintSet android:id="@+id/swipedLeft">
+        <Constraint
+            android:id="@+id/cardPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="200dp"
+            app:layout_constraintEnd_toStartOf="parent">
+
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/comeFromRight">
+        <Constraint
+            android:id="@+id/cardPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+    <!-- Right -->
+    <ConstraintSet android:id="@+id/swipedRight">
+        <Constraint
+            android:id="@+id/cardPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="200dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="parent">
+
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/comeFromLeft">
+        <Constraint
+            android:id="@+id/cardPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+</MotionScene>
