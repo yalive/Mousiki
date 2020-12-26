@@ -133,6 +133,7 @@
 
         <OnSwipe
             app:dragDirection="dragUp"
+            app:onTouchUp="stop"
             app:touchAnchorId="@id/recyclerView"
             app:touchAnchorSide="top" />
         <KeyFrameSet>

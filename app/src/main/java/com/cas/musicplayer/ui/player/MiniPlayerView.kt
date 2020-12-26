@@ -2,14 +2,14 @@ package com.cas.musicplayer.ui.player
 
 import android.content.Context
 import android.support.v4.media.session.PlaybackStateCompat
+import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.postDelayed
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.android.synthetic.main.mini_player_view.view.*
 
 /**
@@ -41,6 +41,8 @@ class MiniPlayerView @JvmOverloads constructor(
         btnShowQueue.onClick {
             onClickShowQueue?.invoke()
         }
+
+        txtTitle.isSelected = true
     }
 
     fun updateProgress(newProgress: Int) {
@@ -48,7 +50,11 @@ class MiniPlayerView @JvmOverloads constructor(
     }
 
     fun onTrackChanged(track: MusicTrack) {
+        txtTitle.ellipsize = null
         txtTitle.text = track.title
+        postDelayed(500) {
+            txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
+        }
     }
 
     fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
@@ -66,12 +72,5 @@ class MiniPlayerView @JvmOverloads constructor(
 
     fun doOnClickPlayPause(callback: () -> Unit) {
         onClickPlayPause = callback
-    }
-
-    fun acquirePlayer(youTubePlayerView: YouTubePlayerView) {
-        if (youTubePlayerView.parent == miniPlayerContainer) return
-        val oldParent = youTubePlayerView.parent as? ViewGroup
-        oldParent?.removeView(youTubePlayerView)
-        miniPlayerContainer.addView(youTubePlayerView)
     }
 }

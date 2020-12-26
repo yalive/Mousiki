@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -17,24 +18,18 @@ import android.widget.SeekBar
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.os.bundleOf
 import androidx.core.os.postDelayed
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.cas.common.connectivity.ConnectionModel
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.observe
-import com.cas.common.extensions.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -49,15 +44,13 @@ import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.player.queue.QueueFragment
-import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
-import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.android.gms.ads.AdRequest
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
@@ -73,7 +66,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private val binding by viewBinding(FragmentPlayerBinding::bind)
     private val viewModel by viewModel { injector.playerViewModel }
-    private val playerVideosAdapter by lazy { PlayerPagerAdapter(binding.viewPager) }
     private val handler = Handler()
     private var seekingDuration = false
 
@@ -175,7 +167,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun setupView() {
         setupMotionLayout()
         binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
-        setupViewPager()
         setUpUserEvents()
         observe(DeviceInset) { inset ->
             binding.fullScreenSwitchView.updatePadding(top = inset.top)
@@ -186,6 +177,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         } else {
             binding.bannerAdView.isVisible = false
         }
+        binding.txtTitle.isSelected = true
     }
 
     private fun setUpUserEvents() {
@@ -197,28 +189,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             Utils.shareWithDeepLink(PlayerQueue.value, requireContext())
         }
 
-        binding.btnAddToPlaylist.onClick {
-            val musicTrack = PlayerQueue.value ?: return@onClick
-            collapsePlayer()
-            val currentDestinationId = findNavController().currentDestination?.id
-            if (currentDestinationId == R.id.addTrackToPlaylistFragment
-                || currentDestinationId == R.id.createPlaylistFragment
-            ) return@onClick
-            handler.postDelayed(500) {
-                val navOptions = navOptions {
-                    anim {
-                        enter = R.anim.fad_in
-                        exit = R.anim.fad_out
-                    }
-                }
-                findNavController().navigate(
-                    R.id.addTrackToPlaylistFragment, bundleOf(
-                        AddTrackToPlaylistFragment.EXTRAS_TRACK to musicTrack,
-                        AddTrackToPlaylistFragment.EXTRAS_CURRENT_DESTINATION to currentDestinationId
-                    ), navOptions
-                )
-            }
-        }
         binding.btnAddFav.onClick {
             val isFav = UserPrefs.isFav(PlayerQueue.value?.youtubeId)
             if (!isFav) {
@@ -250,11 +220,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         binding.btnPlayNext.onClick {
-            viewModel.onClickPlayNext(binding.viewPager.currentItem)
+            viewModel.playNext()
         }
 
         binding.btnPlayPrevious.onClick {
-            viewModel.onClickPlayPrevious(binding.viewPager.currentItem)
+            viewModel.playPrevious()
         }
 
         binding.btnShowQueueFull.onClick {
@@ -270,7 +240,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
 
         binding.lockScreenView.doOnSlideComplete {
-            playerVideosAdapter.notifyItemChanged(binding.viewPager.currentItem)
             lockScreen(false)
         }
 
@@ -283,41 +252,20 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private val TAG = "PlayerFragment_pager"
-    private fun setupViewPager() = with(binding.viewPager) {
-        adapter = playerVideosAdapter
-        doOnPageSelected { position, fromUser ->
-            Log.d(TAG, "page $position selected fromUser:$fromUser ")
-            postDelayed(300) {
-                if (position != viewModel.currentPage) {
-                    adjustPlayerPosition()
-                    // Do not wary about performance
-                    // Only 1 or 2 will be refreshed
-                    playerVideosAdapter.notifyDataSetChanged()
-                    viewModel.onPageSelected(position, fromUser)
-                }
-            }
-            adjustPlayControlsForItemAt(position)
-        }
-    }
 
     private fun adjustPlayControlsForItemAt(position: Int) {
         val alpha = if (viewModel.isAdsItem(position)) 0.0f else 1.0f
         binding.playbackControlsView.alpha = alpha
         binding.seekBarView.alpha = alpha
-        binding.favView.alpha = alpha
         binding.btnLockScreen.alpha = alpha
     }
 
     private fun observeViewModel() {
         observe(viewModel.queue) { items ->
-            val diffCallback = SongsDiffUtil(playerVideosAdapter.dataItems, items)
-            playerVideosAdapter.submitList(items, diffCallback)
-            movePagerToCurrentPlayingTrack()
         }
         observe(PlayerQueue) { video ->
             onVideoChanged(video)
             binding.lockScreenView.setCurrentTrack(video)
-            movePagerToCurrentPlayingTrack()
             adjustPlayerPosition()
         }
         observe(PlaybackDuration) { elapsedSeconds ->
@@ -333,10 +281,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 }
             }
         }
-        observeEvent(viewModel.goToPosition) { position ->
-            Log.d(TAG_PAGER, "SHow ads at position: $position")
-            binding.viewPager.setCurrentItem(position, true)
-        }
+
         observe(viewModel.isLiked) { isLiked ->
             if (isLiked) {
                 binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
@@ -402,7 +347,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun lockScreen(lock: Boolean) {
-        binding.mainView.isVisible = !lock
+        //binding.mainView.isVisible = !lock
         mainActivity.isLocked = lock
         binding.lockScreenView.toggle(lock)
         if (lock) {
@@ -414,16 +359,17 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
-    private fun movePagerToCurrentPlayingTrack(smoothScroll: Boolean = false) {
-        with(binding.viewPager) {
-            post {
-                setCurrentItem(viewModel.currentTrackPosition(), smoothScroll)
-            }
-        }
-    }
 
     private fun onVideoChanged(track: MusicTrack) {
         binding.miniPlayerView.onTrackChanged(track)
+
+        binding.txtTitle.ellipsize = null
+        binding.txtTitle.text = track.title
+        lifecycleScope.launch {
+            delay(500)
+            binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
+        }
+
 
         if (UserPrefs.isFav(track.youtubeId)) {
             binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
@@ -432,7 +378,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             binding.btnAddFav.setImageResource(R.drawable.ic_heart_light)
             binding.btnAddFav.tint(R.color.colorWhite)
         }
-        loadAndBlurImage(track)
         configureSeekBar(track)
     }
 
@@ -467,20 +412,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         })
     }
 
-    private fun loadAndBlurImage(video: MusicTrack) {
-        lifecycleScope.launch {
-            try {
-                val bitmap = binding.imgBlured.getBitmap(video.imgUrlDefault, 500) ?: return@launch
-                binding.imgBlured.clearAnimation()
-                binding.imgBlured.updateBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (error: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(error)
-            }
-        }
-    }
-
     private fun updateCurrentTrackTime(elapsedSeconds: Int) {
         val minutes = elapsedSeconds / 60
         val seconds = elapsedSeconds % 60
@@ -496,12 +427,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 endId: Int,
                 progress: Float
             ) {
-                /*Log.d(
-                    TAG,
-                    "onTransitionChange: $progress, (start ${stateName(startId)} end ${
-                        stateName(endId)
-                    }) (${binding.motionLayout.currentState})"
-                )*/
                 if (endId != R.id.hidden && startId != R.id.hidden) {
                     (activity as? MainActivity)?.binding?.motionLayout?.progress = progress
                     adjustPlayerPosition()
@@ -528,27 +453,26 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
             }
         })
+
+        binding.newPager.addTransitionListener(object : TransitionAdapter() {
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                if (currentId == R.id.swipedRight) {
+                    viewModel.playPrevious()
+                } else if (currentId == R.id.swipedLeft) {
+                    viewModel.playNext()
+                }
+            }
+        })
     }
 
     //endregion
 
     fun adjustPlayerPosition() {
-        //Log.d(TAG, "adjustPlayerPosition: ${currentState()}")
         val playerView = reusedPlayerView ?: return
-        if (binding.motionLayout.progress <= 0.4f || isCollapsed()) {
-            //Log.d(TAG, "will attach miniPlayerView")
-            binding.miniPlayerView.post {
-                binding.miniPlayerView.acquirePlayer(playerView)
-            }
-        } else {
-            //Log.d(TAG, "will attach pager, progress = ${binding.motionLayout.progress}")
-            val currentItem = binding.viewPager.currentItem
-            val holder = (binding.viewPager[0] as? RecyclerView)
-                ?.findViewHolderForAdapterPosition(currentItem)
-            if (holder is PlayerVideosDelegate.ViewHolder) {
-                holder.showPlayerIfNeeded(playerView)
-            }
-        }
+        if (playerView.parent == binding.cardPager) return
+        val oldParent = playerView.parent as? ViewGroup
+        oldParent?.removeView(playerView)
+        binding.cardPager.addView(playerView, 0)
     }
 
     private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
@@ -566,7 +490,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun checkToShowTipBatterySaver() {
-        val parent = binding.mainView ?: return
+        // it was mainView
+        val parent = binding.root ?: return
         parent.post {
             if (parent.windowToken != null) {
                 if (!UserPrefs.hasSeenToolTipBatterySaver() && mainActivity.isBottomPanelExpanded()) {
@@ -591,7 +516,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
 
     fun onExitFullScreen() {
-        playerVideosAdapter.notifyDataSetChanged()
+
     }
 
 

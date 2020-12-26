@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
 import androidx.core.view.isGone
@@ -32,7 +31,6 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
 import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
@@ -239,11 +237,6 @@ class MainActivity : BaseActivity() {
                 expandBottomPanel()
                 playerFragment.openBatterySaverMode()
                 openBatterySaver = false
-            }
-        } else if (isServiceRunning(MusicPlayerService::class.java)) {
-            collapseBottomPanel()
-            handler.postDelayed(300) {
-                playerFragment.adjustPlayerPosition()
             }
         }
 
