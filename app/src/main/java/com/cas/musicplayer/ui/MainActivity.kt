@@ -6,22 +6,18 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-import androidx.transition.TransitionManager
 import com.adcolony.sdk.AdColony
 import com.afollestad.materialdialogs.MaterialDialog
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.extensions.isDarkMode
-import com.cas.common.extensions.observe
 import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -40,7 +36,6 @@ import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 const val TAG_MAIN = "MainActivity_check"
 
@@ -58,9 +53,6 @@ class MainActivity : BaseActivity() {
 
     private var isFromService = false
     private var openBatterySaver = false
-
-    private val bottomView: ViewGroup by lazy { binding.bottomView }
-    private val txtConnectivityState: TextView by lazy { binding.txtConnectivityState }
 
     private lateinit var playerFragment: PlayerFragment
     private var exitDialog: MaterialDialog? = null
@@ -135,8 +127,6 @@ class MainActivity : BaseActivity() {
             true
         }
 
-        observeViewModel()
-
         if (savedInstanceState == null) {
             viewModel.checkToRateApp()
         }
@@ -149,26 +139,6 @@ class MainActivity : BaseActivity() {
             }
         }
         viewModel.checkStartFromShortcut(intent.data?.toString())
-    }
-
-    private fun observeViewModel() {
-        observe(viewModel.connectivityState) { state ->
-            lifecycleScope.launch {
-                val delay = if (state.isConnected) 500L else 0
-                delay(delay)
-                TransitionManager.beginDelayedTransition(bottomView)
-                txtConnectivityState.isGone = state.isConnected
-                playerFragment.onConnectivityStateChanged(state)
-            }
-            if (state.isConnected) {
-                txtConnectivityState.setBackgroundColor(color(R.color.colorGreenState))
-                txtConnectivityState.setText(R.string.connection_back)
-            } else {
-                txtConnectivityState.setBackgroundColor(color(R.color.colorDarkNavigationView))
-                txtConnectivityState.setText(R.string.no_connection)
-            }
-            VideoEmplacementLiveData.forceUpdate()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

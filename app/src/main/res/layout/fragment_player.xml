@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cas.musicplayer.ui.player.SingleViewTouchableMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cas.musicplayer.ui.player.view.SingleViewTouchableMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/motionLayout"
@@ -10,20 +10,11 @@
     tools:context=".ui.player.PlayerFragment">
 
     <!-- Background of player-->
-    <FrameLayout
+    <View
         android:id="@+id/playerBgView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorBgPlayer">
-
-        <ImageView
-            android:id="@+id/imgBlured"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            android:visibility="visible" />
-    </FrameLayout>
+        android:background="@color/colorBgPlayer" />
 
     <!-- Expanded player -->
     <LinearLayout
@@ -289,28 +280,28 @@
     </LinearLayout>
 
     <!-- Mini player -->
-    <com.cas.musicplayer.ui.player.MiniPlayerView
+    <com.cas.musicplayer.ui.player.view.MiniPlayerView
         android:id="@+id/miniPlayerView"
         android:layout_width="0dp"
         android:layout_height="@dimen/minimized_player_height"
         android:background="@color/colorDarkNavigationView" />
 
-    <com.cas.musicplayer.ui.player.HorizontalMotion
+    <com.cas.musicplayer.ui.player.view.HorizontalMotionPager
         android:id="@+id/newPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutDescription="@xml/pager">
 
-        <com.cas.musicplayer.ui.player.InterceptAllEventsCard
+        <com.cas.musicplayer.ui.player.view.PreventTouchCard
             android:id="@+id/cardPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </com.cas.musicplayer.ui.player.HorizontalMotion>
+    </com.cas.musicplayer.ui.player.view.HorizontalMotionPager>
 
-    <com.cas.musicplayer.ui.player.LockScreenView
+    <com.cas.musicplayer.ui.player.view.LockScreenView
         android:id="@+id/lockScreenView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-</com.cas.musicplayer.ui.player.SingleViewTouchableMotionLayout>
+</com.cas.musicplayer.ui.player.view.SingleViewTouchableMotionLayout>

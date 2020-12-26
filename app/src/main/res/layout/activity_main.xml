@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottomView"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -54,41 +54,20 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <LinearLayout
-        android:id="@+id/bottomView"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="@dimen/bottom_nav_bar_height"
+        android:background="@color/colorDarkNavigationView"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+        app:itemIconTint="@color/navigation_menu_icon_color"
+        app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+        app:itemTextAppearanceInactive="@style/BottomNavigationView.Inactive"
+        app:itemTextColor="@color/navigation_menu_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/bottom_nav_bar_height"
-            android:background="@color/colorDarkNavigationView"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
-            app:itemIconTint="@color/navigation_menu_icon_color"
-            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
-            app:itemTextAppearanceInactive="@style/BottomNavigationView.Inactive"
-            app:itemTextColor="@color/navigation_menu_text_color"
-            app:menu="@menu/bottom_nav_menu" />
-
-        <TextView
-            android:id="@+id/txtConnectivityState"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@color/colorDarkNavigationView"
-            android:elevation="32dp"
-            android:gravity="center"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:text="@string/no_connection"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            android:visibility="gone" />
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
     <FrameLayout
         android:id="@+id/playerContainer"

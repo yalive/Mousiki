@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.player
+package com.cas.musicplayer.ui.player.view
 
 import android.content.BroadcastReceiver
 import android.content.Context

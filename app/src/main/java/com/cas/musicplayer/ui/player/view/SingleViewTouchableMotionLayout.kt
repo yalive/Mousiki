@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.player
+package com.cas.musicplayer.ui.player.view
 
 import android.content.Context
 import android.graphics.Rect
@@ -9,6 +9,7 @@ import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import com.cas.musicplayer.R
+import com.cas.musicplayer.ui.player.name
 import kotlin.math.abs
 
 
@@ -24,7 +25,8 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     private val viewRect = Rect()
     private var touchStarted = false
 
-    private var mIsScrolling = false
+    var mIsScrolling = false
+        private set
     private val mTouchSlop: Int = android.view.ViewConfiguration.get(context).scaledTouchSlop
     private var lastY = 0f
     private var lastX = 0f
@@ -63,24 +65,23 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
         })
     }
 
-    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        Log.d(
+            TAG_MOTION,
+            "onInterceptTouchEvent **Main**: ${event.name()}, progress = ${progress}"
+        )
+
         /*
          * This method JUST determines whether we want to intercept the motion.
          * If we return true, onTouchEvent will be called and we do the actual
          * scrolling there.
          */
-        if (ev.actionMasked == MotionEvent.ACTION_DOWN) {
-            lastY = ev.y
-            lastX = ev.x
+        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+            lastY = event.y
+            lastX = event.x
         }
 
-        val yDiffLog: Int = abs(ev.y - lastY).toInt()
-        val xDiffLog: Int = abs(ev.x - lastX).toInt()
-        Log.d(
-            TAG_HORZ,
-            "Intercept Parent, ${ev.name()}, mIsScrolling:$mIsScrolling,xd=$xDiffLog, yd=$yDiffLog"
-        )
-        return when (ev.actionMasked) {
+        return when (event.actionMasked) {
             // Always handle the case of the touch gesture being complete.
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                 // Release the scroll.
@@ -91,20 +92,31 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
                 if (mIsScrolling) {
                     // We're currently scrolling, so yes, intercept the
                     // touch event!
-                    Log.d(TAG_HORZ, "Yeeeees already scrolllll")
                     true
                 } else {
                     // If the user has dragged her finger vertically more than
                     // the touch slop, start the scroll
-                    val yDiff: Int = abs(ev.y - lastY).toInt()
-                    val xDiff: Int = abs(ev.x - lastX).toInt()
+                    val yDiff: Int = abs(event.y - lastY).toInt()
+                    val xDiff: Int = abs(event.x - lastX).toInt()
                     if (yDiff > mTouchSlop && yDiff > xDiff) {
-                        Log.d(TAG_HORZ, "Yeeeees scrolllll")
-                        // Start scrolling!
-                        mIsScrolling = true
-                        true
+
+                        if (progress > 0) {
+                            if ((event.y - lastY).toInt() > 0) {
+                                // Start scrolling!
+                                mIsScrolling = true
+                                true
+                            } else {
+                                // Do not start up because already expanded
+                                mIsScrolling = false
+                                false
+                            }
+                        } else {
+                            // Start scrolling!
+                            mIsScrolling = true
+                            true
+                        }
+
                     } else {
-                        Log.d(TAG_HORZ, "Noooooo  scrolllll")
                         false
                     }
                 }
@@ -118,20 +130,34 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG_HORZ, "onTouchEvent Parent: ${event.name()}")
-        if (event.actionMasked == MotionEvent.ACTION_CANCEL || event.actionMasked == MotionEvent.ACTION_UP) {
+        Log.d(
+            TAG_MOTION,
+            "onTouchEvent Main: ${event.name()}, progress = ${progress}"
+        )
+
+        if (event.actionMasked == MotionEvent.ACTION_CANCEL
+            || event.actionMasked == MotionEvent.ACTION_UP
+            || event.actionMasked == MotionEvent.ACTION_POINTER_UP
+        ) {
             mIsScrolling = false
+        }
+
+        if (event.action == MotionEvent.ACTION_POINTER_UP) {
+            transitionToEnd()
         }
 
         if (startState == R.id.collapsed && endState == R.id.expanded) {
             // Consume touch on the whole screen
             val yDiff: Int = abs(event.y - lastY).toInt()
             val xDiff: Int = abs(event.x - lastX).toInt()
+            Log.d("Whole_screen", "onTouchEvent ${event.name()}: xDiff=$xDiff, yDiff=$yDiff")
+
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                return super.onTouchEvent(event)
+            }
             if (yDiff > mTouchSlop && yDiff > xDiff) {
-                Log.d(TAG_MOTION, "onTouchEvent ${event.name()}: handled")
                 return super.onTouchEvent(event)
             } else if (yDiff < xDiff) {
-                Log.d(TAG_MOTION, "onTouchEvent ${event.name()}: may be will not be handled")
                 return false
             }
         }
@@ -145,6 +171,11 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
                 return super.onTouchEvent(event)
             }
         }
+
+/*        if (progress > 0.5) {
+            return (super.onTouchEvent(event))
+        }*/
+
         if (!touchStarted) {
             viewToDetectTouch.getHitRect(viewRect)
             touchStarted = viewRect.contains(event.x.toInt(), event.y.toInt())
