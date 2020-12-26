@@ -84,6 +84,8 @@ class HorizontalMotionPager @JvmOverloads constructor(
                 TAG_HORZ,
                 "onTouchEvent pager blocked: ${event.name()}, progress = ${parentMotion.progress}"
             )
+            mIsScrolling = false
+            transitionToStart()
             return false
         } else {
             Log.d(

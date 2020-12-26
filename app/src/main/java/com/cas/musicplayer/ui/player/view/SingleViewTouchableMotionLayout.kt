@@ -147,6 +147,8 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
 
         if (event.action == MotionEvent.ACTION_POINTER_UP) {
             transitionToEnd()
+            // TODO: Return to be reviewed
+            return true
         }
 
         if (startState == R.id.collapsed && endState == R.id.expanded) {
