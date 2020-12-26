@@ -87,7 +87,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 mediaController?.registerCallback(mediaControllerCallback)
                 mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
                 reusedPlayerView = service.getPlayerView()
-                adjustPlayerPosition()
+                showPlayerView()
             }
         }
     }
@@ -131,14 +131,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun bindService() {
         val intent = Intent(requireContext(), MusicPlayerService::class.java)
         activity?.bindService(intent, serviceConnection, 0)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val serviceRunning = context?.isServiceRunning(MusicPlayerService::class.java) ?: false
-        if (serviceRunning) {
-            adjustPlayerPosition()
-        }
     }
 
     override fun onStop() {
@@ -251,20 +243,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private val TAG = "PlayerFragment_pager"
 
-    private fun adjustPlayControlsForItemAt(position: Int) {
-        val alpha = if (viewModel.isAdsItem(position)) 0.0f else 1.0f
-        binding.playbackControlsView.alpha = alpha
-        binding.seekBarView.alpha = alpha
-        binding.btnLockScreen.alpha = alpha
-    }
-
     private fun observeViewModel() {
         observe(viewModel.queue) { items ->
         }
         observe(PlayerQueue) { video ->
             onVideoChanged(video)
             binding.lockScreenView.setCurrentTrack(video)
-            adjustPlayerPosition()
         }
         observe(PlaybackDuration) { elapsedSeconds ->
             if (!seekingDuration) {
@@ -427,17 +411,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             ) {
                 if (endId != R.id.hidden && startId != R.id.hidden) {
                     (activity as? MainActivity)?.binding?.motionLayout?.progress = progress
-                    adjustPlayerPosition()
                 }
             }
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
                 if (currentId == R.id.expanded) {
                     (activity as? MainActivity)?.binding?.motionLayout?.progress = 1.0f
-                    adjustPlayerPosition()
                 } else if (currentId == R.id.collapsed) {
                     (activity as? MainActivity)?.binding?.motionLayout?.progress = 0.0f
-                    adjustPlayerPosition()
                 } else if (currentId == R.id.hidden) {
                     mediaController?.transportControls?.stop()
                 }
@@ -455,17 +436,16 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.newPager.addTransitionListener(object : TransitionAdapter() {
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
                 if (currentId == R.id.swipedRight) {
-                    viewModel.playPrevious()
+                    viewModel.swipeRight()
                 } else if (currentId == R.id.swipedLeft) {
-                    viewModel.playNext()
+                    viewModel.swipeLeft()
                 }
             }
         })
     }
 
     //endregion
-
-    fun adjustPlayerPosition() {
+    fun showPlayerView() {
         val playerView = reusedPlayerView ?: return
         if (playerView.parent == binding.cardPager) return
         val oldParent = playerView.parent as? ViewGroup
@@ -525,7 +505,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     fun collapsePlayer() {
         binding.motionLayout.transitionToState(R.id.collapsed)
-        adjustPlayerPosition()
     }
 
     fun isExpanded(): Boolean {

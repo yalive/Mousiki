@@ -3,9 +3,6 @@ package com.cas.musicplayer.ui.player
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
-import com.cas.common.event.Event
-import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.config.RemoteAppConfig
@@ -16,12 +13,10 @@ import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUse
 import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.common.ads.AdsItem
-import com.cas.musicplayer.ui.common.ads.loadMultipleNativeAdWithMediation
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.google.android.gms.ads.formats.UnifiedNativeAd
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -37,21 +32,11 @@ class PlayerViewModel @Inject constructor(
     private val appConfig: RemoteAppConfig
 ) : BaseViewModel() {
 
-    private val _goToPosition = MediatorLiveData<Event<Int>>()
-    val goToPosition: LiveData<Event<Int>> = _goToPosition
-
-
     private val _isLiked = MediatorLiveData<Boolean>()
     val isLiked: LiveData<Boolean> = _isLiked
 
-    private val _currentVideo = MediatorLiveData<DisplayedVideoItem>()
-    val currentVideo: LiveData<DisplayedVideoItem> = _currentVideo
-
     private val _queue = MediatorLiveData<List<DisplayableItem>>()
     val queue: LiveData<List<DisplayableItem>> = _queue
-
-    var currentPage = -1
-        private set
 
     private val nativeAds = mutableListOf<UnifiedNativeAd>()
     private val queueObserver = Observer<List<MusicTrack>?> { newQueue ->
@@ -81,11 +66,11 @@ class PlayerViewModel @Inject constructor(
     fun bannerAdOn() = appConfig.bannerAdOn()
 
     fun prepareAds() {
-        viewModelScope.launch {
-            val ads = loadMultipleNativeAdWithMediation(3)
-            nativeAds.clear()
-            nativeAds.addAll(ads)
-        }
+        /* viewModelScope.launch {
+             val ads = loadMultipleNativeAdWithMediation(3)
+             nativeAds.clear()
+             nativeAds.addAll(ads)
+         }*/
     }
 
     override fun onCleared() {
@@ -93,39 +78,6 @@ class PlayerViewModel @Inject constructor(
         nativeAds.clear()
         OnChangeQueue.removeObserver(queueObserver)
         super.onCleared()
-    }
-
-    fun onPageSelected(position: Int, swipeByUser: Boolean) {
-        currentPage = position
-        val item = _queue.value?.getOrNull(position) ?: return
-        if (swipeByUser && item is DisplayedVideoItem) {
-            val index = PlayerQueue.queue.orEmpty().indexOf(item.track)
-            PlayerQueue.playTrackAt(index)
-        }
-    }
-
-    fun onClickPlayNext(currentPosition: Int) {
-        val nextItem = _queue.value?.getOrNull(currentPosition + 1)
-        if (nextItem is AdsItem) {
-            _goToPosition.value = (currentPosition + 1).asEvent()
-            return
-        }
-        PlayerQueue.playNextTrack()
-    }
-
-    fun onClickPlayPrevious(currentPosition: Int) {
-        val previousItem = _queue.value?.getOrNull(currentPosition - 1)
-        if (previousItem is AdsItem) {
-            _goToPosition.value = (currentPosition - 1).asEvent()
-            return
-        }
-        PlayerQueue.playPreviousTrack()
-    }
-
-    fun currentTrackPosition(): Int {
-        return _queue.value?.indexOfFirst {
-            it is DisplayedVideoItem && it.track.youtubeId == PlayerQueue.value?.youtubeId
-        } ?: -1
     }
 
     private fun getListWithAds(items: List<DisplayableItem>): List<DisplayableItem> {
@@ -152,10 +104,30 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun playNext() {
-        onClickPlayNext(currentTrackPosition())
+        PlayerQueue.playNextTrack()
     }
 
     fun playPrevious() {
-        onClickPlayPrevious(currentTrackPosition())
+        PlayerQueue.playPreviousTrack()
+    }
+
+    fun swipeRight() {
+        // Play previous
+        doOnSwipe(false)
+    }
+
+    fun swipeLeft() {
+        // Play next
+        doOnSwipe(true)
+    }
+
+    private fun doOnSwipe(next: Boolean) {
+        val indexCurrent = _queue.value?.indexOfFirst {
+            it is DisplayedVideoItem && it.track.youtubeId == PlayerQueue.value?.youtubeId
+        } ?: return
+        val targetIndex = if (next) indexCurrent + 1 else indexCurrent - 1
+        val previous = _queue.value?.getOrNull(targetIndex) as? DisplayedVideoItem
+        val track = previous?.track ?: return
+        PlayerQueue.playTrack(track, PlayerQueue.queue.orEmpty())
     }
 }
