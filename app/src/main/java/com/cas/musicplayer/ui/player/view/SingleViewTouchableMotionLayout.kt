@@ -135,17 +135,19 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(
             TAG_MOTION,
-            "onTouchEvent Main: ${event.name()}, progress = ${progress}"
+            "onTouchEvent Main: ${event.name()}, progress = ${progress},touchStarted=$touchStarted"
         )
 
         if (event.actionMasked == MotionEvent.ACTION_CANCEL
             || event.actionMasked == MotionEvent.ACTION_UP
             || event.actionMasked == MotionEvent.ACTION_POINTER_UP
         ) {
+            touchStarted = false
             mIsScrolling = false
         }
 
         if (event.action == MotionEvent.ACTION_POINTER_UP) {
+            touchStarted = false
             transitionToEnd()
             // TODO: Return to be reviewed
             return true
