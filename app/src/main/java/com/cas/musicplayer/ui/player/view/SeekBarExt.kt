@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.player
+package com.cas.musicplayer.ui.player.view
 
 import android.os.Build
 import android.widget.SeekBar

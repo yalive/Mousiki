@@ -10,7 +10,7 @@
             <KeyPosition
                 motion:framePosition="20"
                 motion:keyPositionType="deltaRelative"
-                motion:motionTarget="@id/bottomView"
+                motion:motionTarget="@id/bottomNavView"
                 motion:percentY="0.65" />
         </KeyFrameSet>
     </Transition>
@@ -25,7 +25,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
-            android:id="@+id/bottomView"
+            android:id="@+id/bottomNavView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
     </ConstraintSet>
     <ConstraintSet android:id="@+id/bottomBarVisible">
         <Constraint
-            android:id="@+id/bottomView"
+            android:id="@+id/bottomNavView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             motion:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +51,7 @@
             android:id="@+id/coordinator"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            motion:layout_constraintBottom_toTopOf="@+id/bottomView"
+            motion:layout_constraintBottom_toTopOf="@+id/bottomNavView"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />

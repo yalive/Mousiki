@@ -17,7 +17,6 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -27,8 +26,6 @@ import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
-import com.cas.common.connectivity.ConnectionModel
-import com.cas.common.dpToPixel
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
@@ -44,6 +41,7 @@ import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.player.queue.QueueFragment
+import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
 import com.google.android.gms.ads.AdRequest
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -565,16 +563,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
-    fun onConnectivityStateChanged(state: ConnectionModel) {
-        val bottomMargin = if (state.isConnected) MINI_PLAYER_SIZE_DP
-        else MINI_PLAYER_SIZE_DP + INTERNET_STATUS_HEIGHT_DP
-        val constraintSet = binding.motionLayout.getConstraintSet(R.id.collapsed)
-        constraintSet.setMargin(R.id.miniPlayerView, ConstraintSet.BOTTOM, dpToPixel(bottomMargin))
-    }
 
     companion object {
         private const val RQ_CODE_WRITE_SETTINGS = 101
-        private const val MINI_PLAYER_SIZE_DP = 56
-        private const val INTERNET_STATUS_HEIGHT_DP = 20
     }
 }

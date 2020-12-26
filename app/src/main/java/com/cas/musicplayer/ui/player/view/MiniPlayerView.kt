@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.player
+package com.cas.musicplayer.ui.player.view
 
 import android.content.Context
 import android.support.v4.media.session.PlaybackStateCompat
