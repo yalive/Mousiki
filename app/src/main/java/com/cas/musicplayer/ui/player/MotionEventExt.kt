@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.player
 
 import android.view.MotionEvent
+import kotlin.math.abs
 
 fun MotionEvent?.name(): String {
     return when (this?.actionMasked) {
@@ -13,3 +14,6 @@ fun MotionEvent?.name(): String {
         else -> "Unknown"
     }
 }
+
+fun MotionEvent.yDistanceTo(yCoordinate: Float) = abs(y - yCoordinate)
+fun MotionEvent.xDistanceTo(xCoordinate: Float) = abs(x - xCoordinate)

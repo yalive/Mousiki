@@ -10,6 +10,8 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.player.name
+import com.cas.musicplayer.ui.player.xDistanceTo
+import com.cas.musicplayer.ui.player.yDistanceTo
 import kotlin.math.abs
 
 
@@ -27,6 +29,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
 
     var mIsScrolling = false
         private set
+
     private val mTouchSlop: Int = android.view.ViewConfiguration.get(context).scaledTouchSlop
     private var lastY = 0f
     private var lastX = 0f
@@ -148,11 +151,9 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
 
         if (startState == R.id.collapsed && endState == R.id.expanded) {
             // Consume touch on the whole screen
-            val yDiff: Int = abs(event.y - lastY).toInt()
-            val xDiff: Int = abs(event.x - lastX).toInt()
-            Log.d("Whole_screen", "onTouchEvent ${event.name()}: xDiff=$xDiff, yDiff=$yDiff")
-
-            if (event.action == MotionEvent.ACTION_DOWN) {
+            val yDiff = event.yDistanceTo(lastY).toInt()
+            val xDiff = event.xDistanceTo(lastX).toInt()
+            if (event.action == MotionEvent.ACTION_DOWN && progress > 0f) {
                 return super.onTouchEvent(event)
             }
             if (yDiff > mTouchSlop && yDiff > xDiff) {
@@ -162,9 +163,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
             }
         }
 
-        val yDiff: Int = abs(event.y - lastY).toInt()
-        val xDiff: Int = abs(event.x - lastX).toInt()
-        if (xDiff > yDiff) return false
+        if (event.xDistanceTo(lastX) > event.yDistanceTo(lastY)) return false
         when (event.actionMasked) {
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 touchStarted = false
@@ -172,14 +171,13 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
             }
         }
 
-/*        if (progress > 0.5) {
-            return (super.onTouchEvent(event))
-        }*/
-
         if (!touchStarted) {
             viewToDetectTouch.getHitRect(viewRect)
             touchStarted = viewRect.contains(event.x.toInt(), event.y.toInt())
         }
         return (touchStarted && super.onTouchEvent(event))
     }
+
+/*    private fun isExpanded() = currentState == R.id.expanded
+    private fun isCollapsed() = currentState == R.id.collapsed*/
 }
