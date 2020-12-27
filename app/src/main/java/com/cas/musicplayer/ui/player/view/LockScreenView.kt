@@ -32,7 +32,10 @@ import java.util.*
  * Created by Y.Abdelhadi on 4/28/20.
  ***************************************
  */
-class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener, CoroutineScope {
+class LockScreenView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), SlideToActView.OnSlideCompleteListener,
+    CoroutineScope {
 
     private val mainJob = Job()
     override val coroutineContext = mainJob + Dispatchers.Main
@@ -58,19 +61,7 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     }
 
-    constructor(context: Context) : super(context) {
-        init(null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    init {
         init(attrs)
     }
 

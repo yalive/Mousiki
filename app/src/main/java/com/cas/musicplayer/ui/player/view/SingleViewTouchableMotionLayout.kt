@@ -155,7 +155,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
             ) {
                 Log.d(TAG_MOTION, "on click")
                 clicked = true
-                transitionToEnd()
+                transitionToState(R.id.expanded)
             }
             touchStarted = false
             mIsScrolling = false

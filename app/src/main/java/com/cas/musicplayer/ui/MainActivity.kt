@@ -25,7 +25,6 @@ import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
-import com.cas.musicplayer.player.EmplacementFullScreen
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
@@ -42,10 +41,6 @@ const val TAG_MAIN = "MainActivity_check"
 class MainActivity : BaseActivity() {
 
     var isLocked = false
-        set(value) {
-            field = value
-            onLockChanged(value)
-        }
 
     val adsViewModel by viewModel { injector.adsViewModel }
     private val viewModel by viewModel { injector.mainViewModel }
@@ -200,11 +195,8 @@ class MainActivity : BaseActivity() {
         }
         if (isFromService) {
             isFromService = false
-
             expandBottomPanel()
-
             if (openBatterySaver) {
-                expandBottomPanel()
                 playerFragment.openBatterySaverMode()
                 openBatterySaver = false
             }
@@ -300,20 +292,8 @@ class MainActivity : BaseActivity() {
             playerFragment.onQueueClosed()
             return
         }
-        if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
-            showStatusBar()
-            switchToPortrait()
-            VideoEmplacementLiveData.inApp()
-            playerFragment.onExitFullScreen()
-            return
-        }
 
-        if (isBottomPanelExpanded() && !isLocked) {
-            collapseBottomPanel()
-            return
-        } else if (isLocked) {
-            return
-        }
+        if (playerFragment.handleBackPress()) return
 
         if (navController.isHome()) {
             exitDialog = showExitDialog()
@@ -344,10 +324,6 @@ class MainActivity : BaseActivity() {
     fun isBottomPanelExpanded(): Boolean {
         if (playerFragment.view == null) return false
         return playerFragment.isExpanded()
-    }
-
-    private fun onLockChanged(locked: Boolean) {
-        //slidingPaneLayout.isTouchEnabled = !locked
     }
 
     private fun handleDynamicLinks() {

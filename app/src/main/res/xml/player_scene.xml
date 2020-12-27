@@ -181,6 +181,12 @@
                 android:alpha="1"
                 android:visibility="visible" />
         </Constraint>
+
+        <Constraint android:id="@id/lockScreenView">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/collapsed">
@@ -287,6 +293,12 @@
                 android:alpha="0"
                 android:visibility="invisible" />
         </Constraint>
+
+        <Constraint android:id="@id/lockScreenView">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/hidden">
@@ -390,6 +402,12 @@
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/lockScreenView">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
         </Constraint>
     </ConstraintSet>
 </MotionScene>
