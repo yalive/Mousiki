@@ -504,6 +504,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun collapsePlayer() {
+        binding.motionLayout.setTransition(R.id.collapsed, R.id.expanded)
         binding.motionLayout.transitionToState(R.id.collapsed)
     }
 

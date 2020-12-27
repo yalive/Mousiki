@@ -15,7 +15,7 @@ import com.cas.musicplayer.ui.player.yDistanceTo
 import kotlin.math.abs
 
 
-private const val TAG_MOTION = "SingleViewTouchableMoti"
+const val TAG_MOTION = "SingleViewTouchableMoti"
 
 class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -33,6 +33,8 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     private val mTouchSlop: Int = android.view.ViewConfiguration.get(context).scaledTouchSlop
     private var lastY = 0f
     private var lastX = 0f
+
+    private var lastDownTime: Long = 0
 
     init {
         setTransitionListener(object : TransitionAdapter() {
@@ -82,6 +84,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             lastY = event.y
             lastX = event.x
+            lastDownTime = System.currentTimeMillis()
         }
 
         return when (event.actionMasked) {
@@ -142,8 +145,21 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
             || event.actionMasked == MotionEvent.ACTION_UP
             || event.actionMasked == MotionEvent.ACTION_POINTER_UP
         ) {
+            var clicked = false
+            if (touchStarted && isAClick(
+                    lastX,
+                    event.x,
+                    lastY,
+                    event.y
+                ) && event.actionMasked == MotionEvent.ACTION_UP
+            ) {
+                Log.d(TAG_MOTION, "on click")
+                clicked = true
+                transitionToEnd()
+            }
             touchStarted = false
             mIsScrolling = false
+            if (clicked) return true
         }
 
         if (event.action == MotionEvent.ACTION_POINTER_UP) {
@@ -178,10 +194,24 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
         if (!touchStarted) {
             viewToDetectTouch.getHitRect(viewRect)
             touchStarted = viewRect.contains(event.x.toInt(), event.y.toInt())
+
+            if (touchStarted && event.action == MotionEvent.ACTION_UP) {
+                Log.d(TAG_MOTION, "on UP")
+            }
         }
         return (touchStarted && super.onTouchEvent(event))
     }
 
-/*    private fun isExpanded() = currentState == R.id.expanded
-    private fun isCollapsed() = currentState == R.id.collapsed*/
+    private fun isAClick(startX: Float?, endX: Float, startY: Float?, endY: Float): Boolean {
+        if (System.currentTimeMillis() - lastDownTime > 200) return false
+        if (startX == null || startY == null) return false
+        val differenceX = abs(startX - endX)
+        val differenceY = abs(startY - endY)
+        return !/* =5 */(differenceX > 200 || differenceY > 200)
+    }
+
+
+    private fun stateName() {
+
+    }
 }
