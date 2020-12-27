@@ -154,6 +154,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
+    fun handleBackPress(): Boolean {
+        if (binding.lockScreenView.isVisible) return true
+        if (isExpanded()) {
+            collapsePlayer()
+            return true
+        }
+        return false
+    }
+
     private fun setupView() {
         setupMotionLayout()
         binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
@@ -329,7 +338,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun lockScreen(lock: Boolean) {
-        //binding.mainView.isVisible = !lock
+        binding.lockScreenView.isVisible = lock
         mainActivity.isLocked = lock
         binding.lockScreenView.toggle(lock)
         if (lock) {
@@ -338,9 +347,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     binding.lockScreenView.acquirePlayer(playerView)
                 }
             }
+        } else {
+            showPlayerView()
         }
-    }
 
+        // Disable/Enable motion transition
+        binding.motionLayout.getTransition(R.id.mainTransition).setEnable(!lock)
+    }
 
     private fun onVideoChanged(track: MusicTrack) {
         binding.miniPlayerView.onTrackChanged(track)
@@ -493,18 +506,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
 
-    fun onExitFullScreen() {
-
-    }
-
-
     /// Public API ///
     fun expandPlayer() {
         binding.motionLayout.transitionToState(R.id.expanded)
     }
 
     fun collapsePlayer() {
-        binding.motionLayout.setTransition(R.id.collapsed, R.id.expanded)
+        //binding.motionLayout.setTransition(R.id.collapsed, R.id.expanded)
         binding.motionLayout.transitionToState(R.id.collapsed)
     }
 
