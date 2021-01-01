@@ -19,7 +19,6 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -126,6 +125,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         bindService()
         mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
         viewModel.prepareAds()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkLockScreen(binding.lockScreenView.isVisible)
     }
 
     private fun bindService() {
@@ -239,7 +243,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
 
         binding.lockScreenView.doOnSlideComplete {
-            lockScreen(false)
+            checkLockScreen(false)
         }
 
         binding.miniPlayerView.doOnClickPlayPause {
@@ -250,7 +254,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
-    private val TAG = "PlayerFragment_pager"
+    private val TAG = "player_view"
 
     private fun observeViewModel() {
         observe(viewModel.queue) { items ->
@@ -334,19 +338,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
             return
         }
-        lockScreen(true)
+        checkLockScreen(true)
     }
 
-    private fun lockScreen(lock: Boolean) {
+    private fun checkLockScreen(lock: Boolean) {
         binding.lockScreenView.isVisible = lock
         mainActivity.isLocked = lock
         binding.lockScreenView.toggle(lock)
         if (lock) {
-            playerService?.getPlayerView()?.let { playerView ->
-                binding.lockScreenView.postDelayed(300) {
-                    binding.lockScreenView.acquirePlayer(playerView)
-                }
-            }
+            binding.lockScreenView.acquirePlayer(playerService?.getPlayerView())
         } else {
             showPlayerView()
         }
@@ -423,15 +423,28 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 progress: Float
             ) {
                 if (endId != R.id.hidden && startId != R.id.hidden) {
+                    Log.d(
+                        TAG,
+                        "onTransitionChange: ${transitionInfo()}, and startId=${stateName(startId)}, and endId=${
+                            stateName(
+                                endId
+                            )
+                        }"
+                    )
                     (activity as? MainActivity)?.binding?.motionLayout?.progress = progress
                 }
             }
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                val parentMotionLayout = (activity as? MainActivity)?.binding?.motionLayout
+                Log.d(
+                    TAG,
+                    "onTransitionCompleted: ${transitionInfo()}, and currentId=${stateName(currentId)}"
+                )
                 if (currentId == R.id.expanded) {
-                    (activity as? MainActivity)?.binding?.motionLayout?.progress = 1.0f
+                    parentMotionLayout?.progress = 1.0f
                 } else if (currentId == R.id.collapsed) {
-                    (activity as? MainActivity)?.binding?.motionLayout?.progress = 0.0f
+                    parentMotionLayout?.progress = 0.0f
                 } else if (currentId == R.id.hidden) {
                     mediaController?.transportControls?.stop()
                 }
@@ -508,12 +521,23 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     /// Public API ///
     fun expandPlayer() {
-        binding.motionLayout.transitionToState(R.id.expanded)
+        Log.d(TAG, "expandPlayer, ${transitionInfo()}")
+        lifecycleScope.launchWhenResumed {
+            binding.motionLayout.setTransition(R.id.mainTransition)
+            binding.motionLayout.progress = 1f
+            binding.motionLayout.transitionToState(R.id.expanded)
+
+            // Make sure bottom bar is visible
+            ensureBottomNavBarHidden()
+        }
     }
 
     fun collapsePlayer() {
-        //binding.motionLayout.setTransition(R.id.collapsed, R.id.expanded)
-        binding.motionLayout.transitionToState(R.id.collapsed)
+        lifecycleScope.launchWhenResumed {
+            Log.d(TAG, "collapsePlayer, ${transitionInfo()}")
+            binding.motionLayout.setTransition(R.id.mainTransition)
+            binding.motionLayout.transitionToState(R.id.collapsed)
+        }
     }
 
     fun isExpanded(): Boolean {
@@ -529,18 +553,22 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun hidePlayer() {
+        Log.d(TAG, "hidePlayer, ${transitionInfo()}")
+        binding.motionLayout.setTransition(R.id.initialState)
+        binding.motionLayout.progress = 0f
         binding.motionLayout.transitionToState(R.id.hidden)
+
+        // Make sure bottom bar is visible
+        ensureBottomNavBarVisible()
     }
 
-    private fun currentState(): String {
-        return when (binding.motionLayout.currentState) {
-            R.id.collapsed -> "Collapsed: progress=${binding.motionLayout.progress}"
-            R.id.expanded -> "Expanded: progress=${binding.motionLayout.progress}"
-            R.id.hidden -> "Hidden: progress=${binding.motionLayout.progress}"
-            else -> "Unknown(${binding.motionLayout.currentState}): progress=${binding.motionLayout.progress}"
-        }
+    private fun ensureBottomNavBarVisible() {
+        (activity as? MainActivity)?.binding?.motionLayout?.progress = 0f
     }
 
+    private fun ensureBottomNavBarHidden() {
+        (activity as? MainActivity)?.binding?.motionLayout?.progress = 1f
+    }
 
     private fun stateName(id: Int): String {
         return when (id) {
@@ -551,6 +579,17 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
+    private fun transitionInfo(): String {
+        return "State: (start,end, current) = (${stateName(binding.motionLayout.startState)},${
+            stateName(
+                binding.motionLayout.endState
+            )
+        },${
+            stateName(
+                binding.motionLayout.currentState
+            )
+        }) progress=${binding.motionLayout.progress}"
+    }
 
     companion object {
         private const val RQ_CODE_WRITE_SETTINGS = 101
