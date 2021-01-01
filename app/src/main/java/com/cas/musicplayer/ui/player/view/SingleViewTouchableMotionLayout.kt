@@ -16,6 +16,7 @@ import kotlin.math.abs
 
 
 const val TAG_MOTION = "SingleViewTouchableMoti"
+const val TAG_NEW = "new_tag"
 
 class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -71,6 +72,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        Log.d(TAG_NEW, "onInterceptTouchEvent parent: ${event.name()}")
         Log.d(
             TAG_MOTION,
             "onInterceptTouchEvent **Main**: ${event.name()}, progress = ${progress}"
@@ -136,9 +138,10 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        Log.d(TAG_NEW, "onTouchEvent parent: ${event.name()}")
         Log.d(
             TAG_MOTION,
-            "onTouchEvent Main: ${event.name()}, progress = ${progress},touchStarted=$touchStarted"
+            "onTouchEvent Main: ${event.name()}, progress = ${progress},touchStarted=$touchStarted, state:${stateName()}, start:${startStateName()}, end:${endStateName()}"
         )
 
         if (event.actionMasked == MotionEvent.ACTION_CANCEL
@@ -169,7 +172,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
             return true
         }
 
-        if (startState == R.id.collapsed && endState == R.id.expanded) {
+        if ((startState == R.id.collapsed && endState == R.id.expanded) || currentState == R.id.expanded) {
             // Consume touch on the whole screen
             val yDiff = event.yDistanceTo(lastY).toInt()
             val xDiff = event.xDistanceTo(lastX).toInt()
@@ -211,7 +214,30 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     }
 
 
-    private fun stateName() {
+    private fun stateName(): String {
+        return when (currentState) {
+            R.id.collapsed -> "Collapsed"
+            R.id.expanded -> "Expanded"
+            R.id.hidden -> "Hidden"
+            else -> "Unknown"
+        }
+    }
 
+    private fun startStateName(): String {
+        return when (startState) {
+            R.id.collapsed -> "Collapsed"
+            R.id.expanded -> "Expanded"
+            R.id.hidden -> "Hidden"
+            else -> "Unknown"
+        }
+    }
+
+    private fun endStateName(): String {
+        return when (endState) {
+            R.id.collapsed -> "Collapsed"
+            R.id.expanded -> "Expanded"
+            R.id.hidden -> "Hidden"
+            else -> "Unknown"
+        }
     }
 }
