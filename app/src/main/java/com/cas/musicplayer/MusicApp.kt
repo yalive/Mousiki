@@ -9,9 +9,13 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
+import com.cas.musicplayer.ui.common.ads.AdsManager
 import com.cas.musicplayer.utils.UserPrefs
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 
 /**
@@ -20,6 +24,8 @@ import com.google.android.gms.ads.MobileAds
  **********************************
  */
 class MusicApp : Application(), ComponentProvider {
+
+    val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private var _isInForeground = false
     val isInForeground: Boolean
@@ -51,6 +57,7 @@ class MusicApp : Application(), ComponentProvider {
                 _isInForeground = false
             }
         })
+        AdsManager.init(applicationScope)
     }
 
     companion object {
