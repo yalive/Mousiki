@@ -137,6 +137,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (binding.lockScreenView.isVisible) {
             checkLockScreen(true)
         }
+
+        // Util when service is killed and fragment is resumed after that.
+        // Need to check if service is running
+        if (!requireContext().isServiceRunning(MusicPlayerService::class.java)) {
+            hidePlayer()
+        }
     }
 
     override fun onPause() {
