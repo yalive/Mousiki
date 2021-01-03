@@ -13,6 +13,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.media.session.MediaButtonReceiver
 import com.cas.common.extensions.doOnExtrasTrue
+import com.cas.common.extensions.dumpData
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.AppComponent
@@ -33,6 +35,7 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
 import com.cas.musicplayer.player.extensions.musicTrack
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -70,6 +73,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG_SERVICE, "onStartCommand: ${intent?.dumpData()}")
         if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
             handleLastSessionSysMediaButton()
         }
@@ -136,14 +140,17 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         super.onCreate()
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
+                Log.d(TAG_SERVICE, "onPlay callback")
                 youtubePlayerManager.play()
             }
 
             override fun onPause() {
+                Log.d(TAG_SERVICE, "onPause callback")
                 youtubePlayerManager.pause()
             }
 
             override fun onStop() {
+                Log.d(TAG_SERVICE, "onStop callback")
                 /*stopForeground(true)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     stopForeground(true);
@@ -153,24 +160,29 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onSeekTo(pos: Long) {
+                Log.d(TAG_SERVICE, "onSeekTo callback")
                 youtubePlayerManager.seekTo(pos.toFloat() / 1000)
             }
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
+                Log.d(TAG_SERVICE, "onPlayFromMediaId callback")
                 mediaId?.let {
                     youtubePlayerManager.loadVideo(mediaId, 0f)
                 }
             }
 
             override fun onSkipToNext() {
+                Log.d(TAG_SERVICE, "onSkipToNext callback")
                 PlayerQueue.playNextTrack()
             }
 
             override fun onSkipToPrevious() {
+                Log.d(TAG_SERVICE, "onSkipToPrevious callback")
                 PlayerQueue.playPreviousTrack()
             }
 
             override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
+                Log.d(TAG_SERVICE, "onCommand callback")
                 if (command == CustomCommand.ENABLE_NOTIFICATION_ACTIONS) {
                     youtubePlayerManager.onScreenUnlocked()
                 } else if (command == CustomCommand.DISABLE_NOTIFICATION_ACTIONS) {
@@ -179,6 +191,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
+                Log.d(TAG_SERVICE, "onCustomAction callback")
                 val metadata: MediaMetadataCompat = mediaSession.controller.metadata ?: return
                 if (action == CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE) {
                     lifecycleScope.launch {

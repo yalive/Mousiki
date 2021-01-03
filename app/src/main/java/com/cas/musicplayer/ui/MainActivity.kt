@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
@@ -16,9 +17,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.adcolony.sdk.AdColony
 import com.afollestad.materialdialogs.MaterialDialog
-import com.cas.common.extensions.fromDynamicLink
-import com.cas.common.extensions.isDarkMode
-import com.cas.common.extensions.observeEvent
+import com.cas.common.extensions.*
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
@@ -28,6 +27,7 @@ import com.cas.musicplayer.domain.model.toYoutubeDuration
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -46,9 +46,6 @@ class MainActivity : BaseActivity() {
     private val viewModel by viewModel { injector.mainViewModel }
     private lateinit var navController: NavController
 
-    private var isFromService = false
-    private var openBatterySaver = false
-
     private lateinit var playerFragment: PlayerFragment
     private var exitDialog: MaterialDialog? = null
 
@@ -57,6 +54,7 @@ class MainActivity : BaseActivity() {
     private var dialogDrawOverApps: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG_SERVICE, "onCreate: activity, intent=${intent.dumpData()}, tostr=$intent")
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         initMediationSDK()
@@ -184,42 +182,39 @@ class MainActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        isFromService = intent?.getBooleanExtra(EXTRAS_FROM_PLAYER_SERVICE, false) ?: false
-        openBatterySaver = intent?.getBooleanExtra(EXTRAS_OPEN_BATTERY_SAVER_MODE, false) ?: false
+        setIntent(intent)
+        Log.d(TAG_SERVICE, "onNewIntent: ${intent?.dumpData()}")
     }
 
     override fun onResume() {
         super.onResume()
-        if (!isFromService) {
-            isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAYER_SERVICE, false)
-        }
-        if (isFromService) {
-            isFromService = false
+        Log.d(TAG_SERVICE, "onResume: from service:${intent.bool(EXTRAS_FROM_PLAYER_SERVICE)}")
+        if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
             expandBottomPanel()
-            if (openBatterySaver) {
+            if (intent.bool(EXTRAS_OPEN_BATTERY_SAVER_MODE)) {
                 playerFragment.openBatterySaverMode()
-                openBatterySaver = false
             }
         }
-
         ViewCompat.requestApplyInsets(binding.coordinator)
-        if (canDrawOverApps()) {
-            handleDynamicLinks()
-        }
-
+        handleDynamicLinks()
         VideoEmplacementLiveData.inApp()
-    }
 
+        // Clean intent
+        intent = intent.apply {
+            putExtra(EXTRAS_FROM_PLAYER_SERVICE, false)
+            putExtra(EXTRAS_OPEN_BATTERY_SAVER_MODE, false)
+        }
+    }
 
     override fun onPause() {
         super.onPause()
-        // Save current state
-        viewModel.lastVideoEmplacement = VideoEmplacementLiveData.value
+        Log.d(TAG_SERVICE, "onPause ")
         // Movable video
         VideoEmplacementLiveData.out()
     }
 
     override fun onDestroy() {
+        Log.d(TAG_SERVICE, "onDestroy: activity")
         exitDialog?.dismiss()
         dialogDrawOverApps?.dismiss()
         super.onDestroy()
@@ -231,32 +226,6 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.playerContainer, playerFragment)
             .commit()
-
-        /* slidingPaneLayout.addPanelSlideListener(object :
-             SlidingUpPanelLayout.SimplePanelSlideListener() {
-             override fun onPanelSlide(panel: View, slideOffset: Float) {
-                 DragBottomPanelLiveData.value = DragPanelInfo(panel.y, slideOffset)
-             }
-
-             override fun onPanelStateChanged(
-                 panel: View,
-                 previousState: SlidingUpPanelLayout.PanelState,
-                 newState: SlidingUpPanelLayout.PanelState?
-             ) {
-                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                     window.statusBarColor = Color.TRANSPARENT
-                     darkStatusBar()
-                     hideBottomNavBar()
-                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                     adjustStatusBarWhenPanelCollapsed()
-                     binding.bottomNavView.isVisible =
-                         isBottomBarVisibleFor(navController.currentDestination!!.id)
-                 } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
-                     binding.bottomNavView.isVisible =
-                         isBottomBarVisibleFor(navController.currentDestination!!.id)
-                 }
-             }
-         })*/
     }
 
     private fun adjustStatusBarWhenPanelCollapsed() {
@@ -327,6 +296,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleDynamicLinks() {
+        if (!canDrawOverApps()) return
         Firebase.dynamicLinks
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
@@ -377,6 +347,11 @@ class MainActivity : BaseActivity() {
             "appee158214620447b7ba",
             "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
         )
+    }
+
+    fun wasLaunchedFromRecent(): Boolean {
+        val flags: Int = intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
+        return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
     }
 
     companion object {
