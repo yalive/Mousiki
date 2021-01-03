@@ -20,6 +20,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import kotlinx.android.synthetic.main.fragment_search_youtube.*
 import kotlinx.coroutines.delay
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
+
 class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
 
     public override val viewModel by viewModel { injector.searchYoutubeViewModel }
@@ -45,12 +47,12 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
                 progressBar.visible()
                 viewModel.search(it)
             }
-            return false
+            return true
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
             viewModel.getSuggestions(newText)
-            return false
+            return true
         }
     }
     private var searchSuggestionsAdapter = SearchSuggestionsAdapter(
@@ -86,6 +88,10 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                if ((activity as? MainActivity)?.isBottomPanelExpanded() == true) {
+                    (activity as? MainActivity)?.collapseBottomPanel()
+                    return false
+                }
                 view?.hideSoftKeyboard()
                 lifecycleScope.launch {
                     delay(200)
