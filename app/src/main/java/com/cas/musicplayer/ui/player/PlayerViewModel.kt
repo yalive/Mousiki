@@ -74,8 +74,6 @@ class PlayerViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        nativeAds.forEach { it.destroy() }
-        nativeAds.clear()
         OnChangeQueue.removeObserver(queueObserver)
         super.onCleared()
     }

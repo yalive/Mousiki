@@ -8,6 +8,7 @@ import android.graphics.PixelFormat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.isVisible
@@ -19,6 +20,7 @@ import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.player.services.YoutubePlayerManager
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.screenSize
@@ -212,14 +214,10 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
+        Log.d(TAG_SERVICE, "onVideoEmplacementChanged: $emplacement")
         radius = emplacement.radius
         this.videoEmplacement = emplacement
-        if (emplacement is EmplacementFullScreen) {
-            toggleFullScreenVideoPlayer(true)
-
-        } else {
-            toggleFullScreenVideoPlayer(false)
-        }
+        toggleFullScreenVideoPlayer(false)
 
         if (emplacement is EmplacementOut) {
             videoViewParams.flags =
@@ -239,7 +237,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
 
 
         this.alpha = 1f
-        if (emplacement !is EmplacementFullScreen && emplacement !is EmplacementOut) {
+        if (emplacement !is EmplacementOut) {
             hide()
         } else {
             acquirePlayer()

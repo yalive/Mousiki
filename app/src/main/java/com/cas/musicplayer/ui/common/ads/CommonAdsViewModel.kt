@@ -51,10 +51,4 @@ class CommonAdsViewModel @Inject constructor(
             trackOptionsAd = ad
         }
     }
-
-    override fun onCleared() {
-        trackOptionsAd?.destroy()
-        exitAd?.destroy()
-        super.onCleared()
-    }
 }
