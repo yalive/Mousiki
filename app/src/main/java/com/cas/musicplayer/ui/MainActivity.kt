@@ -36,7 +36,7 @@ import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
 import kotlinx.coroutines.delay
 
-const val TAG_MAIN = "MainActivity_check"
+private const val TAG_NAV = "MainActivity_nav"
 
 class MainActivity : BaseActivity() {
 
@@ -159,6 +159,9 @@ class MainActivity : BaseActivity() {
             R.id.libraryFragment -> {
                 binding.bottomNavView.menu[1].isChecked = true
             }
+            R.id.mainSearchFragment -> {
+                binding.bottomNavView.menu[2].isChecked = true
+            }
         }
     }
 
@@ -168,7 +171,9 @@ class MainActivity : BaseActivity() {
             return
         }
         binding.appbar.setExpanded(true, true)
-        navController.navigate(R.id.mainSearchFragment)
+        if (!navController.popBackStack(R.id.mainSearchFragment, false)) {
+            navController.navigate(R.id.mainSearchFragment)
+        }
     }
 
     private fun handleClickMenuHome() {
@@ -177,7 +182,9 @@ class MainActivity : BaseActivity() {
 
     private fun handleClickMenuLibrary() {
         if (navController.currentDestination?.id == R.id.libraryFragment) return
-        navController.navigate(R.id.libraryFragment)
+        if (!navController.popBackStack(R.id.libraryFragment, false)) {
+            navController.navigate(R.id.libraryFragment)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {

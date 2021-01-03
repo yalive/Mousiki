@@ -65,6 +65,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
             attachQueryListener()
             searchView?.hideSoftKeyboard()
             viewModel.search(suggestion.value)
+            searchView?.clearFocus()
         },
         onClickAutocomplete = { suggestion ->
             searchView?.setQuery(suggestion.value, false)
