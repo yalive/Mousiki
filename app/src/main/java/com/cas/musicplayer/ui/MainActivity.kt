@@ -30,6 +30,7 @@ import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
@@ -47,7 +48,7 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
 
     private lateinit var playerFragment: PlayerFragment
-    private var exitDialog: MaterialDialog? = null
+    private var exitDialog: BottomSheetDialog? = null
 
     val binding by viewBinding(ActivityMainBinding::inflate)
 

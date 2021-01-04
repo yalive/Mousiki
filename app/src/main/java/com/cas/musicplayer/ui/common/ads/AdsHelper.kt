@@ -6,6 +6,7 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.formats.NativeAdOptions
+import com.google.android.gms.ads.formats.NativeAdOptions.ADCHOICES_BOTTOM_RIGHT
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import kotlinx.coroutines.*
 import kotlin.coroutines.resume
@@ -41,6 +42,6 @@ private suspend fun loadSingleNativeAd() =
                     continuation.resume(null)
                 }
             }
-        }).withNativeAdOptions(NativeAdOptions.Builder().build()).build()
+        }).withNativeAdOptions(NativeAdOptions.Builder().setAdChoicesPlacement(ADCHOICES_BOTTOM_RIGHT).build()).build()
         adLoader.loadAd(AdRequest.Builder().build())
     }
