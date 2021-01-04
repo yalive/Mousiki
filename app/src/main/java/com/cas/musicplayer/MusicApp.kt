@@ -41,7 +41,7 @@ class MusicApp : Application(), ComponentProvider {
         super.onCreate()
         instance = this
         configurePreferredTheme()
-        if (AudienceNetworkAds.isInAdsProcess(this)) {
+        if (AudienceNetworkAds.isInitialized(this)) {
             return
         }
         MobileAds.initialize(this, getString(R.string.admob_app_id))
