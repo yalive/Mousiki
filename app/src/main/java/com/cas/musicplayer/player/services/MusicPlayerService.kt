@@ -68,6 +68,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private val binder = ServiceBinder()
 
     override fun onBind(intent: Intent?): IBinder? {
+        Log.d(TAG_SERVICE, "onBind: ${intent?.dumpData()}")
         super.onBind(intent)
         return binder
     }
@@ -93,6 +94,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
 
         intent?.getStringExtra(COMMAND_PLAY_TRACK)?.let {
+            Log.d(TAG_SERVICE, "onStartCommand: COMMAND_PLAY_TRACK")
             PlayerQueue.value?.let { currentTrack ->
                 metadataBuilder.musicTrack = currentTrack
                 mediaSession.setMetadata(metadataBuilder.build())
@@ -131,12 +133,19 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 stopPlayer(afterDuration = duration)
             }
         }
-        return super.onStartCommand(intent, flags, startId)
+
+        return START_STICKY
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        Log.d(TAG_SERVICE, "onTaskRemoved")
+        super.onTaskRemoved(rootIntent)
     }
 
     private lateinit var youtubePlayerManager: YoutubePlayerManager
 
     override fun onCreate() {
+        Log.d(TAG_SERVICE, "onCreate service")
         super.onCreate()
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
@@ -182,7 +191,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
-                Log.d(TAG_SERVICE, "onCommand callback")
+                Log.d(TAG_SERVICE, "onCommand callback with command=$command, and extras=${extras}")
                 if (command == CustomCommand.ENABLE_NOTIFICATION_ACTIONS) {
                     youtubePlayerManager.onScreenUnlocked()
                 } else if (command == CustomCommand.DISABLE_NOTIFICATION_ACTIONS) {
@@ -277,10 +286,9 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         favouriteReceiver.register()
 
         lifecycleScope.launch {
-            startForeground(
-                NOW_PLAYING_NOTIFICATION,
-                notificationBuilder.buildNotification(mediaSession.sessionToken)
-            )
+            val notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
+            notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
+            startForeground(NOW_PLAYING_NOTIFICATION, notification)
         }
     }
 
@@ -335,6 +343,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onDestroy() {
+        Log.d(TAG_SERVICE, "onDestroy: service")
         super.onDestroy()
         deleteNotificationReceiver.unregister()
         lockScreenReceiver.unregister()
@@ -408,6 +417,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                             notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
                         }
                         stopForeground(false)
+                        Log.d(TAG_SERVICE, "updateNotification: Stop foreground")
                     }
                 }
             }

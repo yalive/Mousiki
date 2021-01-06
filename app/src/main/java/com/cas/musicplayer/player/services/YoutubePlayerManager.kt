@@ -30,7 +30,7 @@ class YoutubePlayerManager(
     private var playbackstateBuilder = PlaybackStateCompat.Builder()
 
     override fun onReady(youTubePlayer: YouTubePlayer) {
-        Log.d(TAG_SERVICE, "onReady: YT player")
+        //Log.d(TAG_SERVICE, "onReady: YT player")
         this.youTubePlayer = youTubePlayer
         PlayerQueue.value?.let { currentTrack ->
             mediaController.transportControls?.playFromMediaId(
@@ -41,12 +41,12 @@ class YoutubePlayerManager(
     }
 
     override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
-        Log.d(TAG_SERVICE, "onError: YT player")
+        //Log.d(TAG_SERVICE, "onError: YT player")
         MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
     }
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
-        Log.d(TAG_SERVICE, "onStateChange: YT player (${state.name})")
+        //Log.d(TAG_SERVICE, "onStateChange: YT player (${state.name})")
         PlaybackLiveData.value = state
         if (state == PlayerConstants.PlayerState.ENDED) {
             mediaController.transportControls?.skipToNext()
@@ -106,17 +106,17 @@ class YoutubePlayerManager(
     }
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
-        Log.d(TAG_SERVICE, "loadVideo: YT player")
+        //Log.d(TAG_SERVICE, "loadVideo: YT player")
         youTubePlayer?.loadVideo(videoId, 0f)
     }
 
     override fun play() {
-        Log.d(TAG_SERVICE, "play: YT player")
+        //Log.d(TAG_SERVICE, "play: YT player")
         youTubePlayer?.play()
     }
 
     override fun pause() {
-        Log.d(TAG_SERVICE, "pause: YT player")
+        //Log.d(TAG_SERVICE, "pause: YT player")
         youTubePlayer?.pause()
     }
 
@@ -125,7 +125,7 @@ class YoutubePlayerManager(
     }
 
     override fun seekTo(time: Float) {
-        Log.d(TAG_SERVICE, "seekTo: YT player")
+        //Log.d(TAG_SERVICE, "seekTo: YT player")
         youTubePlayer?.seekTo(time)
     }
 

@@ -147,6 +147,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
                 batterySaverView.isVisible = false
 
                 if (bottomView.isActivated) {
+                    Log.d(TAG_SERVICE, "will call stop service from fling")
                     service.stopSelf()
                 } else if (batterySaverView.isActivated) {
                     // Save energy mode
@@ -214,7 +215,6 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
-        Log.d(TAG_SERVICE, "onVideoEmplacementChanged: $emplacement")
         radius = emplacement.radius
         this.videoEmplacement = emplacement
         toggleFullScreenVideoPlayer(false)

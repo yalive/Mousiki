@@ -17,7 +17,10 @@ import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.adcolony.sdk.AdColony
 import com.afollestad.materialdialogs.MaterialDialog
-import com.cas.common.extensions.*
+import com.cas.common.extensions.bool
+import com.cas.common.extensions.fromDynamicLink
+import com.cas.common.extensions.isDarkMode
+import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
@@ -54,7 +57,6 @@ class MainActivity : BaseActivity() {
     private var dialogDrawOverApps: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG_SERVICE, "onCreate: activity, intent=${intent.dumpData()}, tostr=$intent")
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         initMediationSDK()
@@ -190,12 +192,12 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
-        Log.d(TAG_SERVICE, "onNewIntent: ${intent?.dumpData()}")
+        //Log.d(TAG_SERVICE, "onNewIntent: ${intent?.dumpData()}")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG_SERVICE, "onResume: from service:${intent.bool(EXTRAS_FROM_PLAYER_SERVICE)}")
+        //Log.d(TAG_SERVICE, "onResume: from service:${intent.bool(EXTRAS_FROM_PLAYER_SERVICE)}")
         if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
             expandBottomPanel()
             if (intent.bool(EXTRAS_OPEN_BATTERY_SAVER_MODE)) {
@@ -215,7 +217,7 @@ class MainActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG_SERVICE, "onPause ")
+        //Log.d(TAG_SERVICE, "onPause ")
         // Movable video
         VideoEmplacementLiveData.out()
     }
