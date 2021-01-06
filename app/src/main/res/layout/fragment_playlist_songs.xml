@@ -105,6 +105,7 @@
         android:paddingBottom="@dimen/padding_for_player_space"
         android:paddingTop="20dp"
         android:visibility="visible"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

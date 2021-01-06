@@ -2,11 +2,8 @@ package com.cas.musicplayer.ui.home
 
 import android.view.View
 import android.widget.*
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.callbacks.onDismiss
-import com.afollestad.materialdialogs.customview.customView
+import com.cas.common.extensions.invisible
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.MainActivity
@@ -14,6 +11,7 @@ import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,27 +22,25 @@ import kotlinx.coroutines.launch
  ***************************************
  */
 
-fun MainActivity.showExitDialog(): MaterialDialog {
-    val dialog = MaterialDialog(this/*, BottomSheet(LayoutMode.WRAP_CONTENT)*/)
-    dialog.show {
-        //setPeekHeight(literal = dpToPixel(600f))
-        cancelOnTouchOutside(true)
-        cancelable(true)
-        customView(viewRes = R.layout.layout_exit_dialog, noVerticalPadding = true)
-    }
-    dialog.view.findViewById<ImageButton>(R.id.btnExit).onClick {
+fun MainActivity.showExitDialog(): BottomSheetDialog {
+    val dialog = BottomSheetDialog(this)
+    val view: View = layoutInflater.inflate(R.layout.layout_exit_dialog, this.binding.root, false)
+    dialog.setCancelable(true)
+    dialog.setCanceledOnTouchOutside(true)
+    dialog.setContentView(view)
+    view.findViewById<ImageButton>(R.id.btnExit).onClick {
         dialog.dismiss()
         lifecycleScope.launch {
             delay(200)
             finish()
         }
     }
-    dialog.onDismiss {
+    dialog.setOnDismissListener {
         if (!isFinishing) {
             adsViewModel.loadExitAd()
         }
     }
-    val adView = dialog.view.findViewById<UnifiedNativeAdView>(R.id.ad_view)
+    val adView = view.findViewById<UnifiedNativeAdView>(R.id.ad_view)
     adView.apply {
         mediaView = findViewById<View>(R.id.ad_media) as MediaView
         // Register the view used for each individual asset.
@@ -60,8 +56,9 @@ fun MainActivity.showExitDialog(): MaterialDialog {
     adsViewModel.exitAd?.let { ad ->
         populateNativeAdView(ad, adView)
     } ?: run {
-        adView.isVisible = false
+        adView.invisible()
     }
+    dialog.show()
     return dialog
 }
 
@@ -109,6 +106,7 @@ fun populateNativeAdView(
     try {
         adView.setNativeAd(nativeAd)
     } catch (e: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(Exception("setNativeAd crash in showExitDialog", e))
+        FirebaseCrashlytics.getInstance()
+            .recordException(Exception("setNativeAd crash in showExitDialog", e))
     }
 }
