@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.player
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Color
@@ -79,9 +80,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         override fun onServiceDisconnected(name: ComponentName?) {
             Log.d(TAG_SERVICE, "onServiceDisconnected")
             playerService = null
+            serviceBound = false
         }
 
         override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+            serviceBound = true
             Log.d(TAG_SERVICE, "onServiceConnected")
             if (binder is MusicPlayerService.ServiceBinder) {
                 playerService = binder.service()
@@ -90,7 +93,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 mediaController?.registerCallback(mediaControllerCallback)
                 mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
                 showPlayerView("service connected")
-                ensurePlayerVisible()
+                if (PlayerQueue.value != null) {
+                    ensurePlayerVisible()
+                }
             }
         }
     }
@@ -110,7 +115,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         override fun onSessionDestroyed() {
             Log.d(TAG_SERVICE, "onSessionDestroyed: ")
             hidePlayer()
-            bindService()
+            bindServiceIfNecessary()
         }
     }
 
@@ -125,14 +130,29 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         observeViewModel()
     }
 
+
+    private var serviceBound = false
+
     override fun onStart() {
         super.onStart()
+        Log.d(TAG_SERVICE, "onStart fragment")
         viewModel.prepareAds()
+
+        // Bind service if necessary
+        bindServiceIfNecessary()
+    }
+
+    private fun bindServiceIfNecessary() {
+        if (!serviceBound && PlayerQueue.value != null) {
+            val intent = Intent(requireContext(), MusicPlayerService::class.java)
+            activity?.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        bindService()
+        Log.d(TAG_SERVICE, "onResume fragment")
+
         mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
         if (binding.lockScreenView.isVisible) {
             checkLockScreen(true)
@@ -143,21 +163,42 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (!requireContext().isServiceRunning(MusicPlayerService::class.java)) {
             hidePlayer()
         }
+
+        // check if no track currently playing
+        if (PlayerQueue.value == null) {
+            hidePlayer()
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        mediaController?.unregisterCallback(mediaControllerCallback)
-        activity?.unbindService(serviceConnection)
+        Log.d(TAG_SERVICE, "onPause fragment")
+
         if (binding.lockScreenView.isVisible) {
             binding.lockScreenView.disableLock()
             binding.motionLayout.getTransition(R.id.mainTransition).setEnable(true)
         }
     }
 
-    private fun bindService() {
-        val intent = Intent(requireContext(), MusicPlayerService::class.java)
-        activity?.bindService(intent, serviceConnection, 0)
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG_SERVICE, "onStop fragment")
+
+        if (serviceBound) {
+            mediaController?.unregisterCallback(mediaControllerCallback)
+            activity?.unbindService(serviceConnection)
+            serviceBound = false
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG_SERVICE, "onDestroyView fragment")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG_SERVICE, "onDestroy fragment")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -279,6 +320,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         observe(PlayerQueue) { video ->
             onVideoChanged(video)
             binding.lockScreenView.setCurrentTrack(video)
+            bindServiceIfNecessary()
         }
         observe(PlaybackDuration) { elapsedSeconds ->
             if (!seekingDuration) {
@@ -490,18 +532,18 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     //endregion
     fun showPlayerView(from: String) {
-        Log.d(TAG_SERVICE, "showPlayerView: from $from")
+        Log.d(TAG, "showPlayerView: from $from")
         val playerView = reusedPlayerView ?: kotlin.run {
-            Log.d(TAG_SERVICE, "showPlayerView: view not yet initialized")
+            Log.d(TAG, "showPlayerView: view not yet initialized")
             return
         }
         if (playerView.parent == binding.cardPager) kotlin.run {
-            Log.d(TAG_SERVICE, "showPlayerView: view already shown")
+            Log.d(TAG, "showPlayerView: view already shown")
             return
         }
         val oldParent = playerView.parent as? ViewGroup
         if (oldParent == null) {
-            Log.d(TAG_SERVICE, "showPlayerView: old parent null")
+            Log.d(TAG, "showPlayerView: old parent null")
         }
         oldParent?.removeView(playerView)
         binding.cardPager.addView(playerView, 0)

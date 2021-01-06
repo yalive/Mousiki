@@ -2,7 +2,9 @@ package com.cas.musicplayer.player.services
 
 import android.content.Intent
 import android.os.SystemClock
+import android.util.Log
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 import java.util.*
 
 /**
@@ -32,6 +34,7 @@ class MusicSleepTimer : SleepTimer {
             override fun run() {
                 val elapsedSeconds = (SystemClock.elapsedRealtime() - initialTime) / 1000
                 if (afterDuration * 60 - elapsedSeconds < 0) {
+                    Log.d(TAG_SERVICE, "stop service from timer")
                     cancel() // Stop timer
                     val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
                     MusicApp.get().stopService(intent)

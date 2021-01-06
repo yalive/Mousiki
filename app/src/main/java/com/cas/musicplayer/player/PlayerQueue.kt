@@ -10,6 +10,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.ui.popular.swapped
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
@@ -159,6 +160,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     private fun notifyService(videoId: String) {
+        Log.d(TAG_SERVICE, "notifyService: $videoId")
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }

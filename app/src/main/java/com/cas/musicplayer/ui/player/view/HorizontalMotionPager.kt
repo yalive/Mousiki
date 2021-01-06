@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import androidx.constraintlayout.motion.widget.MotionLayout
+import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.player.name
 import kotlin.math.abs
 
@@ -25,13 +26,13 @@ class HorizontalMotionPager @JvmOverloads constructor(
         if (parentMotion.mIsScrolling || (parentMotion.progress != 0f && parentMotion.progress != 1.0f)) {
             Log.d(
                 TAG_HORZ,
-                "onInterceptTouchEvent pager blocked: ${event.name()}, progress = ${parentMotion.progress}"
+                "onInterceptTouchEvent pager blocked: ${event.name()}, ${transitionInfo()}"
             )
             return false
         } else {
             Log.d(
                 TAG_HORZ,
-                "onInterceptTouchEvent pager noooon blocked: ${event.name()}, progress = ${parentMotion.progress}"
+                "onInterceptTouchEvent pager noooon blocked: ${event.name()}, ${transitionInfo()}"
             )
         }
         /*
@@ -84,7 +85,7 @@ class HorizontalMotionPager @JvmOverloads constructor(
         if (parentMotion.mIsScrolling || (parentMotion.progress != 0f && parentMotion.progress != 1.0f)) {
             Log.d(
                 TAG_HORZ,
-                "onTouchEvent pager blocked: ${event.name()}, progress = ${parentMotion.progress}"
+                "onTouchEvent pager blocked: ${event.name()}, ${transitionInfo()}"
             )
             mIsScrolling = false
             transitionToStart()
@@ -92,7 +93,7 @@ class HorizontalMotionPager @JvmOverloads constructor(
         } else {
             Log.d(
                 TAG_HORZ,
-                "onTouchEvent pager noooon blocked: ${event.name()}, progress = ${parentMotion.progress}"
+                "onTouchEvent pager noooon blocked: ${event.name()}, ${transitionInfo()}"
             )
         }
 
@@ -100,5 +101,28 @@ class HorizontalMotionPager @JvmOverloads constructor(
             mIsScrolling = false
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun stateName(id: Int): String {
+        return when (id) {
+            R.id.idle -> "idle"
+            R.id.swipedLeft -> "swipedLeft"
+            R.id.comeFromRight -> "comeFromRight"
+            R.id.swipedRight -> "swipedRight"
+            R.id.comeFromLeft -> "comeFromLeft"
+            else -> "Unknown"
+        }
+    }
+
+    private fun transitionInfo(): String {
+        return "State: (start,end, current) = (${stateName(startState)},${
+            stateName(
+                endState
+            )
+        },${
+            stateName(
+                currentState
+            )
+        }) progress=${progress}"
     }
 }
