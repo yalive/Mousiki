@@ -168,6 +168,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (PlayerQueue.value == null) {
             hidePlayer()
         }
+
+        // Make sure video is visible if service is bound
+        showPlayerView("on resume")
     }
 
     override fun onPause() {

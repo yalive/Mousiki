@@ -10,7 +10,7 @@
         <OnSwipe
             app:dragDirection="dragStart"
             app:maxAcceleration="30"
-            app:onTouchUp="autoCompleteToEnd"
+            app:onTouchUp="autoComplete"
             app:touchAnchorId="@id/cardPager"
             app:touchRegionId="@id/cardPager" />
     </Transition>
@@ -27,7 +27,6 @@
         app:constraintSetStart="@+id/comeFromRight"
         app:duration="200" />
 
-
     <!-- Swipe to right -->
     <Transition
         app:constraintSetEnd="@+id/swipedRight"
@@ -35,8 +34,8 @@
         app:duration="300">
         <OnSwipe
             app:dragDirection="dragEnd"
-            app:onTouchUp="autoCompleteToEnd"
             app:maxAcceleration="30"
+            app:onTouchUp="autoComplete"
             app:touchAnchorId="@id/cardPager"
             app:touchRegionId="@id/cardPager" />
     </Transition>
