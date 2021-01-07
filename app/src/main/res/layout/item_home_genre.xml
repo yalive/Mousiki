@@ -35,10 +35,10 @@
             android:layout_marginEnd="-20dp"
             android:layout_toStartOf="@+id/cardImgCategory"
             android:ellipsize="end"
-            android:fontFamily="@font/pangram_bold"
+            android:fontFamily="@font/roboto_condensed_bold"
             android:maxLines="3"
             android:textColor="@color/colorWhite"
-            android:textSize="15sp"
+            android:textSize="16sp"
             tools:text="Pop Music" />
 
         <androidx.cardview.widget.CardView
