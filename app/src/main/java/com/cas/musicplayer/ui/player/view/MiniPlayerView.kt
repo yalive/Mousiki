@@ -50,6 +50,7 @@ class MiniPlayerView @JvmOverloads constructor(
     }
 
     fun onTrackChanged(track: MusicTrack) {
+        artistName.text = track.title.substringBefore("-")
         txtTitle.ellipsize = null
         txtTitle.text = track.title
         postDelayed(500) {

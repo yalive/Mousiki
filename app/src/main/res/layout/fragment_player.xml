@@ -132,6 +132,7 @@
             app:srcCompat="@drawable/ic_heart_light" />
 
         <TextView
+            android:id="@+id/artistName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTitle"
@@ -139,7 +140,6 @@
             android:layout_marginTop="@dimen/sixteen_16dp"
             android:alpha="0.6"
             android:fontFamily="@font/pangram_regular"
-            android:text="Hamid El Kasri"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
     </RelativeLayout>

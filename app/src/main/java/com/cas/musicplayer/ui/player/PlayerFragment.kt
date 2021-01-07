@@ -423,6 +423,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         binding.txtTitle.ellipsize = null
         binding.txtTitle.text = track.title
+        binding.artistName.text = track.title.substringBefore("-")
         lifecycleScope.launch {
             delay(500)
             binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
