@@ -19,7 +19,7 @@ class HomeRepository @Inject constructor(
 
     suspend fun getHome(): Result<HomeRS> {
         return retrofitRunner.executeNetworkCall {
-            mousikiApi.getHome("https://mousikiapp.herokuapp.com")
+            mousikiApi.getHome("https://ktor-demo.herokuapp.com")
         }
     }
 }

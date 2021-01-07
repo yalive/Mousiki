@@ -48,7 +48,7 @@ open class HorizontalListSongsAdapterDelegate(
     ) {
         val songs = songsFromItem(items[position])
         val title = getHeaderTitle(items, position)
-        (holder as HorizontalSongsListViewHolder).bind(title, songs)
+        (holder as HorizontalSongsListViewHolder).bind(title, songs, title.isNotEmpty())
     }
 
     protected open fun songsFromItem(
@@ -90,8 +90,11 @@ open class HorizontalListSongsAdapterDelegate(
             recyclerView.adapter = adapter
         }
 
-        fun bind(title: String, resource: Resource<List<DisplayedVideoItem>>) {
-            txtTitle.text = title
+        fun bind(title: String, resource: Resource<List<DisplayedVideoItem>>, isTitleVisible: Boolean) {
+            txtTitle.apply {
+                text = title
+                isVisible = isTitleVisible
+            }
             return when (resource) {
                 is Resource.Loading -> {
                     viewError.isVisible = false

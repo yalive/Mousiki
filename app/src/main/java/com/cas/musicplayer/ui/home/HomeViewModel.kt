@@ -95,12 +95,12 @@ class HomeViewModel @Inject constructor(
                     val videoLists = homeRS.videoLists.filter {
                         it.videos.isNotEmpty()
                     }.map {
-                        HomeItem.VideoLists(it.title, it.videos.map { it.toTrack() })
+                        HomeItem.VideoLists(it.title, it.videos.map { it.video.toTrack() })
                     }
 
                     val promos = HomeItem.VideoLists(
                         "Promos",
-                        tracks = homeRS.promos.map { it.toTrack() }
+                        tracks = homeRS.promos.map { it.video.toTrack() }
                     )
                     items.add(promos)
                     items.add(HeaderItem.PopularsHeader(false))

@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName
  */
 data class HomeRS(
     @SerializedName("promos")
-    val promos: List<MousikiVideoRS>,
+    val promos: List<VideoInfo>,
 
     @SerializedName("compactPlaylists")
     val compactPlaylists: List<CompactPlaylistSection>,
@@ -34,7 +34,7 @@ data class MousikiVideoRS(
     val viewCountShort: String?,
     @SerializedName("publishedTimeText")
     val publishedTimeText: String?,
-    @SerializedName("videoId")
+    @SerializedName("id")
     val videoId: String?,
     @SerializedName("duration")
     val duration: String?,
@@ -51,7 +51,7 @@ data class CompactPlaylistSection(
     val thumbnail: String,
     @SerializedName("index")
     val index: Int,
-    @SerializedName("items")
+    @SerializedName("playlists")
     val playlists: List<CompactPlaylist>
 )
 
@@ -75,7 +75,7 @@ data class SimplePlaylistSection(
     val thumbnail: String,
     @SerializedName("index")
     val index: Int,
-    @SerializedName("items")
+    @SerializedName("playlists")
     val playlists: List<SimplePlaylist>
 )
 
@@ -105,8 +105,18 @@ data class VideoListSection(
     val thumbnail: String,
     @SerializedName("index")
     val index: Int,
-    @SerializedName("items")
-    val videos: List<MousikiVideoRS>
+    @SerializedName("videos")
+    val videos: List<VideoInfo>
+)
+
+data class VideoInfo(
+    val video: MousikiVideoRS,
+    val owner: VideoOwner
+)
+
+data class VideoOwner(
+    val channelId: String,
+    val title: String
 )
 
 fun MousikiVideoRS.toTrack(): MusicTrack {
