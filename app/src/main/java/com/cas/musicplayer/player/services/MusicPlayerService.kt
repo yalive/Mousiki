@@ -149,7 +149,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
         }
 
-        return START_STICKY
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
