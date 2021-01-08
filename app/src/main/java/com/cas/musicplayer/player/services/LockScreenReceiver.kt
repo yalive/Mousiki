@@ -12,7 +12,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.cas.musicplayer.R
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.toText
 import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomCommand
@@ -52,8 +51,6 @@ class LockScreenReceiver(
                 shouldShowPopup = true
                 mediaController.transportControls.pause()
             }
-            // Pause player due to Google policy
-            PlayerQueue.pause()
 
             // Disable notification buttons
             mediaController.sendCommand(CustomCommand.DISABLE_NOTIFICATION_ACTIONS, null, null)
