@@ -10,7 +10,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.player.MousikiPlayer
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.player.TAG_SERVICE
-import com.cas.musicplayer.utils.isScreenLocked
 import com.cas.musicplayer.utils.toast
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -67,11 +66,6 @@ class YoutubePlayerManager(
 
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
         val seconds = second.toInt()
-        if (seconds % 3 == 0 && isScreenLocked()) {
-            PlayerQueue.pause()
-            return
-        }
-
         val duration = PlaybackDuration.value ?: 0
         if (seconds != duration) {
             PlaybackDuration.value = seconds
