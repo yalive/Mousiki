@@ -204,6 +204,7 @@
             android:id="@id/newPager"
             android:layout_width="90dp"
             android:layout_height="58dp"
+            android:layout_marginStart="@dimen/two_2dp"
             android:layout_marginBottom="@dimen/two_2dp"
             app:layout_constraintBottom_toBottomOf="@id/miniPlayerView"
             app:layout_constraintStart_toStartOf="parent"
