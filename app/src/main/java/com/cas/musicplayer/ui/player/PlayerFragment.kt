@@ -232,7 +232,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (!serviceBound && PlayerQueue.value != null) {
             val intent = Intent(requireContext().applicationContext, MusicPlayerService::class.java)
             val resultBind =
-                activity?.bindService(intent, serviceConnection, Context.BIND_IMPORTANT)
+                activity?.bindService(
+                    intent,
+                    serviceConnection,
+                    Context.BIND_IMPORTANT and Context.BIND_AUTO_CREATE
+                )
             if (resultBind == true) {
                 serviceBound = true
             }
@@ -367,6 +371,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     // TODO: move outside fragment
     private fun onClickPlayPause() {
+        Log.d(TAG_SERVICE, "onClickPlayPause: service bound=$serviceBound")
         val oldState = PlaybackLiveData.value
         oldState?.let { playerState ->
             if (playerState == PlayerConstants.PlayerState.PLAYING) {
@@ -535,6 +540,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 } else if (currentId == R.id.collapsed) {
                     parentMotionLayout?.progress = 0.0f
                 } else if (currentId == R.id.hidden) {
+                    Log.d(TAG, "onTransitionCompleted: Player hidden")
                     mediaController?.transportControls?.stop()
                 }
             }
