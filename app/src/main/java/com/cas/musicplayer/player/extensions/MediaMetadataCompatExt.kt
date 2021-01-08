@@ -34,6 +34,12 @@ inline var MediaMetadataCompat.Builder.displayTitle: String?
         putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, value)
     }
 
+inline var MediaMetadataCompat.Builder.artist: String?
+    @Deprecated(NO_GET, level = DeprecationLevel.ERROR)
+    get() = throw IllegalAccessException("Cannot get from MediaMetadataCompat.Builder")
+    set(value) {
+        putString(MediaMetadataCompat.METADATA_KEY_ARTIST, value)
+    }
 
 inline var MediaMetadataCompat.Builder.mediaUri: String?
     @Deprecated(NO_GET, level = DeprecationLevel.ERROR)
@@ -72,4 +78,9 @@ var MediaMetadataCompat.Builder.musicTrack: MusicTrack
         mediaUri = value.imgUrl
         artUri = value.imgUrl
         albumArtUri = value.imgUrl
+        artist = try {
+            value.title.substringBefore("-")
+        } catch (e: Exception) {
+            ""
+        }
     }
