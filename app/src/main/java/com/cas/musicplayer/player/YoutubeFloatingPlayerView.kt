@@ -76,6 +76,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     ) {
         val mediaController = MediaControllerCompat(context, sessionToken)
         youTubePlayerView = findViewById(R.id.youtubePlayerView)
+        youTubePlayerView.enableBackgroundPlayback(true)
         videoViewParams = WindowManager.LayoutParams(
             videoEmplacement.width,
             videoEmplacement.height,
@@ -215,6 +216,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
+        Log.d(TAG_SERVICE, "onVideoEmplacementChanged: ")
         radius = emplacement.radius
         this.videoEmplacement = emplacement
         toggleFullScreenVideoPlayer(false)

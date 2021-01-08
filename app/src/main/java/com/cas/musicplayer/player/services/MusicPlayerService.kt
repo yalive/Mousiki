@@ -73,6 +73,16 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         return binder
     }
 
+    override fun onUnbind(intent: Intent?): Boolean {
+        Log.d(TAG_SERVICE, "onUnbind: ${intent?.dumpData()}")
+        return super.onUnbind(intent)
+    }
+
+    override fun onRebind(intent: Intent?) {
+        Log.d(TAG_SERVICE, "onRebind: ${intent?.dumpData()}")
+        super.onRebind(intent)
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG_SERVICE, "onStartCommand: ${intent?.dumpData()}")
         if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
@@ -174,7 +184,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
-                Log.d(TAG_SERVICE, "onPlayFromMediaId callback")
+                Log.d(TAG_SERVICE, "onPlayFromMediaId callback , extras=$extras")
                 mediaId?.let {
                     youtubePlayerManager.loadVideo(mediaId, 0f)
                 }
@@ -290,6 +300,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
             startForeground(NOW_PLAYING_NOTIFICATION, notification)
         }
+
     }
 
     private fun observeForegroundToggle() {

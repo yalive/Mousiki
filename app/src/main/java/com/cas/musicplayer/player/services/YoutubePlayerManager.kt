@@ -33,6 +33,7 @@ class YoutubePlayerManager(
         //Log.d(TAG_SERVICE, "onReady: YT player")
         this.youTubePlayer = youTubePlayer
         PlayerQueue.value?.let { currentTrack ->
+            Log.d(TAG_SERVICE, "onReady: will call play latest")
             mediaController.transportControls?.playFromMediaId(
                 currentTrack.youtubeId,
                 null
@@ -56,6 +57,7 @@ class YoutubePlayerManager(
                 setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING)
             }
             PlayerConstants.PlayerState.PAUSED -> {
+                Log.d(TAG_SERVICE, "pause: YT player")
                 setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
             }
             else -> {
