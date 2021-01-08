@@ -175,9 +175,10 @@ class LockScreenView @JvmOverloads constructor(
     }
 
     fun acquirePlayer(youTubePlayerView: YouTubePlayerView?) {
+        if (youTubePlayerView == null) return
         postDelayed(300) {
-            val oldParent = youTubePlayerView?.parent as? ViewGroup
-            oldParent?.removeView(youTubePlayerView)
+            val oldParent = youTubePlayerView.parent as? ViewGroup ?: return@postDelayed
+            oldParent.removeView(youTubePlayerView)
             frameVideo.addView(youTubePlayerView)
         }
     }
