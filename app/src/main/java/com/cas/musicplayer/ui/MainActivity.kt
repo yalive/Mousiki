@@ -295,11 +295,6 @@ class MainActivity : BaseActivity() {
         playerFragment.collapsePlayer()
     }
 
-    fun isBottomPanelCollapsed(): Boolean {
-        if (playerFragment.view == null) return false
-        return playerFragment.isCollapsed()
-    }
-
     fun isBottomPanelExpanded(): Boolean {
         if (playerFragment.view == null) return false
         return playerFragment.isExpanded()

@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 
 class DeleteNotificationReceiver(
     private val context: Context,
@@ -17,6 +19,7 @@ class DeleteNotificationReceiver(
     private val mediaController = MediaControllerCompat(context, sessionToken)
 
     override fun onReceive(context: Context, intent: Intent) {
+        Log.d(TAG_SERVICE, "DeleteNotificationReceiver")
         if (intent.action == ACTION_DELETE_NOTIFICATION) {
             mediaController.transportControls?.stop()
         }

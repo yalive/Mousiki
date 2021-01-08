@@ -84,6 +84,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        lifecycleScope.launch {
+            val notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
+            notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
+            startForeground(NOW_PLAYING_NOTIFICATION, notification)
+        }
         Log.d(TAG_SERVICE, "onStartCommand: ${intent?.dumpData()}")
         if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
             handleLastSessionSysMediaButton()
@@ -170,11 +175,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             override fun onStop() {
                 Log.d(TAG_SERVICE, "onStop callback")
-                /*stopForeground(true)
+                stopForeground(true)
+                /*
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     stopForeground(true);
                 } else {*/
-                stopSelf()
+                //stopSelf()
                 // }
             }
 
@@ -400,6 +406,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
 
         private suspend fun updateNotification(state: PlaybackStateCompat) {
+            Log.d(TAG_SERVICE, "updateNotification")
             val updatedState = state.state
             // Skip building a notification when state is "none" and metadata is null.
             val notification = if (mediaController.metadata != null
