@@ -34,6 +34,7 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
+import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.*
@@ -41,6 +42,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -88,6 +90,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             val notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
             notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
             startForeground(NOW_PLAYING_NOTIFICATION, notification)
+            scheduleStopForeground()
         }
         Log.d(TAG_SERVICE, "onStartCommand: ${intent?.dumpData()}")
         if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
@@ -164,6 +167,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         super.onCreate()
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
+                if (isScreenLocked()) return
                 Log.d(TAG_SERVICE, "onPlay callback")
                 youtubePlayerManager.play()
             }
@@ -176,20 +180,16 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             override fun onStop() {
                 Log.d(TAG_SERVICE, "onStop callback")
                 stopForeground(true)
-                /*
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    stopForeground(true);
-                } else {*/
-                //stopSelf()
-                // }
             }
 
             override fun onSeekTo(pos: Long) {
+                if (isScreenLocked()) return
                 Log.d(TAG_SERVICE, "onSeekTo callback")
                 youtubePlayerManager.seekTo(pos.toFloat() / 1000)
             }
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
+                if (isScreenLocked()) return
                 Log.d(TAG_SERVICE, "onPlayFromMediaId callback , extras=$extras")
                 mediaId?.let {
                     youtubePlayerManager.loadVideo(mediaId, 0f)
@@ -197,11 +197,13 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onSkipToNext() {
+                if (isScreenLocked()) return
                 Log.d(TAG_SERVICE, "onSkipToNext callback")
                 PlayerQueue.playNextTrack()
             }
 
             override fun onSkipToPrevious() {
+                if (isScreenLocked()) return
                 Log.d(TAG_SERVICE, "onSkipToPrevious callback")
                 PlayerQueue.playPreviousTrack()
             }
@@ -305,6 +307,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             val notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
             notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
             startForeground(NOW_PLAYING_NOTIFICATION, notification)
+            scheduleStopForeground()
         }
 
     }
@@ -422,6 +425,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                     if (notification != null) {
                         notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
                         if (!isForegroundService) {
+                            stopForegroundJob?.cancel()
                             startForeground(NOW_PLAYING_NOTIFICATION, notification)
                             isForegroundService = true
                         }
@@ -454,6 +458,17 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                     VideoEmplacementLiveData.out()
                 }
             }
+        }
+    }
+
+    // Schedule stop foreground service if not playing, so user can swipe to delete notification
+    private var stopForegroundJob: Job? = null
+    private fun scheduleStopForeground() {
+        stopForegroundJob?.cancel()
+        stopForegroundJob = lifecycleScope.launch {
+            delay(5 * 1000) // 5 seconds
+            if (mediaController.playbackState.isPlaying) return@launch
+            stopForeground(false)
         }
     }
 

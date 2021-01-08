@@ -64,6 +64,7 @@ class YoutubePlayerManager(
         }
     }
 
+
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
         val seconds = second.toInt()
         val duration = PlaybackDuration.value ?: 0
