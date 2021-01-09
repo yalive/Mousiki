@@ -18,7 +18,7 @@ import kotlin.math.abs
 const val TAG_MOTION = "SingleViewTouchableMoti"
 const val TAG_NEW = "new_tag"
 
-class SingleViewTouchableMotionLayout @JvmOverloads constructor(
+class MousikiPlayerMotionLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : MotionLayout(context, attrs, defStyleAttr) {
 

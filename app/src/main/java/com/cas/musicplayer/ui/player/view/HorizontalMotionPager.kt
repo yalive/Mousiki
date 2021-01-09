@@ -22,7 +22,7 @@ class HorizontalMotionPager @JvmOverloads constructor(
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG_NEW, "onInterceptTouchEvent child: ${event.name()}")
-        val parentMotion = parent as? SingleViewTouchableMotionLayout ?: return false
+        val parentMotion = parent as? MousikiPlayerMotionLayout ?: return false
         if (parentMotion.mIsScrolling || (parentMotion.progress != 0f && parentMotion.progress != 1.0f)) {
             Log.d(
                 TAG_HORZ,
@@ -81,7 +81,7 @@ class HorizontalMotionPager @JvmOverloads constructor(
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG_NEW, "onTouchEvent child: ${event.name()}")
-        val parentMotion = parent as? SingleViewTouchableMotionLayout ?: return false
+        val parentMotion = parent as? MousikiPlayerMotionLayout ?: return false
         if (parentMotion.mIsScrolling || (parentMotion.progress != 0f && parentMotion.progress != 1.0f)) {
             Log.d(
                 TAG_HORZ,
