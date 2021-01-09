@@ -184,7 +184,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             override fun onSeekTo(pos: Long) {
                 if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onSeekTo callback")
                 youtubePlayerManager.seekTo(pos.toFloat() / 1000)
             }
 
