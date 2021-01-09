@@ -76,7 +76,7 @@
     <string name="cancel">Cancel</string>
     <string name="choose_dark_mode_theme">Choose theme</string>
     <string name="label_error">Error</string>
-    <string name="label_developed_with_youtube_part1" translatable="false">Developed with</string>
+    <string name="label_developed_with_youtube_part1" translatable="false">Powered by</string>
     <string name="label_developed_with_youtube_part2" translatable="false">YouTube</string>
     <string name="btn_unfavorite">Unfavorite</string>
     <string name="label_no_songs">No song</string>
