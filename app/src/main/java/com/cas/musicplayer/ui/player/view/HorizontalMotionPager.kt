@@ -103,6 +103,12 @@ class HorizontalMotionPager @JvmOverloads constructor(
         return super.onTouchEvent(event)
     }
 
+    fun reset() {
+        mIsScrolling = false
+        setTransition(R.id.idleToLeft)
+        transitionToState(R.id.idle)
+    }
+
     private fun stateName(id: Int): String {
         return when (id) {
             R.id.idle -> "idle"

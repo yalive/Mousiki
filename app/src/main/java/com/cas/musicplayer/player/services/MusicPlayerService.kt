@@ -466,7 +466,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         stopForegroundJob?.cancel()
         stopForegroundJob = lifecycleScope.launch {
             delay(5 * 1000) // 5 seconds
-            if (mediaController.playbackState.isPlaying) return@launch
+            if (mediaController.playbackState?.isPlaying == true) return@launch
             stopForeground(false)
         }
     }
