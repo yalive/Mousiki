@@ -15,12 +15,10 @@ import com.cas.musicplayer.ui.player.TAG_SERVICE
 object VideoEmplacementLiveData : MutableLiveData<VideoEmplacement>() {
 
     fun out() {
-        Log.d(TAG_SERVICE, "out: player")
         value = VideoEmplacement.out()
     }
 
     fun inApp() {
-        Log.d(TAG_SERVICE, "in: player")
         value = EmplacementInApp()
     }
 }

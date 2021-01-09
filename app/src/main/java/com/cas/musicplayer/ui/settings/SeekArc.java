@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -153,8 +152,6 @@ public class SeekArc extends View {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-
-        Log.d(TAG, "Initialising SeekArc");
         final Resources res = getResources();
         float density = context.getResources().getDisplayMetrics().density;
 

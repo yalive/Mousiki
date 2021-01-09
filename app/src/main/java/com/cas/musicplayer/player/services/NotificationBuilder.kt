@@ -10,7 +10,6 @@ import android.os.Build
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
@@ -156,10 +155,6 @@ class NotificationBuilder(private val context: Context) {
 
         val largeIconBitmap = description?.mediaUri?.toString()?.let {
             Picasso.get().getBitmap(it, 400)
-        }
-
-        if (largeIconBitmap == null) {
-            Log.d(TAG_BG, "Thumbnail null: ${description?.mediaUri}")
         }
 
         return builder.setContentIntent(controller.sessionActivity)

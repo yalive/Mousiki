@@ -19,7 +19,6 @@ class DeleteNotificationReceiver(
     private val mediaController = MediaControllerCompat(context, sessionToken)
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(TAG_SERVICE, "DeleteNotificationReceiver")
         if (intent.action == ACTION_DELETE_NOTIFICATION) {
             mediaController.transportControls?.stop()
         }

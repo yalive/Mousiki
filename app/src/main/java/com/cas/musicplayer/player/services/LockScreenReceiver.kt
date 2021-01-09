@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.util.Log
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -16,7 +15,6 @@ import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.toText
 import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomCommand
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
@@ -45,7 +43,6 @@ class LockScreenReceiver(
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_SCREEN_OFF) {
             val state = mediaController.playbackState?.toText()
-            Log.d(TAG_SERVICE, "onReceive: screen off, state=$state")
             val isPlaying = mediaController.playbackState?.isPlaying == true
             if (isPlaying) {
                 shouldShowPopup = true
@@ -55,7 +52,6 @@ class LockScreenReceiver(
             // Disable notification buttons
             mediaController.sendCommand(CustomCommand.DISABLE_NOTIFICATION_ACTIONS, null, null)
         } else if (intent.action == Intent.ACTION_USER_PRESENT && context.canDrawOverApps()) {
-            Log.d(TAG_SERVICE, "onReceive: screen on shouldShowPopup=$shouldShowPopup")
             if (shouldShowPopup) {
                 shouldShowPopup = false
                 MaterialDialog(context).show {

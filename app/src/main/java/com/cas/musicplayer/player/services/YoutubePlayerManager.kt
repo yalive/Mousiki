@@ -3,13 +3,11 @@ package com.cas.musicplayer.player.services
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import androidx.core.os.bundleOf
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.MousikiPlayer
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.toast
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -47,7 +45,6 @@ class YoutubePlayerManager(
     }
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
-        Log.d(TAG_SERVICE, "onStateChange: $state")
         PlaybackLiveData.value = state
         if (state == PlayerConstants.PlayerState.ENDED) {
             if (seekToCalled && stateBeforeSeek == PlayerConstants.PlayerState.PAUSED) {
@@ -71,12 +68,10 @@ class YoutubePlayerManager(
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
         elapsedSeconds = 0
-        Log.d(TAG_SERVICE, "loadVideo: YT player")
         youTubePlayer?.loadVideo(videoId, 0f)
     }
 
     override fun play() {
-        Log.d(TAG_SERVICE, "play: YT player")
         if (PlaybackLiveData.value == PlayerConstants.PlayerState.ENDED) {
             mediaController.transportControls?.skipToNext()
         } else {
@@ -85,7 +80,6 @@ class YoutubePlayerManager(
     }
 
     override fun pause() {
-        Log.d(TAG_SERVICE, "pause: YT player")
         youTubePlayer?.pause()
     }
 
@@ -96,7 +90,6 @@ class YoutubePlayerManager(
     override fun seekTo(time: Float) {
         stateBeforeSeek = PlaybackLiveData.value
         elapsedSeconds = time.toInt()
-        Log.d(TAG_SERVICE, "seekTo: ${formatTime(time.toInt())}")
         seekToCalled = true
         youTubePlayer?.seekTo(time)
         PlaybackDuration.value = elapsedSeconds
@@ -144,7 +137,6 @@ class YoutubePlayerManager(
     }
 
     private fun setMediaPlaybackState(state: Int) {
-        Log.d(TAG_SERVICE, "setMediaPlaybackState: ${formatTime(elapsedSeconds)}")
         if (state == PlaybackStateCompat.STATE_PLAYING) {
             playbackstateBuilder.setActions(
                 PlaybackStateCompat.ACTION_PLAY_PAUSE

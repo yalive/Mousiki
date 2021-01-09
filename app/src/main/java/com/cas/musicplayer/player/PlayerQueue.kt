@@ -27,9 +27,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     var queue: List<MusicTrack>? = null
 
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
-        Log.d("PlayerFragment_pager", "playTrack: ${currentTrack.youtubeId}")
         if (value == currentTrack) {
-            Log.d("PlayerFragment_pager", "already playing: ${currentTrack.youtubeId}")
             resume()
             return
         }
@@ -160,7 +158,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     private fun notifyService(videoId: String) {
-        Log.d(TAG_SERVICE, "notifyService: $videoId")
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }

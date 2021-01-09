@@ -13,7 +13,6 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import android.view.*
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
@@ -23,7 +22,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.media.session.MediaButtonReceiver
 import com.cas.common.extensions.doOnExtrasTrue
-import com.cas.common.extensions.dumpData
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.AppComponent
@@ -33,7 +31,6 @@ import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.musicTrack
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -67,23 +64,19 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private val binder = ServiceBinder()
 
     override fun onBind(intent: Intent?): IBinder? {
-        Log.d(TAG_SERVICE, "onBind: ${intent?.dumpData()}")
         super.onBind(intent)
         return binder
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        Log.d(TAG_SERVICE, "onUnbind: ${intent?.dumpData()}")
         return super.onUnbind(intent)
     }
 
     override fun onRebind(intent: Intent?) {
-        Log.d(TAG_SERVICE, "onRebind: ${intent?.dumpData()}")
         super.onRebind(intent)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG_SERVICE, "onStartCommand: ${intent?.dumpData()}")
         lifecycleScope.launch {
             val notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
             notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
@@ -96,7 +89,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             val event = intent?.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
             if (event?.action == KeyEvent.ACTION_DOWN && intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
                 handleLastSessionSysMediaButton()
-                Log.d(TAG_SERVICE, "should handle last media session: ")
             } else {
                 MediaButtonReceiver.handleIntent(mediaSession, intent)
             }
@@ -114,7 +106,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
 
         intent?.getStringExtra(COMMAND_PLAY_TRACK)?.let {
-            Log.d(TAG_SERVICE, "onStartCommand: COMMAND_PLAY_TRACK")
             PlayerQueue.value?.let { currentTrack ->
                 metadataBuilder.musicTrack = currentTrack
                 mediaSession.setMetadata(metadataBuilder.build())
@@ -158,29 +149,24 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        Log.d(TAG_SERVICE, "onTaskRemoved")
         super.onTaskRemoved(rootIntent)
     }
 
     private lateinit var youtubePlayerManager: YoutubePlayerManager
 
     override fun onCreate() {
-        Log.d(TAG_SERVICE, "onCreate service")
         super.onCreate()
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
                 if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onPlay media session callback")
                 youtubePlayerManager.play()
             }
 
             override fun onPause() {
-                Log.d(TAG_SERVICE, "onPause media session callback")
                 youtubePlayerManager.pause()
             }
 
             override fun onStop() {
-                Log.d(TAG_SERVICE, "onStop media session callback")
                 stopForeground(true)
             }
 
@@ -190,17 +176,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
-                if (isScreenLocked()) {
-                    Log.d(
-                        TAG_SERVICE,
-                        "onPlayFromMediaId media session callback , extras=$extras  ==> Screen LOCKED"
-                    )
-                    return
-                }
-                Log.d(
-                    TAG_SERVICE,
-                    "onPlayFromMediaId media session callback, mediaId=$mediaId , extras=$extras"
-                )
+                if (isScreenLocked()) return
                 mediaId?.let {
                     youtubePlayerManager.loadVideo(mediaId, 0f)
                 }
@@ -208,21 +184,15 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             override fun onSkipToNext() {
                 if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onSkipToNext media session callback")
                 PlayerQueue.playNextTrack()
             }
 
             override fun onSkipToPrevious() {
                 if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onSkipToPrevious media session callback")
                 PlayerQueue.playPreviousTrack()
             }
 
             override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
-                Log.d(
-                    TAG_SERVICE,
-                    "onCommand media session callback with command=$command, and extras=${extras}"
-                )
                 if (command == CustomCommand.ENABLE_NOTIFICATION_ACTIONS) {
                     youtubePlayerManager.onScreenUnlocked()
                 } else if (command == CustomCommand.DISABLE_NOTIFICATION_ACTIONS) {
@@ -231,7 +201,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
-                Log.d(TAG_SERVICE, "onCustomAction media session callback")
                 val metadata: MediaMetadataCompat = mediaSession.controller.metadata ?: return
                 lifecycleScope.launch {
                     if (action == CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE) {
@@ -374,7 +343,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onDestroy() {
-        Log.d(TAG_SERVICE, "onDestroy: service")
         super.onDestroy()
         deleteNotificationReceiver.unregister()
         lockScreenReceiver.unregister()
@@ -420,7 +388,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
 
         private suspend fun updateNotification(state: PlaybackStateCompat) {
-            //Log.d(TAG_SERVICE, "updateNotification")
             val updatedState = state.state
             // Skip building a notification when state is "none" and metadata is null.
             val notification = if (mediaController.metadata != null
@@ -450,7 +417,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                             notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
                         }
                         stopForeground(false)
-                        Log.d(TAG_SERVICE, "updateNotification: Stop foreground")
                     }
                 }
             }

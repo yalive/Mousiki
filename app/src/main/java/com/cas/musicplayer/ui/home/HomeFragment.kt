@@ -4,7 +4,6 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,7 +62,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         adjustStatusBar()
         darkStatusBar()
         observe(PlaybackLiveData) { state ->
-            Log.d("PlayerFragment_pager", "state changed: $state")
             if (state == PlayerConstants.PlayerState.PLAYING
                 || state == PlayerConstants.PlayerState.PAUSED
                 || state == PlayerConstants.PlayerState.ENDED

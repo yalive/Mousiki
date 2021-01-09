@@ -2,11 +2,9 @@ package com.cas.musicplayer.ui.player.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.player.name
 import kotlin.math.abs
 
 const val TAG_HORZ = "HorizontalMotion"
@@ -21,19 +19,9 @@ class HorizontalMotionPager @JvmOverloads constructor(
     private var lastX = 0f
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG_NEW, "onInterceptTouchEvent child: ${event.name()}")
         val parentMotion = parent as? MousikiPlayerMotionLayout ?: return false
         if (parentMotion.mIsScrolling || (parentMotion.progress != 0f && parentMotion.progress != 1.0f)) {
-            Log.d(
-                TAG_HORZ,
-                "onInterceptTouchEvent pager blocked: ${event.name()}, ${transitionInfo()}"
-            )
             return false
-        } else {
-            Log.d(
-                TAG_HORZ,
-                "onInterceptTouchEvent pager noooon blocked: ${event.name()}, ${transitionInfo()}"
-            )
         }
         /*
          * This method JUST determines whether we want to intercept the motion.
@@ -80,21 +68,11 @@ class HorizontalMotionPager @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG_NEW, "onTouchEvent child: ${event.name()}")
         val parentMotion = parent as? MousikiPlayerMotionLayout ?: return false
         if (parentMotion.mIsScrolling || (parentMotion.progress != 0f && parentMotion.progress != 1.0f)) {
-            Log.d(
-                TAG_HORZ,
-                "onTouchEvent pager blocked: ${event.name()}, ${transitionInfo()}"
-            )
             mIsScrolling = false
             transitionToStart()
             return false
-        } else {
-            Log.d(
-                TAG_HORZ,
-                "onTouchEvent pager noooon blocked: ${event.name()}, ${transitionInfo()}"
-            )
         }
 
         if (event.actionMasked == MotionEvent.ACTION_CANCEL || event.actionMasked == MotionEvent.ACTION_UP) {
