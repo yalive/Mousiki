@@ -3,13 +3,11 @@ package com.cas.musicplayer.ui.player.view
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.player.name
 import com.cas.musicplayer.ui.player.xDistanceTo
 import com.cas.musicplayer.ui.player.yDistanceTo
 import kotlin.math.abs
@@ -77,12 +75,6 @@ class MousikiPlayerMotionLayout @JvmOverloads constructor(
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG_NEW, "onInterceptTouchEvent parent: ${event.name()}")
-        Log.d(
-            TAG_MOTION,
-            "onInterceptTouchEvent **Main**: ${event.name()}, progress = ${progress}"
-        )
-
         /*
          * This method JUST determines whether we want to intercept the motion.
          * If we return true, onTouchEvent will be called and we do the actual
@@ -143,16 +135,6 @@ class MousikiPlayerMotionLayout @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG_NEW, "onTouchEvent parent: ${event.name()}")
-        Log.d(
-            TAG_MOTION,
-            "onTouchEvent Main: ${event.name()}, progress = ${progress},touchStarted=$touchStarted, state:${
-                stateName(
-                    currentState
-                )
-            }, start:${stateName(startState)}, end:${stateName(endState)}"
-        )
-
         if (event.actionMasked == MotionEvent.ACTION_CANCEL
             || event.actionMasked == MotionEvent.ACTION_UP
             || event.actionMasked == MotionEvent.ACTION_POINTER_UP
@@ -165,7 +147,6 @@ class MousikiPlayerMotionLayout @JvmOverloads constructor(
                     event.y
                 ) && event.actionMasked == MotionEvent.ACTION_UP
             ) {
-                Log.d(TAG_MOTION, "on click")
                 clicked = true
                 transitionToState(R.id.expanded)
             }
@@ -206,10 +187,6 @@ class MousikiPlayerMotionLayout @JvmOverloads constructor(
         if (!touchStarted) {
             viewToDetectTouch.getHitRect(viewRect)
             touchStarted = viewRect.contains(event.x.toInt(), event.y.toInt())
-
-            if (touchStarted && event.action == MotionEvent.ACTION_UP) {
-                Log.d(TAG_MOTION, "on UP")
-            }
         }
         return (touchStarted && super.onTouchEvent(event))
     }

@@ -45,7 +45,6 @@ class PlayerVideosDelegate(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        Log.d("PlayerFragment_pager", "onCreateViewHolder: for normal item")
         val view = parent.inflate(R.layout.item_player_video)
         return ViewHolder(view).apply {
             adjustVideoSize()
@@ -57,7 +56,6 @@ class PlayerVideosDelegate(
         position: Int,
         holder: RecyclerView.ViewHolder
     ) {
-        Log.d("PlayerFragment_pager", "onBindViewHolder: for normal item at $position")
         val video = items[position] as DisplayedVideoItem
         (holder as ViewHolder).bind(video)
     }

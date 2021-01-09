@@ -1,12 +1,10 @@
 package com.cas.musicplayer.ui.common.ads
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.player.TAG_PAGER
 
 
 /**
@@ -25,7 +23,6 @@ class PagerAdsCellDelegate : AdsCellDelegate() {
         position: Int,
         holder: RecyclerView.ViewHolder
     ) {
-        Log.d("PlayerFragment_pager", "onBindViewHolder: for normal item ads $position")
         super.onBindViewHolder(items, position, holder)
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
@@ -29,7 +28,6 @@ import com.cas.musicplayer.domain.model.toYoutubeDuration
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -192,16 +190,13 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
-        //Log.d(TAG_SERVICE, "onNewIntent: ${intent?.dumpData()}")
     }
 
     override fun onResume() {
         super.onResume()
-        //Log.d(TAG_SERVICE, "onResume: from service:${intent.bool(EXTRAS_FROM_PLAYER_SERVICE)}")
         if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
             expandBottomPanel()
             if (intent.bool(EXTRAS_OPEN_BATTERY_SAVER_MODE)) {
-                Log.d(TAG_SERVICE, "onResume: OPEN SAVE MODE FROM ACTIVITY")
                 playerFragment.openBatterySaverMode()
             }
         }
@@ -216,15 +211,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        //Log.d(TAG_SERVICE, "onPause ")
-        // Movable video
-        // VideoEmplacementLiveData.out()
-    }
-
     override fun onDestroy() {
-        Log.d(TAG_SERVICE, "onDestroy: activity")
         exitDialog?.dismiss()
         dialogDrawOverApps?.dismiss()
         super.onDestroy()

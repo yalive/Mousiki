@@ -62,21 +62,6 @@ class MusicApp : Application(), ComponentProvider {
         AdsManager.init(applicationScope)
     }
 
-    override fun onLowMemory() {
-        super.onLowMemory()
-        Log.d(TAG_SERVICE, "onLowMemory: app")
-    }
-
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-        Log.d(TAG_SERVICE, "onTrimMemory: app with flag=${trimFlag(level)}")
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        Log.d(TAG_SERVICE, "onTerminate: app")
-    }
-
     companion object {
         private lateinit var instance: MusicApp
 
