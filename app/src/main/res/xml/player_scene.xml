@@ -40,7 +40,12 @@
 
             <KeyAttribute
                 android:alpha="0"
-                app:framePosition="80"
+                app:framePosition="90"
+                app:motionTarget="@id/btnYoutube" />
+
+            <KeyAttribute
+                android:alpha="0"
+                app:framePosition="85"
                 app:motionTarget="@id/tileView" />
 
             <KeyAttribute
@@ -50,7 +55,7 @@
 
             <KeyAttribute
                 android:alpha="0"
-                app:framePosition="80"
+                app:framePosition="78"
                 app:motionTarget="@id/playbackControlsView" />
 
             <KeyPosition
@@ -154,6 +159,19 @@
         </Constraint>
 
         <Constraint
+            android:id="@+id/btnYoutube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/twenty_four_24dp"
+            android:layout_marginBottom="@dimen/sixteen_16dp"
+            app:layout_constraintBottom_toTopOf="@+id/tileView"
+            app:layout_constraintStart_toStartOf="parent">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint
             android:id="@+id/seekBarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -249,6 +267,19 @@
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/btnYoutube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/twenty_four_24dp"
+            android:layout_marginBottom="@dimen/sixteen_16dp"
+            app:layout_constraintBottom_toTopOf="@+id/tileView"
+            app:layout_constraintStart_toStartOf="parent">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="visible" />
         </Constraint>
 
         <Constraint
@@ -361,6 +392,19 @@
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@+id/btnYoutube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/twenty_four_24dp"
+            android:layout_marginBottom="@dimen/sixteen_16dp"
+            app:layout_constraintBottom_toTopOf="@+id/tileView"
+            app:layout_constraintStart_toStartOf="parent">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="visible" />
         </Constraint>
 
         <Constraint

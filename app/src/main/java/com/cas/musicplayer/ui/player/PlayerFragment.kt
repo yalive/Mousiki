@@ -387,7 +387,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         val fragment = activity?.supportFragmentManager
             ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()
         val fm = activity?.supportFragmentManager
-        fm?.beginTransaction()?.replace(R.id.queueFragmentContainer, fragment)?.commit()
+        fm?.beginTransaction()?.setCustomAnimations(
+            R.anim.slide_in_up, R.anim.slide_out_up
+        )?.replace(R.id.queueFragmentContainer, fragment)?.commit()
         (fragment as? QueueFragment)?.doOnClose {
             onQueueClosed()
         }

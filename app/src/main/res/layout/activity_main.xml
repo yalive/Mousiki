@@ -82,6 +82,6 @@
         android:id="@+id/queueFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="40dp"
+        android:elevation="24dp"
         android:visibility="gone" />
 </androidx.constraintlayout.motion.widget.MotionLayout>
