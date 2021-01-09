@@ -37,6 +37,10 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
 
     private var lastDownTime: Long = 0
 
+    private val horizontalPager by lazy {
+        findViewById<HorizontalMotionPager>(R.id.newPager)
+    }
+
     init {
         setTransitionListener(object : TransitionAdapter() {
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
@@ -49,6 +53,7 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
                 endId: Int
             ) {
                 super.onTransitionStarted(motionLayout, startId, endId)
+                horizontalPager.reset()
             }
 
             override fun onTransitionChange(
@@ -141,7 +146,11 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
         Log.d(TAG_NEW, "onTouchEvent parent: ${event.name()}")
         Log.d(
             TAG_MOTION,
-            "onTouchEvent Main: ${event.name()}, progress = ${progress},touchStarted=$touchStarted, state:${stateName()}, start:${startStateName()}, end:${endStateName()}"
+            "onTouchEvent Main: ${event.name()}, progress = ${progress},touchStarted=$touchStarted, state:${
+                stateName(
+                    currentState
+                )
+            }, start:${stateName(startState)}, end:${stateName(endState)}"
         )
 
         if (event.actionMasked == MotionEvent.ACTION_CANCEL
@@ -214,26 +223,8 @@ class SingleViewTouchableMotionLayout @JvmOverloads constructor(
     }
 
 
-    private fun stateName(): String {
-        return when (currentState) {
-            R.id.collapsed -> "Collapsed"
-            R.id.expanded -> "Expanded"
-            R.id.hidden -> "Hidden"
-            else -> "Unknown"
-        }
-    }
-
-    private fun startStateName(): String {
-        return when (startState) {
-            R.id.collapsed -> "Collapsed"
-            R.id.expanded -> "Expanded"
-            R.id.hidden -> "Hidden"
-            else -> "Unknown"
-        }
-    }
-
-    private fun endStateName(): String {
-        return when (endState) {
+    private fun stateName(id: Int): String {
+        return when (id) {
             R.id.collapsed -> "Collapsed"
             R.id.expanded -> "Expanded"
             R.id.hidden -> "Hidden"

@@ -4,6 +4,7 @@
 
     <!-- Swipe to left -->
     <Transition
+        android:id="@+id/idleToLeft"
         app:constraintSetEnd="@+id/swipedLeft"
         app:constraintSetStart="@+id/idle"
         app:duration="400">
@@ -29,6 +30,7 @@
 
     <!-- Swipe to right -->
     <Transition
+        android:id="@+id/idleToRight"
         app:constraintSetEnd="@+id/swipedRight"
         app:constraintSetStart="@+id/idle"
         app:duration="400">
@@ -58,7 +60,7 @@
         <Constraint
             android:id="@+id/cardPager"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +74,7 @@
         <Constraint
             android:id="@+id/cardPager"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="200dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -86,7 +88,7 @@
         <Constraint
             android:id="@+id/cardPager"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -99,7 +101,7 @@
         <Constraint
             android:id="@+id/cardPager"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="200dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -113,7 +115,7 @@
         <Constraint
             android:id="@+id/cardPager"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
