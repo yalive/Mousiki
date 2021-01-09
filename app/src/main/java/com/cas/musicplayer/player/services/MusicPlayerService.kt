@@ -93,10 +93,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
         // check last media session
         if (intent?.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
-            MediaButtonReceiver.handleIntent(mediaSession, intent)
             val event = intent?.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
-            if (event?.action == KeyEvent.ACTION_DOWN) {
+            if (event?.action == KeyEvent.ACTION_DOWN && intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
                 handleLastSessionSysMediaButton()
+                Log.d(TAG_SERVICE, "should handle last media session: ")
+            } else {
+                MediaButtonReceiver.handleIntent(mediaSession, intent)
             }
         }
         intent?.doOnExtrasTrue(COMMAND_RESUME) {
@@ -195,7 +197,10 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                     )
                     return
                 }
-                Log.d(TAG_SERVICE, "onPlayFromMediaId media session callback , extras=$extras")
+                Log.d(
+                    TAG_SERVICE,
+                    "onPlayFromMediaId media session callback, mediaId=$mediaId , extras=$extras"
+                )
                 mediaId?.let {
                     youtubePlayerManager.loadVideo(mediaId, 0f)
                 }
