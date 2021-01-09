@@ -86,13 +86,13 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG_SERVICE, "onStartCommand: ${intent?.dumpData()}")
         lifecycleScope.launch {
             val notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
             notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
             startForeground(NOW_PLAYING_NOTIFICATION, notification)
             scheduleStopForeground()
         }
-        Log.d(TAG_SERVICE, "onStartCommand: ${intent?.dumpData()}")
         if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
             handleLastSessionSysMediaButton()
         }
@@ -168,17 +168,17 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
                 if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onPlay callback")
+                Log.d(TAG_SERVICE, "onPlay media session callback")
                 youtubePlayerManager.play()
             }
 
             override fun onPause() {
-                Log.d(TAG_SERVICE, "onPause callback")
+                Log.d(TAG_SERVICE, "onPause media session callback")
                 youtubePlayerManager.pause()
             }
 
             override fun onStop() {
-                Log.d(TAG_SERVICE, "onStop callback")
+                Log.d(TAG_SERVICE, "onStop media session callback")
                 stopForeground(true)
             }
 
@@ -188,8 +188,14 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
-                if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onPlayFromMediaId callback , extras=$extras")
+                if (isScreenLocked()) {
+                    Log.d(
+                        TAG_SERVICE,
+                        "onPlayFromMediaId media session callback , extras=$extras  ==> Screen LOCKED"
+                    )
+                    return
+                }
+                Log.d(TAG_SERVICE, "onPlayFromMediaId media session callback , extras=$extras")
                 mediaId?.let {
                     youtubePlayerManager.loadVideo(mediaId, 0f)
                 }
@@ -197,18 +203,18 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             override fun onSkipToNext() {
                 if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onSkipToNext callback")
+                Log.d(TAG_SERVICE, "onSkipToNext media session callback")
                 PlayerQueue.playNextTrack()
             }
 
             override fun onSkipToPrevious() {
                 if (isScreenLocked()) return
-                Log.d(TAG_SERVICE, "onSkipToPrevious callback")
+                Log.d(TAG_SERVICE, "onSkipToPrevious media session callback")
                 PlayerQueue.playPreviousTrack()
             }
 
             override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
-                Log.d(TAG_SERVICE, "onCommand callback with command=$command, and extras=${extras}")
+                Log.d(TAG_SERVICE, "onCommand media session callback with command=$command, and extras=${extras}")
                 if (command == CustomCommand.ENABLE_NOTIFICATION_ACTIONS) {
                     youtubePlayerManager.onScreenUnlocked()
                 } else if (command == CustomCommand.DISABLE_NOTIFICATION_ACTIONS) {
@@ -217,7 +223,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
-                Log.d(TAG_SERVICE, "onCustomAction callback")
+                Log.d(TAG_SERVICE, "onCustomAction media session callback")
                 val metadata: MediaMetadataCompat = mediaSession.controller.metadata ?: return
                 if (action == CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE) {
                     lifecycleScope.launch {
@@ -408,7 +414,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
 
         private suspend fun updateNotification(state: PlaybackStateCompat) {
-            Log.d(TAG_SERVICE, "updateNotification")
+            //Log.d(TAG_SERVICE, "updateNotification")
             val updatedState = state.state
             // Skip building a notification when state is "none" and metadata is null.
             val notification = if (mediaController.metadata != null

@@ -3,11 +3,13 @@ package com.cas.musicplayer.player.services
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.core.os.bundleOf
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.MousikiPlayer
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.toast
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -26,6 +28,9 @@ class YoutubePlayerManager(
 
     private var youTubePlayer: YouTubePlayer? = null
     private var playbackstateBuilder = PlaybackStateCompat.Builder()
+    private var elapsedSeconds: Int = 0
+    private var seekToCalled = false
+    private var stateBeforeSeek: PlayerConstants.PlayerState? = null
 
     override fun onReady(youTubePlayer: YouTubePlayer) {
         this.youTubePlayer = youTubePlayer
@@ -42,11 +47,87 @@ class YoutubePlayerManager(
     }
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+        Log.d(TAG_SERVICE, "onStateChange: $state")
         PlaybackLiveData.value = state
         if (state == PlayerConstants.PlayerState.ENDED) {
-            mediaController.transportControls?.skipToNext()
+            if (seekToCalled && stateBeforeSeek == PlayerConstants.PlayerState.PAUSED) {
+                // Nothing to do
+            } else {
+                mediaController.transportControls?.skipToNext()
+            }
         }
+        seekToCalled = false
         updatePlayerState(state)
+    }
+
+    override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+        if (seekToCalled) return // Ignore if seekTo being called, and wait effect of seekTo.
+        elapsedSeconds = second.toInt()
+        val previousSeconds = PlaybackDuration.value ?: 0
+        if (elapsedSeconds != previousSeconds) {
+            PlaybackDuration.value = elapsedSeconds
+        }
+    }
+
+    override fun loadVideo(videoId: String, startSeconds: Float) {
+        elapsedSeconds = 0
+        Log.d(TAG_SERVICE, "loadVideo: YT player")
+        youTubePlayer?.loadVideo(videoId, 0f)
+    }
+
+    override fun play() {
+        Log.d(TAG_SERVICE, "play: YT player")
+        if (PlaybackLiveData.value == PlayerConstants.PlayerState.ENDED) {
+            mediaController.transportControls?.skipToNext()
+        } else {
+            youTubePlayer?.play()
+        }
+    }
+
+    override fun pause() {
+        Log.d(TAG_SERVICE, "pause: YT player")
+        youTubePlayer?.pause()
+    }
+
+    override fun stop() {
+        setMediaPlaybackState(PlaybackStateCompat.STATE_STOPPED)
+    }
+
+    override fun seekTo(time: Float) {
+        stateBeforeSeek = PlaybackLiveData.value
+        elapsedSeconds = time.toInt()
+        Log.d(TAG_SERVICE, "seekTo: ${formatTime(time.toInt())}")
+        seekToCalled = true
+        youTubePlayer?.seekTo(time)
+        PlaybackDuration.value = elapsedSeconds
+
+        // When player is paused, seekTo may not causing onStateChange to be called
+        // We need to update notification seek bar specifically when change come from player fragment
+        // In case player is not paused calling seekTo will invoke onStateChange and notification will be updated
+        val currentState = PlaybackLiveData.value ?: return
+        if (currentState == PlayerConstants.PlayerState.ENDED || currentState == PlayerConstants.PlayerState.PAUSED) {
+            setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
+        }
+    }
+
+    fun onScreenLocked() {
+        val newBuilder = playbackstateBuilder
+        newBuilder.setExtras(
+            bundleOf(
+                "screenLocked" to true
+            )
+        )
+        mediaSession.setPlaybackState(newBuilder.build())
+    }
+
+    fun onScreenUnlocked() {
+        val newBuilder = playbackstateBuilder
+        newBuilder.setExtras(
+            bundleOf(
+                "screenLocked" to false
+            )
+        )
+        mediaSession.setPlaybackState(newBuilder.build())
     }
 
     private fun updatePlayerState(state: PlayerConstants.PlayerState) {
@@ -62,23 +143,8 @@ class YoutubePlayerManager(
         }
     }
 
-    private var seconds: Int = 0
-    private var previousSec = 0
-    override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-        seconds = second.toInt()
-        val duration = PlaybackDuration.value ?: 0
-        if (seconds != duration) {
-            PlaybackDuration.value = seconds
-        }
-
-        if (seconds != previousSec) {
-            previousSec = seconds
-            val currentState = PlaybackLiveData.value ?: return
-            updatePlayerState(currentState)
-        }
-    }
-
     private fun setMediaPlaybackState(state: Int) {
+        Log.d(TAG_SERVICE, "setMediaPlaybackState: ${formatTime(elapsedSeconds)}")
         if (state == PlaybackStateCompat.STATE_PLAYING) {
             playbackstateBuilder.setActions(
                 PlaybackStateCompat.ACTION_PLAY_PAUSE
@@ -101,54 +167,10 @@ class YoutubePlayerManager(
         }
         playbackstateBuilder.setState(
             state,
-            seconds * 1000L,
+            elapsedSeconds * 1000L,
             speed
         )
         mediaSession.setPlaybackState(playbackstateBuilder.build())
-    }
-
-    override fun loadVideo(videoId: String, startSeconds: Float) {
-        //Log.d(TAG_SERVICE, "loadVideo: YT player")
-        youTubePlayer?.loadVideo(videoId, 0f)
-    }
-
-    override fun play() {
-        //Log.d(TAG_SERVICE, "play: YT player")
-        youTubePlayer?.play()
-    }
-
-    override fun pause() {
-        //Log.d(TAG_SERVICE, "pause: YT player")
-        youTubePlayer?.pause()
-    }
-
-    override fun stop() {
-        setMediaPlaybackState(PlaybackStateCompat.STATE_STOPPED)
-    }
-
-    override fun seekTo(time: Float) {
-        //Log.d(TAG_SERVICE, "seekTo: YT player")
-        youTubePlayer?.seekTo(time)
-    }
-
-    fun onScreenLocked() {
-        val newBuilder = playbackstateBuilder
-        newBuilder.setExtras(
-            bundleOf(
-                "screenLocked" to true
-            )
-        )
-        mediaSession.setPlaybackState(newBuilder.build())
-    }
-
-    fun onScreenUnlocked() {
-        val newBuilder = playbackstateBuilder
-        newBuilder.setExtras(
-            bundleOf(
-                "screenLocked" to false
-            )
-        )
-        mediaSession.setPlaybackState(newBuilder.build())
     }
 }
 

@@ -17,7 +17,6 @@ import androidx.media.session.MediaButtonReceiver
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.getBitmap
 import com.cas.musicplayer.utils.isScreenLocked
@@ -31,6 +30,8 @@ import com.squareup.picasso.Picasso
 
 const val NOW_PLAYING_CHANNEL: String = "com.mousiki.media.NOW_PLAYING"
 const val NOW_PLAYING_NOTIFICATION: Int = 0xb339
+
+const val TAG_BG = "come_from_bg"
 
 class NotificationBuilder(private val context: Context) {
 
@@ -109,7 +110,6 @@ class NotificationBuilder(private val context: Context) {
     )
 
     suspend fun buildNotification(sessionToken: MediaSessionCompat.Token): Notification {
-        Log.d(TAG_SERVICE, "buildNotification: called")
         if (shouldCreateNowPlayingChannel()) {
             createNowPlayingChannel()
         }
@@ -157,6 +157,11 @@ class NotificationBuilder(private val context: Context) {
         val largeIconBitmap = description?.mediaUri?.toString()?.let {
             Picasso.get().getBitmap(it, 400)
         }
+
+        if (largeIconBitmap == null) {
+            Log.d(TAG_BG, "Thumbnail null: ${description?.mediaUri}")
+        }
+
         return builder.setContentIntent(controller.sessionActivity)
             .setContentText(description?.subtitle)
             .setContentTitle(description?.title)

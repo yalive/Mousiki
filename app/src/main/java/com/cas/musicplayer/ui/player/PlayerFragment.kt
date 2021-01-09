@@ -371,12 +371,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     // TODO: move outside fragment
     private fun onClickPlayPause() {
-        Log.d(TAG_SERVICE, "onClickPlayPause: service bound=$serviceBound")
         val oldState = PlaybackLiveData.value
         oldState?.let { playerState ->
             if (playerState == PlayerConstants.PlayerState.PLAYING) {
                 PlayerQueue.pause()
-            } else if (playerState == PlayerConstants.PlayerState.PAUSED) {
+            } else if (playerState == PlayerConstants.PlayerState.PAUSED || playerState == PlayerConstants.PlayerState.ENDED) {
                 PlayerQueue.resume()
             }
         }
