@@ -82,7 +82,7 @@ var MediaMetadataCompat.Builder.musicTrack: MusicTrack
         id = value.youtubeId
         title = value.title
         displayTitle = value.title
-        mediaUri = value.imgUrl
+        mediaUri = value.imgUrlDefault
         artUri = value.imgUrl
         albumArtUri = value.imgUrl
         duration = value.totalSeconds * 1000
