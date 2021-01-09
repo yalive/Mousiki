@@ -72,7 +72,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fullScreenSwitchView" />
 
-
     <RelativeLayout
         android:id="@+id/tileView"
         android:layout_width="match_parent"
@@ -299,7 +298,9 @@
         <com.cas.musicplayer.ui.player.view.PreventTouchCard
             android:id="@+id/cardPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@color/colorBlack"
+            app:cardCornerRadius="4dp" />
     </com.cas.musicplayer.ui.player.view.HorizontalMotionPager>
 
     <com.cas.musicplayer.ui.player.view.LockScreenView

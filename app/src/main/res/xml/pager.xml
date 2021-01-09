@@ -6,11 +6,11 @@
     <Transition
         app:constraintSetEnd="@+id/swipedLeft"
         app:constraintSetStart="@+id/idle"
-        app:duration="300">
+        app:duration="400">
         <OnSwipe
             app:dragDirection="dragStart"
-            app:maxAcceleration="30"
-            app:onTouchUp="autoCompleteToEnd"
+            app:maxAcceleration="10"
+            app:onTouchUp="autoComplete"
             app:touchAnchorId="@id/cardPager"
             app:touchRegionId="@id/cardPager" />
     </Transition>
@@ -27,16 +27,15 @@
         app:constraintSetStart="@+id/comeFromRight"
         app:duration="200" />
 
-
     <!-- Swipe to right -->
     <Transition
         app:constraintSetEnd="@+id/swipedRight"
         app:constraintSetStart="@+id/idle"
-        app:duration="300">
+        app:duration="400">
         <OnSwipe
             app:dragDirection="dragEnd"
-            app:onTouchUp="autoCompleteToEnd"
-            app:maxAcceleration="30"
+            app:maxAcceleration="10"
+            app:onTouchUp="autoComplete"
             app:touchAnchorId="@id/cardPager"
             app:touchRegionId="@id/cardPager" />
     </Transition>
@@ -76,7 +75,9 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="200dp"
-            app:layout_constraintEnd_toStartOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </Constraint>
     </ConstraintSet>
@@ -101,7 +102,9 @@
             android:layout_height="0dp"
             android:layout_marginStart="200dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toEndOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </Constraint>
     </ConstraintSet>
