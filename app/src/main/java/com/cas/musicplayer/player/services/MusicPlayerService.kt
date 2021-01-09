@@ -14,10 +14,7 @@ import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
@@ -93,11 +90,14 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             startForeground(NOW_PLAYING_NOTIFICATION, notification)
             scheduleStopForeground()
         }
-        if (intent?.extras?.getString(Intent.EXTRA_PACKAGE_NAME) == "android") {
-            handleLastSessionSysMediaButton()
-        }
+
+        // check last media session
         if (intent?.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
             MediaButtonReceiver.handleIntent(mediaSession, intent)
+            val event = intent?.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
+            if (event?.action == KeyEvent.ACTION_DOWN) {
+                handleLastSessionSysMediaButton()
+            }
         }
         intent?.doOnExtrasTrue(COMMAND_RESUME) {
             PlayerQueue.value?.let { currentTrack ->
@@ -214,7 +214,10 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
-                Log.d(TAG_SERVICE, "onCommand media session callback with command=$command, and extras=${extras}")
+                Log.d(
+                    TAG_SERVICE,
+                    "onCommand media session callback with command=$command, and extras=${extras}"
+                )
                 if (command == CustomCommand.ENABLE_NOTIFICATION_ACTIONS) {
                     youtubePlayerManager.onScreenUnlocked()
                 } else if (command == CustomCommand.DISABLE_NOTIFICATION_ACTIONS) {
