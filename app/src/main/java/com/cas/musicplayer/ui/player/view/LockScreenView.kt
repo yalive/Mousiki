@@ -94,7 +94,7 @@ class LockScreenView @JvmOverloads constructor(
             oldState?.let { playerState ->
                 if (playerState == PlayerConstants.PlayerState.PLAYING) {
                     PlayerQueue.pause()
-                } else if (playerState == PlayerConstants.PlayerState.PAUSED) {
+                } else if (playerState == PlayerConstants.PlayerState.PAUSED || playerState == PlayerConstants.PlayerState.ENDED) {
                     PlayerQueue.resume()
                 }
             }
