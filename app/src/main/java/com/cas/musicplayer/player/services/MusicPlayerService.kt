@@ -233,8 +233,8 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             override fun onCustomAction(action: String?, extras: Bundle?) {
                 Log.d(TAG_SERVICE, "onCustomAction media session callback")
                 val metadata: MediaMetadataCompat = mediaSession.controller.metadata ?: return
-                if (action == CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE) {
-                    lifecycleScope.launch {
+                lifecycleScope.launch {
+                    if (action == CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE) {
                         val mediaId = metadata.description.mediaId
                         val title = metadata.description.title
                         val duration = PlayerQueue.value?.duration
@@ -246,18 +246,16 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                             )
                             injector.addSongToFavourite(track)
                         }
-                    }
-                } else if (action == CustomAction.REMOVE_CURRENT_MEDIA_FROM_FAVOURITE) {
-                    lifecycleScope.launch {
+                    } else if (action == CustomAction.REMOVE_CURRENT_MEDIA_FROM_FAVOURITE) {
                         val mediaId = metadata.description.mediaId
                         mediaId?.let {
                             injector.removeSongFromFavouriteList(mediaId)
                         }
                     }
-                }
-                val playbackState = mediaSession.controller.playbackState
-                playbackState?.let {
-                    mediaSession.setPlaybackState(playbackState)
+                    val playbackState = mediaSession.controller.playbackState
+                    playbackState?.let {
+                        mediaSession.setPlaybackState(playbackState)
+                    }
                 }
             }
         }
