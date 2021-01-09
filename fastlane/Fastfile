@@ -31,7 +31,7 @@ platform :android do
             app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
             groups: "qa-team-internal",
             release_notes: "
-            - Keep improving...Let user remove notification
+            - Keep improving...Refinement
             "
         )
     end

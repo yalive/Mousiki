@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cas.musicplayer.ui.player.view.SingleViewTouchableMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cas.musicplayer.ui.player.view.MousikiPlayerMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/motionLayout"
@@ -305,4 +305,4 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-</com.cas.musicplayer.ui.player.view.SingleViewTouchableMotionLayout>
+</com.cas.musicplayer.ui.player.view.MousikiPlayerMotionLayout>
