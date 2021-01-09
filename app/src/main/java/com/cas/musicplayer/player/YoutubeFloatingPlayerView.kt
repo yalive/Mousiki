@@ -216,7 +216,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
-        Log.d(TAG_SERVICE, "onVideoEmplacementChanged: ")
+        Log.d(TAG_SERVICE, "onVideoEmplacementChanged: $emplacement")
         radius = emplacement.radius
         this.videoEmplacement = emplacement
         toggleFullScreenVideoPlayer(false)
