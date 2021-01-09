@@ -69,7 +69,7 @@ class MusicApp : Application(), ComponentProvider {
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
-        Log.d(TAG_SERVICE, "onTrimMemory: app")
+        Log.d(TAG_SERVICE, "onTrimMemory: app with flag=${trimFlag(level)}")
     }
 
     override fun onTerminate() {
@@ -96,6 +96,19 @@ class MusicApp : Application(), ComponentProvider {
         } else if (preferredTheme == UserPrefs.THEME_DARK) {
             UserPrefs.setThemeModeValue(UserPrefs.THEME_DARK)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+    }
+
+    fun trimFlag(flag: Int): String {
+        return when (flag) {
+            TRIM_MEMORY_BACKGROUND -> "TRIM_MEMORY_BACKGROUND"
+            TRIM_MEMORY_COMPLETE -> "TRIM_MEMORY_COMPLETE"
+            TRIM_MEMORY_MODERATE -> "TRIM_MEMORY_MODERATE"
+            TRIM_MEMORY_RUNNING_CRITICAL -> "TRIM_MEMORY_RUNNING_CRITICAL"
+            TRIM_MEMORY_RUNNING_LOW -> "TRIM_MEMORY_RUNNING_LOW"
+            TRIM_MEMORY_RUNNING_MODERATE -> "TRIM_MEMORY_RUNNING_MODERATE"
+            TRIM_MEMORY_UI_HIDDEN -> "TRIM_MEMORY_UI_HIDDEN"
+            else -> "Unknown"
         }
     }
 }

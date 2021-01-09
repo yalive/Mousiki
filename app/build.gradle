@@ -12,8 +12,8 @@ apply plugin: 'org.sonarqube'
 
 repositories {
     maven { url 'https://jitpack.io' }
-    maven { url 'https://s3.amazonaws.com/moat-sdk-builds'}
-    maven { url  "https://adcolony.bintray.com/AdColony" }
+    maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+    maven { url "https://adcolony.bintray.com/AdColony" }
 }
 
 apply plugin: 'com.google.firebase.crashlytics'
@@ -79,8 +79,8 @@ android {
         }
 
         dev {
-            versionCode 76
-            versionName "1.76"
+            versionCode 80
+            versionName "1.80"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }

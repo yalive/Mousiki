@@ -17,7 +17,6 @@ import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
@@ -29,13 +28,13 @@ import com.google.android.gms.ads.formats.MediaView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.synthetic.main.fragment_track_options.*
 import java.util.concurrent.Executors
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
+
 class TrackOptionsFragment : BottomSheetDialogFragment() {
 
     var onDismissed: (() -> Unit)? = null
@@ -130,29 +129,16 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     }
 
     override fun dismiss() {
-        restorePlayer()
         adsViewModel.loadTrackOptionsAd()
         super.dismiss()
     }
 
     override fun onResume() {
         super.onResume()
-        if (PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
-            PlayerQueue.hideVideo()
-        }
-
         dialog?.setOnDismissListener {
             adsViewModel.loadTrackOptionsAd()
             onDismissed?.invoke()
-            restorePlayer()
-        }
-    }
-
-    private fun restorePlayer() {
-        val mainActivity = activity as? MainActivity ?: return
-        if (mainActivity.isBottomPanelCollapsed() && PlaybackLiveData.value != null && PlaybackLiveData.value != PlayerConstants.PlayerState.UNKNOWN) {
-            PlayerQueue.showVideo()
-            PlayerQueue.resume()
+            dismiss()
         }
     }
 

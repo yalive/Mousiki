@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.adcolony.sdk.AdColony
-import com.afollestad.materialdialogs.MaterialDialog
 import com.cas.common.extensions.bool
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.extensions.isDarkMode
@@ -202,12 +201,13 @@ class MainActivity : BaseActivity() {
         if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
             expandBottomPanel()
             if (intent.bool(EXTRAS_OPEN_BATTERY_SAVER_MODE)) {
+                Log.d(TAG_SERVICE, "onResume: OPEN SAVE MODE FROM ACTIVITY")
                 playerFragment.openBatterySaverMode()
             }
         }
         ViewCompat.requestApplyInsets(binding.coordinator)
         handleDynamicLinks()
-        VideoEmplacementLiveData.inApp()
+
 
         // Clean intent
         intent = intent.apply {
@@ -220,7 +220,7 @@ class MainActivity : BaseActivity() {
         super.onPause()
         //Log.d(TAG_SERVICE, "onPause ")
         // Movable video
-        VideoEmplacementLiveData.out()
+        // VideoEmplacementLiveData.out()
     }
 
     override fun onDestroy() {
@@ -293,11 +293,6 @@ class MainActivity : BaseActivity() {
             return
         }
         playerFragment.collapsePlayer()
-    }
-
-    fun isBottomPanelCollapsed(): Boolean {
-        if (playerFragment.view == null) return false
-        return playerFragment.isCollapsed()
     }
 
     fun isBottomPanelExpanded(): Boolean {
