@@ -31,7 +31,7 @@ import com.cas.musicplayer.databinding.FragmentPlayerBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.services.FavouriteReceiver
+import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -117,6 +117,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             hidePlayer()
             bindServiceIfNecessary()
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -359,7 +360,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun showQueue() {
-        PlayerQueue.hideVideo()
         activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = true
         val fragment = activity?.supportFragmentManager
             ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()

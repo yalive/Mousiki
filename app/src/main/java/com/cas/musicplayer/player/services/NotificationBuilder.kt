@@ -15,6 +15,8 @@ import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.extensions.isPlaying
+import com.cas.musicplayer.player.receiver.DeleteNotificationReceiver
+import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.getBitmap
@@ -29,8 +31,6 @@ import com.squareup.picasso.Picasso
 
 const val NOW_PLAYING_CHANNEL: String = "com.mousiki.media.NOW_PLAYING"
 const val NOW_PLAYING_NOTIFICATION: Int = 0xb339
-
-const val TAG_BG = "come_from_bg"
 
 class NotificationBuilder(private val context: Context) {
 

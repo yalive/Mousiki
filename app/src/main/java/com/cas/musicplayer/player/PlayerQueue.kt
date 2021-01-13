@@ -1,7 +1,6 @@
 package com.cas.musicplayer.player
 
 import android.content.Intent
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.randomOrNull
@@ -10,7 +9,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.ui.popular.swapped
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
@@ -117,18 +115,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         return currentTrack.youtubeId == musicTrack.youtubeId
     }
 
-    fun hideVideo() {
-        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_HIDE_VIDEO, true)
-        MusicApp.get().startService(intent)
-    }
-
-    fun showVideo() {
-        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_SHOW_VIDEO, true)
-        MusicApp.get().startService(intent)
-    }
-
     private fun getNextTrack(): MusicTrack? {
         val mQueue = queue ?: return null
         if (mQueue.isEmpty()) return null
@@ -162,7 +148,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             return
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, videoId)
+        intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, true)
         MusicApp.get().startService(intent)
     }
 
