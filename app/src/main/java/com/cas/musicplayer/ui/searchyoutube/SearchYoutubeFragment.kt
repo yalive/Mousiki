@@ -32,10 +32,11 @@ import kotlinx.coroutines.launch
  **********************************
  */
 
-class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>() {
+class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
+    R.layout.fragment_search_youtube
+) {
 
     public override val viewModel by viewModel { injector.searchYoutubeViewModel }
-    override val layoutResourceId: Int = R.layout.fragment_search_youtube
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
     private var recyclerViewSuggestions: RecyclerView? = null

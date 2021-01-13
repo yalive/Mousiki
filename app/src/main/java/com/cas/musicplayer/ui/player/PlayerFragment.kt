@@ -55,10 +55,8 @@ import java.util.concurrent.Executors
  * Copyright © 2020 Mousiki
  ************************************
  */
-const val TAG_SERVICE = "service_playback"
 
 class PlayerFragment : Fragment(R.layout.fragment_player) {
-    private val TAG = "player_view"
     private val binding by viewBinding(FragmentPlayerBinding::bind)
     private val viewModel by viewModel { injector.playerViewModel }
     private var seekingDuration = false

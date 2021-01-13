@@ -18,9 +18,10 @@ import com.cas.musicplayer.utils.navigateSafeAction
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 
-class SettingsFragment : BaseFragment<SettingsViewModel>() {
+class SettingsFragment : BaseFragment<SettingsViewModel>(
+    R.layout.fragment_settings
+) {
 
-    override val layoutResourceId: Int = R.layout.fragment_settings
     override val viewModel by viewModel { injector.settingsViewModel }
     override val screenTitle: String by lazy {
         getString(R.string.menu_settings)

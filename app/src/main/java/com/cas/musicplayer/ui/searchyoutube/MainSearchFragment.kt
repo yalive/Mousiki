@@ -22,9 +22,10 @@ import kotlinx.android.synthetic.main.main_search_fragment.*
  * Created by Y.Abdelhadi on 3/26/20.
  ***************************************
  */
-class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
+class MainSearchFragment : BaseFragment<MainSearchViewModel>(
+    R.layout.main_search_fragment
+) {
     override val viewModel by viewModel { injector.mainSearchViewModel }
-    override val layoutResourceId: Int = R.layout.main_search_fragment
     private val searchGenresAdapter by lazy { SearchGenresAdapter() }
 
     private val mainViewModel by activityViewModel { injector.mainViewModel }

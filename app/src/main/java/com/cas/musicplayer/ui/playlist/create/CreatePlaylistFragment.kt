@@ -19,8 +19,9 @@ import kotlinx.android.synthetic.main.fragment_create_palylist.*
  * Created by Y.Abdelhadi on 4/4/20.
  ***************************************
  */
-class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>() {
-    override val layoutResourceId = R.layout.fragment_create_palylist
+class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
+    R.layout.fragment_create_palylist
+) {
     override val viewModel by lazy { injector.createPlaylistViewModel }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

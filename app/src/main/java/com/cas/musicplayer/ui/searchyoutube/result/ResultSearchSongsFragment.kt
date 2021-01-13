@@ -17,9 +17,10 @@ import com.cas.musicplayer.utils.Constants
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
-class ResultSearchSongsFragment : BaseSearchResultFragment(), PageableFragment {
+class ResultSearchSongsFragment : BaseSearchResultFragment(
+    R.layout.fragment_yt_search_videos
+), PageableFragment {
 
-    override val layoutResourceId: Int = R.layout.fragment_yt_search_videos
     override val pageTitle: String by lazy {
         getString(R.string.title_videos)
     }

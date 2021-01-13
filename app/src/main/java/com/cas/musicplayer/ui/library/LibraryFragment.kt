@@ -29,9 +29,10 @@ import kotlinx.android.synthetic.main.fragment_library.*
  * Created by Abdelhadi on 2019-11-28.
  ***************************************
  */
-class LibraryFragment : BaseFragment<LibraryViewModel>() {
+class LibraryFragment : BaseFragment<LibraryViewModel>(
+    R.layout.fragment_library
+) {
 
-    override val layoutResourceId: Int = R.layout.fragment_library
     override val viewModel by viewModel { injector.libraryViewModel }
     override val screenTitle by lazy {
         getString(R.string.library)
