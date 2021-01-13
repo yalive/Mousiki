@@ -40,21 +40,15 @@ class CommonAdsViewModel @Inject constructor(
     }
 
     fun loadExitAd() = viewModelScope.launch {
-        loadSingleNativeAd()?.also { ad ->
+        AdsManager.getAd()?.also { ad ->
             exitAd = ad
         }
     }
 
     fun loadTrackOptionsAd() = viewModelScope.launch {
         if (!appConfig.showNativeAdTrackOptions()) return@launch
-        loadSingleNativeAd()?.also { ad ->
+        AdsManager.getAd()?.also { ad ->
             trackOptionsAd = ad
         }
-    }
-
-    override fun onCleared() {
-        trackOptionsAd?.destroy()
-        exitAd?.destroy()
-        super.onCleared()
     }
 }

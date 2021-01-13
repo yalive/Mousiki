@@ -1,15 +1,15 @@
-package com.cas.musicplayer.ui.player
+package com.cas.musicplayer.ui.player.view
 
 import android.content.Context
 import android.support.v4.media.session.PlaybackStateCompat
+import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.postDelayed
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.android.synthetic.main.mini_player_view.view.*
 
 /**
@@ -17,26 +17,16 @@ import kotlinx.android.synthetic.main.mini_player_view.view.*
  * Created by Y.Abdelhadi on 5/11/20.
  ***************************************
  */
-class MiniPlayerView : ConstraintLayout {
+class MiniPlayerView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var onClickShowQueue: (() -> Unit)? = null
     private var onClickPlayPause: (() -> Unit)? = null
 
     private lateinit var miniPlayerContainer: FrameLayout
 
-    constructor(context: Context) : super(context) {
-        init(null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    init {
         init(attrs)
     }
 
@@ -51,6 +41,8 @@ class MiniPlayerView : ConstraintLayout {
         btnShowQueue.onClick {
             onClickShowQueue?.invoke()
         }
+
+        txtTitle.isSelected = true
     }
 
     fun updateProgress(newProgress: Int) {
@@ -58,7 +50,12 @@ class MiniPlayerView : ConstraintLayout {
     }
 
     fun onTrackChanged(track: MusicTrack) {
+        artistName.text = track.title.substringBefore("-")
+        txtTitle.ellipsize = null
         txtTitle.text = track.title
+        postDelayed(500) {
+            txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
+        }
     }
 
     fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
@@ -76,11 +73,5 @@ class MiniPlayerView : ConstraintLayout {
 
     fun doOnClickPlayPause(callback: () -> Unit) {
         onClickPlayPause = callback
-    }
-
-    fun acquirePlayer(youTubePlayerView: YouTubePlayerView) {
-        val oldParent = youTubePlayerView.parent as? ViewGroup
-        oldParent?.removeView(youTubePlayerView)
-        miniPlayerContainer.addView(youTubePlayerView)
     }
 }

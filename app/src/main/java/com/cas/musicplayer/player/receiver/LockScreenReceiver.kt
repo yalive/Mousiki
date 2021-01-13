@@ -1,4 +1,4 @@
-package com.cas.musicplayer.player.services
+package com.cas.musicplayer.player.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.extensions.isPlaying
+import com.cas.musicplayer.player.extensions.toText
 import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomCommand
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.canDrawOverApps
@@ -41,7 +42,8 @@ class LockScreenReceiver(
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_SCREEN_OFF) {
-            val isPlaying = mediaController.playbackState?.isPlaying ?: false
+            val state = mediaController.playbackState?.toText()
+            val isPlaying = mediaController.playbackState?.isPlaying == true
             if (isPlaying) {
                 shouldShowPopup = true
                 mediaController.transportControls.pause()
@@ -63,7 +65,10 @@ class LockScreenReceiver(
                     positiveButton(R.string.common_turn_on) {
                         mediaController.transportControls.play()
                         val startLockScreenIntent = Intent(context, MainActivity::class.java)
-                        startLockScreenIntent.putExtra(MainActivity.EXTRAS_FROM_PLAYER_SERVICE, true)
+                        startLockScreenIntent.putExtra(
+                            MainActivity.EXTRAS_FROM_PLAYER_SERVICE,
+                            true
+                        )
                         startLockScreenIntent.putExtra(
                             MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE,
                             true

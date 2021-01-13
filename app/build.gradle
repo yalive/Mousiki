@@ -12,8 +12,8 @@ apply plugin: 'org.sonarqube'
 
 repositories {
     maven { url 'https://jitpack.io' }
-    maven { url 'https://s3.amazonaws.com/moat-sdk-builds'}
-    maven { url  "https://adcolony.bintray.com/AdColony" }
+    maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+    maven { url "https://adcolony.bintray.com/AdColony" }
 }
 
 apply plugin: 'com.google.firebase.crashlytics'
@@ -79,8 +79,8 @@ android {
         }
 
         dev {
-            versionCode 70
-            versionName "1.70"
+            versionCode 83
+            versionName "1.83"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }
@@ -134,7 +134,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0-rc01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0-alpha1'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     testImplementation 'junit:junit:4.12'
@@ -154,7 +154,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     // Youtube Player
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.3'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     // Network inspection
@@ -198,8 +198,8 @@ dependencies {
     implementation 'com.google.ads.mediation:adcolony:4.1.4.1'
     implementation 'com.google.ads.mediation:mopub:5.13.0.0'
     implementation 'com.google.ads.mediation:unity:3.4.6.0'
-    implementation 'com.google.ads.mediation:facebook:5.9.0.0'
-    implementation 'com.facebook.android:audience-network-sdk:5.9.0'
+    implementation 'com.google.ads.mediation:facebook:6.2.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
     implementation project(path: ':common')
 

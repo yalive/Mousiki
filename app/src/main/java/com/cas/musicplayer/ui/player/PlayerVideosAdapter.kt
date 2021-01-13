@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.player
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -15,13 +16,15 @@ import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.ads.PagerAdsCellDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.screenSize
 import com.cas.musicplayer.utils.visibleInScreen
 import com.google.android.material.card.MaterialCardView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import kotlin.math.min
 
+
+const val TAG_PAGER = "PlayerVideosAdapter"
 
 class PlayerPagerAdapter(
     viewPager: ViewPager2,
@@ -36,8 +39,6 @@ class PlayerPagerAdapter(
 class PlayerVideosDelegate(
     private val viewPager: ViewPager2
 ) : AdapterDelegate<List<DisplayableItem>>() {
-
-    var reusedPlayerView: YouTubePlayerView? = null
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is DisplayedVideoItem
@@ -67,15 +68,15 @@ class PlayerVideosDelegate(
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
         fun bind(video: DisplayedVideoItem) {
-            txtTitle.text = video.songTitle
+            txtTitle.text = "$adapterPosition -${video.songTitle}"
             imgTrack.loadTrackImage(video.track)
             if (viewPager.currentItem == adapterPosition) {
-                addPlayerIfNeeded()
+                //showPlayerIfNeeded()
             }
             imgTrack.isInvisible = viewPager.currentItem == adapterPosition
         }
 
-        private fun addPlayerIfNeeded() {
+        fun showPlayerIfNeeded(playerView: YouTubePlayerView) {
             if (!viewPager.visibleInScreen()) return
             val childCount = frameLayout.childCount
             var found = false
@@ -87,25 +88,19 @@ class PlayerVideosDelegate(
                 }
             }
             if (!found) {
-                reusedPlayerView?.let { reusedPlayerView ->
-                    val oldParent = reusedPlayerView.parent as? FrameLayout
-                    oldParent?.removeView(reusedPlayerView)
-                    frameLayout.addView(reusedPlayerView)
-                }
+                val oldParent = playerView.parent as? FrameLayout
+                oldParent?.removeView(playerView)
+                frameLayout.addView(playerView)
             }
         }
 
         fun adjustVideoSize() {
-            val marginEnd = (itemView.layoutParams as ViewGroup.MarginLayoutParams).marginEnd
             val screenSize = itemView.context.screenSize()
-            val widthPx = screenSize.widthPx - marginEnd * 2
-            val avHeight = viewPager.height - txtTitle.height - youtubeCopyRightView.height
+            val videoSize = screenSize.widthPx - itemView.context.dpToPixel(32f)
             val layoutParams = videoCardView.layoutParams
-            val videoSize = min(avHeight, widthPx)
             layoutParams.width = videoSize
             layoutParams.height = videoSize
             videoCardView.layoutParams = layoutParams
         }
     }
-
 }

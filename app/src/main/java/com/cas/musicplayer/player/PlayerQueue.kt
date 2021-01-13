@@ -62,7 +62,10 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
                 }
             }
 
+            val oldQueue = queue.orEmpty()
+
             this.queue = newList
+            checkQueueChanged(oldQueue, newList)
         }
     }
 
@@ -112,18 +115,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         return currentTrack.youtubeId == musicTrack.youtubeId
     }
 
-    fun hideVideo() {
-        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_HIDE_VIDEO, true)
-        MusicApp.get().startService(intent)
-    }
-
-    fun showVideo() {
-        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_SHOW_VIDEO, true)
-        MusicApp.get().startService(intent)
-    }
-
     private fun getNextTrack(): MusicTrack? {
         val mQueue = queue ?: return null
         if (mQueue.isEmpty()) return null
@@ -157,7 +148,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             return
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, videoId)
+        intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, true)
         MusicApp.get().startService(intent)
     }
 

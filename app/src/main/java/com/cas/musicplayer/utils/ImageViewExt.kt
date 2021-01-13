@@ -161,6 +161,8 @@ fun ImageView.updateBitmap(
 ) {
     val animOut = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
     val animIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
+    animIn.duration = 1000
+    animOut.duration = 500
     animOut.setAnimationListener(object : Animation.AnimationListener {
         override fun onAnimationStart(animation: Animation?) {}
         override fun onAnimationRepeat(animation: Animation?) {}

@@ -28,6 +28,9 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
     private val searchGenresAdapter by lazy { SearchGenresAdapter() }
 
     private val mainViewModel by activityViewModel { injector.mainViewModel }
+    private val bottomPlayerSpace by lazy {
+        requireContext().resources.getDimensionPixelSize(R.dimen.padding_for_player_space)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,7 +38,11 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>() {
         recyclerView.addItemDecoration(
             MarginItemDecoration(
                 verticalMargin = dpToPixel(8),
-                horizontalMargin = dpToPixel(8)
+                horizontalMargin = dpToPixel(8),
+                bottomMarginProvider = { position ->
+                    if (position == searchGenresAdapter.itemCount - 2 || position == searchGenresAdapter.itemCount - 1) bottomPlayerSpace
+                    else dpToPixel(8)
+                }
             )
         )
         adjustStatusBarWithTheme()

@@ -1,6 +1,5 @@
 package com.cas.musicplayer.player
 
-import android.view.WindowManager
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.dpToPixel
@@ -24,9 +23,6 @@ sealed class VideoEmplacement {
     }
 
     companion object {
-
-        fun fullscreen(): EmplacementFullScreen = EmplacementFullScreen()
-
         fun out(): EmplacementOut = EmplacementOut()
     }
 }
@@ -37,19 +33,6 @@ class EmplacementInApp : VideoEmplacement() {
     override val x: Int = 0
     override val y: Int = 0
     override val radius: Float = 0f
-}
-
-class EmplacementFullScreen : VideoEmplacement() {
-    override val x: Int = 0
-
-    override val y: Int = 0
-
-    override val width: Int = WindowManager.LayoutParams.MATCH_PARENT
-
-    override val height: Int = WindowManager.LayoutParams.MATCH_PARENT
-
-    override val radius: Float
-        get() = dpToPixel(8f).toFloat()
 }
 
 class EmplacementOut : VideoEmplacement() {

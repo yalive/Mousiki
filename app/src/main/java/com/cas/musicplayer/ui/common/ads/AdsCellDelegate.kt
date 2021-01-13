@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.common.ads
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.delegatedadapter.AdapterDelegate
@@ -25,7 +26,7 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.item_ads)
+        val view = parent.inflate(R.layout.item_ad)
         return AdsViewHolder(view)
     }
 
@@ -50,6 +51,7 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         private val adView: UnifiedNativeAdView =
             itemView.findViewById<UnifiedNativeAdView>(R.id.ad_view).apply {
                 mediaView = findViewById<View>(R.id.ad_media) as MediaView
+                mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 // Register the view used for each individual asset.
                 headlineView = findViewById(R.id.ad_headline)
                 bodyView = findViewById(R.id.ad_body)

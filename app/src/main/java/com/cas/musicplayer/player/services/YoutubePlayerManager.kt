@@ -8,7 +8,6 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.MousikiPlayer
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.utils.isScreenLocked
 import com.cas.musicplayer.utils.toast
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -19,6 +18,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
  * Created by Y.Abdelhadi on 4/22/20.
  ***************************************
  */
+
 class YoutubePlayerManager(
     private val mediaController: MediaControllerCompat,
     private val mediaSession: MediaSessionCompat
@@ -26,6 +26,9 @@ class YoutubePlayerManager(
 
     private var youTubePlayer: YouTubePlayer? = null
     private var playbackstateBuilder = PlaybackStateCompat.Builder()
+    private var elapsedSeconds: Int = 0
+    private var seekToCalled = false
+    private var stateBeforeSeek: PlayerConstants.PlayerState? = null
 
     override fun onReady(youTubePlayer: YouTubePlayer) {
         this.youTubePlayer = youTubePlayer
@@ -44,68 +47,36 @@ class YoutubePlayerManager(
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
         PlaybackLiveData.value = state
         if (state == PlayerConstants.PlayerState.ENDED) {
-            mediaController.transportControls?.skipToNext()
-        }
-        when (state) {
-            PlayerConstants.PlayerState.PLAYING, PlayerConstants.PlayerState.BUFFERING -> {
-                setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING)
-            }
-            PlayerConstants.PlayerState.PAUSED -> {
-                setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
-            }
-            else -> {
+            if (seekToCalled && stateBeforeSeek == PlayerConstants.PlayerState.PAUSED) {
+                // Nothing to do
+            } else {
+                mediaController.transportControls?.skipToNext()
             }
         }
+        seekToCalled = false
+        updatePlayerState(state)
     }
 
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-        val seconds = second.toInt()
-        if (seconds % 3 == 0 && isScreenLocked()) {
-            PlayerQueue.pause()
-            return
+        if (seekToCalled) return // Ignore if seekTo being called, and wait effect of seekTo.
+        elapsedSeconds = second.toInt()
+        val previousSeconds = PlaybackDuration.value ?: 0
+        if (elapsedSeconds != previousSeconds) {
+            PlaybackDuration.value = elapsedSeconds
         }
-
-        val duration = PlaybackDuration.value ?: 0
-        if (seconds != duration) {
-            PlaybackDuration.value = seconds
-        }
-    }
-
-    private fun setMediaPlaybackState(state: Int) {
-        if (state == PlaybackStateCompat.STATE_PLAYING) {
-            playbackstateBuilder.setActions(
-                PlaybackStateCompat.ACTION_PLAY_PAUSE
-                        or PlaybackStateCompat.ACTION_PAUSE
-                        /*or PlaybackStateCompat.ACTION_SEEK_TO*/
-                        or PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-                        or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
-            )
-        } else {
-            playbackstateBuilder.setActions(
-                PlaybackStateCompat.ACTION_PLAY_PAUSE or PlaybackStateCompat.ACTION_PLAY
-                        or PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-                        /*or PlaybackStateCompat.ACTION_SEEK_TO*/
-                        or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
-            )
-        }
-        val speed = when (state) {
-            PlaybackStateCompat.STATE_PLAYING -> 1f
-            else -> 0f
-        }
-        playbackstateBuilder.setState(
-            state,
-            PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
-            speed
-        )
-        mediaSession.setPlaybackState(playbackstateBuilder.build())
     }
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
+        elapsedSeconds = 0
         youTubePlayer?.loadVideo(videoId, 0f)
     }
 
     override fun play() {
-        youTubePlayer?.play()
+        if (PlaybackLiveData.value == PlayerConstants.PlayerState.ENDED) {
+            mediaController.transportControls?.skipToNext()
+        } else {
+            youTubePlayer?.play()
+        }
     }
 
     override fun pause() {
@@ -117,7 +88,19 @@ class YoutubePlayerManager(
     }
 
     override fun seekTo(time: Float) {
+        stateBeforeSeek = PlaybackLiveData.value
+        elapsedSeconds = time.toInt()
+        seekToCalled = true
         youTubePlayer?.seekTo(time)
+        PlaybackDuration.value = elapsedSeconds
+
+        // When player is paused, seekTo may not causing onStateChange to be called
+        // We need to update notification seek bar specifically when change come from player fragment
+        // In case player is not paused calling seekTo will invoke onStateChange and notification will be updated
+        val currentState = PlaybackLiveData.value ?: return
+        if (currentState == PlayerConstants.PlayerState.ENDED || currentState == PlayerConstants.PlayerState.PAUSED) {
+            setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
+        }
     }
 
     fun onScreenLocked() {
@@ -138,5 +121,47 @@ class YoutubePlayerManager(
             )
         )
         mediaSession.setPlaybackState(newBuilder.build())
+    }
+
+    private fun updatePlayerState(state: PlayerConstants.PlayerState) {
+        when (state) {
+            PlayerConstants.PlayerState.PLAYING, PlayerConstants.PlayerState.BUFFERING -> {
+                setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING)
+            }
+            PlayerConstants.PlayerState.PAUSED -> {
+                setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
+            }
+            else -> {
+            }
+        }
+    }
+
+    private fun setMediaPlaybackState(state: Int) {
+        if (state == PlaybackStateCompat.STATE_PLAYING) {
+            playbackstateBuilder.setActions(
+                PlaybackStateCompat.ACTION_PLAY_PAUSE
+                        or PlaybackStateCompat.ACTION_PAUSE
+                        or PlaybackStateCompat.ACTION_SEEK_TO
+                        or PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                        or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+            )
+        } else {
+            playbackstateBuilder.setActions(
+                PlaybackStateCompat.ACTION_PLAY_PAUSE or PlaybackStateCompat.ACTION_PLAY
+                        or PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                        or PlaybackStateCompat.ACTION_SEEK_TO
+                        or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+            )
+        }
+        val speed = when (state) {
+            PlaybackStateCompat.STATE_PLAYING -> 1f
+            else -> 0f
+        }
+        playbackstateBuilder.setState(
+            state,
+            elapsedSeconds * 1000L,
+            speed
+        )
+        mediaSession.setPlaybackState(playbackstateBuilder.build())
     }
 }

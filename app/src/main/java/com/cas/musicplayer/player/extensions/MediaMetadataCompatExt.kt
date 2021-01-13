@@ -34,12 +34,25 @@ inline var MediaMetadataCompat.Builder.displayTitle: String?
         putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, value)
     }
 
+inline var MediaMetadataCompat.Builder.artist: String?
+    @Deprecated(NO_GET, level = DeprecationLevel.ERROR)
+    get() = throw IllegalAccessException("Cannot get from MediaMetadataCompat.Builder")
+    set(value) {
+        putString(MediaMetadataCompat.METADATA_KEY_ARTIST, value)
+    }
 
 inline var MediaMetadataCompat.Builder.mediaUri: String?
     @Deprecated(NO_GET, level = DeprecationLevel.ERROR)
     get() = throw IllegalAccessException("Cannot get from MediaMetadataCompat.Builder")
     set(value) {
         putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, value)
+    }
+
+inline var MediaMetadataCompat.Builder.duration: Long
+    @Deprecated(NO_GET, level = DeprecationLevel.ERROR)
+    get() = throw IllegalAccessException("Cannot get from MediaMetadataCompat.Builder")
+    set(value) {
+        putLong(MediaMetadataCompat.METADATA_KEY_DURATION, value)
     }
 
 inline var MediaMetadataCompat.Builder.artUri: String?
@@ -69,7 +82,13 @@ var MediaMetadataCompat.Builder.musicTrack: MusicTrack
         id = value.youtubeId
         title = value.title
         displayTitle = value.title
-        mediaUri = value.imgUrl
+        mediaUri = value.imgUrlDefault
         artUri = value.imgUrl
         albumArtUri = value.imgUrl
+        duration = value.totalSeconds * 1000
+        artist = try {
+            value.title.substringBefore("-")
+        } catch (e: Exception) {
+            ""
+        }
     }

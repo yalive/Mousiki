@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.player
+package com.cas.musicplayer.ui.player.view
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import com.cas.common.extensions.*
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
@@ -32,7 +33,10 @@ import java.util.*
  * Created by Y.Abdelhadi on 4/28/20.
  ***************************************
  */
-class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener, CoroutineScope {
+class LockScreenView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr), SlideToActView.OnSlideCompleteListener,
+    CoroutineScope {
 
     private val mainJob = Job()
     override val coroutineContext = mainJob + Dispatchers.Main
@@ -58,19 +62,7 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     }
 
-    constructor(context: Context) : super(context) {
-        init(null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    init {
         init(attrs)
     }
 
@@ -102,7 +94,7 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
             oldState?.let { playerState ->
                 if (playerState == PlayerConstants.PlayerState.PLAYING) {
                     PlayerQueue.pause()
-                } else if (playerState == PlayerConstants.PlayerState.PAUSED) {
+                } else if (playerState == PlayerConstants.PlayerState.PAUSED || playerState == PlayerConstants.PlayerState.ENDED) {
                     PlayerQueue.resume()
                 }
             }
@@ -142,7 +134,9 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
         showSubViews()
         isVisible = false
         BrightnessUtils.apply {
-            setSystemScreenBrightness(context, currentBrightness)
+            if (currentBrightness > 0) {
+                setSystemScreenBrightness(context, currentBrightness)
+            }
         }
     }
 
@@ -180,10 +174,13 @@ class LockScreenView : ConstraintLayout, SlideToActView.OnSlideCompleteListener,
         mainJob.cancel() // Cancel any ongoing work
     }
 
-    fun acquirePlayer(youTubePlayerView: YouTubePlayerView) {
-        val oldParent = youTubePlayerView.parent as? ViewGroup
-        oldParent?.removeView(youTubePlayerView)
-        frameVideo.addView(youTubePlayerView)
+    fun acquirePlayer(youTubePlayerView: YouTubePlayerView?) {
+        if (youTubePlayerView == null) return
+        postDelayed(300) {
+            val oldParent = youTubePlayerView.parent as? ViewGroup ?: return@postDelayed
+            oldParent.removeView(youTubePlayerView)
+            frameVideo.addView(youTubePlayerView)
+        }
     }
 
     private fun registerClockReceiver() {

@@ -13,11 +13,12 @@ fun Intent.dumpData(): String {
     val packageData = "Package:$`package`"
     val typeData = "Type:$type"
     val keySet = extras?.keySet()
-    val extrasData = StringBuilder("Extras:\n")
+    val extrasData = StringBuilder("Extras:{")
     keySet?.forEach { key ->
-        extrasData.append("- $key=${extras?.get(key)}\n")
+        extrasData.append("$key= ${extras?.get(key)}, ")
     }
-    return "\n$categoryData\n$actionData\n$packageData\n$typeData\n$extrasData\n "
+    extrasData.append("}")
+    return "$categoryData, $actionData, $packageData, $typeData, $extrasData "
 }
 
 fun Intent.doOnExtrasTrue(booleanExtras: String, block: () -> Unit) {
@@ -25,6 +26,10 @@ fun Intent.doOnExtrasTrue(booleanExtras: String, block: () -> Unit) {
     if (isTrue) {
         block()
     }
+}
+
+fun Intent?.bool(key: String): Boolean {
+    return this?.getBooleanExtra(key, false) == true
 }
 
 fun Intent.fromDynamicLink(): Boolean {
