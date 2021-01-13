@@ -15,6 +15,7 @@ import com.cas.common.extensions.valueOrNull
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentHomeBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -22,19 +23,25 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
+import com.cas.musicplayer.utils.viewBinding
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
-class HomeFragment : BaseFragment<HomeViewModel>() {
+class HomeFragment : BaseFragment<HomeViewModel>(
+    R.layout.fragment_home
+) {
+    private val binding by viewBinding(FragmentHomeBinding::bind)
 
     override val viewModel by viewModel { injector.homeViewModel }
-    override val layoutResourceId: Int = R.layout.fragment_home
     override val screenTitle: String by lazy {
         getString(R.string.app_name)
     }
 
-    private var recyclerView: RecyclerView? = null
-    private var progressBar: ProgressBar? = null
+    private val recyclerView: RecyclerView
+        get() = binding.recyclerView
+
+    private val progressBar: ProgressBar
+        get() = binding.progressBar
 
     private val homeAdapter by lazy {
         HomeAdapter(viewModel = viewModel, onVideoSelected = { track ->
@@ -52,12 +59,10 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        recyclerView = view?.findViewById(R.id.recyclerView)
-        progressBar = view?.findViewById(R.id.progressBar)
-        recyclerView?.addItemDecoration(HomeMarginItemDecoration())
-        recyclerView?.adapter = homeAdapter
+        recyclerView.addItemDecoration(HomeMarginItemDecoration())
+        recyclerView.adapter = homeAdapter
         observeViewModel()
-        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 adjustStatusBar()
@@ -88,8 +93,8 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                 )
             }
 
-            recyclerView?.post {
-                val holder = recyclerView?.findViewHolderForAdapterPosition(2)
+            recyclerView.post {
+                val holder = recyclerView.findViewHolderForAdapterPosition(2)
                         as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder
                 if (holder != null) {
                     val adapter = holder.adapter
@@ -108,7 +113,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
          */
         observe(viewModel.homeItems) { items ->
             homeAdapter.dataItems = items.toMutableList()
-            progressBar?.isVisible = false
+            progressBar.isVisible = false
         }
         observe(viewModel.genres, homeAdapter::updateGenres)
         observe(viewModel.artists, homeAdapter::updateArtists)
@@ -128,7 +133,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private fun adjustStatusBar() {
-        val linearLayoutManager = recyclerView?.layoutManager as LinearLayoutManager
+        val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
         val firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition()
         val rect = Rect()
         linearLayoutManager.findViewByPosition(firstVisiblePosition)?.getGlobalVisibleRect(rect)

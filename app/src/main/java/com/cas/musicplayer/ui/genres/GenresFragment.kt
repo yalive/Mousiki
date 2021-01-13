@@ -20,8 +20,9 @@ import kotlinx.android.synthetic.main.fragment_genres.*
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-class GenresFragment : BaseFragment<GenresViewModel>() {
-    override val layoutResourceId: Int = R.layout.fragment_genres
+class GenresFragment : BaseFragment<GenresViewModel>(
+    R.layout.fragment_genres
+) {
     override val viewModel by viewModel { injector.genresViewModel }
     override val screenTitle: String by lazy {
         getString(R.string.genres)

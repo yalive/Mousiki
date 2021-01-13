@@ -25,9 +25,10 @@ import com.cas.musicplayer.utils.navigateSafeAction
 import kotlinx.android.synthetic.main.fragment_artists.*
 
 
-class ArtistListFragment : BaseFragment<ArtistListViewModel>() {
+class ArtistListFragment : BaseFragment<ArtistListViewModel>(
+    R.layout.fragment_artists
+) {
 
-    override val layoutResourceId: Int = R.layout.fragment_artists
     override val viewModel by activityViewModel { injector.artistListViewModel }
     override val screenTitle by lazy {
         getString(R.string.artists)

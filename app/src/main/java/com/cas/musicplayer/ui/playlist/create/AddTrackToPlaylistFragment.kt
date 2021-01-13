@@ -20,9 +20,9 @@ import kotlinx.android.synthetic.main.fragment_add_track_playlist.*
  * Created by Y.Abdelhadi on 4/4/20.
  ***************************************
  */
-class AddTrackToPlaylistFragment(
-) : BaseFragment<AddTrackToPlaylistViewModel>() {
-    override val layoutResourceId = R.layout.fragment_add_track_playlist
+class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
+    R.layout.fragment_add_track_playlist
+) {
     override val viewModel by lazy {
         injector.addTrackToPlaylistViewModelFactory.create(track)
     }

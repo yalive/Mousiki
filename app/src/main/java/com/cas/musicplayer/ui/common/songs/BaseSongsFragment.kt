@@ -46,9 +46,8 @@ import kotlinx.coroutines.launch
  * Created by Fayssel on 2019-12-18.
  ***************************************
  */
-abstract class BaseSongsFragment<T : BaseViewModel> : BaseFragment<T>() {
-
-    override val layoutResourceId: Int = R.layout.fragment_playlist_songs
+abstract class BaseSongsFragment<T : BaseViewModel>
+    : BaseFragment<T>(R.layout.fragment_playlist_songs) {
 
     private var imgArtist: ImageView? = null
     private var imgBackground: ImageView? = null

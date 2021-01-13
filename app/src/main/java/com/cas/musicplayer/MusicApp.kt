@@ -1,7 +1,6 @@
 package com.cas.musicplayer
 
 import android.app.Application
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -11,7 +10,6 @@ import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
 import com.cas.musicplayer.ui.common.ads.AdsManager
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.UserPrefs
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds

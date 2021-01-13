@@ -1,5 +1,6 @@
 package com.cas.musicplayer.data.remote.models.mousiki
 
+import androidx.annotation.Keep
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.google.gson.annotations.SerializedName
 
@@ -9,6 +10,7 @@ import com.google.gson.annotations.SerializedName
  * Copyright © 2020 Mousiki
  ************************************
  */
+@Keep
 data class HomeRS(
     @SerializedName("promos")
     val promos: List<VideoInfo>,
@@ -23,6 +25,7 @@ data class HomeRS(
     val videoLists: List<VideoListSection>
 )
 
+@Keep
 data class MousikiVideoRS(
     @SerializedName("title")
     val title: String?,
@@ -44,6 +47,7 @@ data class MousikiVideoRS(
     val channelName: String?
 )
 
+@Keep
 data class CompactPlaylistSection(
     @SerializedName("title")
     val title: String,
@@ -55,6 +59,7 @@ data class CompactPlaylistSection(
     val playlists: List<CompactPlaylist>
 )
 
+@Keep
 data class CompactPlaylist(
     @SerializedName("title")
     val title: String,
@@ -68,6 +73,7 @@ data class CompactPlaylist(
     val featuredImage: String
 )
 
+@Keep
 data class SimplePlaylistSection(
     @SerializedName("title")
     val title: String,
@@ -79,6 +85,7 @@ data class SimplePlaylistSection(
     val playlists: List<SimplePlaylist>
 )
 
+@Keep
 data class SimplePlaylist(
     @SerializedName("title")
     val title: String,
@@ -98,6 +105,7 @@ data class SimplePlaylist(
     val channelName: String
 )
 
+@Keep
 data class VideoListSection(
     @SerializedName("title")
     val title: String,
@@ -109,16 +117,19 @@ data class VideoListSection(
     val videos: List<VideoInfo>
 )
 
+@Keep
 data class VideoInfo(
     val video: MousikiVideoRS,
     val owner: VideoOwner
 )
 
+@Keep
 data class VideoOwner(
     val channelId: String,
     val title: String
 )
 
+@Keep
 fun MousikiVideoRS.toTrack(): MusicTrack {
     return MusicTrack(
         youtubeId = videoId.orEmpty(),

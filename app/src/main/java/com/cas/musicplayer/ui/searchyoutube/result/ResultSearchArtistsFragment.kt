@@ -10,14 +10,15 @@ import com.cas.common.resource.Resource
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.list.ArtistListAdapter
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
 
 
-class ResultSearchArtistsFragment : BaseSearchResultFragment(), PageableFragment {
+class ResultSearchArtistsFragment : BaseSearchResultFragment(
+    R.layout.fragment_yt_search_channels
+), PageableFragment {
 
-    override val layoutResourceId: Int = R.layout.fragment_yt_search_channels
     override val pageTitle: String by lazy {
         getString(R.string.title_channels)
     }

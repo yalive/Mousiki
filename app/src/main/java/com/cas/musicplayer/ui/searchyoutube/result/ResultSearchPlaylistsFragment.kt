@@ -14,9 +14,10 @@ import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
-class ResultSearchPlaylistsFragment : BaseSearchResultFragment(), PageableFragment {
+class ResultSearchPlaylistsFragment : BaseSearchResultFragment(
+    R.layout.fragment_yt_search_videos
+), PageableFragment {
 
-    override val layoutResourceId: Int = R.layout.fragment_yt_search_videos
     private val adapter by lazy { PlaylistsAdapter() }
     override val pageTitle: String by lazy {
         getString(R.string.title_playlist)
