@@ -10,7 +10,7 @@ import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToVideoId
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
 import com.cas.musicplayer.data.remote.models.TrackDto
-import com.cas.musicplayer.data.remote.models.mousiki.musicTracks
+import com.cas.musicplayer.data.remote.models.mousiki.tracks
 import com.cas.musicplayer.data.remote.models.toDomainModel
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
@@ -54,16 +54,14 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getPlaylistSongs(playlistId: String): Result<List<MusicTrack>> {
-        if (appConfig.loadPlaylistSongsFromApi()) {
-            val resultFromApi = retrofitRunner.getMusicTracks(
-                config = appConfig.playlistApiConfig(),
-                requestWithApi = { apiUrl ->
-                    mousikiSearchApi.getPlaylistDetail(apiUrl, playlistId).musicTracks()
-                }
-            )
-            if (resultFromApi is Result.Success && resultFromApi.data.size > 3) {
-                return resultFromApi
+        val resultFromApi = retrofitRunner.getMusicTracks(
+            config = appConfig.playlistApiConfig(),
+            requestWithApi = { apiUrl ->
+                mousikiSearchApi.getPlaylistDetail(apiUrl, playlistId).tracks()
             }
+        )
+        if (resultFromApi is Result.Success && resultFromApi.data.size > 3) {
+            return resultFromApi
         }
 
         val isTopTrackOfGenre = genresRepository.isTopTrackOfGenre(playlistId)
