@@ -38,7 +38,7 @@ class GetListAdsDelegateImp @Inject constructor(
         val offset = config.getOffsetListAds()
         val adsCount = size / offset
         if (adsCount > 0) {
-            val ads = loadMultipleNativeAdWithMediation(adsCount).map {
+            val ads = AdsManager.getAds(adsCount).map {
                 AdsItem(it)
             }
             val songsList = items.toMutableList()

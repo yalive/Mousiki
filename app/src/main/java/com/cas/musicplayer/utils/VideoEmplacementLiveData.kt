@@ -12,22 +12,11 @@ import com.cas.musicplayer.player.VideoEmplacement
 
 object VideoEmplacementLiveData : MutableLiveData<VideoEmplacement>() {
 
-    fun fullscreen() {
-        value = VideoEmplacement.fullscreen()
-    }
-
     fun out() {
         value = VideoEmplacement.out()
     }
 
     fun inApp() {
         value = EmplacementInApp()
-    }
-
-    fun forceUpdate() {
-        val currentValue = value
-        if (currentValue != null) {
-            this.value = value
-        }
     }
 }

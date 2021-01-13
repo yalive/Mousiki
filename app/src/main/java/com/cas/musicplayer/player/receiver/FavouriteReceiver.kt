@@ -1,4 +1,4 @@
-package com.cas.musicplayer.player.services
+package com.cas.musicplayer.player.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,8 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
-import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomAction.ADD_CURRENT_MEDIA_TO_FAVOURITE
-import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomAction.REMOVE_CURRENT_MEDIA_FROM_FAVOURITE
+import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomAction.ADD_TO_FAVOURITE
+import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomAction.REMOVE_FROM_FAVOURITE
 
 class FavouriteReceiver(
     private val context: Context,
@@ -19,8 +19,8 @@ class FavouriteReceiver(
     override fun onReceive(context: Context?, receivedIntent: Intent?) {
         if (receivedIntent?.action == ACTION_FAVOURITE) {
             val addToFav = receivedIntent.getBooleanExtra(EXTRAS_ADD_TO_FAVOURITE, false)
-            val action = if (addToFav) ADD_CURRENT_MEDIA_TO_FAVOURITE
-            else REMOVE_CURRENT_MEDIA_FROM_FAVOURITE
+            val action = if (addToFav) ADD_TO_FAVOURITE
+            else REMOVE_FROM_FAVOURITE
             mediaController.transportControls.sendCustomAction(action, null)
         }
     }

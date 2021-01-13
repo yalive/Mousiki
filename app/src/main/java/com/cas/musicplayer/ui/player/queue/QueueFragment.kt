@@ -30,7 +30,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.synthetic.main.queue_fragment.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -113,7 +112,6 @@ class QueueFragment : Fragment() {
         btnClose.onClick {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
             activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = false
-            PlayerQueue.showVideo()
             onCloseQueue?.invoke()
         }
         DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
@@ -143,10 +141,6 @@ class QueueFragment : Fragment() {
             bottomSheetFragment.arguments = bundle
             bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             bottomSheetFragment.onDismissed = {
-                lifecycleScope.launch {
-                    delay(100)
-                    PlayerQueue.hideVideo()
-                }
             }
         }
         observe(PlaybackLiveData) { state ->

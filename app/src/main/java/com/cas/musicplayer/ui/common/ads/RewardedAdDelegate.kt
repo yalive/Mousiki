@@ -79,7 +79,6 @@ class RewardedAdDelegateImp(
             }
 
             override fun onRewardedAdOpened() {
-                PlayerQueue.hideVideo()
                 PlayerQueue.pause()
             }
 
@@ -87,7 +86,6 @@ class RewardedAdDelegateImp(
                 retriesCount = 0
                 loadAd()
                 PlayerQueue.resume()
-                PlayerQueue.showVideo()
             }
         })
     }

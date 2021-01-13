@@ -69,6 +69,8 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             if (state == PlayerConstants.PlayerState.PLAYING
                 || state == PlayerConstants.PlayerState.PAUSED
                 || state == PlayerConstants.PlayerState.ENDED
+                || state == PlayerConstants.PlayerState.BUFFERING
+                || state == PlayerConstants.PlayerState.UNKNOWN
             ) {
                 updateCurrentPlayingItem(state)
             }
@@ -79,6 +81,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         viewModel.newReleases.valueOrNull()?.let { items ->
             val updatedList = items.map { item ->
                 val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
+                        && state != PlayerConstants.PlayerState.UNKNOWN
                 item.copy(
                     isCurrent = isCurrent,
                     isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)

@@ -1,4 +1,4 @@
-package com.cas.musicplayer.player.services
+package com.cas.musicplayer.player.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context

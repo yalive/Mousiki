@@ -74,6 +74,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     ) {
         val mediaController = MediaControllerCompat(context, sessionToken)
         youTubePlayerView = findViewById(R.id.youtubePlayerView)
+        youTubePlayerView.enableBackgroundPlayback(true)
         videoViewParams = WindowManager.LayoutParams(
             videoEmplacement.width,
             videoEmplacement.height,
@@ -198,28 +199,10 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
         youTubePlayerView.addYouTubePlayerListener(youtubePlayerManager)
     }
 
-    fun hide() {
-        videoViewParams.width = 0
-        videoViewParams.height = 0
-        updateLayout()
-    }
-
-    fun show() {
-        this.visible()
-        videoViewParams.width = videoEmplacement.width
-        videoViewParams.height = videoEmplacement.height
-        updateLayout()
-    }
-
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
         radius = emplacement.radius
         this.videoEmplacement = emplacement
-        if (emplacement is EmplacementFullScreen) {
-            toggleFullScreenVideoPlayer(true)
-
-        } else {
-            toggleFullScreenVideoPlayer(false)
-        }
+        toggleFullScreenVideoPlayer(false)
 
         if (emplacement is EmplacementOut) {
             videoViewParams.flags =
@@ -237,13 +220,9 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
         //Update the layout with new X & Y coordinate
         updateLayout()
 
-
         this.alpha = 1f
-        if (emplacement !is EmplacementFullScreen && emplacement !is EmplacementOut) {
-            hide()
-        } else {
+        if (emplacement is EmplacementOut) {
             acquirePlayer()
-            show()
         }
     }
 

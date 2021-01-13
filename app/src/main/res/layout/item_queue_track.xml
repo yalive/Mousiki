@@ -21,7 +21,6 @@
         android:layout_marginBottom="8dp"
         android:scaleType="centerCrop" />
 
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -54,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:fontFamily="@font/pangram_medium"
-                android:maxLines="3"
+                android:maxLines="2"
                 android:textColor="@color/colorWhite"
                 android:textSize="15sp"
                 tools:text="Hello Test" />

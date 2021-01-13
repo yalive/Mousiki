@@ -1,103 +1,111 @@
 package com.cas.musicplayer.ui.player
 
-
 import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.view.LayoutInflater
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.SeekBar
-import androidx.core.os.bundleOf
-import androidx.core.os.postDelayed
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
-import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.cas.common.extensions.observe
-import com.cas.common.extensions.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentPlayerBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.services.FavouriteReceiver
+import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.player.queue.QueueFragment
-import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
-import com.cas.musicplayer.ui.popular.SongsDiffUtil
+import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
 import com.google.android.gms.ads.AdRequest
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.COLLAPSED
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.EXPANDED
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
-import kotlinx.android.synthetic.main.fragment_player.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
-class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
+/**
+ ************************************
+ * Created by Abdelhadi on 11/28/20.
+ * Copyright © 2020 Mousiki
+ ************************************
+ */
+const val TAG_SERVICE = "service_playback"
 
-    private lateinit var mainActivity: MainActivity
+class PlayerFragment : Fragment(R.layout.fragment_player) {
+    private val TAG = "player_view"
+    private val binding by viewBinding(FragmentPlayerBinding::bind)
     private val viewModel by viewModel { injector.playerViewModel }
-    private val handler = Handler()
-    private var mediaController: MediaControllerCompat? = null
-    private var btnFullScreen: ImageButton? = null
-    private var btnPlayOption: ImageButton? = null
-    private var mainView: ViewGroup? = null
-    private var btnPlayPauseMain: ImageButton? = null
-    private var imgBlurred: ImageView? = null
-    private var lockScreenView: LockScreenView? = null
     private var seekingDuration = false
 
+    private var mediaController: MediaControllerCompat? = null
     private var playerService: MusicPlayerService? = null
-    private lateinit var playerVideosAdapter: PlayerPagerAdapter
+
+    private val reusedPlayerView: YouTubePlayerView?
+        get() = playerService?.getPlayerView()
+
+    private var serviceBound = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
             playerService = null
+            serviceBound = false
         }
 
-        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-            if (binder is MusicPlayerService.ServiceBinder) {
-                playerService = binder.service()
-                val service = binder.service()
-                mediaController = MediaControllerCompat(requireContext(), service.mediaSession)
-                mediaController?.registerCallback(mediaControllerCallback)
-                mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
-                playerVideosAdapter.videosDelegate.reusedPlayerView = service.getPlayerView()
+        override fun onServiceConnected(name: ComponentName?, binder: IBinder) {
+            val service = (binder as MusicPlayerService.ServiceBinder).service()
+            playerService = service
+            mediaController = MediaControllerCompat(requireContext(), service.mediaSession)
+            mediaController?.registerCallback(mediaControllerCallback)
+            mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
+            showPlayerView("service connected")
+            if (PlayerQueue.value != null) {
+                ensurePlayerVisible()
             }
+        }
+
+        override fun onBindingDied(name: ComponentName?) {
+            super.onBindingDied(name)
+            unbindService()
+            bindServiceIfNecessary()
+        }
+
+        override fun onNullBinding(name: ComponentName?) {
+            super.onNullBinding(name)
+            unbindService()
+            bindServiceIfNecessary()
         }
     }
 
     private val mediaControllerCallback = object : MediaControllerCompat.Callback() {
         override fun binderDied() {
             super.binderDied()
-            mainActivity.hideBottomPanel()
+            hidePlayer()
         }
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
@@ -105,213 +113,79 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
 
         override fun onSessionDestroyed() {
-            mainActivity.hideBottomPanel()
+            serviceBound = false
+            hidePlayer()
+            bindServiceIfNecessary()
         }
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_player, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupView()
+        observeViewModel()
+        bindServiceIfNecessary()
     }
 
     override fun onStart() {
         super.onStart()
-        val intent = Intent(requireContext(), MusicPlayerService::class.java)
-        activity?.bindService(intent, serviceConnection, 0)
-
-        mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
-        val serviceRunning = context?.isServiceRunning(MusicPlayerService::class.java) ?: false
-        if (!serviceRunning) {
-            mainActivity.hideBottomPanel()
-        }
+        VideoEmplacementLiveData.inApp()
         viewModel.prepareAds()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mediaController?.unregisterCallback(mediaControllerCallback)
-        activity?.unbindService(serviceConnection)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        btnFullScreen = view?.findViewById(R.id.btnFullScreen)
-        btnPlayOption = view?.findViewById(R.id.btnPlayOption)
-        mainView = view?.findViewById(R.id.mainView)
-        btnPlayPauseMain = view?.findViewById(R.id.btnPlayPauseMain)
-        lockScreenView = view?.findViewById(R.id.lockScreenView)
-        imgBlurred = view?.findViewById(R.id.imgBlured)
-
-        mainActivity = requireActivity() as MainActivity
-        mainActivity.slidingPaneLayout.addPanelSlideListener(this)
-
-        setupCenterViewPager()
-        observe(viewModel.queue) { items ->
-            val diffCallback = SongsDiffUtil(playerVideosAdapter.dataItems, items)
-            playerVideosAdapter.submitList(items, diffCallback)
-            viewPager.post {
-                viewPager?.setCurrentItem(viewModel.currentTrackPosition(), false)
-            }
-        }
-        PlayerQueue.observe(viewLifecycleOwner, Observer { video ->
-            onVideoChanged(video)
-            lockScreenView?.setCurrentTrack(video)
-            viewPager.post {
-                viewPager?.setCurrentItem(viewModel.currentTrackPosition(), false)
-            }
-        })
-
-        btnPlayPauseMain?.onClick {
-            onClickPlayPause()
-        }
-
-        btnShareVia.onClick {
-            Utils.shareWithDeepLink(PlayerQueue.value, mContext = mainActivity)
-        }
-
-        btnAddToPlaylist.onClick {
-            val musicTrack = PlayerQueue.value ?: return@onClick
-            (requireActivity() as? MainActivity)?.collapseBottomPanel()
-            val currentDestinationId = findNavController().currentDestination?.id
-            if (currentDestinationId == R.id.addTrackToPlaylistFragment
-                || currentDestinationId == R.id.createPlaylistFragment
-            ) return@onClick
-            handler.postDelayed(500) {
-                val navOptions = navOptions {
-                    anim {
-                        enter = R.anim.fad_in
-                        exit = R.anim.fad_out
-                    }
-                }
-                findNavController().navigate(
-                    R.id.addTrackToPlaylistFragment, bundleOf(
-                        AddTrackToPlaylistFragment.EXTRAS_TRACK to musicTrack,
-                        AddTrackToPlaylistFragment.EXTRAS_CURRENT_DESTINATION to currentDestinationId
-                    ), navOptions
-                )
-            }
-        }
-        btnAddFav.onClick {
-            val isFav = UserPrefs.isFav(PlayerQueue.value?.youtubeId)
-            if (!isFav) {
-                Executors.newSingleThreadExecutor().execute {
-                    val musicTrack = PlayerQueue.value
-                    musicTrack?.let {
-                        viewModel.makeSongAsFavourite(it)
-                    }
-                }
-                btnAddFav.setImageResource(R.drawable.ic_heart_solid)
-                btnAddFav.tint(R.color.colorAccent)
-            } else {
-                val musicTrack = PlayerQueue.value
-                musicTrack?.let {
-                    viewModel.removeSongFromFavourite(it)
-                }
-                btnAddFav.setImageResource(R.drawable.ic_heart_light)
-                btnAddFav.tint(R.color.colorWhite)
-            }
-            FavouriteReceiver.broadcast(requireContext().applicationContext, !isFav)
-        }
-
-        btnLockScreen.onClick {
-            openBatterySaverMode()
-        }
-
-        btnClosePanel.onClick {
-            mainActivity.collapseBottomPanel()
-        }
-
-        btnPlayNext.onClick {
-            viewModel.onClickPlayNext(viewPager.currentItem)
-        }
-
-        btnPlayPrevious.onClick {
-            viewModel.onClickPlayPrevious(viewPager.currentItem)
-        }
-
-        PlaybackDuration.observe(viewLifecycleOwner, Observer { elapsedSeconds ->
-            if (!seekingDuration) {
-                updateCurrentTrackTime(elapsedSeconds)
-                PlayerQueue.value?.let { currentTrack ->
-                    val totalSeconds = currentTrack.totalSeconds.toInt()
-                    val progress =
-                        if (totalSeconds > 0) (elapsedSeconds * 100 / currentTrack.totalSeconds).toInt()
-                        else 0
-                    seekBarDuration.animateProgress(progress)
-                    miniPlayerView.updateProgress(progress)
-                }
-            }
-        })
-
-        btnShowQueueFull.onClick {
-            showQueue()
-        }
-
-        antiDrag.onClick {
-            if (mainActivity.slidingPaneLayout.panelState == COLLAPSED) {
-                mainActivity.expandBottomPanel()
-            }
-        }
-
-        btnPlayOption?.setImageResource(UserPrefs.getSort().icon)
-
-        btnPlayOption?.onClick {
-            // Get next state
-            val nextSort = UserPrefs.getSort().next()
-            btnPlayOption?.setImageResource(nextSort.icon)
-            UserPrefs.saveSort(nextSort)
-        }
-
-        btnFullScreen?.onClick {
-            (requireActivity() as MainActivity).switchToLandscape()
-            (requireActivity() as MainActivity).hideStatusBar()
-            VideoEmplacementLiveData.fullscreen()
-        }
-
-        DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
-            fullScreenSwitchView.updatePadding(top = inset.top)
-        })
-
-        miniPlayerView.onClick {
-            mainActivity.expandBottomPanel()
-        }
-        miniPlayerView.doOnClickPlayPause {
-            onClickPlayPause()
-        }
-        miniPlayerView.doOnClickShowQueue {
-            showQueue()
-        }
-        observe(viewModel.isLiked) { isLiked ->
-            if (isLiked) {
-                btnAddFav.setImageResource(R.drawable.ic_heart_solid)
-                btnAddFav.tint(R.color.colorAccent)
-            } else {
-                btnAddFav.setImageResource(R.drawable.ic_heart_light)
-                btnAddFav.tint(R.color.colorWhite)
-            }
-        }
-        lockScreenView?.doOnSlideComplete {
-            playerVideosAdapter.notifyItemChanged(viewPager.currentItem)
-            lockScreen(false)
-        }
-
-        if (viewModel.bannerAdOn()) {
-            bannerAdView.loadAd(AdRequest.Builder().build())
-        } else {
-            bannerAdView.isVisible = false
-        }
-
-        observeEvent(viewModel.goToPosition) { position ->
-            viewPager?.setCurrentItem(position, true)
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        acquirePlayerIfNeeded()
+
+        mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
+        if (binding.lockScreenView.isVisible) {
+            checkLockScreen(true)
+        }
+
+        // Util when service is killed and fragment is resumed after that.
+        // Need to check if service is running
+        if (!requireContext().isServiceRunning(MusicPlayerService::class.java)) {
+            hidePlayer()
+        }
+
+        // check if no track currently playing
+        if (PlayerQueue.value == null) {
+            hidePlayer()
+        }
+
+        // Make sure video is visible if service is bound
+        showPlayerView("on resume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.lockScreenView.isVisible) {
+            binding.lockScreenView.disableLock()
+            binding.motionLayout.getTransition(R.id.mainTransition).setEnable(true)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Movable video
+        VideoEmplacementLiveData.out()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbindService()
+    }
+
+    private fun unbindService() {
+        if (serviceBound) {
+            serviceBound = false
+            mediaController?.unregisterCallback(mediaControllerCallback)
+            activity?.unbindService(serviceConnection)
+            playerService = null
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -320,106 +194,264 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
                     && SystemSettings.canDrawOverApps(requireContext())
             if (canWriteSettings) {
-                handler.postDelayed(500) {
-                    // ensure video in center
-                    (activity as? MainActivity)?.expandBottomPanel()
-                    (activity as? MainActivity)?.hideBottomNavBar()
+                lifecycleScope.launchWhenResumed {
+                    delay(500)
+                    expandPlayer()
                 }
                 openBatterySaverMode()
             }
         }
     }
 
-    fun openBatterySaverMode() {
-        val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
-                && SystemSettings.canDrawOverApps(requireContext())
-        if (!canWriteSettings) {
-            // Show popup
-            MaterialDialog(requireContext()).show {
-                message(R.string.battery_saver_mode_request_change_settings)
-                positiveButton(R.string.ok) {
-                    activity?.let { activity ->
-                        SystemSettings.enableSettingModification(
-                            this@PlayerFragment,
-                            RQ_CODE_WRITE_SETTINGS
-                        )
+    fun handleBackPress(): Boolean {
+        if (binding.lockScreenView.isVisible) return true
+        if (isExpanded()) {
+            collapsePlayer()
+            return true
+        }
+        return false
+    }
+
+    private fun bindServiceIfNecessary() {
+        if (!serviceBound && PlayerQueue.value != null) {
+            val intent = Intent(requireContext().applicationContext, MusicPlayerService::class.java)
+            val resultBind =
+                activity?.bindService(
+                    intent,
+                    serviceConnection,
+                    Context.BIND_IMPORTANT and Context.BIND_AUTO_CREATE
+                )
+            if (resultBind == true) {
+                serviceBound = true
+            }
+        }
+    }
+
+    private fun setupView() {
+        setupMotionLayout()
+        binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+        setUpUserEvents()
+        observe(DeviceInset) { inset ->
+            binding.fullScreenSwitchView.updatePadding(top = inset.top)
+        }
+
+        if (viewModel.bannerAdOn()) {
+            binding.bannerAdView.loadAd(AdRequest.Builder().build())
+        } else {
+            binding.bannerAdView.isVisible = false
+        }
+        binding.txtTitle.isSelected = true
+    }
+
+    private fun setUpUserEvents() {
+        binding.btnPlayPauseMain.onClick {
+            onClickPlayPause()
+        }
+
+        binding.btnShareVia.onClick {
+            Utils.shareWithDeepLink(PlayerQueue.value, requireContext())
+        }
+
+        binding.btnAddFav.onClick {
+            val isFav = UserPrefs.isFav(PlayerQueue.value?.youtubeId)
+            if (!isFav) {
+                Executors.newSingleThreadExecutor().execute {
+                    val musicTrack = PlayerQueue.value
+                    musicTrack?.let {
+                        viewModel.makeSongAsFavourite(it)
                     }
                 }
-                negativeButton(R.string.cancel)
-                getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
-                window?.setType(windowOverlayTypeOrPhone)
+                binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
+                binding.btnAddFav.tint(R.color.colorAccent)
+            } else {
+                val musicTrack = PlayerQueue.value
+                musicTrack?.let {
+                    viewModel.removeSongFromFavourite(it)
+                }
+                binding.btnAddFav.setImageResource(R.drawable.ic_heart_light)
+                binding.btnAddFav.tint(R.color.colorWhite)
             }
-            return
+            FavouriteReceiver.broadcast(requireContext().applicationContext, !isFav)
         }
-        lockScreen(true)
+
+        binding.btnLockScreen.onClick {
+            openBatterySaverMode()
+        }
+
+        binding.btnClosePanel.onClick {
+            collapsePlayer()
+        }
+
+        binding.btnPlayNext.onClick {
+            viewModel.playNext()
+        }
+
+        binding.btnPlayPrevious.onClick {
+            viewModel.playPrevious()
+        }
+
+        binding.btnShowQueueFull.onClick {
+            showQueue()
+        }
+
+        binding.btnPlayOption.onClick {
+            // Get next state
+            val nextSort = UserPrefs.getSort().next()
+            binding.btnPlayOption.setImageResource(nextSort.icon)
+            UserPrefs.saveSort(nextSort)
+        }
+
+
+        binding.lockScreenView.doOnSlideComplete {
+            checkLockScreen(false)
+        }
+
+        binding.miniPlayerView.doOnClickPlayPause {
+            onClickPlayPause()
+        }
+        binding.miniPlayerView.doOnClickShowQueue {
+            showQueue()
+        }
     }
 
-    override fun onPanelSlide(panel: View?, slideOffset: Float) {
-        mainView?.alpha = slideOffset
-        miniPlayerView.alpha = 1 - slideOffset
-    }
+    private fun observeViewModel() {
+        observe(viewModel.queue) { items ->
+        }
+        observe(PlayerQueue) { video ->
+            onVideoChanged(video)
+            binding.lockScreenView.setCurrentTrack(video)
+            bindServiceIfNecessary()
+        }
+        observe(PlaybackDuration) { elapsedSeconds ->
+            if (!seekingDuration) {
+                updateCurrentTrackTime(elapsedSeconds)
+                PlayerQueue.value?.let { currentTrack ->
+                    val totalSeconds = currentTrack.totalSeconds.toInt()
+                    val progress =
+                        if (totalSeconds > 0) (elapsedSeconds * 100 / currentTrack.totalSeconds).toInt()
+                        else 0
+                    binding.seekBarDuration.animateProgress(progress)
+                    binding.miniPlayerView.updateProgress(progress)
+                }
+            }
+        }
 
-    override fun onPanelStateChanged(
-        panel: View?,
-        previousState: SlidingUpPanelLayout.PanelState?,
-        newState: SlidingUpPanelLayout.PanelState?
-    ) {
-        btnFullScreen?.isEnabled = newState == EXPANDED
-        if (newState == EXPANDED) {
-            checkToShowTipBatterySaver()
-            playerVideosAdapter.notifyDataSetChanged()
-        } else if (newState == COLLAPSED) {
-            val reusedPlayerView = playerVideosAdapter.videosDelegate.reusedPlayerView
-            reusedPlayerView?.let {
-                miniPlayerView.acquirePlayer(reusedPlayerView)
+        observe(viewModel.isLiked) { isLiked ->
+            if (isLiked) {
+                binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
+                binding.btnAddFav.tint(R.color.colorAccent)
+            } else {
+                binding.btnAddFav.setImageResource(R.drawable.ic_heart_light)
+                binding.btnAddFav.tint(R.color.colorWhite)
             }
         }
     }
 
-    private fun showQueue() {
-        PlayerQueue.hideVideo()
-        activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = true
-        val fragment = activity?.supportFragmentManager
-            ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()
-        val fm = activity?.supportFragmentManager
-        fm?.beginTransaction()?.replace(R.id.queueFragmentContainer, fragment)?.commit()
-        (fragment as? QueueFragment)?.doOnClose {
-            onQueueClosed()
-        }
-    }
-
+    // TODO: move outside fragment
     private fun onClickPlayPause() {
         val oldState = PlaybackLiveData.value
         oldState?.let { playerState ->
             if (playerState == PlayerConstants.PlayerState.PLAYING) {
                 PlayerQueue.pause()
-            } else if (playerState == PlayerConstants.PlayerState.PAUSED) {
+            } else if (playerState == PlayerConstants.PlayerState.PAUSED || playerState == PlayerConstants.PlayerState.ENDED) {
                 PlayerQueue.resume()
             }
         }
     }
 
+    private fun showQueue() {
+        activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = true
+        val fragment = activity?.supportFragmentManager
+            ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()
+        val fm = activity?.supportFragmentManager
+        fm?.beginTransaction()?.setCustomAnimations(
+            R.anim.slide_in_up, R.anim.slide_out_up
+        )?.replace(R.id.queueFragmentContainer, fragment)?.commit()
+        (fragment as? QueueFragment)?.doOnClose {
+            onQueueClosed()
+        }
+    }
+
+    fun onQueueClosed() {
+        binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+    }
+
+    fun openBatterySaverMode() {
+        lifecycleScope.launchWhenResumed {
+            val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
+                    && SystemSettings.canDrawOverApps(requireContext())
+            if (!canWriteSettings) {
+                // Show popup
+                MaterialDialog(requireContext()).show {
+                    message(R.string.battery_saver_mode_request_change_settings)
+                    positiveButton(R.string.ok) {
+                        activity?.let { activity ->
+                            SystemSettings.enableSettingModification(
+                                this@PlayerFragment,
+                                PlayerFragment.RQ_CODE_WRITE_SETTINGS
+                            )
+                        }
+                    }
+                    negativeButton(R.string.cancel)
+                    getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
+                    window?.setType(windowOverlayTypeOrPhone)
+                }
+                return@launchWhenResumed
+            }
+
+            // A hacky solution to wait service binding
+            var count = 0
+            while (reusedPlayerView == null && count < 20 && isActive) {
+                count++
+                delay(50)
+            }
+            checkLockScreen(true)
+        }
+    }
+
+    private fun checkLockScreen(lock: Boolean) {
+        binding.lockScreenView.isVisible = lock
+        (activity as? MainActivity)?.isLocked = lock
+        binding.lockScreenView.toggle(lock)
+        if (lock) {
+            binding.lockScreenView.acquirePlayer(reusedPlayerView)
+        } else {
+            showPlayerView("lock")
+        }
+        // Disable/Enable motion transition
+        binding.motionLayout.getTransition(R.id.mainTransition).setEnable(!lock)
+    }
+
     private fun onVideoChanged(track: MusicTrack) {
-        miniPlayerView.onTrackChanged(track)
+        binding.miniPlayerView.onTrackChanged(track)
+
+        binding.txtTitle.ellipsize = null
+        binding.txtTitle.text = track.title
+        binding.artistName.text = track.title.substringBefore("-")
+        lifecycleScope.launch {
+            delay(500)
+            binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
+        }
+
 
         if (UserPrefs.isFav(track.youtubeId)) {
-            btnAddFav.setImageResource(R.drawable.ic_heart_solid)
-            btnAddFav.tint(R.color.colorAccent)
+            binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
+            binding.btnAddFav.tint(R.color.colorAccent)
         } else {
-            btnAddFav.setImageResource(R.drawable.ic_heart_light)
-            btnAddFav.tint(R.color.colorWhite)
+            binding.btnAddFav.setImageResource(R.drawable.ic_heart_light)
+            binding.btnAddFav.tint(R.color.colorWhite)
         }
-        loadAndBlurImage(track)
         configureSeekBar(track)
     }
 
     @SuppressLint("SetTextI18n")
     private fun configureSeekBar(video: MusicTrack) {
-        txtDuration.text = video.durationFormatted
-        txtElapsedTime.text = "00:00"
-        seekBarDuration.progress = 0
-        miniPlayerView.updateProgress(0)
-        seekBarDuration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.txtDuration.text = video.durationFormatted
+        binding.txtElapsedTime.text = "00:00"
+        binding.seekBarDuration.progress = 0
+        binding.miniPlayerView.updateProgress(0)
+        binding.seekBarDuration.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     seekingDuration = true
@@ -436,7 +468,8 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
                 val progress = seekBar.progress
                 val seconds = progress * video.totalSeconds / 100
                 PlayerQueue.seekTo(seconds * 1000)
-                handler.postDelayed(500) {
+                lifecycleScope.launch {
+                    delay(500)
                     seekingDuration = false
                 }
             }
@@ -446,57 +479,86 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
     private fun updateCurrentTrackTime(elapsedSeconds: Int) {
         val minutes = elapsedSeconds / 60
         val seconds = elapsedSeconds % 60
-        txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
+        binding.txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
     }
 
-    private fun loadAndBlurImage(video: MusicTrack) {
-        lifecycleScope.launch {
-            try {
-                val bitmap = imgBlurred?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
-                imgBlurred?.updateBitmap(BlurImage.fastblur(bitmap, 0.1f, 50))
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (error: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(error)
-            }
-        }
-    }
-
-    private fun lockScreen(lock: Boolean) {
-        mainView?.isVisible = !lock
-        mainActivity.isLocked = lock
-        lockScreenView?.toggle(lock)
-        if (lock) {
-            playerService?.getPlayerView()?.let { playerView ->
-                lockScreenView?.postDelayed(300) {
-                    lockScreenView?.acquirePlayer(playerView)
+    //region Motion Layout Transition
+    private fun setupMotionLayout() {
+        binding.motionLayout.addTransitionListener(object : TransitionAdapter() {
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+                if (endId != R.id.hidden && startId != R.id.hidden) {
+                    (activity as? MainActivity)?.binding?.motionLayout?.progress = progress
                 }
             }
-        }
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                val parentMotionLayout = (activity as? MainActivity)?.binding?.motionLayout
+                if (currentId == R.id.expanded) {
+                    parentMotionLayout?.progress = 1.0f
+                } else if (currentId == R.id.collapsed) {
+                    parentMotionLayout?.progress = 0.0f
+                } else if (currentId == R.id.hidden) {
+                    mediaController?.transportControls?.stop()
+                }
+            }
+
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+
+            }
+        })
+
+        binding.newPager.addTransitionListener(object : TransitionAdapter() {
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                if (currentId == R.id.swipedRight) {
+                    viewModel.swipeRight()
+                } else if (currentId == R.id.swipedLeft) {
+                    viewModel.swipeLeft()
+                }
+            }
+        })
+    }
+
+    //endregion
+    fun showPlayerView(from: String) {
+        val playerView = reusedPlayerView ?: return
+        if (playerView.parent == binding.cardPager) return
+        val oldParent = playerView.parent as? ViewGroup
+        oldParent?.removeView(playerView)
+        binding.cardPager.addView(playerView, 0)
     }
 
     private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
-        miniPlayerView.onPlayMusicStateChanged(stateCompat)
+        binding.miniPlayerView.onPlayMusicStateChanged(stateCompat)
         val state = stateCompat.state
         if (state == PlaybackStateCompat.STATE_PLAYING || state == PlaybackStateCompat.STATE_BUFFERING) {
-            btnPlayPauseMain?.setImageResource(R.drawable.ic_pause)
-            lockScreenView?.onPlayBackStateChanged()
+            binding.btnPlayPauseMain.setImageResource(R.drawable.ic_pause)
+            binding.lockScreenView.onPlayBackStateChanged()
         } else if (state == PlaybackStateCompat.STATE_PAUSED) {
-            btnPlayPauseMain?.setImageResource(R.drawable.ic_play)
-            lockScreenView?.onPlayBackStateChanged()
+            binding.btnPlayPauseMain.setImageResource(R.drawable.ic_play)
+            binding.lockScreenView.onPlayBackStateChanged()
         } else if (state == PlaybackStateCompat.STATE_STOPPED) {
-            mainActivity.hideBottomPanel()
+            hidePlayer()
         }
     }
 
     private fun checkToShowTipBatterySaver() {
-        val parent = mainView ?: return
+        // it was mainView
+        val parent = binding.root ?: return
         parent.post {
             if (parent.windowToken != null) {
-                if (!UserPrefs.hasSeenToolTipBatterySaver() && mainActivity.isBottomPanelExpanded()) {
+                if (!UserPrefs.hasSeenToolTipBatterySaver() && isExpanded()) {
                     val tip = Tooltip.Builder(requireContext())
                         .styleId(R.style.TooltipLayoutStyle)
-                        .anchor(btnLockScreen)
+                        .anchor(binding.btnLockScreen)
                         .text(R.string.tool_tip_battery_saver)
                         .arrow(true)
                         .overlay(true)
@@ -513,56 +575,79 @@ class PlayerFragment : Fragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
     }
 
-    fun onQueueClosed() {
-        btnPlayOption?.setImageResource(UserPrefs.getSort().icon)
-    }
+    /// Public API ///
+    fun expandPlayer() {
+        lifecycleScope.launchWhenResumed {
+            binding.motionLayout.setTransition(R.id.mainTransition)
+            binding.motionLayout.progress = 1f
+            binding.motionLayout.transitionToState(R.id.expanded)
 
-    fun acquirePlayerIfNeeded() {
-        val panelState = mainActivity.slidingPaneLayout.panelState
-        if (panelState == EXPANDED) {
-            val currentItem = viewPager.currentItem
-            if (currentItem >= 0) {
-                playerVideosAdapter.notifyItemChanged(currentItem)
-            }
-        } else if (panelState == COLLAPSED) {
-            val reusedPlayerView = playerVideosAdapter.videosDelegate.reusedPlayerView
-            reusedPlayerView?.let {
-                miniPlayerView.post {
-                    miniPlayerView.acquirePlayer(reusedPlayerView)
-                }
-            }
+            // Make sure bottom bar is visible
+            ensureBottomNavBarHidden()
         }
     }
 
-
-    /* Indicate if a swipe is initiated by user or programmatically */
-    private val scrollEvents = mutableListOf<Int>()
-    private fun setupCenterViewPager() {
-
-        playerVideosAdapter = PlayerPagerAdapter(viewPager)
-        viewPager.adapter = playerVideosAdapter
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                val swipeByUser =
-                    !(scrollEvents.isEmpty() || !scrollEvents.contains(ViewPager2.SCROLL_STATE_DRAGGING))
-                viewPager.postDelayed(300) {
-                    playerVideosAdapter.notifyItemChanged(position)
-                    playerVideosAdapter.notifyItemChanged(viewModel.currentPage)
-                    viewModel.onPageSelected(position, swipeByUser)
-                }
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-                scrollEvents.add(state)
-                if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                    scrollEvents.clear()
-                }
-            }
-        })
+    fun collapsePlayer() {
+        lifecycleScope.launchWhenResumed {
+            binding.motionLayout.setTransition(R.id.mainTransition)
+            binding.motionLayout.transitionToState(R.id.collapsed)
+        }
     }
 
-    fun onExitFullScreen() {
-        playerVideosAdapter.notifyDataSetChanged()
+    fun isExpanded(): Boolean {
+        return binding.motionLayout.currentState == R.id.expanded
+    }
+
+    fun isPlayerHidden(): Boolean {
+        return binding.motionLayout.currentState == R.id.hidden
+    }
+
+    fun isCollapsed(): Boolean {
+        return binding.motionLayout.currentState == R.id.collapsed
+    }
+
+    fun hidePlayer() {
+        binding.motionLayout.setTransition(R.id.initialState)
+        binding.motionLayout.progress = 0f
+        binding.motionLayout.transitionToState(R.id.hidden)
+
+        // Make sure bottom bar is visible
+        ensureBottomNavBarVisible()
+    }
+
+    private fun ensureBottomNavBarVisible() {
+        (activity as? MainActivity)?.binding?.motionLayout?.progress = 0f
+    }
+
+    private fun ensureBottomNavBarHidden() {
+        (activity as? MainActivity)?.binding?.motionLayout?.progress = 1f
+    }
+
+    private fun ensurePlayerVisible() {
+        if (isPlayerHidden()) {
+            collapsePlayer()
+        }
+    }
+
+    private fun stateName(id: Int): String {
+        return when (id) {
+            R.id.collapsed -> "Collapsed"
+            R.id.expanded -> "Expanded"
+            R.id.hidden -> "Hidden"
+            else -> "Unknown"
+        }
+    }
+
+    private fun transitionInfo(): String {
+        return "State: (start,end, current) = (${stateName(binding.motionLayout.startState)},${
+            stateName(
+                binding.motionLayout.endState
+            )
+        },${
+            stateName(
+                binding.motionLayout.currentState
+            )
+        }) progress=${binding.motionLayout.progress}"
     }
 
     companion object {

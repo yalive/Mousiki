@@ -1,6 +1,7 @@
 package com.cas.musicplayer
 
 import android.app.Application
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -9,9 +10,14 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
+import com.cas.musicplayer.ui.common.ads.AdsManager
+import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.UserPrefs
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 
 /**
@@ -20,6 +26,8 @@ import com.google.android.gms.ads.MobileAds
  **********************************
  */
 class MusicApp : Application(), ComponentProvider {
+
+    val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private var _isInForeground = false
     val isInForeground: Boolean
@@ -35,7 +43,7 @@ class MusicApp : Application(), ComponentProvider {
         super.onCreate()
         instance = this
         configurePreferredTheme()
-        if (AudienceNetworkAds.isInAdsProcess(this)) {
+        if (AudienceNetworkAds.isInitialized(this)) {
             return
         }
         MobileAds.initialize(this, getString(R.string.admob_app_id))
@@ -51,6 +59,7 @@ class MusicApp : Application(), ComponentProvider {
                 _isInForeground = false
             }
         })
+        AdsManager.init(applicationScope)
     }
 
     companion object {

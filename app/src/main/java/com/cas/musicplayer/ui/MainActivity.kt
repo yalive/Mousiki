@@ -5,26 +5,19 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-import androidx.transition.TransitionManager
 import com.adcolony.sdk.AdColony
-import com.afollestad.materialdialogs.MaterialDialog
+import com.cas.common.extensions.bool
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.extensions.isDarkMode
-import com.cas.common.extensions.observe
 import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -32,50 +25,31 @@ import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
-import com.cas.musicplayer.player.EmplacementFullScreen
-import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.services.DragBottomPanelLiveData
-import com.cas.musicplayer.player.services.DragPanelInfo
-import com.cas.musicplayer.player.services.MusicPlayerService
-import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.home.showExitDialog
-import com.cas.musicplayer.ui.home.view.InsetSlidingPanelView
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.delay
 
-private const val TAG = "MainActivity_check"
+private const val TAG_NAV = "MainActivity_nav"
 
 class MainActivity : BaseActivity() {
 
-    val slidingPaneLayout: InsetSlidingPanelView by lazy { binding.slidingLayout }
     var isLocked = false
-        set(value) {
-            field = value
-            onLockChanged(value)
-        }
 
     val adsViewModel by viewModel { injector.adsViewModel }
     private val viewModel by viewModel { injector.mainViewModel }
     private lateinit var navController: NavController
 
-    private var isFromService = false
-    private var openBatterySaver = false
-
-    private val bottomView: ViewGroup by lazy { binding.bottomView }
-    private val txtConnectivityState: TextView by lazy { binding.txtConnectivityState }
-
     private lateinit var playerFragment: PlayerFragment
-    private var exitDialog: MaterialDialog? = null
+    private var exitDialog: BottomSheetDialog? = null
 
-    private val binding by viewBinding(ActivityMainBinding::inflate)
+    val binding by viewBinding(ActivityMainBinding::inflate)
 
     private var dialogDrawOverApps: AlertDialog? = null
 
@@ -109,7 +83,7 @@ class MainActivity : BaseActivity() {
         }
         setupPlayerFragment()
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.cordinator) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.coordinator) { v, insets ->
             if (insets.systemWindowInsetTop > 0) {
                 DeviceInset.value = ScreenInset(
                     insets.systemWindowInsetLeft,
@@ -145,8 +119,6 @@ class MainActivity : BaseActivity() {
             true
         }
 
-        observeViewModel()
-
         if (savedInstanceState == null) {
             viewModel.checkToRateApp()
         }
@@ -159,25 +131,6 @@ class MainActivity : BaseActivity() {
             }
         }
         viewModel.checkStartFromShortcut(intent.data?.toString())
-    }
-
-    private fun observeViewModel() {
-        observe(viewModel.connectivityState) { state ->
-            handler.postDelayed(if (state.isConnected) 500L else 0) {
-                bottomView.let { viewGroup ->
-                    TransitionManager.beginDelayedTransition(viewGroup)
-                }
-                txtConnectivityState.isGone = state.isConnected
-            }
-            if (state.isConnected) {
-                txtConnectivityState.setBackgroundColor(color(R.color.colorGreenState))
-                txtConnectivityState.setText(R.string.connection_back)
-            } else {
-                txtConnectivityState.setBackgroundColor(color(R.color.colorDarkNavigationView))
-                txtConnectivityState.setText(R.string.no_connection)
-            }
-            VideoEmplacementLiveData.forceUpdate()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -205,15 +158,10 @@ class MainActivity : BaseActivity() {
             R.id.libraryFragment -> {
                 binding.bottomNavView.menu[1].isChecked = true
             }
+            R.id.mainSearchFragment -> {
+                binding.bottomNavView.menu[2].isChecked = true
+            }
         }
-        val showBottomBarForDestination = isBottomBarVisibleFor(destinationId)
-        binding.bottomNavView.isVisible = showBottomBarForDestination
-    }
-
-    private fun isBottomBarVisibleFor(destinationId: Int): Boolean {
-        return (destinationId == R.id.homeFragment
-                || destinationId == R.id.libraryFragment
-                || destinationId == R.id.mainSearchFragment)
     }
 
     private fun handleClickMenuSearch() {
@@ -222,7 +170,9 @@ class MainActivity : BaseActivity() {
             return
         }
         binding.appbar.setExpanded(true, true)
-        navController.navigate(R.id.mainSearchFragment)
+        if (!navController.popBackStack(R.id.mainSearchFragment, false)) {
+            navController.navigate(R.id.mainSearchFragment)
+        }
     }
 
     private fun handleClickMenuHome() {
@@ -231,53 +181,33 @@ class MainActivity : BaseActivity() {
 
     private fun handleClickMenuLibrary() {
         if (navController.currentDestination?.id == R.id.libraryFragment) return
-        navController.navigate(R.id.libraryFragment)
+        if (!navController.popBackStack(R.id.libraryFragment, false)) {
+            navController.navigate(R.id.libraryFragment)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        isFromService = intent?.getBooleanExtra(EXTRAS_FROM_PLAYER_SERVICE, false) ?: false
-        openBatterySaver = intent?.getBooleanExtra(EXTRAS_OPEN_BATTERY_SAVER_MODE, false) ?: false
+        setIntent(intent)
     }
 
     override fun onResume() {
         super.onResume()
-        if (!isFromService) {
-            isFromService = intent.getBooleanExtra(EXTRAS_FROM_PLAYER_SERVICE, false)
-        }
-        if (isFromService) {
-            isFromService = false
-
+        if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
             expandBottomPanel()
-            bottomPanelFragment()?.onPanelSlide(slidingPaneLayout, 1f)
-
-            if (openBatterySaver) {
-                expandBottomPanel()
+            if (intent.bool(EXTRAS_OPEN_BATTERY_SAVER_MODE)) {
                 playerFragment.openBatterySaverMode()
-                openBatterySaver = false
-            }
-        } else if (isServiceRunning(MusicPlayerService::class.java)) {
-            collapseBottomPanel()
-            handler.postDelayed(300) {
-                playerFragment.acquirePlayerIfNeeded()
             }
         }
+        ViewCompat.requestApplyInsets(binding.coordinator)
+        handleDynamicLinks()
 
-        ViewCompat.requestApplyInsets(binding.cordinator)
-        if (canDrawOverApps()) {
-            handleDynamicLinks()
+
+        // Clean intent
+        intent = intent.apply {
+            putExtra(EXTRAS_FROM_PLAYER_SERVICE, false)
+            putExtra(EXTRAS_OPEN_BATTERY_SAVER_MODE, false)
         }
-
-        VideoEmplacementLiveData.inApp()
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        // Save current state
-        viewModel.lastVideoEmplacement = VideoEmplacementLiveData.value
-        // Movable video
-        VideoEmplacementLiveData.out()
     }
 
     override fun onDestroy() {
@@ -286,50 +216,12 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
     }
 
-    private fun bottomPanelFragment(): PlayerFragment? {
-        return supportFragmentManager.findFragmentById(R.id.playerFragment) as? PlayerFragment
-    }
-
     private fun setupPlayerFragment() {
-        playerFragment = supportFragmentManager.findFragmentById(R.id.playerFragment)
+        playerFragment = supportFragmentManager.findFragmentById(R.id.playerContainer)
                 as? PlayerFragment ?: PlayerFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.playerFragment, playerFragment)
+            .replace(R.id.playerContainer, playerFragment)
             .commit()
-
-        hideBottomPanel()
-        slidingPaneLayout.addPanelSlideListener(object :
-            SlidingUpPanelLayout.SimplePanelSlideListener() {
-            override fun onPanelSlide(panel: View, slideOffset: Float) {
-                DragBottomPanelLiveData.value = DragPanelInfo(panel.y, slideOffset)
-            }
-
-            override fun onPanelStateChanged(
-                panel: View,
-                previousState: SlidingUpPanelLayout.PanelState,
-                newState: SlidingUpPanelLayout.PanelState?
-            ) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    window.statusBarColor = Color.TRANSPARENT
-                    darkStatusBar()
-                    hideBottomNavBar()
-                } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    adjustStatusBarWhenPanelCollapsed()
-                    binding.bottomNavView.isVisible =
-                        isBottomBarVisibleFor(navController.currentDestination!!.id)
-                } else if (newState != SlidingUpPanelLayout.PanelState.DRAGGING) {
-                    binding.bottomNavView.isVisible =
-                        isBottomBarVisibleFor(navController.currentDestination!!.id)
-                }
-            }
-        })
-
-        PlaybackLiveData.observe(this, Observer {
-            if (it == PlayerConstants.PlayerState.UNKNOWN) {
-                hideBottomPanel()
-            }
-        })
-
     }
 
     private fun adjustStatusBarWhenPanelCollapsed() {
@@ -360,25 +252,12 @@ class MainActivity : BaseActivity() {
             supportFragmentManager.findFragmentById(R.id.queueFragmentContainer)?.let {
                 supportFragmentManager.beginTransaction().remove(it).commit()
             }
-            PlayerQueue.showVideo()
             binding.queueFragmentContainer.isVisible = false
             playerFragment.onQueueClosed()
             return
         }
-        if (VideoEmplacementLiveData.value is EmplacementFullScreen) {
-            showStatusBar()
-            switchToPortrait()
-            VideoEmplacementLiveData.inApp()
-            playerFragment.onExitFullScreen()
-            return
-        }
 
-        if (isBottomPanelExpanded() && !isLocked) {
-            collapseBottomPanel()
-            return
-        } else if (isLocked) {
-            return
-        }
+        if (playerFragment.handleBackPress()) return
 
         if (navController.isHome()) {
             exitDialog = showExitDialog()
@@ -387,13 +266,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-
-    fun hideBottomPanel() {
-        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
-    }
-
     fun expandBottomPanel() {
-        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+        playerFragment.expandPlayer()
     }
 
     fun collapseBottomPanel() {
@@ -403,22 +277,16 @@ class MainActivity : BaseActivity() {
             }
             return
         }
-        slidingPaneLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-    }
-
-    fun isBottomPanelCollapsed(): Boolean {
-        return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.COLLAPSED
+        playerFragment.collapsePlayer()
     }
 
     fun isBottomPanelExpanded(): Boolean {
-        return slidingPaneLayout.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
-    }
-
-    private fun onLockChanged(locked: Boolean) {
-        slidingPaneLayout.isTouchEnabled = !locked
+        if (playerFragment.view == null) return false
+        return playerFragment.isExpanded()
     }
 
     private fun handleDynamicLinks() {
+        if (!canDrawOverApps()) return
         Firebase.dynamicLinks
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
@@ -471,8 +339,9 @@ class MainActivity : BaseActivity() {
         )
     }
 
-    fun hideBottomNavBar() {
-        binding.bottomNavView.isVisible = false
+    fun wasLaunchedFromRecent(): Boolean {
+        val flags: Int = intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
+        return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
     }
 
     companion object {

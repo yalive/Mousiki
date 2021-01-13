@@ -1,7 +1,6 @@
 package com.cas.musicplayer.ui.settings
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
@@ -26,7 +25,6 @@ class TimerDialog : BaseDialogFragment() {
                     txtCurrentValue.text = formatDuration(progress)
                     return
                 }
-                Log.d("tag_progress", "progress:$progress")
                 txtCurrentValue.text = formatDuration(progress)
             }
 

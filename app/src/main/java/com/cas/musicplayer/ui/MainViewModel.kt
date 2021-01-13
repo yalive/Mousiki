@@ -2,14 +2,12 @@ package com.cas.musicplayer.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.player.VideoEmplacement
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.uiCoroutine
@@ -25,11 +23,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val remoteAppConfig: RemoteAppConfig,
     private val analytics: FirebaseAnalytics,
-    val connectivityState: ConnectivityState,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
-
-    var lastVideoEmplacement: VideoEmplacement? = null
 
     private val _rateApp = MutableLiveData<Event<Unit>>()
     val rateApp: LiveData<Event<Unit>>
