@@ -25,7 +25,6 @@ import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
@@ -253,7 +252,6 @@ class MainActivity : BaseActivity() {
             supportFragmentManager.findFragmentById(R.id.queueFragmentContainer)?.let {
                 supportFragmentManager.beginTransaction().remove(it).commit()
             }
-            PlayerQueue.showVideo()
             binding.queueFragmentContainer.isVisible = false
             playerFragment.onQueueClosed()
             return

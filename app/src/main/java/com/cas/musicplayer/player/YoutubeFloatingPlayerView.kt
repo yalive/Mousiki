@@ -8,7 +8,6 @@ import android.graphics.PixelFormat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.isVisible
@@ -20,7 +19,6 @@ import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.player.services.YoutubePlayerManager
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.player.TAG_SERVICE
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.screenSize
@@ -201,19 +199,6 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
         youTubePlayerView.addYouTubePlayerListener(youtubePlayerManager)
     }
 
-    fun hide() {
-        videoViewParams.width = 0
-        videoViewParams.height = 0
-        updateLayout()
-    }
-
-    fun show() {
-        this.visible()
-        videoViewParams.width = videoEmplacement.width
-        videoViewParams.height = videoEmplacement.height
-        updateLayout()
-    }
-
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
         radius = emplacement.radius
         this.videoEmplacement = emplacement
@@ -235,13 +220,9 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
         //Update the layout with new X & Y coordinate
         updateLayout()
 
-
         this.alpha = 1f
-        if (emplacement !is EmplacementOut) {
-            hide()
-        } else {
+        if (emplacement is EmplacementOut) {
             acquirePlayer()
-            show()
         }
     }
 

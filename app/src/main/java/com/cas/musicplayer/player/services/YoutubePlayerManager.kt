@@ -165,9 +165,3 @@ class YoutubePlayerManager(
         mediaSession.setPlaybackState(playbackstateBuilder.build())
     }
 }
-
-fun formatTime(elapsedSeconds: Int): String {
-    val minutes = elapsedSeconds / 60
-    val seconds = elapsedSeconds % 60
-    return String.format("%d:%02d", minutes, seconds)
-}
