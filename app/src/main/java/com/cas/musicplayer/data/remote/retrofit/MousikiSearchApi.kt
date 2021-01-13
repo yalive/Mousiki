@@ -1,7 +1,6 @@
 package com.cas.musicplayer.data.remote.retrofit
 
 import com.cas.musicplayer.data.remote.models.mousiki.HomeRS
-import com.cas.musicplayer.data.remote.models.mousiki.MousikiPlaylistRS
 import com.cas.musicplayer.data.remote.models.mousiki.MousikiSearchApiRS
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,17 +19,18 @@ interface MousikiSearchApi {
         @Query("q") query: String
     ): MousikiSearchApiRS
 
-    @GET("{url}/api/{channelId}/songs")
+
+    @GET("{url}/api/channels/{channelId}/songs")
     suspend fun searchChannel(
         @Path(value = "url", encoded = true) apiUrl: String,
         @Path(value = "channelId") channelId: String
     ): MousikiSearchApiRS
 
-    @GET("{url}/api/playlistSongs")
+    @GET("{url}/api/playlists/{playlistId}/songs")
     suspend fun getPlaylistDetail(
         @Path(value = "url", encoded = true) apiUrl: String,
-        @Query(value = "id") playlistId: String
-    ): MousikiPlaylistRS
+        @Path(value = "playlistId") playlistId: String
+    ): MousikiSearchApiRS
 
     @GET("{url}/api/home?gl=US")
     suspend fun getHome(

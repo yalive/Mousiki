@@ -23,13 +23,12 @@
         android:id="@+id/progressBar"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/eight_8dp"
         android:background="@drawable/bg_circle"
         android:indeterminateTint="@color/colorYellow"
         android:padding="@dimen/four_4dp"
-        android:visibility="gone"
-        tools:visibility="gone" />
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/txtError"

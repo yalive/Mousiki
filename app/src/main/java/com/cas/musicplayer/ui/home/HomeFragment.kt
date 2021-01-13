@@ -4,18 +4,24 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
+import android.widget.ProgressBar
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observe
+import com.cas.common.extensions.valueOrNull
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
+import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
@@ -28,6 +34,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private var recyclerView: RecyclerView? = null
+    private var progressBar: ProgressBar? = null
 
     private val homeAdapter by lazy {
         HomeAdapter(viewModel = viewModel, onVideoSelected = { track ->
@@ -46,6 +53,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerView = view?.findViewById(R.id.recyclerView)
+        progressBar = view?.findViewById(R.id.progressBar)
         recyclerView?.addItemDecoration(HomeMarginItemDecoration())
         recyclerView?.adapter = homeAdapter
         observeViewModel()
@@ -68,7 +76,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        /*viewModel.newReleases.valueOrNull()?.let { items ->
+        viewModel.newReleases.valueOrNull()?.let { items ->
             val updatedList = items.map { item ->
                 val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
                 item.copy(
@@ -86,7 +94,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                     adapter.submitList(updatedList, diffCallback)
                 }
             }
-        }*/
+        }
     }
 
     override fun withToolbar(): Boolean = false
@@ -97,6 +105,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
          */
         observe(viewModel.homeItems) { items ->
             homeAdapter.dataItems = items.toMutableList()
+            progressBar?.isVisible = false
         }
         observe(viewModel.genres, homeAdapter::updateGenres)
         observe(viewModel.artists, homeAdapter::updateArtists)
