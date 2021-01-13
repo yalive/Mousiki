@@ -44,7 +44,7 @@
         android:layout_alignEnd="@+id/cardView"
         android:layout_marginTop="@dimen/spacing_x_small"
         android:ellipsize="end"
-        android:fontFamily="@font/pangram_bold"
+        android:fontFamily="@font/roboto_bold"
         android:gravity="start"
         android:maxLines="3"
         android:textColor="?android:textColorPrimary"

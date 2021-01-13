@@ -41,6 +41,7 @@ class SimplePlaylistsAdapter(
     inner class ViewHolder(val view: View, val items: List<SimplePlaylist>) :
         SimpleBaseViewHolder<SimplePlaylist>(view) {
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+        private val txtTitleChart: TextView = view.findViewById(R.id.txtTitleChart)
         private val txtDesc: TextView = view.findViewById(R.id.txtDesc)
 
         init {
@@ -70,6 +71,7 @@ class SimplePlaylistsAdapter(
 
         override fun bind(data: SimplePlaylist) {
             txtTitle.text = data.title
+            txtTitleChart.text = data.title
             txtDesc.text = data.description
             try {
                 val imageSize = itemView.context.dpToPixel(180f)
