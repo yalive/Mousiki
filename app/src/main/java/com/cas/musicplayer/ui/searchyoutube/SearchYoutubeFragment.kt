@@ -5,11 +5,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.cas.common.adapter.FragmentPageAdapter
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.gone
@@ -17,12 +20,14 @@ import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
 import com.cas.common.fragment.BaseFragment
+import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentSearchYoutubeBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
-import kotlinx.android.synthetic.main.fragment_search_youtube.*
+import com.cas.musicplayer.utils.viewBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -35,16 +40,26 @@ import kotlinx.coroutines.launch
 class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
     R.layout.fragment_search_youtube
 ) {
+    private val binding by viewBinding(FragmentSearchYoutubeBinding::bind)
 
     public override val viewModel by viewModel { injector.searchYoutubeViewModel }
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
-    private var recyclerViewSuggestions: RecyclerView? = null
+
+    private val recyclerViewSuggestions: RecyclerView
+        get() = binding.recyclerViewSuggestions
+
+    private val viewPager: ViewPager
+        get() = binding.viewPager
+
+    private val progressBar: ProgressBar
+        get() = binding.progressBar
+
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
-                recyclerViewSuggestions?.gone()
-                pagerContainer.gone()
+                recyclerViewSuggestions.gone()
+                viewPager.gone()
                 progressBar.visible()
                 viewModel.search(it)
             }
@@ -56,10 +71,11 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             return true
         }
     }
+
     private var searchSuggestionsAdapter = SearchSuggestionsAdapter(
         onClickItem = { suggestion ->
-            recyclerViewSuggestions?.gone()
-            pagerContainer.gone()
+            recyclerViewSuggestions.gone()
+            viewPager.gone()
             progressBar.visible()
             removeQueryListener()
             searchView?.setQuery(suggestion.value, false)
@@ -108,19 +124,16 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerViewSuggestions = view.findViewById(R.id.recyclerViewSuggestions)
         val fragments = listOf<PageableFragment>(
             ResultSearchSongsFragment()
         )
         viewPager.adapter = FragmentPageAdapter(
-            childFragmentManager, fragments, mutableListOf(
-                getString(R.string.title_videos),
-                getString(R.string.title_channels),
-                getString(R.string.title_playlist)
-            )
+            childFragmentManager,
+            fragments,
+            mutableListOf(getString(R.string.title_videos))
         )
-        recyclerViewSuggestions?.adapter = searchSuggestionsAdapter
-        recyclerViewSuggestions?.addItemDecoration(
+        recyclerViewSuggestions.adapter = searchSuggestionsAdapter
+        recyclerViewSuggestions.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 RecyclerView.VERTICAL
@@ -140,13 +153,17 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
 
     private fun observeViewModel() {
         observe(viewModel.videos) {
-            pagerContainer.visible()
+            viewPager.visible()
             progressBar.gone()
-            recyclerViewSuggestions?.gone()
+            recyclerViewSuggestions.gone()
+            if (it is Resource.Success) {
+                Toast.makeText(requireContext(), "${it.data.size} results", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
         observe(viewModel.searchSuggestions) { suggestions ->
-            recyclerViewSuggestions?.visible()
-            pagerContainer.gone()
+            recyclerViewSuggestions.visible()
+            viewPager.gone()
             progressBar.gone()
             searchSuggestionsAdapter.dataItems = suggestions.toMutableList()
         }

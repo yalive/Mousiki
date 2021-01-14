@@ -8,8 +8,8 @@ import com.cas.musicplayer.data.local.database.dao.SearchQueryDao
 import com.cas.musicplayer.data.local.models.SearchQueryEntity
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.domain.model.Channel
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
+import com.cas.musicplayer.domain.model.SearchTracksResult
 import org.json.JSONArray
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,13 +27,22 @@ class SearchRepository @Inject constructor(
     private val searchQueryDao: SearchQueryDao
 ) {
 
-    suspend fun searchTracks(query: String): Result<List<MusicTrack>> {
-        val localResult = searchLocalDataSource.getSearchSongsResultForQuery(query)
-        if (localResult.isNotEmpty()) {
-            return Result.Success(localResult)
+    suspend fun searchTracks(
+        query: String,
+        key: String? = null,
+        token: String? = null
+    ): Result<SearchTracksResult> {
+
+        // Check cache only if no pagination is specified
+        if (key == null && token == null) {
+            val localResult = searchLocalDataSource.getSearchSongsResultForQuery(query)
+            if (localResult.isNotEmpty()) {
+                return Result.Success(SearchTracksResult(localResult))
+            }
         }
-        return searchRemoteDataSource.searchTracks(query).alsoWhenSuccess {
-            searchLocalDataSource.saveSongs(query, it)
+
+        return searchRemoteDataSource.searchTracks(query, key, token).alsoWhenSuccess {
+            searchLocalDataSource.saveSongs(query, it.tracks)
         }
     }
 

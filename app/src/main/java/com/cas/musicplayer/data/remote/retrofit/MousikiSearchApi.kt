@@ -3,6 +3,7 @@ package com.cas.musicplayer.data.remote.retrofit
 import com.cas.musicplayer.data.remote.models.mousiki.HomeRS
 import com.cas.musicplayer.data.remote.models.mousiki.MousikiSearchApiRS
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -16,7 +17,9 @@ interface MousikiSearchApi {
     @GET("{url}/api/search")
     suspend fun search(
         @Path(value = "url", encoded = true) url: String,
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Header("continuationKey") key: String? = null,
+        @Header("continuationToken") token: String? = null
     ): MousikiSearchApiRS
 
 

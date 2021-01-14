@@ -12,6 +12,8 @@ import com.cas.musicplayer.data.datasource.search.getOrEmpty
 import com.cas.musicplayer.data.datasource.search.hasData
 import com.cas.musicplayer.data.remote.mappers.Mapper
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.SearchTracksResult
+import com.cas.musicplayer.domain.model.hasData
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.withContext
@@ -64,6 +66,28 @@ class RetrofitRunner @Inject constructor() {
 
         var retries = 0
         var tracksResult: Result<List<MusicTrack>> = NO_RESULT
+        do {
+            retries++
+            var apiIndex = 0
+            var api = apiList.getOrEmpty(apiIndex)
+            while (api.isNotEmpty() && !tracksResult.hasData()) {
+                tracksResult = executeNetworkCall { requestWithApi(api) }
+                apiIndex++
+                api = if (apiIndex < maxApis) apiList.getOrEmpty(apiIndex) else ""
+            }
+        } while (!tracksResult.hasData() && retries < config.retryCount())
+        return tracksResult
+    }
+
+    suspend fun getMusicTracksWithPagination(
+        config: SearchConfig,
+        requestWithApi: suspend (String) -> SearchTracksResult
+    ): Result<SearchTracksResult> {
+        val apiList = config.apiList()
+        val maxApis = config.maxApi()
+
+        var retries = 0
+        var tracksResult: Result<SearchTracksResult> = NO_RESULT
         do {
             retries++
             var apiIndex = 0
