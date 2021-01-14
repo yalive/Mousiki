@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.searchyoutube.result
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.observe
@@ -9,6 +10,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
+import com.cas.musicplayer.ui.popular.EndlessRecyclerOnScrollListener
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
 import com.cas.musicplayer.utils.Constants
 
@@ -17,6 +19,8 @@ import com.cas.musicplayer.utils.Constants
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
+private const val TAG = "load_more_search"
+
 class ResultSearchSongsFragment : BaseSearchResultFragment(
     R.layout.fragment_yt_search_videos
 ), PageableFragment {
@@ -46,6 +50,11 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView?.adapter = adapter
+        recyclerView?.addOnScrollListener(EndlessRecyclerOnScrollListener { page ->
+            Log.d(TAG, "load more: $page")
+            val parentFragment = parentFragment as? SearchYoutubeFragment
+            parentFragment?.viewModel?.loadMore(page)
+        })
         observeViseModel()
     }
 
