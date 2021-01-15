@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,7 +19,6 @@ import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
 import com.cas.common.fragment.BaseFragment
-import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSearchYoutubeBinding
@@ -57,12 +55,11 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
 
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            query?.let {
-                recyclerViewSuggestions.gone()
-                viewPager.gone()
-                progressBar.visible()
-                viewModel.search(it)
-            }
+            query ?: return true
+            recyclerViewSuggestions.gone()
+            viewPager.gone()
+            progressBar.visible()
+            viewModel.search(query)
             return true
         }
 
@@ -156,10 +153,6 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             viewPager.visible()
             progressBar.gone()
             recyclerViewSuggestions.gone()
-            if (it is Resource.Success) {
-                Toast.makeText(requireContext(), "${it.data.size} results", Toast.LENGTH_SHORT)
-                    .show()
-            }
         }
         observe(viewModel.searchSuggestions) { suggestions ->
             recyclerViewSuggestions.visible()
