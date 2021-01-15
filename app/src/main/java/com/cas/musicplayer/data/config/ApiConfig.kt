@@ -16,5 +16,7 @@ data class ApiConfig(
     @SerializedName("artistSongs")
     val artistSongs: SearchConfig,
     @SerializedName("playlists")
-    val playlists: SearchConfig
+    val playlists: SearchConfig,
+    @SerializedName("home")
+    val home: SearchConfig
 )

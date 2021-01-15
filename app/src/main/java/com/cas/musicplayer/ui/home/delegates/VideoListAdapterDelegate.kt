@@ -20,15 +20,15 @@ class VideoListAdapterDelegate(
     override val showRetryButton: Boolean = false
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
-        return items[position] is HomeItem.VideoLists
+        return items[position] is HomeItem.VideoList
     }
 
     override fun songsFromItem(item: DisplayableItem): Resource<List<DisplayedVideoItem>> {
-        return Resource.Success((item as HomeItem.VideoLists).tracks.map { it.toDisplayedVideoItem() })
+        return Resource.Success((item as HomeItem.VideoList).tracks.map { it.toDisplayedVideoItem() })
     }
 
     override fun getHeaderTitle(items: List<DisplayableItem>, position: Int): String {
-        val videoListsItem = items[position] as HomeItem.VideoLists
+        val videoListsItem = items[position] as HomeItem.VideoList
         return videoListsItem.title
     }
 }
