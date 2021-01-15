@@ -70,6 +70,8 @@ class RemoteAppConfig @Inject constructor(
 
     fun artistSongsApiConfig(): SearchConfig = getApiConfig().artistSongs
 
+    fun homeApiConfig(): SearchConfig = getApiConfig().home
+
     fun loadChartSongsFromFirebase(): Boolean {
         return firebaseRemoteConfig.getBoolean(LOAD_CHART_SONGS_FROM_FIREBASE)
     }
@@ -98,6 +100,10 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getBoolean(TURN_ON_REWARD_AD)
     }
 
+    fun newHomeEnabled(): Boolean {
+        return firebaseRemoteConfig.getBoolean(ENABLE_NEW_HOME)
+    }
+
     fun bannerAdOn(): Boolean {
         return firebaseRemoteConfig.getBoolean(BANNER_AD_TURNED_ON)
     }
@@ -114,6 +120,13 @@ class RemoteAppConfig @Inject constructor(
         val offset = firebaseRemoteConfig.getLong(SHOW_REWARD_AFTER_X_CLICK).toInt()
         if (offset <= 0) return DEF_CLICK_TO_SHOW_REWARD
         return offset
+    }
+
+    /* Duration in hours */
+    fun getHomeCacheDuration(): Int {
+        val cacheDuration = firebaseRemoteConfig.getLong(HOME_CACHE_DURATION).toInt()
+        if (cacheDuration <= 0) return 1 // 1 hour
+        return cacheDuration
     }
 
     companion object {
@@ -133,5 +146,7 @@ class RemoteAppConfig @Inject constructor(
         const val SHOW_REWARD_AFTER_X_CLICK = "show_reward_after_x_click"
         const val SHOW_AD_FOR_TRACK_OPTIONS = "show_ad_for_track_options"
         const val SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API = "search_artist_tracks_from_mousiki_api"
+        const val HOME_CACHE_DURATION = "home_cache_duration_hours"
+        const val ENABLE_NEW_HOME = "enable_new_home"
     }
 }

@@ -119,13 +119,17 @@ data class VideoListSection(
 
 @Keep
 data class VideoInfo(
+    @SerializedName("video")
     val video: MousikiVideoRS,
+    @SerializedName("owner")
     val owner: VideoOwner
 )
 
 @Keep
 data class VideoOwner(
+    @SerializedName("channelId")
     val channelId: String,
+    @SerializedName("title")
     val title: String
 )
 
