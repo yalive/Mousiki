@@ -99,7 +99,7 @@ class HomeViewModel @Inject constructor(
                     }
 
                     val promos = HomeItem.VideoLists(
-                        "Promos",
+                        "Trending videos",
                         tracks = homeRS.promos.map { it.video.toTrack() }
                     )
                     items.add(promos)
