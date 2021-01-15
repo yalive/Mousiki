@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.home.adapters
 
+import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -33,6 +34,8 @@ class SimplePlaylistsAdapter(
         dataItems = items.toMutableList()
     }
 
+    val textColor = listOf("#ee34a2", "#1d1c0f", "#2b138a", "#e2eca7", "#ff4632")
+    val cardBackgroundColors = listOf("#9cf0e1", "#ff4632", "#cdf463", "#4200f5", "#1d1c0f")
     override val cellResId: Int = R.layout.item_home_simple_playlist
     override fun createViewHolder(view: View): ViewHolder {
         return ViewHolder(view, dataItems)
@@ -43,9 +46,10 @@ class SimplePlaylistsAdapter(
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
         private val txtTitleChart: TextView = view.findViewById(R.id.txtTitleChart)
         private val txtDesc: TextView = view.findViewById(R.id.txtDesc)
+        private val cardView = view.findViewById<View>(R.id.cardView)
 
         init {
-            view.findViewById<View>(R.id.cardView).onClick {
+            cardView.onClick {
                 if (adapterPosition >= 0) {
                     val item = items[adapterPosition]
                     val artist = Artist(item.title, "US", item.playlistId)
@@ -71,7 +75,11 @@ class SimplePlaylistsAdapter(
 
         override fun bind(data: SimplePlaylist) {
             txtTitle.text = data.title
-            txtTitleChart.text = data.title
+            txtTitleChart.apply {
+                text = data.title
+                setTextColor(Color.parseColor(textColor[adapterPosition % textColor.size]))
+            }
+            cardView.setBackgroundColor(Color.parseColor(cardBackgroundColors[adapterPosition % cardBackgroundColors.size]))
             txtDesc.text = data.description
             try {
                 val imageSize = itemView.context.dpToPixel(180f)
