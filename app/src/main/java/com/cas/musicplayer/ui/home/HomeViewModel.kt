@@ -52,10 +52,6 @@ class HomeViewModel @Inject constructor(
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val newReleases: LiveData<Resource<List<DisplayedVideoItem>>> = _newReleases
 
-    /*  private val _charts = MutableLiveData<List<ChartModel>>()
-      val charts: LiveData<List<ChartModel>> = _charts*/
-
-
     private val _genres = MutableLiveData<List<GenreMusic>>()
     val genres: LiveData<List<GenreMusic>> = _genres
 
@@ -66,10 +62,6 @@ class HomeViewModel @Inject constructor(
     val homeItems: LiveData<List<HomeItem>> = _homeItems
 
     init {
-        /*
-
-        loadCharts()
-        loadGenres()*/
         getHome()
     }
 
@@ -77,6 +69,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = homeRepository.getHome()) {
                 is Result.Success -> {
+
                     val homeRS = result.data
                     val items = mutableListOf<HomeItem>()
 
