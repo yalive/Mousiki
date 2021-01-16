@@ -15,7 +15,7 @@ import com.cas.musicplayer.ui.library.model.LibraryItem
  ***************************************
  */
 class LibraryRecentTracksAdapterDelegate(
-    onVideoSelected: (MusicTrack) -> Unit
+    onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit
 ) : HorizontalListSongsAdapterDelegate(onVideoSelected) {
 
     override val showRetryButton: Boolean = false

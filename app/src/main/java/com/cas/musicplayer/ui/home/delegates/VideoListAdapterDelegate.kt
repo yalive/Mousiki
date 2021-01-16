@@ -6,7 +6,6 @@ import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 
 /**
  ***************************************
@@ -14,7 +13,7 @@ import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
  ***************************************
  */
 class VideoListAdapterDelegate(
-    onVideoSelected: (MusicTrack) -> Unit
+    onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit
 ) : HorizontalListSongsAdapterDelegate(onVideoSelected) {
 
     override val showRetryButton: Boolean = false
@@ -24,7 +23,7 @@ class VideoListAdapterDelegate(
     }
 
     override fun songsFromItem(item: DisplayableItem): Resource<List<DisplayedVideoItem>> {
-        return Resource.Success((item as HomeItem.VideoList).tracks.map { it.toDisplayedVideoItem() })
+        return Resource.Success((item as HomeItem.VideoList).items)
     }
 
     override fun getHeaderTitle(items: List<DisplayableItem>, position: Int): String {

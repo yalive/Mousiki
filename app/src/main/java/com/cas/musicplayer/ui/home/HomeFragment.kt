@@ -45,9 +45,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(
         get() = binding.progressBar
 
     private val homeAdapter by lazy {
-        HomeAdapter(viewModel = viewModel, onVideoSelected = { track ->
+        HomeAdapter(viewModel = viewModel, onVideoSelected = { track, tracks ->
             (activity as? MainActivity)?.collapseBottomPanel()
-            viewModel.onClickTrack(track)
+            viewModel.onClickTrack(track, tracks)
         }, onClickRetryNewRelease = {
             viewModel.onClickRetryNewRelease()
         })
