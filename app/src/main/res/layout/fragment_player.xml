@@ -352,6 +352,7 @@
         android:id="@+id/lockScreenView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="3dp"
         android:visibility="gone" />
 
 </com.cas.musicplayer.ui.player.view.MousikiPlayerMotionLayout>
