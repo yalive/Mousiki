@@ -68,6 +68,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHome() = viewModelScope.launch {
+        appConfig.awaitActivation()
         if (appConfig.newHomeEnabled()) {
             when (val result = homeRepository.getHome()) {
                 is Result.Success -> {
