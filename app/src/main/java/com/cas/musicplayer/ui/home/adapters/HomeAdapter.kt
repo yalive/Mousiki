@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
 class HomeAdapter(
     viewModel: HomeViewModel,
     private val chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
-    onVideoSelected: (MusicTrack) -> Unit,
+    onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit,
     onClickRetryNewRelease: () -> Unit
 ) : BaseDelegationAdapter(
     listOf(
@@ -88,7 +88,7 @@ class HomeAdapter(
         }
     }
 
-    private fun updateItemAtIndex(index: Int, item: DisplayableItem) {
+    fun updateItemAtIndex(index: Int, item: DisplayableItem) {
         dataItems[index] = item
         notifyItemChanged(index)
     }

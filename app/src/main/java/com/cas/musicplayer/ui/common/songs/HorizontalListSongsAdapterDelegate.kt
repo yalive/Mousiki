@@ -28,7 +28,7 @@ import com.cas.musicplayer.utils.dpToPixel
  */
 
 open class HorizontalListSongsAdapterDelegate(
-    private val onVideoSelected: (MusicTrack) -> Unit,
+    private val onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit,
     private val onClickRetry: () -> Unit = {}
 ) : AdapterDelegate<List<DisplayableItem>>() {
 

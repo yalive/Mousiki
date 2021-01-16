@@ -19,14 +19,14 @@ class LibraryAdapter(
     private val viewModel: LibraryViewModel
 ) : BaseDelegationAdapter(
     listOf(
-        LibraryRecentTracksAdapterDelegate {
-            viewModel.onClickRecentTrack(it)
+        LibraryRecentTracksAdapterDelegate { track, tracks ->
+            viewModel.onClickRecentTrack(track, tracks)
         },
-        LibraryHeavyTracksAdapterDelegate {
-            viewModel.onClickHeavyTrack(it)
+        LibraryHeavyTracksAdapterDelegate { track, tracks ->
+            viewModel.onClickHeavyTrack(track, tracks)
         },
-        LibraryFavouriteTracksAdapterDelegate {
-            viewModel.onClickFavouriteTrack(it)
+        LibraryFavouriteTracksAdapterDelegate { track, tracks ->
+            viewModel.onClickFavouriteTrack(track, tracks)
         },
         LibraryHeaderAdapterDelegate(),
         LibraryPlaylistsDelegate(viewModel)

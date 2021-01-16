@@ -94,17 +94,19 @@ class HomeViewModel @Inject constructor(
                     val videoLists = homeRS.videoLists.filter {
                         it.videos.isNotEmpty()
                     }.map {
-                        HomeItem.VideoList(it.title, it.videos.map { it.video.toTrack() })
+                        HomeItem.VideoList(
+                            it.title,
+                            it.videos.map { it.video.toTrack().toDisplayedVideoItem() })
                     }
 
                     // Create promos
                     val promos = HomeItem.VideoList(
                         "Trending videos",
-                        tracks = homeRS.promos.map { it.video.toTrack() }
+                        items = homeRS.promos.map { it.video.toTrack().toDisplayedVideoItem() }
                     )
 
                     // Add items: this is the order in UI
-                    if (promos.tracks.isNotEmpty()) {
+                    if (promos.items.isNotEmpty()) {
                         items.add(promos)
                     }
 
@@ -129,10 +131,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = uiCoroutine {
-        val tracks =
-            (_newReleases.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
-        playTrackFromQueue(track, tracks)
+    fun onClickTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
+        playTrackFromQueue(track, queue)
     }
 
     fun onClickRetryNewRelease() {
