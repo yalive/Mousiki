@@ -10,6 +10,7 @@ import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.ui.home.adapters.CompactPlaylistsAdapter
+import com.cas.musicplayer.utils.dpToPixel
 
 /**
  ***************************************
@@ -36,7 +37,7 @@ class CompactPlaylistSectionDelegate : AdapterDelegate<List<DisplayableItem>>() 
         (holder as ViewHolder).bind(section)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), HomeMarginProvider {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
@@ -44,6 +45,10 @@ class CompactPlaylistSectionDelegate : AdapterDelegate<List<DisplayableItem>>() 
             val adapter = CompactPlaylistsAdapter(section.playlists)
             recyclerView.adapter = adapter
             txtTitle.text = section.title
+        }
+
+        override fun topMargin(): Int {
+            return itemView.context.dpToPixel(24f)
         }
     }
 }

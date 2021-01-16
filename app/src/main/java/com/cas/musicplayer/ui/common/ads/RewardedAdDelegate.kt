@@ -15,6 +15,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
 import javax.inject.Inject
 
@@ -52,6 +53,7 @@ class RewardedAdDelegateImp(
 
     init {
         loadAd()
+        UnityAds.addListener(UnityAdsListener())
     }
 
     override fun register(activity: Activity) {
@@ -65,17 +67,22 @@ class RewardedAdDelegateImp(
     }
 
     private fun showReward(activity: Activity) {
-       /* if (errorLoadingAd) {
+        if (UnityAds.isReady(activity.getString(R.string.unity_placement_id))) {
+            UnityAds.show(activity, activity.getString(R.string.unity_placement_id))
+            return
+        }
+
+        if (errorLoadingAd) {
             retriesCount = 0
             loadAd()
         }
         if (!rewardedAd.isLoaded) {
             analytics.logEvent(ANALYTICS_ERROR_LOAD_AD, null)
             return
-        }*/
+        }
 
 
-       /* rewardedAd.show(activity, object : RewardedAdCallback() {
+        rewardedAd.show(activity, object : RewardedAdCallback() {
             override fun onUserEarnedReward(p0: RewardItem) {
                 PlayerQueue.pause()
             }
@@ -89,15 +96,7 @@ class RewardedAdDelegateImp(
                 loadAd()
                 PlayerQueue.resume()
             }
-        })*/
-
-        showUnityRewardAd(activity)
-    }
-
-    private fun showUnityRewardAd(activity: Activity) {
-        if (UnityAds.isReady(activity.getString(R.string.unity_placement_id))) {
-            UnityAds.show(activity, activity.getString(R.string.unity_placement_id));
-        }
+        })
     }
 
     private fun loadAd() {
@@ -143,5 +142,23 @@ class NoRewardedAdDelegate @Inject constructor() : RewardedAdDelegate {
 
     override fun unregister() {
         // no-op
+    }
+}
+
+class UnityAdsListener : IUnityAdsListener {
+
+    override fun onUnityAdsStart(placementId: String?) {
+        PlayerQueue.pause()
+    }
+
+    override fun onUnityAdsFinish(placementId: String?, result: UnityAds.FinishState?) {
+        PlayerQueue.resume()
+    }
+
+    override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
+        PlayerQueue.resume()
+    }
+
+    override fun onUnityAdsReady(placementId: String?) {
     }
 }

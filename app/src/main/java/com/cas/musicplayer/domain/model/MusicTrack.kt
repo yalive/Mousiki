@@ -92,6 +92,8 @@ val LENGTH_PATTERN =
     Pattern.compile("^PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?$", Pattern.CASE_INSENSITIVE)
 
 private fun MusicTrack.durationToSeconds(): Long {
+
+    // "mm:ss"
     val m = LENGTH_PATTERN.matcher(duration)
     if (m.matches()) {
         val hr = m.group(1)
@@ -129,7 +131,8 @@ private fun parseDurationPart(part: String): Int {
     return try {
         part.toInt()
     } catch (e: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(Exception("Unable to parse custom duration part: $part", e))
+        FirebaseCrashlytics.getInstance()
+            .recordException(Exception("Unable to parse custom duration part: $part", e))
         0
     }
 }
@@ -140,4 +143,3 @@ val MusicTrack.Companion.EMPTY: MusicTrack
         title = "",
         duration = ""
     )
-

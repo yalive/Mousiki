@@ -26,7 +26,6 @@ import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
@@ -36,15 +35,10 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
-import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
 import kotlinx.coroutines.delay
 
-private const val TAG_NAV = "MainActivity_nav"
-
 class MainActivity : BaseActivity() {
-
-    var isLocked = false
 
     val adsViewModel by viewModel { injector.adsViewModel }
     private val viewModel by viewModel { injector.mainViewModel }
@@ -342,14 +336,11 @@ class MainActivity : BaseActivity() {
             "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
         )
 
-        UnityAds.addListener(UnityAdsListener())
-
         val testMode = BuildConfig.DEBUG
-        UnityAds.initialize(this,getString(R.string.unity_rewarded_game_id), testMode)
-
+        UnityAds.initialize(this, getString(R.string.unity_rewarded_game_id), testMode)
     }
 
-    fun wasLaunchedFromRecent(): Boolean {
+    private fun wasLaunchedFromRecent(): Boolean {
         val flags: Int = intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
         return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
     }
@@ -358,23 +349,4 @@ class MainActivity : BaseActivity() {
         const val EXTRAS_FROM_PLAYER_SERVICE = "from_player_service"
         const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
     }
-}
-
-private class UnityAdsListener : IUnityAdsListener {
-
-    override fun onUnityAdsStart(placementId: String?) {
-        PlayerQueue.pause()
-    }
-
-    override fun onUnityAdsFinish(placementId: String?, result: UnityAds.FinishState?) {
-        PlayerQueue.resume()
-    }
-
-    override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
-        PlayerQueue.resume()
-    }
-
-    override fun onUnityAdsReady(placementId: String?) {
-    }
-
 }
