@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.library.delegates
 
 import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
@@ -32,6 +33,6 @@ class LibraryFavouriteTracksAdapterDelegate(
     }
 
     override fun getHeaderTitle(items: List<DisplayableItem>, position: Int): String {
-        return "Favourites"
+        return MusicApp.get().getString(R.string.library_favourites)
     }
 }

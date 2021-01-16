@@ -61,11 +61,11 @@ class LibraryViewModel @Inject constructor(
     init {
         uiCoroutine {
 
-            _favouriteSongs.addSource(getFavouriteTracksLive(10)) { songs ->
+            _favouriteSongs.addSource(getFavouriteTracksLive(20)) { songs ->
                 _favouriteSongs.postValue(tracksToDisplayableItems(songs))
             }
 
-            _recentSongs.addSource(getRecentlyPlayedSongsLive(10)) { songs ->
+            _recentSongs.addSource(getRecentlyPlayedSongsLive(50)) { songs ->
                 _recentSongs.postValue(tracksToDisplayableItems(songs))
             }
 

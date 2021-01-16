@@ -54,7 +54,6 @@ class LibraryAdapter(
             updateItemAtIndex(index, LibraryItem.Heavy(songs))
         } else if (songs.isNotEmpty()) {
             val oldSize = dataItems.size
-            dataItems.add(LibraryHeaderItem.HeavyHeader)
             dataItems.add(LibraryItem.Heavy(songs))
             notifyItemRangeInserted(oldSize, 2)
         }
