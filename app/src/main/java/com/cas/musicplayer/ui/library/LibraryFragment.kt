@@ -58,9 +58,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
                 val context = parent.context
                 val position = parent.getChildAdapterPosition(view)
                 with(outRect) {
-                    if (position == 2) {
-                        top = context.dpToPixel(24f)
-                    } else if (position == 4) {
+                    if (position > 1) {
                         top = context.dpToPixel(24f)
                     }
                 }

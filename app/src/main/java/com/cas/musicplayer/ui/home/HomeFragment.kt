@@ -4,6 +4,7 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.widget.ProgressBar
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
@@ -83,34 +84,31 @@ class HomeFragment : BaseFragment<HomeViewModel>(
     }
 
     private fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        viewModel.newReleases.valueOrNull()?.let { items ->
-            val updatedList = items.map { item ->
-                val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
-                        && state != PlayerConstants.PlayerState.UNKNOWN
-                item.copy(
-                    isCurrent = isCurrent,
-                    isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)
-                )
-            }
+        val items = viewModel.newReleases.valueOrNull() ?: return
+        val updatedList = items.map { item ->
+            val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
+                    && state != PlayerConstants.PlayerState.UNKNOWN
+            item.copy(
+                isCurrent = isCurrent,
+                isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)
+            )
+        }
 
-            recyclerView.post {
-                val holder = recyclerView.findViewHolderForAdapterPosition(2)
-                        as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder
-                if (holder != null) {
-                    val adapter = holder.adapter
-                    val diffCallback = SongsDiffUtil(adapter.dataItems, updatedList)
-                    adapter.submitList(updatedList, diffCallback)
-                }
+        recyclerView.post {
+            val holder = recyclerView.findViewHolderForAdapterPosition(2)
+                    as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder
+            if (holder != null) {
+                val adapter = holder.adapter
+                val diffCallback = SongsDiffUtil(adapter.dataItems, updatedList)
+                adapter.submitList(updatedList, diffCallback)
             }
         }
+
     }
 
     override fun withToolbar(): Boolean = false
 
     private fun observeViewModel() {
-        /*
-         observe(viewModel.charts, homeAdapter::updateCharts)
-         */
         observe(viewModel.homeItems) { items ->
             homeAdapter.dataItems = items.toMutableList()
             progressBar.isVisible = false

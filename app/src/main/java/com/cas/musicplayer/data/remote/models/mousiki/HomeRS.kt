@@ -2,6 +2,7 @@ package com.cas.musicplayer.data.remote.models.mousiki
 
 import androidx.annotation.Keep
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.toYoutubeDuration
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -138,6 +139,6 @@ fun MousikiVideoRS.toTrack(): MusicTrack {
     return MusicTrack(
         youtubeId = videoId.orEmpty(),
         title = title.orEmpty(),
-        duration = duration.orEmpty()
+        duration = MusicTrack.toYoutubeDuration(duration.orEmpty())
     )
 }

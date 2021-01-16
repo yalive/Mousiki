@@ -409,7 +409,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private fun checkLockScreen(lock: Boolean) {
         binding.lockScreenView.isVisible = lock
-        (activity as? MainActivity)?.isLocked = lock
         binding.lockScreenView.toggle(lock)
         if (lock) {
             binding.lockScreenView.acquirePlayer(reusedPlayerView)

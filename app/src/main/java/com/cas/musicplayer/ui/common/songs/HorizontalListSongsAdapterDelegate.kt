@@ -17,7 +17,9 @@ import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.utils.dpToPixel
 
 /**
  ***************************************
@@ -66,7 +68,8 @@ open class HorizontalListSongsAdapterDelegate(
         return ""
     }
 
-    inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view),
+        HomeMarginProvider {
         val adapter = HorizontalSongsAdapter(onVideoSelected)
         private val txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
         private val txtEmpty = itemView.findViewById<TextView>(R.id.txtEmpty)
@@ -90,7 +93,11 @@ open class HorizontalListSongsAdapterDelegate(
             recyclerView.adapter = adapter
         }
 
-        fun bind(title: String, resource: Resource<List<DisplayedVideoItem>>, isTitleVisible: Boolean) {
+        fun bind(
+            title: String,
+            resource: Resource<List<DisplayedVideoItem>>,
+            isTitleVisible: Boolean
+        ) {
             txtTitle.apply {
                 text = title
                 isVisible = isTitleVisible
@@ -113,6 +120,11 @@ open class HorizontalListSongsAdapterDelegate(
                     recyclerView.isInvisible = true
                 }
             }
+        }
+
+        override fun topMargin(): Int {
+            if (!txtTitle.isVisible) return 0
+            return itemView.context.dpToPixel(24f)
         }
     }
 }

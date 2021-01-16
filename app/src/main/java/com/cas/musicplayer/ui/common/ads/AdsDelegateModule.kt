@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.common.ads
 
 import android.content.Context
+import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.data.config.EnvConfig
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -33,7 +34,7 @@ class RewardedAdDelegateModule {
         analytics: FirebaseAnalytics,
         envConfig: EnvConfig
     ): RewardedAdDelegate {
-        return if (appConfig.rewardAdOn()) {
+        return if (appConfig.rewardAdOn() && !BuildConfig.DEBUG) {
             RewardedAdDelegateImp(
                 context = context,
                 analytics = analytics,

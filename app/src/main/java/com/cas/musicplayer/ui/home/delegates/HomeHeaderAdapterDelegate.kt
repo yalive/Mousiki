@@ -12,14 +12,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
-import com.cas.common.extensions.valueOrNull
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HeaderItem
-import com.cas.musicplayer.ui.common.songs.AppImage
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.navigateSafeAction
 
 /**
@@ -49,13 +47,16 @@ class HomeHeaderAdapterDelegate(
         (holder as HeaderViewHolder).bind(headerItem)
     }
 
-    private inner class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    private inner class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view),
+        HomeMarginProvider {
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
         private val txtMore: TextView = view.findViewById(R.id.txtMore)
         private val showAll: ImageButton = view.findViewById(R.id.showAll)
         private val progressBar: ProgressBar = view.findViewById(R.id.progressBar)
 
+        var item: HeaderItem? = null
         fun bind(headerItem: HeaderItem) {
+            item = headerItem
             txtTitle.setText(headerItem.title)
             if (headerItem.showMore) {
                 view.onClick { showMore(headerItem) }
@@ -90,6 +91,17 @@ class HomeHeaderAdapterDelegate(
                 HeaderItem.GenresHeader -> R.id.action_homeFragment_to_genresFragment
             }
             itemView.findNavController().navigateSafeAction(destination, bundle)
+        }
+
+        override fun topMargin(): Int {
+            val headerItem = item ?: return 0
+            val dp = when (headerItem) {
+                is HeaderItem.PopularsHeader -> 24f
+                HeaderItem.ChartsHeader -> 0f
+                HeaderItem.ArtistsHeader -> 56f
+                HeaderItem.GenresHeader -> 40f
+            }
+            return itemView.context.dpToPixel(dp)
         }
     }
 }
