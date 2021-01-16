@@ -70,7 +70,7 @@ class QueueAdapter(
 
             indicatorPlaying.setMusicPlayingState(item)
 
-            val alpha = if (item.beforeCurrent) 0.3f else 1f
+            val alpha = if (item.beforeCurrent) 0.6f else 1f
             imgSong.alpha = alpha
             txtTitle.alpha = alpha
             txtCategory.alpha = alpha

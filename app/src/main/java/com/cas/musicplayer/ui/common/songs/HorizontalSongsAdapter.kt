@@ -29,7 +29,7 @@ import com.cas.musicplayer.utils.themeColor
  **********************************
  */
 class HorizontalSongsAdapter(
-    private val onVideoSelected: (MusicTrack) -> Unit
+    private val onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit
 ) : SimpleBaseAdapter<DisplayedVideoItem, HorizontalSongsAdapter.HorizontalSongViewHolder>() {
 
     override val cellResId: Int = R.layout.item_new_release
@@ -39,7 +39,7 @@ class HorizontalSongsAdapter(
 
     inner class HorizontalSongViewHolder(
         view: View,
-        private val onVideoSelected: (MusicTrack) -> Unit
+        private val onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit
     ) : SimpleBaseViewHolder<DisplayedVideoItem>(view) {
 
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
@@ -66,7 +66,8 @@ class HorizontalSongsAdapter(
 
             itemView.findViewById<View>(R.id.cardView).onClick {
                 UserPrefs.onClickTrack()
-                onVideoSelected(item.track)
+                val tracks = dataItems.map { it.track }
+                onVideoSelected(item.track, tracks)
             }
             TransitionManager.beginDelayedTransition(itemView as ViewGroup)
             indicatorPlaying.setMusicPlayingState(item)

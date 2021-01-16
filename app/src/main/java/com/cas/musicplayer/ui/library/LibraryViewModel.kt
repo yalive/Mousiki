@@ -76,22 +76,19 @@ class LibraryViewModel @Inject constructor(
     }
 
 
-    fun onClickRecentTrack(track: MusicTrack) = uiCoroutine {
+    fun onClickRecentTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
         _onClickSong.value = Unit.asEvent()
-        val tracks = _recentSongs.value?.map { it.track } ?: emptyList()
-        playTrackFromQueue(track, tracks)
+        playTrackFromQueue(track, queue)
     }
 
-    fun onClickHeavyTrack(track: MusicTrack) = uiCoroutine {
+    fun onClickHeavyTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
         _onClickSong.value = Unit.asEvent()
-        val tracks = _heavySongs.value?.map { it.track } ?: emptyList()
-        playTrackFromQueue(track, tracks)
+        playTrackFromQueue(track, queue)
     }
 
-    fun onClickFavouriteTrack(track: MusicTrack) = uiCoroutine {
+    fun onClickFavouriteTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
         _onClickSong.value = Unit.asEvent()
-        val tracks = _heavySongs.value?.map { it.track } ?: emptyList()
-        playTrackFromQueue(track, tracks)
+        playTrackFromQueue(track, queue)
     }
 
     fun onClickPlaylist(playlist: Playlist) {
