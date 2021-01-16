@@ -35,8 +35,9 @@ interface MousikiSearchApi {
         @Path(value = "playlistId") playlistId: String
     ): MousikiSearchApiRS
 
-    @GET("{url}/api/home?gl=US")
+    @GET("{url}/api/home")
     suspend fun getHome(
-        @Path(value = "url", encoded = true) apiUrl: String
+        @Path(value = "url", encoded = true) apiUrl: String,
+        @Query("gl") gl: String
     ): HomeRS
 }

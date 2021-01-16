@@ -20,11 +20,9 @@ data class MousikiSearchVideoItem(
     val url: String?,
     @SerializedName("duration")
     val duration: String?,
-    @SerializedName("snippet")
-    val snippet: String?,
-    @SerializedName("upload_date")
+    @SerializedName("uploadDate")
     val upload_date: String?,
-    @SerializedName("thumbnail_src")
+    @SerializedName("thumbnail")
     val thumbnail_src: String?,
     @SerializedName("views")
     val views: String?

@@ -59,13 +59,25 @@
 
     <entry>
         <key>api_urls</key>
-        <value>{"search": {"apis": ["https://youtube-scrape.herokuapp.com",
-            "https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"], "maxApiToTry":
-            3, "retryCount": 1},"artistSongs": {"apis": ["https://mousikiapp.herokuapp.com",
-            "https://mousikiapp2.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1}, "playlists":
-            {"apis": ["https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"],
-            "maxApiToTry": 3, "retryCount": 1}}
+        <value>{ "search": { "apis": [ "https://mousikiapp.herokuapp.com",
+            "https://mousikiapp2.herokuapp.com" ], "maxApiToTry": 3, "retryCount": 1 },
+            "artistSongs": { "apis": [ "https://mousikiapp.herokuapp.com",
+            "https://mousikiapp2.herokuapp.com" ], "maxApiToTry": 3, "retryCount": 1 }, "playlists":
+            { "apis": [ "https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com" ],
+            "maxApiToTry": 3, "retryCount": 1 }, "home": { "apis": [
+            "https://mousikiapp.herokuapp.com" ], "maxApiToTry": 3, "retryCount": 1 } }
         </value>
+    </entry>
+
+
+    <entry>
+        <key>home_cache_duration_hours</key>
+        <value>1</value>
+    </entry>
+
+    <entry>
+        <key>enable_new_home</key>
+        <value>true</value>
     </entry>
 
 </defaultsMap>
