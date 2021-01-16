@@ -2,13 +2,14 @@ package com.cas.musicplayer.data.config
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
 import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.utils.getCurrentLocale
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,19 +26,11 @@ class RemoteAppConfig @Inject constructor(
     private val context: Context
 ) {
 
-    init {
-        val connectedBefore = connectivityState.isConnected()
-        firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
-                val bundle = Bundle()
-                bundle.putBoolean("isConnected", connectivityState.isConnected())
-                bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
-                bundle.putString("local", getCurrentLocale())
-                firebaseAnalytics.logEvent("error_fetch_remote_config", bundle)
-            }
-        }
+    private val fetchConfigJob: Job = MusicApp.get().applicationScope.launch {
+        firebaseRemoteConfig.fetchAndActivate().await()
     }
+
+    suspend fun awaitActivation() = fetchConfigJob.join()
 
     @SuppressLint("DefaultLocale")
     fun getYoutubeApiKeys(): List<String> {
