@@ -13,6 +13,7 @@ import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.data.remote.models.mousiki.toTrack
 import com.cas.musicplayer.data.repositories.HomeRepository
@@ -46,15 +47,12 @@ class HomeViewModel @Inject constructor(
     private val analytics: FirebaseAnalytics,
     private val connectivityState: ConnectivityState,
     private val homeRepository: HomeRepository,
+    private val appConfig: RemoteAppConfig,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
     private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val newReleases: LiveData<Resource<List<DisplayedVideoItem>>> = _newReleases
-
-    /*  private val _charts = MutableLiveData<List<ChartModel>>()
-      val charts: LiveData<List<ChartModel>> = _charts*/
-
 
     private val _genres = MutableLiveData<List<GenreMusic>>()
     val genres: LiveData<List<GenreMusic>> = _genres
@@ -66,43 +64,49 @@ class HomeViewModel @Inject constructor(
     val homeItems: LiveData<List<HomeItem>> = _homeItems
 
     init {
-        /*
-
-        loadCharts()
-        loadGenres()*/
         getHome()
     }
 
-    private fun getHome() {
-        viewModelScope.launch {
+    private fun getHome() = viewModelScope.launch {
+        if (appConfig.newHomeEnabled()) {
             when (val result = homeRepository.getHome()) {
                 is Result.Success -> {
+
                     val homeRS = result.data
                     val items = mutableListOf<HomeItem>()
 
+                    // Create compact playlists
                     val compactPlaylists = homeRS.compactPlaylists.filter {
                         it.playlists.isNotEmpty()
                     }.map {
                         HomeItem.CompactPlaylists(it.title, it.playlists)
                     }
 
+                    // Create simple playlists
                     val simplePlaylists = homeRS.simplePlaylists.filter {
                         it.playlists.isNotEmpty()
                     }.map {
                         HomeItem.SimplePlaylists(it.title, it.playlists)
                     }
 
+                    // Create videos lists
                     val videoLists = homeRS.videoLists.filter {
                         it.videos.isNotEmpty()
                     }.map {
-                        HomeItem.VideoLists(it.title, it.videos.map { it.video.toTrack() })
+                        HomeItem.VideoList(it.title, it.videos.map { it.video.toTrack() })
                     }
 
-                    val promos = HomeItem.VideoLists(
+                    // Create promos
+                    val promos = HomeItem.VideoList(
                         "Trending videos",
                         tracks = homeRS.promos.map { it.video.toTrack() }
                     )
-                    items.add(promos)
+
+                    // Add items: this is the order in UI
+                    if (promos.tracks.isNotEmpty()) {
+                        items.add(promos)
+                    }
+
                     items.add(HeaderItem.PopularsHeader(false))
                     items.add(HomeItem.PopularsItem(Resource.Loading))
                     items.addAll(compactPlaylists)
@@ -117,11 +121,12 @@ class HomeViewModel @Inject constructor(
                     loadGenres()
                     loadArtists(getCurrentLocale())
                 }
-                is Result.Error -> Unit
+                is Result.Error -> showOldHome()
             }
+        } else {
+            showOldHome()
         }
     }
-
 
     fun onClickTrack(track: MusicTrack) = uiCoroutine {
         val tracks =
@@ -143,23 +148,14 @@ class HomeViewModel @Inject constructor(
         _newReleases.value = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
-        when (result) {
-            is Result.Error -> {
-                val bundle = Bundle()
-                bundle.putBoolean("isConnected", connectivityState.isConnected())
-                bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
-                bundle.putString("local", getCurrentLocale())
-                analytics.logEvent("cannot_load_trending_tracks", bundle)
-            }
+        if (result is Result.Error) {
+            val bundle = Bundle()
+            bundle.putBoolean("isConnected", connectivityState.isConnected())
+            bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
+            bundle.putString("local", getCurrentLocale())
+            analytics.logEvent("cannot_load_trending_tracks", bundle)
         }
     }
-
-/*    private fun loadCharts() = uiCoroutine {
-        val chartList = getUserRelevantCharts(max = 6).shuffled()
-        _charts.value = chartList
-    }
-
-    */
 
     private fun loadGenres() = uiCoroutine {
         val chartList = getGenres().take(8)
@@ -173,5 +169,21 @@ class HomeViewModel @Inject constructor(
             _artists.value = result.asResource()
         }
     }
+
+    private fun showOldHome() {
+        val items = mutableListOf<HomeItem>()
+        items.add(HeaderItem.PopularsHeader(false))
+        items.add(HomeItem.PopularsItem(Resource.Loading))
+        items.add(HeaderItem.GenresHeader)
+        items.add(HomeItem.GenreItem(emptyList()))
+        items.add(HeaderItem.ArtistsHeader)
+        items.add(HomeItem.ArtistItem(emptyList()))
+
+        _homeItems.value = items
+        loadTrending()
+        loadGenres()
+        loadArtists(getCurrentLocale())
+    }
+
 }
 

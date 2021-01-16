@@ -21,7 +21,6 @@ data class SearchConfig(
 
 // For Fallback
 fun SearchConfig.apiList(): List<String> {
-    if (NEW_BACK) return listOf("https://ktor-demo.herokuapp.com")
     if (!apis.isNullOrEmpty()) return apis
     return listOf("https://mousikiapp.herokuapp.com/")
 }
@@ -35,5 +34,3 @@ fun SearchConfig.retryCount(): Int {
     if (retryCount != null && retryCount > 0) return retryCount
     return 1
 }
-
-private val NEW_BACK = true

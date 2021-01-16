@@ -42,6 +42,16 @@ class PreferencesHelper @Inject constructor(
         return preferences().getLong(EXTRAS_CHARTS_UPDATE_DATE, -1)
     }
 
+    /* Home */
+    fun setHomeResponseDate() {
+        val elapsedRealtime = SystemClock.elapsedRealtime()
+        preferences().edit().putLong(EXTRAS_HOME_UPDATE_DATE, elapsedRealtime).apply()
+    }
+
+    fun getHomeResponseDate(): Long {
+        return preferences().getLong(EXTRAS_HOME_UPDATE_DATE, -1)
+    }
+
     private fun preferences(): SharedPreferences {
         return context.getSharedPreferences("mousiki", Context.MODE_PRIVATE)
     }
@@ -49,6 +59,7 @@ class PreferencesHelper @Inject constructor(
     companion object {
         private const val EXTRAS_POPULAR_NEXT_PAGE = "most-popular-next-page"
         private const val EXTRAS_POPULAR_UPDATE_DATE = "most-popular-songs-update-date"
+        private const val EXTRAS_HOME_UPDATE_DATE = "home-response-update-date"
         private const val EXTRAS_CHARTS_UPDATE_DATE = "charts-update-date"
     }
 }
