@@ -15,6 +15,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.unity3d.ads.UnityAds
 import javax.inject.Inject
 
 /**
@@ -64,16 +65,17 @@ class RewardedAdDelegateImp(
     }
 
     private fun showReward(activity: Activity) {
-        if (errorLoadingAd) {
+       /* if (errorLoadingAd) {
             retriesCount = 0
             loadAd()
         }
         if (!rewardedAd.isLoaded) {
             analytics.logEvent(ANALYTICS_ERROR_LOAD_AD, null)
             return
-        }
-        PlayerQueue.pause()
-        rewardedAd.show(activity, object : RewardedAdCallback() {
+        }*/
+
+
+       /* rewardedAd.show(activity, object : RewardedAdCallback() {
             override fun onUserEarnedReward(p0: RewardItem) {
                 PlayerQueue.pause()
             }
@@ -87,7 +89,15 @@ class RewardedAdDelegateImp(
                 loadAd()
                 PlayerQueue.resume()
             }
-        })
+        })*/
+
+        showUnityRewardAd(activity)
+    }
+
+    private fun showUnityRewardAd(activity: Activity) {
+        if (UnityAds.isReady(activity.getString(R.string.unity_placement_id))) {
+            UnityAds.show(activity, activity.getString(R.string.unity_placement_id));
+        }
     }
 
     private fun loadAd() {
