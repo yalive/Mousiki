@@ -31,7 +31,7 @@ sealed class HomeItem : DisplayableItem {
     ) : HomeItem()
 
     data class VideoList(
-        val title: String, val tracks: List<MusicTrack>
+        val title: String, val items: List<DisplayedVideoItem>
     ) : HomeItem()
 }
 
