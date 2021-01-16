@@ -21,7 +21,12 @@ fun pixelsToDp(px: Float, context: Context): Float {
 }
 
 fun Fragment.dpToPixel(dp: Float): Int {
-    return (dp * (requireContext().resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    return try {
+        (dp * (requireContext().resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    } catch (e: Exception) {
+        // Returns 0 if fragment not attached
+        0
+    }
 }
 
 fun Fragment.dpToPixel(dp: Int): Int {
