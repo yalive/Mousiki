@@ -10,6 +10,7 @@ import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.data.remote.models.mousiki.CompactPlaylist
+import com.cas.musicplayer.databinding.ItemHomeCompactPlaylistBinding
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
@@ -17,7 +18,6 @@ import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_home_compact_playlist.view.*
 
 
 /**
@@ -35,16 +35,19 @@ class CompactPlaylistsAdapter(
 
     override val cellResId: Int = R.layout.item_home_compact_playlist
     override fun createViewHolder(view: View): ViewHolder {
-        return ViewHolder(view, dataItems)
+        val binding = ItemHomeCompactPlaylistBinding.bind(view)
+        return ViewHolder(binding, dataItems)
     }
 
-    inner class ViewHolder(val view: View, val items: List<CompactPlaylist>) :
-        SimpleBaseViewHolder<CompactPlaylist>(view) {
-        private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
-        private val txtDesc: TextView = view.findViewById(R.id.txtDesc)
+    inner class ViewHolder(
+        val binding: ItemHomeCompactPlaylistBinding,
+        val items: List<CompactPlaylist>
+    ) : SimpleBaseViewHolder<CompactPlaylist>(binding.root) {
+        private val txtTitle: TextView = binding.txtTitle
+        private val txtDesc: TextView = binding.txtDesc
 
         init {
-            view.findViewById<View>(R.id.cardView).onClick {
+            binding.cardView.onClick {
                 if (adapterPosition >= 0) {
                     val item = items[adapterPosition]
                     val artist = Artist(item.title, "US", item.playlistId)
@@ -57,7 +60,10 @@ class CompactPlaylistsAdapter(
                     )
 
                     itemView.findNavController()
-                        .navigateSafeAction(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
+                        .navigateSafeAction(
+                            R.id.action_homeFragment_to_playlistVideosFragment,
+                            bundle
+                        )
 
                     if (!Utils.hasShownAdsOneTime) {
                         Utils.hasShownAdsOneTime = true
@@ -76,7 +82,7 @@ class CompactPlaylistsAdapter(
                 Picasso.get()
                     .load(item.featuredImage)
                     .resize(imageSize, imageSize)
-                    .into(itemView.backgroundCategory)
+                    .into(binding.backgroundCategory)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
             } catch (e: OutOfMemoryError) {

@@ -9,12 +9,13 @@ import com.cas.common.extensions.visible
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentPlayListBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.utils.Constants
-import kotlinx.android.synthetic.main.fragment_play_list.*
+import com.cas.musicplayer.utils.viewBinding
 
 class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>(
     R.layout.fragment_play_list
@@ -24,6 +25,7 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>(
     override val screenTitle: String by lazy {
         getString(R.string.favourites)
     }
+    private val binding by viewBinding(FragmentPlayListBinding::bind)
 
     private val adapter by lazy {
         SongsAdapter(
@@ -44,17 +46,17 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
         observe(viewModel.favouritesSongs) {
             if (it.isNotEmpty()) {
-                recyclerView.visible()
-                imgNoSongs.gone()
-                txtError.gone()
+                binding.recyclerView.visible()
+                binding.imgNoSongs.gone()
+                binding.txtError.gone()
                 adapter.dataItems = it.toMutableList()
             } else {
-                recyclerView.gone()
-                imgNoSongs.visible()
-                txtError.visible()
+                binding.recyclerView.gone()
+                binding.imgNoSongs.visible()
+                binding.txtError.visible()
             }
         }
     }

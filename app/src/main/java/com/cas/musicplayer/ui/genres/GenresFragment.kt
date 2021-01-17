@@ -11,9 +11,10 @@ import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.common.viewmodel.viewModel
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentGenresBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.searchyoutube.GenreAdapterDelegate
-import kotlinx.android.synthetic.main.fragment_genres.*
+import com.cas.musicplayer.utils.viewBinding
 
 /**
  **********************************
@@ -23,10 +24,13 @@ import kotlinx.android.synthetic.main.fragment_genres.*
 class GenresFragment : BaseFragment<GenresViewModel>(
     R.layout.fragment_genres
 ) {
+
     override val viewModel by viewModel { injector.genresViewModel }
     override val screenTitle: String by lazy {
         getString(R.string.genres)
     }
+    private val binding by viewBinding(FragmentGenresBinding::bind)
+
     private val adapter by lazy {
         val delegates = listOf(
             HeaderGenreDelegate(),
@@ -39,7 +43,7 @@ class GenresFragment : BaseFragment<GenresViewModel>(
         super.onViewCreated(view, savedInstanceState)
         activity?.setTitle(R.string.genres)
         val eightDp = dpToPixel(8)
-        recyclerView.itemsMarginDecorator(MarginItemDecoration(
+        binding.recyclerView.itemsMarginDecorator(MarginItemDecoration(
             horizontalMargin = eightDp,
             verticalMargin = eightDp,
             topMarginProvider = { position ->
@@ -50,8 +54,8 @@ class GenresFragment : BaseFragment<GenresViewModel>(
                 }
             }
         ))
-        recyclerView.adapter = adapter
-        (recyclerView.layoutManager as GridLayoutManager).spanSizeLookup =
+        binding.recyclerView.adapter = adapter
+        (binding.recyclerView.layoutManager as GridLayoutManager).spanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when {

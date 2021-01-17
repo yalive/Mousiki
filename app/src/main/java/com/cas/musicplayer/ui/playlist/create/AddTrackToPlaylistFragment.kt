@@ -10,10 +10,11 @@ import com.cas.common.extensions.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentAddTrackPlaylistBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.longToast
-import kotlinx.android.synthetic.main.fragment_add_track_playlist.*
+import com.cas.musicplayer.utils.viewBinding
 
 /**
  ***************************************
@@ -30,6 +31,8 @@ class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
         getString(R.string.add_to_playlist)
     }
 
+    private val binding by viewBinding(FragmentAddTrackPlaylistBinding::bind)
+
     private val adapter by lazy {
         SelectPlaylistAdapter(
             context = requireContext(),
@@ -39,7 +42,7 @@ class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
         observe(viewModel.playlists) { playlists ->
             adapter.dataItems = playlists.toMutableList()
         }
@@ -49,7 +52,7 @@ class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
             findNavController().popBackStack()
         }
 
-        btnCreatePlaylist.onClick {
+        binding.btnCreatePlaylist.onClick {
             val navOptions = navOptions {
                 popUpTo = currentDestination
                 anim {

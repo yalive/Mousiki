@@ -5,8 +5,8 @@ import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.graphics.Rect
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.cas.common.listener.SingleClickListener
@@ -32,6 +32,9 @@ fun View.hideSoftKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
+
+inline val View.inflater: LayoutInflater
+    get() = LayoutInflater.from(context)
 
 fun View.scaleOriginal() {
     val scaleUpX = ObjectAnimator.ofFloat(

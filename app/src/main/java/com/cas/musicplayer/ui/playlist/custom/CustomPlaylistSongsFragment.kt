@@ -9,7 +9,6 @@ import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 
 /**
  ***************************************
@@ -27,8 +26,8 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe(viewModel.songs, this::updateUI)
-        txtPlaylistName.text = viewModel.playlist.title
-        txtScreenTitle.text = viewModel.playlist.title
+        binding.txtPlaylistName.text = viewModel.playlist.title
+        binding.txtScreenTitle.text = viewModel.playlist.title
     }
 
     override fun onClickTrack(track: MusicTrack) {

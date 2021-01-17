@@ -11,6 +11,7 @@ import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.data.remote.models.mousiki.SimplePlaylist
+import com.cas.musicplayer.databinding.ItemHomeSimplePlaylistBinding
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
@@ -18,7 +19,6 @@ import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_home_compact_playlist.view.*
 
 
 /**
@@ -38,15 +38,18 @@ class SimplePlaylistsAdapter(
     val cardBackgroundColors = listOf("#9cf0e1", "#ff4632", "#cdf463", "#4200f5", "#1d1c0f")
     override val cellResId: Int = R.layout.item_home_simple_playlist
     override fun createViewHolder(view: View): ViewHolder {
-        return ViewHolder(view, dataItems)
+        val binding = ItemHomeSimplePlaylistBinding.bind(view)
+        return ViewHolder(binding, dataItems)
     }
 
-    inner class ViewHolder(val view: View, val items: List<SimplePlaylist>) :
-        SimpleBaseViewHolder<SimplePlaylist>(view) {
-        private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
-        private val txtTitleChart: TextView = view.findViewById(R.id.txtTitleChart)
-        private val txtDesc: TextView = view.findViewById(R.id.txtDesc)
-        private val cardView = view.findViewById<View>(R.id.cardView)
+    inner class ViewHolder(
+        val binding: ItemHomeSimplePlaylistBinding,
+        val items: List<SimplePlaylist>
+    ) : SimpleBaseViewHolder<SimplePlaylist>(binding.root) {
+        private val txtTitle: TextView = binding.txtTitle
+        private val txtTitleChart: TextView = binding.txtTitleChart
+        private val txtDesc: TextView = binding.txtDesc
+        private val cardView = binding.cardView
 
         init {
             cardView.onClick {
@@ -62,7 +65,10 @@ class SimplePlaylistsAdapter(
                     )
 
                     itemView.findNavController()
-                        .navigateSafeAction(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
+                        .navigateSafeAction(
+                            R.id.action_homeFragment_to_playlistVideosFragment,
+                            bundle
+                        )
 
                     if (!Utils.hasShownAdsOneTime) {
                         Utils.hasShownAdsOneTime = true
@@ -86,7 +92,7 @@ class SimplePlaylistsAdapter(
                 Picasso.get()
                     .load(data.featuredImage)
                     .resize(imageSize, imageSize)
-                    .into(itemView.backgroundCategory)
+                    .into(binding.backgroundCategory)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
             } catch (e: OutOfMemoryError) {

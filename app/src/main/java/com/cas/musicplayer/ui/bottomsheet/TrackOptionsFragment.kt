@@ -13,6 +13,7 @@ import androidx.navigation.navOptions
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentTrackOptionsBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
@@ -20,15 +21,11 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
-import com.cas.musicplayer.utils.Constants
-import com.cas.musicplayer.utils.UserPrefs
-import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.loadTrackImage
+import com.cas.musicplayer.utils.*
 import com.google.android.gms.ads.formats.MediaView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.fragment_track_options.*
 import java.util.concurrent.Executors
 
 /**
@@ -43,6 +40,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
     private val viewModel by lazy { injector.trackOptionsViewModel }
     private val adsViewModel by activityViewModel { injector.adsViewModel }
+    private val binding by viewBinding(FragmentTrackOptionsBinding::bind)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,22 +63,22 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         }
         musicTrack = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
         if (!UserPrefs.isFav(musicTrack.youtubeId)) {
-            favIcon.setImageResource(R.drawable.ic_heart_light)
-            favLabel.text = getString(R.string.btn_favorite)
+            binding.favIcon.setImageResource(R.drawable.ic_heart_light)
+            binding.favLabel.text = getString(R.string.btn_favorite)
         } else {
-            favIcon.setImageResource(R.drawable.ic_heart_solid)
-            favLabel.text = getString(R.string.favourites)
+            binding.favIcon.setImageResource(R.drawable.ic_heart_solid)
+            binding.favLabel.text = getString(R.string.favourites)
         }
-        imgTrack.loadTrackImage(musicTrack)
-        txtTrackTitle.text = musicTrack.title
-        shareVia.onClick {
+        binding.imgTrack.loadTrackImage(musicTrack)
+        binding.txtTrackTitle.text = musicTrack.title
+        binding.shareVia.onClick {
             Utils.shareWithDeepLink(musicTrack, context!!)
             if (this.isVisible) {
                 this.dismiss()
             }
         }
 
-        favController.onClick {
+        binding.favController.onClick {
             Executors.newSingleThreadExecutor().execute {
                 if (UserPrefs.isFav(musicTrack.youtubeId)) {
                     viewModel.removeSongFromFavourite(musicTrack)
@@ -94,12 +92,12 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             }
         }
 
-        viewAddToQuee.onClick {
+        binding.viewAddToQuee.onClick {
             PlayerQueue.addAsNext(musicTrack)
             this.dismiss()
         }
 
-        viewAddToPlaylist.onClick {
+        binding.viewAddToPlaylist.onClick {
             if ((activity as MainActivity).isBottomPanelExpanded()) {
                 (activity as MainActivity).collapseBottomPanel()
             }
@@ -117,13 +115,13 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             )
             dismiss()
         }
-        viewRemoveFromCurrentPlaylist.onClick {
+        binding.viewRemoveFromCurrentPlaylist.onClick {
             viewModel.removeSongFromPlaylist(musicTrack, customPlaylist)
             onDismissed?.invoke()
             dismiss()
         }
-        viewRemoveFromCurrentPlaylist.isVisible = isFromCustomPlaylist
-        viewAddToPlaylist.isVisible = !isFromCustomPlaylist
+        binding.viewRemoveFromCurrentPlaylist.isVisible = isFromCustomPlaylist
+        binding.viewAddToPlaylist.isVisible = !isFromCustomPlaylist
 
         configureAdView()
     }
@@ -143,7 +141,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     }
 
     private fun configureAdView() {
-        adView.apply {
+        binding.adView.apply {
             mediaView = findViewById<View>(R.id.ad_media) as MediaView
             // Register the view used for each individual asset.
             headlineView = findViewById(R.id.ad_headline)
@@ -156,9 +154,9 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             advertiserView = findViewById(R.id.ad_advertiser)
         }
         adsViewModel.trackOptionsAd?.let { ad ->
-            populateNativeAdView(ad, adView)
+            populateNativeAdView(ad, binding.adView)
         } ?: run {
-            adView.isVisible = false
+            binding.adView.isVisible = false
         }
     }
 
