@@ -80,12 +80,9 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     }
 
     private suspend fun loadArtistTracksFromMousikiApi(artist: Artist): Result<List<MusicTrack>> {
-        return retrofitRunner.getMusicTracks(
-            config = appConfig.artistSongsApiConfig(),
-            requestWithApi = { apiUrl ->
-                mousikiSearchApi.searchChannel(apiUrl, artist.channelId).tracks()
-            }
-        )
+        return retrofitRunner.loadWithRetry(appConfig.artistSongsApiConfig()) { apiUrl ->
+            mousikiSearchApi.searchChannel(apiUrl, artist.channelId).tracks()
+        }
     }
 
 
@@ -101,9 +98,11 @@ class ChannelSongsRemoteDataSource @Inject constructor(
                 fileDownloaded = suspendCoroutine { continuation ->
                     val ref =
                         storage.getReferenceFromUrl(
-                            "${BASE_URL_STORAGE}${STORAGE_ARTISTS_SONGS_DIR}/${artist.countryCode.toLowerCase(
-                                Locale.getDefault()
-                            )}/${localFile.name}"
+                            "${BASE_URL_STORAGE}${STORAGE_ARTISTS_SONGS_DIR}/${
+                                artist.countryCode.toLowerCase(
+                                    Locale.getDefault()
+                                )
+                            }/${localFile.name}"
                         )
                     ref.getFile(localFile).addOnSuccessListener {
                         continuation.resume(true)

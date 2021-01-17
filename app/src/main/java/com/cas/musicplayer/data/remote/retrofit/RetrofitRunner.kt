@@ -9,11 +9,7 @@ import com.cas.musicplayer.data.config.apiList
 import com.cas.musicplayer.data.config.maxApi
 import com.cas.musicplayer.data.config.retryCount
 import com.cas.musicplayer.data.datasource.search.getOrEmpty
-import com.cas.musicplayer.data.datasource.search.hasData
 import com.cas.musicplayer.data.remote.mappers.Mapper
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.SearchTracksResult
-import com.cas.musicplayer.domain.model.hasData
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.withContext
@@ -57,48 +53,26 @@ class RetrofitRunner @Inject constructor() {
         Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
     }
 
-    suspend fun getMusicTracks(
+    suspend fun <T> loadWithRetry(
         config: SearchConfig,
-        requestWithApi: suspend (String) -> List<MusicTrack>
-    ): Result<List<MusicTrack>> {
+        apiCall: suspend (String) -> T
+    ): Result<T> {
         val apiList = config.apiList()
         val maxApis = config.maxApi()
 
         var retries = 0
-        var tracksResult: Result<List<MusicTrack>> = NO_RESULT
+        var result: Result<T> = NO_RESULT
         do {
             retries++
             var apiIndex = 0
             var api = apiList.getOrEmpty(apiIndex)
-            while (api.isNotEmpty() && !tracksResult.hasData()) {
-                tracksResult = executeNetworkCall { requestWithApi(api) }
+            while (api.isNotEmpty() && result !is Result.Success) {
+                result = executeNetworkCall { apiCall(api) }
                 apiIndex++
                 api = if (apiIndex < maxApis) apiList.getOrEmpty(apiIndex) else ""
             }
-        } while (!tracksResult.hasData() && retries < config.retryCount())
-        return tracksResult
-    }
-
-    suspend fun getMusicTracksWithPagination(
-        config: SearchConfig,
-        requestWithApi: suspend (String) -> SearchTracksResult
-    ): Result<SearchTracksResult> {
-        val apiList = config.apiList()
-        val maxApis = config.maxApi()
-
-        var retries = 0
-        var tracksResult: Result<SearchTracksResult> = NO_RESULT
-        do {
-            retries++
-            var apiIndex = 0
-            var api = apiList.getOrEmpty(apiIndex)
-            while (api.isNotEmpty() && !tracksResult.hasData()) {
-                tracksResult = executeNetworkCall { requestWithApi(api) }
-                apiIndex++
-                api = if (apiIndex < maxApis) apiList.getOrEmpty(apiIndex) else ""
-            }
-        } while (!tracksResult.hasData() && retries < config.retryCount())
-        return tracksResult
+        } while (result !is Result.Success && retries < config.retryCount())
+        return result
     }
 }
 
