@@ -223,8 +223,6 @@ dependencies {
     // Palette
     implementation 'androidx.palette:palette:1.0.0'
 
-    implementation project(':nativetemplates')
-
     // Lootie
     implementation 'com.airbnb.android:lottie:3.4.0'
 
