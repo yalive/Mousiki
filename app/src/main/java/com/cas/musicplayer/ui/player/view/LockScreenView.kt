@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import com.cas.common.extensions.*
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.LockScreenLayoutBinding
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -21,7 +22,6 @@ import com.cas.musicplayer.utils.launchDelayed
 import com.ncorti.slidetoact.SlideToActView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import kotlinx.android.synthetic.main.lock_screen_layout.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -62,6 +62,8 @@ class LockScreenView @JvmOverloads constructor(
         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     }
 
+    private val binding = LockScreenLayoutBinding.inflate(inflater, this)
+
     init {
         init(attrs)
     }
@@ -72,9 +74,8 @@ class LockScreenView @JvmOverloads constructor(
      * @param attrs attrs from xml
      */
     private fun init(attrs: AttributeSet?) {
-        inflate(context, R.layout.lock_screen_layout, this)
         setBackgroundColor(context.color(R.color.colorBlack))
-        slideToUnlock.onSlideCompleteListener = this
+        binding.slideToUnlock.onSlideCompleteListener = this
         onClick {
             currentJob?.cancel()
             if (textVisible()) {
@@ -84,11 +85,12 @@ class LockScreenView @JvmOverloads constructor(
                 scheduleHideViews()
             }
         }
-        btnPlayPrevious.onClick {
+
+        binding.btnPlayPrevious.onClick {
             scheduleHideViews()
             PlayerQueue.playPreviousTrack()
         }
-        btnPlayPause.onClick {
+        binding.btnPlayPause.onClick {
             scheduleHideViews()
             val oldState = PlaybackLiveData.value
             oldState?.let { playerState ->
@@ -99,7 +101,7 @@ class LockScreenView @JvmOverloads constructor(
                 }
             }
         }
-        btnPlayNext.onClick {
+        binding.btnPlayNext.onClick {
             scheduleHideViews()
             PlayerQueue.playNextTrack()
         }
@@ -109,7 +111,7 @@ class LockScreenView @JvmOverloads constructor(
     override fun onSlideComplete(view: SlideToActView) {
         isVisible = false
         onSlideComplete?.invoke()
-        slideToUnlock.resetSlider()
+        binding.slideToUnlock.resetSlider()
     }
 
     fun doOnSlideComplete(callback: (() -> Unit)) {
@@ -146,17 +148,17 @@ class LockScreenView @JvmOverloads constructor(
     }
 
     fun setCurrentTrack(track: MusicTrack) {
-        txtTrackTitle.text = track.title
+        binding.txtTrackTitle.text = track.title
     }
 
     fun onPlayBackStateChanged() {
         val state = PlaybackLiveData.value ?: return
         when (state) {
             PlayerConstants.PlayerState.PLAYING -> {
-                btnPlayPause.setImageResource(R.drawable.ic_pause)
+                binding.btnPlayPause.setImageResource(R.drawable.ic_pause)
             }
             PlayerConstants.PlayerState.PAUSED -> {
-                btnPlayPause.setImageResource(R.drawable.ic_play)
+                binding.btnPlayPause.setImageResource(R.drawable.ic_play)
             }
             else -> {
             }
@@ -179,7 +181,7 @@ class LockScreenView @JvmOverloads constructor(
         postDelayed(300) {
             val oldParent = youTubePlayerView.parent as? ViewGroup ?: return@postDelayed
             oldParent.removeView(youTubePlayerView)
-            frameVideo.addView(youTubePlayerView)
+            binding.frameVideo.addView(youTubePlayerView)
         }
     }
 
@@ -213,8 +215,8 @@ class LockScreenView @JvmOverloads constructor(
 
     private fun updateTime() {
         val calendar = Calendar.getInstance()
-        txtTime.text = hourDateFormat.format(calendar.time)
-        txtDate.text = dateFormat.format(calendar.time)
+        binding.txtTime.text = hourDateFormat.format(calendar.time)
+        binding.txtDate.text = dateFormat.format(calendar.time)
     }
 
     companion object {

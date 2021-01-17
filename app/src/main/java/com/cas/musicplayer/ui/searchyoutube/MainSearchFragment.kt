@@ -13,9 +13,10 @@ import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentMainSearchBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.navigateSafeAction
-import kotlinx.android.synthetic.main.main_search_fragment.*
+import com.cas.musicplayer.utils.viewBinding
 
 /**
  ***************************************
@@ -23,10 +24,12 @@ import kotlinx.android.synthetic.main.main_search_fragment.*
  ***************************************
  */
 class MainSearchFragment : BaseFragment<MainSearchViewModel>(
-    R.layout.main_search_fragment
+    R.layout.fragment_main_search
 ) {
     override val viewModel by viewModel { injector.mainSearchViewModel }
     private val searchGenresAdapter by lazy { SearchGenresAdapter() }
+
+    private val binding by viewBinding(FragmentMainSearchBinding::bind)
 
     private val mainViewModel by activityViewModel { injector.mainViewModel }
     private val bottomPlayerSpace by lazy {
@@ -35,8 +38,8 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.adapter = searchGenresAdapter
-        recyclerView.addItemDecoration(
+        binding.recyclerView.adapter = searchGenresAdapter
+        binding.recyclerView.addItemDecoration(
             MarginItemDecoration(
                 verticalMargin = dpToPixel(8),
                 horizontalMargin = dpToPixel(8),
@@ -48,7 +51,7 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
         )
         adjustStatusBarWithTheme()
         observeViewModel()
-        btnStartSearch.onClick {
+        binding.btnStartSearch.onClick {
             startSearch()
         }
         observeEvent(mainViewModel.doubleClickSearch) {

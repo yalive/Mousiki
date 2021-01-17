@@ -14,6 +14,7 @@ import com.cas.common.extensions.observeEvent
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentLibraryBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.songs.AppImage
@@ -22,7 +23,7 @@ import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.navigateSafeAction
-import kotlinx.android.synthetic.main.fragment_library.*
+import com.cas.musicplayer.utils.viewBinding
 
 /**
  ***************************************
@@ -37,6 +38,8 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     override val screenTitle by lazy {
         getString(R.string.library)
     }
+    private val binding by viewBinding(FragmentLibraryBinding::bind)
+
     private val adapter by lazy {
         LibraryAdapter(viewModel)
     }
@@ -49,8 +52,8 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect, view: View,
                 parent: RecyclerView, state: RecyclerView.State

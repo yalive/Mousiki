@@ -5,7 +5,7 @@ import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
-import kotlinx.android.synthetic.main.item_youtube_serach_suggestion.view.*
+import com.cas.musicplayer.databinding.ItemYoutubeSerachSuggestionBinding
 
 
 /**
@@ -21,23 +21,24 @@ class SearchSuggestionsAdapter(
     override val cellResId: Int = R.layout.item_youtube_serach_suggestion
 
     override fun createViewHolder(view: View): ViewHolder {
-        return ViewHolder(view)
+        val binding = ItemYoutubeSerachSuggestionBinding.bind(view)
+        return ViewHolder(binding)
     }
 
     inner class ViewHolder(
-        view: View
-    ) : SimpleBaseViewHolder<SearchSuggestion>(view) {
+        val binding: ItemYoutubeSerachSuggestionBinding
+    ) : SimpleBaseViewHolder<SearchSuggestion>(binding.root) {
 
         override fun bind(item: SearchSuggestion) {
-            itemView.txtTitle.text = item.value
+            binding.txtTitle.text = item.value
             val searchIcon = if (item.fromHistoric) R.drawable.ic_history else R.drawable.ic_search
-            itemView.imgSearch.setImageResource(searchIcon)
+            binding.imgSearch.setImageResource(searchIcon)
             itemView.onClick {
                 if (adapterPosition >= 0) {
                     onClickItem.invoke(item)
                 }
             }
-            itemView.btnPast.onClick {
+            binding.btnPast.onClick {
                 if (adapterPosition >= 0) {
                     onClickAutocomplete.invoke(item)
                 }

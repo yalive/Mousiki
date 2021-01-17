@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.player.queue
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -19,6 +18,7 @@ import com.cas.common.extensions.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentQueueBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
@@ -28,12 +28,13 @@ import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import kotlinx.android.synthetic.main.queue_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class QueueFragment : Fragment() {
+class QueueFragment : Fragment(R.layout.fragment_queue) {
+
+    private val binding by viewBinding(FragmentQueueBinding::bind)
 
     private val viewModel: QueueViewModel by viewModel {
         injector.queueViewModel
@@ -95,32 +96,25 @@ class QueueFragment : Fragment() {
         ItemTouchHelper(callback)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.queue_fragment, container, false).apply {
-            setOnClickListener {
-                // Just to prevent player slide trigger
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
-        btnClose.onClick {
+        view.setOnClickListener {
+            // Just to prevent player slide trigger
+        }
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        binding.btnClose.onClick {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
             activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = false
             onCloseQueue?.invoke()
         }
         DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
-            topBar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            binding.topBar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = inset.top
             }
         })
-        btnPlayOption.setImageResource(UserPrefs.getSort().icon)
-        recyclerView.adapter = adapter
+        binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+        binding.recyclerView.adapter = adapter
         observe(viewModel.queue) { newList ->
             val firstTime = adapter.dataItems.isEmpty()
             val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
@@ -128,7 +122,7 @@ class QueueFragment : Fragment() {
             if (firstTime) {
                 val currentTrackIndex =
                     newList.indexOfFirst { PlayerQueue.isCurrentTrack(it.track) }
-                (recyclerView.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(
+                (binding.recyclerView.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(
                     currentTrackIndex,
                     requireContext().screenSize().heightPx / 3
                 )
@@ -155,9 +149,9 @@ class QueueFragment : Fragment() {
         PlayerQueue.observe(viewLifecycleOwner, Observer { track ->
             loadAndBlurImage(track)
         })
-        btnPlayOption.onClick {
+        binding.btnPlayOption.onClick {
             val nextSort = UserPrefs.getSort().next()
-            btnPlayOption.setImageResource(nextSort.icon)
+            binding.btnPlayOption.setImageResource(nextSort.icon)
             UserPrefs.saveSort(nextSort)
         }
     }
@@ -165,11 +159,11 @@ class QueueFragment : Fragment() {
     private fun loadAndBlurImage(video: MusicTrack) {
         lifecycleScope.launch {
             try {
-                val bitmap = imgBlured?.getBitmap(video.imgUrlDefault, 500) ?: return@launch
+                val bitmap = binding.imgBlured.getBitmap(video.imgUrlDefault, 500) ?: return@launch
                 val blurredBitmap = withContext(Dispatchers.Default) {
                     BlurImage.fastblur(bitmap, 0.1f, 50)
                 }
-                imgBlured?.setImageBitmap(blurredBitmap)
+                binding.imgBlured.setImageBitmap(blurredBitmap)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
             } catch (error: OutOfMemoryError) {

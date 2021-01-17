@@ -14,7 +14,6 @@ import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.featuredImage
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import kotlinx.android.synthetic.main.fragment_playlist_songs.*
 
 
 class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
@@ -27,11 +26,11 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
             displayFeaturedImageIfNecessary(it)
             updateUI(it)
         }
-        recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
+        binding.recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
             viewModel.loadMoreSongs()
         })
-        txtPlaylistName.text = getString(R.string.title_new_release)
-        txtScreenTitle.text = getString(R.string.title_new_release)
+        binding.txtPlaylistName.text = getString(R.string.title_new_release)
+        binding.txtScreenTitle.text = getString(R.string.title_new_release)
     }
 
     override fun onClickTrack(track: MusicTrack) {

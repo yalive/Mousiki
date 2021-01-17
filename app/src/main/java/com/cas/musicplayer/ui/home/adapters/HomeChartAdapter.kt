@@ -9,6 +9,7 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.databinding.ItemHomeChartBinding
 import com.cas.musicplayer.domain.model.ChartModel
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
@@ -20,7 +21,6 @@ import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_home_chart.view.*
 
 
 /**
@@ -32,16 +32,17 @@ import kotlinx.android.synthetic.main.item_home_chart.view.*
 class HomeChartAdapter : SimpleBaseAdapter<ChartModel, HomeChartViewHolder>() {
     override val cellResId: Int = R.layout.item_home_chart
     override fun createViewHolder(view: View): HomeChartViewHolder {
-        return HomeChartViewHolder(view, dataItems)
+        val binding = ItemHomeChartBinding.bind(view)
+        return HomeChartViewHolder(binding, dataItems)
     }
 }
 
-class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
-    SimpleBaseViewHolder<ChartModel>(view) {
-    private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
+class HomeChartViewHolder(val binding: ItemHomeChartBinding, val items: List<ChartModel>) :
+    SimpleBaseViewHolder<ChartModel>(binding.root) {
+    private val txtTitle: TextView = binding.txtTitle
 
     init {
-        view.findViewById<View>(R.id.cardView).onClick {
+        binding.cardView.onClick {
             if (adapterPosition >= 0) {
                 val item = items[adapterPosition]
                 val artist = Artist(item.title, "US", item.playlistId)
@@ -70,7 +71,7 @@ class HomeChartViewHolder(val view: View, val items: List<ChartModel>) :
             Picasso.get()
                 .load(item.featuredImageRes)
                 .resize(0, 360)
-                .into(itemView.imgChart)
+                .into(binding.imgChart)
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
         } catch (e: OutOfMemoryError) {

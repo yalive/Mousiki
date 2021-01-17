@@ -16,13 +16,14 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentArtistsBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.sidebar.SideBar
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.utils.navigateSafeAction
-import kotlinx.android.synthetic.main.fragment_artists.*
+import com.cas.musicplayer.utils.viewBinding
 
 
 class ArtistListFragment : BaseFragment<ArtistListViewModel>(
@@ -33,6 +34,8 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     override val screenTitle by lazy {
         getString(R.string.artists)
     }
+    private val binding by viewBinding(FragmentArtistsBinding::bind)
+
     private lateinit var adapter: ArtistListAdapter
     private lateinit var sideBar: SideBar
     private lateinit var txtDialog: TextView
@@ -46,7 +49,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
         observeViewModel()
         viewModel.loadAllArtists()
         setupSideBar()
-        editSearch.doAfterTextChanged {
+        binding.editSearch.doAfterTextChanged {
             filterArtists()
         }
         filterArtists()
@@ -58,7 +61,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     }
 
     private fun filterArtists() {
-        viewModel.filterArtists(editSearch.text?.toString().orEmpty())
+        viewModel.filterArtists(binding.editSearch.text?.toString().orEmpty())
     }
 
     private fun setupRecyclerView() {
@@ -75,10 +78,10 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
                 bundle
             )
         })
-        recyclerView.adapter = adapter
-        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+        binding.recyclerView.adapter = adapter
+        val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
         var firstVisibleInListview = layoutManager.findFirstVisibleItemPosition()
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
@@ -97,10 +100,10 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
             when (resource) {
                 is Resource.Success -> {
                     adapter.dataItems = resource.data.toMutableList()
-                    listContainer.visible()
-                    progressBar.gone()
+                    binding.listContainer.visible()
+                    binding.progressBar.gone()
                 }
-                is Resource.Loading -> progressBar.visible()
+                is Resource.Loading -> binding.progressBar.visible()
             }
         }
     }
@@ -113,7 +116,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
             override fun onTouchingLetterChanged(str: String) {
                 val headPositionInAdapter = adapter.getLetterPosition(str)
                 if (headPositionInAdapter != -1) {
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
                     layoutManager.scrollToPositionWithOffset(headPositionInAdapter, 0)
                     layoutManager.stackFromEnd = true
                 }

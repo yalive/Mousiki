@@ -9,13 +9,14 @@ import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentSettingsBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.ui.settings.rate.writeFeedback
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.navigateSafeAction
-import kotlinx.android.synthetic.main.fragment_settings.*
+import com.cas.musicplayer.utils.viewBinding
 
 
 class SettingsFragment : BaseFragment<SettingsViewModel>(
@@ -27,10 +28,12 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         getString(R.string.menu_settings)
     }
 
+    private val binding by viewBinding(FragmentSettingsBinding::bind)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
-        btnDarkMode.onClick {
+        binding.btnDarkMode.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
                 .setSingleChoiceItems(R.array.dark_mode_values, UserPrefs.getThemeModeValue(), null)
                 .setTitle(R.string.choose_dark_mode_theme)
@@ -55,27 +58,27 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
                 }
                 .show()
         }
-        btnTimer.onClick {
+        binding.btnTimer.onClick {
             findNavController().navigateSafeAction(R.id.action_settingsFragment_to_timerDialog)
         }
-        btnFeedback.onClick {
+        binding.btnFeedback.onClick {
             context?.writeFeedback()
         }
-        btnLikeFacebook.onClick {
+        binding.btnLikeFacebook.onClick {
             Utils.openFacebookPage(requireContext())
         }
-        btnPolicy.onClick {
+        binding.btnPolicy.onClick {
             Utils.openWebview(requireContext(), "file:///android_asset/policy.html")
         }
 
-        btnRateApp.onClick {
+        binding.btnRateApp.onClick {
             context?.askUserForFeelingAboutApp()
         }
-        btnShareApp.onClick {
+        binding.btnShareApp.onClick {
             Utils.shareAppVia()
         }
 
-        btnOutVideoSize.onClick {
+        binding.btnOutVideoSize.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
                 .setSingleChoiceItems(
                     R.array.out_video_size_values,

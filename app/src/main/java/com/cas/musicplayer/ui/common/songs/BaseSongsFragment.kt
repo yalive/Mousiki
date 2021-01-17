@@ -23,6 +23,7 @@ import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.FragmentPlaylistSongsBinding
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -36,8 +37,6 @@ import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.fragment_playlist_songs.*
-import kotlinx.android.synthetic.main.layout_shimmer_loading_music_list.*
 import kotlinx.coroutines.launch
 
 
@@ -49,9 +48,13 @@ import kotlinx.coroutines.launch
 abstract class BaseSongsFragment<T : BaseViewModel>
     : BaseFragment<T>(R.layout.fragment_playlist_songs) {
 
-    private var imgArtist: ImageView? = null
-    private var imgBackground: ImageView? = null
+    private val imgArtist: ImageView
+        get() = binding.imgArtist
 
+    private val imgBackground: ImageView
+        get() = binding.imgBackground
+
+    protected val binding by viewBinding(FragmentPlaylistSongsBinding::bind)
     protected val adapter by lazy {
         SongsAdapter(
             onVideoSelected = { track ->
@@ -75,10 +78,8 @@ abstract class BaseSongsFragment<T : BaseViewModel>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        imgArtist = view.findViewById(R.id.imgArtist)
-        imgBackground = view.findViewById(R.id.imgBackground)
-        recyclerView.adapter = adapter
-        recyclerView.itemsMarginDecorator(MarginItemDecoration(
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.itemsMarginDecorator(MarginItemDecoration(
             topMarginProvider = { position ->
                 when (position) {
                     0 -> dpToPixel(32)
@@ -92,18 +93,18 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 }
             }
         ))
-        btnPlayAll.onClick {
+        binding.btnPlayAll.onClick {
             if (adapter.dataItems.isEmpty()) return@onClick
             val mainActivity = requireActivity() as MainActivity
             mainActivity.collapseBottomPanel()
             onClickTrackPlayAll()
         }
-        btnBack.onClick {
+        binding.btnBack.onClick {
             findNavController().popBackStack()
         }
-        DeviceInset.observe(this, Observer { inset ->
-            topGuideline.setGuidelineBegin(inset.top)
-            bottomGuideline.setGuidelineBegin(inset.top + dpToPixel(56))
+        DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
+            binding.topGuideline.setGuidelineBegin(inset.top)
+            binding.bottomGuideline.setGuidelineBegin(inset.top + dpToPixel(56))
         })
         requireActivity().window.statusBarColor = Color.TRANSPARENT
         darkStatusBar()
@@ -147,16 +148,16 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 (view as? ViewGroup)?.let { viewGroup ->
                     TransitionManager.beginDelayedTransition(viewGroup)
                 }
-                btnPlayAll.alpha = 1f
-                loadingView.alpha = 0f
-                loadingView.stopShimmer()
+                binding.btnPlayAll.alpha = 1f
+                binding.shimmerView.loadingView.alpha = 0f
+                binding.shimmerView.loadingView.stopShimmer()
                 val newList = resource.data
 
                 val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
                 adapter.submitList(newList, diffCallback)
 
                 val size = newList.filterIsInstance<DisplayedVideoItem>().size
-                txtNumberOfSongs.text = requireContext().resources.getQuantityString(
+                binding.txtNumberOfSongs.text = requireContext().resources.getQuantityString(
                     R.plurals.playlist_tracks_counts,
                     size,
                     size
@@ -166,14 +167,14 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 }
             }
             Resource.Loading -> {
-                loadingView.alpha = 1f
-                btnPlayAll.alpha = 0f
+                binding.shimmerView.loadingView.alpha = 1f
+                binding.btnPlayAll.alpha = 0f
             }
             is Resource.Failure -> {
-                loadingView.alpha = 0f
-                btnPlayAll.alpha = 0f
+                binding.shimmerView.loadingView.alpha = 0f
+                binding.btnPlayAll.alpha = 0f
                 if (adapter.dataItems.isEmpty()) {
-                    txtNumberOfSongs.setText(R.string.error_while_loading_song_list)
+                    binding.txtNumberOfSongs.setText(R.string.error_while_loading_song_list)
                 }
             }
         }
