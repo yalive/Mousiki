@@ -185,6 +185,7 @@
             android:layout_toStartOf="@+id/btnAddFav"
             android:layout_toEndOf="@+id/btnShareVia"
             android:alpha="0.6"
+            android:textAlignment="center"
             android:ellipsize="end"
             android:fontFamily="@font/pangram_regular"
             android:maxLines="1"
