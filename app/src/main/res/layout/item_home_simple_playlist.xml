@@ -32,7 +32,7 @@
                 android:background="@drawable/bg_circle"
                 android:padding="2dp"
                 android:src="@drawable/app_icon_placeholder"
-                android:tint="@color/gnt_white"
+                android:tint="@color/colorWhite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
