@@ -17,7 +17,6 @@ import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -75,9 +74,6 @@ object AppModule {
             .addInterceptor(addKeyInterceptor)
 
         if (Constants.Config.DEBUG_NETWORK) {
-            val logging = HttpLoggingInterceptor()
-            logging.level = HttpLoggingInterceptor.Level.BODY
-            client.addInterceptor(logging)
             client.addInterceptor(ChuckInterceptor(MusicApp.get()))
         }
         return client.build()
