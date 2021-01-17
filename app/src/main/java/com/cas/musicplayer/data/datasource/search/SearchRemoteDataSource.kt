@@ -45,12 +45,9 @@ class SearchRemoteDataSource @Inject constructor(
         // First API
         analytics.logEvent(EVENT_START_SEARCH, null)
 
-        val resultSearch = retrofitRunner.getMusicTracksWithPagination(
-            config = remoteConfig.searchConfig(),
-            requestWithApi = { apiUrl ->
-                mousikiSearchApi.search(apiUrl, query, key, token).searchResults()
-            }
-        )
+        val resultSearch = retrofitRunner.loadWithRetry(remoteConfig.searchConfig()) { apiUrl ->
+            mousikiSearchApi.search(apiUrl, query, key, token).searchResults()
+        }
         if (resultSearch.hasData()) return resultSearch
 
         // Youtube search

@@ -37,17 +37,6 @@ class HomeAdapter(
         )
     )
 ) {
-    init {
-        /*this.dataItems = mutableListOf(
-            HomeItem.ChartItem(emptyList()),
-            HeaderItem.PopularsHeader(),
-            HomeItem.PopularsItem(Resource.Loading),
-            HeaderItem.GenresHeader,
-            HomeItem.GenreItem(emptyList()),
-            HeaderItem.ArtistsHeader,
-            HomeItem.ArtistItem(emptyList())
-        )*/
-    }
 
     fun updatePopularSongs(resource: Resource<List<DisplayedVideoItem>>) {
         val index = indexOfItem(HomeItem.PopularsItem::class)

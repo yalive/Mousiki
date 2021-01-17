@@ -54,12 +54,9 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getPlaylistSongs(playlistId: String): Result<List<MusicTrack>> {
-        val resultFromApi = retrofitRunner.getMusicTracks(
-            config = appConfig.playlistApiConfig(),
-            requestWithApi = { apiUrl ->
-                mousikiSearchApi.getPlaylistDetail(apiUrl, playlistId).tracks()
-            }
-        )
+        val resultFromApi = retrofitRunner.loadWithRetry(appConfig.playlistApiConfig()) { apiUrl ->
+            mousikiSearchApi.getPlaylistDetail(apiUrl, playlistId).tracks()
+        }
         if (resultFromApi is Result.Success && resultFromApi.data.size > 3) {
             return resultFromApi
         }
