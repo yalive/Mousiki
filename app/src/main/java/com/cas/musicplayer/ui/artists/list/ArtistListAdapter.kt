@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.utils.loadImage
@@ -57,12 +58,9 @@ class ArtistListAdapter(
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
         override fun bind(item: Artist) {
-            val urlImage: String? = item.urlImage
-            if (urlImage != null && urlImage.isNotEmpty()) {
-                imgSong.loadImage(urlImage)
-            }
+            imgSong.loadImage(item.imageFullPath, placeHolder = null, errorImage = null)
             txtTitle.text = item.name
-            itemView.setOnClickListener {
+            itemView.onClick {
                 if (adapterPosition >= 0) {
                     onClickArtist(item)
                 }

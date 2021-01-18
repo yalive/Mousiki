@@ -1,7 +1,15 @@
 package com.cas.musicplayer.data.remote.retrofit
 
+import android.content.Context
+import android.os.Bundle
+import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.data.config.RemoteAppConfig
+import com.cas.musicplayer.utils.getCurrentLocale
+import com.google.firebase.analytics.FirebaseAnalytics
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  **********************************
@@ -9,27 +17,29 @@ import okhttp3.Response
  **********************************
  */
 
-class AddKeyInterceptor : Interceptor {
+// AIzaSyBG7HtgbENiSehKP7O5vKLbW7lnA6Ip_QY   -----> 1
+// AIzaSyALB5-Y7FlvLbJGWgZ7lu8GViyHrbezPk4   -----> 2
+// AIzaSyDl2cO4YdaIHQHtumnE4UljiLT266sj-uw   -----> 3
+@Singleton
+class AddKeyInterceptor @Inject constructor(
+    private val context: Context,
+    private val remoteConfig: RemoteAppConfig,
+    private val connectivityState: ConnectivityState
+) : Interceptor {
 
-    private val keys = mutableListOf(
-        "AIzaSyC1kFDwpC9FTJfHolxXHd_2Lo9cD3Yd2WQ",//mousiki project api key
-        "AIzaSyBbEnTCM6ZQiyZIiYO98usu3gjhFIPSrmA",//appodeal project api key
-        "AIzaSyC_yUoi7wGn3tGH3oXjTszPXOI-jQWsipg",//CAStudio project api key
-        "AIzaSyBqhHieeAMC79qmGm67df6vm8kMQoTpnog",//chatApp project api key
-        "AIzaSyAKBQe0h6RcLTERmnFsuBTnkR85q96afMg",//chatApplication project api key
-        "AIzaSyD6zBfCgaiLihDNkN3qqjR6jMBgVmEcXcE",//FireBaseExample project api key
-        "AIzaSyC0EY97Ub0plnZICfJ7D-7X9oNTyo-pHXU",//pushNotificationDemo project api key
-        "AIzaSyDgsObSiocd0oY-EMKQakzPeHy6QU9hjsU",//quickstart project api key
-        "AIzaSyC40U4MYSqEjNnNp8c1389vU3g7kJ1WGCo",//RingtoneApp project api key
-        "AIzaSyC4bPPdqk3VL4Gy78hYFU-dnFgtbfa77Fc"//RingtoneApp project api key
-    )
+    private var currentKey = ""
 
-    private var currentKey = keys[0]
+    init {
+        currentKey = nexKey()
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        synchronized(this) {
+            checkApiKeys()
+        }
         var request = chain.request()
         val url = request.url().newBuilder()
-            .addQueryParameter("key", currentKey)
+            .addQueryParameter(QUERY_KEY, currentKey)
             .build()
         val builder = request.newBuilder()
         request = builder.url(url).build()
@@ -40,6 +50,29 @@ class AddKeyInterceptor : Interceptor {
         return response
     }
 
+    /**
+     * wait for api keys
+     */
+    private fun checkApiKeys() {
+        var count = 0
+        while (currentKey.isEmpty() && count < MAX_RETRY_GET_KEYS) {
+            count++
+            try {
+                Thread.sleep(500)
+            } catch (e: Exception) {
+            }
+            val youtubeApiKeys = remoteConfig.getYoutubeApiKeys()
+            currentKey = youtubeApiKeys.firstOrNull().orEmpty()
+        }
+        if (count >= MAX_RETRY_GET_KEYS && currentKey.isEmpty()) {
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+            val bundle = Bundle()
+            bundle.putBoolean("isConnected", connectivityState.isConnected())
+            bundle.putString("local", getCurrentLocale())
+            firebaseAnalytics.logEvent("cannot_get_ytb_api_keys", bundle)
+        }
+    }
+
     private fun retryRequestWithAnotherKey(chain: Interceptor.Chain): Response {
         var retryCount = 0
         var response: Response
@@ -48,18 +81,24 @@ class AddKeyInterceptor : Interceptor {
             val request = chain.request()
             currentKey = nexKey()
             val urlWithNewKey = request.url().newBuilder()
-                .addQueryParameter("key", currentKey)
+                .addQueryParameter(QUERY_KEY, currentKey)
                 .build()
             response = chain.proceed(request.newBuilder().url(urlWithNewKey).build())
-        } while ((response.code() == 403 || response.code() == 400) && retryCount < 4)
+        } while ((response.code() == 403 || response.code() == 400) && retryCount < 10)
         return response
     }
 
     private fun nexKey(): String {
+        val keys = remoteConfig.getYoutubeApiKeys()
         val indexOfCurrent = keys.indexOf(currentKey)
         if (indexOfCurrent < 0 || indexOfCurrent >= keys.size - 1) {
             return keys[0]
         }
         return keys[indexOfCurrent + 1]
+    }
+
+    companion object {
+        private const val QUERY_KEY = "key"
+        private const val MAX_RETRY_GET_KEYS = 20
     }
 }

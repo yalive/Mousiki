@@ -7,10 +7,8 @@ import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.*
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
-import com.cas.musicplayer.ui.home.delegates.HomeArtistAdapterDelegate
-import com.cas.musicplayer.ui.home.delegates.HomeChartAdapterDelegate
-import com.cas.musicplayer.ui.home.delegates.HomeGenreAdapterDelegate
-import com.cas.musicplayer.ui.home.delegates.HomeHeaderAdapterDelegate
+import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.ui.home.delegates.*
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlin.reflect.KClass
 
@@ -20,29 +18,25 @@ import kotlin.reflect.KClass
  **********************************
  */
 class HomeAdapter(
+    viewModel: HomeViewModel,
     private val chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
-    onVideoSelected: (MusicTrack) -> Unit
+    onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit,
+    onClickRetryNewRelease: () -> Unit
 ) : BaseDelegationAdapter(
     listOf(
+        CompactPlaylistSectionDelegate(),
+        SimplePlaylistSectionDelegate(),
+        VideoListAdapterDelegate(onVideoSelected),
         HomeArtistAdapterDelegate(),
         chartDelegate,
         HomeGenreAdapterDelegate(),
-        HomeHeaderAdapterDelegate(),
-        HorizontalListSongsAdapterDelegate(onVideoSelected)
+        HomeHeaderAdapterDelegate(viewModel),
+        HorizontalListSongsAdapterDelegate(
+            onVideoSelected = onVideoSelected,
+            onClickRetry = onClickRetryNewRelease
+        )
     )
 ) {
-    init {
-        this.dataItems = mutableListOf(
-            HeaderItem.ChartsHeader,
-            HomeItem.ChartItem(emptyList()),
-            HeaderItem.PopularsHeader(),
-            HomeItem.PopularsItem(Resource.Loading),
-            HeaderItem.GenresHeader,
-            HomeItem.GenreItem(emptyList()),
-            HeaderItem.ArtistsHeader,
-            HomeItem.ArtistItem(emptyList())
-        )
-    }
 
     fun updatePopularSongs(resource: Resource<List<DisplayedVideoItem>>) {
         val index = indexOfItem(HomeItem.PopularsItem::class)
@@ -51,7 +45,10 @@ class HomeAdapter(
             updateItemAtIndex(index, HomeItem.PopularsItem(resource))
         }
         if (indexOfHeader != -1) {
-            updateItemAtIndex(indexOfHeader, HeaderItem.PopularsHeader(resource is Resource.Loading))
+            updateItemAtIndex(
+                indexOfHeader,
+                HeaderItem.PopularsHeader(resource is Resource.Loading)
+            )
         }
     }
 
@@ -80,7 +77,7 @@ class HomeAdapter(
         }
     }
 
-    private fun updateItemAtIndex(index: Int, item: DisplayableItem) {
+    fun updateItemAtIndex(index: Int, item: DisplayableItem) {
         dataItems[index] = item
         notifyItemChanged(index)
     }

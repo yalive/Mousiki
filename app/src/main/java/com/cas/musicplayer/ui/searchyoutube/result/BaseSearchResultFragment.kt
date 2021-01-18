@@ -3,21 +3,21 @@ package com.cas.musicplayer.ui.searchyoutube.result
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.RelativeLayout
+import androidx.annotation.LayoutRes
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.common.extensions.gone
 import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.musicplayer.R
 import com.cas.musicplayer.utils.NoViewModelFragment
-import com.google.android.material.appbar.CollapsingToolbarLayout
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-12-07.
  ***************************************
  */
-abstract class BaseSearchResultFragment : NoViewModelFragment() {
+abstract class BaseSearchResultFragment(
+    @LayoutRes layoutResourceId: Int
+) : NoViewModelFragment(layoutResourceId) {
 
     protected var recyclerView: RecyclerView? = null
     protected var progressBar: ProgressBar? = null

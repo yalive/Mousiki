@@ -3,14 +3,15 @@ package com.cas.musicplayer.player
 import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.event.Event
+import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.player.services.VideoPlaybackService
+import com.cas.musicplayer.player.services.MusicPlayerService
+import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.ui.popular.swapped
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
-import com.cas.musicplayer.utils.isScreenLocked
 
 
 /**
@@ -19,31 +20,23 @@ import com.cas.musicplayer.utils.isScreenLocked
  **********************************
  */
 
-object ClickVideoListener : MutableLiveData<Event<MusicTrack>>()
-
-object OnShowAdsListener : MutableLiveData<Event<Boolean>>()
-
 object PlayerQueue : MutableLiveData<MusicTrack>() {
 
     var queue: List<MusicTrack>? = null
 
     fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
-        if (isScreenLocked()) return
         if (value == currentTrack) {
             resume()
             return
         }
+        val oldQueue = this.queue.orEmpty()
         this.queue = queue
         this.value = currentTrack
         notifyService(currentTrack.youtubeId)
-
-        // For Ads
-        UserPrefs.onClickTrack()
-        ClickVideoListener.value = Event(currentTrack)
+        checkQueueChanged(oldQueue, queue)
     }
 
     fun playNextTrack() {
-        if (isScreenLocked()) return
         val nextTrack = getNextTrack()
         if (nextTrack != null) {
             this.value = nextTrack
@@ -52,7 +45,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun playPreviousTrack() {
-        if (isScreenLocked()) return
         val previousTrack = getPreviousTrack()
         if (previousTrack != null) {
             this.value = previousTrack
@@ -61,7 +53,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun addAsNext(track: MusicTrack) {
-
         val newList = mutableListOf<MusicTrack>()
         if (queue != null) {
             for (musicTrack in queue!!) {
@@ -71,7 +62,29 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
                 }
             }
 
+            val oldQueue = queue.orEmpty()
+
             this.queue = newList
+            checkQueueChanged(oldQueue, newList)
+        }
+    }
+
+    fun removeTrack(track: MusicTrack) {
+        val mutableQueue = queue?.toMutableList()
+        mutableQueue?.remove(track)
+        this.queue = mutableQueue
+    }
+
+    fun swapTracks(from: Int, to: Int) {
+        val swappedQueue = queue?.swapped(from, to)
+        queue = swappedQueue
+    }
+
+    fun togglePlayback() {
+        if (PlaybackLiveData.isPlaying()) {
+            pause()
+        } else {
+            resume()
         }
     }
 
@@ -83,25 +96,23 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         resumeVideo()
     }
 
-    fun seekTo(to: Long, comeFromFullScreen: Boolean = false) {
-        seekTrackTo(to, comeFromFullScreen)
+    fun seekTo(to: Long) {
+        seekTrackTo(to)
+    }
+
+    fun scheduleStopMusic(duration: Int) {
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
+        if (value == null) return
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_SCHEDULE_TIMER, duration)
+        MusicApp.get().startService(intent)
     }
 
     fun isCurrentTrack(musicTrack: MusicTrack): Boolean {
         val currentTrack = value ?: return false
         return currentTrack.youtubeId == musicTrack.youtubeId
-    }
-
-    fun hideVideo() {
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_HIDE_VIDEO, true)
-        MusicApp.get().startService(intent)
-    }
-
-    fun showVideo() {
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_SHOW_VIDEO, true)
-        MusicApp.get().startService(intent)
     }
 
     private fun getNextTrack(): MusicTrack? {
@@ -112,7 +123,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) + 1)
             PlaySort.LOOP_ONE -> currentTrack
             PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) + 1) { mQueue[0] }
-            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.random()
+            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.randomOrNull()
         }
     }
 
@@ -124,7 +135,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) - 1)
             PlaySort.LOOP_ONE -> currentTrack
             PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) - 1) { mQueue[mQueue.size - 1] }
-            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.random()
+            PlaySort.RANDOM -> mQueue.filter { it != currentTrack }.randomOrNull()
         }
     }
 
@@ -136,12 +147,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
-        if (isScreenLocked()) {
-            pauseVideo()
-            return
-        }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_PLAY_TRACK, videoId)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, true)
         MusicApp.get().startService(intent)
     }
 
@@ -149,8 +156,8 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_PAUSE, true)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_PAUSE, true)
         MusicApp.get().startService(intent)
     }
 
@@ -158,35 +165,53 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
-        if (isScreenLocked()) {
-            pauseVideo()
-            return
-        }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_RESUME, true)
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_RESUME, true)
         MusicApp.get().startService(intent)
     }
 
-    private fun seekTrackTo(to: Long, comeFromFullScreen: Boolean) {
+    private fun seekTrackTo(to: Long) {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
-        if (isScreenLocked()) {
-            pauseVideo()
+
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
+        MusicApp.get().startService(intent)
+    }
+
+    fun size() = queue?.size ?: 0
+
+    fun indexOfCurrent(): Int {
+        val currentTrack = value ?: return -1
+        return queue?.indexOf(currentTrack) ?: -1
+    }
+
+    fun playTrackAt(position: Int) {
+        val currentQueue = queue ?: emptyList()
+        val track = currentQueue.getOrNull(position) ?: return
+        playTrack(track, currentQueue)
+    }
+
+    private fun checkQueueChanged(oldQueue: List<MusicTrack>, newQueue: List<MusicTrack>) {
+        if (oldQueue.size != newQueue.size) {
+            OnChangeQueue.value = newQueue
             return
         }
-        val intent = Intent(MusicApp.get(), VideoPlaybackService::class.java)
-        intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO, to)
-        intent.putExtra(VideoPlaybackService.COMMAND_SEEK_TO_FROM_FULL_SCREEN, comeFromFullScreen)
-        MusicApp.get().startService(intent)
+
+        if (oldQueue != newQueue) {
+            OnChangeQueue.value = newQueue
+        }
     }
 }
 
+object OnChangeQueue : MutableLiveData<List<MusicTrack>>()
+
 enum class PlaySort(@DrawableRes val icon: Int) {
-    RANDOM(R.drawable.ic_shuffle),
+    RANDOM(R.drawable.ic_random),
     LOOP_ONE(R.drawable.ic_repeat_one),
-    LOOP_ALL(R.drawable.ic_repeat_all),
-    SEQUENCE(R.drawable.ic_sequence);
+    LOOP_ALL(R.drawable.ic_repeat),
+    SEQUENCE(R.drawable.ic_arrow_alt_to_right);
 
     fun next(): PlaySort = when {
         this == RANDOM -> LOOP_ONE
@@ -201,7 +226,7 @@ enum class PlaySort(@DrawableRes val icon: Int) {
                 valueOf(enumString)
             } catch (ex: Exception) {
                 // For error cases
-                SEQUENCE
+                LOOP_ALL
             }
         }
     }

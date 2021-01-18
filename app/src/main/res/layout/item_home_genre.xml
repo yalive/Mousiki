@@ -3,47 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="120dp"
     android:clickable="true"
     android:elevation="@dimen/eight_8dp"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
-    app:cardPreventCornerOverlap="true">
+    app:cardPreventCornerOverlap="true"
+    tools:layout_margin="@dimen/eight_8dp">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/imgCategory"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_genres_0" />
 
         <ImageView
             android:id="@+id/backgroundCategory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.8"
             android:background="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="-20dp"
+            android:layout_toStartOf="@+id/cardImgCategory"
             android:ellipsize="end"
-            android:gravity="center"
-            android:lines="1"
-            android:maxLines="1"
-            android:padding="@dimen/four_4dp"
+            android:fontFamily="@font/roboto_condensed_bold"
+            android:maxLines="3"
             android:textColor="@color/colorWhite"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:textSize="16sp"
             tools:text="Pop Music" />
-    </FrameLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardImgCategory"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end|bottom"
+            android:rotation="20"
+            android:translationX="20dp"
+            android:translationY="12dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true">
+
+            <ImageView
+                android:id="@+id/imgCategory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_genres_0" />
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

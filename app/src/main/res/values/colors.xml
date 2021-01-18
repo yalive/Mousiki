@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">@color/colorAccent</color>
     <color name="colorPrimaryDark">@color/colorTransparent</color>
     <color name="colorAccent">#D81B60</color>
 
@@ -9,13 +9,24 @@
     <color name="colorTransparent">#00000000</color>
 
     <color name="colorYellow">#F3CB45</color>
-
+    <color name="colorGrayText">#727272</color>
+    <color name="dividerColor">#1f000000</color>
+    <color name="colorIconSettings">#2C2B2B</color>
+    <color name="colorGreenState">#2CA540</color>
 
     <color name="colorClosePlayerOn">#BCC7485B</color>
+    <color name="colorBlack_80">#80000000</color>
     <color name="colorClosePlayerOff">#45000000</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="colorSplash">#78909C</color>
     <color name="colorSidebarSelected">@color/colorAccent</color>
     <color name="colorPlaceholderImage">#454B45</color>
+
+    <color name="colorBgSearchArtist">#F5F6FF</color>
+
+    <color name="colorDarkNavigationView">#23232D</color>
+    <color name="colorBackgroundDialog">@color/colorWhite</color>
+    <color name="colorBgPlayer">#00020B</color>
+    <color name="cardAdBackgroundColor">#EAE9E9</color>
 </resources>

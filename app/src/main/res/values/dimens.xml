@@ -12,10 +12,30 @@
 
     <dimen name="floating_video_height">70dp</dimen>
     <dimen name="floating_video_width">120dp</dimen>
-    <dimen name="bottom_pannel_height">54dp</dimen>
+    <dimen name="minimized_player_height">70dp</dimen>
+    <dimen name="padding_for_player_space">90dp</dimen>
+    <dimen name="bottom_nav_bar_height">56dp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
 
     <dimen name="fast_scroll_bar_width">5dp</dimen>
+    <dimen name="home_chart_height">320dp</dimen>
 
+
+    <!-- Standard Spaces && Margins-->
+    <dimen name="spacing_xxx_large">48dp</dimen>
+    <dimen name="spacing_xx_large">32dp</dimen>
+    <dimen name="spacing_x_large">24dp</dimen>
+    <dimen name="spacing_large">20dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_normal">12dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_x_small">4dp</dimen>
+    <dimen name="spacing_xx_small">2dp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radius_large">24dp</dimen>
+    <dimen name="radius_medium">16dp</dimen>
+    <dimen name="radius_normal">8dp</dimen>
+    <dimen name="radius_small">4dp</dimen>
 </resources>

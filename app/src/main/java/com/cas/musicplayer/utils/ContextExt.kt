@@ -1,19 +1,20 @@
 package com.cas.musicplayer.utils
 
 import android.content.Context
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 /**
  **********************************
@@ -24,11 +25,11 @@ import androidx.lifecycle.LifecycleService
 data class ScreenSize(val widthPx: Int, val heightPx: Int)
 
 fun Context.dpToPixel(dp: Float): Int {
-    return dpToPixel(dp, this).toInt()
+    return com.cas.common.dpToPixel(dp, this).toInt()
 }
 
 fun Context.pixelsToDp(px: Float): Float {
-    return pixelsToDp(px, this)
+    return com.cas.common.pixelsToDp(px, this)
 }
 
 @ColorInt
@@ -37,7 +38,12 @@ fun Context.color(@ColorRes id: Int): Int {
 }
 
 fun Context.drawable(@DrawableRes id: Int): Drawable? {
-    return ContextCompat.getDrawable(this, id)
+    return try {
+        ContextCompat.getDrawable(this, id)
+    } catch (e: OutOfMemoryError) {
+        FirebaseCrashlytics.getInstance().recordException(e)
+        null
+    }
 }
 
 fun Context.themeColor(@AttrRes attrRes: Int): Int {
@@ -51,6 +57,17 @@ fun Context.canDrawOverApps() =
         this
     ))
 
+val windowOverlayTypeOrPhone: Int
+    get() = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        else -> WindowManager.LayoutParams.TYPE_PHONE
+    }
+
+val windowOverlayTypeOrSysAlert: Int
+    get() = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        else -> WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+    }
 
 fun Context.screenSize(): ScreenSize {
 
@@ -66,6 +83,39 @@ fun Context.screenSize(): ScreenSize {
     return ScreenSize(w, h)
 }
 
+/* Toast */
 fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.toast(@StringRes stringRes: Int) {
+    Toast.makeText(this, stringRes, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.longToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Context.toastCentred(message: String) {
+    val toast = Toast.makeText(this, message, Toast.LENGTH_LONG)
+    toast.setGravity(Gravity.CENTER, 0, 0)
+    toast.show()
+}
+
+fun View?.visibleInScreen(): Boolean {
+    if (this == null) {
+        return false
+    }
+    if (!this.isShown) {
+        return false
+    }
+    val actualPosition = Rect()
+    this.getGlobalVisibleRect(actualPosition)
+    val screen = Rect(
+        0,
+        0,
+        this.context.screenSize().widthPx,
+        this.context.screenSize().heightPx
+    )
+    return actualPosition.intersect(screen)
 }

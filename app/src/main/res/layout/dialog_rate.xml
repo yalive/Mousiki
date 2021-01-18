@@ -1,109 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:paddingBottom="@dimen/sixteen_16dp">
+
+    <ImageButton
+        android:id="@+id/btnCloseDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close"
+        app:tint="@color/colorGrayText" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#FFB200"
-        android:gravity="center"
-        android:text="Did you like this app? Please we need your support."
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp" />
-
-    <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/txtQuestion"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/sixteen_16dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:gravity="center"
-        android:text="Rate the App Please"
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/rate_app_message_play_store"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCloseDialog" />
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancel"
+        style="@style/DialogSecondaryButtonStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:gravity="center"
-        android:text="It wont take more than a minute. Thanks for your support!"
-        android:textColor="@color/colorBlack" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toStartOf="@+id/btnOk"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtQuestion" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOk"
+        style="@style/DialogPrimaryButtonStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen_16dp"
-        android:layout_marginBottom="@dimen/sixteen_16dp"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_star_rate" />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_star_rate" />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_star_rate" />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_star_rate" />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_star_rate" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btnRate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:background="#FFB200"
-        android:text="RATE 5 STARS" />
-
-    <Button
-        android:id="@+id/btnRemindMe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:background="#726D6D"
-        android:text="REMIND ME LATER"
-        android:textColor="@color/colorBlack" />
-
-    <Button
-        android:id="@+id/btnNoThanks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/eight_8dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:layout_marginBottom="@dimen/sixteen_16dp"
-        android:background="#726D6D"
-        android:text="NO, THANKS"
-        android:textColor="@color/colorBlack" />
-</LinearLayout>
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toBottomOf="@+id/txtQuestion" />
+</androidx.constraintlayout.widget.ConstraintLayout>

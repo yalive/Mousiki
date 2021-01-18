@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>youtube_api_keys</key>
+        <value>
+            AIzaSyAlHwrVuiEV7s1yo_qQW2Ka3zIT9psnSB8###AIzaSyD9PTSV4tM4A_D4lrGlmBW71VgW6PWdsVU
+        </value>
+    </entry>
+
+    <entry>
+        <key>chart_songs_from_firebase</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>list_ads_offset</key>
+        <value>5</value>
+    </entry>
+
+    <entry>
+        <key>rate_app_dialog_frequency</key>
+        <value>3</value>
+    </entry>
+
+    <entry>
+        <key>genre_songs_from_firebase</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>playlist_songs_from_api</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>turn_on_reward_ad</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>turn_on_banner_ad</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>search_artist_tracks_from_mousiki_api</key>
+        <value>false</value>
+    </entry>
+
+    <entry>
+        <key>show_reward_after_x_click</key>
+        <value>7</value>
+    </entry>
+
+    <entry>
+        <key>show_ad_for_track_options</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>api_urls</key>
+        <value>{ "search": { "apis": [ "https://mousikiapp.herokuapp.com",
+            "https://mousikiapp2.herokuapp.com" ], "maxApiToTry": 3, "retryCount": 1 },
+            "artistSongs": { "apis": [ "https://mousikiapp.herokuapp.com",
+            "https://mousikiapp2.herokuapp.com" ], "maxApiToTry": 3, "retryCount": 1 }, "playlists":
+            { "apis": [ "https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com" ],
+            "maxApiToTry": 3, "retryCount": 1 }, "home": { "apis": [
+            "https://mousikiapp.herokuapp.com" ], "maxApiToTry": 3, "retryCount": 1 } }
+        </value>
+    </entry>
+
+
+    <entry>
+        <key>home_cache_duration_hours</key>
+        <value>1</value>
+    </entry>
+
+    <entry>
+        <key>enable_new_home</key>
+        <value>false</value>
+    </entry>
+
+</defaultsMap>

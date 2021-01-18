@@ -41,6 +41,10 @@ open class BaseDelegationAdapter(
 
     override fun getItemCount(): Int = dataItems.size
 
+    override fun getItemId(position: Int): Long {
+        return delegateManager.getItemId(dataItems, position)
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         delegateManager.onBindViewHolder(dataItems, position, holder)
     }

@@ -1,15 +1,21 @@
 package com.cas.musicplayer
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
+import com.cas.musicplayer.ui.common.ads.AdsManager
+import com.cas.musicplayer.utils.UserPrefs
 import com.facebook.ads.AudienceNetworkAds
-import com.facebook.stetho.Stetho
 import com.google.android.gms.ads.MobileAds
-import io.fabric.sdk.android.Fabric
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 
 /**
@@ -19,6 +25,12 @@ import io.fabric.sdk.android.Fabric
  */
 class MusicApp : Application(), ComponentProvider {
 
+    val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+    private var _isInForeground = false
+    val isInForeground: Boolean
+        get() = _isInForeground
+
     override val component: AppComponent by lazy {
         DaggerAppComponent
             .factory()
@@ -27,18 +39,25 @@ class MusicApp : Application(), ComponentProvider {
 
     override fun onCreate() {
         super.onCreate()
-
-        if (AudienceNetworkAds.isInAdsProcess(this)) {
-
+        instance = this
+        configurePreferredTheme()
+        if (AudienceNetworkAds.isInitialized(this)) {
             return
         }
-        instance = this
         MobileAds.initialize(this, getString(R.string.admob_app_id))
-        val crashlytics = Crashlytics.Builder()
-            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-            .build()
-        Fabric.with(this, crashlytics)
-        Stetho.initializeWithDefaults(this)
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_START)
+            fun onEnterForeground() {
+                _isInForeground = true
+            }
+
+            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+            fun onEnterBackground() {
+                _isInForeground = false
+            }
+        })
+        AdsManager.init(applicationScope)
     }
 
     companion object {
@@ -46,6 +65,20 @@ class MusicApp : Application(), ComponentProvider {
 
         fun get(): MusicApp {
             return instance
+        }
+    }
+
+    private fun configurePreferredTheme() {
+        val preferredTheme = UserPrefs.getThemeModeValue()
+        if (preferredTheme == UserPrefs.THEME_AUTOMATIC) {
+            UserPrefs.setThemeModeValue(UserPrefs.THEME_AUTOMATIC)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        } else if (preferredTheme == UserPrefs.THEME_LIGHT) {
+            UserPrefs.setThemeModeValue(UserPrefs.THEME_LIGHT)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else if (preferredTheme == UserPrefs.THEME_DARK) {
+            UserPrefs.setThemeModeValue(UserPrefs.THEME_DARK)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 }

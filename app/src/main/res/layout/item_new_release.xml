@@ -1,63 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardView"
     android:layout_width="wrap_content"
-    android:layout_height="148dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="8dp"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPlaceholderImage"
-        android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_margin="4dp"
+        android:background="@drawable/bg_navigation_view"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imgSong"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/txtTitle"
             android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
             tools:src="@drawable/img_genres_0" />
 
         <TextView
             android:id="@+id/txtDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/txtTitle"
-            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|end"
             android:ellipsize="end"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:lines="2"
-            android:maxLines="2"
             android:padding="@dimen/four_4dp"
             android:textColor="@color/colorWhite"
             android:textSize="11sp"
-            android:textStyle="bold"
             tools:ignore="SmallSp"
             tools:text="03:14" />
 
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:background="@color/colorWhite"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:lines="2"
-            android:maxLines="2"
-            android:padding="@dimen/four_4dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            tools:text="Pop Music" />
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/indicatorPlaying"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            app:lottie_colorFilter="@color/colorAccent"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/playing_animation" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/eight_8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:gravity="top|start"
+        android:maxLines="2"
+        android:padding="@dimen/four_4dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorWhite"
+        android:alpha="0.5"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/cardView"
+        app:layout_constraintStart_toStartOf="@id/cardView"
+        app:layout_constraintTop_toBottomOf="@id/cardView"
+        tools:text="Pop Music"
+        tools:ignore="SmallSp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,40 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.9"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="32sp"
+        tools:text="أجمل الأغاني اليوم" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitle"
         android:minHeight="100dp"
         android:orientation="horizontal"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="4"
-        tools:listitem="@layout/item_new_release" />
+        tools:listitem="@layout/item_new_release"
+        tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/txtEmpty"
+    <LinearLayout
+        android:id="@+id/viewError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="sans-serif-light"
+        android:layout_below="@+id/txtTitle"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center"
         android:minHeight="100dp"
-        android:textColor="#D6D3D3"
-        android:textSize="12sp"
-        android:visibility="gone"
-        tools:text="No songs found" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
+            android:gravity="center"
+            android:textColor="#D6D3D3"
+            android:textSize="12sp"
+            tools:text="No songs found"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/btnRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="16dp"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_refresh" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:indeterminateTint="@color/colorYellow"
         android:padding="@dimen/four_4dp"
         android:visibility="gone" />
-</FrameLayout>
+</RelativeLayout>

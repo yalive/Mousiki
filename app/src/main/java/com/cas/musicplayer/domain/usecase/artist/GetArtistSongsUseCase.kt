@@ -1,8 +1,9 @@
 package com.cas.musicplayer.domain.usecase.artist
 
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.common.result.Result
+import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.data.repositories.ArtistsRepository
+import com.cas.musicplayer.domain.model.MusicTrack
 import javax.inject.Inject
 
 /**
@@ -15,7 +16,7 @@ class GetArtistSongsUseCase @Inject constructor(
     private val repository: ArtistsRepository
 ) {
 
-    suspend operator fun invoke(artistChannelId: String): Result<List<MusicTrack>> {
-        return repository.getArtistTracks(artistChannelId)
+    suspend operator fun invoke(artist: Artist): Result<List<MusicTrack>> {
+        return repository.getArtistTracks(artist)
     }
 }

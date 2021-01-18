@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#231f30">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:fontFamily="@font/pangram_regular"
+        android:text="@string/sleep_timer"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.cas.musicplayer.ui.settings.SeekArc
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:padding="30dp"
+        app:arcColor="#000000"
+        app:clockwise="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+        app:max="90"
+        app:progressColor="#ffff49"
+        app:progressValue="30"
+        app:rotation="180"
+        app:startAngle="30"
+        app:sweepAngle="300"
+        app:thumb="@drawable/thumb_timer"
+        app:thumbColor="#ffff49" />
+
+    <TextView
+        android:id="@+id/txtCurrentValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/seekbar"
+        app:layout_constraintEnd_toEndOf="@+id/seekbar"
+        app:layout_constraintStart_toStartOf="@+id/seekbar"
+        app:layout_constraintTop_toTopOf="@+id/seekbar"
+        tools:text="10 min" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSetTimer"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:text="@string/title_button_set_timer"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekbar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

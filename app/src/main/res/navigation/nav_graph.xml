@@ -3,62 +3,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboardFragment">
-
+    app:startDestination="@id/homeFragment">
     <fragment
-        android:id="@+id/dashboardFragment"
-        android:name="com.cas.musicplayer.ui.dashboard.DashboardFragment"
+        android:id="@+id/homeFragment"
+        android:name="com.cas.musicplayer.ui.home.HomeFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_dashboard">
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_dashboardFragment_to_newReleaseFragment"
-            app:destination="@id/newReleaseFragment" />
+            android:id="@+id/action_homeFragment_to_newReleaseFragment"
+            app:destination="@id/newReleaseFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
 
         <action
-            android:id="@+id/action_dashboardFragment_to_artistsFragment"
-            app:destination="@id/artistsFragment" />
+            android:id="@+id/action_homeFragment_to_artistsFragment"
+            app:destination="@id/artistsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
         <action
-            android:id="@+id/action_dashboardFragment_to_searchYoutubeFragment"
-            app:destination="@id/searchYoutubeFragment" />
+            android:id="@+id/action_homeFragment_to_playlistVideosFragment"
+            app:destination="@id/playlistVideosFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
         <action
-            android:id="@+id/action_dashboardFragment_to_favouriteSongsFragment"
-            app:destination="@id/favouriteSongsFragment" />
+            android:id="@+id/action_homeFragment_to_genresFragment"
+            app:destination="@id/genresFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
         <action
-            android:id="@+id/action_dashboardFragment_to_genresFragment"
-            app:destination="@id/genresFragment" />
+            android:id="@+id/action_homeFragment_to_artistSongsFragment"
+            app:destination="@id/artistSongsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
         <action
-            android:id="@+id/action_dashboardFragment_to_chartsFragment"
-            app:destination="@id/chartsFragment" />
+            android:id="@+id/action_homeFragment_to_libraryFragment"
+            app:destination="@id/libraryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mainSearchFragment"
+            app:destination="@id/mainSearchFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/videoPlayerFragment"
-        android:name="com.cas.musicplayer.ui.player.VideoPlayerFragment"
-        android:label="Youtube Player"
-        tools:layout="@layout/fragment_video_player" />
     <fragment
         android:id="@+id/newReleaseFragment"
         android:name="com.cas.musicplayer.ui.popular.PopularSongsFragment"
-        android:label="  " />
+        android:label="  ">
+        <deepLink app:uri="mousiki://open_new_releases" />
+    </fragment>
     <fragment
         android:id="@+id/artistSongsFragment"
         android:name="com.cas.musicplayer.ui.artists.songs.ArtistSongsFragment"
-        android:label="@string/app_name">
-        <action
-            android:id="@+id/action_artistFragment_to_playlistVideosFragment"
-            app:destination="@id/playlistVideosFragment" />
-    </fragment>
+        android:label="@string/app_name" />
     <fragment
         android:id="@+id/playlistVideosFragment"
-        android:name="com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment"
+        android:name="com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment"
         android:label="@string/app_name" />
     <fragment
         android:id="@+id/artistsFragment"
         android:name="com.cas.musicplayer.ui.artists.list.ArtistListFragment"
-        android:label="Artists" />
+        android:label="Artists">
+        <action
+            android:id="@+id/action_artistsFragment_to_artistSongsFragment"
+            app:destination="@id/artistSongsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/searchYoutubeFragment"
         android:name="com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment"
-        android:label="" />
+        android:label="">
+        <deepLink app:uri="mousiki://start_search" />
+    </fragment>
     <fragment
         android:id="@+id/favouriteSongsFragment"
         android:name="com.cas.musicplayer.ui.favourite.FavouriteSongsFragment"
@@ -67,9 +92,100 @@
     <fragment
         android:id="@+id/genresFragment"
         android:name="com.cas.musicplayer.ui.genres.GenresFragment"
-        android:label="@string/genres" />
+        android:label="@string/genres">
+        <action
+            android:id="@+id/action_genresFragment_to_playlistVideosFragment"
+            app:destination="@id/playlistVideosFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+    </fragment>
     <fragment
-        android:id="@+id/chartsFragment"
-        android:name="com.cas.musicplayer.ui.charts.ChartsFragment"
-        android:label="@string/app_name" />
+        android:id="@+id/libraryFragment"
+        android:name="com.cas.musicplayer.ui.library.LibraryFragment"
+        android:label="@string/app_name">
+        <action
+            android:id="@+id/action_libraryFragment_to_favouriteSongsFragment"
+            app:destination="@id/favouriteSongsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_libraryFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_libraryFragment_to_customPlaylistSongsFragment"
+            app:destination="@id/customPlaylistSongsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_libraryFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.cas.musicplayer.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_timerDialog"
+            app:destination="@id/timerDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/timerDialog"
+        android:name="com.cas.musicplayer.ui.settings.TimerDialog"
+        android:label="TimerDialog"
+        tools:layout="@layout/timer_dialog" />
+    <fragment
+        android:id="@+id/mainSearchFragment"
+        android:name="com.cas.musicplayer.ui.searchyoutube.MainSearchFragment"
+        android:label="MainSearchFragment">
+        <action
+            android:id="@+id/action_mainSearchFragment_to_searchYoutubeFragment"
+            app:destination="@id/searchYoutubeFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_mainSearchFragment_to_playlistVideosFragment"
+            app:destination="@id/playlistVideosFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTrackToPlaylistFragment"
+        android:name="com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment"
+        android:label="AddTrackToPlaylistDialog"
+        tools:layout="@layout/fragment_add_track_playlist">
+        <action
+            android:id="@+id/action_addTrackToPlaylistFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment"
+        android:label="CreatePlaylistDialog"
+        tools:layout="@layout/fragment_create_palylist" />
+    <fragment
+        android:id="@+id/customPlaylistSongsFragment"
+        android:name="com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment"
+        android:label="CustomPlaylistSongsFragment"
+        tools:layout="@layout/fragment_playlist_songs" />
 </navigation>

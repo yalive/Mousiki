@@ -1,0 +1,194 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cas.musicplayer.ui.settings.SettingsFragment">
+
+
+    <TextView
+        android:id="@+id/btnDarkMode"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_dark_mode_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/dark_mode"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:id="@+id/btnTimer"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_clock_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/sleep_timer"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:id="@+id/btnOutVideoSize"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_video_size"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/settings_size_out_video"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:id="@+id/btnShareApp"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_share_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/settings_share_app"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:id="@+id/btnRateApp"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_smile_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/settings_rate_app"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:id="@+id/btnLikeFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_thumbs_up_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/settings_facebook_like"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:id="@+id/btnFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_comment_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/settings_feedback"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:id="@+id/btnPolicy"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_privacy_policy_settings"
+        android:drawablePadding="16dp"
+        android:focusable="true"
+        android:fontFamily="@font/pangram_regular"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:text="@string/settings_policy"
+        android:textAllCaps="false"
+        android:textColor="?android:textColorPrimary"
+        app:drawableTint="?colorOnSurface" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
+</LinearLayout>

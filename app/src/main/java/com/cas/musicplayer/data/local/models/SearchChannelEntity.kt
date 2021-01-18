@@ -8,7 +8,10 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.Channel
 
 
-@Entity(tableName = "channel_search_result", indices = [Index(unique = true, value = arrayOf("channel_id"))])
+@Entity(
+    tableName = "channel_search_result",
+    indices = [Index(unique = true, value = arrayOf("channel_id"))]
+)
 data class SearchChannelEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

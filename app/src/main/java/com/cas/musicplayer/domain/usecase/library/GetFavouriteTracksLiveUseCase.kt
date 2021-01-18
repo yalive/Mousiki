@@ -15,7 +15,8 @@ import javax.inject.Inject
 class GetFavouriteTracksLiveUseCase @Inject constructor(
     private val songsRepository: SongsRepository
 ) {
-    suspend operator fun invoke(max: Int = 10): LiveData<List<MusicTrack>> = withContext(bgContext) {
-        return@withContext songsRepository.getFavouriteSongsLive(max)
-    }
+    suspend operator fun invoke(max: Int = 10): LiveData<List<MusicTrack>> =
+        withContext(bgContext) {
+            return@withContext songsRepository.getFavouriteSongsLive(max)
+        }
 }

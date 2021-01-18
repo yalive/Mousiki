@@ -1,9 +1,10 @@
 package com.cas.musicplayer.utils
 
-import com.cas.common.viewmodel.BaseViewModel
+import androidx.annotation.LayoutRes
 import com.cas.common.fragment.BaseFragment
-import com.cas.musicplayer.di.injector.injector
+import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.viewmodel.activityViewModel
+import com.cas.musicplayer.di.injector.injector
 import javax.inject.Inject
 
 /**
@@ -12,7 +13,9 @@ import javax.inject.Inject
  *
  *********************************************
  */
-abstract class NoViewModelFragment : BaseFragment<EmptyViewModel>() {
+abstract class NoViewModelFragment(
+    @LayoutRes layoutResourceId: Int
+) : BaseFragment<EmptyViewModel>(layoutResourceId) {
     override val viewModel by activityViewModel { injector.emptyViewModel }
 }
 

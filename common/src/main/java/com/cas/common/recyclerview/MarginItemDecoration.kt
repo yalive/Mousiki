@@ -11,9 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
  **********************************
  */
 class MarginItemDecoration(
-    private val verticalMargin: Int = 0,
-    private val horizontalMargin: Int = 0,
-    private val firstItemAdditionalMargin: Int = 0
+    verticalMargin: Int = 0,
+    horizontalMargin: Int = 0,
+    private val firstItemAdditionalMargin: Int = 0,
+    private val leftMarginProvider: (Int) -> Int = { horizontalMargin },
+    private val topMarginProvider: (Int) -> Int = { verticalMargin },
+    private val rightMarginProvider: (Int) -> Int = { horizontalMargin },
+    private val bottomMarginProvider: (Int) -> Int = { verticalMargin }
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
@@ -22,22 +26,27 @@ class MarginItemDecoration(
     ) {
         val layoutManager = parent.layoutManager as LinearLayoutManager
         val isVertical = layoutManager.orientation == RecyclerView.VERTICAL
-        val first = parent.getChildAdapterPosition(view) == 0
+        val position = parent.getChildAdapterPosition(view)
+        val first = position == 0
         with(outRect) {
             if (isVertical) {
                 val topMargin =
-                    if (first) verticalMargin + firstItemAdditionalMargin else verticalMargin
+                    if (first) topMarginProvider(position) + firstItemAdditionalMargin else topMarginProvider(
+                        position
+                    )
                 top = topMargin
-                left = horizontalMargin
-                right = horizontalMargin
-                bottom = verticalMargin
+                left = leftMarginProvider(position)
+                right = rightMarginProvider(position)
+                bottom = bottomMarginProvider(position)
             } else {
                 val leftMargin =
-                    if (first) horizontalMargin + firstItemAdditionalMargin else horizontalMargin
+                    if (first) leftMarginProvider(position) + firstItemAdditionalMargin else leftMarginProvider(
+                        position
+                    )
                 left = leftMargin
-                top = verticalMargin
-                right = horizontalMargin
-                bottom = verticalMargin
+                top = topMarginProvider(position)
+                right = rightMarginProvider(position)
+                bottom = bottomMarginProvider(position)
             }
         }
     }

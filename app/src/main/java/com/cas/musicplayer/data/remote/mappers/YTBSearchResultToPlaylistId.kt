@@ -1,7 +1,7 @@
 package com.cas.musicplayer.data.remote.mappers
 
-import com.cas.musicplayer.domain.model.PlaylistId
 import com.cas.musicplayer.data.remote.models.YTBSearchResult
+import com.cas.musicplayer.domain.model.PlaylistId
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,6 +13,6 @@ import javax.inject.Singleton
 @Singleton
 class YTBSearchResultToPlaylistId @Inject constructor() : Mapper<YTBSearchResult, PlaylistId> {
     override suspend fun map(from: YTBSearchResult): PlaylistId {
-        return PlaylistId(from.id?.playlistId ?: "")
+        return PlaylistId(from.id?.playlistId.orEmpty())
     }
 }

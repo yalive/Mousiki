@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.home.delegates
 
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -10,17 +11,23 @@ import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
+import com.cas.common.extensions.onClick
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.HeaderItem
+import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.utils.dpToPixel
+import com.cas.musicplayer.utils.navigateSafeAction
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-12-04.
  ***************************************
  */
-class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
+class HomeHeaderAdapterDelegate(
+    private val viewModel: HomeViewModel
+) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is HeaderItem
@@ -31,22 +38,29 @@ class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return HeaderViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val headerItem = items[position] as HeaderItem
         (holder as HeaderViewHolder).bind(headerItem)
     }
 
-    private inner class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    private inner class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view),
+        HomeMarginProvider {
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
         private val txtMore: TextView = view.findViewById(R.id.txtMore)
         private val showAll: ImageButton = view.findViewById(R.id.showAll)
         private val progressBar: ProgressBar = view.findViewById(R.id.progressBar)
 
+        var item: HeaderItem? = null
         fun bind(headerItem: HeaderItem) {
-            txtTitle.text = headerItem.title
+            item = headerItem
+            txtTitle.setText(headerItem.title)
             if (headerItem.showMore) {
-                view.setOnClickListener { showMore(headerItem) }
-                showAll.setOnClickListener { showMore(headerItem) }
+                view.onClick { showMore(headerItem) }
+                showAll.onClick { showMore(headerItem) }
             }
             if (headerItem is HeaderItem.PopularsHeader) {
                 progressBar.isVisible = headerItem.loading
@@ -59,13 +73,35 @@ class HomeHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         }
 
         private fun showMore(headerItem: HeaderItem) {
+            val bundle = Bundle()
             val destination = when (headerItem) {
-                HeaderItem.ArtistsHeader -> R.id.artistsFragment
-                is HeaderItem.PopularsHeader -> R.id.newReleaseFragment
-                HeaderItem.ChartsHeader -> R.id.chartsFragment
-                HeaderItem.GenresHeader -> R.id.genresFragment
+                HeaderItem.ArtistsHeader -> R.id.action_homeFragment_to_artistsFragment
+                is HeaderItem.PopularsHeader -> {
+                    /*val firstTrackItem = viewModel.newReleases.valueOrNull()?.getOrNull(0) ?: return
+                    bundle.putParcelable(
+                        BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
+                        AppImage.AppImageUrl(
+                            url = firstTrackItem.songImagePath,
+                            altUrl = firstTrackItem.track.imgUrlDef0
+                        )
+                    )*/
+                    R.id.action_homeFragment_to_newReleaseFragment
+                }
+                HeaderItem.ChartsHeader -> R.id.genresFragment // Just for code to compile
+                HeaderItem.GenresHeader -> R.id.action_homeFragment_to_genresFragment
             }
-            itemView.findNavController().navigate(destination)
+            itemView.findNavController().navigateSafeAction(destination, bundle)
+        }
+
+        override fun topMargin(): Int {
+            val headerItem = item ?: return 0
+            val dp = when (headerItem) {
+                is HeaderItem.PopularsHeader -> 24f
+                HeaderItem.ChartsHeader -> 0f
+                HeaderItem.ArtistsHeader -> 56f
+                HeaderItem.GenresHeader -> 40f
+            }
+            return itemView.context.dpToPixel(dp)
         }
     }
 }

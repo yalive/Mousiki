@@ -18,36 +18,14 @@
         android:visibility="gone"
         tools:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/pagerContainer"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="visible">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabIndicatorAnimationDuration="400"
-            app:tabIndicatorColor="@color/colorYellow"
-            app:tabIndicatorHeight="@dimen/two_2dp"
-            app:tabMaxWidth="200dp"
-            app:tabMinWidth="120dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorBlack"
-            app:tabTextAppearance="?android:textAppearanceLargePopupMenu"
-            app:tabTextColor="@color/colorBlack" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_fav_video" />
-    </LinearLayout>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_fav_video"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSuggestions"
