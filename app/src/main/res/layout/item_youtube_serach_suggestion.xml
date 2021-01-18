@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,8 +20,8 @@
         android:layout_marginStart="@dimen/eight_8dp"
         android:background="@null"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_search"
-        android:tint="@color/colorBlack" />
+        android:tint="?android:textColorPrimary"
+        app:srcCompat="@drawable/ic_search" />
 
     <TextView
         android:id="@+id/txtTitle"
@@ -29,19 +30,20 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/eight_8dp"
         android:layout_weight="1"
-        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/pangram_regular"
+        android:textColor="?android:textColorPrimary"
         tools:text="Hello Test" />
 
     <ImageButton
         android:id="@+id/btnPast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/eight_8dp"
         android:layout_marginEnd="@dimen/eight_8dp"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/app_name"
         android:rotation="45"
-        android:src="@drawable/ic_arrow_back"
-        android:tint="@color/colorBlack" />
+        app:srcCompat="@drawable/ic_arrow_back"
+        android:tint="?android:textColorPrimary" />
 </LinearLayout>

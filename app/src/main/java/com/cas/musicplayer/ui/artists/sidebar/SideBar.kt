@@ -11,8 +11,13 @@ import android.view.View
 import android.widget.TextView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.utils.color
+import com.cas.musicplayer.utils.themeColor
 
-class SideBar @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, i: Int = 0) :
+class SideBar @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null,
+    i: Int = 0
+) :
     View(context, attributeSet, i) {
 
     private var choose: Int = 0
@@ -69,7 +74,8 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
     private fun changeTextDialogPos(i: Int, z: Boolean) {
         if (this.mTvDialog != null) {
             val height = height / this.letters.size
-            this.mTvDialog!!.translationY = (height * i - this.mTvDialog!!.height).toFloat() + height.toFloat() / 2.0f
+            this.mTvDialog!!.translationY =
+                (height * i - this.mTvDialog!!.height).toFloat() + height.toFloat() / 2.0f
             this.mTvDialog!!.text = this.letters[i]
             this.mTvDialog!!.visibility = if (z) View.VISIBLE else View.INVISIBLE
             this.mTvDialog?.setTextColor(Color.BLACK)
@@ -105,7 +111,7 @@ class SideBar @JvmOverloads constructor(context: Context, attributeSet: Attribut
         val width = width
         height /= this.letters.size
         for (i in this.letters.indices) {
-            this.paint.color = Color.BLACK
+            this.paint.color = context.themeColor(R.attr.colorOnSurface)
             this.paint.isAntiAlias = true
             this.paint.textSize = spToPx(9).toFloat()
             if (i == this.choose) {

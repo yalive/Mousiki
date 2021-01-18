@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.searchyoutube
 import android.view.View
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import kotlinx.android.synthetic.main.item_youtube_serach_suggestion.view.*
 
@@ -31,12 +32,12 @@ class SearchSuggestionsAdapter(
             itemView.txtTitle.text = item.value
             val searchIcon = if (item.fromHistoric) R.drawable.ic_history else R.drawable.ic_search
             itemView.imgSearch.setImageResource(searchIcon)
-            itemView.setOnClickListener {
+            itemView.onClick {
                 if (adapterPosition >= 0) {
                     onClickItem.invoke(item)
                 }
             }
-            itemView.btnPast.setOnClickListener {
+            itemView.btnPast.onClick {
                 if (adapterPosition >= 0) {
                     onClickAutocomplete.invoke(item)
                 }

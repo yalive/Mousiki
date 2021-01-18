@@ -3,13 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
-    android:layout_width="300dp"
-    android:layout_height="160dp"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/home_chart_height"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
     app:cardPreventCornerOverlap="false">
 
     <RelativeLayout
@@ -24,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:visibility="visible" />
 
         <TextView
@@ -33,15 +31,16 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="#14000000"
             android:ellipsize="end"
-            android:gravity="center"
+            android:fontFamily="@font/pangram_bold"
+            android:gravity="end|bottom"
             android:lines="2"
             android:maxLines="2"
+            android:paddingStart="@dimen/eight_8dp"
+            android:paddingEnd="@dimen/sixteen_16dp"
+            android:paddingBottom="@dimen/thirty_two_32dp"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="visible"
+            android:textSize="24sp"
             tools:text="Pop Music" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

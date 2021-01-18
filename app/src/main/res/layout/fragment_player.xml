@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cas.musicplayer.ui.player.view.MousikiPlayerMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+    app:layoutDescription="@xml/player_scene"
+    tools:context=".ui.player.PlayerFragment">
+
+    <!-- Background of player-->
+    <View
+        android:id="@+id/playerBgView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorBgPlayer" />
+
+    <!-- Expanded player -->
+    <LinearLayout
+        android:id="@+id/fullScreenSwitchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransparent"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnClosePanel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:rotation="90"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_arrow_right" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnLockScreen"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_lock_screen" />
+
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/bannerAdView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fullScreenSwitchView"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="@string/admob_banner_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullScreenSwitchView" />
+
+    <LinearLayout
+        android:id="@+id/btnYoutube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitleVideoCenter"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/tileView"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:alpha="0.5"
+            android:fontFamily="sans-serif-light"
+            android:letterSpacing="0"
+            android:text="@string/label_developed_with_youtube_part1"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="9sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.8"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="bottom"
+            android:letterSpacing="-0.05"
+            android:text="@string/label_developed_with_youtube_part2"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            tools:ignore="UseCompatTextViewDrawableXml" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="-4dp"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/ic_arrow_right" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/tileView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransparent"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/seekBarView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnShareVia"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/sixteen_16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_share_light" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/btnAddFav"
+            android:layout_toEndOf="@+id/btnShareVia"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/pangram_bold"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            tools:text="Hamid El Kasri" />
+
+        <ImageButton
+            android:id="@+id/btnAddFav"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/sixteen_16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:scaleType="fitXY"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_heart_light" />
+
+        <TextView
+            android:id="@+id/artistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:layout_toStartOf="@+id/btnAddFav"
+            android:layout_toEndOf="@+id/btnShareVia"
+            android:alpha="0.6"
+            android:textAlignment="center"
+            android:ellipsize="end"
+            android:fontFamily="@font/pangram_regular"
+            android:maxLines="1"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/seekBarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/playbackControlsView"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/playbackControlsView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/txtElapsedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
+            android:minWidth="@dimen/twenty_four_24dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            tools:text="02:22" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBarDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progressTint="@color/colorAccent"
+            android:thumbTint="@color/colorAccent"
+            tools:progress="25" />
+
+        <TextView
+            android:id="@+id/txtDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pangram_regular"
+            android:minWidth="@dimen/twenty_four_24dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            tools:text="08:04" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playbackControlsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransparent"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnPlayOption"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_random" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnPlayPrevious"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_skip_previous" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnPlayPauseMain"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_pause" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnPlayNext"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_skip_next" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnShowQueueFull"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="6dp"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_queue_music" />
+    </LinearLayout>
+
+    <!-- Mini player -->
+    <com.cas.musicplayer.ui.player.view.MiniPlayerView
+        android:id="@+id/miniPlayerView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/minimized_player_height"
+        android:background="@color/colorDarkNavigationView" />
+
+    <com.cas.musicplayer.ui.player.view.HorizontalMotionPager
+        android:id="@+id/newPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/pager">
+
+        <com.cas.musicplayer.ui.player.view.PreventTouchCard
+            android:id="@+id/cardPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@color/colorBlack"
+            app:cardCornerRadius="4dp" />
+    </com.cas.musicplayer.ui.player.view.HorizontalMotionPager>
+
+    <com.cas.musicplayer.ui.player.view.LockScreenView
+        android:id="@+id/lockScreenView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="3dp"
+        android:visibility="gone" />
+
+</com.cas.musicplayer.ui.player.view.MousikiPlayerMotionLayout>

@@ -3,7 +3,8 @@ package com.cas.musicplayer.ui.genres
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.GenreMusic
+import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
@@ -17,12 +18,28 @@ class GenresViewModel @Inject constructor(
     private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
 
-    private val _genres = MutableLiveData<List<GenreMusic>>()
-    val genres: LiveData<List<GenreMusic>>
+    private val _genres = MutableLiveData<List<DisplayableItem>>()
+    val genres: LiveData<List<DisplayableItem>>
         get() = _genres
+
+    init {
+        loadAllGenres()
+    }
 
     fun loadAllGenres() = uiCoroutine {
         val listGenres = getGenres()
-        _genres.value = listGenres
+        val musicGenres = listGenres.filter { !it.isMood }
+        val moods = listGenres.filter { it.isMood }
+        val displayedItems = mutableListOf<DisplayableItem>().apply {
+            add(HeaderGenresItem(R.string.genre_music))
+            addAll(musicGenres)
+            add(HeaderGenresItem(R.string.genre_mood))
+            addAll(moods)
+        }
+        _genres.value = displayedItems
+    }
+
+    fun isHeader(position: Int): Boolean {
+        return _genres.value?.getOrNull(position) is HeaderGenresItem
     }
 }

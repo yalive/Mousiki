@@ -1,5 +1,9 @@
 package com.cas.musicplayer.domain.model
 
+import android.os.Parcelable
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 import java.util.regex.Pattern
 
 /**
@@ -8,29 +12,28 @@ import java.util.regex.Pattern
  **********************************
  */
 
-
+@Parcelize
 data class MusicTrack(
     val youtubeId: String,
     val title: String,
     val duration: String
-) {
+) : Parcelable {
 
     var fullImageUrl = ""
 
     val imgUrl: String
         get() {
-
             if (fullImageUrl.startsWith("http")) {
                 return fullImageUrl
             }
-
             return "https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg"
         }
 
-    val shareVideoUrl: String
-        get() {
-            return "https://www.youtube.com/watch?v=$youtubeId"
-        }
+    val imgUrlDef0: String
+        get() = "https://img.youtube.com/vi/$youtubeId/0.jpg"
+
+    val imgUrlDefault: String
+        get() = "https://img.youtube.com/vi/$youtubeId/default.jpg"
 
     val durationFormatted: String
         get() {
@@ -39,7 +42,8 @@ data class MusicTrack(
                 return duration
             }
 
-            val result = duration.replace("PT", "").replace("H", ":").replace("M", ":").replace("S", "")
+            val result =
+                duration.replace("PT", "").replace("H", ":").replace("M", ":").replace("S", "")
             val arr = result.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             var timeString = ""
@@ -76,11 +80,20 @@ data class MusicTrack(
 
             return timeString
         }
+
+    @IgnoredOnParcel
+    @delegate:Transient
+    val totalSeconds: Long by lazy { durationToSeconds() }
+
+    companion object
 }
 
-val LENGTH_PATTERN = Pattern.compile("^PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?$", Pattern.CASE_INSENSITIVE)
+val LENGTH_PATTERN =
+    Pattern.compile("^PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?$", Pattern.CASE_INSENSITIVE)
 
-fun MusicTrack.durationToSeconds(): Long {
+private fun MusicTrack.durationToSeconds(): Long {
+
+    // "mm:ss"
     val m = LENGTH_PATTERN.matcher(duration)
     if (m.matches()) {
         val hr = m.group(1)
@@ -98,3 +111,35 @@ fun MusicTrack.durationToSeconds(): Long {
     }
     return 0
 }
+
+fun MusicTrack.Companion.toYoutubeDuration(notificationDuration: String): String {
+    val parts = notificationDuration.split(":")
+    if (parts.size < 2) return ""
+    if (parts.size == 2) {
+        val minute = parseDurationPart(parts[0])
+        val second = parseDurationPart(parts[1])
+        return "PT${minute}M${second}S"
+    } else {
+        val hour = parseDurationPart(parts[0])
+        val minute = parseDurationPart(parts[1])
+        val second = parseDurationPart(parts[2])
+        return "PT${hour}H${minute}M${second}S"
+    }
+}
+
+private fun parseDurationPart(part: String): Int {
+    return try {
+        part.toInt()
+    } catch (e: Exception) {
+        FirebaseCrashlytics.getInstance()
+            .recordException(Exception("Unable to parse custom duration part: $part", e))
+        0
+    }
+}
+
+val MusicTrack.Companion.EMPTY: MusicTrack
+    get() = MusicTrack(
+        youtubeId = "",
+        title = "",
+        duration = ""
+    )

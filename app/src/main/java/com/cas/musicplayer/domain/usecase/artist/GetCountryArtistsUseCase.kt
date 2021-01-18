@@ -1,8 +1,8 @@
 package com.cas.musicplayer.domain.usecase.artist
 
-import com.cas.musicplayer.data.repositories.ArtistsRepository
-import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.common.result.Result
+import com.cas.musicplayer.data.remote.models.Artist
+import com.cas.musicplayer.data.repositories.ArtistsRepository
 import javax.inject.Inject
 
 /**
@@ -11,24 +11,21 @@ import javax.inject.Inject
  ***************************************
  */
 class GetCountryArtistsUseCase @Inject constructor(
-    private val repository: ArtistsRepository,
-    private val getArtistsThumbnails: GetArtistsThumbnailsUseCase
+    private val repository: ArtistsRepository
 ) {
 
     suspend operator fun invoke(countryCode: String): Result<List<Artist>> {
-        val artists = repository.getArtistsFromFile()
-        // Filter 6 artist by country
-        var sixArtist = artists.filter {
-            it.countryCode.equals(countryCode, true)
-        }.shuffled().take(6)
-
-        if (sixArtist.size < 6) {
-            // Request US
-            sixArtist = artists.filter { it.countryCode.equals("US", true) }.shuffled().take(6)
+        val artists = repository.getArtistsByCountry(countryCode)
+        var sixArtist = artists.shuffled().take(MAX)
+        if (sixArtist.size < MAX) {
+            // Request Global
+            val globalArtists = repository.getArtistsByCountry("GLOBAL")
+            sixArtist = globalArtists.shuffled().take(MAX)
         }
+        return Result.Success(sixArtist)
+    }
 
-        // Get detail of artists
-        val ids = sixArtist.map { it.channelId }
-        return getArtistsThumbnails(ids)
+    companion object {
+        private const val MAX = 9
     }
 }

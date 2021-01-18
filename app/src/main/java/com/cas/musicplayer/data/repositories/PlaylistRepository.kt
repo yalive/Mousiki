@@ -7,6 +7,7 @@ import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsLocalDataSour
 import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
+import com.cas.musicplayer.data.local.database.dao.CustomPlaylistTrackDao
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.utils.NetworkUtils
@@ -25,6 +26,7 @@ class PlaylistRepository @Inject constructor(
     private val channelPlaylistsRemoteDataSource: ChannelPlaylistsRemoteDataSource,
     private val playlistSongsLocalDataSource: PlaylistSongsLocalDataSource,
     private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource,
+    private val customPlaylistTrackDao: CustomPlaylistTrackDao,
     private val networkUtils: NetworkUtils
 ) {
 
@@ -48,9 +50,10 @@ class PlaylistRepository @Inject constructor(
         if (localTracks.isNotEmpty()) {
             return Success(localTracks)
         }
-        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId).alsoWhenSuccess { tracks ->
-            playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, tracks)
-        }
+        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId)
+            .alsoWhenSuccess { tracks ->
+                playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, tracks)
+            }
     }
 
     suspend fun getPlaylists(channelId: String): Result<List<Playlist>> {

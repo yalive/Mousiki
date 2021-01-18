@@ -6,12 +6,16 @@ detekt {
     config = files("$rootDir/default-detekt-config.yml")
     reports {
         xml {
-            enabled = true                                // Enable/Disable XML report (default: true)
-            destination = file("build/reports/detekt.xml")  // Path where XML report will be stored (default: `build/reports/detekt/detekt.xml`)
+            enabled = true
+            // Enable/Disable XML report (default: true)
+            destination = file("build/reports/detekt.xml")
+            // Path where XML report will be stored (default: `build/reports/detekt/detekt.xml`)
         }
         html {
-            enabled = true                                // Enable/Disable HTML report (default: true)
-            destination = file("build/reports/detekt.html") // Path where HTML report will be stored (default: `build/reports/detekt/detekt.html`)
+            enabled = true
+            // Enable/Disable HTML report (default: true)
+            destination = file("build/reports/detekt.html")
+            // Path where HTML report will be stored (default: `build/reports/detekt/detekt.html`)
         }
     }
 }

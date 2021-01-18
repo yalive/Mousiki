@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/bottomBarHidden"
+        motion:constraintSetStart="@+id/bottomBarVisible">
+
+        <KeyFrameSet>
+            <KeyPosition
+                motion:framePosition="20"
+                motion:keyPositionType="deltaRelative"
+                motion:motionTarget="@id/bottomNavView"
+                motion:percentY="0.65" />
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/bottomBarHidden">
+        <Constraint
+            android:id="@+id/coordinator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/bottomNavView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/coordinator" />
+
+        <Constraint
+            android:id="@+id/queueFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            motion:visibilityMode="ignore" />
+    </ConstraintSet>
+    <ConstraintSet android:id="@+id/bottomBarVisible">
+        <Constraint
+            android:id="@+id/bottomNavView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+
+        <Constraint
+            android:id="@+id/coordinator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toTopOf="@+id/bottomNavView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/queueFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            motion:visibilityMode="ignore" />
+    </ConstraintSet>
+
+</MotionScene>

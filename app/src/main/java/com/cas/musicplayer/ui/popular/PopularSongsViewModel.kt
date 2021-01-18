@@ -16,6 +16,8 @@ import com.cas.delegatedadapter.LoadingItem
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
+import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
+import com.cas.musicplayer.ui.common.songList
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
@@ -25,12 +27,12 @@ import javax.inject.Inject
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
+
 class PopularSongsViewModel @Inject constructor(
     private val getPopularSongs: GetPopularSongsUseCase,
-    delegate: PlaySongDelegate
-) : BaseViewModel(), PlaySongDelegate by delegate {
-
-    private val allSongs = mutableListOf<MusicTrack>()
+    delegate: PlaySongDelegate,
+    getListAdsDelegate: GetListAdsDelegate
+) : BaseViewModel(), PlaySongDelegate by delegate, GetListAdsDelegate by getListAdsDelegate {
 
     private val _newReleases = MutableLiveData<Resource<List<DisplayableItem>>>()
     val newReleases: LiveData<Resource<List<DisplayableItem>>>
@@ -40,52 +42,56 @@ class PopularSongsViewModel @Inject constructor(
         loadTrending()
     }
 
+    private var loadingMore = false
+
     private fun loadTrending() = uiCoroutine {
         if (_newReleases.hasItems() || _newReleases.isLoading()) {
             return@uiCoroutine
         }
+        loadingMore = true
         _newReleases.loading()
-        val result = getPopularSongs(25)
+        val result = getPopularSongs(PAGE_SIZE)
         _newReleases.value = result.map { tracks ->
-            allSongs.addAll(tracks)
             tracks.map { it.toDisplayedVideoItem() }.toMutableList()
         }.asResource()
+        populateAdsIn(_newReleases)
+        loadingMore = false
+        if (result is Result.Success && result.data.size < PAGE_SIZE) {
+            loadMoreSongs()
+        }
     }
 
-    var loadingMore = false
     fun loadMoreSongs() = uiCoroutine {
         if (loadingMore) return@uiCoroutine
+        val allSongs = _newReleases.songList()
         if (allSongs.isNotEmpty() && allSongs.size < MAX_VIDEOS) {
             loadingMore = true
-            _newReleases.appendItems(listOf(LoadingItem))
-            val result = getPopularSongs(25, allSongs.lastOrNull())
-            loadingMore = false
+            _newReleases.appendItems(listOf(LoadingItem), false)
+            val result = getPopularSongs(PAGE_SIZE, allSongs.lastOrNull())
             if (result is Result.Success) {
-                val newSongs = result.data
-                allSongs.addAll(newSongs)
-                val newPageMapped = newSongs.map { it.toDisplayedVideoItem() }
-                _newReleases.appendItemsAndRemoveLoading(newPageMapped)
+                val newPageMapped = result.data.map { it.toDisplayedVideoItem() }
+                val itemsWithAds = insertAdsIn(newPageMapped)
+                _newReleases.appendItems(itemsWithAds, true)
             } else {
                 _newReleases.removeLoading()
             }
+            loadingMore = false
         }
     }
 
-    fun onClickTrack(track: MusicTrack) {
-        uiCoroutine {
-            playTrackFromQueue(track, allSongs)
-        }
+    fun onClickTrack(track: MusicTrack) = uiCoroutine {
+        playTrackFromQueue(track, _newReleases.songList())
     }
 
-    fun onClickTrackPlayAll() {
-        uiCoroutine {
-            if (allSongs.isEmpty()) return@uiCoroutine
-            playTrackFromQueue(allSongs.first(), allSongs)
-        }
+    fun onClickTrackPlayAll() = uiCoroutine {
+        val allSongs = _newReleases.songList()
+        if (allSongs.isEmpty()) return@uiCoroutine
+        playTrackFromQueue(allSongs.first(), allSongs)
     }
 
     companion object {
         private const val MAX_VIDEOS = 200
+        private const val PAGE_SIZE = 25
     }
 }
 
@@ -95,22 +101,20 @@ fun MutableLiveData<Resource<List<DisplayableItem>>>.removeLoading() {
     value = Resource.Success(oldList)
 }
 
-fun MutableLiveData<Resource<List<DisplayableItem>>>.appendItems(newItems: List<DisplayableItem>) {
+fun MutableLiveData<Resource<List<DisplayableItem>>>.appendItems(
+    newItems: List<DisplayableItem>,
+    removeLoading: Boolean
+) {
     val oldList = (valueOrNull() ?: emptyList()).toMutableList().apply {
         addAll(newItems)
+    }
+    if (removeLoading) {
+        oldList.remove(LoadingItem)
     }
     value = Resource.Success(oldList)
 }
 
-fun MutableLiveData<Resource<List<DisplayableItem>>>.appendItemsAndRemoveLoading(newItems: List<DisplayableItem>) {
-    val oldList = (valueOrNull() ?: emptyList()).toMutableList().apply {
-        addAll(newItems)
-    }
-    oldList.remove(LoadingItem)
-    value = Resource.Success(oldList)
-}
-
-private fun <T> List<T>.swapped(position1: Int, position2: Int): List<T> {
+fun <T> List<T>.swapped(position1: Int, position2: Int): List<T> {
     if (position1 > size || position2 >= size || position1 < 0 || position2 < 0) return this
     val mutableList = toMutableList()
     val item1 = mutableList[position1]

@@ -2,10 +2,12 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.data.local.database.dao.*
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
+import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.utils.Constants
 import com.google.gson.Gson
@@ -34,13 +36,27 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesYoutubeService(gson: Gson, client: OkHttpClient): YoutubeService {
+    fun providesRetrofit(gson: Gson, client: OkHttpClient): Retrofit {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
+        return retrofit
+    }
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYoutubeService(retrofit: Retrofit): YoutubeService {
         return retrofit.create(YoutubeService::class.java)
+    }
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesMousikiSearchApi(retrofit: Retrofit): MousikiSearchApi {
+        return retrofit.create(MousikiSearchApi::class.java)
     }
 
     @Singleton
@@ -51,12 +67,12 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesOkHttp(): OkHttpClient {
+    fun providesOkHttp(addKeyInterceptor: AddKeyInterceptor): OkHttpClient {
         val client = OkHttpClient.Builder()
             .connectTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
             .writeTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
             .readTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
-            .addInterceptor(AddKeyInterceptor())
+            .addInterceptor(addKeyInterceptor)
 
         if (Constants.Config.DEBUG_NETWORK) {
             val logging = HttpLoggingInterceptor()
@@ -67,11 +83,18 @@ object AppModule {
         return client.build()
     }
 
+
     @Singleton
     @JvmStatic
     @Provides
     fun providesSharedPref(context: Context): SharedPreferences =
         context.getSharedPreferences("music.app", Context.MODE_PRIVATE)
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesConnectivityState(context: Context): ConnectivityState =
+        ConnectivityState(context)
 
     @Singleton
     @JvmStatic
@@ -151,4 +174,10 @@ object AppModule {
     @Provides
     fun providesSearchChannelDao(db: MusicTrackRoomDatabase): SearchChannelDao =
         db.searchSearchChannelDao()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesCustomPlaylistTrackDao(db: MusicTrackRoomDatabase): CustomPlaylistTrackDao =
+        db.customPlaylistTrackDao()
 }

@@ -29,7 +29,11 @@ class HomeArtistAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return ArtistViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val artistItem = items[position] as HomeItem.ArtistItem
         (holder as ArtistViewHolder).bind(artistItem.artists)
     }

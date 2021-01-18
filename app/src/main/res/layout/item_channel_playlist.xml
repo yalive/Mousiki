@@ -37,6 +37,7 @@
                     android:id="@+id/txtCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pangram_regular"
                     android:gravity="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp"
@@ -64,7 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
             android:layout_marginEnd="@dimen/eight_8dp"
-            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/pangram_regular"
+            android:textColor="?android:textColorPrimary"
             tools:text="Hello Test" />
 
         <TextView
@@ -73,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
             android:layout_marginEnd="@dimen/eight_8dp"
+            android:fontFamily="@font/pangram_regular"
             android:textColor="#A5A5C4"
             android:textSize="12sp"
             tools:text="Hello Test" />

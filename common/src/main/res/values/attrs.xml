@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Custom attrs for pager indicator -->
+    <declare-styleable name="PagerIndicatorView">
+        <attr name="numberOfPages" format="integer" />
+        <attr name="colorIndicator" format="color|reference" />
+        <attr name="colorCurrentIndicator" format="color|reference" />
+    </declare-styleable>
+</resources>

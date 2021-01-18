@@ -12,7 +12,10 @@ import com.cas.musicplayer.domain.model.Playlist
  ***************************************
  */
 
-@Entity(tableName = "playlists_search_result", indices = [Index(unique = true, value = arrayOf("playlist_id"))])
+@Entity(
+    tableName = "playlists_search_result",
+    indices = [Index(unique = true, value = arrayOf("playlist_id"))]
+)
 data class SearchPlaylistEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

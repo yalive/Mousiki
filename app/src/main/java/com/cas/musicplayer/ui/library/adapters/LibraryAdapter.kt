@@ -2,14 +2,12 @@ package com.cas.musicplayer.ui.library.adapters
 
 import com.cas.delegatedadapter.BaseDelegationAdapter
 import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.library.delegates.LibraryFavouriteTracksAdapterDelegate
-import com.cas.musicplayer.ui.library.delegates.LibraryHeaderAdapterDelegate
-import com.cas.musicplayer.ui.library.delegates.LibraryHeavyTracksAdapterDelegate
-import com.cas.musicplayer.ui.library.delegates.LibraryRecentTracksAdapterDelegate
+import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.cas.musicplayer.ui.library.delegates.*
 import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
 import com.cas.musicplayer.ui.library.model.LibraryItem
+import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import kotlin.reflect.KClass
 
 /**
@@ -18,22 +16,27 @@ import kotlin.reflect.KClass
  ***************************************
  */
 class LibraryAdapter(
-    onRecentSongSelected: (MusicTrack) -> Unit,
-    onHeavySongSelected: (MusicTrack) -> Unit,
-    onFavouriteSongSelected: (MusicTrack) -> Unit
+    private val viewModel: LibraryViewModel
 ) : BaseDelegationAdapter(
     listOf(
-        LibraryRecentTracksAdapterDelegate(onRecentSongSelected),
-        LibraryHeavyTracksAdapterDelegate(onHeavySongSelected),
-        LibraryFavouriteTracksAdapterDelegate(onFavouriteSongSelected),
-        LibraryHeaderAdapterDelegate()
+        LibraryRecentTracksAdapterDelegate { track, tracks ->
+            viewModel.onClickRecentTrack(track, tracks)
+        },
+        LibraryHeavyTracksAdapterDelegate { track, tracks ->
+            viewModel.onClickHeavyTrack(track, tracks)
+        },
+        LibraryFavouriteTracksAdapterDelegate { track, tracks ->
+            viewModel.onClickFavouriteTrack(track, tracks)
+        },
+        LibraryHeaderAdapterDelegate(),
+        LibraryPlaylistsDelegate(viewModel)
     )
 ) {
     init {
         dataItems = mutableListOf(
-            LibraryHeaderItem.RecentHeader,
+            LibraryHeaderItem.PlaylistsHeader,
+            LibraryItem.Playlists(listOf()),
             LibraryItem.Recent(emptyList()),
-            LibraryHeaderItem.FavouriteHeader,
             LibraryItem.Favourite(emptyList())
         )
     }
@@ -51,9 +54,15 @@ class LibraryAdapter(
             updateItemAtIndex(index, LibraryItem.Heavy(songs))
         } else if (songs.isNotEmpty()) {
             val oldSize = dataItems.size
-            dataItems.add(LibraryHeaderItem.HeavyHeader)
             dataItems.add(LibraryItem.Heavy(songs))
             notifyItemRangeInserted(oldSize, 2)
+        }
+    }
+
+    fun updatePlaylists(playlists: List<LibraryPlaylistItem>) {
+        val index = indexOfItem(LibraryItem.Playlists::class)
+        if (index != -1) {
+            updateItemAtIndex(index, LibraryItem.Playlists(playlists))
         }
     }
 
@@ -61,6 +70,14 @@ class LibraryAdapter(
         val index = indexOfItem(LibraryItem.Favourite::class)
         if (index != -1) {
             updateItemAtIndex(index, LibraryItem.Favourite(songs))
+        }
+
+        // Show more
+        if (songs.size > 5) {
+            val indexHeader = indexOfItem(LibraryHeaderItem.FavouriteHeader::class)
+            if (indexHeader != -1) {
+                updateItemAtIndex(indexHeader, LibraryHeaderItem.FavouriteHeader(withMore = true))
+            }
         }
     }
 

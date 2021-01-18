@@ -7,11 +7,14 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.domain.model.Playlist
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
-import com.cas.musicplayer.ui.playlistvideos.PlaylistSongsFragment
+import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.loadImage
 
 /**
@@ -32,12 +35,16 @@ class PlaylistsAdapter : SimpleBaseAdapter<Playlist, PlaylistsAdapter.ViewHolder
         private val txtCount: TextView = view.findViewById(R.id.txtCount)
 
         init {
-            itemView.setOnClickListener {
+            itemView.onClick {
                 val item = dataItems[adapterPosition]
                 val bundle = Bundle()
                 bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.id)
                 val artist = Artist(item.title, "US", item.id, item.urlImage)
                 bundle.putParcelable(EXTRAS_ARTIST, artist)
+                bundle.putParcelable(
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
+                    AppImage.AppImageUrl(artist.urlImage)
+                )
                 itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
             }
         }

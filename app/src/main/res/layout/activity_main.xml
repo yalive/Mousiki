@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cas.musicplayer.ui.home.view.InsetSlidingPanelView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sliding_layout"
+    android:id="@+id/motionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:gravity="bottom"
-    app:umanoPanelHeight="@dimen/bottom_pannel_height"
-    app:umanoShadowHeight="4dp">
+    app:layoutDescription="@xml/main_scene">
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/cordinator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/coordinator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context=".ui.MainActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -22,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:theme="@style/AppTheme.AppBarOverlay"
+            android:fitsSystemWindows="true"
             app:elevation="0dp">
 
             <androidx.appcompat.widget.Toolbar
@@ -30,10 +32,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorTransparent"
-                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                android:theme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:navigationIcon="@drawable/ic_arrow_left_light"
+                app:titleTextAppearance="@style/TextAppearance.Mousiki.Toolbar.Title" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout
@@ -52,8 +54,34 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <FrameLayout
-        android:id="@+id/bottomPanelContent"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</com.cas.musicplayer.ui.home.view.InsetSlidingPanelView>
+        android:layout_height="@dimen/bottom_nav_bar_height"
+        android:background="@color/colorDarkNavigationView"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+        app:itemIconTint="@color/navigation_menu_icon_color"
+        app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+        app:itemTextAppearanceInactive="@style/BottomNavigationView.Inactive"
+        app:itemTextColor="@color/navigation_menu_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <FrameLayout
+        android:id="@+id/playerContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/queueFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="24dp"
+        android:visibility="gone" />
+</androidx.constraintlayout.motion.widget.MotionLayout>

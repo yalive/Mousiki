@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:icon="@mipmap/ic_search_shortcut"
+        android:shortcutId="search"
+        android:shortcutShortLabel="@string/app_shortcut_search">
+        <intent
+            android:action="mousiki.intent.action.START_SEARCH"
+            android:data="mousiki://start_search"
+            android:targetClass="com.cas.musicplayer.ui.MainActivity"
+            android:targetPackage="com.cas.musicplayer.dev" />
+    </shortcut>
+
+    <shortcut
+        android:icon="@mipmap/ic_trending_shortcut"
+        android:shortcutId="new_release"
+        android:shortcutShortLabel="@string/app_shortcut_new_releases">
+        <intent
+            android:action="mousiki.intent.action.OPEN_NEW_RELEASES"
+            android:data="mousiki://open_new_releases"
+            android:targetClass="com.cas.musicplayer.ui.MainActivity"
+            android:targetPackage="com.cas.musicplayer.dev" />
+    </shortcut>
+</shortcuts>

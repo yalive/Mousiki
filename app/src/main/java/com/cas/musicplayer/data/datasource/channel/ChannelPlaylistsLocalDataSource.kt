@@ -23,16 +23,17 @@ class ChannelPlaylistsLocalDataSource @Inject constructor(
         }
     }
 
-    suspend fun saveChannelPlaylists(channelId: String, playlists: List<Playlist>) = withContext(bgContext) {
-        val channelPlaylists = playlists.map {
-            ChannelPlaylistEntity(
-                playlistId = it.id,
-                channelId = channelId,
-                title = it.title,
-                urlImage = it.urlImage,
-                itemCount = it.itemCount
-            )
+    suspend fun saveChannelPlaylists(channelId: String, playlists: List<Playlist>) =
+        withContext(bgContext) {
+            val channelPlaylists = playlists.map {
+                ChannelPlaylistEntity(
+                    playlistId = it.id,
+                    channelId = channelId,
+                    title = it.title,
+                    urlImage = it.urlImage,
+                    itemCount = it.itemCount
+                )
+            }
+            channelPlaylistsDao.insert(channelPlaylists)
         }
-        channelPlaylistsDao.insert(channelPlaylists)
-    }
 }

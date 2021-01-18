@@ -12,7 +12,10 @@ import com.cas.musicplayer.domain.model.MusicTrack
  ***************************************
  */
 
-@Entity(tableName = "channel_tracks", indices = [Index(unique = true, value = arrayOf("youtube_id"))])
+@Entity(
+    tableName = "channel_tracks",
+    indices = [Index(unique = true, value = arrayOf("youtube_id"))]
+)
 data class ChannelSongEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

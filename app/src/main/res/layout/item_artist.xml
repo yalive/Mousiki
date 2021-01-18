@@ -37,6 +37,7 @@
                 android:layout_marginBottom="@dimen/four_4dp"
                 android:background="@drawable/bg_duration_black"
                 android:ellipsize="end"
+                android:fontFamily="@font/pangram_regular"
                 android:gravity="center"
                 android:lines="2"
                 android:maxLines="2"
@@ -61,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
+            android:fontFamily="@font/pangram_regular"
             android:text="Hello Test"
             android:textColor="@color/colorWhite" />
 
@@ -69,6 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/eight_8dp"
+            android:fontFamily="@font/pangram_regular"
             android:text="Hello Test"
             android:textColor="#71717A"
             android:textSize="12sp" />
@@ -81,5 +84,5 @@
         android:layout_gravity="center_vertical"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="@dimen/sixteen_16dp"
-        android:src="@drawable/ic_more_vertical" />
+        app:srcCompat="@drawable/ic_more_vertical" />
 </LinearLayout>

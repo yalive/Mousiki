@@ -11,7 +11,10 @@ import com.cas.musicplayer.domain.model.MusicTrack
  * Created by Abdelhadi on 2019-11-26.
  ***************************************
  */
-@Entity(tableName = "recent_played_tracks", indices = [Index(unique = true, value = arrayOf("youtube_id"))])
+@Entity(
+    tableName = "recent_played_tracks",
+    indices = [Index(unique = true, value = arrayOf("youtube_id"))]
+)
 data class RecentlyPlayedTrack(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

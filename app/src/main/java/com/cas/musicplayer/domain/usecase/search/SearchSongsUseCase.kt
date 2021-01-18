@@ -1,8 +1,8 @@
 package com.cas.musicplayer.domain.usecase.search
 
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.common.result.Result
 import com.cas.musicplayer.data.repositories.SearchRepository
+import com.cas.musicplayer.domain.model.SearchTracksResult
 import javax.inject.Inject
 
 /**
@@ -14,7 +14,12 @@ import javax.inject.Inject
 class SearchSongsUseCase @Inject constructor(
     private val repository: SearchRepository
 ) {
-    suspend operator fun invoke(query: String): Result<List<MusicTrack>> {
-        return repository.searchTracks(query)
+    suspend operator fun invoke(
+        query: String,
+        key: String? = null,
+        token: String? = null
+    ): Result<SearchTracksResult> {
+        return repository.searchTracks(query, key, token)
     }
 }
+

@@ -11,15 +11,19 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.ui.bottomsheet.FvaBottomSheetFragment
+import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
-import com.google.gson.Gson
+import com.cas.musicplayer.utils.Constants
 import kotlinx.android.synthetic.main.fragment_play_list.*
 
-class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>() {
+class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>(
+    R.layout.fragment_play_list
+) {
 
-    override val layoutResourceId: Int = R.layout.fragment_play_list
     override val viewModel by viewModel { injector.favouriteTracksViewModel }
+    override val screenTitle: String by lazy {
+        getString(R.string.favourites)
+    }
 
     private val adapter by lazy {
         SongsAdapter(
@@ -29,9 +33,9 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>() {
                 viewModel.onClickFavouriteTrack(track)
             },
             onClickMore = { track ->
-                val bottomSheetFragment = FvaBottomSheetFragment()
+                val bottomSheetFragment = TrackOptionsFragment()
                 val bundle = Bundle()
-                bundle.putString("MUSIC_TRACK", Gson().toJson(track))
+                bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 bottomSheetFragment.arguments = bundle
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }

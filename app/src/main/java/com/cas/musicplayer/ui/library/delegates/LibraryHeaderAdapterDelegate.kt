@@ -8,6 +8,7 @@ import androidx.core.view.isInvisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
+import com.cas.common.extensions.onClick
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
@@ -29,7 +30,11 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         return HeaderViewHolder(view)
     }
 
-    override fun onBindViewHolder(items: List<DisplayableItem>, position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder
+    ) {
         val headerItem = items[position] as LibraryHeaderItem
         (holder as HeaderViewHolder).bind(headerItem)
     }
@@ -40,10 +45,10 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         private val txtMore: TextView = view.findViewById(R.id.txtMore)
 
         fun bind(headerItem: LibraryHeaderItem) {
-            txtTitle.text = headerItem.title
+            txtTitle.setText(headerItem.title)
             if (headerItem.showMore) {
-                view.setOnClickListener { showMore(headerItem) }
-                showAll.setOnClickListener { showMore(headerItem) }
+                view.onClick { showMore(headerItem) }
+                showAll.onClick { showMore(headerItem) }
             }
             showAll.isInvisible = !headerItem.showMore
             txtMore.isInvisible = !headerItem.showMore
@@ -52,8 +57,9 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         private fun showMore(headerItem: LibraryHeaderItem) {
             val destination = when (headerItem) {
                 LibraryHeaderItem.RecentHeader -> -1
-                LibraryHeaderItem.FavouriteHeader -> R.id.favouriteSongsFragment
+                is LibraryHeaderItem.FavouriteHeader -> R.id.action_libraryFragment_to_favouriteSongsFragment
                 LibraryHeaderItem.HeavyHeader -> -1
+                LibraryHeaderItem.PlaylistsHeader -> -1
             }
             if (destination != -1) {
                 itemView.findNavController().navigate(destination)

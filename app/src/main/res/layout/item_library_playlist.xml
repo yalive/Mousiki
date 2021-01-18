@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="160dp"
+    android:layout_margin="2dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="148dp"
+        android:layout_above="@+id/txtTitle"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorDarkNavigationView"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgSong"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_music_note" />
+
+            <TextView
+                android:id="@+id/txtDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#8D0E0D0D"
+                android:ellipsize="end"
+                android:fontFamily="@font/pangram_regular"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:padding="@dimen/four_4dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp"
+                tools:text="4 tracks" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/btnMoreOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txtTitle"
+        android:layout_alignEnd="@+id/cardView"
+        android:layout_alignBottom="@+id/txtTitle"
+        android:background="?selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_more_vertical"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/cardView"
+        android:layout_alignEnd="@+id/cardView"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:ellipsize="end"
+        android:fontFamily="@font/pangram_bold"
+        android:gravity="center"
+        android:lines="2"
+        android:maxLines="2"
+        android:padding="@dimen/four_4dp"
+        android:textColor="?colorOnSurface"
+        android:textSize="12sp"
+        tools:text="Pop Music" />
+</RelativeLayout>
