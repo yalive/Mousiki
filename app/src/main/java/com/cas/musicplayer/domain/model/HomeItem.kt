@@ -10,7 +10,7 @@ import com.cas.musicplayer.data.remote.models.Artist
 import com.cas.musicplayer.data.remote.models.mousiki.CompactPlaylist
 import com.cas.musicplayer.data.remote.models.mousiki.SimplePlaylist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  **********************************

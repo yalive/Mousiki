@@ -2,8 +2,8 @@ package com.cas.musicplayer.domain.model
 
 import android.os.Parcelable
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import java.util.regex.Pattern
 
 /**
