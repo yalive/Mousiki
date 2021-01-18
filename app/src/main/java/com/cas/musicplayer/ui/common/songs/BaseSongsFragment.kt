@@ -36,8 +36,8 @@ import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 
 
 /**
