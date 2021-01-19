@@ -3,6 +3,9 @@ package com.cas.musicplayer.player.extensions
 import android.graphics.Bitmap
 import android.support.v4.media.MediaMetadataCompat
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.durationToSeconds
+import com.cas.musicplayer.domain.model.imgUrl
+import com.cas.musicplayer.domain.model.imgUrlDefault
 
 /**
  ***************************************
@@ -85,7 +88,7 @@ var MediaMetadataCompat.Builder.musicTrack: MusicTrack
         mediaUri = value.imgUrlDefault
         artUri = value.imgUrl
         albumArtUri = value.imgUrl
-        duration = value.totalSeconds * 1000
+        duration = value.durationToSeconds() * 1000
         artist = try {
             value.title.substringBefore("-")
         } catch (e: Exception) {

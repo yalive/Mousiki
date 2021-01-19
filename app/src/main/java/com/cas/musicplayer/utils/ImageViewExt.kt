@@ -11,6 +11,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.imgUrlDef0
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso

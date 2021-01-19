@@ -2,6 +2,8 @@ package com.cas.musicplayer.ui.home.model
 
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.durationFormatted
+import com.cas.musicplayer.domain.model.imgUrl
 
 /**
  ***************************************
