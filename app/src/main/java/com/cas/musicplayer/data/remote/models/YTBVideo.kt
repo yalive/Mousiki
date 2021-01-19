@@ -1,8 +1,7 @@
 package com.cas.musicplayer.data.remote.models
 
 import androidx.annotation.Keep
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 /**
  ***************************************
@@ -10,36 +9,23 @@ import com.google.gson.annotations.SerializedName
  ***************************************
  */
 @Keep
+@Serializable
 data class YTBVideo(
-    @Expose
-    @SerializedName("id")
-    val id: String?,
-    @Expose
-    @SerializedName("snippet")
-    val snippet: YTBVideoSnippet?,
-    @Expose
-    @SerializedName("contentDetails")
-    val contentDetails: YTBVideoContentDetail?
+    val id: String? = null,
+    val snippet: YTBVideoSnippet? = null,
+    val contentDetails: YTBVideoContentDetail? = null
 )
 
 @Keep
+@Serializable
 data class YTBVideoSnippet(
-    @Expose
-    @SerializedName("title")
-    val title: String?,
-
-    @Expose
-    @SerializedName("thumbnails")
-    var thumbnails: YTThumbnails?,
-
-    @Expose
-    @SerializedName("channelTitle")
-    val channelTitle: String?
+    val title: String? = null,
+    var thumbnails: YTThumbnails? = null,
+    val channelTitle: String? = null
 )
 
 @Keep
+@Serializable
 data class YTBVideoContentDetail(
-    @Expose
-    @SerializedName("duration")
-    val duration: String?
+    val duration: String? = null
 )

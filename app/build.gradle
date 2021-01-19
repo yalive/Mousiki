@@ -6,6 +6,8 @@ plugins {
     id 'kotlin-parcelize'
 
     id 'kotlin-kapt'
+
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
 }
 
 repositories {
@@ -130,9 +132,11 @@ dependencies {
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+
+    // Serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
 
     // Network inspection
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'

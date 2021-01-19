@@ -3,8 +3,7 @@
 package com.cas.musicplayer.data.remote.models
 
 import androidx.annotation.Keep
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 /**
  **********************************
@@ -12,48 +11,22 @@ import com.google.gson.annotations.SerializedName
  **********************************
  */
 @Keep
+@Serializable
 data class YTThumbnails(
-    @Expose
-    @SerializedName("default")
-    val default: YTThumbnail?,
-
-    @Expose
-    @SerializedName("medium")
-    val medium: YTThumbnail?,
-
-    @Expose
-    @SerializedName("high")
-    val high: YTThumbnail?,
-
-    @Expose
-    @SerializedName("standard")
-    val standard: YTThumbnail?,
-
-    @Expose
-    @SerializedName("maxres")
-    val maxres: YTThumbnail?
+    val default: YTThumbnail? = null,
+    val medium: YTThumbnail? = null,
+    val high: YTThumbnail? = null,
+    val standard: YTThumbnail? = null,
+    val maxres: YTThumbnail? = null
 )
 
 fun YTThumbnails.urlOrEmpty(): String {
-
-    medium?.url?.let {
-        return it
-    }
-
-    default?.url?.let {
-        return it
-    }
-
-    high?.url?.let {
-        return it
-    }
-
+    medium?.url?.let { return it }
+    default?.url?.let { return it }
+    high?.url?.let { return it }
     return ""
 }
 
 @Keep
-data class YTThumbnail(
-    @Expose
-    @SerializedName("url")
-    val url: String
-)
+@Serializable
+data class YTThumbnail(val url: String? = null)

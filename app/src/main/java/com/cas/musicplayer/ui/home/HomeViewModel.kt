@@ -78,25 +78,25 @@ class HomeViewModel @Inject constructor(
 
                     // Create compact playlists
                     val compactPlaylists = homeRS.compactPlaylists.filter {
-                        it.playlists.isNotEmpty()
+                        it.playlists.orEmpty().isNotEmpty()
                     }.map {
-                        HomeItem.CompactPlaylists(it.title, it.playlists)
+                        HomeItem.CompactPlaylists(it.title.orEmpty(), it.playlists.orEmpty())
                     }
 
                     // Create simple playlists
                     val simplePlaylists = homeRS.simplePlaylists.filter {
-                        it.playlists.isNotEmpty()
+                        it.playlists.orEmpty().isNotEmpty()
                     }.map {
-                        HomeItem.SimplePlaylists(it.title, it.playlists)
+                        HomeItem.SimplePlaylists(it.title.orEmpty(), it.playlists.orEmpty())
                     }
 
                     // Create videos lists
                     val videoLists = homeRS.videoLists.filter {
-                        it.videos.isNotEmpty()
+                        it.videos.orEmpty().isNotEmpty()
                     }.map {
                         HomeItem.VideoList(
-                            it.title,
-                            it.videos.map { it.video.toTrack().toDisplayedVideoItem() })
+                            it.title.orEmpty(),
+                            it.videos.orEmpty().map { it.video.toTrack().toDisplayedVideoItem() })
                     }
 
                     // Create promos

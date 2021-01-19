@@ -16,9 +16,9 @@ import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import java.io.File
 import javax.inject.Inject
@@ -34,7 +34,7 @@ import kotlin.coroutines.suspendCoroutine
 
 @Singleton
 class ArtistsRepository @Inject constructor(
-    private var gson: Gson,
+    private var json: Json,
     private val localDataSource: ArtistsLocalDataSource,
     private val remoteDataSource: ArtistsRemoteDataSource,
     private val channelLocalDataSource: ChannelSongsLocalDataSource,
@@ -64,9 +64,7 @@ class ArtistsRepository @Inject constructor(
                     val artists = mutableListOf<Artist>()
                     artistsObject.keys().forEach { code ->
                         val jsonArray = artistsObject.getJSONArray(code).toString()
-                        val typeTokenArtists = object : TypeToken<List<Artist>>() {}.type
-                        val countryArtists =
-                            gson.fromJson<List<Artist>>(jsonArray, typeTokenArtists)
+                        val countryArtists = json.decodeFromString<List<Artist>>(jsonArray)
                         val map = countryArtists.map { it.copy(countryCode = code) }
                         artists.addAll(map)
                     }
@@ -89,9 +87,8 @@ class ArtistsRepository @Inject constructor(
                     val fileContent = Utils.fileContent(localFile)
                     val artistsJsonArray = JSONObject(fileContent)
                         .getJSONArray(countryCode.toUpperCase()).toString()
-                    val typeTokenArtists = object : TypeToken<List<Artist>>() {}.type
                     val countryArtists =
-                        gson.fromJson<List<Artist>>(artistsJsonArray, typeTokenArtists)
+                        json.decodeFromString<List<Artist>>(artistsJsonArray)
                     countryArtists.map { it.copy(countryCode = countryCode) }
                 } catch (e: Exception) {
                     FirebaseCrashlytics.getInstance().recordException(e)

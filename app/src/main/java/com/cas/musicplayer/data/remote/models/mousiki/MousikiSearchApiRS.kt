@@ -3,7 +3,7 @@ package com.cas.musicplayer.data.remote.models.mousiki
 import androidx.annotation.Keep
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.SearchTracksResult
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 /**
  ***************************************
@@ -11,19 +11,17 @@ import com.google.gson.annotations.SerializedName
  ***************************************
  */
 @Keep
+@Serializable
 data class MousikiSearchApiRS(
-    @SerializedName("results")
-    val results: List<MousikiSearchApiResult>?,
-    @SerializedName("nextPageToken")
-    val nextPageToken: String?,
-    @SerializedName("key")
-    val key: String?
+    val results: List<MousikiSearchApiResult>? = null,
+    val nextPageToken: String? = null,
+    val key: String? = null
 )
 
 @Keep
+@Serializable
 data class MousikiSearchApiResult(
-    @SerializedName("video")
-    val video: MousikiSearchVideoItem?
+    val video: MousikiSearchVideoItem? = null
 )
 
 fun MousikiSearchApiRS.tracks(): List<MusicTrack> {

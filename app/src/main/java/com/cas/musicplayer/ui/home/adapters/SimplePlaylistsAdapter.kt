@@ -55,12 +55,12 @@ class SimplePlaylistsAdapter(
             cardView.onClick {
                 if (adapterPosition >= 0) {
                     val item = items[adapterPosition]
-                    val artist = Artist(item.title, "US", item.playlistId)
+                    val artist = Artist(item.title.orEmpty(), "US", item.playlistId.orEmpty())
                     val bundle = bundleOf(
                         PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
                         EXTRAS_ARTIST to artist,
                         BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
-                            item.featuredImage
+                            item.featuredImage.orEmpty()
                         )
                     )
 

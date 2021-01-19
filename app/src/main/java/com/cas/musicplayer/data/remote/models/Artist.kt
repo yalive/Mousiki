@@ -2,9 +2,9 @@ package com.cas.musicplayer.data.remote.models
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  **********************************
@@ -13,18 +13,14 @@ import kotlinx.parcelize.Parcelize
  */
 @Keep
 @Parcelize
+@Serializable
 data class Artist(
-    @Expose
-    @SerializedName("title")
+    @SerialName("title")
     val name: String,
-    @Expose
-    @SerializedName("country")
-    val countryCode: String,
-    @Expose
-    @SerializedName("channelId")
+    @SerialName("country")
+    val countryCode: String? = null,
     val channelId: String,
-    @Expose
-    @SerializedName("thumbUrl")
+    @SerialName("thumbUrl")
     val urlImage: String = ""
 ) : Parcelable {
     val imageFullPath: String

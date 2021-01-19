@@ -23,9 +23,9 @@ import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.json.JSONArray
 import java.io.File
 import javax.inject.Inject
@@ -43,7 +43,7 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
     private val retrofitRunner: RetrofitRunner,
     private val videoIdMapper: YTBPlaylistItemToVideoId,
     private val trackMapper: YTBVideoToTrack,
-    private val gson: Gson,
+    private val json: Json,
     private val playlistTrackMapper: YTBPlaylistItemToTrack,
     private var appConfig: RemoteAppConfig,
     private val chartsRepository: ChartsRepository,
@@ -75,9 +75,7 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
                     try {
                         val fileContent = Utils.fileContent(file)
                         val songsJsonArray = JSONArray(fileContent).toString()
-                        val typeTokenTracks = object : TypeToken<List<TrackDto>>() {}.type
-                        val trackDtos =
-                            gson.fromJson<List<TrackDto>>(songsJsonArray, typeTokenTracks)
+                        val trackDtos: List<TrackDto> = json.decodeFromString(songsJsonArray)
                         val musicTracks = trackDtos.map { it.toDomainModel() }
                         tracks.addAll(musicTracks)
                     } catch (e: Exception) {

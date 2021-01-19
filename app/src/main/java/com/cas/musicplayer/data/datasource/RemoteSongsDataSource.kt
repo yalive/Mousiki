@@ -18,9 +18,9 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -38,7 +38,7 @@ class RemoteSongsDataSource @Inject constructor(
     private val trackMapper: YTBVideoToTrack,
     private val preferences: PreferencesHelper,
     private val appContext: Context,
-    private val gson: Gson,
+    private val json: Json,
     private val analytics: FirebaseAnalytics,
     private val connectivityState: ConnectivityState,
     private val storage: FirebaseStorage
@@ -46,7 +46,7 @@ class RemoteSongsDataSource @Inject constructor(
 
     suspend fun getTrendingSongs(max: Int): Result<List<MusicTrack>> {
         val firebaseTracks = withContext(bgContext) {
-            downloadTrendingFile().musicTracks(gson)
+            downloadTrendingFile().musicTracks(json)
         }
         if (firebaseTracks.isNotEmpty()) return Result.Success(firebaseTracks)
         if (getCurrentLocale().toLowerCase(Locale.getDefault()) == "mx") {
@@ -121,11 +121,10 @@ class RemoteSongsDataSource @Inject constructor(
 
 private val ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING = "mexico_cannot_load_trending"
 
-fun File.musicTracks(gson: Gson): List<MusicTrack> = if (exists()) {
+fun File.musicTracks(json: Json): List<MusicTrack> = if (exists()) {
     val tracksFromFile: List<MusicTrack> = try {
         val fileContent = Utils.fileContent(this@musicTracks)
-        val typeTokenTracks = object : TypeToken<List<TrackDto>>() {}.type
-        val trackDtos = gson.fromJson<List<TrackDto>>(fileContent, typeTokenTracks)
+        val trackDtos: List<TrackDto> = json.decodeFromString(fileContent)
         trackDtos.map { it.toDomainModel() }
     } catch (e: Exception) {
         FirebaseCrashlytics.getInstance().recordException(e)
