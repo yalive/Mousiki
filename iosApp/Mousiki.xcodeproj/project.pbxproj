@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DA335E23C375C4D4248D5F5C /* Pods_Mousiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B63F9B22DB32197EF0C4D5A /* Pods_Mousiki.framework */; };
+		FA5FFCC425B766E300DA9920 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5FFCC325B766E300DA9920 /* shared.framework */; };
+		FA5FFCC525B766E300DA9920 /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA5FFCC325B766E300DA9920 /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FAA207DD25B6DBFC004D12CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */; };
+		FAA207DF25B6DBFC004D12CF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */; };
+		FAA207E125B6DBFC004D12CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207E025B6DBFC004D12CF /* ViewController.swift */; };
+		FAA207E425B6DBFC004D12CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E225B6DBFC004D12CF /* Main.storyboard */; };
+		FAA207E625B6DBFE004D12CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E525B6DBFE004D12CF /* Assets.xcassets */; };
+		FAA207E925B6DBFE004D12CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FA5FFCC625B766E300DA9920 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FA5FFCC525B766E300DA9920 /* shared.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4B63F9B22DB32197EF0C4D5A /* Pods_Mousiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mousiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6E47CB1A6F89CF419C76886 /* Pods-Mousiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.debug.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.debug.xcconfig"; sourceTree = "<group>"; };
+		F09AD451831C26B84B3A66C8 /* Pods-Mousiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.release.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.release.xcconfig"; sourceTree = "<group>"; };
+		FA5FFCC325B766E300DA9920 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
+		FAA207D925B6DBFC004D12CF /* Mousiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mousiki.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		FAA207E025B6DBFC004D12CF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FAA207E325B6DBFC004D12CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FAA207E525B6DBFE004D12CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FAA207E825B6DBFE004D12CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FAA207EA25B6DBFE004D12CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FACAC38A25B6F7A100ED7B20 /* debugFramework */ = {isa = PBXFileReference; lastKnownFileType = folder; name = debugFramework; path = ../../AndroidStudioProjects/Mousiki/shared/build/bin/iosArm64/debugFramework; sourceTree = "<group>"; };
+		FACAC38B25B6F7BB00ED7B20 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = ../../AndroidStudioProjects/Mousiki/shared/build/bin/iosX64/debugFramework/shared.framework; sourceTree = "<group>"; };
+		FAE0BAE925B6EE940070F70D /* xcode-frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "xcode-frameworks"; path = "../../AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks"; sourceTree = "<group>"; };
+		FAE0BAEA25B6EEE80070F70D /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../../AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FAA207D625B6DBFC004D12CF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA335E23C375C4D4248D5F5C /* Pods_Mousiki.framework in Frameworks */,
+				FA5FFCC425B766E300DA9920 /* shared.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		36D397B2EB2ED51B5018C0DA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FACAC38B25B6F7BB00ED7B20 /* shared.framework */,
+				FA5FFCC325B766E300DA9920 /* shared.framework */,
+				FACAC38A25B6F7A100ED7B20 /* debugFramework */,
+				FAE0BAEA25B6EEE80070F70D /* shared.framework */,
+				FAE0BAE925B6EE940070F70D /* xcode-frameworks */,
+				4B63F9B22DB32197EF0C4D5A /* Pods_Mousiki.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		742E2F641BECB7DED150D633 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D6E47CB1A6F89CF419C76886 /* Pods-Mousiki.debug.xcconfig */,
+				F09AD451831C26B84B3A66C8 /* Pods-Mousiki.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		FAA207D025B6DBFC004D12CF = {
+			isa = PBXGroup;
+			children = (
+				FAA207DB25B6DBFC004D12CF /* Mousiki */,
+				FAA207DA25B6DBFC004D12CF /* Products */,
+				742E2F641BECB7DED150D633 /* Pods */,
+				36D397B2EB2ED51B5018C0DA /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		FAA207DA25B6DBFC004D12CF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAA207D925B6DBFC004D12CF /* Mousiki.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAA207DB25B6DBFC004D12CF /* Mousiki */ = {
+			isa = PBXGroup;
+			children = (
+				FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */,
+				FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */,
+				FAA207E025B6DBFC004D12CF /* ViewController.swift */,
+				FAA207E225B6DBFC004D12CF /* Main.storyboard */,
+				FAA207E525B6DBFE004D12CF /* Assets.xcassets */,
+				FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */,
+				FAA207EA25B6DBFE004D12CF /* Info.plist */,
+			);
+			path = Mousiki;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FAA207D825B6DBFC004D12CF /* Mousiki */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAA207ED25B6DBFE004D12CF /* Build configuration list for PBXNativeTarget "Mousiki" */;
+			buildPhases = (
+				FAE0BAE825B6E0C90070F70D /* ShellScript */,
+				4303FEA24F1CD547DC68D900 /* [CP] Check Pods Manifest.lock */,
+				FAA207D525B6DBFC004D12CF /* Sources */,
+				FAA207D625B6DBFC004D12CF /* Frameworks */,
+				FAA207D725B6DBFC004D12CF /* Resources */,
+				FA5FFCC625B766E300DA9920 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mousiki;
+			productName = Mousiki;
+			productReference = FAA207D925B6DBFC004D12CF /* Mousiki.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FAA207D125B6DBFC004D12CF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1160;
+				LastUpgradeCheck = 1160;
+				ORGANIZATIONNAME = YabaSoft;
+				TargetAttributes = {
+					FAA207D825B6DBFC004D12CF = {
+						CreatedOnToolsVersion = 11.6;
+					};
+				};
+			};
+			buildConfigurationList = FAA207D425B6DBFC004D12CF /* Build configuration list for PBXProject "Mousiki" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FAA207D025B6DBFC004D12CF;
+			productRefGroup = FAA207DA25B6DBFC004D12CF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FAA207D825B6DBFC004D12CF /* Mousiki */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FAA207D725B6DBFC004D12CF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA207E925B6DBFE004D12CF /* LaunchScreen.storyboard in Resources */,
+				FAA207E625B6DBFE004D12CF /* Assets.xcassets in Resources */,
+				FAA207E425B6DBFC004D12CF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4303FEA24F1CD547DC68D900 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mousiki-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FAE0BAE825B6E0C90070F70D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FAA207D525B6DBFC004D12CF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAA207E125B6DBFC004D12CF /* ViewController.swift in Sources */,
+				FAA207DD25B6DBFC004D12CF /* AppDelegate.swift in Sources */,
+				FAA207DF25B6DBFC004D12CF /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FAA207E225B6DBFC004D12CF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAA207E325B6DBFC004D12CF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAA207E825B6DBFE004D12CF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FAA207EB25B6DBFE004D12CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FAA207EC25B6DBFE004D12CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FAA207EE25B6DBFE004D12CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6E47CB1A6F89CF419C76886 /* Pods-Mousiki.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MTTTZM4R7M;
+				FRAMEWORK_SEARCH_PATHS = "/Users/macbook/AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks";
+				INFOPLIST_FILE = Mousiki/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mousiki.Mousiki;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FAA207EF25B6DBFE004D12CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F09AD451831C26B84B3A66C8 /* Pods-Mousiki.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MTTTZM4R7M;
+				FRAMEWORK_SEARCH_PATHS = "/Users/macbook/AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks";
+				INFOPLIST_FILE = Mousiki/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mousiki.Mousiki;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FAA207D425B6DBFC004D12CF /* Build configuration list for PBXProject "Mousiki" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAA207EB25B6DBFE004D12CF /* Debug */,
+				FAA207EC25B6DBFE004D12CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAA207ED25B6DBFE004D12CF /* Build configuration list for PBXNativeTarget "Mousiki" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAA207EE25B6DBFE004D12CF /* Debug */,
+				FAA207EF25B6DBFE004D12CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FAA207D125B6DBFC004D12CF /* Project object */;
+}
