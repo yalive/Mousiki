@@ -3,7 +3,8 @@ package com.cas.musicplayer.data.remote.models.mousiki
 import androidx.annotation.Keep
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  ***************************************
@@ -11,21 +12,16 @@ import com.google.gson.annotations.SerializedName
  ***************************************
  */
 @Keep
+@Serializable
 data class MousikiSearchVideoItem(
-    @SerializedName("id")
-    val id: String?,
-    @SerializedName("title")
-    val title: String?,
-    @SerializedName("url")
-    val url: String?,
-    @SerializedName("duration")
-    val duration: String?,
-    @SerializedName("uploadDate")
-    val upload_date: String?,
-    @SerializedName("thumbnail")
-    val thumbnail_src: String?,
-    @SerializedName("views")
-    val views: String?
+    val id: String? = null,
+    val title: String? = null,
+    val url: String? = null,
+    val duration: String? = null,
+    @SerialName("uploadDate")
+    val upload_date: String? = null,
+    val thumbnail: String? = null,
+    val views: String? = null
 )
 
 fun MousikiSearchVideoItem.toMusicTrack(): MusicTrack {

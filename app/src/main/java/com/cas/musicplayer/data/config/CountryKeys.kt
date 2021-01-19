@@ -1,15 +1,17 @@
 package com.cas.musicplayer.data.config
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 4/16/20.
  ***************************************
  */
+@Serializable
 data class CountryKeys(
-    @SerializedName("countryCode")
+    @SerialName("countryCode")
     val countries: String,
-    @SerializedName("keys")
+    @SerialName("keys")
     val keys: List<String>
 )

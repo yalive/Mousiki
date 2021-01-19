@@ -1,7 +1,8 @@
 package com.cas.musicplayer.data.config
 
 import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  ************************************
@@ -10,13 +11,12 @@ import com.google.gson.annotations.SerializedName
  ************************************
  */
 @Keep
+@Serializable
 data class SearchConfig(
-    @SerializedName("apis")
-    val apis: List<String>?,
-    @SerializedName("maxApiToTry")
-    val maxApi: Int?,
-    @SerializedName("retryCount")
-    val retryCount: Int?
+    val apis: List<String>? = null,
+    @SerialName("maxApiToTry")
+    val maxApi: Int? = null,
+    val retryCount: Int? = null
 )
 
 // For Fallback

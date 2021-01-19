@@ -10,15 +10,16 @@ import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.utils.Constants
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
 import dagger.Provides
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -32,16 +33,17 @@ import javax.inject.Singleton
 @Module(includes = [AssistedInject_AppModule::class])
 object AppModule {
 
+    @ExperimentalSerializationApi
     @Singleton
     @JvmStatic
     @Provides
-    fun providesRetrofit(gson: Gson, client: OkHttpClient): Retrofit {
-        val retrofit = Retrofit.Builder()
+    fun providesRetrofit(json: Json, client: OkHttpClient): Retrofit {
+        val contentType = MediaType.get("application/json")
+        return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
+            .addConverterFactory(json.asConverterFactory(contentType))
             .build()
-        return retrofit
     }
 
     @Singleton
@@ -61,7 +63,10 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesGson(): Gson = GsonBuilder().setLenient().create()
+    fun providesKotlinXJson(): Json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
 
     @Singleton
     @JvmStatic

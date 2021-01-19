@@ -3,7 +3,8 @@ package com.cas.musicplayer.data.remote.models.mousiki
 import androidx.annotation.Keep
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.toYoutubeDuration
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  ************************************
@@ -12,126 +13,91 @@ import com.google.gson.annotations.SerializedName
  ************************************
  */
 @Keep
+@Serializable
 data class HomeRS(
-    @SerializedName("promos")
     val promos: List<VideoInfo>,
-
-    @SerializedName("compactPlaylists")
     val compactPlaylists: List<CompactPlaylistSection>,
-
-    @SerializedName("simplePlaylists")
     val simplePlaylists: List<SimplePlaylistSection>,
-
-    @SerializedName("videoLists")
     val videoLists: List<VideoListSection>
 )
 
 @Keep
+@Serializable
 data class MousikiVideoRS(
-    @SerializedName("title")
-    val title: String?,
-    @SerializedName("thumbnail")
-    val thumbnail: String?,
-    @SerializedName("viewCount")
-    val viewCount: String?,
-    @SerializedName("viewCountShort")
-    val viewCountShort: String?,
-    @SerializedName("publishedTimeText")
-    val publishedTimeText: String?,
-    @SerializedName("id")
-    val videoId: String?,
-    @SerializedName("duration")
-    val duration: String?,
-    @SerializedName("channelId")
-    val channelId: String?,
-    @SerializedName("channelName")
-    val channelName: String?
+    val title: String? = null,
+    val thumbnail: String? = null,
+    val viewCount: String? = null,
+    val viewCountShort: String? = null,
+    val publishedTimeText: String? = null,
+    @SerialName("id")
+    val videoId: String? = null,
+    val duration: String? = null,
+    val channelId: String? = null,
+    val channelName: String? = null
 )
 
 @Keep
+@Serializable
 data class CompactPlaylistSection(
-    @SerializedName("title")
-    val title: String,
-    @SerializedName("thumbnail")
-    val thumbnail: String,
-    @SerializedName("index")
+    val title: String? = null,
+    val thumbnail: String? = null,
     val index: Int,
-    @SerializedName("playlists")
-    val playlists: List<CompactPlaylist>
+    val playlists: List<CompactPlaylist>? = null
 )
 
 @Keep
+@Serializable
 data class CompactPlaylist(
-    @SerializedName("title")
     val title: String,
-    @SerializedName("description")
     val description: String,
-    @SerializedName("videoCount")
     val videoCount: String,
-    @SerializedName("playlistId")
     val playlistId: String,
-    @SerializedName("featuredImage")
     val featuredImage: String
 )
 
 @Keep
+@Serializable
 data class SimplePlaylistSection(
-    @SerializedName("title")
-    val title: String,
-    @SerializedName("thumbnail")
-    val thumbnail: String,
-    @SerializedName("index")
-    val index: Int,
-    @SerializedName("playlists")
-    val playlists: List<SimplePlaylist>
+    val title: String? = null,
+    val thumbnail: String? = null,
+    val index: Int = 0,
+    val playlists: List<SimplePlaylist>? = null
 )
 
 @Keep
+@Serializable
 data class SimplePlaylist(
-    @SerializedName("title")
-    val title: String,
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("videoCount")
-    val videoCount: String,
-    @SerializedName("playlistId")
-    val playlistId: String,
-    @SerializedName("featuredImage")
-    val featuredImage: String,
-    @SerializedName("updatedTime")
-    val updatedTime: String,
-    @SerializedName("channelId")
-    val channelId: String,
-    @SerializedName("channelName")
-    val channelName: String
+    val title: String? = null,
+    val description: String? = null,
+    val videoCount: String? = null,
+    val playlistId: String? = null,
+    val featuredImage: String? = null,
+    val updatedTime: String? = null,
+    val channelId: String? = null,
+    val channelName: String? = null
 )
 
 @Keep
+@Serializable
 data class VideoListSection(
-    @SerializedName("title")
-    val title: String,
-    @SerializedName("thumbnail")
-    val thumbnail: String,
-    @SerializedName("index")
-    val index: Int,
-    @SerializedName("videos")
-    val videos: List<VideoInfo>
+    val title: String? = null,
+    val thumbnail: String? = null,
+    val index: Int = 0,
+    val videos: List<VideoInfo>? = null
 )
 
 @Keep
+@Serializable
 data class VideoInfo(
-    @SerializedName("video")
     val video: MousikiVideoRS,
-    @SerializedName("owner")
-    val owner: VideoOwner
+    val owner: VideoOwner? = null
 )
 
 @Keep
+@Serializable
 data class VideoOwner(
-    @SerializedName("channelId")
-    val channelId: String,
-    @SerializedName("title")
-    val title: String
+    val channelId: String? = null,
+    val title: String? = null
 )
 
 @Keep

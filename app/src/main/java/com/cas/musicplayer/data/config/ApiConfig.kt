@@ -1,7 +1,7 @@
 package com.cas.musicplayer.data.config
 
 import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 /**
  ************************************
@@ -10,13 +10,10 @@ import com.google.gson.annotations.SerializedName
  ************************************
  */
 @Keep
+@Serializable
 data class ApiConfig(
-    @SerializedName("search")
     val search: SearchConfig,
-    @SerializedName("artistSongs")
     val artistSongs: SearchConfig,
-    @SerializedName("playlists")
     val playlists: SearchConfig,
-    @SerializedName("home")
     val home: SearchConfig
 )

@@ -20,8 +20,8 @@ import com.cas.musicplayer.utils.getCurrentLocale
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
-import com.google.gson.Gson
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     private val searchMapper: YTBSearchResultToVideoId,
     private val trackMapper: YTBVideoToTrack,
     private val appContext: Context,
-    private val gson: Gson,
+    private val json: Json,
     private val connectivityState: ConnectivityState,
     private val storage: FirebaseStorage,
     private val appConfig: RemoteAppConfig
@@ -56,7 +56,7 @@ class ChannelSongsRemoteDataSource @Inject constructor(
 
         // Check firebase
         val firebaseTracks = withContext(bgContext) {
-            downloadArtistTracksFile(artist).musicTracks(gson)
+            downloadArtistTracksFile(artist).musicTracks(json)
         }
         if (firebaseTracks.isNotEmpty()) return Result.Success(firebaseTracks)
 
@@ -99,7 +99,7 @@ class ChannelSongsRemoteDataSource @Inject constructor(
                     val ref =
                         storage.getReferenceFromUrl(
                             "${BASE_URL_STORAGE}${STORAGE_ARTISTS_SONGS_DIR}/${
-                                artist.countryCode.toLowerCase(
+                                artist.countryCode.orEmpty().toLowerCase(
                                     Locale.getDefault()
                                 )
                             }/${localFile.name}"

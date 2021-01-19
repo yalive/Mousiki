@@ -15,9 +15,12 @@ import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.getCurrentLocale
-import com.google.gson.Gson
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.File
 import javax.inject.Inject
 
@@ -33,7 +36,7 @@ class HomeRepository @Inject constructor(
     private val mousikiApi: MousikiSearchApi,
     private val preferences: PreferencesHelper,
     private val appContext: Context,
-    private val gson: Gson,
+    private val json: Json,
     private val appConfig: RemoteAppConfig
 ) {
 
@@ -76,13 +79,22 @@ class HomeRepository @Inject constructor(
     private suspend fun getCachedHome(): HomeRS? = withContext(Dispatchers.IO) {
         val cacheFile = File(cacheDirectory, CACHE_FILE_NAME)
         val fileContent = Utils.fileContent(cacheFile)
-        return@withContext gson.fromJson(fileContent, HomeRS::class.java)
+        return@withContext try {
+            json.decodeFromString<HomeRS>(fileContent)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private suspend fun writeHomeToCache(homeRS: HomeRS) = withContext(Dispatchers.IO) {
-        val cacheFile = File(cacheDirectory, CACHE_FILE_NAME)
-        Utils.writeToFile(gson.toJson(homeRS), cacheFile)
-        preferences.setHomeResponseDate()
+        try {
+            val cacheFile = File(cacheDirectory, CACHE_FILE_NAME)
+            Utils.writeToFile(json.encodeToString(homeRS), cacheFile)
+            preferences.setHomeResponseDate()
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance()
+                .recordException(Exception("Unable to encode home response", e))
+        }
     }
 
     private fun homeExpired(): Boolean {

@@ -1,15 +1,13 @@
 package com.cas.musicplayer.data.config
 
 import android.annotation.SuppressLint
-import android.content.Context
-import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,9 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class RemoteAppConfig @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    private val connectivityState: ConnectivityState,
-    private val gson: Gson,
-    private val context: Context
+    private val json: Json
 ) {
 
     private val fetchConfigJob: Job = MusicApp.get().applicationScope.launch {
@@ -35,8 +31,12 @@ class RemoteAppConfig @Inject constructor(
     @SuppressLint("DefaultLocale")
     fun getYoutubeApiKeys(): List<String> {
         val jsonKeysByCountry = firebaseRemoteConfig.getString(YOUTUBE_API_KEYS_BY_COUNTRY)
-        val typeTokenKeys = object : TypeToken<List<CountryKeys>>() {}.type
-        val keys: List<CountryKeys>? = gson.fromJson(jsonKeysByCountry, typeTokenKeys)
+        val keys: List<CountryKeys>? = try {
+            json.decodeFromString(jsonKeysByCountry)
+        } catch (e: Exception) {
+            null
+        }
+
         if (keys != null && keys.isNotEmpty()) {
             val currentLocale = getCurrentLocale()
             val countryKeys = keys.find {
@@ -53,8 +53,8 @@ class RemoteAppConfig @Inject constructor(
     }
 
     private fun getApiConfig(): ApiConfig {
-        val json = firebaseRemoteConfig.getString(API_URLS)
-        return gson.fromJson(json, ApiConfig::class.java)
+        val jsonString = firebaseRemoteConfig.getString(API_URLS)
+        return json.decodeFromString(jsonString)
     }
 
     fun searchConfig(): SearchConfig = getApiConfig().search

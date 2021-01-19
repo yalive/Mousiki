@@ -31,7 +31,6 @@ import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
 import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.gson.Gson
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -105,8 +104,6 @@ interface AppComponent {
     val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase
 
     val analytics: FirebaseAnalytics
-
-    val gson: Gson
 
     val rewardedAdDelegate: RewardedAdDelegate
 
