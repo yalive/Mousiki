@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.cas.common.extensions.observe
 import com.cas.common.viewmodel.viewModel
-import com.cas.musicplayer.data.remote.models.Artist
+import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST

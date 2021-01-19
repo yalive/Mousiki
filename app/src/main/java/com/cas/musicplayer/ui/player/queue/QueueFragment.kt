@@ -21,13 +21,13 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentQueueBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.imgUrlDefault
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.imgUrlDefault
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

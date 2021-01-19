@@ -6,13 +6,13 @@ import com.cas.common.result.map
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.*
-import com.cas.musicplayer.data.remote.models.mousiki.searchResults
+import com.mousiki.shared.data.models.searchResults
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.cas.musicplayer.domain.model.Channel
-import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.domain.model.SearchTracksResult
+import com.mousiki.shared.domain.models.Channel
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.SearchTracksResult
 import com.cas.musicplayer.domain.model.hasData
 import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject

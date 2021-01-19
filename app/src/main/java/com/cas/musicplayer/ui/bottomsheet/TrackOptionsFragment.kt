@@ -16,7 +16,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentTrackOptionsBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView

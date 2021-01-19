@@ -4,10 +4,10 @@ import com.cas.common.result.AppMessage
 import com.cas.common.result.NO_RESULT
 import com.cas.common.result.Result
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.config.SearchConfig
-import com.cas.musicplayer.data.config.apiList
-import com.cas.musicplayer.data.config.maxApi
-import com.cas.musicplayer.data.config.retryCount
+import com.mousiki.shared.data.config.SearchConfig
+import com.mousiki.shared.data.config.apiList
+import com.mousiki.shared.data.config.maxApi
+import com.mousiki.shared.data.config.retryCount
 import com.cas.musicplayer.data.datasource.search.getOrEmpty
 import com.cas.musicplayer.data.remote.mappers.Mapper
 import com.cas.musicplayer.utils.bgContext

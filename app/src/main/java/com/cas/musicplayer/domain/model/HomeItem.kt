@@ -6,9 +6,9 @@ import androidx.annotation.StringRes
 import com.cas.common.resource.Resource
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.data.remote.models.mousiki.CompactPlaylist
-import com.cas.musicplayer.data.remote.models.mousiki.SimplePlaylist
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.CompactPlaylist
+import com.mousiki.shared.data.models.SimplePlaylist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import kotlinx.parcelize.Parcelize
 

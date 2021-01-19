@@ -1,4 +1,4 @@
-plugins {
+ plugins {
     id 'com.android.application'
 
     id 'kotlin-android'
@@ -193,6 +193,7 @@ dependencies {
     // Modules
     implementation project(path: ':common')
     implementation project(path: ':delegatedadapter')
+    implementation project(path: ':shared')
 }
 
 apply plugin: 'com.google.gms.google-services'

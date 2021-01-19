@@ -9,7 +9,7 @@ import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
 import com.cas.musicplayer.data.local.database.dao.CustomPlaylistTrackDao
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.utils.NetworkUtils
 import javax.inject.Inject
 import javax.inject.Singleton

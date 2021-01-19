@@ -26,7 +26,6 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.imgUrl
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
@@ -38,6 +37,7 @@ import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso

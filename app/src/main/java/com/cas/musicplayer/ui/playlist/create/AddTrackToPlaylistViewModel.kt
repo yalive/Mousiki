@@ -6,14 +6,14 @@ import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.domain.model.imgUrl
 import com.cas.musicplayer.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.imgUrl
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 

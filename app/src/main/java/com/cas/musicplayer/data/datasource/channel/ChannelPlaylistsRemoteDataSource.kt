@@ -5,7 +5,7 @@ import com.cas.musicplayer.data.remote.mappers.YTBPlaylistToPlaylist
 import com.cas.musicplayer.data.remote.mappers.toListMapper
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import javax.inject.Inject
 
 /**

@@ -2,7 +2,7 @@ package com.cas.musicplayer.domain.usecase.search
 
 import com.cas.common.result.Result
 import com.cas.musicplayer.data.repositories.SearchRepository
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import javax.inject.Inject
 
 /**

@@ -1,7 +1,7 @@
 package com.cas.musicplayer.data.remote.retrofit
 
-import com.cas.musicplayer.data.remote.models.mousiki.HomeRS
-import com.cas.musicplayer.data.remote.models.mousiki.MousikiSearchApiRS
+import com.mousiki.shared.data.models.HomeRS
+import com.mousiki.shared.data.models.MousikiSearchApiRS
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path

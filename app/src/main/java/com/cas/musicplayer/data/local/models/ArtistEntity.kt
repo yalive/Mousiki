@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.cas.musicplayer.data.remote.models.Artist
+import com.mousiki.shared.data.models.Artist
 
 
 @Entity(tableName = "artists", indices = [Index(unique = true, value = arrayOf("channel_id"))])

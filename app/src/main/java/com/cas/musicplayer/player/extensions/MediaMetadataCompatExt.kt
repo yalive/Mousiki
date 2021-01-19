@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import android.support.v4.media.MediaMetadataCompat
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.domain.model.durationToSeconds
-import com.cas.musicplayer.domain.model.imgUrl
-import com.cas.musicplayer.domain.model.imgUrlDefault
+import com.mousiki.shared.domain.models.imgUrl
+import com.mousiki.shared.domain.models.imgUrlDefault
 
 /**
  ***************************************

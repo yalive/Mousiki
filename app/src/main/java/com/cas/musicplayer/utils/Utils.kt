@@ -27,12 +27,12 @@ import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.imgUrl
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
+import com.mousiki.shared.domain.models.imgUrl
 import java.io.File
 import java.util.*
 

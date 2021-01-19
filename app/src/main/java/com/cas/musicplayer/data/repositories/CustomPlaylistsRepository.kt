@@ -4,7 +4,7 @@ import com.cas.musicplayer.data.local.database.dao.CustomPlaylistTrackDao
 import com.cas.musicplayer.data.local.models.CustomPlaylistEntity
 import com.cas.musicplayer.data.local.models.imgUrl
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import javax.inject.Inject
 import javax.inject.Singleton
 

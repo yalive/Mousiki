@@ -9,8 +9,8 @@ import com.cas.musicplayer.data.datasource.musicTracks
 import com.cas.musicplayer.data.remote.mappers.YTBSearchResultToVideoId
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
-import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.data.remote.models.mousiki.tracks
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.tracks
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService

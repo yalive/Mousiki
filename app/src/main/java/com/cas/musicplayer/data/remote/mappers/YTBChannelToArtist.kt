@@ -1,8 +1,8 @@
 package com.cas.musicplayer.data.remote.mappers
 
-import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.data.remote.models.YTBChannel
-import com.cas.musicplayer.data.remote.models.urlOrEmpty
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.YTBChannel
+import com.mousiki.shared.data.models.urlOrEmpty
 import javax.inject.Inject
 import javax.inject.Singleton
 
