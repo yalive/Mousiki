@@ -6,7 +6,7 @@ import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate

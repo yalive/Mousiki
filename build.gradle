@@ -16,7 +16,6 @@ buildscript {
 
         // firebase crashlytics
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
-
     }
 }
 

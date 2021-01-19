@@ -8,7 +8,7 @@ import com.cas.common.resource.doOnSuccess
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.data.remote.models.Artist
+import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.domain.usecase.artist.GetAllArtistsUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject

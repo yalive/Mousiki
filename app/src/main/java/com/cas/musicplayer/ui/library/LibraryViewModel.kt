@@ -9,8 +9,7 @@ import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.domain.model.imgUrl
+import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.cas.musicplayer.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
@@ -23,6 +22,7 @@ import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
+import com.mousiki.shared.domain.models.imgUrl
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

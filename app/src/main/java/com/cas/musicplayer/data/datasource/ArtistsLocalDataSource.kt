@@ -3,7 +3,7 @@ package com.cas.musicplayer.data.datasource
 import com.cas.musicplayer.data.local.database.dao.ArtistDao
 import com.cas.musicplayer.data.local.models.ArtistEntity
 import com.cas.musicplayer.data.local.models.toArtist
-import com.cas.musicplayer.data.remote.models.Artist
+import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

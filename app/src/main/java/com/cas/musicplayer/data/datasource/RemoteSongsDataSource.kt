@@ -6,8 +6,8 @@ import com.cas.common.result.Result
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
-import com.cas.musicplayer.data.remote.models.TrackDto
-import com.cas.musicplayer.data.remote.models.toDomainModel
+import com.mousiki.shared.data.models.TrackDto
+import com.mousiki.shared.data.models.toDomainModel
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.domain.model.MusicTrack

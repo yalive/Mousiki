@@ -14,8 +14,8 @@ import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.data.remote.models.mousiki.toTrack
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.toTrack
 import com.cas.musicplayer.data.repositories.HomeRepository
 import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.domain.model.HeaderItem

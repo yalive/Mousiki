@@ -1,6 +1,6 @@
 package com.cas.musicplayer.data.remote.retrofit
 
-import com.cas.musicplayer.data.remote.models.*
+import com.mousiki.shared.data.models.*
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Query

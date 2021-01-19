@@ -7,9 +7,9 @@ import com.cas.musicplayer.data.datasource.search.SearchRemoteDataSource
 import com.cas.musicplayer.data.local.database.dao.SearchQueryDao
 import com.cas.musicplayer.data.local.models.SearchQueryEntity
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.cas.musicplayer.domain.model.Channel
-import com.cas.musicplayer.domain.model.Playlist
-import com.cas.musicplayer.domain.model.SearchTracksResult
+import com.mousiki.shared.domain.models.Channel
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.SearchTracksResult
 import org.json.JSONArray
 import javax.inject.Inject
 import javax.inject.Singleton

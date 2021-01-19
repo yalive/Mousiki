@@ -12,7 +12,7 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.loadImage
 

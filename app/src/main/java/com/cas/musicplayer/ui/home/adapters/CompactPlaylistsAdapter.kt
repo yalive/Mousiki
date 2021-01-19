@@ -8,8 +8,8 @@ import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.remote.models.Artist
-import com.cas.musicplayer.data.remote.models.mousiki.CompactPlaylist
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.CompactPlaylist
 import com.cas.musicplayer.databinding.ItemHomeCompactPlaylistBinding
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage

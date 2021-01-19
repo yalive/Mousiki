@@ -1,7 +1,7 @@
 package com.cas.musicplayer.data.remote.mappers
 
-import com.cas.musicplayer.data.remote.models.YTBPlaylistItem
-import com.cas.musicplayer.domain.model.VideoId
+import com.mousiki.shared.data.models.YTBPlaylistItem
+import com.mousiki.shared.domain.models.VideoId
 import javax.inject.Inject
 import javax.inject.Singleton
 

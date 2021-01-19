@@ -15,7 +15,7 @@ import com.cas.common.extensions.onClick
 import com.cas.delegatedadapter.AdapterDelegate
 import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.Playlist
+import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import com.cas.musicplayer.utils.Constants

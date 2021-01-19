@@ -10,7 +10,7 @@ import com.cas.musicplayer.data.datasource.ArtistsLocalDataSource
 import com.cas.musicplayer.data.datasource.ArtistsRemoteDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelSongsRemoteDataSource
-import com.cas.musicplayer.data.remote.models.Artist
+import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
