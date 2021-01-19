@@ -30,6 +30,8 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlayerBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.domain.model.MusicTrack
+import com.cas.musicplayer.domain.model.durationFormatted
+import com.cas.musicplayer.domain.model.durationToSeconds
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
@@ -324,9 +326,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             if (!seekingDuration) {
                 updateCurrentTrackTime(elapsedSeconds)
                 PlayerQueue.value?.let { currentTrack ->
-                    val totalSeconds = currentTrack.totalSeconds.toInt()
+                    val totalSeconds = currentTrack.durationToSeconds().toInt()
                     val progress =
-                        if (totalSeconds > 0) (elapsedSeconds * 100 / currentTrack.totalSeconds).toInt()
+                        if (totalSeconds > 0) (elapsedSeconds * 100 / currentTrack.durationToSeconds()).toInt()
                         else 0
                     binding.seekBarDuration.animateProgress(progress)
                     binding.miniPlayerView.updateProgress(progress)
@@ -452,7 +454,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     seekingDuration = true
-                    val seconds = progress * video.totalSeconds.toInt() / 100
+                    val seconds = progress * video.durationToSeconds().toInt() / 100
                     updateCurrentTrackTime(seconds)
                 }
             }
@@ -463,7 +465,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 val progress = seekBar.progress
-                val seconds = progress * video.totalSeconds / 100
+                val seconds = progress * video.durationToSeconds() / 100
                 PlayerQueue.seekTo(seconds * 1000)
                 lifecycleScope.launch {
                     delay(500)
