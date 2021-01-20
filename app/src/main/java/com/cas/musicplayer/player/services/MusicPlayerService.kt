@@ -40,7 +40,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -264,7 +263,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         mediaSession.setMetadata(metadataBuilder.build())
         mediaController.transportControls.playFromMediaId(currentTrack.youtubeId, null)
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             injector.addTrackToRecentlyPlayed(currentTrack)
             val loadBitmap = Picasso.get().getBitmap(currentTrack.imgUrl, 320)
             metadataBuilder.albumArt = loadBitmap
