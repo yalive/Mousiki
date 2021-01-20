@@ -5,6 +5,7 @@ import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.utils.getCurrentLocale
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -27,10 +28,19 @@ class RemoteAppConfig @Inject constructor(
 ) {
 
     private val fetchConfigJob: Job = MusicApp.get().applicationScope.launch {
-        firebaseRemoteConfig.fetchAndActivate().await()
+        try {
+            firebaseRemoteConfig.fetchAndActivate().await()
+        } catch (ignored: Exception) {
+        }
     }
 
-    suspend fun awaitActivation() = fetchConfigJob.join()
+    suspend fun awaitActivation() = try {
+        fetchConfigJob.join()
+    } catch (e: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(
+            Exception("Error while config awaitActivation", e)
+        )
+    }
 
     @SuppressLint("DefaultLocale")
     fun getYoutubeApiKeys(): List<String> {
