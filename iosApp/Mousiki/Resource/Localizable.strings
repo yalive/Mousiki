@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  Mousiki
+
+  Created by A.Yabahddou on 1/20/21.
+  Copyright © 2021 YabaSoft. All rights reserved.
+*/
+
+
+"menu_home" = "Home";
+"menu_library" = "Library";
+"menu_search" = "Search";
