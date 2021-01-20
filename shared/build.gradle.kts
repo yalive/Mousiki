@@ -20,6 +20,11 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2-native-mt"){
+                    version {
+                        strictly("1.4.2-native-mt")
+                    }
+                }
             }
         }
         val androidMain by getting {
@@ -27,7 +32,10 @@ kotlin {
                 implementation("androidx.annotation:annotation:1.1.0")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+            }
+        }
     }
 }
 

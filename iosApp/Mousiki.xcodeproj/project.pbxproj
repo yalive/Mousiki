@@ -3,29 +3,54 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DA335E23C375C4D4248D5F5C /* Pods_Mousiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B63F9B22DB32197EF0C4D5A /* Pods_Mousiki.framework */; };
-		FA5FFCC425B766E300DA9920 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5FFCC325B766E300DA9920 /* shared.framework */; };
-		FA5FFCC525B766E300DA9920 /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA5FFCC325B766E300DA9920 /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C200231F94EBB0BB2E3694B0 /* Pods_Mousiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */; };
+		FA5FFCD325B8214800DA9920 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCD125B8214800DA9920 /* HomeVC.swift */; };
+		FA5FFCD425B8214800DA9920 /* HomeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCD225B8214800DA9920 /* HomeVC.xib */; };
+		FA5FFCD725B8218C00DA9920 /* LibraryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCD525B8218C00DA9920 /* LibraryVC.swift */; };
+		FA5FFCD825B8218C00DA9920 /* LibraryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCD625B8218C00DA9920 /* LibraryVC.xib */; };
+		FA5FFCDB25B821A400DA9920 /* MainSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCD925B821A400DA9920 /* MainSearchVC.swift */; };
+		FA5FFCDC25B821A400DA9920 /* MainSearchVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCDA25B821A400DA9920 /* MainSearchVC.xib */; };
+		FA5FFCDF25B821D900DA9920 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCDD25B821D900DA9920 /* SettingsVC.swift */; };
+		FA5FFCE025B821D900DA9920 /* SettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCDE25B821D900DA9920 /* SettingsVC.xib */; };
+		FA5FFCE625B8238F00DA9920 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCE525B8238F00DA9920 /* Screen.swift */; };
+		FA5FFCE825B823AA00DA9920 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCE725B823AA00DA9920 /* Font.swift */; };
+		FA5FFCEE25B824E000DA9920 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCED25B824E000DA9920 /* Roboto-Bold.ttf */; };
+		FA5FFCF325B824EF00DA9920 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCEF25B824EE00DA9920 /* Roboto-Italic.ttf */; };
+		FA5FFCF425B824EF00DA9920 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCF025B824EE00DA9920 /* Roboto-Medium.ttf */; };
+		FA5FFCF525B824EF00DA9920 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCF125B824EF00DA9920 /* Roboto-Regular.ttf */; };
+		FA5FFCF625B824EF00DA9920 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCF225B824EF00DA9920 /* Roboto-Light.ttf */; };
 		FAA207DD25B6DBFC004D12CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */; };
 		FAA207DF25B6DBFC004D12CF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */; };
-		FAA207E125B6DBFC004D12CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207E025B6DBFC004D12CF /* ViewController.swift */; };
-		FAA207E425B6DBFC004D12CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E225B6DBFC004D12CF /* Main.storyboard */; };
 		FAA207E625B6DBFE004D12CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E525B6DBFE004D12CF /* Assets.xcassets */; };
 		FAA207E925B6DBFE004D12CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */; };
+		FAABE1EA25B85B9F001FD8C5 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1E925B85B9F001FD8C5 /* R.generated.swift */; };
+		FAABE1F225B85CF7001FD8C5 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAABE1F125B85CF7001FD8C5 /* shared.framework */; };
+		FAABE1F325B85CF7001FD8C5 /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAABE1F125B85CF7001FD8C5 /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FAABE1F625B8661C001FD8C5 /* UIColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1F525B8661C001FD8C5 /* UIColorExt.swift */; };
+		FAABE1F825B86698001FD8C5 /* UIViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1F725B86698001FD8C5 /* UIViewController+Helper.swift */; };
+		FAABE1FA25B866C1001FD8C5 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1F925B866C1001FD8C5 /* String+Extension.swift */; };
+		FAABE1FC25B866EE001FD8C5 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1FB25B866EE001FD8C5 /* UIViewExt.swift */; };
+		FAABE20325B8671D001FD8C5 /* UIViewController+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20225B8671D001FD8C5 /* UIViewController+Network.swift */; };
+		FAABE20525B86735001FD8C5 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20425B86735001FD8C5 /* UIViewController+Alert.swift */; };
+		FAABE20725B86755001FD8C5 /* UIViewController + Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20625B86755001FD8C5 /* UIViewController + Keyboard.swift */; };
+		FAABE20925B8676B001FD8C5 /* UITableViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20825B8676B001FD8C5 /* UITableViewExt.swift */; };
+		FAABE20B25B86786001FD8C5 /* CollectionExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20A25B86786001FD8C5 /* CollectionExt.swift */; };
+		FAABE20D25B86794001FD8C5 /* Locale.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20C25B86794001FD8C5 /* Locale.swift */; };
+		FAABE21525B86AF2001FD8C5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAABE21425B86AF2001FD8C5 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		FA5FFCC625B766E300DA9920 /* Embed Frameworks */ = {
+		FAABE1F425B85CF7001FD8C5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FA5FFCC525B766E300DA9920 /* shared.framework in Embed Frameworks */,
+				FAABE1F325B85CF7001FD8C5 /* shared.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -33,22 +58,44 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4B63F9B22DB32197EF0C4D5A /* Pods_Mousiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mousiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6E47CB1A6F89CF419C76886 /* Pods-Mousiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.debug.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.debug.xcconfig"; sourceTree = "<group>"; };
-		F09AD451831C26B84B3A66C8 /* Pods-Mousiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.release.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.release.xcconfig"; sourceTree = "<group>"; };
-		FA5FFCC325B766E300DA9920 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
+		03D7859ADD3CF7DCE340599D /* Pods-Mousiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.release.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.release.xcconfig"; sourceTree = "<group>"; };
+		88A3FEA9F7E64247A44DE3DF /* Pods-Mousiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.debug.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.debug.xcconfig"; sourceTree = "<group>"; };
+		97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mousiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA5FFCD125B8214800DA9920 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		FA5FFCD225B8214800DA9920 /* HomeVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeVC.xib; sourceTree = "<group>"; };
+		FA5FFCD525B8218C00DA9920 /* LibraryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryVC.swift; sourceTree = "<group>"; };
+		FA5FFCD625B8218C00DA9920 /* LibraryVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LibraryVC.xib; sourceTree = "<group>"; };
+		FA5FFCD925B821A400DA9920 /* MainSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSearchVC.swift; sourceTree = "<group>"; };
+		FA5FFCDA25B821A400DA9920 /* MainSearchVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainSearchVC.xib; sourceTree = "<group>"; };
+		FA5FFCDD25B821D900DA9920 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		FA5FFCDE25B821D900DA9920 /* SettingsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsVC.xib; sourceTree = "<group>"; };
+		FA5FFCE525B8238F00DA9920 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		FA5FFCE725B823AA00DA9920 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		FA5FFCED25B824E000DA9920 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		FA5FFCEF25B824EE00DA9920 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Italic.ttf"; sourceTree = "<group>"; };
+		FA5FFCF025B824EE00DA9920 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		FA5FFCF125B824EF00DA9920 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		FA5FFCF225B824EF00DA9920 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		FAA207D925B6DBFC004D12CF /* Mousiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mousiki.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		FAA207E025B6DBFC004D12CF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FAA207E325B6DBFC004D12CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FAA207E525B6DBFE004D12CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAA207E825B6DBFE004D12CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAA207EA25B6DBFE004D12CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FACAC38A25B6F7A100ED7B20 /* debugFramework */ = {isa = PBXFileReference; lastKnownFileType = folder; name = debugFramework; path = ../../AndroidStudioProjects/Mousiki/shared/build/bin/iosArm64/debugFramework; sourceTree = "<group>"; };
-		FACAC38B25B6F7BB00ED7B20 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = ../../AndroidStudioProjects/Mousiki/shared/build/bin/iosX64/debugFramework/shared.framework; sourceTree = "<group>"; };
-		FAE0BAE925B6EE940070F70D /* xcode-frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "xcode-frameworks"; path = "../../AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks"; sourceTree = "<group>"; };
-		FAE0BAEA25B6EEE80070F70D /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../../AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
+		FAABE1E925B85B9F001FD8C5 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		FAABE1F025B85CE4001FD8C5 /* xcode-frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "xcode-frameworks"; path = "../shared/build/xcode-frameworks"; sourceTree = "<group>"; };
+		FAABE1F125B85CF7001FD8C5 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
+		FAABE1F525B8661C001FD8C5 /* UIColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExt.swift; sourceTree = "<group>"; };
+		FAABE1F725B86698001FD8C5 /* UIViewController+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helper.swift"; sourceTree = "<group>"; };
+		FAABE1F925B866C1001FD8C5 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		FAABE1FB25B866EE001FD8C5 /* UIViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
+		FAABE20225B8671D001FD8C5 /* UIViewController+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Network.swift"; sourceTree = "<group>"; };
+		FAABE20425B86735001FD8C5 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		FAABE20625B86755001FD8C5 /* UIViewController + Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Keyboard.swift"; sourceTree = "<group>"; };
+		FAABE20825B8676B001FD8C5 /* UITableViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExt.swift; sourceTree = "<group>"; };
+		FAABE20A25B86786001FD8C5 /* CollectionExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExt.swift; sourceTree = "<group>"; };
+		FAABE20C25B86794001FD8C5 /* Locale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locale.swift; sourceTree = "<group>"; };
+		FAABE21425B86AF2001FD8C5 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,43 +103,187 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA335E23C375C4D4248D5F5C /* Pods_Mousiki.framework in Frameworks */,
-				FA5FFCC425B766E300DA9920 /* shared.framework in Frameworks */,
+				C200231F94EBB0BB2E3694B0 /* Pods_Mousiki.framework in Frameworks */,
+				FAABE1F225B85CF7001FD8C5 /* shared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		36D397B2EB2ED51B5018C0DA /* Frameworks */ = {
+		2BCA627819188D7BC715F2CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FACAC38B25B6F7BB00ED7B20 /* shared.framework */,
-				FA5FFCC325B766E300DA9920 /* shared.framework */,
-				FACAC38A25B6F7A100ED7B20 /* debugFramework */,
-				FAE0BAEA25B6EEE80070F70D /* shared.framework */,
-				FAE0BAE925B6EE940070F70D /* xcode-frameworks */,
-				4B63F9B22DB32197EF0C4D5A /* Pods_Mousiki.framework */,
+				FAABE1F125B85CF7001FD8C5 /* shared.framework */,
+				FAABE1F025B85CE4001FD8C5 /* xcode-frameworks */,
+				97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		742E2F641BECB7DED150D633 /* Pods */ = {
+		C7C378B5D4F2F5DDFF218D7B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D6E47CB1A6F89CF419C76886 /* Pods-Mousiki.debug.xcconfig */,
-				F09AD451831C26B84B3A66C8 /* Pods-Mousiki.release.xcconfig */,
+				88A3FEA9F7E64247A44DE3DF /* Pods-Mousiki.debug.xcconfig */,
+				03D7859ADD3CF7DCE340599D /* Pods-Mousiki.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FA5FFCC725B81F7A00DA9920 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCEC25B8246E00DA9920 /* Fonts */,
+				FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */,
+				FAA207E525B6DBFE004D12CF /* Assets.xcassets */,
+				FAABE21425B86AF2001FD8C5 /* Localizable.strings */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		FA5FFCC825B81F8700DA9920 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */,
+				FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		FA5FFCC925B81FDA00DA9920 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCCD25B820B400DA9920 /* Artists */,
+				FA5FFCCA25B8209500DA9920 /* Home */,
+				FA5FFCCB25B8209C00DA9920 /* Library */,
+				FA5FFCD025B820D800DA9920 /* Player */,
+				FA5FFCCE25B820BC00DA9920 /* Playlists */,
+				FA5FFCCC25B820A700DA9920 /* Search */,
+				FA5FFCCF25B820CA00DA9920 /* Settings */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		FA5FFCCA25B8209500DA9920 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCD125B8214800DA9920 /* HomeVC.swift */,
+				FA5FFCD225B8214800DA9920 /* HomeVC.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		FA5FFCCB25B8209C00DA9920 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCD525B8218C00DA9920 /* LibraryVC.swift */,
+				FA5FFCD625B8218C00DA9920 /* LibraryVC.xib */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		FA5FFCCC25B820A700DA9920 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCD925B821A400DA9920 /* MainSearchVC.swift */,
+				FA5FFCDA25B821A400DA9920 /* MainSearchVC.xib */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		FA5FFCCD25B820B400DA9920 /* Artists */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Artists;
+			sourceTree = "<group>";
+		};
+		FA5FFCCE25B820BC00DA9920 /* Playlists */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Playlists;
+			sourceTree = "<group>";
+		};
+		FA5FFCCF25B820CA00DA9920 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCDD25B821D900DA9920 /* SettingsVC.swift */,
+				FA5FFCDE25B821D900DA9920 /* SettingsVC.xib */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		FA5FFCD025B820D800DA9920 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		FA5FFCE125B8232100DA9920 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCE425B8237D00DA9920 /* Views */,
+				FA5FFCE325B8237100DA9920 /* Extensions */,
+				FA5FFCE225B8236700DA9920 /* Sizes */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		FA5FFCE225B8236700DA9920 /* Sizes */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCE525B8238F00DA9920 /* Screen.swift */,
+				FA5FFCE725B823AA00DA9920 /* Font.swift */,
+			);
+			path = Sizes;
+			sourceTree = "<group>";
+		};
+		FA5FFCE325B8237100DA9920 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FAABE1F525B8661C001FD8C5 /* UIColorExt.swift */,
+				FAABE1F725B86698001FD8C5 /* UIViewController+Helper.swift */,
+				FAABE1F925B866C1001FD8C5 /* String+Extension.swift */,
+				FAABE1FB25B866EE001FD8C5 /* UIViewExt.swift */,
+				FAABE20225B8671D001FD8C5 /* UIViewController+Network.swift */,
+				FAABE20425B86735001FD8C5 /* UIViewController+Alert.swift */,
+				FAABE20625B86755001FD8C5 /* UIViewController + Keyboard.swift */,
+				FAABE20825B8676B001FD8C5 /* UITableViewExt.swift */,
+				FAABE20A25B86786001FD8C5 /* CollectionExt.swift */,
+				FAABE20C25B86794001FD8C5 /* Locale.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		FA5FFCE425B8237D00DA9920 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FA5FFCEC25B8246E00DA9920 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				FA5FFCEF25B824EE00DA9920 /* Roboto-Italic.ttf */,
+				FA5FFCF225B824EF00DA9920 /* Roboto-Light.ttf */,
+				FA5FFCF025B824EE00DA9920 /* Roboto-Medium.ttf */,
+				FA5FFCF125B824EF00DA9920 /* Roboto-Regular.ttf */,
+				FA5FFCED25B824E000DA9920 /* Roboto-Bold.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		FAA207D025B6DBFC004D12CF = {
 			isa = PBXGroup;
 			children = (
+				FAABE1E925B85B9F001FD8C5 /* R.generated.swift */,
 				FAA207DB25B6DBFC004D12CF /* Mousiki */,
 				FAA207DA25B6DBFC004D12CF /* Products */,
-				742E2F641BECB7DED150D633 /* Pods */,
-				36D397B2EB2ED51B5018C0DA /* Frameworks */,
+				C7C378B5D4F2F5DDFF218D7B /* Pods */,
+				2BCA627819188D7BC715F2CA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,13 +298,11 @@
 		FAA207DB25B6DBFC004D12CF /* Mousiki */ = {
 			isa = PBXGroup;
 			children = (
-				FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */,
-				FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */,
-				FAA207E025B6DBFC004D12CF /* ViewController.swift */,
-				FAA207E225B6DBFC004D12CF /* Main.storyboard */,
-				FAA207E525B6DBFE004D12CF /* Assets.xcassets */,
-				FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */,
 				FAA207EA25B6DBFE004D12CF /* Info.plist */,
+				FA5FFCE125B8232100DA9920 /* Common */,
+				FA5FFCC825B81F8700DA9920 /* App */,
+				FA5FFCC725B81F7A00DA9920 /* Resource */,
+				FA5FFCC925B81FDA00DA9920 /* Features */,
 			);
 			path = Mousiki;
 			sourceTree = "<group>";
@@ -125,12 +314,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FAA207ED25B6DBFE004D12CF /* Build configuration list for PBXNativeTarget "Mousiki" */;
 			buildPhases = (
-				FAE0BAE825B6E0C90070F70D /* ShellScript */,
-				4303FEA24F1CD547DC68D900 /* [CP] Check Pods Manifest.lock */,
+				A5FB0B7139D555E257BED3BC /* [CP] Check Pods Manifest.lock */,
+				FAABE1EE25B85C9B001FD8C5 /* ShellScript */,
+				FAABE1E725B85B53001FD8C5 /* ShellScript */,
 				FAA207D525B6DBFC004D12CF /* Sources */,
 				FAA207D625B6DBFC004D12CF /* Frameworks */,
 				FAA207D725B6DBFC004D12CF /* Resources */,
-				FA5FFCC625B766E300DA9920 /* Embed Frameworks */,
+				EA0A79CFD3060BC2017939D9 /* [CP] Embed Pods Frameworks */,
+				FAABE1F425B85CF7001FD8C5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -179,16 +370,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA5FFCEE25B824E000DA9920 /* Roboto-Bold.ttf in Resources */,
+				FAABE21525B86AF2001FD8C5 /* Localizable.strings in Resources */,
+				FA5FFCDC25B821A400DA9920 /* MainSearchVC.xib in Resources */,
+				FA5FFCF525B824EF00DA9920 /* Roboto-Regular.ttf in Resources */,
+				FA5FFCF625B824EF00DA9920 /* Roboto-Light.ttf in Resources */,
+				FA5FFCD825B8218C00DA9920 /* LibraryVC.xib in Resources */,
 				FAA207E925B6DBFE004D12CF /* LaunchScreen.storyboard in Resources */,
+				FA5FFCE025B821D900DA9920 /* SettingsVC.xib in Resources */,
+				FA5FFCF325B824EF00DA9920 /* Roboto-Italic.ttf in Resources */,
+				FA5FFCD425B8214800DA9920 /* HomeVC.xib in Resources */,
 				FAA207E625B6DBFE004D12CF /* Assets.xcassets in Resources */,
-				FAA207E425B6DBFC004D12CF /* Main.storyboard in Resources */,
+				FA5FFCF425B824EF00DA9920 /* Roboto-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4303FEA24F1CD547DC68D900 /* [CP] Check Pods Manifest.lock */ = {
+		A5FB0B7139D555E257BED3BC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -210,7 +410,43 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FAE0BAE825B6E0C90070F70D /* ShellScript */ = {
+		EA0A79CFD3060BC2017939D9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mousiki/Pods-Mousiki-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mousiki/Pods-Mousiki-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mousiki/Pods-Mousiki-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FAABE1E725B85B53001FD8C5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$TEMP_DIR/rswift-lastrun",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
+		};
+		FAABE1EE25B85C9B001FD8C5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -234,23 +470,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAA207E125B6DBFC004D12CF /* ViewController.swift in Sources */,
+				FAABE20D25B86794001FD8C5 /* Locale.swift in Sources */,
+				FAABE20525B86735001FD8C5 /* UIViewController+Alert.swift in Sources */,
+				FAABE1FC25B866EE001FD8C5 /* UIViewExt.swift in Sources */,
+				FAABE1F825B86698001FD8C5 /* UIViewController+Helper.swift in Sources */,
+				FA5FFCE625B8238F00DA9920 /* Screen.swift in Sources */,
+				FAABE20925B8676B001FD8C5 /* UITableViewExt.swift in Sources */,
+				FA5FFCD725B8218C00DA9920 /* LibraryVC.swift in Sources */,
+				FAABE1EA25B85B9F001FD8C5 /* R.generated.swift in Sources */,
+				FAABE1FA25B866C1001FD8C5 /* String+Extension.swift in Sources */,
+				FAABE1F625B8661C001FD8C5 /* UIColorExt.swift in Sources */,
+				FA5FFCD325B8214800DA9920 /* HomeVC.swift in Sources */,
 				FAA207DD25B6DBFC004D12CF /* AppDelegate.swift in Sources */,
+				FAABE20B25B86786001FD8C5 /* CollectionExt.swift in Sources */,
+				FA5FFCE825B823AA00DA9920 /* Font.swift in Sources */,
 				FAA207DF25B6DBFC004D12CF /* SceneDelegate.swift in Sources */,
+				FA5FFCDB25B821A400DA9920 /* MainSearchVC.swift in Sources */,
+				FA5FFCDF25B821D900DA9920 /* SettingsVC.swift in Sources */,
+				FAABE20325B8671D001FD8C5 /* UIViewController+Network.swift in Sources */,
+				FAABE20725B86755001FD8C5 /* UIViewController + Keyboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FAA207E225B6DBFC004D12CF /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FAA207E325B6DBFC004D12CF /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -378,12 +622,15 @@
 		};
 		FAA207EE25B6DBFE004D12CF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6E47CB1A6F89CF419C76886 /* Pods-Mousiki.debug.xcconfig */;
+			baseConfigurationReference = 88A3FEA9F7E64247A44DE3DF /* Pods-Mousiki.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MTTTZM4R7M;
-				FRAMEWORK_SEARCH_PATHS = "/Users/macbook/AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../shared/build/xcode-frameworks",
+				);
 				INFOPLIST_FILE = Mousiki/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -398,12 +645,18 @@
 		};
 		FAA207EF25B6DBFE004D12CF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F09AD451831C26B84B3A66C8 /* Pods-Mousiki.release.xcconfig */;
+			baseConfigurationReference = 03D7859ADD3CF7DCE340599D /* Pods-Mousiki.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MTTTZM4R7M;
-				FRAMEWORK_SEARCH_PATHS = "/Users/macbook/AndroidStudioProjects/Mousiki/shared/build/xcode-frameworks";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/R.swift.Library/Rswift.framework/Headers\"",
+					"$(SRCROOT)/../shared/build/xcode-frameworks",
+				);
 				INFOPLIST_FILE = Mousiki/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
