@@ -13,14 +13,15 @@ import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.toTrack
 import com.cas.musicplayer.data.repositories.HomeRepository
-import com.cas.musicplayer.domain.model.GenreMusic
+import com.mousiki.shared.domain.models.GenreMusic
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.domain.model.HomeItem
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
@@ -64,6 +65,7 @@ class HomeViewModel @Inject constructor(
     val homeItems: LiveData<List<HomeItem>> = _homeItems
 
     init {
+        R.drawable.img_genres_4
         getHome()
     }
 

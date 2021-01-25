@@ -13,10 +13,10 @@ import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
-import com.cas.delegatedadapter.AdapterDelegate
-import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.utils.UserPrefs

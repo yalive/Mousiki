@@ -1,7 +1,7 @@
 package com.mousiki.shared.data.models
 
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.toYoutubeDuration
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toYoutubeDuration
 import com.mousiki.shared.Keep
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

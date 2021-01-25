@@ -4,7 +4,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="464" id="KGk-i7-Jjw" customClass="HomeGenreCell" customModule="Mousiki" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="464"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="464"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Bxz-5E-K8y">
+                        <rect key="frame" x="12" y="0.0" width="576" height="448"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="igw-9M-vFm">
+                                <rect key="frame" x="0.0" y="0.0" width="576" height="100"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vwo-gA-cdI">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eon-rg-Hx2">
+                                                <rect key="frame" x="16" y="16" width="196" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="3BW-HX-P2L">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="nSW-hj-y1x"/>
+                                                    <constraint firstAttribute="height" constant="80" id="nmR-oG-yEO"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstItem="eon-rg-Hx2" firstAttribute="top" secondItem="vwo-gA-cdI" secondAttribute="top" constant="16" id="0su-cs-MvK"/>
+                                            <constraint firstItem="eon-rg-Hx2" firstAttribute="leading" secondItem="vwo-gA-cdI" secondAttribute="leading" constant="16" id="23v-PZ-qou"/>
+                                            <constraint firstAttribute="trailing" secondItem="3BW-HX-P2L" secondAttribute="trailing" constant="8" id="Vqr-Uo-RP8"/>
+                                            <constraint firstAttribute="bottom" secondItem="3BW-HX-P2L" secondAttribute="bottom" constant="8" id="pum-7D-rSd"/>
+                                            <constraint firstItem="3BW-HX-P2L" firstAttribute="leading" secondItem="eon-rg-Hx2" secondAttribute="trailing" constant="-40" id="uc0-66-Jxb"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLb-NJ-1kd">
+                                        <rect key="frame" x="296" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etB-DR-edJ">
+                                                <rect key="frame" x="16" y="16" width="196" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="Zde-yc-FAi">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="751-st-aSx"/>
+                                                    <constraint firstAttribute="width" constant="100" id="9jC-qb-9T6"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstItem="Zde-yc-FAi" firstAttribute="leading" secondItem="etB-DR-edJ" secondAttribute="trailing" constant="-40" id="CpN-OW-bMm"/>
+                                            <constraint firstItem="etB-DR-edJ" firstAttribute="top" secondItem="hLb-NJ-1kd" secondAttribute="top" constant="16" id="LNM-71-WZF"/>
+                                            <constraint firstAttribute="bottom" secondItem="Zde-yc-FAi" secondAttribute="bottom" constant="8" id="cd1-Wa-fbf"/>
+                                            <constraint firstAttribute="trailing" secondItem="Zde-yc-FAi" secondAttribute="trailing" constant="8" id="fIN-Qd-HmS"/>
+                                            <constraint firstItem="etB-DR-edJ" firstAttribute="leading" secondItem="hLb-NJ-1kd" secondAttribute="leading" constant="16" id="yTe-ng-50B"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="yV7-eh-8xF"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="26J-ZR-AB6">
+                                <rect key="frame" x="0.0" y="116" width="576" height="100"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M8L-p5-hJb">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yAy-LM-Cby">
+                                                <rect key="frame" x="16" y="16" width="196" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="aKO-9A-z7M">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="20z-g4-UHR"/>
+                                                    <constraint firstAttribute="width" constant="100" id="jSZ-Y7-4sb"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="aKO-9A-z7M" secondAttribute="trailing" constant="8" id="W1h-pK-f09"/>
+                                            <constraint firstItem="aKO-9A-z7M" firstAttribute="leading" secondItem="yAy-LM-Cby" secondAttribute="trailing" constant="-40" id="aPL-lR-nwK"/>
+                                            <constraint firstAttribute="bottom" secondItem="aKO-9A-z7M" secondAttribute="bottom" constant="8" id="rGt-xl-B1J"/>
+                                            <constraint firstItem="yAy-LM-Cby" firstAttribute="top" secondItem="M8L-p5-hJb" secondAttribute="top" constant="16" id="xM2-Qo-CcQ"/>
+                                            <constraint firstItem="yAy-LM-Cby" firstAttribute="leading" secondItem="M8L-p5-hJb" secondAttribute="leading" constant="16" id="xVg-iX-AOX"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iQ6-t3-tYh">
+                                        <rect key="frame" x="296" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2L-ff-38r">
+                                                <rect key="frame" x="16" y="16" width="196" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="IHh-rQ-rHo">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="3T6-zi-0Lv"/>
+                                                    <constraint firstAttribute="height" constant="80" id="9zH-pQ-c6j"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="IHh-rQ-rHo" secondAttribute="trailing" constant="8" id="C5d-Q8-HOj"/>
+                                            <constraint firstAttribute="bottom" secondItem="IHh-rQ-rHo" secondAttribute="bottom" constant="8" id="cmM-Yh-tXy"/>
+                                            <constraint firstItem="IHh-rQ-rHo" firstAttribute="leading" secondItem="E2L-ff-38r" secondAttribute="trailing" constant="-40" id="ebr-vt-9kN"/>
+                                            <constraint firstItem="E2L-ff-38r" firstAttribute="leading" secondItem="iQ6-t3-tYh" secondAttribute="leading" constant="16" id="nHZ-Xa-C3a"/>
+                                            <constraint firstItem="E2L-ff-38r" firstAttribute="top" secondItem="iQ6-t3-tYh" secondAttribute="top" constant="16" id="sNC-IW-f0s"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="rvU-6y-rp9"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="LSv-iP-7fM">
+                                <rect key="frame" x="0.0" y="232" width="576" height="100"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1dE-ZG-iYa">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1m-Wd-1dY">
+                                                <rect key="frame" x="16" y="16" width="196" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="R5U-l7-KYv">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="BhB-6m-Ejy"/>
+                                                    <constraint firstAttribute="width" constant="100" id="Xoi-Ge-nSG"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="R5U-l7-KYv" secondAttribute="trailing" constant="8" id="SsD-Ma-WeO"/>
+                                            <constraint firstItem="D1m-Wd-1dY" firstAttribute="top" secondItem="1dE-ZG-iYa" secondAttribute="top" constant="16" id="TTy-Nz-cOL"/>
+                                            <constraint firstItem="D1m-Wd-1dY" firstAttribute="leading" secondItem="1dE-ZG-iYa" secondAttribute="leading" constant="16" id="Vbk-aL-d17"/>
+                                            <constraint firstItem="R5U-l7-KYv" firstAttribute="leading" secondItem="D1m-Wd-1dY" secondAttribute="trailing" constant="-40" id="gR4-zX-GV1"/>
+                                            <constraint firstAttribute="bottom" secondItem="R5U-l7-KYv" secondAttribute="bottom" constant="8" id="xe9-6W-amm"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="abw-ey-yfI">
+                                        <rect key="frame" x="296" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AAb-xt-i6k">
+                                                <rect key="frame" x="16" y="16" width="216" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="oMs-rO-ib1">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="DTL-UO-rbP"/>
+                                                    <constraint firstAttribute="width" constant="100" id="gcV-Xd-O8x"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstItem="oMs-rO-ib1" firstAttribute="leading" secondItem="AAb-xt-i6k" secondAttribute="trailing" constant="-60" id="1gY-sC-LkN"/>
+                                            <constraint firstAttribute="trailing" secondItem="oMs-rO-ib1" secondAttribute="trailing" constant="8" id="6ec-BU-5Y7"/>
+                                            <constraint firstItem="AAb-xt-i6k" firstAttribute="leading" secondItem="abw-ey-yfI" secondAttribute="leading" constant="16" id="GaQ-dc-u4S"/>
+                                            <constraint firstItem="AAb-xt-i6k" firstAttribute="top" secondItem="abw-ey-yfI" secondAttribute="top" constant="16" id="o8v-7r-gDp"/>
+                                            <constraint firstAttribute="bottom" secondItem="oMs-rO-ib1" secondAttribute="bottom" constant="8" id="rvR-7r-Rmu"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="QFM-O0-7Yo"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="qLQ-oA-tEx">
+                                <rect key="frame" x="0.0" y="348" width="576" height="100"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8TH-nq-aCY">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Zk-Ss-hcK">
+                                                <rect key="frame" x="16" y="16" width="196" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="xxr-Pp-lSP">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="htl-M9-Gcg"/>
+                                                    <constraint firstAttribute="width" constant="100" id="ssy-yf-zA5"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="xxr-Pp-lSP" secondAttribute="trailing" constant="8" id="1h0-20-QR5"/>
+                                            <constraint firstItem="5Zk-Ss-hcK" firstAttribute="leading" secondItem="8TH-nq-aCY" secondAttribute="leading" constant="16" id="9Hj-nf-fyh"/>
+                                            <constraint firstAttribute="bottom" secondItem="xxr-Pp-lSP" secondAttribute="bottom" constant="8" id="SAJ-QQ-mxa"/>
+                                            <constraint firstItem="5Zk-Ss-hcK" firstAttribute="top" secondItem="8TH-nq-aCY" secondAttribute="top" constant="16" id="XXJ-aj-sk8"/>
+                                            <constraint firstItem="xxr-Pp-lSP" firstAttribute="leading" secondItem="5Zk-Ss-hcK" secondAttribute="trailing" constant="-40" id="Y2T-Kt-Gc2"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFu-xL-VbW">
+                                        <rect key="frame" x="296" y="0.0" width="280" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pop Music" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pen-9D-dB8">
+                                                <rect key="frame" x="16" y="16" width="196" height="19"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="def_simple_playlist" translatesAutoresizingMaskIntoConstraints="NO" id="ffM-Nn-pUC">
+                                                <rect key="frame" x="172" y="12" width="100" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="ATN-BZ-97Y"/>
+                                                    <constraint firstAttribute="height" constant="80" id="fWd-gC-U7r"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="ffM-Nn-pUC" secondAttribute="trailing" constant="8" id="IPs-lX-w6b"/>
+                                            <constraint firstItem="pen-9D-dB8" firstAttribute="leading" secondItem="SFu-xL-VbW" secondAttribute="leading" constant="16" id="ZIH-e9-hyx"/>
+                                            <constraint firstAttribute="bottom" secondItem="ffM-Nn-pUC" secondAttribute="bottom" constant="8" id="rvO-eJ-Q8r"/>
+                                            <constraint firstItem="ffM-Nn-pUC" firstAttribute="leading" secondItem="pen-9D-dB8" secondAttribute="trailing" constant="-40" id="sAg-jr-hsI"/>
+                                            <constraint firstItem="pen-9D-dB8" firstAttribute="top" secondItem="SFu-xL-VbW" secondAttribute="top" constant="16" id="xUv-Z6-2EO"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="esS-35-fuO"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </stackView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="Bxz-5E-K8y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="XBB-Ri-2z2"/>
+                    <constraint firstItem="Bxz-5E-K8y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="kiw-UH-hh0"/>
+                    <constraint firstAttribute="trailing" secondItem="Bxz-5E-K8y" secondAttribute="trailing" constant="12" id="lc6-Ty-bdN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <gestureRecognizers/>
+            <connections>
+                <outletCollection property="labels" destination="eon-rg-Hx2" collectionClass="NSMutableArray" id="hD4-Ft-SIL"/>
+                <outletCollection property="labels" destination="etB-DR-edJ" collectionClass="NSMutableArray" id="asr-hp-NoO"/>
+                <outletCollection property="labels" destination="yAy-LM-Cby" collectionClass="NSMutableArray" id="cKg-rO-ztE"/>
+                <outletCollection property="labels" destination="E2L-ff-38r" collectionClass="NSMutableArray" id="SP3-I5-4U3"/>
+                <outletCollection property="labels" destination="D1m-Wd-1dY" collectionClass="NSMutableArray" id="UcI-f8-xsD"/>
+                <outletCollection property="labels" destination="AAb-xt-i6k" collectionClass="NSMutableArray" id="A6J-ge-hd3"/>
+                <outletCollection property="labels" destination="5Zk-Ss-hcK" collectionClass="NSMutableArray" id="c6l-3R-zaj"/>
+                <outletCollection property="labels" destination="pen-9D-dB8" collectionClass="NSMutableArray" id="x6S-0u-kZG"/>
+                <outletCollection property="images" destination="3BW-HX-P2L" collectionClass="NSMutableArray" id="kDk-4q-Rcf"/>
+                <outletCollection property="images" destination="Zde-yc-FAi" collectionClass="NSMutableArray" id="xi5-z7-n6v"/>
+                <outletCollection property="images" destination="aKO-9A-z7M" collectionClass="NSMutableArray" id="8sF-Wq-4K2"/>
+                <outletCollection property="images" destination="IHh-rQ-rHo" collectionClass="NSMutableArray" id="l29-PA-ag0"/>
+                <outletCollection property="images" destination="R5U-l7-KYv" collectionClass="NSMutableArray" id="QGH-FR-CVD"/>
+                <outletCollection property="images" destination="oMs-rO-ib1" collectionClass="NSMutableArray" id="ygo-dL-VaB"/>
+                <outletCollection property="images" destination="xxr-Pp-lSP" collectionClass="NSMutableArray" id="XL9-DZ-ULy"/>
+                <outletCollection property="images" destination="ffM-Nn-pUC" collectionClass="NSMutableArray" id="PGm-oU-DVz"/>
+                <outletCollection property="views" destination="vwo-gA-cdI" collectionClass="NSMutableArray" id="CvY-rE-Rzh"/>
+                <outletCollection property="views" destination="hLb-NJ-1kd" collectionClass="NSMutableArray" id="aF6-ht-1Zu"/>
+                <outletCollection property="views" destination="M8L-p5-hJb" collectionClass="NSMutableArray" id="ESr-76-ALY"/>
+                <outletCollection property="views" destination="iQ6-t3-tYh" collectionClass="NSMutableArray" id="7XJ-00-w5G"/>
+                <outletCollection property="views" destination="1dE-ZG-iYa" collectionClass="NSMutableArray" id="lEM-Qv-6FJ"/>
+                <outletCollection property="views" destination="abw-ey-yfI" collectionClass="NSMutableArray" id="oNe-dA-rZ3"/>
+                <outletCollection property="views" destination="8TH-nq-aCY" collectionClass="NSMutableArray" id="sao-Yf-h9u"/>
+                <outletCollection property="views" destination="SFu-xL-VbW" collectionClass="NSMutableArray" id="qKG-lt-RxC"/>
+            </connections>
+            <point key="canvasLocation" x="-68.115942028985515" y="186.83035714285714"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="def_simple_playlist" width="1280" height="720"/>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

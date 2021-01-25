@@ -1,7 +1,7 @@
 package com.cas.musicplayer.ui.library.model
 
 import androidx.annotation.StringRes
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem

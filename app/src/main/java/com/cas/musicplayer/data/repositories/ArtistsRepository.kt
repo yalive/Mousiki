@@ -11,7 +11,7 @@ import com.cas.musicplayer.data.datasource.ArtistsRemoteDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics

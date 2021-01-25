@@ -3,7 +3,7 @@ package com.cas.musicplayer.data.datasource.channel
 import com.cas.musicplayer.data.local.database.dao.ChannelSongsDao
 import com.cas.musicplayer.data.local.models.ChannelSongEntity
 import com.cas.musicplayer.data.local.models.toMusicTrack
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

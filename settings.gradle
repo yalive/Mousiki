@@ -1,4 +1,3 @@
 include ':shared'
 include ':app'
 include ':common'
-include ':delegatedadapter'

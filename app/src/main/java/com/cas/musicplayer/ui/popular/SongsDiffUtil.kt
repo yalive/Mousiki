@@ -1,8 +1,8 @@
 package com.cas.musicplayer.ui.popular
 
 import androidx.recyclerview.widget.DiffUtil
-import com.cas.delegatedadapter.DisplayableItem
-import com.cas.delegatedadapter.LoadingItem
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.LoadingItem
 import com.cas.musicplayer.ui.common.ads.AdsItem
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.model.SongsHeaderItem

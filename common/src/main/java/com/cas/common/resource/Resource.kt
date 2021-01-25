@@ -47,15 +47,3 @@ fun <T> Resource<T>.doOnSuccess(block: (T) -> Unit) {
         is Resource.Success -> block(data)
     }
 }
-
-fun <T> Resource<T>.doOnError(block: (AppMessage) -> Unit) {
-    when (this) {
-        is Resource.Failure -> block(this.message)
-    }
-}
-
-fun <T> Resource<T>.doOnLoading(block: () -> Unit) {
-    when (this) {
-        is Resource.Loading -> block()
-    }
-}

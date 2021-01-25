@@ -7,7 +7,7 @@ import com.cas.common.extensions.observe
 import com.cas.common.viewmodel.viewModel
 import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 

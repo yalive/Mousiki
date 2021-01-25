@@ -13,7 +13,7 @@ import androidx.core.view.postDelayed
 import com.cas.common.extensions.*
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LockScreenLayoutBinding
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.utils.BrightnessUtils

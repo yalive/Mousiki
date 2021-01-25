@@ -192,7 +192,6 @@ dependencies {
 
     // Modules
     implementation project(path: ':common')
-    implementation project(path: ':delegatedadapter')
     implementation project(path: ':shared')
 }
 

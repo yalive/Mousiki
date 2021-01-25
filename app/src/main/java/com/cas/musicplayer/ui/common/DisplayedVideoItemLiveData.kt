@@ -2,8 +2,8 @@ package com.cas.musicplayer.ui.common
 
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
-import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 
 /**

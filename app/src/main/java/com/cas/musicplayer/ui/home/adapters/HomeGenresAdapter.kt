@@ -1,6 +1,8 @@
 package com.cas.musicplayer.ui.home.adapters
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +17,14 @@ import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
-import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.domain.model.GenreMusic
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.domain.models.GenreMusic
 
 /**
  ***************************************
@@ -44,14 +46,18 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
 
     override fun bind(genreMusic: GenreMusic) {
         txtTitle.text = genreMusic.title
-        imgCategory.setImageDrawable(itemView.context.drawable(genreMusic.img))
+        imgCategory.setImageDrawable(genreMusic.getImage(itemView.context))
         view.findViewById<ViewGroup>(R.id.cardView).onClick {
-            val artist = Artist(genreMusic.title, "US", genreMusic.topTracksPlaylist)
+            val artist = Artist(
+                genreMusic.title,
+                "US",
+                genreMusic.topTracksPlaylist
+            )
             val bundle = bundleOf(
                 PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to genreMusic.topTracksPlaylist,
                 EXTRAS_ARTIST to artist,
-                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageRes(
-                    genreMusic.img
+                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageName(
+                    genreMusic.imageName
                 )
             )
             itemView.findNavController()
@@ -78,4 +84,12 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
             FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
+}
+
+fun GenreMusic.getImage(context: Context): Drawable {
+    val resources = context.resources
+    val resourceId: Int = resources.getIdentifier(
+        imageName, "drawable", context.packageName
+    )
+    return resources.getDrawable(resourceId)
 }

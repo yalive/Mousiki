@@ -29,9 +29,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlayerBinding
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.durationFormatted
-import com.cas.musicplayer.domain.model.durationToSeconds
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
@@ -42,6 +39,9 @@ import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
 import com.google.android.gms.ads.AdRequest
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.durationFormatted
+import com.mousiki.shared.domain.models.durationToSeconds
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.sephiroth.android.library.xtooltip.ClosePolicy

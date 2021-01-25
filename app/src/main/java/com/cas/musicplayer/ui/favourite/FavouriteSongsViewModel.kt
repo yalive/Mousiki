@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.favourite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem

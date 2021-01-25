@@ -10,8 +10,8 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrlDef0
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -133,6 +133,12 @@ suspend fun ImageView.getBitmap(appImage: AppImage, maxHeight: Int): Bitmap? =
             }
             is AppImage.AppImageUrl -> {
                 picasso.load(appImage.url).resize(0, maxHeight).into(target)
+            }
+            is AppImage.AppImageName -> {
+                val resourceId: Int = resources.getIdentifier(
+                    appImage.name, "drawable", context.packageName
+                )
+                picasso.load(resourceId).resize(0, maxHeight).into(target)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.cas.musicplayer.domain.model
+package com.mousiki.shared.domain.models
 
 import com.mousiki.shared.Parcelable
 import com.mousiki.shared.Parcelize

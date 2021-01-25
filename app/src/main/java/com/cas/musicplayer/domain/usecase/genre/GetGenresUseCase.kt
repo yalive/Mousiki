@@ -1,7 +1,7 @@
 package com.cas.musicplayer.domain.usecase.genre
 
-import com.cas.musicplayer.data.repositories.GenresRepository
-import com.cas.musicplayer.domain.model.GenreMusic
+import com.mousiki.shared.data.repository.GenresRepository
+import com.mousiki.shared.domain.models.GenreMusic
 import javax.inject.Inject
 
 /**

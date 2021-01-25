@@ -5,7 +5,7 @@ import com.cas.musicplayer.data.local.database.dao.SearchPlaylistsDao
 import com.cas.musicplayer.data.local.database.dao.SearchSongDao
 import com.cas.musicplayer.data.local.models.*
 import com.mousiki.shared.domain.models.Channel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import javax.inject.Inject
 

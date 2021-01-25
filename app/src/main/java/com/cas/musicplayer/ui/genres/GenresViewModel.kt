@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.genres
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
 import com.cas.musicplayer.utils.uiCoroutine

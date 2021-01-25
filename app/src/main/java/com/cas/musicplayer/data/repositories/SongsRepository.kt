@@ -9,7 +9,7 @@ import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
 import com.cas.musicplayer.data.local.database.dao.FavouriteTracksDao
 import com.cas.musicplayer.data.local.models.FavouriteSongEntity
 import com.cas.musicplayer.data.local.models.toMusicTrack
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.NetworkUtils
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.bgContext

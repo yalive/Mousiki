@@ -9,8 +9,8 @@ import com.cas.common.result.Result
 import com.cas.common.result.asResource
 import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.delegatedadapter.DisplayableItem
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
 import com.cas.musicplayer.domain.usecase.search.GetRecentSearchQueriesUseCase
 import com.cas.musicplayer.domain.usecase.search.SaveSearchQueryUseCase

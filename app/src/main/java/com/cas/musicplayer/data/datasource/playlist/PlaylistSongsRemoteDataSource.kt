@@ -16,8 +16,8 @@ import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.data.repositories.ChartsRepository
-import com.cas.musicplayer.data.repositories.GenresRepository
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.data.repository.GenresRepository
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics

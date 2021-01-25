@@ -2,7 +2,7 @@ package com.cas.musicplayer.data.remote.mappers
 
 import com.mousiki.shared.data.models.YTBVideo
 import com.mousiki.shared.data.models.urlOrEmpty
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import javax.inject.Inject
 import javax.inject.Singleton
 

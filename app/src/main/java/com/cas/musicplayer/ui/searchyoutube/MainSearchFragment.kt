@@ -11,7 +11,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
-import com.cas.delegatedadapter.BaseDelegationAdapter
+import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentMainSearchBinding
 import com.cas.musicplayer.di.injector.injector

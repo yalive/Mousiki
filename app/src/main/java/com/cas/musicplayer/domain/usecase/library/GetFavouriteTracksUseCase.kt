@@ -1,7 +1,7 @@
 package com.cas.musicplayer.domain.usecase.library
 
 import com.cas.musicplayer.data.repositories.SongsRepository
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

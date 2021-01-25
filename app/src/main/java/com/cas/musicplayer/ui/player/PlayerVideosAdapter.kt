@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.player
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -10,9 +9,9 @@ import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.cas.common.extensions.inflate
-import com.cas.delegatedadapter.AdapterDelegate
-import com.cas.delegatedadapter.BaseDelegationAdapter
-import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.ads.PagerAdsCellDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem

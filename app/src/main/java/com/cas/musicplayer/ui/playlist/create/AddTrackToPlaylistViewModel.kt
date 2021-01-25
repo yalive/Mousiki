@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
