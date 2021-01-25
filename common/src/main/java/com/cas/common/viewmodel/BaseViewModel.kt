@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
-import com.cas.common.result.AppMessage
+import com.mousiki.shared.utils.TextResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,8 +21,8 @@ open class BaseViewModel : ViewModel(), CoroutineScope {
     private val job = Job()
     override val coroutineContext = job + Dispatchers.Main
 
-    private val _toast = MutableLiveData<Event<AppMessage.ResourceMessage>>()
-    val toast: LiveData<Event<AppMessage.ResourceMessage>> = _toast
+    private val _toast = MutableLiveData<Event<TextResource>>()
+    val toast: LiveData<Event<TextResource>> = _toast
 
     override fun onCleared() {
         super.onCleared()
@@ -30,6 +30,6 @@ open class BaseViewModel : ViewModel(), CoroutineScope {
     }
 
     fun showToast(@StringRes messageResId: Int) {
-        _toast.value = AppMessage.ResourceMessage(messageResId).asEvent()
+        _toast.value = TextResource.fromStringId(messageResId).asEvent()
     }
 }

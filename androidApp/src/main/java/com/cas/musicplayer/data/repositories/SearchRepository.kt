@@ -1,7 +1,6 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.common.result.Result
-import com.cas.common.result.alsoWhenSuccess
+import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.datasource.search.SearchLocalDataSource
 import com.cas.musicplayer.data.datasource.search.SearchRemoteDataSource
 import com.cas.musicplayer.data.local.database.dao.SearchQueryDao
@@ -10,6 +9,7 @@ import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.mousiki.shared.domain.models.Channel
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.SearchTracksResult
+import com.mousiki.shared.domain.result.alsoWhenSuccess
 import org.json.JSONArray
 import javax.inject.Inject
 import javax.inject.Singleton

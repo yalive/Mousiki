@@ -1,9 +1,9 @@
 package com.cas.musicplayer.domain.usecase.channel
 
-import com.cas.common.result.Result
-import com.cas.common.result.map
 import com.cas.musicplayer.data.repositories.PlaylistRepository
 import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.map
 import javax.inject.Inject
 
 /**

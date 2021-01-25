@@ -1,6 +1,6 @@
 package com.cas.musicplayer.domain.usecase.artist
 
-import com.cas.common.result.Result
+import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.data.repositories.ArtistsRepository
 import com.mousiki.shared.domain.models.MusicTrack

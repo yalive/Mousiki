@@ -5,12 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.common.resource.Resource
-import com.cas.common.result.Result
 import com.cas.common.result.asResource
-import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
 import com.cas.musicplayer.domain.usecase.search.GetRecentSearchQueriesUseCase
 import com.cas.musicplayer.domain.usecase.search.SaveSearchQueryUseCase
@@ -21,6 +17,10 @@ import com.cas.musicplayer.ui.common.songList
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.cas.musicplayer.utils.uiScope
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.map
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject

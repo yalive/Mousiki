@@ -1,6 +1,6 @@
 package com.cas.musicplayer.domain.usecase.search
 
-import com.cas.common.result.Result
+import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.repositories.SearchRepository
 import com.mousiki.shared.domain.models.Channel
 import javax.inject.Inject

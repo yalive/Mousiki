@@ -2,17 +2,17 @@ package com.cas.musicplayer.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.cas.common.result.Result
-import com.cas.common.result.alsoWhenSuccess
 import com.cas.musicplayer.data.datasource.LocalSongsDataSource
 import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
 import com.cas.musicplayer.data.local.database.dao.FavouriteTracksDao
 import com.cas.musicplayer.data.local.models.FavouriteSongEntity
 import com.cas.musicplayer.data.local.models.toMusicTrack
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.NetworkUtils
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.bgContext
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.alsoWhenSuccess
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton

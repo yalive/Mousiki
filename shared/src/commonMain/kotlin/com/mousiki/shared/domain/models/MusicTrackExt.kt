@@ -38,7 +38,9 @@ val MusicTrack.durationFormatted: String
             }
 
         } else if (arr.size == 2) {
-            timeString = "%02d:%02d".format(arr[0].toInt(), arr[1].toInt())
+            val args = arr[0].toInt()
+            val args1 = arr[1].toInt()
+            timeString = "%02d:%02d".format(args, args1)
         } else if (arr.size == 3) {
             timeString = "%d:%02d:%02d".format(arr[0].toInt(), arr[1].toInt(), arr[2].toInt())
         }

@@ -9,19 +9,13 @@ import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
-import com.cas.common.result.Result
 import com.cas.common.result.asResource
-import com.cas.common.result.map
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.data.models.toTrack
 import com.cas.musicplayer.data.repositories.HomeRepository
-import com.mousiki.shared.domain.models.GenreMusic
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.domain.model.HomeItem
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase
 import com.cas.musicplayer.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
@@ -32,6 +26,12 @@ import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.cas.musicplayer.utils.uiCoroutine
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.toTrack
+import com.mousiki.shared.domain.models.GenreMusic
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

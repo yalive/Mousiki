@@ -1,7 +1,7 @@
 package com.cas.common.resource
 
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.result.AppMessage
+import com.mousiki.shared.utils.TextResource
 
 /**
  **********************************
@@ -17,7 +17,7 @@ sealed class Resource<out T> {
 
     data class Success<out T>(val data: T) : Resource<T>()
 
-    data class Failure(val message: AppMessage) : Resource<Nothing>()
+    data class Failure(val message: TextResource) : Resource<Nothing>()
 }
 
 fun <T> MutableLiveData<Resource<List<T>>>.hasItems(): Boolean {

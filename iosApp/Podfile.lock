@@ -1,0 +1,45 @@
+PODS:
+  - Alamofire (5.2.0)
+  - EZAlertController (4.2)
+  - Kingfisher (6.0.1)
+  - R.swift (5.2.2):
+    - R.swift.Library (~> 5.2.0)
+  - R.swift.Library (5.2.0)
+  - SVProgressHUD (2.2.5)
+
+DEPENDENCIES:
+  - Alamofire (~> 5.2)
+  - EZAlertController (from `https://github.com/thellimist/EZAlertController.git`, branch `master`)
+  - Kingfisher (= 6.0.1)
+  - R.swift
+  - SVProgressHUD
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Kingfisher
+    - R.swift
+    - R.swift.Library
+    - SVProgressHUD
+
+EXTERNAL SOURCES:
+  EZAlertController:
+    :branch: master
+    :git: https://github.com/thellimist/EZAlertController.git
+
+CHECKOUT OPTIONS:
+  EZAlertController:
+    :commit: 235b78ae4477e4ff413485c17e3ef69e58a32261
+    :git: https://github.com/thellimist/EZAlertController.git
+
+SPEC CHECKSUMS:
+  Alamofire: c1ca147559e730bfb2182c8c7aafbdd90a867987
+  EZAlertController: 00a5f68e2b6561416306ea434ef1be6c0239319a
+  Kingfisher: adde87a4f74f6a3845395769354efff593581740
+  R.swift: 7c52cdc57a66840ffe6cbd8a823d732059d42a32
+  R.swift.Library: 5ba4f1631300caf9a4d890186930da85d540769d
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+
+PODFILE CHECKSUM: 9ad2e70a40ba024e7b11018fb26bf95879184d95
+
+COCOAPODS: 1.9.1

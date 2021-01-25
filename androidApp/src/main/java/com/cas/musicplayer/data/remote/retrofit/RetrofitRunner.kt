@@ -1,17 +1,17 @@
 package com.cas.musicplayer.data.remote.retrofit
 
-import com.cas.common.result.AppMessage
 import com.cas.common.result.NO_RESULT
-import com.cas.common.result.Result
+import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.R
-import com.mousiki.shared.data.config.SearchConfig
-import com.mousiki.shared.data.config.apiList
-import com.mousiki.shared.data.config.maxApi
-import com.mousiki.shared.data.config.retryCount
 import com.cas.musicplayer.data.datasource.search.getOrEmpty
 import com.cas.musicplayer.data.remote.mappers.Mapper
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.data.config.SearchConfig
+import com.mousiki.shared.data.config.apiList
+import com.mousiki.shared.data.config.maxApi
+import com.mousiki.shared.data.config.retryCount
+import com.mousiki.shared.utils.TextResource
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -40,7 +40,7 @@ class RetrofitRunner @Inject constructor() {
         Result.Success(mappedResponse)
     } catch (e: Exception) {
         FirebaseCrashlytics.getInstance().recordException(e)
-        Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
+        Result.Error(TextResource.fromStringId(R.string.common_technical_issue))
     }
 
     suspend fun <T> executeNetworkCall(
@@ -50,7 +50,7 @@ class RetrofitRunner @Inject constructor() {
         Result.Success(response)
     } catch (e: Exception) {
         FirebaseCrashlytics.getInstance().recordException(e)
-        Result.Error(AppMessage.ResourceMessage(R.string.common_technical_issue))
+        Result.Error(TextResource.fromStringId(R.string.common_technical_issue))
     }
 
     suspend fun <T> loadWithRetry(

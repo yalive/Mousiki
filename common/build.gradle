@@ -49,4 +49,6 @@ dependencies {
 
     // Recycler view
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    implementation project(path: ':shared')
 }

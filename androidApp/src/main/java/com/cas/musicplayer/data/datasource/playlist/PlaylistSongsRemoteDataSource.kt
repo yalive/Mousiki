@@ -3,7 +3,7 @@ package com.cas.musicplayer.data.datasource.playlist
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.result.NO_RESULT
-import com.cas.common.result.Result
+import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToTrack
 import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToVideoId

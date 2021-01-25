@@ -1,6 +1,6 @@
 package com.cas.musicplayer.data.datasource.channel
 
-import com.cas.common.result.Result
+import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.remote.mappers.YTBPlaylistToPlaylist
 import com.cas.musicplayer.data.remote.mappers.toListMapper
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
