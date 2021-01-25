@@ -7,7 +7,7 @@ import com.cas.musicplayer.data.remote.mappers.*
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.cas.musicplayer.domain.model.hasData
+import com.mousiki.shared.domain.models.hasData
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.mousiki.shared.data.models.searchResults
 import com.mousiki.shared.domain.models.Channel
