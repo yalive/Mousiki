@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.BaseViewModel
+import com.mousiki.shared.utils.resolve
 
 /**
  ***************************************
@@ -27,7 +28,8 @@ abstract class BaseFragment<T : BaseViewModel>(
         super.onResume()
         setupToolbar()
         observeEvent(viewModel.toast) {
-            Toast.makeText(requireContext(), it.resMessage, Toast.LENGTH_LONG).show()
+            val message = requireContext().resolve(it)
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
     }
 

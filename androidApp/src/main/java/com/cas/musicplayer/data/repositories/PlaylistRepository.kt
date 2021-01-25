@@ -1,8 +1,7 @@
 package com.cas.musicplayer.data.repositories
 
-import com.cas.common.result.Result
-import com.cas.common.result.Result.Success
-import com.cas.common.result.alsoWhenSuccess
+import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.Result.Success
 import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsLocalDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
@@ -11,6 +10,7 @@ import com.cas.musicplayer.data.local.database.dao.CustomPlaylistTrackDao
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.utils.NetworkUtils
+import com.mousiki.shared.domain.result.alsoWhenSuccess
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -3,7 +3,7 @@ package com.cas.musicplayer.data.repositories
 import android.content.Context
 import android.os.SystemClock
 import com.cas.common.result.NO_RESULT
-import com.cas.common.result.Result
+import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.datasource.search.getOrEmpty
 import com.cas.musicplayer.data.preferences.PreferencesHelper

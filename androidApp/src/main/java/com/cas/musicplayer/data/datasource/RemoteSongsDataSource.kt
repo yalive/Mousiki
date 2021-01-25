@@ -2,7 +2,7 @@ package com.cas.musicplayer.data.datasource
 
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
-import com.cas.common.result.Result
+import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
 import com.cas.musicplayer.data.remote.mappers.toListMapper
