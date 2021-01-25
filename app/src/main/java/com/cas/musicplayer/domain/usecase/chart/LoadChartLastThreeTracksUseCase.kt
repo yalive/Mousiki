@@ -2,7 +2,7 @@ package com.cas.musicplayer.domain.usecase.chart
 
 import com.cas.musicplayer.data.repositories.ChartsRepository
 import com.cas.musicplayer.domain.model.ChartModel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import javax.inject.Inject
 
 /**

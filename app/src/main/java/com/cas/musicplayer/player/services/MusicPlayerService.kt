@@ -25,7 +25,7 @@ import com.cas.common.extensions.bool
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt

@@ -14,7 +14,7 @@ import com.mousiki.shared.data.models.tracks
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.google.firebase.crashlytics.FirebaseCrashlytics

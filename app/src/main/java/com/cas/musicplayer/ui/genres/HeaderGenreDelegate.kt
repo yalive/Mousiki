@@ -6,8 +6,8 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.delegatedadapter.AdapterDelegate
-import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 
 /**

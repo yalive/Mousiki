@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase

@@ -3,7 +3,7 @@ package com.cas.musicplayer.data.local.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 
 /**
  ***************************************

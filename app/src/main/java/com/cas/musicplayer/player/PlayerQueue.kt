@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.popular.swapped

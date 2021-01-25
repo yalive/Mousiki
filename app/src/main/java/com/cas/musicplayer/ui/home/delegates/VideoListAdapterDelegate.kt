@@ -1,9 +1,9 @@
 package com.cas.musicplayer.ui.home.delegates
 
 import com.cas.common.resource.Resource
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.domain.model.HomeItem
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 

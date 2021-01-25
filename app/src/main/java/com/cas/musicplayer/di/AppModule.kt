@@ -9,6 +9,7 @@ import com.cas.musicplayer.data.local.database.dao.*
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.mousiki.shared.data.repository.GenresRepository
 import com.cas.musicplayer.utils.Constants
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.readystatesoftware.chuck.ChuckInterceptor
@@ -181,4 +182,9 @@ object AppModule {
     @Provides
     fun providesCustomPlaylistTrackDao(db: MusicTrackRoomDatabase): CustomPlaylistTrackDao =
         db.customPlaylistTrackDao()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesGenreRepository(): GenresRepository = GenresRepository()
 }

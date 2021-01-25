@@ -1,7 +1,7 @@
 package com.cas.musicplayer.ui.playlist.create
 
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.utils.Constants

@@ -15,17 +15,18 @@ import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
-import com.cas.delegatedadapter.AdapterDelegate
-import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
-import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.domain.model.GenreMusic
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.GenreMusic
+import com.cas.musicplayer.ui.home.adapters.getImage
 
 /**
  ***************************************
@@ -62,18 +63,22 @@ class GenreAdapterDelegate(
 
         fun bind(genreMusic: GenreMusic) {
             txtTitle.text = genreMusic.title
-            imgCategory.setImageDrawable(itemView.context.drawable(genreMusic.img))
+            imgCategory.setImageDrawable(genreMusic.getImage(view.context))
             view.findViewById<ViewGroup>(R.id.cardView).onClick {
                 val bundle = Bundle()
                 bundle.putString(
                     PlaylistSongsFragment.EXTRAS_PLAYLIST_ID,
                     genreMusic.topTracksPlaylist
                 )
-                val artist = Artist(genreMusic.title, "US", genreMusic.topTracksPlaylist)
+                val artist = Artist(
+                    genreMusic.title,
+                    "US",
+                    genreMusic.topTracksPlaylist
+                )
                 bundle.putParcelable(EXTRAS_ARTIST, artist)
                 bundle.putParcelable(
-                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE, AppImage.AppImageRes(
-                        genreMusic.img
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE, AppImage.AppImageName(
+                        genreMusic.imageName
                     )
                 )
                 itemView.findNavController()

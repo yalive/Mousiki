@@ -5,7 +5,7 @@ import android.view.View
 import com.cas.common.extensions.observe
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment

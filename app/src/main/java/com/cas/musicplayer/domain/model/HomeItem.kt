@@ -1,16 +1,15 @@
 package com.cas.musicplayer.domain.model
 
-import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.cas.common.resource.Resource
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
+import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.CompactPlaylist
 import com.mousiki.shared.data.models.SimplePlaylist
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import kotlinx.parcelize.Parcelize
+import com.mousiki.shared.domain.models.GenreMusic
 
 /**
  **********************************
@@ -48,12 +47,3 @@ data class ChartModel(
     @DrawableRes val featuredImageRes: Int
 )
 
-@Parcelize
-data class GenreMusic(
-    val title: String,
-    val img: Int,
-    val channelId: String,
-    val topTracksPlaylist: String,
-    val isMood: Boolean,
-    val backgroundColor: String
-) : Parcelable, DisplayableItem

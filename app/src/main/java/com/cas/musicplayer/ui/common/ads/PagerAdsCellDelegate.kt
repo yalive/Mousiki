@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.common.ads
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 
 

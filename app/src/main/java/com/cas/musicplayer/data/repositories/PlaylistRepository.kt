@@ -8,7 +8,7 @@ import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsRemoteDataSou
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
 import com.cas.musicplayer.data.local.database.dao.CustomPlaylistTrackDao
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.utils.NetworkUtils
 import javax.inject.Inject

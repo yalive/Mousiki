@@ -24,8 +24,8 @@ import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
-import com.cas.musicplayer.domain.model.toYoutubeDuration
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toYoutubeDuration
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp

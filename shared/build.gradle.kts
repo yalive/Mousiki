@@ -25,6 +25,10 @@ kotlin {
                         strictly("1.4.2-native-mt")
                     }
                 }
+
+                implementation("io.ktor:ktor-client-core:1.5.0")
+                implementation("io.ktor:ktor-client-json:1.5.0")
+                implementation("io.ktor:ktor-client-serialization:1.5.0")
             }
         }
         val androidMain by getting {
@@ -34,6 +38,7 @@ kotlin {
         }
         val iosMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-client-ios:1.5.0")
             }
         }
     }
@@ -53,6 +58,7 @@ val packForXcode by tasks.creating(Sync::class) {
     val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
     val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
     val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
+    print("Target is $targetName")
     val framework =
         kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
     inputs.property("mode", mode)

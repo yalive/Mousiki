@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase

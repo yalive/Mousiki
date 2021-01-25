@@ -1,6 +1,6 @@
 package com.mousiki.shared.data.models
 
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.Keep
 import kotlinx.serialization.Serializable
 

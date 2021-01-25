@@ -2,7 +2,7 @@ package com.cas.musicplayer.domain.usecase.recent
 
 import androidx.lifecycle.LiveData
 import com.cas.musicplayer.data.repositories.StatisticsRepository
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

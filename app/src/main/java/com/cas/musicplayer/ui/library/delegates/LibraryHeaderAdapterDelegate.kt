@@ -9,8 +9,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
-import com.cas.delegatedadapter.AdapterDelegate
-import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
 

@@ -6,10 +6,10 @@ import android.view.View
 import com.cas.common.extensions.observe
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.viewModel
-import com.cas.delegatedadapter.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.featuredImage

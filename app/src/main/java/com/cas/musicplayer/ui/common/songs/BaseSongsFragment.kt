@@ -8,6 +8,7 @@ import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,10 +22,8 @@ import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.delegatedadapter.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlaylistSongsBinding
-import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
@@ -35,6 +34,8 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.MusicTrack
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -184,15 +185,21 @@ abstract class BaseSongsFragment<T : BaseViewModel>
 
     protected fun loadFeaturedImage(featuredImage: AppImage) {
         when (featuredImage) {
-            is AppImageRes -> imgArtist?.setImageResource(featuredImage.resId)
+            is AppImageRes -> imgArtist.setImageResource(featuredImage.resId)
+            is AppImage.AppImageName -> {
+                val resourceId: Int = resources.getIdentifier(
+                    featuredImage.name, "drawable", requireContext().packageName
+                )
+                imgArtist.setImageResource(resourceId)
+            }
             is AppImageUrl -> {
-                imgArtist?.loadImage(
+                imgArtist.loadImage(
                     urlImage = featuredImage.url,
                     errorImage = R.drawable.app_icon_placeholder,
                     placeHolder = R.drawable.app_icon_placeholder
                 ) {
                     if (featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
-                        imgArtist?.loadImage(
+                        imgArtist.loadImage(
                             urlImage = featuredImage.altUrl,
                             errorImage = R.drawable.app_icon_placeholder,
                             placeHolder = R.drawable.app_icon_placeholder
@@ -204,9 +211,9 @@ abstract class BaseSongsFragment<T : BaseViewModel>
 
         // Background
         lifecycleScope.launch {
-            var imageBitmap = imgBackground?.getBitmap(featuredImage, 400)
+            var imageBitmap = imgBackground.getBitmap(featuredImage, 400)
             if (imageBitmap == null && featuredImage is AppImageUrl && featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
-                imageBitmap = imgBackground?.getBitmap(featuredImage.altUrl, 400)
+                imageBitmap = imgBackground.getBitmap(featuredImage.altUrl, 400)
             }
             imageBitmap?.let { bitmap ->
                 findDominantColors(bitmap)
@@ -226,9 +233,9 @@ abstract class BaseSongsFragment<T : BaseViewModel>
             val gradient = GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM, colors
             )
-            imgBackground?.setImageDrawable(gradient)
+            imgBackground.setImageDrawable(gradient)
         } else {
-            imgBackground?.setBackgroundColor(dominantColor)
+            imgBackground.setBackgroundColor(dominantColor)
         }
     }
 
@@ -255,6 +262,9 @@ val BaseSongsFragment<*>.featuredImage: AppImage?
 sealed class AppImage : Parcelable {
     @Parcelize
     data class AppImageRes(val resId: Int) : AppImage()
+
+    @Parcelize
+    data class AppImageName(val name: String) : AppImage()
 
     @Parcelize
     data class AppImageUrl(val url: String, val altUrl: String? = null) : AppImage()

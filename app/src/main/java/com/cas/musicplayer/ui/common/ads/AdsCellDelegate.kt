@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.delegatedadapter.AdapterDelegate
-import com.cas.delegatedadapter.DisplayableItem
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.google.android.gms.ads.formats.MediaView

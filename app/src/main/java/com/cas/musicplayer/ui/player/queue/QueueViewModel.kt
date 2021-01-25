@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.common.PlaySongDelegate

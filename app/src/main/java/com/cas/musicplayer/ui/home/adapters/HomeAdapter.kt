@@ -2,14 +2,18 @@ package com.cas.musicplayer.ui.home.adapters
 
 import com.cas.common.resource.Resource
 import com.cas.common.resource.doOnSuccess
-import com.cas.delegatedadapter.BaseDelegationAdapter
-import com.cas.delegatedadapter.DisplayableItem
-import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.domain.model.*
+import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
+import com.cas.musicplayer.domain.model.ChartModel
+import com.cas.musicplayer.domain.model.HeaderItem
+import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.home.delegates.*
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.GenreMusic
+import com.mousiki.shared.domain.models.MusicTrack
 import kotlin.reflect.KClass
 
 /**

@@ -1,7 +1,7 @@
 package com.cas.musicplayer.ui.bottomsheet
 
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.domain.usecase.customplaylist.DeleteTrackFromCustomPlaylistUseCase
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase

@@ -11,7 +11,7 @@ import androidx.core.view.postDelayed
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.MiniPlayerViewBinding
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 
 /**
  ***************************************

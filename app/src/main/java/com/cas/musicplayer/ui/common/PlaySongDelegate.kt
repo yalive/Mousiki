@@ -1,6 +1,6 @@
 package com.cas.musicplayer.ui.common
 
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.cas.musicplayer.player.PlayerQueue
 import javax.inject.Inject

@@ -10,7 +10,7 @@ import com.mousiki.shared.data.models.TrackDto
 import com.mousiki.shared.data.models.toDomainModel
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.cas.musicplayer.utils.getCurrentLocale

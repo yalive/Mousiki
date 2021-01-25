@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.searchyoutube
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.GenreMusic
+import com.mousiki.shared.domain.models.GenreMusic
 import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject

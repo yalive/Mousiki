@@ -3,7 +3,7 @@ package com.cas.musicplayer.domain.usecase.artist
 import com.cas.common.result.Result
 import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.data.repositories.ArtistsRepository
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import javax.inject.Inject
 
 /**

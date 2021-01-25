@@ -15,7 +15,7 @@ import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentTrackOptionsBinding
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity

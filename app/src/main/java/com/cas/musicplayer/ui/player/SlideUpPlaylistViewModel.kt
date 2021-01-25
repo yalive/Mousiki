@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.player
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem

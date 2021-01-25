@@ -10,5 +10,5 @@ target 'Mousiki' do
   pod 'R.swift'
   pod 'SVProgressHUD'
   pod 'EZAlertController', :git => "https://github.com/thellimist/EZAlertController.git", :branch => 'master'
-  
+  pod 'Kingfisher', '6.0.1'
 end

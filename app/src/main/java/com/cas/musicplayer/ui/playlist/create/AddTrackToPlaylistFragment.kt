@@ -12,7 +12,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentAddTrackPlaylistBinding
 import com.cas.musicplayer.di.injector.injector
-import com.cas.musicplayer.domain.model.MusicTrack
+import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.longToast
 import com.cas.musicplayer.utils.viewBinding
 
