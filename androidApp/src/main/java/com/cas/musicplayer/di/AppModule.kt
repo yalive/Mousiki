@@ -3,17 +3,19 @@ package com.cas.musicplayer.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.MousikiDb
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
 import com.cas.musicplayer.data.local.database.dao.*
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.mousiki.shared.data.repository.GenresRepository
 import com.cas.musicplayer.utils.Constants
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.mousiki.shared.data.repository.GenresRepository
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.inject.assisted.dagger2.AssistedModule
+import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -187,4 +189,17 @@ object AppModule {
     @JvmStatic
     @Provides
     fun providesGenreRepository(): GenresRepository = GenresRepository()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesSqlDb(appContext: Context): MousikiDb {
+        val driver = AndroidSqliteDriver(
+            MousikiDb.Schema,
+            appContext,
+            "music_track_database"
+        )
+        return MousikiDb(driver)
+    }
+
 }

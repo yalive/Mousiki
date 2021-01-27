@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.4.10"
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
@@ -25,14 +26,21 @@ kotlin {
                         strictly("1.4.2-native-mt")
                     }
                 }
+
+                implementation(Deps.SqlDelight.runtime)
             }
         }
         val androidMain by getting {
             dependencies {
                 implementation("androidx.annotation:annotation:1.1.0")
+                implementation(Deps.SqlDelight.driverAndroid)
             }
         }
-        val iosMain by getting
+        val iosMain by getting{
+            dependencies {
+                implementation(Deps.SqlDelight.driverIos)
+            }
+        }
     }
 }
 
@@ -60,3 +68,9 @@ val packForXcode by tasks.creating(Sync::class) {
     into(targetDir)
 }
 tasks.getByName("build").dependsOn(packForXcode)
+
+sqldelight {
+    database("MousikiDb") {
+        packageName = "com.cas.musicplayer"
+    }
+}

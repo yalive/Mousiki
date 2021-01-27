@@ -1,12 +1,13 @@
 package com.cas.musicplayer.data.datasource
 
 import android.os.SystemClock
+import com.cas.musicplayer.MousikiDb
 import com.cas.musicplayer.data.local.database.dao.TrendingSongsDao
 import com.cas.musicplayer.data.local.models.TrendingSongEntity
-import com.cas.musicplayer.data.local.models.toMusicTrack
 import com.cas.musicplayer.data.preferences.PreferencesHelper
+import com.mousiki.shared.data.db.toMusicTrack
 import com.mousiki.shared.domain.models.MusicTrack
-import com.cas.musicplayer.utils.bgContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -16,21 +17,28 @@ import javax.inject.Inject
  ***************************************
  */
 class LocalSongsDataSource @Inject constructor(
-    private val trendingSongsDao: TrendingSongsDao,
-    private val preferences: PreferencesHelper
+    private val preferences: PreferencesHelper,
+    private val db: MousikiDb,
+    private val trendingSongsDao: TrendingSongsDao
 ) {
 
     suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): List<MusicTrack> =
-        withContext(bgContext) {
+        withContext(Dispatchers.IO) {
+            val dao = db.trendingTrackQueries
             if (lastKnown != null) {
-                val songEntity = trendingSongsDao.getByYoutubeId(lastKnown.youtubeId)
-                val songs = trendingSongsDao.getSongsStartingFrom(songEntity.id, max)
-                return@withContext songs.map { it.toMusicTrack() }
+                val songEntity = dao.getByYoutubeId(lastKnown.youtubeId).executeAsOneOrNull()
+                if (songEntity != null) {
+                    val songs =
+                        dao.getSongsStartingFrom(songEntity.id, max.toLong()).executeAsList()
+                    return@withContext songs.map { it.toMusicTrack() }
+                }
             }
-            return@withContext trendingSongsDao.getSongs(max).map { it.toMusicTrack() }
+            val listRoom = dao.getSongs(max.toLong()).executeAsList()
+            print("")
+            return@withContext listRoom.map { it.toMusicTrack() }
         }
 
-    suspend fun saveTrendingSongs(tracks: List<MusicTrack>) = withContext(bgContext) {
+    suspend fun saveTrendingSongs(tracks: List<MusicTrack>) = withContext(Dispatchers.IO) {
         if (numberOfSongs() == 0) {
             preferences.setMostPopularSongsUpdateDate()
         }
@@ -45,7 +53,7 @@ class LocalSongsDataSource @Inject constructor(
         trendingSongsDao.insert(trendingTracks)
     }
 
-    suspend fun numberOfSongs(): Int = withContext(bgContext) {
+    suspend fun numberOfSongs(): Int = withContext(Dispatchers.IO) {
         return@withContext trendingSongsDao.count()
     }
 
@@ -55,7 +63,7 @@ class LocalSongsDataSource @Inject constructor(
         return cacheDuration - CACHE_MAX_DURATION_SECONDS >= 0
     }
 
-    suspend fun clear() = withContext(bgContext) {
+    suspend fun clear() = withContext(Dispatchers.IO) {
         trendingSongsDao.clear()
     }
 

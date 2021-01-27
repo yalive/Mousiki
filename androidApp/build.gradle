@@ -1,4 +1,4 @@
- plugins {
+plugins {
     id 'com.android.application'
 
     id 'kotlin-android'
@@ -36,6 +36,12 @@ android {
         versionName "3.1.0"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     flavorDimensions "default"
@@ -193,6 +199,9 @@ dependencies {
     // Modules
     implementation project(path: ':common')
     implementation project(path: ':shared')
+
+
+    implementation "com.squareup.sqldelight:android-driver:1.4.4"
 }
 
 apply plugin: 'com.google.gms.google-services'
