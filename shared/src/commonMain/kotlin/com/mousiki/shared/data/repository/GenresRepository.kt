@@ -8,6 +8,7 @@ import com.mousiki.shared.domain.models.GenreMusic
  ***************************************
  */
 class GenresRepository {
+
     fun loadGenres(): List<GenreMusic> {
         return mutableListOf<GenreMusic>().apply {
             add(

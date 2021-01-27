@@ -5,16 +5,25 @@ import android.content.SharedPreferences
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MousikiDb
 import com.cas.musicplayer.MusicApp
-import com.cas.musicplayer.data.local.database.MusicTrackRoomDatabase
-import com.cas.musicplayer.data.local.database.dao.*
+import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
 import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.cas.musicplayer.data.repositories.SongsRepository
+import com.cas.musicplayer.data.repositories.StatisticsRepository
 import com.cas.musicplayer.utils.Constants
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
+import com.mousiki.shared.data.datasource.LocalSongsDataSource
+import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
+import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
+import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
+import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
+import com.mousiki.shared.data.repository.CustomPlaylistsRepository
 import com.mousiki.shared.data.repository.GenresRepository
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.preference.SettingsProvider
+import com.mousiki.shared.utils.NetworkUtils
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -102,91 +111,7 @@ object AppModule {
     fun providesConnectivityState(context: Context): ConnectivityState =
         ConnectivityState(context)
 
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesDataBase(context: Context): MusicTrackRoomDatabase =
-        MusicTrackRoomDatabase.getDatabase(context)
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesTrendingSongsDao(db: MusicTrackRoomDatabase): TrendingSongsDao =
-        db.trendingSongsDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesFavouriteSongsDao(db: MusicTrackRoomDatabase): FavouriteTracksDao =
-        db.favouriteTracksDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesArtistDao(db: MusicTrackRoomDatabase): ArtistDao = db.artistsDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesChannelSongsDao(db: MusicTrackRoomDatabase): ChannelSongsDao = db.channelSongsDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesChannelPlaylistsDao(db: MusicTrackRoomDatabase): ChannelPlaylistsDao =
-        db.channelPlaylistsDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesPlaylistSongsDao(db: MusicTrackRoomDatabase): PlaylistSongsDao =
-        db.playlistSongsDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesSongTitleDao(db: MusicTrackRoomDatabase): LightSongDao = db.songTitleDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesRecentlyPlayedTracksDao(db: MusicTrackRoomDatabase): RecentlyPlayedTracksDao =
-        db.recentlyPlayedTracksDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesHistoricTracksDao(db: MusicTrackRoomDatabase): HistoricTracksDao =
-        db.historicTracksDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesSearchQueryDao(db: MusicTrackRoomDatabase): SearchQueryDao = db.searchQueryDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesSearchSongDao(db: MusicTrackRoomDatabase): SearchSongDao = db.searchSongDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesSearchPlaylistsDao(db: MusicTrackRoomDatabase): SearchPlaylistsDao =
-        db.searchPlaylistsDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesSearchChannelDao(db: MusicTrackRoomDatabase): SearchChannelDao =
-        db.searchSearchChannelDao()
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesCustomPlaylistTrackDao(db: MusicTrackRoomDatabase): CustomPlaylistTrackDao =
-        db.customPlaylistTrackDao()
-
+    // Region: To ease migration ==> will migrate to koin
     @Singleton
     @JvmStatic
     @Provides
@@ -210,5 +135,78 @@ object AppModule {
     fun providesKMMPreferenceHelper(
         context: Context
     ): PreferencesHelper = PreferencesHelper(SettingsProvider(context))
+
+    @JvmStatic
+    @Provides
+    fun providesLocalSongsDataSource(
+        preferences: PreferencesHelper,
+        db: MousikiDb
+    ): LocalSongsDataSource = LocalSongsDataSource(preferences, db)
+
+    @JvmStatic
+    @Provides
+    fun providesArtistsLocalDataSource(
+        db: MousikiDb
+    ): ArtistsLocalDataSource = ArtistsLocalDataSource(db)
+
+    @JvmStatic
+    @Provides
+    fun providesSearchLocalDataSource(
+        db: MousikiDb
+    ): SearchLocalDataSource = SearchLocalDataSource(db)
+
+    @JvmStatic
+    @Provides
+    fun providesPlaylistSongsLocalDataSource(
+        db: MousikiDb
+    ): PlaylistSongsLocalDataSource = PlaylistSongsLocalDataSource(db)
+
+    @JvmStatic
+    @Provides
+    fun providesChannelPlaylistsLocalDataSource(
+        db: MousikiDb
+    ): ChannelPlaylistsLocalDataSource = ChannelPlaylistsLocalDataSource(db)
+
+    @JvmStatic
+    @Provides
+    fun providesChannelSongsLocalDataSource(
+        db: MousikiDb
+    ): ChannelSongsLocalDataSource = ChannelSongsLocalDataSource(db)
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesCustomPlaylistsRepository(
+        db: MousikiDb
+    ): CustomPlaylistsRepository = CustomPlaylistsRepository(db)
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesNetworkUtils(
+        appContext: Context
+    ): NetworkUtils = NetworkUtils(appContext)
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesSongsRepository(
+        db: MousikiDb,
+        remoteDataSource: RemoteSongsDataSource,
+        localDataSource: LocalSongsDataSource,
+        networkUtils: NetworkUtils
+    ): SongsRepository = SongsRepository(db, remoteDataSource, localDataSource, networkUtils)
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesStatisticsRepository(
+        db: MousikiDb,
+    ): StatisticsRepository = StatisticsRepository(db)
+
 
 }

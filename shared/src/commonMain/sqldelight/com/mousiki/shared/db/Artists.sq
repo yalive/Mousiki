@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS artists (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`channel_id` TEXT NOT NULL,
+`name` TEXT NOT NULL,
+`urlImage` TEXT NOT NULL,
+`countryCode` TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS `index_artists_channel_id` ON `artists` (`channel_id`);
+
+insert:
+INSERT OR REPLACE INTO artists(channel_id, name, urlImage,countryCode)
+VALUES ?;
+
+getByChannelIds:
+SELECT * FROM artists WHERE channel_id IN ?;

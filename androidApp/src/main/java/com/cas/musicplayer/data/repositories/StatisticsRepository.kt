@@ -2,35 +2,42 @@ package com.cas.musicplayer.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.cas.musicplayer.data.local.database.dao.HistoricTracksDao
-import com.cas.musicplayer.data.local.database.dao.RecentlyPlayedTracksDao
-import com.cas.musicplayer.data.local.models.HistoricTrackEntity
-import com.cas.musicplayer.data.local.models.RecentlyPlayedTrack
-import com.cas.musicplayer.data.local.models.toMusicTrack
+import com.cas.musicplayer.MousikiDb
+import com.mousiki.shared.data.db.toMusicTrack
+import com.mousiki.shared.db.Historic_tracks
+import com.mousiki.shared.db.Recent_played_tracks
 import com.mousiki.shared.domain.models.MusicTrack
-import com.cas.musicplayer.utils.bgContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-11-26.
  ***************************************
  */
-@Singleton
-class StatisticsRepository @Inject constructor(
-    private val recentlyPlayedTracksDao: RecentlyPlayedTracksDao,
-    private val historicTracksDao: HistoricTracksDao
+class StatisticsRepository(
+    private val db: MousikiDb
 ) {
 
+    private val recentlyPlayedTracksDao by lazy { db.recentPlayedTracksQueries }
+    private val historicTracksDao by lazy { db.historicTracksQueries }
+
     suspend fun addTrackToRecent(track: MusicTrack) {
-        recentlyPlayedTracksDao.insert(RecentlyPlayedTrack.fromMusicTrack(track))
-        val historicTrackEntity = historicTracksDao.getByYoutubeId(track.youtubeId)
+        recentlyPlayedTracksDao.insert(
+            Recent_played_tracks(
+                id = 0,
+                youtube_id = track.youtubeId,
+                title = track.title,
+                duration = track.duration
+            )
+        )
+        val historicTrackEntity =
+            historicTracksDao.getByYoutubeId(track.youtubeId).executeAsOneOrNull()
         if (historicTrackEntity == null) {
             historicTracksDao.insert(
-                HistoricTrackEntity(
-                    youtubeId = track.youtubeId,
+                Historic_tracks(
+                    id = 0,
+                    youtube_id = track.youtubeId,
                     title = track.title,
                     duration = track.duration,
                     count = 1
@@ -41,29 +48,32 @@ class StatisticsRepository @Inject constructor(
         }
     }
 
-    suspend fun getRecentlyPlayedTracks(): List<MusicTrack> {
-        return recentlyPlayedTracksDao.getSongs().map {
+    suspend fun getRecentlyPlayedTracks(max: Int = 10): List<MusicTrack> {
+        return recentlyPlayedTracksDao.getSongs(max.toLong()).executeAsList().map {
             it.toMusicTrack()
         }
     }
 
+    // TODO: migrate to flow
     suspend fun getRecentlyPlayedTracksLive(max: Int = 10): LiveData<List<MusicTrack>> =
-        withContext(bgContext) {
-            return@withContext Transformations.map(recentlyPlayedTracksDao.getSongsLive(max)) { input ->
-                input.map { it.toMusicTrack() }
+        withContext(Dispatchers.Default) {
+            val liveData = recentlyPlayedTracksDao.getSongs(max.toLong()).asLiveData()
+            return@withContext Transformations.map(liveData) { input ->
+                input.executeAsList().map { it.toMusicTrack() }
             }
         }
 
     suspend fun getHeavyList(max: Int = 10): List<MusicTrack> {
-        return historicTracksDao.getHeavyList(max).map {
+        return historicTracksDao.getHeavyList(max.toLong()).executeAsList().map {
             it.toMusicTrack()
         }
     }
 
     suspend fun getHeavyListLive(max: Int = 10): LiveData<List<MusicTrack>> =
-        withContext(bgContext) {
-            return@withContext Transformations.map(historicTracksDao.getHeavyListLive(max)) { input ->
-                input.map { it.toMusicTrack() }
+        withContext(Dispatchers.Default) {
+            val livaData = historicTracksDao.getHeavyList(max.toLong()).asLiveData()
+            return@withContext Transformations.map(livaData) { input ->
+                input.executeAsList().map { it.toMusicTrack() }
             }
         }
 }
