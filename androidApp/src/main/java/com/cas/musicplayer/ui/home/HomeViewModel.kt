@@ -11,7 +11,6 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.repositories.HomeRepository
 import com.cas.musicplayer.domain.model.HeaderItem
@@ -32,6 +31,7 @@ import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
+import com.mousiki.shared.preference.PreferencesHelper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,6 +49,7 @@ class HomeViewModel @Inject constructor(
     private val connectivityState: ConnectivityState,
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
+    private val preferencesHelper: PreferencesHelper,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -65,7 +66,6 @@ class HomeViewModel @Inject constructor(
     val homeItems: LiveData<List<HomeItem>> = _homeItems
 
     init {
-        R.drawable.img_genres_4
         getHome()
     }
 

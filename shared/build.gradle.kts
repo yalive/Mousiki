@@ -28,6 +28,7 @@ kotlin {
                 }
 
                 implementation(Deps.SqlDelight.runtime)
+                implementation("com.russhwolf:multiplatform-settings:0.7")
             }
         }
         val androidMain by getting {
@@ -36,7 +37,7 @@ kotlin {
                 implementation(Deps.SqlDelight.driverAndroid)
             }
         }
-        val iosMain by getting{
+        val iosMain by getting {
             dependencies {
                 implementation(Deps.SqlDelight.driverIos)
             }

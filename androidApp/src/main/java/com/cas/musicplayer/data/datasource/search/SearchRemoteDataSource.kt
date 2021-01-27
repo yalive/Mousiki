@@ -2,19 +2,19 @@ package com.cas.musicplayer.data.datasource.search
 
 import com.cas.common.result.NO_RESULT
 import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.cas.musicplayer.data.preferences.PreferencesHelper
 import com.cas.musicplayer.data.remote.mappers.*
 import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
 import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.mousiki.shared.domain.models.hasData
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.mousiki.shared.data.models.searchResults
 import com.mousiki.shared.domain.models.Channel
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.SearchTracksResult
+import com.mousiki.shared.domain.models.hasData
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
+import com.mousiki.shared.preference.PreferencesHelper
 import javax.inject.Inject
 
 /**
