@@ -13,6 +13,8 @@ import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.utils.Constants
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.mousiki.shared.data.repository.GenresRepository
+import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.preference.SettingsProvider
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -201,5 +203,12 @@ object AppModule {
         )
         return MousikiDb(driver)
     }
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesKMMPreferenceHelper(
+        context: Context
+    ): PreferencesHelper = PreferencesHelper(SettingsProvider(context))
 
 }
