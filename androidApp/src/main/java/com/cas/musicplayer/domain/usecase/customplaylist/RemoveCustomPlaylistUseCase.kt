@@ -1,6 +1,6 @@
 package com.cas.musicplayer.domain.usecase.customplaylist
 
-import com.cas.musicplayer.data.repositories.CustomPlaylistsRepository
+import com.mousiki.shared.data.repository.CustomPlaylistsRepository
 import javax.inject.Inject
 
 /**

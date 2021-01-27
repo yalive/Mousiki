@@ -265,7 +265,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         mediaSession.setMetadata(metadataBuilder.build())
         mediaController.transportControls.playFromMediaId(currentTrack.youtubeId, null)
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.Main) {
             injector.addTrackToRecentlyPlayed(currentTrack)
             val loadBitmap = Picasso.get().getBitmap(currentTrack.imgUrl, 320)
             metadataBuilder.albumArt = loadBitmap

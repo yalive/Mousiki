@@ -5,8 +5,10 @@ CREATE TABLE IF NOT EXISTS trending_tracks (
 `duration` TEXT NOT NULL
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS `index_trending_tracks_youtube_id` ON `trending_tracks` (`youtube_id`);
+
 insert:
-INSERT OR REPLACE INTO trending_tracks(id, youtube_id, title, duration)
+INSERT OR REPLACE INTO trending_tracks(youtube_id, title, duration)
 VALUES ?;
 
 getSongs:

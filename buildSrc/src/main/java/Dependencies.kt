@@ -45,4 +45,10 @@ object Deps {
         val driverIos = "com.squareup.sqldelight:native-driver:${Versions.sqlDelight}"
         val driverAndroid = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
     }
+
+    object Coroutines {
+        val common = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+        val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+        val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+    }
 }

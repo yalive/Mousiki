@@ -1,15 +1,13 @@
 package com.cas.musicplayer.data.repositories
 
-import com.mousiki.shared.domain.result.Result
-import com.mousiki.shared.domain.result.Result.Success
-import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsLocalDataSource
+import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelPlaylistsRemoteDataSource
-import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
-import com.cas.musicplayer.data.local.database.dao.CustomPlaylistTrackDao
+import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
-import com.cas.musicplayer.utils.NetworkUtils
+import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,9 +23,7 @@ class PlaylistRepository @Inject constructor(
     private val channelPlaylistsLocalDataSource: ChannelPlaylistsLocalDataSource,
     private val channelPlaylistsRemoteDataSource: ChannelPlaylistsRemoteDataSource,
     private val playlistSongsLocalDataSource: PlaylistSongsLocalDataSource,
-    private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource,
-    private val customPlaylistTrackDao: CustomPlaylistTrackDao,
-    private val networkUtils: NetworkUtils
+    private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource
 ) {
 
     suspend fun playlistVideos(playlistId: String): Result<List<MusicTrack>> {
@@ -38,22 +34,6 @@ class PlaylistRepository @Inject constructor(
         return playlistSongsRemoteDataSource.getPlaylistSongs(playlistId).alsoWhenSuccess {
             playlistSongsLocalDataSource.savePlaylistSongs(playlistId, it)
         }
-    }
-
-    suspend fun firstThreeVideo(playlistId: String): Result<List<MusicTrack>> {
-
-        if (playlistSongsLocalDataSource.expired() && networkUtils.hasNetworkConnection()) {
-            playlistSongsLocalDataSource.clear()
-        }
-
-        val localTracks = playlistSongsLocalDataSource.getPlaylistLightSongs(playlistId)
-        if (localTracks.isNotEmpty()) {
-            return Success(localTracks)
-        }
-        return playlistSongsRemoteDataSource.getPlaylistLightSongs(playlistId)
-            .alsoWhenSuccess { tracks ->
-                playlistSongsLocalDataSource.savePlaylistLightSongs(playlistId, tracks)
-            }
     }
 
     suspend fun getPlaylists(channelId: String): Result<List<Playlist>> {

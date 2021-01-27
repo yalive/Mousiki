@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS search_queries (
+`query` TEXT NOT NULL, PRIMARY KEY(`query`)
+);
+
+insert:
+INSERT OR REPLACE INTO search_queries(query)
+VALUES ?;
+
+search:
+SELECT * FROM search_queries WHERE `query` LIKE ?;

@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS favourite_tracks (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`youtube_id` TEXT NOT NULL,
+`title` TEXT NOT NULL,
+`duration` TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS `index_favourite_tracks_youtube_id` ON `favourite_tracks` (`youtube_id`);
+
+insert:
+INSERT OR REPLACE INTO favourite_tracks(youtube_id, title,duration)
+VALUES ?;
+
+getAll:
+SELECT * FROM favourite_tracks;
+
+getSongs:
+SELECT * FROM favourite_tracks ORDER BY id DESC LIMIT ?;
+
+deleteSong:
+DELETE  FROM favourite_tracks WHERE youtube_id= ?;

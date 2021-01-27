@@ -36,12 +36,6 @@ android {
         versionName "3.1.0"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
     }
 
     flavorDimensions "default"
@@ -95,7 +89,6 @@ android {
 
 dependencies {
 
-    def roomVersion = "2.2.6"
     def lifecycle_version = "2.2.0"
 
     // Kotlin
@@ -124,11 +117,6 @@ dependencies {
 
     // View pager
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-
-    // Room
-    implementation "androidx.room:room-runtime:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
 
     // Palette
     implementation 'androidx.palette:palette-ktx:1.0.0'

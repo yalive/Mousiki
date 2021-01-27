@@ -20,13 +20,12 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2-native-mt") {
+                implementation(Deps.Coroutines.common) {
                     version {
-                        strictly("1.4.2-native-mt")
+                        strictly(Versions.coroutines)
                     }
                 }
-
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
                 implementation(Deps.SqlDelight.runtime)
                 implementation("com.russhwolf:multiplatform-settings:0.7")
             }

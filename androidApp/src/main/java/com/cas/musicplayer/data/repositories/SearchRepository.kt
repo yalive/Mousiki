@@ -1,14 +1,14 @@
 package com.cas.musicplayer.data.repositories
 
-import com.mousiki.shared.domain.result.Result
-import com.cas.musicplayer.data.datasource.search.SearchLocalDataSource
+import com.cas.musicplayer.MousikiDb
 import com.cas.musicplayer.data.datasource.search.SearchRemoteDataSource
-import com.cas.musicplayer.data.local.database.dao.SearchQueryDao
-import com.cas.musicplayer.data.local.models.SearchQueryEntity
 import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
+import com.mousiki.shared.db.Search_queries
 import com.mousiki.shared.domain.models.Channel
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.SearchTracksResult
+import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
 import org.json.JSONArray
 import javax.inject.Inject
@@ -24,8 +24,10 @@ class SearchRepository @Inject constructor(
     private var youtubeService: YoutubeService,
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val searchLocalDataSource: SearchLocalDataSource,
-    private val searchQueryDao: SearchQueryDao
+    private val db: MousikiDb
 ) {
+
+    private val searchQueryDao by lazy { db.searchQueriesQueries }
 
     suspend fun searchTracks(
         query: String,
@@ -93,10 +95,10 @@ class SearchRepository @Inject constructor(
     }
 
     suspend fun saveSearchQuery(query: String) {
-        searchQueryDao.insert(SearchQueryEntity(query))
+        searchQueryDao.insert(Search_queries(query))
     }
 
     suspend fun searchRecentQueries(query: String): List<String> {
-        return searchQueryDao.search("%$query%").map { it.query }
+        return searchQueryDao.search("%$query%").executeAsList()
     }
 }
