@@ -14,6 +14,7 @@
         android:clipToPadding="false"
         android:paddingBottom="@dimen/padding_for_player_space"
         android:paddingTop="32dp"
+        android:layout_marginTop="@dimen/thirty_two_32dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_new_release"
