@@ -2,15 +2,14 @@ package com.cas.musicplayer.data.config
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import com.cas.common.connectivity.ConnectivityState
-import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.utils.getCurrentLocale
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,19 +26,29 @@ class RemoteAppConfig @Inject constructor(
     private val context: Context
 ) {
 
-    private val fetchConfigJob: Job = MusicApp.get().applicationScope.launch {
-        try {
-            firebaseRemoteConfig.fetchAndActivate().await()
-        } catch (ignored: Exception) {
+    private var gotConfigResponse = false
+
+    init {
+        val connectedBefore = connectivityState.isConnected()
+        firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            gotConfigResponse = true
+            if (!task.isSuccessful) {
+                val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+                val bundle = Bundle()
+                bundle.putBoolean("isConnected", connectivityState.isConnected())
+                bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
+                bundle.putString("local", getCurrentLocale())
+                firebaseAnalytics.logEvent("error_fetch_remote_config", bundle)
+            }
         }
     }
 
-    suspend fun awaitActivation() = try {
-        fetchConfigJob.join()
-    } catch (e: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(
-            Exception("Error while config awaitActivation", e)
-        )
+    suspend fun awaitActivation() {
+        var count = 0
+        while (!gotConfigResponse && count < MAX_CYCLES) {
+            count++
+            delay(WAIT_INTERVAL_MS)
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -151,5 +160,8 @@ class RemoteAppConfig @Inject constructor(
         const val SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API = "search_artist_tracks_from_mousiki_api"
         const val HOME_CACHE_DURATION = "home_cache_duration_hours"
         const val ENABLE_NEW_HOME = "enable_new_home"
+
+        private const val WAIT_INTERVAL_MS = 100L
+        private const val MAX_CYCLES = 150
     }
 }
