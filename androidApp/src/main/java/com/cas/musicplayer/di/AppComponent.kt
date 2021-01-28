@@ -2,7 +2,6 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
-import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
@@ -30,7 +29,8 @@ import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
 import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.utils.AnalyticsApi
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -103,7 +103,7 @@ interface AppComponent {
 
     val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase
 
-    val analytics: FirebaseAnalytics
+    val analytics: AnalyticsApi
 
     val rewardedAdDelegate: RewardedAdDelegate
 

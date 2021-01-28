@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.home
 
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,6 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.repositories.HomeRepository
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.domain.model.HomeItem
@@ -22,9 +20,8 @@ import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.utils.getCurrentLocale
 import com.cas.musicplayer.utils.uiCoroutine
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.domain.models.GenreMusic
@@ -32,6 +29,8 @@ import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.getCurrentLocale
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,7 +44,7 @@ class HomeViewModel @Inject constructor(
     private val getCountryArtists: GetCountryArtistsUseCase,
     private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
     private val getGenres: GetGenresUseCase,
-    private val analytics: FirebaseAnalytics,
+    private val analytics: AnalyticsApi,
     private val connectivityState: ConnectivityState,
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
@@ -152,11 +151,12 @@ class HomeViewModel @Inject constructor(
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
         if (result is Result.Error) {
-            val bundle = Bundle()
-            bundle.putBoolean("isConnected", connectivityState.isConnected())
-            bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
-            bundle.putString("local", getCurrentLocale())
-            analytics.logEvent("cannot_load_trending_tracks", bundle)
+            analytics.logEvent(
+                "cannot_load_trending_tracks",
+                "isConnected" to connectivityState.isConnected(),
+                "isConnectedBeforeCall" to connectedBefore,
+                "local" to getCurrentLocale()
+            )
         }
     }
 

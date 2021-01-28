@@ -3,6 +3,7 @@ package com.cas.musicplayer.di
 import android.content.Context
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
+import com.cas.musicplayer.utils.AndroidAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -10,6 +11,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import com.mousiki.shared.utils.AnalyticsApi
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -38,8 +40,11 @@ object FirebaseModule {
     @Singleton
     @Provides
     @JvmStatic
-    fun provideFirebaseAnalytics(context: Context): FirebaseAnalytics {
-        return FirebaseAnalytics.getInstance(context)
+    fun provideAnalytics(
+        context: Context
+    ): AnalyticsApi {
+        val analytics = FirebaseAnalytics.getInstance(context)
+        return AndroidAnalytics(analytics)
     }
 
     @Singleton

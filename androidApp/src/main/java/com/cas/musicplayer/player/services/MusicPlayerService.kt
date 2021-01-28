@@ -25,7 +25,6 @@ import com.cas.common.extensions.bool
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.injector.injector
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
@@ -37,6 +36,7 @@ import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -419,7 +419,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     private fun handleLastSessionSysMediaButton() = lifecycleScope.launch {
-        injector.analytics.logEvent(START_PLAYER_FORM_LAST_SESSION, null)
+        injector.analytics.logEvent(START_PLAYER_FORM_LAST_SESSION)
         val recentlyPlayedSongs = injector.getRecentlyPlayedSongs
         val recentTracks = recentlyPlayedSongs()
         if (recentTracks.isNotEmpty()) {

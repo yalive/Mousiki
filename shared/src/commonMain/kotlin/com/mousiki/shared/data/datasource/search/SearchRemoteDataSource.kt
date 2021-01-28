@@ -1,8 +1,6 @@
-package com.cas.musicplayer.data.datasource.search
+package com.mousiki.shared.data.datasource.search
 
-import com.cas.common.result.NO_RESULT
-import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.searchResults
 import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.data.remote.mapper.*
@@ -11,16 +9,17 @@ import com.mousiki.shared.domain.models.Channel
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.SearchTracksResult
 import com.mousiki.shared.domain.models.hasData
+import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
-import javax.inject.Inject
+import com.mousiki.shared.utils.AnalyticsApi
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-12-09.
  ***************************************
  */
-class SearchRemoteDataSource @Inject constructor(
+class SearchRemoteDataSource(
     private val networkRunner: NetworkRunner,
     private val trackMapper: YTBVideoToTrack,
     private val playlistMapper: YTBPlaylistToPlaylist,
@@ -28,7 +27,7 @@ class SearchRemoteDataSource @Inject constructor(
     private val videoIdMapper: YTBSearchResultToVideoId,
     private val channelIdMapper: YTBSearchResultToChannelId,
     private val playlistIdMapper: YTBSearchResultToPlaylistId,
-    private val analytics: FirebaseAnalytics,
+    private val analytics: AnalyticsApi,
     private val remoteConfig: RemoteAppConfig,
     private val mousikiApi: MousikiApi
 ) {
@@ -39,7 +38,7 @@ class SearchRemoteDataSource @Inject constructor(
         token: String? = null
     ): Result<SearchTracksResult> {
         // First API
-        analytics.logEvent(EVENT_START_SEARCH, null)
+        analytics.logEvent(EVENT_START_SEARCH)
 
         val resultSearch = networkRunner.loadWithRetry(remoteConfig.searchConfig()) { apiUrl ->
             mousikiApi.search(apiUrl, query, key, token).searchResults()
@@ -47,7 +46,7 @@ class SearchRemoteDataSource @Inject constructor(
         if (resultSearch.hasData()) return resultSearch
 
         // Youtube search
-        analytics.logEvent(EVENT_SCRAP_NOT_WORKING, null)
+        analytics.logEvent(EVENT_SCRAP_NOT_WORKING)
         val idsResult = networkRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
             mousikiApi.searchVideoIdsByQuery(query, 50).items ?: emptyList()
         } as? Result.Success ?: return NO_RESULT

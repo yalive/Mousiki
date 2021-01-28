@@ -3,7 +3,7 @@ package com.cas.musicplayer.data.repositories
 import android.annotation.SuppressLint
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
-import com.cas.musicplayer.data.datasource.ArtistsRemoteDataSource
+import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.cas.musicplayer.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext

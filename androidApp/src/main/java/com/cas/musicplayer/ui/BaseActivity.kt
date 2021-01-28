@@ -11,7 +11,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.utils.AudienceNetworkInitializeHelper
-import com.cas.musicplayer.utils.getCurrentLocale
+import com.mousiki.shared.utils.getCurrentLocale
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
@@ -100,7 +100,8 @@ open class BaseActivity : AppCompatActivity() {
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(
                 Exception(
-                    "Unable to subscribe to topic ${getCurrentLocale().toLowerCase(
+                    "Unable to subscribe to topic ${
+                        getCurrentLocale().toLowerCase(
                         Locale.getDefault()
                     )}", e
                 )

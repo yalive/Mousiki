@@ -10,9 +10,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.audiofx.AudioEffect
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
-import android.telephony.TelephonyManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -23,15 +21,14 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
-import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.MusicTrack
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrl
 import java.io.File
 import java.util.*
@@ -229,30 +226,6 @@ object Utils {
 fun isScreenLocked(): Boolean {
     val myKM = MusicApp.get().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
     return myKM.isKeyguardLocked
-}
-
-fun getCurrentLocale(): String {
-    if (BuildConfig.DEBUG) {
-        return "MA"
-    }
-    val tm = MusicApp.get().getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
-    val countryCodeValue: String? = tm?.networkCountryIso
-
-    if (countryCodeValue != null && countryCodeValue.length == 2) {
-        return countryCodeValue
-    }
-
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        val locales = MusicApp.get().resources.configuration.locales
-        when {
-            locales.isEmpty -> "US"
-            locales.get(0)?.country != null && locales.get(0).country.length == 2 -> "US"
-            else -> "US"
-        }
-    } else {
-        val country = MusicApp.get().resources.configuration?.locale?.country
-        if (country != null && country.isNotEmpty() && country.length == 2) country else "US"
-    }
 }
 
 fun getLanguage(): String {

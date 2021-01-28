@@ -4,8 +4,6 @@ import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
-import com.cas.musicplayer.utils.getCurrentLocale
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
@@ -18,6 +16,8 @@ import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.getCurrentLocale
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -39,7 +39,7 @@ class RemoteSongsDataSource @Inject constructor(
     private val preferences: PreferencesHelper,
     private val appContext: Context,
     private val json: Json,
-    private val analytics: FirebaseAnalytics,
+    private val analytics: AnalyticsApi,
     private val connectivityState: ConnectivityState,
     private val storage: FirebaseStorage
 ) {
@@ -50,7 +50,7 @@ class RemoteSongsDataSource @Inject constructor(
         }
         if (firebaseTracks.isNotEmpty()) return Result.Success(firebaseTracks)
         if (getCurrentLocale().toLowerCase(Locale.getDefault()) == "mx") {
-            analytics.logEvent(ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING, null)
+            analytics.logEvent(ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING)
         }
         return networkRunner.executeNetworkCall(trackMapper.toListMapper()) {
             val resource = mousikiApi.trending(

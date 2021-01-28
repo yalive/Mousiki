@@ -2,25 +2,24 @@ package com.cas.musicplayer.data.datasource.playlist
 
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
-import com.cas.common.result.NO_RESULT
-import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.repositories.ChartsRepository
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.TrackDto
 import com.mousiki.shared.data.models.toDomainModel
 import com.mousiki.shared.data.models.tracks
 import com.mousiki.shared.data.remote.api.MousikiApi
-import com.mousiki.shared.data.remote.mapper.YTBPlaylistItemToTrack
 import com.mousiki.shared.data.remote.mapper.YTBPlaylistItemToVideoId
 import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
 import com.mousiki.shared.data.remote.mapper.toListMapper
 import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.data.repository.GenresRepository
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
@@ -42,7 +41,6 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
     private val videoIdMapper: YTBPlaylistItemToVideoId,
     private val trackMapper: YTBVideoToTrack,
     private val json: Json,
-    private val playlistTrackMapper: YTBPlaylistItemToTrack,
     private var appConfig: RemoteAppConfig,
     private val chartsRepository: ChartsRepository,
     private val genresRepository: GenresRepository,

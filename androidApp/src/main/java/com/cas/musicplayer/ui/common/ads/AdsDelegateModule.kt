@@ -3,8 +3,9 @@ package com.cas.musicplayer.ui.common.ads
 import android.content.Context
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.data.config.EnvConfig
-import com.cas.musicplayer.data.config.RemoteAppConfig
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.utils.AnalyticsApi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -31,7 +32,7 @@ class RewardedAdDelegateModule {
     fun providesRewardedAdDelegate(
         context: Context,
         appConfig: RemoteAppConfig,
-        analytics: FirebaseAnalytics,
+        analytics: AnalyticsApi,
         envConfig: EnvConfig
     ): RewardedAdDelegate {
         return if (appConfig.rewardAdOn() && !BuildConfig.DEBUG) {
