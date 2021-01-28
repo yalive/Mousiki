@@ -3,26 +3,25 @@ package com.cas.musicplayer.data.datasource.playlist
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.result.NO_RESULT
-import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToTrack
-import com.cas.musicplayer.data.remote.mappers.YTBPlaylistItemToVideoId
-import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
-import com.cas.musicplayer.data.remote.mappers.toListMapper
-import com.mousiki.shared.data.models.TrackDto
-import com.mousiki.shared.data.models.tracks
-import com.mousiki.shared.data.models.toDomainModel
-import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
-import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.data.repositories.ChartsRepository
-import com.mousiki.shared.data.repository.GenresRepository
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
+import com.mousiki.shared.data.models.TrackDto
+import com.mousiki.shared.data.models.toDomainModel
+import com.mousiki.shared.data.models.tracks
+import com.mousiki.shared.data.remote.api.MousikiApi
+import com.mousiki.shared.data.remote.mapper.YTBPlaylistItemToTrack
+import com.mousiki.shared.data.remote.mapper.YTBPlaylistItemToVideoId
+import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
+import com.mousiki.shared.data.remote.mapper.toListMapper
+import com.mousiki.shared.data.remote.runner.NetworkRunner
+import com.mousiki.shared.data.repository.GenresRepository
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.result.Result
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -38,9 +37,8 @@ import kotlin.coroutines.suspendCoroutine
  ***************************************
  */
 class PlaylistSongsRemoteDataSource @Inject constructor(
-    private var youtubeService: YoutubeService,
-    private val mousikiSearchApi: MousikiSearchApi,
-    private val retrofitRunner: RetrofitRunner,
+    private val mousikiApi: MousikiApi,
+    private val networkRunner: NetworkRunner,
     private val videoIdMapper: YTBPlaylistItemToVideoId,
     private val trackMapper: YTBVideoToTrack,
     private val json: Json,
@@ -54,8 +52,8 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getPlaylistSongs(playlistId: String): Result<List<MusicTrack>> {
-        val resultFromApi = retrofitRunner.loadWithRetry(appConfig.playlistApiConfig()) { apiUrl ->
-            mousikiSearchApi.getPlaylistDetail(apiUrl, playlistId).tracks()
+        val resultFromApi = networkRunner.loadWithRetry(appConfig.playlistApiConfig()) { apiUrl ->
+            mousikiApi.getPlaylistDetail(apiUrl, playlistId).tracks()
         }
         if (resultFromApi is Result.Success && resultFromApi.data.size > 3) {
             return resultFromApi
@@ -91,14 +89,14 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
         }
 
         // 1 - Get video ids
-        val idsResult = retrofitRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
-            youtubeService.playlistVideoIds(playlistId, 50).items ?: emptyList()
+        val idsResult = networkRunner.executeNetworkCall(videoIdMapper.toListMapper()) {
+            mousikiApi.playlistVideoIds(playlistId, 50).items ?: emptyList()
         } as? Result.Success ?: return NO_RESULT
 
         // 2 - Get videos
         val ids = idsResult.data.joinToString { it.id }
-        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.videos(ids).items!!
+        return networkRunner.executeNetworkCall(trackMapper.toListMapper()) {
+            mousikiApi.videos(ids).items!!
         }
     }
 
@@ -139,12 +137,6 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
             }
         }
         return localFile
-    }
-
-    suspend fun getPlaylistLightSongs(playlistId: String): Result<List<MusicTrack>> {
-        return retrofitRunner.executeNetworkCall(playlistTrackMapper.toListMapper()) {
-            youtubeService.playlistLightTracks(playlistId, 3).items ?: emptyList()
-        }
     }
 
     companion object {

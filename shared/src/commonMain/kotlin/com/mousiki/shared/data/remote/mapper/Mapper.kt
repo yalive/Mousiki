@@ -1,4 +1,4 @@
-package com.cas.musicplayer.data.remote.mappers
+package com.mousiki.shared.data.remote.mapper
 
 /**
  * [F]: The type to convert

@@ -1,7 +1,5 @@
 package com.cas.musicplayer.data.repositories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.cas.musicplayer.MousikiDb
 import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
 import com.cas.musicplayer.utils.UserPrefs
@@ -13,7 +11,11 @@ import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
 import com.mousiki.shared.utils.NetworkUtils
 import com.squareup.sqldelight.Query
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 /**
@@ -33,7 +35,6 @@ class SongsRepository(
         max: Int,
         lastKnown: MusicTrack? = null
     ): Result<List<MusicTrack>> {
-        val all: Query<Favourite_tracks> = favouriteTracksDaoSql.getAll()
         if (lastKnown == null) {
             // First load
             if (localDataSource.numberOfSongs() > 0 && localDataSource.expired() && networkUtils.hasNetworkConnection()) {
@@ -55,12 +56,12 @@ class SongsRepository(
             }
         }
 
-    suspend fun getFavouriteSongsLive(max: Int = 10): LiveData<List<MusicTrack>> =
+    suspend fun getFavouriteSongsFlow(max: Int = 10): Flow<List<MusicTrack>> =
         withContext(Dispatchers.Default) {
-            val liveData = favouriteTracksDaoSql.getSongs(max.toLong()).asLiveData()
-            return@withContext Transformations.map(liveData) { input ->
-                input.executeAsList().map { it.toMusicTrack() }
-            }
+            return@withContext favouriteTracksDaoSql.getSongs(max.toLong())
+                .asFlow()
+                .mapToList()
+                .map { it.map(Favourite_tracks::toMusicTrack) }
         }
 
     suspend fun addSongToFavourite(track: MusicTrack) = withContext(Dispatchers.Default) {

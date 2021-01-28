@@ -28,17 +28,30 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
                 implementation(Deps.SqlDelight.runtime)
                 implementation("com.russhwolf:multiplatform-settings:0.7")
+                implementation("com.squareup.sqldelight:coroutines-extensions:1.4.4")
+
+                // Ktor
+                implementation(Deps.Ktor.commonCore)
+                implementation(Deps.Ktor.commonJson)
+                implementation(Deps.Ktor.commonLogging)
+                implementation(Deps.Ktor.commonSerialization)
+
+                // Logs
+                api("co.touchlab:kermit:0.1.7")
             }
         }
         val androidMain by getting {
             dependencies {
                 implementation("androidx.annotation:annotation:1.1.0")
                 implementation(Deps.SqlDelight.driverAndroid)
+
+                implementation(Deps.Ktor.androidCore)
             }
         }
         val iosMain by getting {
             dependencies {
                 implementation(Deps.SqlDelight.driverIos)
+                implementation(Deps.Ktor.ios)
             }
         }
     }

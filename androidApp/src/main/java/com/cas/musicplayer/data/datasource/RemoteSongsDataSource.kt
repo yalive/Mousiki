@@ -2,10 +2,6 @@ package com.cas.musicplayer.data.datasource
 
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
-import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
-import com.cas.musicplayer.data.remote.mappers.toListMapper
-import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.bgContext
 import com.cas.musicplayer.utils.getCurrentLocale
@@ -15,6 +11,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import com.mousiki.shared.data.models.TrackDto
 import com.mousiki.shared.data.models.toDomainModel
+import com.mousiki.shared.data.remote.api.MousikiApi
+import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
+import com.mousiki.shared.data.remote.mapper.toListMapper
+import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.preference.PreferencesHelper
@@ -33,8 +33,8 @@ import kotlin.coroutines.suspendCoroutine
  ***************************************
  */
 class RemoteSongsDataSource @Inject constructor(
-    private var youtubeService: YoutubeService,
-    private val retrofitRunner: RetrofitRunner,
+    private val mousikiApi: MousikiApi,
+    private val networkRunner: NetworkRunner,
     private val trackMapper: YTBVideoToTrack,
     private val preferences: PreferencesHelper,
     private val appContext: Context,
@@ -52,8 +52,8 @@ class RemoteSongsDataSource @Inject constructor(
         if (getCurrentLocale().toLowerCase(Locale.getDefault()) == "mx") {
             analytics.logEvent(ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING, null)
         }
-        return retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            val resource = youtubeService.trending(
+        return networkRunner.executeNetworkCall(trackMapper.toListMapper()) {
+            val resource = mousikiApi.trending(
                 max,
                 getCurrentLocale(),
                 preferences.mostPopularNextPageToken()

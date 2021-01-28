@@ -1,7 +1,6 @@
 package com.cas.musicplayer.ui.library
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.common.event.Event
@@ -10,10 +9,10 @@ import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.cas.musicplayer.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
-import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
+import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.domain.usecase.library.GetHeavyTracksUseCase
-import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsLiveUseCase
+import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
@@ -23,6 +22,8 @@ import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.imgUrl
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,25 +33,25 @@ import javax.inject.Inject
  ***************************************
  */
 class LibraryViewModel @Inject constructor(
-    private val getRecentlyPlayedSongsLive: GetRecentlyPlayedSongsLiveUseCase,
-    private val getHeavyTracks: GetHeavyTracksUseCase,
-    private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase,
+    private val getRecentlyPlayedSongsFlow: GetRecentlyPlayedSongsFlowUseCase,
+    private val getHeavyTracksFlow: GetHeavyTracksUseCase,
+    private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val getCustomPlaylists: GetCustomPlaylistsUseCase,
     private val removeCustomPlaylist: RemoveCustomPlaylistUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
-    private val _recentSongs = MediatorLiveData<List<DisplayedVideoItem>>()
+    private val _recentSongs = MutableLiveData<List<DisplayedVideoItem>>()
     val recentSongs: LiveData<List<DisplayedVideoItem>> = _recentSongs
 
-    private val _heavySongs = MediatorLiveData<List<DisplayedVideoItem>>()
+    private val _heavySongs = MutableLiveData<List<DisplayedVideoItem>>()
     val heavySongs: LiveData<List<DisplayedVideoItem>> = _heavySongs
 
-    private val _favouriteSongs = MediatorLiveData<List<DisplayedVideoItem>>()
+    private val _favouriteSongs = MutableLiveData<List<DisplayedVideoItem>>()
     val favouriteSongs: LiveData<List<DisplayedVideoItem>> = _favouriteSongs
 
-    private val _playlists = MediatorLiveData<List<LibraryPlaylistItem>>()
+    private val _playlists = MutableLiveData<List<LibraryPlaylistItem>>()
     val playlists: LiveData<List<LibraryPlaylistItem>> = _playlists
 
     private val _onClickSong = MutableLiveData<Event<Unit>>()
@@ -60,22 +61,30 @@ class LibraryViewModel @Inject constructor(
     val onClickPlaylist: LiveData<Event<Playlist>> = _onClickPlaylist
 
     init {
-        uiCoroutine {
+        collectRecent()
+        collectFavourite()
+        collectHeavy()
+    }
 
-            _favouriteSongs.addSource(getFavouriteTracksLive(20)) { songs ->
-                _favouriteSongs.postValue(tracksToDisplayableItems(songs))
-            }
-
-            _recentSongs.addSource(getRecentlyPlayedSongsLive(50)) { songs ->
-                _recentSongs.postValue(tracksToDisplayableItems(songs))
-            }
-
-            _heavySongs.addSource(getHeavyTracks(10)) { songs ->
-                _heavySongs.postValue(tracksToDisplayableItems(songs))
-            }
+    private fun collectRecent() = viewModelScope.launch {
+        getRecentlyPlayedSongsFlow(50).collect { songs ->
+            _recentSongs.postValue(tracksToDisplayableItems(songs))
         }
     }
 
+    private fun collectFavourite() = viewModelScope.launch {
+        getFavouriteTracksFlow(20).collect { songs ->
+            _favouriteSongs.postValue(tracksToDisplayableItems(songs))
+        }
+    }
+
+    private fun collectHeavy() = viewModelScope.launch {
+        getHeavyTracksFlow(10)
+            .filter { it.size >= 3 }
+            .collect { songs ->
+                _heavySongs.postValue(tracksToDisplayableItems(songs))
+            }
+    }
 
     fun onClickRecentTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
         _onClickSong.value = Unit.asEvent()

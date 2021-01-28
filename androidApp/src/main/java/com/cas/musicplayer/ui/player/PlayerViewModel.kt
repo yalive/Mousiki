@@ -3,12 +3,11 @@ package com.cas.musicplayer.ui.player
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
-import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksLiveUseCase
+import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
@@ -17,6 +16,10 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.google.android.gms.ads.formats.UnifiedNativeAd
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.MusicTrack
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -28,7 +31,7 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
-    private val getFavouriteTracksLive: GetFavouriteTracksLiveUseCase,
+    private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,
     private val appConfig: RemoteAppConfig
 ) : BaseViewModel() {
 
@@ -47,11 +50,11 @@ class PlayerViewModel @Inject constructor(
     }
 
     init {
-        uiCoroutine {
-            _isLiked.addSource(getFavouriteTracksLive(20)) { songs ->
+        OnChangeQueue.observeForever(queueObserver)
+        viewModelScope.launch {
+            getFavouriteTracksFlow(50).collect { songs ->
                 _isLiked.postValue(songs.contains(PlayerQueue.value))
             }
-            OnChangeQueue.observeForever(queueObserver)
         }
     }
 

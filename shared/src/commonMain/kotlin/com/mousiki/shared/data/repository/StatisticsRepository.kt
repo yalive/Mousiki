@@ -1,13 +1,15 @@
-package com.cas.musicplayer.data.repositories
+package com.mousiki.shared.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.toMusicTrack
 import com.mousiki.shared.db.Historic_tracks
 import com.mousiki.shared.db.Recent_played_tracks
 import com.mousiki.shared.domain.models.MusicTrack
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 /**
@@ -54,14 +56,12 @@ class StatisticsRepository(
         }
     }
 
-    // TODO: migrate to flow
-    suspend fun getRecentlyPlayedTracksLive(max: Int = 10): LiveData<List<MusicTrack>> =
-        withContext(Dispatchers.Default) {
-            val liveData = recentlyPlayedTracksDao.getSongs(max.toLong()).asLiveData()
-            return@withContext Transformations.map(liveData) { input ->
-                input.executeAsList().map { it.toMusicTrack() }
-            }
-        }
+    suspend fun getRecentlyPlayedTracksFlow(max: Int = 10): Flow<List<MusicTrack>> {
+        return recentlyPlayedTracksDao.getSongs(max.toLong())
+            .asFlow()
+            .mapToList()
+            .map { it.map(Recent_played_tracks::toMusicTrack) }
+    }
 
     suspend fun getHeavyList(max: Int = 10): List<MusicTrack> {
         return historicTracksDao.getHeavyList(max.toLong()).executeAsList().map {
@@ -69,11 +69,11 @@ class StatisticsRepository(
         }
     }
 
-    suspend fun getHeavyListLive(max: Int = 10): LiveData<List<MusicTrack>> =
+    suspend fun getHeavyListFlow(max: Int = 10): Flow<List<MusicTrack>> =
         withContext(Dispatchers.Default) {
-            val livaData = historicTracksDao.getHeavyList(max.toLong()).asLiveData()
-            return@withContext Transformations.map(livaData) { input ->
-                input.executeAsList().map { it.toMusicTrack() }
-            }
+            return@withContext historicTracksDao.getHeavyList(max.toLong())
+                .asFlow()
+                .mapToList()
+                .map { it.map(Historic_tracks::toMusicTrack) }
         }
 }

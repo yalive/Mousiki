@@ -51,4 +51,13 @@ object Deps {
         val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
         val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     }
+
+    object Ktor {
+        val commonCore = "io.ktor:ktor-client-core:${Versions.ktor}"
+        val commonJson = "io.ktor:ktor-client-json:${Versions.ktor}"
+        val commonLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
+        val androidCore = "io.ktor:ktor-client-okhttp:${Versions.ktor}"
+        val ios = "io.ktor:ktor-client-ios:${Versions.ktor}"
+        val commonSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
+    }
 }

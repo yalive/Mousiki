@@ -1,11 +1,11 @@
 package com.cas.musicplayer.data.datasource
 
-import com.mousiki.shared.domain.result.Result
-import com.cas.musicplayer.data.remote.mappers.YTBChannelToArtist
-import com.cas.musicplayer.data.remote.mappers.toListMapper
 import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.mousiki.shared.data.remote.api.MousikiApi
+import com.mousiki.shared.data.remote.mapper.YTBChannelToArtist
+import com.mousiki.shared.data.remote.mapper.toListMapper
+import com.mousiki.shared.data.remote.runner.NetworkRunner
+import com.mousiki.shared.domain.result.Result
 import javax.inject.Inject
 
 /**
@@ -15,15 +15,15 @@ import javax.inject.Inject
  */
 
 class ArtistsRemoteDataSource @Inject constructor(
-    private var youtubeService: YoutubeService,
-    private val retrofitRunner: RetrofitRunner,
-    private val artistMapper: YTBChannelToArtist
+    private var mousikiApi: MousikiApi,
+    private val networkRunner: NetworkRunner,
+    private val artistMapper: YTBChannelToArtist = YTBChannelToArtist()
 ) {
 
     suspend fun getArtists(ids: List<String>): Result<List<Artist>> {
-        return retrofitRunner.executeNetworkCall(artistMapper.toListMapper()) {
+        return networkRunner.executeNetworkCall(artistMapper.toListMapper()) {
             val idsList = ids.joinToString { it }
-            youtubeService.channels(idsList).items ?: emptyList()
+            mousikiApi.channels(idsList).items ?: emptyList()
         }
     }
 }

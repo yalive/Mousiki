@@ -1,13 +1,10 @@
-package com.cas.musicplayer.data.remote.mappers
+package com.mousiki.shared.data.remote.mapper
 
 import com.mousiki.shared.data.models.YTBVideo
 import com.mousiki.shared.data.models.urlOrEmpty
 import com.mousiki.shared.domain.models.MusicTrack
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class YTBVideoToTrack @Inject constructor() : Mapper<YTBVideo, MusicTrack> {
+class YTBVideoToTrack : Mapper<YTBVideo, MusicTrack> {
     override suspend fun map(from: YTBVideo): MusicTrack {
         val id = from.id.orEmpty()
         val title = from.snippet?.title.orEmpty()
