@@ -1,7 +1,7 @@
 package com.cas.musicplayer.domain.usecase.search
 
 import com.cas.musicplayer.data.repositories.SearchRepository
-import com.cas.musicplayer.utils.getCurrentLocale
+import com.mousiki.shared.utils.getCurrentLocale
 import com.cas.musicplayer.utils.getLanguage
 import javax.inject.Inject
 

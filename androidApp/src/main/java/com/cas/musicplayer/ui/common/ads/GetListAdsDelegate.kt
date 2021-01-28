@@ -1,12 +1,11 @@
 package com.cas.musicplayer.ui.common.ads
 
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
-import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.utils.AnalyticsApi
 import javax.inject.Inject
 
 /**
@@ -21,7 +20,7 @@ interface GetListAdsDelegate {
 
 class GetListAdsDelegateImp @Inject constructor(
     private val config: RemoteAppConfig,
-    private val analytics: FirebaseAnalytics
+    private val analytics: AnalyticsApi
 ) : GetListAdsDelegate {
 
 
@@ -49,11 +48,7 @@ class GetListAdsDelegateImp @Inject constructor(
             }
             val duration = System.currentTimeMillis() - startTime
             if (duration > 5 * 1000) {
-                analytics.logEvent(
-                    KEY_EVENT_AD_TAKE_TOO_MUCH_TIME, bundleOf(
-                        "duration" to duration
-                    )
-                )
+                analytics.logEvent(KEY_EVENT_AD_TAKE_TOO_MUCH_TIME, "duration" to duration)
             }
             return songsList
         }

@@ -3,10 +3,8 @@ package com.cas.musicplayer.ui.common.ads
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.os.bundleOf
 import com.cas.musicplayer.R
 import com.cas.musicplayer.data.config.EnvConfig
-import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.UserPrefs
 import com.google.android.gms.ads.AdRequest
@@ -14,7 +12,8 @@ import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.utils.AnalyticsApi
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
 import javax.inject.Inject
@@ -31,7 +30,7 @@ interface RewardedAdDelegate {
 
 class RewardedAdDelegateImp(
     private val context: Context,
-    private val analytics: FirebaseAnalytics,
+    private val analytics: AnalyticsApi,
     private val appConfig: RemoteAppConfig,
     private val envConfig: EnvConfig
 ) : RewardedAdDelegate {
@@ -77,7 +76,7 @@ class RewardedAdDelegateImp(
             loadAd()
         }
         if (!rewardedAd.isLoaded) {
-            analytics.logEvent(ANALYTICS_ERROR_LOAD_AD, null)
+            analytics.logEvent(ANALYTICS_ERROR_LOAD_AD)
             return
         }
 
@@ -108,16 +107,15 @@ class RewardedAdDelegateImp(
                 if (retriesCount < MAX_RETRIES) {
                     loadAd()
                 } else {
-                    analytics.logEvent(ANALYTICS_ERROR_LOAD_AD_RETRY, null)
+                    analytics.logEvent(ANALYTICS_ERROR_LOAD_AD_RETRY)
                 }
             }
 
             override fun onRewardedAdLoaded() {
                 if (retriesCount > 0) {
                     analytics.logEvent(
-                        ANALYTICS_GOT_REWARD_AFTER_RETRIES, bundleOf(
-                            "retries" to retriesCount
-                        )
+                        ANALYTICS_GOT_REWARD_AFTER_RETRIES,
+                        "retries" to retriesCount
                     )
                 }
                 retriesCount = 0

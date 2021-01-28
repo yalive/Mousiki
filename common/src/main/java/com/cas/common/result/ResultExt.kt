@@ -1,6 +1,5 @@
 package com.cas.common.result
 
-import com.cas.common.R
 import com.cas.common.resource.Resource
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.utils.TextResource
@@ -12,4 +11,3 @@ fun <T> Result<T>.asResource(): Resource<T> {
     }
 }
 
-val NO_RESULT = Result.Error(TextResource.fromStringId(R.string.common_empty_state))

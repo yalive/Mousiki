@@ -2,8 +2,8 @@ package com.cas.musicplayer.ui.common.ads
 
 import android.app.Activity
 import android.content.Context
-import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.utils.AnalyticsApi
 import javax.inject.Inject
 
 /**
@@ -18,7 +18,7 @@ interface InterstitialDelegate {
 
 class InterstitialDelegateImp(
     private val context: Context,
-    private val analytics: FirebaseAnalytics,
+    private val analytics: AnalyticsApi,
     private val appConfig: RemoteAppConfig
 ) : InterstitialDelegate {
 

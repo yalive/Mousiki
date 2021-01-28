@@ -1,4 +1,4 @@
-package com.cas.musicplayer.data.datasource
+package com.mousiki.shared.data.datasource
 
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.remote.api.MousikiApi
@@ -6,7 +6,6 @@ import com.mousiki.shared.data.remote.mapper.YTBChannelToArtist
 import com.mousiki.shared.data.remote.mapper.toListMapper
 import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.result.Result
-import javax.inject.Inject
 
 /**
  ***************************************
@@ -14,10 +13,10 @@ import javax.inject.Inject
  ***************************************
  */
 
-class ArtistsRemoteDataSource @Inject constructor(
+class ArtistsRemoteDataSource constructor(
     private var mousikiApi: MousikiApi,
     private val networkRunner: NetworkRunner,
-    private val artistMapper: YTBChannelToArtist = YTBChannelToArtist()
+    private val artistMapper: YTBChannelToArtist
 ) {
 
     suspend fun getArtists(ids: List<String>): Result<List<Artist>> {

@@ -4,12 +4,16 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MousikiDb
+import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
-import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
+import com.mousiki.shared.data.datasource.search.SearchRemoteDataSource
 import com.cas.musicplayer.data.repositories.SongsRepository
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
 import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
+import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
@@ -22,6 +26,7 @@ import com.mousiki.shared.data.repository.GenresRepository
 import com.mousiki.shared.data.repository.StatisticsRepository
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.preference.SettingsProvider
+import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.NetworkUtils
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -233,4 +238,58 @@ object AppModule {
         playlistMapper: YTBPlaylistToPlaylist
     ): ChannelPlaylistsRemoteDataSource =
         ChannelPlaylistsRemoteDataSource(mousikiApi, networkRunner, playlistMapper)
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesRemoteAppConfig(
+        firebaseRemoteConfig: FirebaseRemoteConfig,
+        json: Json,
+        connectivityState: ConnectivityState,
+        context: Context,
+        preferencesHelper: PreferencesHelper
+    ) = RemoteAppConfig(
+        firebaseRemoteConfig,
+        json,
+        context,
+        preferencesHelper
+    )
+
+    @JvmStatic
+    @Provides
+    fun providesSearchRemoteDataSource(
+        networkRunner: NetworkRunner,
+        trackMapper: YTBVideoToTrack,
+        playlistMapper: YTBPlaylistToPlaylist,
+        channelMapper: YTBChannelToChannel,
+        videoIdMapper: YTBSearchResultToVideoId,
+        channelIdMapper: YTBSearchResultToChannelId,
+        playlistIdMapper: YTBSearchResultToPlaylistId,
+        analytics: AnalyticsApi,
+        remoteConfig: RemoteAppConfig,
+        mousikiApi: MousikiApi
+    ) = SearchRemoteDataSource(
+        networkRunner,
+        trackMapper,
+        playlistMapper,
+        channelMapper,
+        videoIdMapper,
+        channelIdMapper,
+        playlistIdMapper,
+        analytics,
+        remoteConfig,
+        mousikiApi
+    )
+
+    @JvmStatic
+    @Provides
+    fun providesArtistsRemoteDataSource(
+        mousikiApi: MousikiApi,
+        networkRunner: NetworkRunner,
+        artistMapper: YTBChannelToArtist
+    ) = ArtistsRemoteDataSource(
+        mousikiApi,
+        networkRunner,
+        artistMapper
+    )
 }

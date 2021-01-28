@@ -2,7 +2,7 @@ package com.cas.musicplayer.ui.common.ads
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cas.musicplayer.data.config.RemoteAppConfig
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import kotlinx.coroutines.launch
 import javax.inject.Inject

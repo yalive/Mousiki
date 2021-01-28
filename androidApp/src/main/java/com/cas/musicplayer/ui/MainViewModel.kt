@@ -6,12 +6,12 @@ import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.BuildConfig
-import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.utils.UserPrefs
 import com.cas.musicplayer.utils.uiCoroutine
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.utils.AnalyticsApi
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ import javax.inject.Inject
  */
 class MainViewModel @Inject constructor(
     private val remoteAppConfig: RemoteAppConfig,
-    private val analytics: FirebaseAnalytics,
+    private val analytics: AnalyticsApi,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -58,9 +58,9 @@ class MainViewModel @Inject constructor(
 
     fun checkStartFromShortcut(data: String?) {
         if (data == DEEP_LINK_SEARCH) {
-            analytics.logEvent(EVENT_OPEN_APP_SHORTCUT_SEARCH, null)
+            analytics.logEvent(EVENT_OPEN_APP_SHORTCUT_SEARCH)
         } else if (data == DEEP_LINK_TRENDING) {
-            analytics.logEvent(EVENT_OPEN_APP_SHORTCUT_TRENDING, null)
+            analytics.logEvent(EVENT_OPEN_APP_SHORTCUT_TRENDING)
         }
     }
 

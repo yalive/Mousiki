@@ -27,3 +27,5 @@ suspend fun <T> Result<T>.alsoWhenSuccess(doOnSuccess: suspend (T) -> Unit): Res
 fun <T> Result<List<T>>.hasData(): Boolean {
     return (this is Result.Success && data.isNotEmpty())
 }
+
+val NO_RESULT = Result.Error(TextResource.fromText("No result found"))
