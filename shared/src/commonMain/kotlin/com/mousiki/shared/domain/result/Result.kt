@@ -23,3 +23,7 @@ suspend fun <T> Result<T>.alsoWhenSuccess(doOnSuccess: suspend (T) -> Unit): Res
     if (this is Result.Success) doOnSuccess(data)
     return this
 }
+
+fun <T> Result<List<T>>.hasData(): Boolean {
+    return (this is Result.Success && data.isNotEmpty())
+}

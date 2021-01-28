@@ -1,14 +1,17 @@
 package com.cas.musicplayer.data.config
 
 import android.annotation.SuppressLint
-import com.cas.musicplayer.MusicApp
+import android.content.Context
+import android.os.Bundle
+import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.utils.getCurrentLocale
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.mousiki.shared.data.config.ApiConfig
 import com.mousiki.shared.data.config.CountryKeys
 import com.mousiki.shared.data.config.SearchConfig
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.mousiki.shared.preference.PreferencesHelper
+import kotlinx.coroutines.delay
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -22,14 +25,41 @@ import javax.inject.Singleton
 @Singleton
 class RemoteAppConfig @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    private val json: Json
+    private val json: Json,
+    private val connectivityState: ConnectivityState,
+    private val context: Context,
+    private val preferencesHelper: PreferencesHelper
 ) {
 
-    private val fetchConfigJob: Job = MusicApp.get().applicationScope.launch {
-        firebaseRemoteConfig.fetchAndActivate().await()
+    private var gotConfigResponse = false
+
+    init {
+        val connectedBefore = connectivityState.isConnected()
+        firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            gotConfigResponse = true
+            if (!task.isSuccessful) {
+                val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+                val bundle = Bundle()
+                bundle.putBoolean("isConnected", connectivityState.isConnected())
+                bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
+                bundle.putString("local", getCurrentLocale())
+                firebaseAnalytics.logEvent("error_fetch_remote_config", bundle)
+            } else {
+                val ytbKeys = getYoutubeApiKeys()
+                if (ytbKeys.isNotEmpty()) {
+                    preferencesHelper.setYtbApiKeys(ytbKeys)
+                }
+            }
+        }
     }
 
-    suspend fun awaitActivation() = fetchConfigJob.join()
+    suspend fun awaitActivation() {
+        var count = 0
+        while (!gotConfigResponse && count < MAX_CYCLES) {
+            count++
+            delay(WAIT_INTERVAL_MS)
+        }
+    }
 
     @SuppressLint("DefaultLocale")
     fun getYoutubeApiKeys(): List<String> {
@@ -144,5 +174,8 @@ class RemoteAppConfig @Inject constructor(
         const val SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API = "search_artist_tracks_from_mousiki_api"
         const val HOME_CACHE_DURATION = "home_cache_duration_hours"
         const val ENABLE_NEW_HOME = "enable_new_home"
+
+        private const val WAIT_INTERVAL_MS = 100L
+        private const val MAX_CYCLES = 150
     }
 }

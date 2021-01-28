@@ -2,8 +2,8 @@ package com.cas.musicplayer.data.repositories
 
 import com.cas.musicplayer.MousikiDb
 import com.cas.musicplayer.data.datasource.search.SearchRemoteDataSource
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
 import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
+import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.db.Search_queries
 import com.mousiki.shared.domain.models.Channel
 import com.mousiki.shared.domain.models.Playlist
@@ -21,7 +21,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class SearchRepository @Inject constructor(
-    private var youtubeService: YoutubeService,
+    private val mousikiApi: MousikiApi,
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val searchLocalDataSource: SearchLocalDataSource,
     private val db: MousikiDb
@@ -71,15 +71,13 @@ class SearchRepository @Inject constructor(
 
     suspend fun getSuggestions(url: String): List<String> {
         try {
-            val responseBody = youtubeService.suggestions(url)
-            val stringResponse = responseBody.string()
+            val stringResponse = mousikiApi.suggestions(url)
             if (stringResponse.startsWith("window.google.ac.h")) {
                 val json =
                     stringResponse.substring(
                         stringResponse.indexOf("(") + 1,
                         stringResponse.indexOf(")")
                     )
-
                 val jsonArray = JSONArray(json).getJSONArray(1)
 
                 val suggestions = mutableListOf<String>()

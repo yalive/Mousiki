@@ -4,37 +4,30 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MousikiDb
-import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
-import com.cas.musicplayer.data.remote.retrofit.AddKeyInterceptor
-import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
+import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.cas.musicplayer.data.repositories.SongsRepository
-import com.cas.musicplayer.data.repositories.StatisticsRepository
-import com.cas.musicplayer.utils.Constants
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
 import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
+import com.mousiki.shared.data.remote.api.MousikiApi
+import com.mousiki.shared.data.remote.api.MousikiApiImpl
+import com.mousiki.shared.data.remote.mapper.*
+import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.data.repository.CustomPlaylistsRepository
 import com.mousiki.shared.data.repository.GenresRepository
+import com.mousiki.shared.data.repository.StatisticsRepository
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.preference.SettingsProvider
 import com.mousiki.shared.utils.NetworkUtils
-import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 /**
@@ -47,33 +40,6 @@ import javax.inject.Singleton
 @Module(includes = [AssistedInject_AppModule::class])
 object AppModule {
 
-    @ExperimentalSerializationApi
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesRetrofit(json: Json, client: OkHttpClient): Retrofit {
-        val contentType = MediaType.get("application/json")
-        return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .client(client)
-            .addConverterFactory(json.asConverterFactory(contentType))
-            .build()
-    }
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesYoutubeService(retrofit: Retrofit): YoutubeService {
-        return retrofit.create(YoutubeService::class.java)
-    }
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesMousikiSearchApi(retrofit: Retrofit): MousikiSearchApi {
-        return retrofit.create(MousikiSearchApi::class.java)
-    }
-
     @Singleton
     @JvmStatic
     @Provides
@@ -81,23 +47,6 @@ object AppModule {
         ignoreUnknownKeys = true
         isLenient = true
     }
-
-    @Singleton
-    @JvmStatic
-    @Provides
-    fun providesOkHttp(addKeyInterceptor: AddKeyInterceptor): OkHttpClient {
-        val client = OkHttpClient.Builder()
-            .connectTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
-            .writeTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
-            .readTimeout((5 * 60).toLong(), TimeUnit.SECONDS)
-            .addInterceptor(addKeyInterceptor)
-
-        if (Constants.Config.DEBUG_NETWORK) {
-            client.addInterceptor(ChuckInterceptor(MusicApp.get()))
-        }
-        return client.build()
-    }
-
 
     @Singleton
     @JvmStatic
@@ -209,4 +158,79 @@ object AppModule {
     ): StatisticsRepository = StatisticsRepository(db)
 
 
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesMousikiApi(
+        preferences: PreferencesHelper
+    ): MousikiApi = MousikiApiImpl(preferences)
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesNetworkRunner(): NetworkRunner = NetworkRunner()
+
+
+    // Mappers
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBChannelToArtist(): YTBChannelToArtist = YTBChannelToArtist()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBChannelToChannel(): YTBChannelToChannel = YTBChannelToChannel()
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBPlaylistItemToTrack(): YTBPlaylistItemToTrack = YTBPlaylistItemToTrack()
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBPlaylistItemToVideoId(): YTBPlaylistItemToVideoId = YTBPlaylistItemToVideoId()
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBPlaylistToPlaylist(): YTBPlaylistToPlaylist = YTBPlaylistToPlaylist()
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBSearchResultToChannelId(): YTBSearchResultToChannelId =
+        YTBSearchResultToChannelId()
+
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBSearchResultToPlaylistId(): YTBSearchResultToPlaylistId =
+        YTBSearchResultToPlaylistId()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBSearchResultToVideoId(): YTBSearchResultToVideoId = YTBSearchResultToVideoId()
+
+    @Singleton
+    @JvmStatic
+    @Provides
+    fun providesYTBVideoToTrack(): YTBVideoToTrack = YTBVideoToTrack()
+
+    @JvmStatic
+    @Provides
+    fun providesChannelPlaylistsRemoteDataSource(
+        mousikiApi: MousikiApi,
+        networkRunner: NetworkRunner,
+        playlistMapper: YTBPlaylistToPlaylist
+    ): ChannelPlaylistsRemoteDataSource =
+        ChannelPlaylistsRemoteDataSource(mousikiApi, networkRunner, playlistMapper)
 }

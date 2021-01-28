@@ -3,23 +3,22 @@ package com.cas.musicplayer.data.datasource.channel
 import android.content.Context
 import com.cas.common.connectivity.ConnectivityState
 import com.cas.common.result.NO_RESULT
-import com.mousiki.shared.domain.result.Result
 import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.datasource.musicTracks
-import com.cas.musicplayer.data.remote.mappers.YTBSearchResultToVideoId
-import com.cas.musicplayer.data.remote.mappers.YTBVideoToTrack
-import com.cas.musicplayer.data.remote.mappers.toListMapper
-import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.data.models.tracks
-import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
-import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
-import com.cas.musicplayer.data.remote.retrofit.YoutubeService
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.tracks
+import com.mousiki.shared.data.remote.api.MousikiApi
+import com.mousiki.shared.data.remote.mapper.YTBSearchResultToVideoId
+import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
+import com.mousiki.shared.data.remote.mapper.toListMapper
+import com.mousiki.shared.data.remote.runner.NetworkRunner
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.result.Result
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -34,9 +33,8 @@ import kotlin.coroutines.suspendCoroutine
  ***************************************
  */
 class ChannelSongsRemoteDataSource @Inject constructor(
-    private var youtubeService: YoutubeService,
-    private var mousikiSearchApi: MousikiSearchApi,
-    private val retrofitRunner: RetrofitRunner,
+    private val mousikiApi: MousikiApi,
+    private val networkRunner: NetworkRunner,
     private val searchMapper: YTBSearchResultToVideoId,
     private val trackMapper: YTBVideoToTrack,
     private val appContext: Context,
@@ -62,14 +60,14 @@ class ChannelSongsRemoteDataSource @Inject constructor(
 
         // Go to youtube!
         // Get ids
-        val result = retrofitRunner.executeNetworkCall(searchMapper.toListMapper()) {
-            youtubeService.channelVideoIds(artist.channelId).items ?: emptyList()
+        val result = networkRunner.executeNetworkCall(searchMapper.toListMapper()) {
+            mousikiApi.channelVideoIds(artist.channelId).items ?: emptyList()
         } as? Result.Success ?: return NO_RESULT
 
         // 2 - Get videos
         val ids = result.data.joinToString { it.id }
-        val resultYoutube = retrofitRunner.executeNetworkCall(trackMapper.toListMapper()) {
-            youtubeService.videos(ids).items ?: emptyList()
+        val resultYoutube = networkRunner.executeNetworkCall(trackMapper.toListMapper()) {
+            mousikiApi.videos(ids).items ?: emptyList()
         }
         if (resultYoutube is Result.Success && resultYoutube.data.size > 3) {
             return resultYoutube
@@ -80,8 +78,8 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     }
 
     private suspend fun loadArtistTracksFromMousikiApi(artist: Artist): Result<List<MusicTrack>> {
-        return retrofitRunner.loadWithRetry(appConfig.artistSongsApiConfig()) { apiUrl ->
-            mousikiSearchApi.searchChannel(apiUrl, artist.channelId).tracks()
+        return networkRunner.loadWithRetry(appConfig.artistSongsApiConfig()) { apiUrl ->
+            mousikiApi.searchChannel(apiUrl, artist.channelId).tracks()
         }
     }
 

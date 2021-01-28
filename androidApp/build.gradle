@@ -125,16 +125,10 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
 
     // Network
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
     // Serialization
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
-
-    // Network inspection
-    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
-    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 
     // Dagger 2
     implementation 'com.google.dagger:dagger:2.24'
@@ -189,7 +183,9 @@ dependencies {
     implementation project(path: ':shared')
 
 
+    // Temporary
     implementation "com.squareup.sqldelight:android-driver:1.4.4"
+    implementation "com.squareup.sqldelight:coroutines-extensions:1.4.4"
 }
 
 apply plugin: 'com.google.gms.google-services'

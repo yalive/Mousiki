@@ -19,13 +19,12 @@ data class SearchConfig(
     val retryCount: Int? = null
 )
 
-private val forceDemo = false
+private val forceDemo = true
 
 // For Fallback
 fun SearchConfig.apiList(): List<String> {
     if (forceDemo) {
-        return listOf("https://" +
-                "ktor-demo.herokuapp.com")
+        return listOf("https://theta-topic-205615.uc.r.appspot.com")
     }
     if (!apis.isNullOrEmpty()) return apis
     return listOf("https://mousikiapp.herokuapp.com/")

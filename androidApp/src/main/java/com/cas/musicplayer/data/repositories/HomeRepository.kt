@@ -4,9 +4,6 @@ import android.content.Context
 import android.os.SystemClock
 import com.cas.common.result.NO_RESULT
 import com.cas.musicplayer.data.config.RemoteAppConfig
-import com.cas.musicplayer.data.datasource.search.getOrEmpty
-import com.cas.musicplayer.data.remote.retrofit.MousikiSearchApi
-import com.cas.musicplayer.data.remote.retrofit.RetrofitRunner
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.getCurrentLocale
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -14,8 +11,11 @@ import com.mousiki.shared.data.config.apiList
 import com.mousiki.shared.data.config.maxApi
 import com.mousiki.shared.data.config.retryCount
 import com.mousiki.shared.data.models.HomeRS
+import com.mousiki.shared.data.remote.api.MousikiApi
+import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.utils.getOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
@@ -32,12 +32,12 @@ import javax.inject.Inject
  */
 
 class HomeRepository @Inject constructor(
-    private val retrofitRunner: RetrofitRunner,
-    private val mousikiApi: MousikiSearchApi,
+    private val networkRunner: NetworkRunner,
     private val preferences: PreferencesHelper,
     private val appContext: Context,
     private val json: Json,
-    private val appConfig: RemoteAppConfig
+    private val appConfig: RemoteAppConfig,
+    private val mousikiApi: MousikiApi
 ) {
 
     private val cacheDirectory: File by lazy {
@@ -115,7 +115,8 @@ class HomeRepository @Inject constructor(
             var apiIndex = 0
             var api = apiList.getOrEmpty(apiIndex)
             while (api.isNotEmpty() && !result.valid()) {
-                result = retrofitRunner.executeNetworkCall { mousikiApi.getHome(api, countryCode) }
+                result =
+                    networkRunner.executeNetworkCall { mousikiApi.getHome(api, countryCode) }
                 apiIndex++
                 api = if (apiIndex < maxApis) apiList.getOrEmpty(apiIndex) else ""
             }

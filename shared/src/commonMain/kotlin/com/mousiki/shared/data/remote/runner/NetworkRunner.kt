@@ -1,28 +1,22 @@
-package com.cas.musicplayer.data.remote.retrofit
+package com.mousiki.shared.data.remote.runner
 
-import com.cas.common.result.NO_RESULT
-import com.mousiki.shared.domain.result.Result
-import com.cas.musicplayer.R
-import com.cas.musicplayer.data.datasource.search.getOrEmpty
-import com.cas.musicplayer.data.remote.mappers.Mapper
-import com.cas.musicplayer.utils.bgContext
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.data.config.SearchConfig
 import com.mousiki.shared.data.config.apiList
 import com.mousiki.shared.data.config.maxApi
 import com.mousiki.shared.data.config.retryCount
+import com.mousiki.shared.data.remote.mapper.Mapper
+import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.utils.TextResource
+import com.mousiki.shared.utils.getOrEmpty
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-06-10.
  ***************************************
  */
-@Singleton
-class RetrofitRunner @Inject constructor() {
+class NetworkRunner {
 
     /**
      * Executes webservice call and map the response to an app domain model.
@@ -34,13 +28,13 @@ class RetrofitRunner @Inject constructor() {
         request: suspend () -> T
     ): Result<E> = try {
         val response = request()
-        val mappedResponse = withContext(bgContext) {
+        val mappedResponse = withContext(Dispatchers.Default) {
             mapper.map(response)
         }
         Result.Success(mappedResponse)
     } catch (e: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(e)
-        Result.Error(TextResource.fromStringId(R.string.common_technical_issue))
+        //FirebaseCrashlytics.getInstance().recordException(e)
+        Result.Error(TextResource.fromText("Something was wrong"))
     }
 
     suspend fun <T> executeNetworkCall(
@@ -49,8 +43,8 @@ class RetrofitRunner @Inject constructor() {
         val response = request()
         Result.Success(response)
     } catch (e: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(e)
-        Result.Error(TextResource.fromStringId(R.string.common_technical_issue))
+        //FirebaseCrashlytics.getInstance().recordException(e)
+        Result.Error(TextResource.fromText("Something was wrong"))
     }
 
     suspend fun <T> loadWithRetry(
@@ -61,7 +55,7 @@ class RetrofitRunner @Inject constructor() {
         val maxApis = config.maxApi()
 
         var retries = 0
-        var result: Result<T> = NO_RESULT
+        var result: Result<T> = Result.Error(TextResource.fromText("Something was wrong"))
         do {
             retries++
             var apiIndex = 0

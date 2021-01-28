@@ -1,6 +1,6 @@
 package com.cas.musicplayer.domain.usecase.recent
 
-import com.cas.musicplayer.data.repositories.StatisticsRepository
+import com.mousiki.shared.data.repository.StatisticsRepository
 import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext

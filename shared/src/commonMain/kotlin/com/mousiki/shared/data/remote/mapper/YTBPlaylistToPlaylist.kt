@@ -1,13 +1,10 @@
-package com.cas.musicplayer.data.remote.mappers
+package com.mousiki.shared.data.remote.mapper
 
 import com.mousiki.shared.data.models.YTBPlaylist
 import com.mousiki.shared.data.models.urlOrEmpty
 import com.mousiki.shared.domain.models.Playlist
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class YTBPlaylistToPlaylist @Inject constructor() : Mapper<YTBPlaylist, Playlist> {
+class YTBPlaylistToPlaylist : Mapper<YTBPlaylist, Playlist> {
     override suspend fun map(from: YTBPlaylist): Playlist {
         val id = from.id.orEmpty()
         val title = from.snippet?.title.orEmpty()

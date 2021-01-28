@@ -1,10 +1,8 @@
 package com.cas.musicplayer.domain.usecase.library
 
-import androidx.lifecycle.LiveData
 import com.cas.musicplayer.data.repositories.SongsRepository
 import com.mousiki.shared.domain.models.MusicTrack
-import com.cas.musicplayer.utils.bgContext
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -12,11 +10,10 @@ import javax.inject.Inject
  * Created by Abdelhadi on 2019-12-06.
  ***************************************
  */
-class GetFavouriteTracksLiveUseCase @Inject constructor(
+class GetFavouriteTracksFlowUseCase @Inject constructor(
     private val songsRepository: SongsRepository
 ) {
-    suspend operator fun invoke(max: Int = 10): LiveData<List<MusicTrack>> =
-        withContext(bgContext) {
-            return@withContext songsRepository.getFavouriteSongsLive(max)
-        }
+    suspend operator fun invoke(max: Int = 10): Flow<List<MusicTrack>> {
+        return songsRepository.getFavouriteSongsFlow(max)
+    }
 }
