@@ -1,30 +1,26 @@
-package com.cas.musicplayer.data.repositories
+package com.mousiki.shared.data.repository
 
-import android.annotation.SuppressLint
-import android.content.Context
-import com.cas.musicplayer.utils.ConnectivityState
-import com.cas.musicplayer.data.datasource.channel.ChannelSongsRemoteDataSource
-import com.cas.musicplayer.data.firebase.downloadFile
-import com.cas.musicplayer.utils.Utils
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.storage.FirebaseStorage
 import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
 import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
+import com.mousiki.shared.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
+import com.mousiki.shared.fs.ContentEncoding
+import com.mousiki.shared.fs.FileSystem
+import com.mousiki.shared.fs.PathComponent
+import com.mousiki.shared.fs.exists
 import com.mousiki.shared.utils.ConnectivityChecker
+import com.mousiki.shared.utils.StorageApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.json.JSONObject
-import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 
 /**
  ***************************************
@@ -32,15 +28,13 @@ import javax.inject.Singleton
  ***************************************
  */
 
-@Singleton
-class ArtistsRepository @Inject constructor(
+class ArtistsRepository(
     private var json: Json,
     private val localDataSource: ArtistsLocalDataSource,
     private val remoteDataSource: ArtistsRemoteDataSource,
     private val channelLocalDataSource: ChannelSongsLocalDataSource,
     private val channelRemoteDataSource: ChannelSongsRemoteDataSource,
-    private val storage: FirebaseStorage,
-    private val appContext: Context,
+    private val storage: StorageApi,
     private val connectivityState: ConnectivityChecker
 ) {
 
@@ -59,39 +53,38 @@ class ArtistsRepository @Inject constructor(
             val localFile = downloadArtistsFile()
             if (localFile.exists()) {
                 try {
-                    val fileContent = Utils.fileContent(localFile)
-                    val artistsObject = JSONObject(fileContent)
+                    val fileContent = FileSystem.readFile(localFile, ContentEncoding.Utf8).orEmpty()
+                    val artistsObject = json.parseToJsonElement(fileContent).jsonObject
                     val artists = mutableListOf<Artist>()
-                    artistsObject.keys().forEach { code ->
-                        val jsonArray = artistsObject.getJSONArray(code).toString()
+                    artistsObject.forEach { entry ->
+                        val jsonArray = entry.value.jsonArray.toString()
                         val countryArtists = json.decodeFromString<List<Artist>>(jsonArray)
-                        val map = countryArtists.map { it.copy(countryCode = code) }
+                        val map = countryArtists.map { it.copy(countryCode = entry.key) }
                         artists.addAll(map)
                     }
                     val distinctBy = artists.distinctBy { it.channelId }
                     return@withContext distinctBy
                 } catch (e: Exception) {
-                    FirebaseCrashlytics.getInstance().recordException(e)
+                    //FirebaseCrashlytics.getInstance().recordException(e)
                 }
             }
             return@withContext emptyList<Artist>()
         }
 
 
-    @SuppressLint("DefaultLocale")
     suspend fun getArtistsByCountry(countryCode: String): List<Artist> =
         withContext(Dispatchers.Default) {
             val localFile = downloadArtistsFile()
             if (localFile.exists()) {
                 try {
-                    val fileContent = Utils.fileContent(localFile)
-                    val artistsJsonArray = JSONObject(fileContent)
-                        .getJSONArray(countryCode.toUpperCase()).toString()
-                    val countryArtists =
-                        json.decodeFromString<List<Artist>>(artistsJsonArray)
+                    val fileContent = FileSystem.readFile(localFile, ContentEncoding.Utf8).orEmpty()
+                    val artistsJsonArray = json.parseToJsonElement(fileContent)
+                        .jsonObject[countryCode.toUpperCase()]
+                        ?.jsonArray.toString()
+                    val countryArtists = json.decodeFromString<List<Artist>>(artistsJsonArray)
                     countryArtists.map { it.copy(countryCode = countryCode) }
                 } catch (e: Exception) {
-                    FirebaseCrashlytics.getInstance().recordException(e)
+                    //FirebaseCrashlytics.getInstance().recordException(e)
                     emptyList<Artist>()
                 }
             } else emptyList()
@@ -107,10 +100,14 @@ class ArtistsRepository @Inject constructor(
         }
     }
 
-    private suspend fun downloadArtistsFile(): File {
+    private suspend fun downloadArtistsFile(): PathComponent {
+        val artistsPath = FileSystem.contentsDirectory
+            .absolutePath!!
+            .byAppending(LOCAL_FILE_NAME_ARTISTS)!!
+
         return storage.downloadFile(
             remoteUrl = URL_STORAGE_ARTISTS,
-            localFile = File(appContext.filesDir, LOCAL_FILE_NAME_ARTISTS),
+            path = artistsPath,
             connectivityState = connectivityState,
             logErrorMessage = "Cannot load artists file from firebase"
         )

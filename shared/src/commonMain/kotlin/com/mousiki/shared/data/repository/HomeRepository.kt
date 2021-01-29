@@ -1,9 +1,5 @@
-package com.cas.musicplayer.data.repositories
+package com.mousiki.shared.data.repository
 
-import android.content.Context
-import android.os.SystemClock
-import com.cas.musicplayer.utils.Utils
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.config.apiList
 import com.mousiki.shared.data.config.maxApi
@@ -13,7 +9,12 @@ import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.fs.ContentEncoding
+import com.mousiki.shared.fs.FileSystem
+import com.mousiki.shared.fs.PathComponent
+import com.mousiki.shared.fs.exists
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.utils.elapsedRealtime
 import com.mousiki.shared.utils.getCurrentLocale
 import com.mousiki.shared.utils.getOrEmpty
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +22,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.io.File
-import javax.inject.Inject
 
 /**
  ************************************
@@ -31,22 +30,21 @@ import javax.inject.Inject
  ************************************
  */
 
-class HomeRepository @Inject constructor(
+class HomeRepository(
     private val networkRunner: NetworkRunner,
     private val preferences: PreferencesHelper,
-    private val appContext: Context,
     private val json: Json,
     private val appConfig: RemoteAppConfig,
     private val mousikiApi: MousikiApi
 ) {
 
-    private val cacheDirectory: File by lazy {
-        val directory = File(
-            appContext.filesDir.absolutePath +
-                    File.separator + "home" + File.separator
-        )
-        if (!directory.exists()) directory.mkdirs()
-        directory
+    private val homeCachePath: PathComponent by lazy {
+        val homeCache = FileSystem.contentsDirectory
+            .absolutePath
+            ?.byAppending("/home/")!!
+        if (!homeCache.exists()) FileSystem.mkdir(homeCache, true)
+
+        homeCache.byAppending(CACHE_FILE_NAME)!!
     }
 
     private val countryCode: String by lazy {
@@ -77,9 +75,8 @@ class HomeRepository @Inject constructor(
     }
 
     private suspend fun getCachedHome(): HomeRS? = withContext(Dispatchers.IO) {
-        val cacheFile = File(cacheDirectory, CACHE_FILE_NAME)
-        val fileContent = Utils.fileContent(cacheFile)
         return@withContext try {
+            val fileContent = FileSystem.readFile(homeCachePath, ContentEncoding.Utf8).orEmpty()
             json.decodeFromString<HomeRS>(fileContent)
         } catch (e: Exception) {
             null
@@ -88,18 +85,22 @@ class HomeRepository @Inject constructor(
 
     private suspend fun writeHomeToCache(homeRS: HomeRS) = withContext(Dispatchers.IO) {
         try {
-            val cacheFile = File(cacheDirectory, CACHE_FILE_NAME)
-            Utils.writeToFile(json.encodeToString(homeRS), cacheFile)
+            FileSystem.writeFile(
+                homeCachePath,
+                json.encodeToString(homeRS),
+                true,
+                ContentEncoding.Utf8
+            )
             preferences.setHomeResponseDate()
         } catch (e: Exception) {
-            FirebaseCrashlytics.getInstance()
-                .recordException(Exception("Unable to encode home response", e))
+            /*FirebaseCrashlytics.getInstance()
+                .recordException(Exception("Unable to encode home response", e))*/
         }
     }
 
     private fun homeExpired(): Boolean {
         val updateDate = preferences.getHomeResponseDate()
-        val cacheDuration = (SystemClock.elapsedRealtime() - updateDate) / 1000
+        val cacheDuration = (elapsedRealtime - updateDate) / 1000
         return cacheDuration - appConfig.getHomeCacheDuration() * 60 * 60 >= 0
     }
 
@@ -136,15 +137,4 @@ class HomeRepository @Inject constructor(
     companion object {
         private const val CACHE_FILE_NAME = "home.json"
     }
-}
-
-fun formatDuration(totalSecs: Int): String {
-    val hours = totalSecs / 3600;
-    val minutes = (totalSecs % 3600) / 60;
-    val seconds = totalSecs % 60;
-
-    if (hours == 0) {
-        return String.format("%02dmin:%02ds", minutes, seconds);
-    }
-    return String.format("%02dh:%02dmin:%02ds", hours, minutes, seconds);
 }

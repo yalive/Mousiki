@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import com.cas.musicplayer.R
-import com.cas.musicplayer.data.config.EnvConfig
+import com.cas.musicplayer.utils.EnvConfig
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.UserPrefs
 import com.google.android.gms.ads.AdRequest

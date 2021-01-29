@@ -1,7 +1,7 @@
 package com.cas.musicplayer.domain.usecase.artist
 
 import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.data.repositories.ArtistsRepository
+import com.mousiki.shared.data.repository.ArtistsRepository
 import javax.inject.Inject
 
 /**

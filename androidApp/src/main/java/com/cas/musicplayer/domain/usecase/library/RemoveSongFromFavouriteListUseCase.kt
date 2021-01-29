@@ -1,6 +1,6 @@
 package com.cas.musicplayer.domain.usecase.library
 
-import com.cas.musicplayer.data.repositories.SongsRepository
+import com.mousiki.shared.data.repository.SongsRepository
 import com.cas.musicplayer.utils.bgContext
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -1,9 +1,8 @@
-package com.cas.musicplayer.data.repositories
+package com.mousiki.shared.data.repository
 
 import com.cas.musicplayer.MousikiDb
-import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
-import com.cas.musicplayer.utils.UserPrefs
 import com.mousiki.shared.data.datasource.LocalSongsDataSource
+import com.mousiki.shared.data.datasource.RemoteSongsDataSource
 import com.mousiki.shared.data.db.toMusicTrack
 import com.mousiki.shared.db.Favourite_tracks
 import com.mousiki.shared.domain.models.MusicTrack
@@ -72,11 +71,11 @@ class SongsRepository(
                 duration = track.duration
             )
         )
-        UserPrefs.saveFav(track.youtubeId, true)
+        //UserPrefs.saveFav(track.youtubeId, true)
     }
 
     suspend fun removeSongFromFavourite(trackId: String) = withContext(Dispatchers.Default) {
         favouriteTracksDaoSql.deleteSong(trackId)
-        UserPrefs.saveFav(trackId, false)
+       // UserPrefs.saveFav(trackId, false)
     }
 }

@@ -1,14 +1,14 @@
 package com.cas.musicplayer.domain.model
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.cas.common.resource.Resource
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.CompactPlaylist
 import com.mousiki.shared.data.models.SimplePlaylist
+import com.mousiki.shared.domain.models.ChartModel
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.GenreMusic
 
 /**
@@ -40,10 +40,3 @@ sealed class HeaderItem(@StringRes val title: Int, val showMore: Boolean = true)
     object ArtistsHeader : HeaderItem(R.string.artists)
     object GenresHeader : HeaderItem(R.string.genres)
 }
-
-data class ChartModel(
-    val title: String,
-    val playlistId: String,
-    @DrawableRes val featuredImageRes: Int
-)
-

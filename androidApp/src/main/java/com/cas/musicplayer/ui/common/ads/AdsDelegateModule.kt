@@ -2,9 +2,8 @@ package com.cas.musicplayer.ui.common.ads
 
 import android.content.Context
 import com.cas.musicplayer.BuildConfig
-import com.cas.musicplayer.data.config.EnvConfig
+import com.cas.musicplayer.utils.EnvConfig
 import com.mousiki.shared.data.config.RemoteAppConfig
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.mousiki.shared.utils.AnalyticsApi
 import dagger.Binds
 import dagger.Module

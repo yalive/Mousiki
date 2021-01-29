@@ -29,6 +29,7 @@ kotlin {
                 implementation(Deps.SqlDelight.runtime)
                 implementation("com.russhwolf:multiplatform-settings:0.7")
                 implementation("com.squareup.sqldelight:coroutines-extensions:1.4.4")
+                implementation("com.squareup.sqldelight:coroutines-extensions:1.4.4")
 
                 // Ktor
                 implementation(Deps.Ktor.commonCore)

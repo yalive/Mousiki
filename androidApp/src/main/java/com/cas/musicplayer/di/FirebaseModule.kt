@@ -4,6 +4,7 @@ import android.content.Context
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.utils.AndroidAnalytics
+import com.cas.musicplayer.utils.Storage
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -12,6 +13,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.StorageApi
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -52,5 +54,13 @@ object FirebaseModule {
     @JvmStatic
     fun provideFirebaseStorage(): FirebaseStorage {
         return Firebase.storage
+    }
+
+
+    @Singleton
+    @Provides
+    @JvmStatic
+    fun providesStorage(): StorageApi {
+        return Storage(Firebase.storage)
     }
 }

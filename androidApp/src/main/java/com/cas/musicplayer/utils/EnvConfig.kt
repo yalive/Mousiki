@@ -1,4 +1,4 @@
-package com.cas.musicplayer.data.config
+package com.cas.musicplayer.utils
 
 import com.cas.musicplayer.BuildConfig
 import dagger.Reusable
