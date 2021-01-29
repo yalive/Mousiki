@@ -1,16 +1,11 @@
 package com.cas.musicplayer.data.datasource.playlist
 
 import android.content.Context
-import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.data.datasource.musicTracks
+import com.cas.musicplayer.data.firebase.downloadFile
 import com.cas.musicplayer.data.repositories.ChartsRepository
-import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.bgContext
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
 import com.mousiki.shared.data.config.RemoteAppConfig
-import com.mousiki.shared.data.models.TrackDto
-import com.mousiki.shared.data.models.toDomainModel
 import com.mousiki.shared.data.models.tracks
 import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.data.remote.mapper.YTBPlaylistItemToVideoId
@@ -21,14 +16,10 @@ import com.mousiki.shared.data.repository.GenresRepository
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.decodeFromString
+import com.mousiki.shared.utils.ConnectivityChecker
 import kotlinx.serialization.json.Json
-import org.json.JSONArray
 import java.io.File
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 /**
  ***************************************
@@ -45,7 +36,7 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
     private val chartsRepository: ChartsRepository,
     private val genresRepository: GenresRepository,
     private val appContext: Context,
-    private val connectivityState: ConnectivityState,
+    private val connectivityState: ConnectivityChecker,
     private val storage: FirebaseStorage
 ) {
 
@@ -63,23 +54,8 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
             || (appConfig.loadGenreSongsFromFirebase() && isTopTrackOfGenre)
         ) {
             // Load from firebase
-            val firebaseTracks = withContext(bgContext) {
-                val directoryName = if (isChart) STORAGE_CHARTS_DIR else STORAGE_GENRES_DIR
-                val file = downloadPlaylistFile(playlistId, directoryName)
-                val tracks = mutableListOf<MusicTrack>()
-                if (file.exists()) {
-                    try {
-                        val fileContent = Utils.fileContent(file)
-                        val songsJsonArray = JSONArray(fileContent).toString()
-                        val trackDtos: List<TrackDto> = json.decodeFromString(songsJsonArray)
-                        val musicTracks = trackDtos.map { it.toDomainModel() }
-                        tracks.addAll(musicTracks)
-                    } catch (e: Exception) {
-                        FirebaseCrashlytics.getInstance().recordException(e)
-                    }
-                }
-                tracks
-            }
+            val directoryName = if (isChart) STORAGE_CHARTS_DIR else STORAGE_GENRES_DIR
+            val firebaseTracks = downloadPlaylistFile(playlistId, directoryName).musicTracks(json)
 
             if (firebaseTracks.isNotEmpty()) {
                 return Result.Success(firebaseTracks)
@@ -105,42 +81,18 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
         val directory = File(fileDirPath)
         if (!directory.exists()) directory.mkdirs()
         val localFile = File(fileDirPath, fileName)
-        if (!localFile.exists()) {
-            val connectedBeforeCall = connectivityState.isConnected()
-            var retryCount = 0
-            var fileDownloaded = false
-            var fileExist = true
-            while (retryCount < MAX_RETRY_FIREBASE_STORAGE && !fileDownloaded && fileExist) {
-                retryCount++
-                fileDownloaded = suspendCoroutine { continuation ->
-                    val ref =
-                        storage.getReferenceFromUrl("$BASE_URL_STORAGE$directoryName/$fileName")
-                    ref.getFile(localFile).addOnSuccessListener {
-                        continuation.resume(true)
-                    }.addOnFailureListener {
-                        if ((it as? StorageException)?.errorCode == StorageException.ERROR_OBJECT_NOT_FOUND) {
-                            fileExist = false
-                        }
-                        continuation.resume(false)
-                    }
-                }
-            }
-            if (!fileDownloaded) {
-                // Log error
-                FirebaseCrashlytics.getInstance().log(
-                    "Cannot load $playlistId songs file from firebase after $retryCount retries," +
-                            "\n Is Connected before call: $connectedBeforeCall" +
-                            "\n Is Connected after call:${connectivityState.isConnected()}"
-                )
-            }
-        }
-        return localFile
+
+        return storage.downloadFile(
+            remoteUrl = "$BASE_URL_STORAGE$directoryName/$fileName",
+            localFile = localFile,
+            connectivityState = connectivityState,
+            logErrorMessage = "Cannot load $playlistId songs file from firebase"
+        )
     }
 
     companion object {
         private const val BASE_URL_STORAGE = "gs://mousiki-e3e22.appspot.com/"
         private const val STORAGE_CHARTS_DIR = "charts"
         private const val STORAGE_GENRES_DIR = "genres"
-        private const val MAX_RETRY_FIREBASE_STORAGE = 4
     }
 }

@@ -73,11 +73,10 @@ class SearchRepository @Inject constructor(
         try {
             val stringResponse = mousikiApi.suggestions(url)
             if (stringResponse.startsWith("window.google.ac.h")) {
-                val json =
-                    stringResponse.substring(
-                        stringResponse.indexOf("(") + 1,
-                        stringResponse.indexOf(")")
-                    )
+                val json = stringResponse.substring(
+                    stringResponse.indexOf("(") + 1,
+                    stringResponse.indexOf(")")
+                )
                 val jsonArray = JSONArray(json).getJSONArray(1)
 
                 val suggestions = mutableListOf<String>()
