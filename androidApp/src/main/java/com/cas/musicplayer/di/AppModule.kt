@@ -2,21 +2,21 @@ package com.cas.musicplayer.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.MousikiDb
-import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.cas.musicplayer.data.datasource.RemoteSongsDataSource
-import com.mousiki.shared.data.datasource.search.SearchRemoteDataSource
 import com.cas.musicplayer.data.repositories.SongsRepository
+import com.cas.musicplayer.utils.ConnectivityState
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
+import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
+import com.mousiki.shared.data.datasource.search.SearchRemoteDataSource
 import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.data.remote.api.MousikiApiImpl
 import com.mousiki.shared.data.remote.mapper.*
@@ -27,6 +27,7 @@ import com.mousiki.shared.data.repository.StatisticsRepository
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.preference.SettingsProvider
 import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.ConnectivityChecker
 import com.mousiki.shared.utils.NetworkUtils
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -62,7 +63,7 @@ object AppModule {
     @Singleton
     @JvmStatic
     @Provides
-    fun providesConnectivityState(context: Context): ConnectivityState =
+    fun providesConnectivityState(context: Context): ConnectivityChecker =
         ConnectivityState(context)
 
     // Region: To ease migration ==> will migrate to koin
@@ -245,7 +246,6 @@ object AppModule {
     fun providesRemoteAppConfig(
         firebaseRemoteConfig: FirebaseRemoteConfig,
         json: Json,
-        connectivityState: ConnectivityState,
         context: Context,
         preferencesHelper: PreferencesHelper
     ) = RemoteAppConfig(

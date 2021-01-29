@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.cas.common.connectivity.ConnectivityState
+import com.cas.musicplayer.utils.ConnectivityState
 import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
@@ -30,6 +30,7 @@ import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.ConnectivityChecker
 import com.mousiki.shared.utils.getCurrentLocale
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,7 +46,7 @@ class HomeViewModel @Inject constructor(
     private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
     private val getGenres: GetGenresUseCase,
     private val analytics: AnalyticsApi,
-    private val connectivityState: ConnectivityState,
+    private val connectivityState: ConnectivityChecker,
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
     private val preferencesHelper: PreferencesHelper,

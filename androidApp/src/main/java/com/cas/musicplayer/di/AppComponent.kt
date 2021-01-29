@@ -1,7 +1,6 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
-import com.cas.common.connectivity.ConnectivityState
 import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
@@ -56,8 +55,6 @@ interface AppComponent {
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): AppComponent
     }
-
-    val connectivityState: ConnectivityState
 
     val mainViewModel: MainViewModel
 

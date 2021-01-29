@@ -1,14 +1,11 @@
 package com.cas.musicplayer.data.datasource.channel
 
+import android.annotation.SuppressLint
 import android.content.Context
-import com.cas.common.connectivity.ConnectivityState
-import com.mousiki.shared.data.config.RemoteAppConfig
 import com.cas.musicplayer.data.datasource.musicTracks
-import com.cas.musicplayer.utils.bgContext
-import com.mousiki.shared.utils.getCurrentLocale
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.cas.musicplayer.data.firebase.downloadFile
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.tracks
 import com.mousiki.shared.data.remote.api.MousikiApi
@@ -19,13 +16,10 @@ import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
-import kotlinx.coroutines.withContext
+import com.mousiki.shared.utils.ConnectivityChecker
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.util.*
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 /**
  ***************************************
@@ -39,7 +33,7 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     private val trackMapper: YTBVideoToTrack,
     private val appContext: Context,
     private val json: Json,
-    private val connectivityState: ConnectivityState,
+    private val connectivityState: ConnectivityChecker,
     private val storage: FirebaseStorage,
     private val appConfig: RemoteAppConfig
 ) {
@@ -53,9 +47,8 @@ class ChannelSongsRemoteDataSource @Inject constructor(
         }
 
         // Check firebase
-        val firebaseTracks = withContext(bgContext) {
-            downloadArtistTracksFile(artist).musicTracks(json)
-        }
+        val firebaseTracks = downloadArtistTracksFile(artist).musicTracks(json)
+
         if (firebaseTracks.isNotEmpty()) return Result.Success(firebaseTracks)
 
         // Go to youtube!
@@ -84,44 +77,16 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     }
 
 
+    @SuppressLint("DefaultLocale")
     private suspend fun downloadArtistTracksFile(artist: Artist): File {
         val localFile = artistSongsFile(artist)
-        if (!localFile.exists()) {
-            val connectedBeforeCall = connectivityState.isConnected()
-            var retryCount = 0
-            var fileDownloaded = false
-            var fileExist = true
-            while (retryCount < MAX_RETRY_FIREBASE_STORAGE && !fileDownloaded && fileExist) {
-                retryCount++
-                fileDownloaded = suspendCoroutine { continuation ->
-                    val ref =
-                        storage.getReferenceFromUrl(
-                            "${BASE_URL_STORAGE}${STORAGE_ARTISTS_SONGS_DIR}/${
-                                artist.countryCode.orEmpty().toLowerCase(
-                                    Locale.getDefault()
-                                )
-                            }/${localFile.name}"
-                        )
-                    ref.getFile(localFile).addOnSuccessListener {
-                        continuation.resume(true)
-                    }.addOnFailureListener {
-                        if ((it as? StorageException)?.errorCode == StorageException.ERROR_OBJECT_NOT_FOUND) {
-                            fileExist = false
-                        }
-                        continuation.resume(false)
-                    }
-                }
-            }
-            if (!fileDownloaded) {
-                // Log error
-                FirebaseCrashlytics.getInstance().log(
-                    "Cannot load ${getCurrentLocale()} trending songs file from firebase after $retryCount retries," +
-                            "\n Is Connected before call: $connectedBeforeCall" +
-                            "\n Is Connected after call:${connectivityState.isConnected()}"
-                )
-            }
-        }
-        return localFile
+        return storage.downloadFile(
+            remoteUrl = "${BASE_URL_STORAGE}${STORAGE_ARTISTS_SONGS_DIR}/${
+                artist.countryCode.orEmpty().toLowerCase()
+            }/${localFile.name}",
+            localFile = localFile,
+            connectivityState = connectivityState
+        )
     }
 
     private fun artistSongsFile(artist: Artist): File {
@@ -136,6 +101,5 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     companion object {
         private const val BASE_URL_STORAGE = "gs://mousiki-e3e22.appspot.com/"
         private const val STORAGE_ARTISTS_SONGS_DIR = "artistsTracks"
-        private const val MAX_RETRY_FIREBASE_STORAGE = 4
     }
 }

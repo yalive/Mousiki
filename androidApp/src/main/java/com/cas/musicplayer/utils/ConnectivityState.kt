@@ -1,4 +1,4 @@
-package com.cas.common.connectivity
+package com.cas.musicplayer.utils
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.lifecycle.LiveData
+import com.mousiki.shared.utils.ConnectivityChecker
 
 /**
  ***************************************
@@ -15,7 +16,7 @@ import androidx.lifecycle.LiveData
  */
 class ConnectivityState(
     private val context: Context
-) : LiveData<ConnectionModel>() {
+) : LiveData<ConnectionModel>(), ConnectivityChecker {
 
     override fun onActive() {
         super.onActive()
@@ -28,7 +29,7 @@ class ConnectivityState(
         context.unregisterReceiver(networkReceiver)
     }
 
-    fun isConnected() = value?.isConnected ?: false
+    override fun isConnected() = value?.isConnected ?: false
 
     private val networkReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {

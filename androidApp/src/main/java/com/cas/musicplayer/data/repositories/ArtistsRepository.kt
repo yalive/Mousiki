@@ -2,20 +2,22 @@ package com.cas.musicplayer.data.repositories
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.cas.common.connectivity.ConnectivityState
-import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
+import com.cas.musicplayer.utils.ConnectivityState
 import com.cas.musicplayer.data.datasource.channel.ChannelSongsRemoteDataSource
+import com.cas.musicplayer.data.firebase.downloadFile
 import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.bgContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.storage.FirebaseStorage
 import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
+import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
+import com.mousiki.shared.utils.ConnectivityChecker
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -23,8 +25,6 @@ import org.json.JSONObject
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 /**
  ***************************************
@@ -41,7 +41,7 @@ class ArtistsRepository @Inject constructor(
     private val channelRemoteDataSource: ChannelSongsRemoteDataSource,
     private val storage: FirebaseStorage,
     private val appContext: Context,
-    private val connectivityState: ConnectivityState
+    private val connectivityState: ConnectivityChecker
 ) {
 
     suspend fun getArtistsChannels(ids: List<String>): Result<List<Artist>> {
@@ -55,7 +55,7 @@ class ArtistsRepository @Inject constructor(
     }
 
     suspend fun getAllArtists(): List<Artist> =
-        withContext(bgContext) {
+        withContext(Dispatchers.Default) {
             val localFile = downloadArtistsFile()
             if (localFile.exists()) {
                 try {
@@ -80,7 +80,7 @@ class ArtistsRepository @Inject constructor(
 
     @SuppressLint("DefaultLocale")
     suspend fun getArtistsByCountry(countryCode: String): List<Artist> =
-        withContext(bgContext) {
+        withContext(Dispatchers.Default) {
             val localFile = downloadArtistsFile()
             if (localFile.exists()) {
                 try {
@@ -108,37 +108,16 @@ class ArtistsRepository @Inject constructor(
     }
 
     private suspend fun downloadArtistsFile(): File {
-        val localFile = File(appContext.filesDir, LOCAL_FILE_NAME_ARTISTS)
-        if (!localFile.exists()) {
-            val connectedBeforeCall = connectivityState.isConnected()
-            var retryCount = 0
-            var fileDownloaded = false
-            while (retryCount < MAX_RETRY_FIREBASE_STORAGE && !fileDownloaded) {
-                retryCount++
-                fileDownloaded = suspendCoroutine { continuation ->
-                    val ref = storage.getReferenceFromUrl(URL_STORAGE_ARTISTS)
-                    ref.getFile(localFile).addOnSuccessListener {
-                        continuation.resume(true)
-                    }.addOnFailureListener {
-                        continuation.resume(false)
-                    }
-                }
-            }
-            if (!fileDownloaded) {
-                // Log error
-                FirebaseCrashlytics.getInstance().log(
-                    "Cannot load artists file from firebase after $retryCount retries," +
-                            "\n Is Connected before call: $connectedBeforeCall" +
-                            "\n Is Connected after call:${connectivityState.isConnected()}"
-                )
-            }
-        }
-        return localFile
+        return storage.downloadFile(
+            remoteUrl = URL_STORAGE_ARTISTS,
+            localFile = File(appContext.filesDir, LOCAL_FILE_NAME_ARTISTS),
+            connectivityState = connectivityState,
+            logErrorMessage = "Cannot load artists file from firebase"
+        )
     }
 
     companion object {
         private const val URL_STORAGE_ARTISTS = "gs://mousiki-e3e22.appspot.com/artists.json"
         private const val LOCAL_FILE_NAME_ARTISTS = "artists.json"
-        private const val MAX_RETRY_FIREBASE_STORAGE = 4
     }
 }
