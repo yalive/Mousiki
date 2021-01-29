@@ -7,7 +7,7 @@ import com.mousiki.shared.BuildConfig
 
 actual fun getCurrentLocale(): String {
     if (BuildConfig.DEBUG) {
-        return "MA"
+        return "MX"
     }
     val tm = globalAppContext.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
     val countryCodeValue: String? = tm?.networkCountryIso

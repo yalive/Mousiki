@@ -13,6 +13,7 @@ import com.cas.musicplayer.ui.common.ads.AdsManager
 import com.cas.musicplayer.utils.UserPrefs
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
+import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,7 @@ class MusicApp : Application(), ComponentProvider {
         super.onCreate()
         instance = this
         globalAppContext = this
+        FileSystem.initialize(this)
         configurePreferredTheme()
         if (AudienceNetworkAds.isInitialized(this)) {
             return

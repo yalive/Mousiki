@@ -1,16 +1,14 @@
-package com.cas.musicplayer.data.repositories
+package com.mousiki.shared.data.repository
 
-import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
-import com.cas.musicplayer.data.datasource.playlist.PlaylistSongsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
+import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
+import com.mousiki.shared.data.datasource.playlist.PlaylistSongsRemoteDataSource
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  ***************************************
@@ -18,8 +16,7 @@ import javax.inject.Singleton
  ***************************************
  */
 
-@Singleton
-class PlaylistRepository @Inject constructor(
+class PlaylistRepository(
     private val channelPlaylistsLocalDataSource: ChannelPlaylistsLocalDataSource,
     private val channelPlaylistsRemoteDataSource: ChannelPlaylistsRemoteDataSource,
     private val playlistSongsLocalDataSource: PlaylistSongsLocalDataSource,

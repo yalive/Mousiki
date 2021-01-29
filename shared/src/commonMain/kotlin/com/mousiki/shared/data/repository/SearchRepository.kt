@@ -1,4 +1,4 @@
-package com.cas.musicplayer.data.repositories
+package com.mousiki.shared.data.repository
 
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
@@ -10,18 +10,18 @@ import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.SearchTracksResult
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
-import org.json.JSONArray
-import javax.inject.Inject
-import javax.inject.Singleton
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-06-12.
  ***************************************
  */
-@Singleton
-class SearchRepository @Inject constructor(
+class SearchRepository(
     private val mousikiApi: MousikiApi,
+    private val json: Json,
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val searchLocalDataSource: SearchLocalDataSource,
     private val db: MousikiDb
@@ -73,15 +73,21 @@ class SearchRepository @Inject constructor(
         try {
             val stringResponse = mousikiApi.suggestions(url)
             if (stringResponse.startsWith("window.google.ac.h")) {
-                val json = stringResponse.substring(
+                val jsonContent = stringResponse.substring(
                     stringResponse.indexOf("(") + 1,
                     stringResponse.indexOf(")")
                 )
-                val jsonArray = JSONArray(json).getJSONArray(1)
+
+                val jsonArray = json.parseToJsonElement(jsonContent).jsonArray[1].jsonArray
 
                 val suggestions = mutableListOf<String>()
-                for (i in 0 until jsonArray.length()) {
-                    suggestions.add(jsonArray.getJSONArray(i).getString(0))
+                jsonArray.forEach { element ->
+                    val suggestion = element.jsonArray
+                        .firstOrNull()
+                        ?.jsonPrimitive?.content.orEmpty()
+                    if (suggestion.isNotEmpty()) {
+                        suggestions.add(suggestion)
+                    }
                 }
                 return suggestions
             }

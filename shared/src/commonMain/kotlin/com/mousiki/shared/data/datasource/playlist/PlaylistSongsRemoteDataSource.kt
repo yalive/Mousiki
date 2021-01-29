@@ -1,10 +1,7 @@
-package com.cas.musicplayer.data.datasource.playlist
+package com.mousiki.shared.data.datasource.playlist
 
-import android.content.Context
-import com.cas.musicplayer.data.datasource.musicTracks
-import com.cas.musicplayer.data.firebase.downloadFile
-import com.cas.musicplayer.data.repositories.ChartsRepository
-import com.google.firebase.storage.FirebaseStorage
+import com.mousiki.shared.data.datasource.musicTracks
+import com.mousiki.shared.data.repository.ChartsRepository
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.tracks
 import com.mousiki.shared.data.remote.api.MousikiApi
@@ -16,17 +13,18 @@ import com.mousiki.shared.data.repository.GenresRepository
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.fs.FileSystem
+import com.mousiki.shared.fs.PathComponent
 import com.mousiki.shared.utils.ConnectivityChecker
+import com.mousiki.shared.utils.StorageApi
 import kotlinx.serialization.json.Json
-import java.io.File
-import javax.inject.Inject
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-11-24.
  ***************************************
  */
-class PlaylistSongsRemoteDataSource @Inject constructor(
+class PlaylistSongsRemoteDataSource(
     private val mousikiApi: MousikiApi,
     private val networkRunner: NetworkRunner,
     private val videoIdMapper: YTBPlaylistItemToVideoId,
@@ -35,9 +33,8 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
     private var appConfig: RemoteAppConfig,
     private val chartsRepository: ChartsRepository,
     private val genresRepository: GenresRepository,
-    private val appContext: Context,
     private val connectivityState: ConnectivityChecker,
-    private val storage: FirebaseStorage
+    private val storage: StorageApi
 ) {
 
     suspend fun getPlaylistSongs(playlistId: String): Result<List<MusicTrack>> {
@@ -74,17 +71,20 @@ class PlaylistSongsRemoteDataSource @Inject constructor(
         }
     }
 
-    private suspend fun downloadPlaylistFile(playlistId: String, directoryName: String): File {
+    private suspend fun downloadPlaylistFile(
+        playlistId: String,
+        directoryName: String
+    ): PathComponent {
         val fileName = "$playlistId.json"
-        val fileDirPath =
-            appContext.filesDir.absolutePath + File.separator + directoryName + File.separator
-        val directory = File(fileDirPath)
-        if (!directory.exists()) directory.mkdirs()
-        val localFile = File(fileDirPath, fileName)
+        val playlistsHomeHome = FileSystem.contentsDirectory
+            .absolutePath
+            ?.byAppending("/$directoryName/")!!
+        if (!FileSystem.exists(playlistsHomeHome)) FileSystem.mkdir(playlistsHomeHome, true)
+        val playlistPath = playlistsHomeHome.byAppending(fileName)!!
 
         return storage.downloadFile(
             remoteUrl = "$BASE_URL_STORAGE$directoryName/$fileName",
-            localFile = localFile,
+            path = playlistPath,
             connectivityState = connectivityState,
             logErrorMessage = "Cannot load $playlistId songs file from firebase"
         )

@@ -1,10 +1,5 @@
-package com.cas.musicplayer.data.datasource
+package com.mousiki.shared.data.datasource
 
-import android.content.Context
-import com.cas.musicplayer.data.firebase.downloadFile
-import com.cas.musicplayer.utils.Utils
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.storage.FirebaseStorage
 import com.mousiki.shared.data.models.TrackDto
 import com.mousiki.shared.data.models.toDomainModel
 import com.mousiki.shared.data.remote.api.MousikiApi
@@ -13,39 +8,39 @@ import com.mousiki.shared.data.remote.mapper.toListMapper
 import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.fs.ContentEncoding
+import com.mousiki.shared.fs.FileSystem
+import com.mousiki.shared.fs.PathComponent
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.ConnectivityChecker
+import com.mousiki.shared.utils.StorageApi
 import com.mousiki.shared.utils.getCurrentLocale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import java.io.File
-import java.util.*
-import javax.inject.Inject
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-11-20.
  ***************************************
  */
-class RemoteSongsDataSource @Inject constructor(
+class RemoteSongsDataSource(
     private val mousikiApi: MousikiApi,
     private val networkRunner: NetworkRunner,
     private val trackMapper: YTBVideoToTrack,
     private val preferences: PreferencesHelper,
-    private val appContext: Context,
     private val json: Json,
     private val analytics: AnalyticsApi,
     private val connectivityState: ConnectivityChecker,
-    private val storage: FirebaseStorage
+    private val storage: StorageApi
 ) {
 
     suspend fun getTrendingSongs(max: Int): Result<List<MusicTrack>> {
         val firebaseTracks = downloadTrendingFile().musicTracks(json)
         if (firebaseTracks.isNotEmpty()) return Result.Success(firebaseTracks)
-        if (getCurrentLocale().toLowerCase(Locale.getDefault()) == "mx") {
+        if (getCurrentLocale().toLowerCase() == "mx") {
             analytics.logEvent(ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING)
         }
         return networkRunner.executeNetworkCall(trackMapper.toListMapper()) {
@@ -60,28 +55,27 @@ class RemoteSongsDataSource @Inject constructor(
         }
     }
 
-    private suspend fun downloadTrendingFile(): File {
+    private suspend fun downloadTrendingFile(): PathComponent {
         val localFile = trendingLocalFile()
         return storage.downloadFile(
-            remoteUrl = "${BASE_URL_STORAGE}$STORAGE_TRENDING_DIR/${localFile.name}",
-            localFile = localFile,
+            remoteUrl = "$BASE_URL_STORAGE$STORAGE_TRENDING_DIR/${FileSystem.stat(localFile)?.name}",
+            path = localFile,
             connectivityState = connectivityState,
             logErrorMessage = "Cannot load ${getCurrentLocale()} trending songs file from firebase"
         )
     }
 
     fun deleteLocalTrendingFile() {
-        trendingLocalFile().delete()
+        FileSystem.unlink(trendingLocalFile())
     }
 
-    private fun trendingLocalFile(): File {
-        val countryCode = getCurrentLocale().toLowerCase()
-        val fileName = "$countryCode.json"
-        val fileDirPath =
-            appContext.filesDir.absolutePath + File.separator + STORAGE_TRENDING_DIR + File.separator
-        val directory = File(fileDirPath)
-        if (!directory.exists()) directory.mkdirs()
-        return File(fileDirPath, fileName)
+    private fun trendingLocalFile(): PathComponent {
+        val trendingHome = FileSystem.contentsDirectory
+            .absolutePath
+            ?.byAppending("/$STORAGE_TRENDING_DIR/")!!
+        if (!FileSystem.exists(trendingHome)) FileSystem.mkdir(trendingHome, true)
+        val trendingFileName = "${getCurrentLocale().toLowerCase()}.json"
+        return trendingHome.byAppending(trendingFileName)!!
     }
 
     companion object {
@@ -92,16 +86,18 @@ class RemoteSongsDataSource @Inject constructor(
 
 private val ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING = "mexico_cannot_load_trending"
 
-suspend fun File.musicTracks(json: Json): List<MusicTrack> = withContext(Dispatchers.Default) {
-    return@withContext if (exists()) {
-        val tracksFromFile: List<MusicTrack> = try {
-            val fileContent = Utils.fileContent(this@musicTracks)
-            val trackDtos: List<TrackDto> = json.decodeFromString(fileContent)
-            trackDtos.map { it.toDomainModel() }
-        } catch (e: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(e)
-            emptyList()
-        }
-        tracksFromFile
-    } else emptyList()
-}
+suspend fun PathComponent.musicTracks(json: Json): List<MusicTrack> =
+    withContext(Dispatchers.Default) {
+        val absolutePath = component ?: return@withContext emptyList()
+        return@withContext if (FileSystem.exists(absolutePath)) {
+            val tracksFromFile: List<MusicTrack> = try {
+                val fileContent = FileSystem.readFile(absolutePath, ContentEncoding.Utf8).orEmpty()
+                val trackDtos: List<TrackDto> = json.decodeFromString(fileContent)
+                trackDtos.map { it.toDomainModel() }
+            } catch (e: Exception) {
+                //FirebaseCrashlytics.getInstance().recordException(e)
+                emptyList()
+            }
+            tracksFromFile
+        } else emptyList()
+    }

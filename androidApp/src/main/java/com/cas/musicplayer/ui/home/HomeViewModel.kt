@@ -3,14 +3,13 @@ package com.cas.musicplayer.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.cas.musicplayer.utils.ConnectivityState
 import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.data.repositories.HomeRepository
+import com.mousiki.shared.data.repository.HomeRepository
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.domain.usecase.artist.GetCountryArtistsUseCase

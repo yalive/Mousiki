@@ -1,7 +1,7 @@
 package com.cas.musicplayer.ui.home.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.cas.musicplayer.domain.model.ChartModel
+import com.mousiki.shared.domain.models.ChartModel
 
 class ChartsDiffUtil(
     private val oldList: List<ChartModel>,
@@ -23,6 +23,6 @@ class ChartsDiffUtil(
         val newItem = newList[newItemPosition]
         return oldItem.playlistId == newItem.playlistId
                 && oldItem.title == newItem.title
-                && oldItem.featuredImageRes == newItem.featuredImageRes
+                && oldItem.featuredImage == newItem.featuredImage
     }
 }

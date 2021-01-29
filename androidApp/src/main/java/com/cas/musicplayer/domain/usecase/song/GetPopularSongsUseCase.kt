@@ -1,7 +1,7 @@
 package com.cas.musicplayer.domain.usecase.song
 
 import com.mousiki.shared.domain.result.Result
-import com.cas.musicplayer.data.repositories.SongsRepository
+import com.mousiki.shared.data.repository.SongsRepository
 import com.mousiki.shared.domain.models.MusicTrack
 import javax.inject.Inject
 

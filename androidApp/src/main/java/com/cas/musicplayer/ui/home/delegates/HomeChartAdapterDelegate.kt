@@ -9,7 +9,7 @@ import com.cas.common.recyclerview.PagerIndicatorView
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.ChartModel
+import com.mousiki.shared.domain.models.ChartModel
 import com.cas.musicplayer.domain.model.HomeItem
 import com.cas.musicplayer.ui.home.adapters.HomeChartAdapter
 

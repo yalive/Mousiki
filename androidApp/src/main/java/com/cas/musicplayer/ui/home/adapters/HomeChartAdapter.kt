@@ -8,9 +8,8 @@ import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
-import com.mousiki.shared.data.models.Artist
 import com.cas.musicplayer.databinding.ItemHomeChartBinding
-import com.cas.musicplayer.domain.model.ChartModel
+import com.mousiki.shared.domain.models.ChartModel
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
@@ -20,7 +19,7 @@ import com.cas.musicplayer.utils.RequestAdsLiveData
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.squareup.picasso.Picasso
+import com.mousiki.shared.data.models.Artist
 
 
 /**
@@ -49,8 +48,8 @@ class HomeChartViewHolder(val binding: ItemHomeChartBinding, val items: List<Cha
                 val bundle = bundleOf(
                     PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
                     EXTRAS_ARTIST to artist,
-                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageRes(
-                        item.featuredImageRes
+                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageName(
+                        item.featuredImage
                     )
                 )
 
@@ -68,10 +67,10 @@ class HomeChartViewHolder(val binding: ItemHomeChartBinding, val items: List<Cha
     override fun bind(item: ChartModel) {
         txtTitle.text = item.title
         try {
-            Picasso.get()
-                .load(item.featuredImageRes)
+            /*Picasso.get()
+                .load(item.featuredImage)
                 .resize(0, 360)
-                .into(binding.imgChart)
+                .into(binding.imgChart)*/
         } catch (e: Exception) {
             FirebaseCrashlytics.getInstance().recordException(e)
         } catch (e: OutOfMemoryError) {

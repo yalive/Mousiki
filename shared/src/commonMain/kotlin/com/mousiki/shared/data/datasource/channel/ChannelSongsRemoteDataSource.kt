@@ -1,10 +1,6 @@
-package com.cas.musicplayer.data.datasource.channel
+package com.mousiki.shared.data.datasource.channel
 
-import android.annotation.SuppressLint
-import android.content.Context
-import com.cas.musicplayer.data.datasource.musicTracks
-import com.cas.musicplayer.data.firebase.downloadFile
-import com.google.firebase.storage.FirebaseStorage
+import com.mousiki.shared.data.datasource.musicTracks
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.tracks
@@ -16,25 +12,25 @@ import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.fs.FileSystem
+import com.mousiki.shared.fs.PathComponent
 import com.mousiki.shared.utils.ConnectivityChecker
+import com.mousiki.shared.utils.StorageApi
 import kotlinx.serialization.json.Json
-import java.io.File
-import javax.inject.Inject
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-11-24.
  ***************************************
  */
-class ChannelSongsRemoteDataSource @Inject constructor(
+class ChannelSongsRemoteDataSource(
     private val mousikiApi: MousikiApi,
     private val networkRunner: NetworkRunner,
     private val searchMapper: YTBSearchResultToVideoId,
     private val trackMapper: YTBVideoToTrack,
-    private val appContext: Context,
     private val json: Json,
     private val connectivityState: ConnectivityChecker,
-    private val storage: FirebaseStorage,
+    private val storage: StorageApi,
     private val appConfig: RemoteAppConfig
 ) {
 
@@ -77,25 +73,24 @@ class ChannelSongsRemoteDataSource @Inject constructor(
     }
 
 
-    @SuppressLint("DefaultLocale")
-    private suspend fun downloadArtistTracksFile(artist: Artist): File {
+    private suspend fun downloadArtistTracksFile(artist: Artist): PathComponent {
         val localFile = artistSongsFile(artist)
         return storage.downloadFile(
-            remoteUrl = "${BASE_URL_STORAGE}${STORAGE_ARTISTS_SONGS_DIR}/${
+            remoteUrl = "$BASE_URL_STORAGE$STORAGE_ARTISTS_SONGS_DIR/${
                 artist.countryCode.orEmpty().toLowerCase()
-            }/${localFile.name}",
-            localFile = localFile,
+            }/${FileSystem.stat(localFile)?.name}",
+            path = localFile,
             connectivityState = connectivityState
         )
     }
 
-    private fun artistSongsFile(artist: Artist): File {
+    private fun artistSongsFile(artist: Artist): PathComponent {
         val fileName = "${artist.channelId}.json"
-        val fileDirPath =
-            appContext.filesDir.absolutePath + File.separator + STORAGE_ARTISTS_SONGS_DIR + File.separator
-        val directory = File(fileDirPath)
-        if (!directory.exists()) directory.mkdirs()
-        return File(fileDirPath, fileName)
+        val artistsSongsHome = FileSystem.contentsDirectory
+            .absolutePath
+            ?.byAppending("/$STORAGE_ARTISTS_SONGS_DIR/")!!
+        if (!FileSystem.exists(artistsSongsHome)) FileSystem.mkdir(artistsSongsHome, true)
+        return artistsSongsHome.byAppending(fileName)!!
     }
 
     companion object {
