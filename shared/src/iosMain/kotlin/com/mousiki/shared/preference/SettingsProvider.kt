@@ -9,4 +9,8 @@ actual class SettingsProvider {
         TODO()
     }
 
+    actual fun providesOldSettings(): Settings {
+        // Not needed for iOS, just return default
+        return providesSettings()
+    }
 }

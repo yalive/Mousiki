@@ -8,6 +8,7 @@ import com.mousiki.shared.db.Favourite_tracks
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
+import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.NetworkUtils
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
@@ -71,11 +72,11 @@ class SongsRepository(
                 duration = track.duration
             )
         )
-        //UserPrefs.saveFav(track.youtubeId, true)
+        UserPrefs.saveFav(track.youtubeId, true)
     }
 
     suspend fun removeSongFromFavourite(trackId: String) = withContext(Dispatchers.Default) {
         favouriteTracksDaoSql.deleteSong(trackId)
-       // UserPrefs.saveFav(trackId, false)
+        UserPrefs.saveFav(trackId, false)
     }
 }

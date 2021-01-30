@@ -19,7 +19,7 @@ import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.utils.UserPrefs
+import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor

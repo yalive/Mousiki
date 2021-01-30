@@ -1,17 +1,16 @@
 package com.cas.musicplayer.player
 
 import android.content.Intent
-import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
-import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.popular.swapped
-import com.cas.musicplayer.utils.UserPrefs
+import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.player.PlaySort
 
 
 /**
@@ -207,27 +206,3 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
 object OnChangeQueue : MutableLiveData<List<MusicTrack>>()
 
-enum class PlaySort(@DrawableRes val icon: Int) {
-    RANDOM(R.drawable.ic_random),
-    LOOP_ONE(R.drawable.ic_repeat_one),
-    LOOP_ALL(R.drawable.ic_repeat),
-    SEQUENCE(R.drawable.ic_arrow_alt_to_right);
-
-    fun next(): PlaySort = when {
-        this == RANDOM -> LOOP_ONE
-        this == LOOP_ONE -> LOOP_ALL
-        this == LOOP_ALL -> SEQUENCE
-        else -> RANDOM
-    }
-
-    companion object {
-        fun toEnum(enumString: String): PlaySort {
-            return try {
-                valueOf(enumString)
-            } catch (ex: Exception) {
-                // For error cases
-                LOOP_ALL
-            }
-        }
-    }
-}

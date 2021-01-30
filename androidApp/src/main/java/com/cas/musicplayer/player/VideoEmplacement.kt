@@ -1,7 +1,7 @@
 package com.cas.musicplayer.player
 
 import com.cas.musicplayer.MusicApp
-import com.cas.musicplayer.utils.UserPrefs
+import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.dpToPixel
 
 /**

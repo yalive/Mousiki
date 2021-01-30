@@ -10,10 +10,10 @@ import com.cas.musicplayer.di.AppComponent
 import com.cas.musicplayer.di.ComponentProvider
 import com.cas.musicplayer.di.DaggerAppComponent
 import com.cas.musicplayer.ui.common.ads.AdsManager
-import com.cas.musicplayer.utils.UserPrefs
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
 import com.mousiki.shared.fs.FileSystem
+import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +44,7 @@ class MusicApp : Application(), ComponentProvider {
         instance = this
         globalAppContext = this
         FileSystem.initialize(this)
+        UserPrefs.init(component.preferencesHelper.provider)
         configurePreferredTheme()
         if (AudienceNetworkAds.isInitialized(this)) {
             return

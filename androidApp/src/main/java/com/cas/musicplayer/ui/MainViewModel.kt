@@ -7,7 +7,7 @@ import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.utils.UserPrefs
+import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.MusicTrack

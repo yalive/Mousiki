@@ -6,7 +6,7 @@ import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.TimerDialogBinding
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.utils.UserPrefs
+import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.viewBinding
 
 /**
