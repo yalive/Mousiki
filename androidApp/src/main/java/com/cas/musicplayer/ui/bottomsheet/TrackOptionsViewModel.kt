@@ -3,9 +3,9 @@ package com.cas.musicplayer.ui.bottomsheet
 import com.cas.common.viewmodel.BaseViewModel
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
-import com.cas.musicplayer.domain.usecase.customplaylist.DeleteTrackFromCustomPlaylistUseCase
-import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
-import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.DeleteTrackFromCustomPlaylistUseCase
+import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 

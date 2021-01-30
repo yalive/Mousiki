@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.usecase.artist.GetArtistSongsUseCase
+import com.mousiki.shared.domain.usecase.artist.GetArtistSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList

@@ -1,10 +1,10 @@
 package com.cas.musicplayer.di
 
 import android.content.Context
-import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
-import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
-import com.cas.musicplayer.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
-import com.cas.musicplayer.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
+import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
+import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
@@ -30,7 +30,6 @@ import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.preference.PreferencesHelper
-import com.mousiki.shared.preference.SettingsProvider
 import com.mousiki.shared.utils.AnalyticsApi
 import dagger.BindsInstance
 import dagger.Component
@@ -45,6 +44,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
+        UseCasesModule::class,
         AppModule::class,
         PlaySongDelegateModule::class,
         AdsDelegateModule::class,

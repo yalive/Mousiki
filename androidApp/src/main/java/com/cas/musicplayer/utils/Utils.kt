@@ -31,7 +31,6 @@ import com.google.firebase.ktx.Firebase
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrl
 import java.io.File
-import java.util.*
 
 
 /**
@@ -226,14 +225,6 @@ object Utils {
 fun isScreenLocked(): Boolean {
     val myKM = MusicApp.get().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
     return myKM.isKeyguardLocked
-}
-
-fun getLanguage(): String {
-    val language = Locale.getDefault().language.toLowerCase(Locale.getDefault())
-    if (language.isEmpty()) {
-        return "en"
-    }
-    return language
 }
 
 private const val ANALYTICS_CREATE_TRACK_DYNAMIC_LINK = "create_track_dynamic_link"

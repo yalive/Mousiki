@@ -6,9 +6,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.cas.common.viewmodel.BaseViewModel
 import com.mousiki.shared.data.config.RemoteAppConfig
-import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
-import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksFlowUseCase
-import com.cas.musicplayer.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.common.ads.AdsItem

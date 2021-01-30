@@ -2,8 +2,8 @@ package com.cas.musicplayer.ui.playlist.create
 
 import com.cas.common.viewmodel.BaseViewModel
 import com.mousiki.shared.domain.models.MusicTrack
-import com.cas.musicplayer.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
-import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
+import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject

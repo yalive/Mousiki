@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
 import com.mousiki.shared.domain.models.MusicTrack
-import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem

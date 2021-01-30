@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.usecase.genre.GetGenresUseCase
+import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
 import com.cas.musicplayer.utils.uiCoroutine
 import javax.inject.Inject
 

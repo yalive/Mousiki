@@ -7,8 +7,8 @@ import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
-import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
-import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem

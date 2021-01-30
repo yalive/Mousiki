@@ -9,7 +9,7 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.usecase.song.GetPopularSongsUseCase
+import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
