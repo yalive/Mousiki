@@ -1,9 +1,7 @@
 package com.mousiki.shared.data.remote.api
 
-import co.touchlab.kermit.Kermit
 import com.mousiki.shared.data.models.*
 import com.mousiki.shared.preference.PreferencesHelper
-import com.mousiki.shared.utils.logger
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -15,7 +13,7 @@ class MousikiApiImpl(
     private val preferencesHelper: PreferencesHelper
 ) : MousikiApi {
 
-    private val kermit = Kermit(logger)
+    //private val kermit = Kermit(logger)
 
     private val client = HttpClient {
         install(JsonFeature) {
@@ -26,14 +24,14 @@ class MousikiApiImpl(
             serializer = KotlinxSerializer(json)
         }
 
-        install(Logging) {
-            this.logger = object : io.ktor.client.features.logging.Logger {
-                override fun log(message: String) {
-                    kermit.v("Network_mousiki") { message }
-                }
-            }
-            level = LogLevel.ALL
-        }
+        /* install(Logging) {
+             this.logger = object : io.ktor.client.features.logging.Logger {
+                 override fun log(message: String) {
+                     kermit.v("Network_mousiki") { message }
+                 }
+             }
+             level = LogLevel.ALL
+         }*/
     }
 
     private val youtubeApi by lazy {
