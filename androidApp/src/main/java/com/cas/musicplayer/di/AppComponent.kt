@@ -29,6 +29,8 @@ import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
 import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
 import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.preference.SettingsProvider
 import com.mousiki.shared.utils.AnalyticsApi
 import dagger.BindsInstance
 import dagger.Component
@@ -109,4 +111,6 @@ interface AppComponent {
     val appConfig: RemoteAppConfig
 
     val queueViewModel: QueueViewModel
+
+    val preferencesHelper: PreferencesHelper
 }

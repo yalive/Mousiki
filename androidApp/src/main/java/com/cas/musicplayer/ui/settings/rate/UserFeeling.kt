@@ -9,7 +9,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
-import com.cas.musicplayer.utils.UserPrefs
+import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.longToast
 import com.google.android.material.textfield.TextInputEditText

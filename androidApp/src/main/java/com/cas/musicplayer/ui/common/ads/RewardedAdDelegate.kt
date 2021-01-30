@@ -4,15 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import com.cas.musicplayer.R
-import com.cas.musicplayer.utils.EnvConfig
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.utils.UserPrefs
+import com.cas.musicplayer.utils.EnvConfig
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.preference.SettingsProvider
+import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.AnalyticsApi
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
@@ -57,12 +58,14 @@ class RewardedAdDelegateImp(
 
     override fun register(activity: Activity) {
         this.activity = activity
-        UserPrefs.getPrefs().registerOnSharedPreferenceChangeListener(preferencesListener)
+        context.getSharedPreferences(SettingsProvider.OLD_PREF_NAME, Context.MODE_PRIVATE)
+            .registerOnSharedPreferenceChangeListener(preferencesListener)
     }
 
     override fun unregister() {
         this.activity = null
-        UserPrefs.getPrefs().unregisterOnSharedPreferenceChangeListener(preferencesListener)
+        context.getSharedPreferences(SettingsProvider.OLD_PREF_NAME, Context.MODE_PRIVATE)
+            .unregisterOnSharedPreferenceChangeListener(preferencesListener)
     }
 
     private fun showReward(activity: Activity) {

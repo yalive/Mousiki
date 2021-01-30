@@ -30,6 +30,7 @@ class RewardedAdDelegateModule {
     @Singleton
     fun providesRewardedAdDelegate(
         context: Context,
+
         appConfig: RemoteAppConfig,
         analytics: AnalyticsApi,
         envConfig: EnvConfig

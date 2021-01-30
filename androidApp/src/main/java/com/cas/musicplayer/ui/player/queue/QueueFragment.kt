@@ -20,14 +20,16 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentQueueBinding
 import com.cas.musicplayer.di.injector.injector
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrlDefault
+import com.mousiki.shared.preference.UserPrefs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -114,7 +116,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
                 topMargin = inset.top
             }
         })
-        binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+        binding.btnPlayOption.setImageResource(UserPrefs.getSort().iconId(requireContext()))
         binding.recyclerView.adapter = adapter
         observe(viewModel.queue) { newList ->
             val firstTime = adapter.dataItems.isEmpty()
@@ -152,7 +154,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
         })
         binding.btnPlayOption.onClick {
             val nextSort = UserPrefs.getSort().next()
-            binding.btnPlayOption.setImageResource(nextSort.icon)
+            binding.btnPlayOption.setImageResource(nextSort.iconId(requireContext()))
             UserPrefs.saveSort(nextSort)
         }
     }

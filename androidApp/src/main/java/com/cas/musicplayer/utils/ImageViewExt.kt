@@ -13,6 +13,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrlDef0
+import com.mousiki.shared.preference.UserPrefs
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target

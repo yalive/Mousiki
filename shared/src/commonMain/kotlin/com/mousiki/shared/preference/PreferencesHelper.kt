@@ -4,7 +4,7 @@ import com.mousiki.shared.utils.elapsedRealtime
 import com.russhwolf.settings.set
 
 class PreferencesHelper(
-    private val provider: SettingsProvider
+    val provider: SettingsProvider
 ) {
 
     private val setting by lazy { provider.providesSettings() }

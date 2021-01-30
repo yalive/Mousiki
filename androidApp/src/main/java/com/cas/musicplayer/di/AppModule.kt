@@ -89,7 +89,9 @@ object AppModule {
     @Provides
     fun providesKMMPreferenceHelper(
         context: Context
-    ): PreferencesHelper = PreferencesHelper(SettingsProvider(context))
+    ): PreferencesHelper {
+        return PreferencesHelper(SettingsProvider(context))
+    }
 
     @JvmStatic
     @Provides

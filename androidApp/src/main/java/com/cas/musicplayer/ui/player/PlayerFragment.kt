@@ -30,6 +30,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlayerBinding
 import com.cas.musicplayer.di.injector.injector
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
@@ -42,6 +43,7 @@ import com.google.android.gms.ads.AdRequest
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.durationFormatted
 import com.mousiki.shared.domain.models.durationToSeconds
+import com.mousiki.shared.preference.UserPrefs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.sephiroth.android.library.xtooltip.ClosePolicy
@@ -229,7 +231,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private fun setupView() {
         setupMotionLayout()
-        binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+        binding.btnPlayOption.setImageResource(UserPrefs.getSort().iconId(requireContext()))
         setUpUserEvents()
         observe(DeviceInset) { inset ->
             binding.fullScreenSwitchView.updatePadding(top = inset.top)
@@ -297,7 +299,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.btnPlayOption.onClick {
             // Get next state
             val nextSort = UserPrefs.getSort().next()
-            binding.btnPlayOption.setImageResource(nextSort.icon)
+            binding.btnPlayOption.setImageResource(nextSort.iconId(requireContext()))
             UserPrefs.saveSort(nextSort)
         }
 
@@ -373,7 +375,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun onQueueClosed() {
-        binding.btnPlayOption.setImageResource(UserPrefs.getSort().icon)
+        binding.btnPlayOption.setImageResource(UserPrefs.getSort().iconId(requireContext()))
     }
 
     fun openBatterySaverMode() {
