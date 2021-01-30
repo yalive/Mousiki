@@ -6,10 +6,10 @@ import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.mousiki.shared.domain.models.MusicTrack
-import com.cas.musicplayer.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
-import com.cas.musicplayer.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
-import com.cas.musicplayer.domain.usecase.library.AddSongToFavouriteUseCase
-import com.cas.musicplayer.domain.usecase.library.GetFavouriteTracksUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
+import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.Playlist

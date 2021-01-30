@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.telephony.TelephonyManager
 import com.mousiki.shared.BuildConfig
+import java.util.*
 
 actual fun getCurrentLocale(): String {
     if (BuildConfig.DEBUG) {
@@ -27,4 +28,12 @@ actual fun getCurrentLocale(): String {
         val country = globalAppContext.resources.configuration?.locale?.country
         if (country != null && country.isNotEmpty() && country.length == 2) country else "US"
     }
+}
+
+actual fun getLanguage(): String {
+    val language = Locale.getDefault().language.toLowerCase(Locale.getDefault())
+    if (language.isEmpty()) {
+        return "en"
+    }
+    return language
 }

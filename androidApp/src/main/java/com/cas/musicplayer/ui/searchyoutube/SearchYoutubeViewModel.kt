@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
-import com.cas.musicplayer.domain.usecase.search.GetRecentSearchQueriesUseCase
-import com.cas.musicplayer.domain.usecase.search.SaveSearchQueryUseCase
-import com.cas.musicplayer.domain.usecase.search.SearchSongsUseCase
+import com.mousiki.shared.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
+import com.mousiki.shared.domain.usecase.search.GetRecentSearchQueriesUseCase
+import com.mousiki.shared.domain.usecase.search.SaveSearchQueryUseCase
+import com.mousiki.shared.domain.usecase.search.SearchSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList

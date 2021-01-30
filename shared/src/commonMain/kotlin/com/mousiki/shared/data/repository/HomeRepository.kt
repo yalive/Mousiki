@@ -74,7 +74,7 @@ class HomeRepository(
         return if (cachedHome != null) Result.Success(cachedHome) else remoteHome
     }
 
-    private suspend fun getCachedHome(): HomeRS? = withContext(Dispatchers.IO) {
+    private suspend fun getCachedHome(): HomeRS? = withContext(Dispatchers.Default) {
         return@withContext try {
             val fileContent = FileSystem.readFile(homeCachePath, ContentEncoding.Utf8).orEmpty()
             json.decodeFromString<HomeRS>(fileContent)
@@ -83,7 +83,7 @@ class HomeRepository(
         }
     }
 
-    private suspend fun writeHomeToCache(homeRS: HomeRS) = withContext(Dispatchers.IO) {
+    private suspend fun writeHomeToCache(homeRS: HomeRS) = withContext(Dispatchers.Default) {
         try {
             FileSystem.writeFile(
                 homeCachePath,
