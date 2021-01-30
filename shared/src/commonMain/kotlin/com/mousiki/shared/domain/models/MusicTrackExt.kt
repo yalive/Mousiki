@@ -1,7 +1,5 @@
 package com.mousiki.shared.domain.models
 
-import com.mousiki.shared.utils.format
-
 val MusicTrack.imgUrlDef0: String
     get() = "https://img.youtube.com/vi/$youtubeId/0.jpg"
 
@@ -30,20 +28,28 @@ val MusicTrack.durationFormatted: String
         var timeString = ""
         //PT3M
         if (arr.size == 1) {
+            // min
             val isMinute = duration.contains("M")
             if (isMinute) {
-                timeString = "%02d:00".format(arr[0].toInt())
+                timeString = "${arr[0].toInt().twoDigits()}:00"
             } else {
-                timeString = "%02ds".format(arr[0].toInt())
+                timeString = "${arr[0].toInt().twoDigits()}s"
             }
 
         } else if (arr.size == 2) {
+            // min:ss
             val args = arr[0].toInt()
             val args1 = arr[1].toInt()
-            timeString = "%02d:%02d".format(args, args1)
+            timeString = "${args.twoDigits()}:${args1.twoDigits()}"
         } else if (arr.size == 3) {
-            timeString = "%d:%02d:%02d".format(arr[0].toInt(), arr[1].toInt(), arr[2].toInt())
+            // h:min:ss
+            timeString = "${arr[0].toInt()}:${arr[1].toInt().twoDigits()}:${arr[2].toInt()}"
         }
 
         return timeString
     }
+
+fun Int.twoDigits(): String {
+    if (this < 10) return "0$this"
+    return "$this"
+}

@@ -36,9 +36,6 @@ kotlin {
                 implementation(Deps.Ktor.commonJson)
                 implementation(Deps.Ktor.commonLogging)
                 implementation(Deps.Ktor.commonSerialization)
-
-                // Logs
-                api("co.touchlab:kermit:0.1.7")
             }
         }
         val androidMain by getting {

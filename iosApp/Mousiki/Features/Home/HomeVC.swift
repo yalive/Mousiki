@@ -15,23 +15,37 @@ class HomeVC: UIViewController {
     
     private var homeItems = [HomeItem]()
     
-    fileprivate let repo = HomeRepo(mousikiApi: MousikiApiImp())
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let errorRS = ResultKt.demoResultError()
-        let successRS = ResultKt.demoResultSuccess()
+        
+        let settingsProvider = SettingsProvider()
+        let preferenceHelper = PreferencesHelper(provider: settingsProvider)
+        preferenceHelper.setYtbApiKeys(keys: [
+            "AIzaSyBqhHieeAMC79qmGm67df6vm8kMQoTpnog",
+            "AIzaSyC40U4MYSqEjNnNp8c1389vU3g7kJ1WGCo",
+            "AIzaSyCnNXLH_W3I8pe0PIsNrDZWb5S9OONZ9vQ",
+            "AIzaSyAyV0mk3Gdx-LHG7np_1kSFLcPd62YWIqA"
+        ])
+        let client = MousikiApiImpl(preferencesHelper: preferenceHelper)
+        client.trending(maxResults: 30, regionCode: "ma", pageToken: "") { (resource, error) in
+            if error == nil {
+                let items = resource?.items
+                print("")
+            }
+            print("")
+        }
         
         //print("\(type(of: errorRS))")
         //print("\(type(of: successRS))")
         
-//        if let data = (successRS as? ResultData)?.data {
-//            print(" data = \(data)")
-//        }
-//
-//        if let error = (errorRS as? ResultError)?.error {
-//            print(" error = \(error)")
-//        }
+        //        if let data = (successRS as? ResultData)?.data {
+        //            print(" data = \(data)")
+        //        }
+        //
+        //        if let error = (errorRS as? ResultError)?.error {
+        //            print(" error = \(error)")
+        //        }
         
         //        repo.getHome { (response, error) in
         //            if let homeRS = response {
