@@ -28,7 +28,7 @@ import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlayerBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.receiver.FavouriteReceiver
@@ -62,7 +62,7 @@ import java.util.concurrent.Executors
 
 class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val binding by viewBinding(FragmentPlayerBinding::bind)
-    private val viewModel by viewModel { injector.playerViewModel }
+    private val viewModel by viewModel { Injector.playerViewModel }
     private var seekingDuration = false
 
     private var mediaController: MediaControllerCompat? = null

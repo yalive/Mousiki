@@ -11,10 +11,10 @@ import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentAddTrackPlaylistBinding
-import com.cas.musicplayer.di.injector.injector
-import com.mousiki.shared.domain.models.MusicTrack
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.utils.longToast
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.domain.models.MusicTrack
 
 /**
  ***************************************
@@ -25,7 +25,9 @@ class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
     R.layout.fragment_add_track_playlist
 ) {
     override val viewModel by lazy {
-        injector.addTrackToPlaylistViewModelFactory.create(track)
+        Injector.addTrackToPlaylistViewModel.also {
+            it.init(track)
+        }
     }
     override val screenTitle: String by lazy {
         getString(R.string.add_to_playlist)

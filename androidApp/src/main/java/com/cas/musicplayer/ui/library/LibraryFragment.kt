@@ -15,7 +15,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentLibraryBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
@@ -34,7 +34,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     R.layout.fragment_library
 ) {
 
-    override val viewModel by viewModel { injector.libraryViewModel }
+    override val viewModel by viewModel { Injector.libraryViewModel }
     override val screenTitle by lazy {
         getString(R.string.library)
     }

@@ -5,8 +5,6 @@ plugins {
 
     id 'kotlin-parcelize'
 
-    id 'kotlin-kapt'
-
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
 }
 
@@ -130,13 +128,6 @@ dependencies {
     // Serialization
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
 
-    // Dagger 2
-    implementation 'com.google.dagger:dagger:2.24'
-    kapt 'com.google.dagger:dagger-compiler:2.24'
-    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.24'
-    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2'
-    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.5.2'
-
     // Youtube Player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
@@ -182,10 +173,7 @@ dependencies {
     implementation project(path: ':common')
     implementation project(path: ':shared')
 
-
-    // Temporary
-    implementation "com.squareup.sqldelight:android-driver:1.4.4"
-    implementation "com.squareup.sqldelight:coroutines-extensions:1.4.4"
+    implementation(Deps.koinCore)
 }
 
 apply plugin: 'com.google.gms.google-services'

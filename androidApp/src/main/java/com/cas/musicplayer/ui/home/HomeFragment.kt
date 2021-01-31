@@ -4,7 +4,6 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
@@ -17,7 +16,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentHomeBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
@@ -33,7 +32,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(
 ) {
     private val binding by viewBinding(FragmentHomeBinding::bind)
 
-    override val viewModel by viewModel { injector.homeViewModel }
+    override val viewModel by viewModel { Injector.homeViewModel }
     override val screenTitle: String by lazy {
         getString(R.string.app_name)
     }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.utils.AnalyticsApi
-import javax.inject.Inject
 
 /**
  ***************************************
@@ -31,7 +30,7 @@ class InterstitialDelegateImp(
     }
 }
 
-class NoInterstitialDelegate @Inject constructor() : InterstitialDelegate {
+class NoInterstitialDelegate : InterstitialDelegate {
 
     override fun register(activity: Activity) {
         // no-op

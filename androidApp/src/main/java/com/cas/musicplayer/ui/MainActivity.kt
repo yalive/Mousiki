@@ -23,7 +23,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
@@ -41,8 +41,8 @@ import kotlinx.coroutines.delay
 
 class MainActivity : BaseActivity() {
 
-    val adsViewModel by viewModel { injector.adsViewModel }
-    private val viewModel by viewModel { injector.mainViewModel }
+    val adsViewModel by viewModel { Injector.adsViewModel }
+    private val viewModel by viewModel { Injector.mainViewModel }
     private lateinit var navController: NavController
 
     private lateinit var playerFragment: PlayerFragment

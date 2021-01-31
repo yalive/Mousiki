@@ -3,20 +3,19 @@ package com.cas.musicplayer.ui.favourite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
-import javax.inject.Inject
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-12-06.
  ***************************************
  */
-class FavouriteSongsViewModel @Inject constructor(
+class FavouriteSongsViewModel(
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {

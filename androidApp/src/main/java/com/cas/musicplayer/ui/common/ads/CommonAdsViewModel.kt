@@ -2,17 +2,16 @@ package com.cas.musicplayer.ui.common.ads
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mousiki.shared.data.config.RemoteAppConfig
 import com.google.android.gms.ads.formats.UnifiedNativeAd
+import com.mousiki.shared.data.config.RemoteAppConfig
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 5/16/20.
  ***************************************
  */
-class CommonAdsViewModel @Inject constructor(
+class CommonAdsViewModel constructor(
     private val appConfig: RemoteAppConfig
 ) : ViewModel() {
 

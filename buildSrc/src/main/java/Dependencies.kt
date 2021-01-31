@@ -36,6 +36,9 @@ object Versions {
 }
 
 object Deps {
+
+    val koinCore = "org.koin:koin-core:${Versions.koin}"
+
     object SqlDelight {
         val gradle = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
         val runtime = "com.squareup.sqldelight:runtime:${Versions.sqlDelight}"

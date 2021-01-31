@@ -1,16 +1,9 @@
 package com.cas.musicplayer.di
 
-import android.content.Context
-import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
-import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
-import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
-import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
-import com.cas.musicplayer.ui.common.PlaySongDelegateModule
-import com.cas.musicplayer.ui.common.ads.AdsDelegateModule
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
@@ -28,89 +21,96 @@ import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
 import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
-import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
+import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
-import dagger.BindsInstance
-import dagger.Component
-import javax.inject.Singleton
+import org.koin.core.KoinComponent
+import org.koin.core.get
 
-/**
- ***************************************
- * Created by Abdelhadi on 2019-06-09.
- ***************************************
- */
-
-@Singleton
-@Component(
-    modules = [
-        UseCasesModule::class,
-        AppModule::class,
-        PlaySongDelegateModule::class,
-        AdsDelegateModule::class,
-        FirebaseModule::class
-    ]
-)
-interface AppComponent {
-
-    @Component.Factory
-    interface Factory {
-        fun create(@BindsInstance applicationContext: Context): AppComponent
-    }
+object Injector : KoinComponent {
 
     val mainViewModel: MainViewModel
+        get() = get()
 
     val adsViewModel: CommonAdsViewModel
+        get() = get()
 
     val homeViewModel: HomeViewModel
+        get() = get()
 
     val popularSongsViewModel: PopularSongsViewModel
+        get() = get()
 
     val artistListViewModel: ArtistListViewModel
+        get() = get()
 
-    val artistVideosViewModelFactory: ArtistSongsViewModel.Factory
+    val artistVideosViewModel: ArtistSongsViewModel
+        get() = get()
 
-    val playlistVideosViewModelFactory: PlaylistSongsViewModel.Factory
+    val playlistVideosViewModel: PlaylistSongsViewModel
+        get() = get()
 
     val searchYoutubeViewModel: SearchYoutubeViewModel
+        get() = get()
 
     val genresViewModel: GenresViewModel
+        get() = get()
 
     val libraryViewModel: LibraryViewModel
+        get() = get()
 
     val favouriteTracksViewModel: FavouriteSongsViewModel
+        get() = get()
 
     val trackOptionsViewModel: TrackOptionsViewModel
+        get() = get()
 
     val playerViewModel: PlayerViewModel
+        get() = get()
 
     val mainSearchViewModel: MainSearchViewModel
+        get() = get()
 
     val emptyViewModel: EmptyViewModel
+        get() = get()
 
     val settingsViewModel: SettingsViewModel
+        get() = get()
 
-    val addTrackToPlaylistViewModelFactory: AddTrackToPlaylistViewModel.Factory
+    val addTrackToPlaylistViewModel: AddTrackToPlaylistViewModel
+        get() = get()
 
-    val customPlaylistSongsViewModelFactory: CustomPlaylistSongsViewModel.Factory
+    val customPlaylistSongsViewModel: CustomPlaylistSongsViewModel
+        get() = get()
 
     val createPlaylistViewModel: CreatePlaylistViewModel
+        get() = get()
 
     val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase
+        get() = get()
 
     val addSongToFavourite: AddSongToFavouriteUseCase
+        get() = get()
 
     val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase
-
-    val analytics: AnalyticsApi
-
-    val rewardedAdDelegate: RewardedAdDelegate
-
-    val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
-
-    val appConfig: RemoteAppConfig
+        get() = get()
 
     val queueViewModel: QueueViewModel
+        get() = get()
+
+    val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
+        get() = get()
 
     val preferencesHelper: PreferencesHelper
+        get() = get()
+
+    val analytics: AnalyticsApi
+        get() = get()
+
+    val rewardedAdDelegate: RewardedAdDelegate
+        get() = get()
+
 }

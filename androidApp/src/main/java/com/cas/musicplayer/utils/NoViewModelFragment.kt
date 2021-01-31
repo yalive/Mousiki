@@ -4,8 +4,7 @@ import androidx.annotation.LayoutRes
 import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.common.viewmodel.activityViewModel
-import com.cas.musicplayer.di.injector.injector
-import javax.inject.Inject
+import com.cas.musicplayer.di.Injector
 
 /**
  *********************************************
@@ -16,7 +15,7 @@ import javax.inject.Inject
 abstract class NoViewModelFragment(
     @LayoutRes layoutResourceId: Int
 ) : BaseFragment<EmptyViewModel>(layoutResourceId) {
-    override val viewModel by activityViewModel { injector.emptyViewModel }
+    override val viewModel by activityViewModel { Injector.emptyViewModel }
 }
 
-class EmptyViewModel @Inject constructor() : BaseViewModel()
+class EmptyViewModel : BaseViewModel()

@@ -6,7 +6,6 @@ import com.cas.common.resource.Resource
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.utils.AnalyticsApi
-import javax.inject.Inject
 
 /**
  ***************************************
@@ -18,7 +17,7 @@ interface GetListAdsDelegate {
     suspend fun insertAdsIn(items: List<DisplayableItem>): List<DisplayableItem>
 }
 
-class GetListAdsDelegateImp @Inject constructor(
+class GetListAdsDelegateImp(
     private val config: RemoteAppConfig,
     private val analytics: AnalyticsApi
 ) : GetListAdsDelegate {

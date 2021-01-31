@@ -9,11 +9,11 @@ import android.os.Handler
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.utils.AudienceNetworkInitializeHelper
-import com.mousiki.shared.utils.getCurrentLocale
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
+import com.mousiki.shared.utils.getCurrentLocale
 import java.util.*
 
 
@@ -39,13 +39,13 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        injector.rewardedAdDelegate.register(this)
+        Injector.rewardedAdDelegate.register(this)
     }
 
 
     override fun onPause() {
         super.onPause()
-        injector.rewardedAdDelegate.unregister()
+        Injector.rewardedAdDelegate.unregister()
     }
 
     fun hideStatusBar() {
@@ -102,8 +102,9 @@ open class BaseActivity : AppCompatActivity() {
                 Exception(
                     "Unable to subscribe to topic ${
                         getCurrentLocale().toLowerCase(
-                        Locale.getDefault()
-                    )}", e
+                            Locale.getDefault()
+                        )
+                    }", e
                 )
             )
         }

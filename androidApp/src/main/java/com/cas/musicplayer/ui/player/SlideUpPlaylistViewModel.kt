@@ -3,20 +3,19 @@ package com.cas.musicplayer.ui.player
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
-import javax.inject.Inject
+import com.mousiki.shared.domain.models.MusicTrack
 
 /**
  ***************************************
  * Created by Abdelhadi on 2019-12-07.
  ***************************************
  */
-class SlideUpPlaylistViewModel @Inject constructor(
+class SlideUpPlaylistViewModel(
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 

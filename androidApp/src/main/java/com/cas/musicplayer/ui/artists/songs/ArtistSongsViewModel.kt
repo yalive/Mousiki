@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.usecase.artist.GetArtistSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
@@ -15,16 +14,14 @@ import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.map
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.mousiki.shared.domain.usecase.artist.GetArtistSongsUseCase
 
 /**
  **********************************
  * Created by Abdelhadi on 4/12/19.
  **********************************
  */
-class ArtistSongsViewModel @AssistedInject constructor(
-    @Assisted private val artist: Artist,
+class ArtistSongsViewModel(
     private val getArtistSongs: GetArtistSongsUseCase,
     playDelegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate
@@ -34,12 +31,7 @@ class ArtistSongsViewModel @AssistedInject constructor(
     val tracks: LiveData<Resource<List<DisplayableItem>>>
         get() = _tracks
 
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(artist: Artist): ArtistSongsViewModel
-    }
-
-    init {
+    fun init(artist: Artist) {
         loadArtistTracks(artist)
     }
 

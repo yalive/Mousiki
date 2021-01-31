@@ -10,20 +10,20 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSettingsBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.ui.settings.rate.writeFeedback
-import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.preference.UserPrefs
 
 
 class SettingsFragment : BaseFragment<SettingsViewModel>(
     R.layout.fragment_settings
 ) {
 
-    override val viewModel by viewModel { injector.settingsViewModel }
+    override val viewModel by viewModel { Injector.settingsViewModel }
     override val screenTitle: String by lazy {
         getString(R.string.menu_settings)
     }

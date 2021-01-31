@@ -10,10 +10,10 @@ import com.cas.common.extensions.onClick
 import com.cas.common.fragment.BaseFragment
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentCreatePalylistBinding
-import com.cas.musicplayer.di.injector.injector
-import com.mousiki.shared.domain.models.MusicTrack
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.utils.toast
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.domain.models.MusicTrack
 
 /**
  ***************************************
@@ -23,7 +23,7 @@ import com.cas.musicplayer.utils.viewBinding
 class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
     R.layout.fragment_create_palylist
 ) {
-    override val viewModel by lazy { injector.createPlaylistViewModel }
+    override val viewModel by lazy { Injector.createPlaylistViewModel }
 
     private val binding by viewBinding(FragmentCreatePalylistBinding::bind)
 

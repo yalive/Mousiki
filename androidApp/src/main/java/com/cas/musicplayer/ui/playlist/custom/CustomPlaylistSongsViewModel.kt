@@ -5,41 +5,34 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.valueOrNull
 import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
-import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.Constants
 import com.cas.musicplayer.utils.uiCoroutine
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 4/5/20.
  ***************************************
  */
-class CustomPlaylistSongsViewModel @AssistedInject constructor(
-    @Assisted val playlist: Playlist,
+class CustomPlaylistSongsViewModel(
     private val getCustomPlaylistTracks: GetCustomPlaylistTracksUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
-
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(playlist: Playlist): CustomPlaylistSongsViewModel
-    }
-
+    lateinit var playlist: Playlist
+        private set
     private val _songs = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
     val songs: LiveData<Resource<List<DisplayedVideoItem>>>
         get() = _songs
 
-    init {
+    fun init(playlist: Playlist) {
+        this.playlist = playlist
         getPlaylistSongs()
     }
 

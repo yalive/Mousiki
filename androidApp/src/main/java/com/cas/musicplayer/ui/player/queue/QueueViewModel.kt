@@ -6,17 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.MusicTrack
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class QueueViewModel @Inject constructor(
+class QueueViewModel(
     playSongDelegate: PlaySongDelegate
 ) : ViewModel(), PlaySongDelegate by playSongDelegate {
 

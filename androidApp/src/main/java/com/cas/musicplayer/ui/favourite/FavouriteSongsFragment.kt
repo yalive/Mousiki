@@ -10,7 +10,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlayListBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
@@ -21,7 +21,7 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>(
     R.layout.fragment_play_list
 ) {
 
-    override val viewModel by viewModel { injector.favouriteTracksViewModel }
+    override val viewModel by viewModel { Injector.favouriteTracksViewModel }
     override val screenTitle: String by lazy {
         getString(R.string.favourites)
     }

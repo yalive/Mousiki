@@ -9,7 +9,6 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
@@ -20,7 +19,7 @@ import com.mousiki.shared.domain.models.LoadingItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
-import javax.inject.Inject
+import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 
 /**
  **********************************
@@ -28,7 +27,7 @@ import javax.inject.Inject
  **********************************
  */
 
-class PopularSongsViewModel @Inject constructor(
+class PopularSongsViewModel(
     private val getPopularSongs: GetPopularSongsUseCase,
     delegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate

@@ -7,20 +7,19 @@ import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.AnalyticsApi
 import kotlinx.coroutines.delay
-import javax.inject.Inject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val remoteAppConfig: RemoteAppConfig,
     private val analytics: AnalyticsApi,
     delegate: PlaySongDelegate
