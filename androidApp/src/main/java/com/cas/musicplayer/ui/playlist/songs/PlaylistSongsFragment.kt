@@ -5,18 +5,20 @@ import android.os.Bundle
 import android.view.View
 import com.cas.common.extensions.observe
 import com.cas.common.viewmodel.viewModel
-import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.di.injector.injector
-import com.mousiki.shared.domain.models.MusicTrack
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.domain.models.MusicTrack
 
 
 class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
 
     override val viewModel: PlaylistSongsViewModel by viewModel {
         val playlistId = arguments?.getString(EXTRAS_PLAYLIST_ID)!!
-        injector.playlistVideosViewModelFactory.create(playlistId)
+        Injector.playlistVideosViewModel.also {
+            it.init(playlistId)
+        }
     }
 
     private lateinit var artist: Artist

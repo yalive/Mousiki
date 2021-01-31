@@ -7,10 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
-import com.mousiki.shared.domain.usecase.search.GetRecentSearchQueriesUseCase
-import com.mousiki.shared.domain.usecase.search.SaveSearchQueryUseCase
-import com.mousiki.shared.domain.usecase.search.SearchSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
@@ -21,16 +17,19 @@ import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
+import com.mousiki.shared.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
+import com.mousiki.shared.domain.usecase.search.GetRecentSearchQueriesUseCase
+import com.mousiki.shared.domain.usecase.search.SaveSearchQueryUseCase
+import com.mousiki.shared.domain.usecase.search.SearchSongsUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/24/19.
  **********************************
  */
-class SearchYoutubeViewModel @Inject constructor(
+class SearchYoutubeViewModel(
     private val searchSongs: SearchSongsUseCase,
     private val getGoogleSearchSuggestions: GetGoogleSearchSuggestionsUseCase,
     private val saveSearchQuery: SaveSearchQueryUseCase,

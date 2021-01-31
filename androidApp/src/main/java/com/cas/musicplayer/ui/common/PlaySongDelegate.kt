@@ -1,9 +1,8 @@
 package com.cas.musicplayer.ui.common
 
+import com.cas.musicplayer.player.PlayerQueue
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
-import com.cas.musicplayer.player.PlayerQueue
-import javax.inject.Inject
 
 /**
  ***************************************
@@ -14,7 +13,7 @@ interface PlaySongDelegate {
     suspend fun playTrackFromQueue(track: MusicTrack, queue: List<MusicTrack>)
 }
 
-class PlaySongDelegateImpl @Inject constructor(
+class PlaySongDelegateImpl(
     private val addTrackToRecentlyPlayed: AddTrackToRecentlyPlayedUseCase
 ) : PlaySongDelegate {
 

@@ -1,16 +1,13 @@
 package com.cas.musicplayer.utils
 
 import com.cas.musicplayer.BuildConfig
-import dagger.Reusable
-import javax.inject.Inject
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 5/6/20.
  ***************************************
  */
-@Reusable
-class EnvConfig @Inject constructor() {
+class EnvConfig {
 
     fun isDev() = BuildConfig.FLAVOR.contains("dev")
 

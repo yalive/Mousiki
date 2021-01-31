@@ -12,7 +12,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentGenresBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.searchyoutube.GenreAdapterDelegate
 import com.cas.musicplayer.utils.viewBinding
 
@@ -25,7 +25,7 @@ class GenresFragment : BaseFragment<GenresViewModel>(
     R.layout.fragment_genres
 ) {
 
-    override val viewModel by viewModel { injector.genresViewModel }
+    override val viewModel by viewModel { Injector.genresViewModel }
     override val screenTitle: String by lazy {
         getString(R.string.genres)
     }

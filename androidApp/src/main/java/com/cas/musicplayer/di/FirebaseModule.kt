@@ -10,57 +10,57 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.StorageApi
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import kotlinx.serialization.json.Json
+import org.koin.dsl.module
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 4/9/20.
  ***************************************
  */
-@Module
-object FirebaseModule {
 
-    @Singleton
-    @Provides
-    @JvmStatic
-    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
-        val remoteConfig = Firebase.remoteConfig
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = if (BuildConfig.DEBUG) 160 else 1800
-        }
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        return remoteConfig
-    }
-
-    @Singleton
-    @Provides
-    @JvmStatic
-    fun provideAnalytics(
-        context: Context
-    ): AnalyticsApi {
-        val analytics = FirebaseAnalytics.getInstance(context)
-        return AndroidAnalytics(analytics)
-    }
-
-    @Singleton
-    @Provides
-    @JvmStatic
-    fun provideFirebaseStorage(): FirebaseStorage {
-        return Firebase.storage
-    }
-
-
-    @Singleton
-    @Provides
-    @JvmStatic
-    fun providesStorage(): StorageApi {
-        return Storage(Firebase.storage)
-    }
+val firebaseModule = module {
+    single { provideFirebaseRemoteConfig() }
+    single { provideAnalytics(get()) }
+    single { providesStorage() }
+    single { providesRemoteAppConfig(get(), get(), get(), get()) }
 }
+
+private fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
+    val remoteConfig = Firebase.remoteConfig
+    val configSettings = remoteConfigSettings {
+        minimumFetchIntervalInSeconds = if (BuildConfig.DEBUG) 160 else 1800
+    }
+    remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+    remoteConfig.setConfigSettingsAsync(configSettings)
+    return remoteConfig
+}
+
+private fun provideAnalytics(
+    context: Context
+): AnalyticsApi {
+    val analytics = FirebaseAnalytics.getInstance(context)
+    return AndroidAnalytics(analytics)
+}
+
+
+private fun providesStorage(): StorageApi {
+    return Storage(Firebase.storage)
+}
+
+private fun providesRemoteAppConfig(
+    firebaseRemoteConfig: FirebaseRemoteConfig,
+    json: Json,
+    context: Context,
+    preferencesHelper: PreferencesHelper
+) = RemoteAppConfig(
+    firebaseRemoteConfig,
+    json,
+    context,
+    preferencesHelper
+)

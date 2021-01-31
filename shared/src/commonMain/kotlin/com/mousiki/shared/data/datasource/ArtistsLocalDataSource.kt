@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
  * Created by Abdelhadi on 2019-11-24.
  ***************************************
  */
-class ArtistsLocalDataSource constructor(
+class ArtistsLocalDataSource(
     private val db: MousikiDb
 ) {
     private val artistQuery: ArtistsQueries = db.artistsQueries

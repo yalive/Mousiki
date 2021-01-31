@@ -3,17 +3,16 @@ package com.cas.musicplayer.ui.searchyoutube
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
-import com.cas.musicplayer.utils.uiCoroutine
-import javax.inject.Inject
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 3/26/20.
  ***************************************
  */
-class MainSearchViewModel @Inject constructor(
+class MainSearchViewModel(
     private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
 

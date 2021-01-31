@@ -17,7 +17,6 @@ import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.AnalyticsApi
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
-import javax.inject.Inject
 
 /**
  ***************************************
@@ -135,7 +134,7 @@ class RewardedAdDelegateImp(
 
 }
 
-class NoRewardedAdDelegate @Inject constructor() : RewardedAdDelegate {
+class NoRewardedAdDelegate : RewardedAdDelegate {
 
     override fun register(activity: Activity) {
         // no-op

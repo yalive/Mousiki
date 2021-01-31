@@ -1,23 +1,26 @@
 package com.cas.musicplayer
 
 import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.cas.musicplayer.di.AppComponent
-import com.cas.musicplayer.di.ComponentProvider
-import com.cas.musicplayer.di.DaggerAppComponent
+import com.cas.musicplayer.di.*
 import com.cas.musicplayer.ui.common.ads.AdsManager
+import com.cas.musicplayer.utils.ConnectivityState
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
+import com.mousiki.shared.di.initKoin
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.preference.UserPrefs
+import com.mousiki.shared.utils.ConnectivityChecker
 import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.koin.dsl.module
 
 
 /**
@@ -25,7 +28,7 @@ import kotlinx.coroutines.SupervisorJob
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class MusicApp : Application(), ComponentProvider {
+class MusicApp : Application() {
 
     val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -33,18 +36,20 @@ class MusicApp : Application(), ComponentProvider {
     val isInForeground: Boolean
         get() = _isInForeground
 
-    override val component: AppComponent by lazy {
-        DaggerAppComponent
-            .factory()
-            .create(this)
-    }
-
     override fun onCreate() {
         super.onCreate()
         instance = this
         globalAppContext = this
         FileSystem.initialize(this)
-        UserPrefs.init(component.preferencesHelper.provider)
+        initKoin(
+            appContextModule(this),
+            firebaseModule,
+            playSongDelegateModule,
+            adsDelegateModule,
+            viewModelsModule
+        )
+
+        UserPrefs.init(Injector.preferencesHelper.provider)
         configurePreferredTheme()
         if (AudienceNetworkAds.isInitialized(this)) {
             return
@@ -86,4 +91,9 @@ class MusicApp : Application(), ComponentProvider {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
+}
+
+private fun appContextModule(appContext: MusicApp) = module {
+    single<Context> { appContext }
+    single<ConnectivityChecker> { ConnectivityState(get()) }
 }

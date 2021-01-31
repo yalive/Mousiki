@@ -5,10 +5,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.data.config.RemoteAppConfig
-import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
-import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
-import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.common.ads.AdsItem
@@ -16,11 +12,15 @@ import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.google.android.gms.ads.formats.UnifiedNativeAd
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
-import kotlinx.coroutines.flow.collect
+import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 
 /**
  ***************************************
@@ -28,7 +28,7 @@ import javax.inject.Inject
  ***************************************
  */
 
-class PlayerViewModel @Inject constructor(
+class PlayerViewModel(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
     private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,

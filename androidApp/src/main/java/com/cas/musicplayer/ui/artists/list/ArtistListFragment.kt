@@ -17,7 +17,7 @@ import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentArtistsBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.sidebar.SideBar
 import com.cas.musicplayer.ui.common.songs.AppImage
@@ -30,7 +30,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     R.layout.fragment_artists
 ) {
 
-    override val viewModel by activityViewModel { injector.artistListViewModel }
+    override val viewModel by activityViewModel { Injector.artistListViewModel }
     override val screenTitle by lazy {
         getString(R.string.artists)
     }

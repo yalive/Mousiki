@@ -9,13 +9,8 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.data.repository.HomeRepository
 import com.cas.musicplayer.domain.model.HeaderItem
 import com.cas.musicplayer.domain.model.HomeItem
-import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
-import com.mousiki.shared.domain.usecase.chart.GetUserRelevantChartsUseCase
-import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
-import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
@@ -23,23 +18,27 @@ import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.toTrack
+import com.mousiki.shared.data.repository.HomeRepository
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
+import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
+import com.mousiki.shared.domain.usecase.chart.GetUserRelevantChartsUseCase
+import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
+import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.ConnectivityChecker
 import com.mousiki.shared.utils.getCurrentLocale
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  **********************************
  * Created by Abdelhadi on 4/13/19.
  **********************************
  */
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
     private val getNewReleasedSongs: GetPopularSongsUseCase,
     private val getCountryArtists: GetCountryArtistsUseCase,
     private val getUserRelevantCharts: GetUserRelevantChartsUseCase,

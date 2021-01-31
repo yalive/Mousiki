@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
@@ -14,36 +13,28 @@ import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.map
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
 
 /**
  **********************************
  * Created by Abdelhadi on 4/12/19.
  **********************************
  */
-class PlaylistSongsViewModel @AssistedInject constructor(
+class PlaylistSongsViewModel(
     private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase,
-    @Assisted private val playlistId: String,
     playDelegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate
 ) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
-
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(playlistId: String): PlaylistSongsViewModel
-    }
 
     private val _songs = MutableLiveData<Resource<List<DisplayableItem>>>()
     val songs: LiveData<Resource<List<DisplayableItem>>>
         get() = _songs
 
-    init {
-        getPlaylistSongs()
+    fun init(playlistId: String) {
+        getPlaylistSongs(playlistId)
     }
 
-    private fun getPlaylistSongs() = uiCoroutine {
+    private fun getPlaylistSongs(playlistId: String) = uiCoroutine {
         _songs.value = Resource.Loading
         val result = getPlaylistVideosUseCase(playlistId)
         _songs.value = result.map { tracks ->

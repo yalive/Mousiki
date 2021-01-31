@@ -22,7 +22,7 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSearchYoutubeBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import com.cas.musicplayer.utils.viewBinding
@@ -40,7 +40,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
 ) {
     private val binding by viewBinding(FragmentSearchYoutubeBinding::bind)
 
-    public override val viewModel by viewModel { injector.searchYoutubeViewModel }
+    public override val viewModel by viewModel { Injector.searchYoutubeViewModel }
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
 

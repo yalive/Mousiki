@@ -24,7 +24,7 @@ import androidx.media.session.MediaButtonReceiver
 import com.cas.common.extensions.bool
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.YoutubeFloatingPlayerView
 import com.cas.musicplayer.player.extensions.albumArt
@@ -201,12 +201,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                                 title = title.toString(),
                                 duration = duration
                             )
-                            injector.addSongToFavourite(track)
+                            Injector.addSongToFavourite(track)
                         }
                     } else if (action == CustomAction.REMOVE_FROM_FAVOURITE) {
                         val mediaId = metadata.description.mediaId
                         mediaId?.let {
-                            injector.removeSongFromFavouriteList(mediaId)
+                            Injector.removeSongFromFavouriteList(mediaId)
                         }
                     }
                     val playbackState = mediaSession.controller.playbackState
@@ -266,7 +266,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         mediaController.transportControls.playFromMediaId(currentTrack.youtubeId, null)
 
         lifecycleScope.launch(Dispatchers.Main) {
-            injector.addTrackToRecentlyPlayed(currentTrack)
+            Injector.addTrackToRecentlyPlayed(currentTrack)
             val loadBitmap = Picasso.get().getBitmap(currentTrack.imgUrl, 320)
             metadataBuilder.albumArt = loadBitmap
             mediaSession.setMetadata(metadataBuilder.build())
@@ -419,8 +419,8 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     private fun handleLastSessionSysMediaButton() = lifecycleScope.launch {
-        injector.analytics.logEvent(START_PLAYER_FORM_LAST_SESSION)
-        val recentlyPlayedSongs = injector.getRecentlyPlayedSongs
+        Injector.analytics.logEvent(START_PLAYER_FORM_LAST_SESSION)
+        val recentlyPlayedSongs = Injector.getRecentlyPlayedSongs
         val recentTracks = recentlyPlayedSongs()
         if (recentTracks.isNotEmpty()) {
             PlayerQueue.playTrack(recentTracks[0], recentTracks)

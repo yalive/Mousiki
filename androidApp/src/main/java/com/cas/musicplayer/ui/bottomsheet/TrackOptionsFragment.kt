@@ -14,18 +14,21 @@ import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentTrackOptionsBinding
-import com.cas.musicplayer.di.injector.injector
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.Playlist
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
-import com.cas.musicplayer.utils.*
+import com.cas.musicplayer.utils.Constants
+import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.loadTrackImage
+import com.cas.musicplayer.utils.viewBinding
 import com.google.android.gms.ads.formats.MediaView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.preference.UserPrefs
 import java.util.concurrent.Executors
 
@@ -39,8 +42,8 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
     lateinit var musicTrack: MusicTrack
 
-    private val viewModel by lazy { injector.trackOptionsViewModel }
-    private val adsViewModel by activityViewModel { injector.adsViewModel }
+    private val viewModel by lazy { Injector.trackOptionsViewModel }
+    private val adsViewModel by activityViewModel { Injector.adsViewModel }
     private val binding by viewBinding(FragmentTrackOptionsBinding::bind)
 
     override fun onCreateView(

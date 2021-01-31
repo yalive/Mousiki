@@ -5,37 +5,28 @@ import androidx.lifecycle.MutableLiveData
 import com.cas.common.event.Event
 import com.cas.common.event.asEvent
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.utils.Constants
+import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
-import com.cas.musicplayer.utils.Constants
-import com.cas.musicplayer.utils.uiCoroutine
-import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.domain.models.imgUrl
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 4/4/20.
  ***************************************
  */
-class AddTrackToPlaylistViewModel @AssistedInject constructor(
-    @Assisted val track: MusicTrack,
+class AddTrackToPlaylistViewModel(
     private val getCustomPlaylists: GetCustomPlaylistsUseCase,
     private val addTrackToCustomPlaylist: AddTrackToCustomPlaylistUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val addSongToFavourite: AddSongToFavouriteUseCase
 ) : BaseViewModel() {
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(track: MusicTrack): AddTrackToPlaylistViewModel
-    }
-
-
+    private lateinit var track: MusicTrack
     private val _playlists = MutableLiveData<List<Playlist>>()
     val playlists: LiveData<List<Playlist>>
         get() = _playlists
@@ -44,7 +35,8 @@ class AddTrackToPlaylistViewModel @AssistedInject constructor(
     val trackAddedToPlaylist: LiveData<Event<Playlist>>
         get() = _trackAddedToPlaylist
 
-    init {
+    fun init(track: MusicTrack) {
+        this.track = track
         loadCustomPlaylists()
     }
 

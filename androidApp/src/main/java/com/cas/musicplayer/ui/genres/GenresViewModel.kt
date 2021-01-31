@@ -3,18 +3,17 @@ package com.cas.musicplayer.ui.genres
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.viewmodel.BaseViewModel
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
 import com.cas.musicplayer.utils.uiCoroutine
-import javax.inject.Inject
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
 
 /**
  **********************************
  * Created by Abdelhadi on 4/26/19.
  **********************************
  */
-class GenresViewModel @Inject constructor(
+class GenresViewModel(
     private val getGenres: GetGenresUseCase
 ) : BaseViewModel() {
 

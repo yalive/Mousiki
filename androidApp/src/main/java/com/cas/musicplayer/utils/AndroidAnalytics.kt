@@ -3,9 +3,8 @@ package com.cas.musicplayer.utils
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.mousiki.shared.utils.AnalyticsApi
-import javax.inject.Inject
 
-class AndroidAnalytics @Inject constructor(
+class AndroidAnalytics(
     private val analytics: FirebaseAnalytics,
 ) : AnalyticsApi {
 

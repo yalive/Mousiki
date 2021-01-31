@@ -36,6 +36,9 @@ kotlin {
                 implementation(Deps.Ktor.commonJson)
                 implementation(Deps.Ktor.commonLogging)
                 implementation(Deps.Ktor.commonSerialization)
+
+                // DI
+                implementation(Deps.koinCore)
             }
         }
         val androidMain by getting {

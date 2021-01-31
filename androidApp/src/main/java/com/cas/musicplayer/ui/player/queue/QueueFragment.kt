@@ -19,7 +19,7 @@ import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentQueueBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.services.PlaybackLiveData
@@ -40,7 +40,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
     private val binding by viewBinding(FragmentQueueBinding::bind)
 
     private val viewModel: QueueViewModel by viewModel {
-        injector.queueViewModel
+        Injector.queueViewModel
     }
     private var onCloseQueue: (() -> Unit)? = null
     private val adapter: QueueAdapter by lazy {

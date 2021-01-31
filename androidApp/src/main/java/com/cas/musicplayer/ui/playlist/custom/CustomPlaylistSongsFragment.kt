@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import com.cas.common.extensions.observe
 import com.cas.common.viewmodel.viewModel
-import com.cas.musicplayer.di.injector.injector
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.Playlist
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Playlist
 
 /**
  ***************************************
@@ -20,7 +20,9 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
 
     override val viewModel: CustomPlaylistSongsViewModel by viewModel {
         val playlist = arguments?.getParcelable<Playlist>(EXTRAS_PLAYLIST)!!
-        injector.customPlaylistSongsViewModelFactory.create(playlist)
+        Injector.customPlaylistSongsViewModel.also {
+            it.init(playlist)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

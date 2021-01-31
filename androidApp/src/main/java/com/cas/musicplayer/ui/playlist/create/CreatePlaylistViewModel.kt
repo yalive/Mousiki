@@ -1,19 +1,18 @@
 package com.cas.musicplayer.ui.playlist.create
 
 import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.utils.Constants
+import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
-import com.cas.musicplayer.utils.Constants
-import com.cas.musicplayer.utils.uiCoroutine
-import javax.inject.Inject
 
 /**
  ***************************************
  * Created by Y.Abdelhadi on 4/4/20.
  ***************************************
  */
-class CreatePlaylistViewModel @Inject constructor(
+class CreatePlaylistViewModel(
     private val addTrackToCustomPlaylist: AddTrackToCustomPlaylistUseCase,
     private val addSongToFavourite: AddSongToFavouriteUseCase
 ) : BaseViewModel() {

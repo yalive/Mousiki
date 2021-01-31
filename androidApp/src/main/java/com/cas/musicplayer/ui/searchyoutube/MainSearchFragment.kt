@@ -11,10 +11,10 @@ import com.cas.common.fragment.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
-import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentMainSearchBinding
-import com.cas.musicplayer.di.injector.injector
+import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
 
@@ -26,12 +26,14 @@ import com.cas.musicplayer.utils.viewBinding
 class MainSearchFragment : BaseFragment<MainSearchViewModel>(
     R.layout.fragment_main_search
 ) {
-    override val viewModel by viewModel { injector.mainSearchViewModel }
+    override val viewModel by viewModel { Injector.mainSearchViewModel }
     private val searchGenresAdapter by lazy { SearchGenresAdapter() }
 
     private val binding by viewBinding(FragmentMainSearchBinding::bind)
 
-    private val mainViewModel by activityViewModel { injector.mainViewModel }
+    private val mainViewModel by activityViewModel {
+        Injector.mainViewModel
+    }
     private val bottomPlayerSpace by lazy {
         requireContext().resources.getDimensionPixelSize(R.dimen.padding_for_player_space)
     }
