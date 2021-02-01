@@ -9,8 +9,8 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.domain.model.HeaderItem
-import com.cas.musicplayer.domain.model.HomeItem
+import com.cas.musicplayer.ui.home.model.HeaderItem
+import com.cas.musicplayer.ui.home.model.HomeItem
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem

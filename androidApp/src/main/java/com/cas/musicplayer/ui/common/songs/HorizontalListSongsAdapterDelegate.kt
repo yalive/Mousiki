@@ -15,7 +15,7 @@ import com.cas.common.resource.Resource
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.HomeItem
+import com.cas.musicplayer.ui.home.model.HomeItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem

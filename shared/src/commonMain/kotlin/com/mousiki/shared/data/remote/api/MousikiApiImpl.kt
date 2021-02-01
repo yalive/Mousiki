@@ -24,14 +24,14 @@ class MousikiApiImpl(
             serializer = KotlinxSerializer(json)
         }
 
-        /* install(Logging) {
+         install(Logging) {
              this.logger = object : io.ktor.client.features.logging.Logger {
                  override fun log(message: String) {
-                     kermit.v("Network_mousiki") { message }
+                     println("Network_mousiki: $message")
                  }
              }
              level = LogLevel.ALL
-         }*/
+         }
     }
 
     private val youtubeApi by lazy {

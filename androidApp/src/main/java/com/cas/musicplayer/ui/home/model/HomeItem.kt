@@ -1,9 +1,8 @@
-package com.cas.musicplayer.domain.model
+package com.cas.musicplayer.ui.home.model
 
 import androidx.annotation.StringRes
 import com.cas.common.resource.Resource
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.CompactPlaylist
 import com.mousiki.shared.data.models.SimplePlaylist
