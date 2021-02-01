@@ -16,8 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let track = MusicTrack(youtubeId: "1234", title: "Hello", duration: "2:32")
-        print("url: \(track.imgUrl)")
+        KoinKt.iOSKoinInit(storageApi: SwiftStorage())
         // Override point for customization after application launch.
         return true
     }

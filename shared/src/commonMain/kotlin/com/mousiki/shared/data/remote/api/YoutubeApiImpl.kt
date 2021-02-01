@@ -91,7 +91,9 @@ internal class YoutubeApiImpl(
         return client.get(YoutubeApi.TRENDING) {
             parameter("maxResults", maxResults)
             parameter("regionCode", regionCode)
-            parameter("pageToken", pageToken)
+            if (pageToken.isNotEmpty()) {
+                parameter("pageToken", pageToken)
+            }
             parameter(QUERY_KEY, preferences.getCurrentYtbApiKey())
         }
     }

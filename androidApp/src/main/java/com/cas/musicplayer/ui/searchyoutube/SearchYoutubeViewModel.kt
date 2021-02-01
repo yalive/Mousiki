@@ -12,7 +12,6 @@ import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
-import com.cas.musicplayer.utils.uiScope
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
@@ -56,7 +55,7 @@ class SearchYoutubeViewModel(
     private var searchToken: String? = null
     private var currentPage: Int = 1
 
-    fun search(query: String) = uiScope.launch(coroutineContext) {
+    fun search(query: String) = viewModelScope.launch(coroutineContext) {
         if (lastQuery == query && videos.value != null) {
             return@launch
         }

@@ -15,7 +15,7 @@ import com.cas.common.extensions.onClick
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.domain.model.HeaderItem
+import com.cas.musicplayer.ui.home.model.HeaderItem
 import com.cas.musicplayer.ui.home.HomeViewModel
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.navigateSafeAction

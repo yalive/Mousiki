@@ -19,23 +19,44 @@ class HomeVC: UIViewController {
         super.viewDidLoad()
         
         
-        let settingsProvider = SettingsProvider()
-        let preferenceHelper = PreferencesHelper(provider: settingsProvider)
-        preferenceHelper.setYtbApiKeys(keys: [
-            "AIzaSyBqhHieeAMC79qmGm67df6vm8kMQoTpnog",
-            "AIzaSyC40U4MYSqEjNnNp8c1389vU3g7kJ1WGCo",
-            "AIzaSyCnNXLH_W3I8pe0PIsNrDZWb5S9OONZ9vQ",
-            "AIzaSyAyV0mk3Gdx-LHG7np_1kSFLcPd62YWIqA"
-        ])
-        let client = MousikiApiImpl(preferencesHelper: preferenceHelper)
-        client.trending(maxResults: 30, regionCode: "ma", pageToken: "") { (resource, error) in
-            if error == nil {
-                let items = resource?.items
-                print("")
-            }
-            print("")
+        let vm = IOSInjector().homeVM
+        
+        
+        vm.loadTrending { tracks in
+            //print("Success: Number of tracks is \(tracks.count)")
+        } onError: { message in
+            //print("Got error")
         }
         
+        
+        //        let injector = CommonInjector()
+        //        injector.homeRepository.getHome { (result, error) in
+        //            if error == nil {
+        //                print("Yeeeeees")
+        //            } else {
+        //                print("Nooooo")
+        //            }
+        //
+        //        }
+        
+        print("")
+        //        let settingsProvider = SettingsProvider()
+        //        let preferenceHelper = PreferencesHelper(provider: settingsProvider)
+        //        preferenceHelper.setYtbApiKeys(keys: [
+        //            "AIzaSyBqhHieeAMC79qmGm67df6vm8kMQoTpnog",
+        //            "AIzaSyC40U4MYSqEjNnNp8c1389vU3g7kJ1WGCo",
+        //            "AIzaSyCnNXLH_W3I8pe0PIsNrDZWb5S9OONZ9vQ",
+        //            "AIzaSyAyV0mk3Gdx-LHG7np_1kSFLcPd62YWIqA"
+        //        ])
+        //        let client = MousikiApiImpl(preferencesHelper: preferenceHelper)
+        //        client.trending(maxResults: 30, regionCode: "ma", pageToken: "") { (resource, error) in
+        //            if error == nil {
+        //                let items = resource?.items
+        //                print("")
+        //            }
+        //            print("")
+        //        }
+        //
         //print("\(type(of: errorRS))")
         //print("\(type(of: successRS))")
         
@@ -216,3 +237,27 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         return 60
     }
 }
+
+class SwiftStorage: StorageApi {
+    
+    func downloadFile(
+        remoteUrl: String,
+        path: PathComponent,
+        connectivityState: ConnectivityChecker,
+        logErrorMessage: String,
+        completionHandler: @escaping (PathComponent?, Error?) -> Void) {
+        
+        print("Call to downloadFile in swift\n")
+        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
+            print("Finished downloadFile in swift")
+            
+            //completionHandler(nil, )
+        }
+    }
+    
+}
+
+enum MError: Error {
+   case One
+}
+
