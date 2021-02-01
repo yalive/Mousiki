@@ -284,7 +284,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         if (intent == null) return null
         if (intent.bool(COMMAND_RESUME)) return PlayerCommand.Resume
         if (intent.bool(COMMAND_PAUSE)) return PlayerCommand.Pause
-        if (intent.bool(COMMAND_PLAY_TRACK)) return PlayerCommand.PlayTrack
+        if (intent.bool(COMMAND_PLAY)) return PlayerCommand.PlayTrack
         val seekTo = intent.getLongExtra(COMMAND_SEEK_TO, -1)
         if (seekTo > 0) {
             return PlayerCommand.SeekTo(seekTo)
@@ -451,7 +451,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     companion object {
-        const val COMMAND_PLAY_TRACK = "video-id"
+        const val COMMAND_PLAY = "play"
         const val COMMAND_RESUME = "resume"
         const val COMMAND_PAUSE = "pause"
         const val COMMAND_SEEK_TO = "seek-to"
