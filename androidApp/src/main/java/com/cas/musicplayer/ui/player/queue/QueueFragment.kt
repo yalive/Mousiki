@@ -116,7 +116,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
                 topMargin = inset.top
             }
         })
-        binding.btnPlayOption.setImageResource(UserPrefs.getSort().iconId(requireContext()))
+        binding.btnPlayOption.setImageResource(UserPrefs.getCurrentPlaybackSort().iconId(requireContext()))
         binding.recyclerView.adapter = adapter
         observe(viewModel.queue) { newList ->
             val firstTime = adapter.dataItems.isEmpty()
@@ -153,7 +153,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
             loadAndBlurImage(track)
         })
         binding.btnPlayOption.onClick {
-            val nextSort = UserPrefs.getSort().next()
+            val nextSort = UserPrefs.getCurrentPlaybackSort().next()
             binding.btnPlayOption.setImageResource(nextSort.iconId(requireContext()))
             UserPrefs.saveSort(nextSort)
         }

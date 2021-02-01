@@ -6,11 +6,11 @@ import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.ui.popular.swapped
-import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.player.PlaySort
+import com.mousiki.shared.preference.UserPrefs
+import com.mousiki.shared.utils.swapped
 
 
 /**
@@ -31,7 +31,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val oldQueue = this.queue.orEmpty()
         this.queue = queue
         this.value = currentTrack
-        notifyService(currentTrack.youtubeId)
+        playTrack()
         checkQueueChanged(oldQueue, queue)
     }
 
@@ -39,7 +39,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val nextTrack = getNextTrack()
         if (nextTrack != null) {
             this.value = nextTrack
-            notifyService(nextTrack.youtubeId)
+            playTrack()
         }
     }
 
@@ -47,7 +47,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val previousTrack = getPreviousTrack()
         if (previousTrack != null) {
             this.value = previousTrack
-            notifyService(previousTrack.youtubeId)
+            playTrack()
         }
     }
 
@@ -88,15 +88,31 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 
     fun pause() {
-        pauseVideo()
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_PAUSE, true)
+        MusicApp.get().startService(intent)
     }
 
     fun resume() {
-        resumeVideo()
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_RESUME, true)
+        MusicApp.get().startService(intent)
     }
 
     fun seekTo(to: Long) {
-        seekTrackTo(to)
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
+
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
+        MusicApp.get().startService(intent)
     }
 
     fun scheduleStopMusic(duration: Int) {
@@ -118,7 +134,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val mQueue = queue ?: return null
         if (mQueue.isEmpty()) return null
         val currentTrack = this.value ?: return null
-        return when (getPlaySort()) {
+        return when (UserPrefs.getCurrentPlaybackSort()) {
             PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) + 1)
             PlaySort.LOOP_ONE -> currentTrack
             PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) + 1) { mQueue[0] }
@@ -130,7 +146,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val mQueue = queue ?: return null
         if (mQueue.isEmpty()) return null
         val currentTrack = this.value ?: return null
-        return when (getPlaySort()) {
+        return when (UserPrefs.getCurrentPlaybackSort()) {
             PlaySort.SEQUENCE -> mQueue.getOrNull(mQueue.indexOf(currentTrack) - 1)
             PlaySort.LOOP_ONE -> currentTrack
             PlaySort.LOOP_ALL -> mQueue.getOrElse(mQueue.indexOf(currentTrack) - 1) { mQueue[mQueue.size - 1] }
@@ -138,58 +154,13 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
     }
 
-    private fun getPlaySort(): PlaySort {
-        return UserPrefs.getSort()
-    }
-
-    private fun notifyService(videoId: String) {
+    private fun playTrack() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_PLAY_TRACK, true)
+        intent.putExtra(MusicPlayerService.COMMAND_PLAY, true)
         MusicApp.get().startService(intent)
-    }
-
-    private fun pauseVideo() {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
-        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_PAUSE, true)
-        MusicApp.get().startService(intent)
-    }
-
-    private fun resumeVideo() {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
-        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_RESUME, true)
-        MusicApp.get().startService(intent)
-    }
-
-    private fun seekTrackTo(to: Long) {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
-
-        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
-        intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
-        MusicApp.get().startService(intent)
-    }
-
-    fun size() = queue?.size ?: 0
-
-    fun indexOfCurrent(): Int {
-        val currentTrack = value ?: return -1
-        return queue?.indexOf(currentTrack) ?: -1
-    }
-
-    fun playTrackAt(position: Int) {
-        val currentQueue = queue ?: emptyList()
-        val track = currentQueue.getOrNull(position) ?: return
-        playTrack(track, currentQueue)
     }
 
     private fun checkQueueChanged(oldQueue: List<MusicTrack>, newQueue: List<MusicTrack>) {
@@ -197,7 +168,6 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
             OnChangeQueue.value = newQueue
             return
         }
-
         if (oldQueue != newQueue) {
             OnChangeQueue.value = newQueue
         }

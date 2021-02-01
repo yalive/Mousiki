@@ -231,7 +231,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private fun setupView() {
         setupMotionLayout()
-        binding.btnPlayOption.setImageResource(UserPrefs.getSort().iconId(requireContext()))
+        binding.btnPlayOption.setImageResource(UserPrefs.getCurrentPlaybackSort().iconId(requireContext()))
         setUpUserEvents()
         observe(DeviceInset) { inset ->
             binding.fullScreenSwitchView.updatePadding(top = inset.top)
@@ -298,7 +298,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         binding.btnPlayOption.onClick {
             // Get next state
-            val nextSort = UserPrefs.getSort().next()
+            val nextSort = UserPrefs.getCurrentPlaybackSort().next()
             binding.btnPlayOption.setImageResource(nextSort.iconId(requireContext()))
             UserPrefs.saveSort(nextSort)
         }
@@ -375,7 +375,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun onQueueClosed() {
-        binding.btnPlayOption.setImageResource(UserPrefs.getSort().iconId(requireContext()))
+        binding.btnPlayOption.setImageResource(UserPrefs.getCurrentPlaybackSort().iconId(requireContext()))
     }
 
     fun openBatterySaverMode() {

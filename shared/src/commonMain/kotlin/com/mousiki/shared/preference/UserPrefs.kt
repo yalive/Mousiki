@@ -41,7 +41,7 @@ object UserPrefs {
     }
 
 
-    fun getSort(): PlaySort {
+    fun getCurrentPlaybackSort(): PlaySort {
         val sort = settings.getString(KEY_CURRENT_SORT, PlaySort.LOOP_ALL.toString())
         return PlaySort.toEnum(sort)
     }
