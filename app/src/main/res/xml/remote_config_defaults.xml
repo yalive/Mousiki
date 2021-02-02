@@ -80,4 +80,14 @@
         <value>false</value>
     </entry>
 
+    <entry>
+        <key>auto_refresh_ads</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>auto_refresh_ads_duration_min</key>
+        <value>10</value>
+    </entry>
+
 </defaultsMap>

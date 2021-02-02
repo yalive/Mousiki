@@ -57,7 +57,7 @@ class MusicApp : Application(), ComponentProvider {
                 _isInForeground = false
             }
         })
-        AdsManager.init(applicationScope)
+        AdsManager.init(applicationScope, component.appConfig)
     }
 
     companion object {

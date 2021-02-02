@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.common.ads
 
 import com.cas.common.extensions.randomOrNull
+import com.cas.musicplayer.data.config.RemoteAppConfig
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -14,9 +15,11 @@ object AdsManager {
 
     private lateinit var appScope: CoroutineScope
 
-    fun init(applicationScope: CoroutineScope) {
+    fun init(applicationScope: CoroutineScope, config: RemoteAppConfig) {
         appScope = applicationScope
-        //appScope.launch { autoRefreshAds() }
+        if (config.autoRefreshAds()) {
+            appScope.launch { autoRefreshAds(config.autoRefreshAdsDuration()) }
+        }
     }
 
     suspend fun getAds(count: Int): List<UnifiedNativeAd> {
@@ -42,10 +45,10 @@ object AdsManager {
         loadingAds = false
     }
 
-    private suspend fun autoRefreshAds() {
+    private suspend fun autoRefreshAds(duration: Int) {
         while (true) {
-            // Wait 15min
-            delay(15 * 60 * 1000)
+            // Wait "duration" min
+            delay(duration.toLong() * 60 * 1000)
             loadAds()
         }
     }
