@@ -101,7 +101,8 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         btnBack.onClick {
             findNavController().popBackStack()
         }
-        DeviceInset.observe(this, Observer { inset ->
+
+        DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
             topGuideline.setGuidelineBegin(inset.top)
             bottomGuideline.setGuidelineBegin(inset.top + dpToPixel(56))
         })
