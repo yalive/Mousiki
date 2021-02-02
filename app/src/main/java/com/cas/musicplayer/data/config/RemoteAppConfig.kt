@@ -112,6 +112,14 @@ class RemoteAppConfig @Inject constructor(
         return firebaseRemoteConfig.getBoolean(TURN_ON_REWARD_AD)
     }
 
+    fun autoRefreshAds(): Boolean {
+        return firebaseRemoteConfig.getBoolean(AUTO_REFRESH_ADS)
+    }
+
+    fun autoRefreshAdsDuration(): Int {
+        return firebaseRemoteConfig.getLong(AUTO_REFRESH_ADS_DURATION).toInt()
+    }
+
     fun newHomeEnabled(): Boolean {
         return firebaseRemoteConfig.getBoolean(ENABLE_NEW_HOME)
     }
@@ -145,6 +153,7 @@ class RemoteAppConfig @Inject constructor(
         private const val DEF_ADS_LIST_OFFSET = 6
         private const val DEF_FREQ_POPUP_RATE = 3
         private const val DEF_CLICK_TO_SHOW_REWARD = 7
+
         const val YOUTUBE_API_KEYS = "youtube_api_keys"
         const val API_URLS = "api_urls"
         const val LOAD_CHART_SONGS_FROM_FIREBASE = "chart_songs_from_firebase"
@@ -160,6 +169,8 @@ class RemoteAppConfig @Inject constructor(
         const val SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API = "search_artist_tracks_from_mousiki_api"
         const val HOME_CACHE_DURATION = "home_cache_duration_hours"
         const val ENABLE_NEW_HOME = "enable_new_home"
+        const val AUTO_REFRESH_ADS = "auto_refresh_ads"
+        const val AUTO_REFRESH_ADS_DURATION = "auto_refresh_ads_duration_min"
 
         private const val WAIT_INTERVAL_MS = 100L
         private const val MAX_CYCLES = 150
