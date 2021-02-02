@@ -12,6 +12,7 @@ import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
 import com.cas.musicplayer.domain.model.MusicTrack
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -39,26 +40,32 @@ fun ImageView.tintColor(color: Int) {
 fun ImageView.loadTrackImage(
     track: MusicTrack
 ) {
-    val url = UserPrefs.getTrackImageUrl(track)
-    if (url.isNotEmpty()) {
-        Picasso.get().load(url)
-            .placeholder(R.drawable.app_icon_placeholder)
-            .fit()
-            .into(this, object : Callback {
-                override fun onSuccess() {
-                    UserPrefs.setTrackImageUrl(track, url)
-                }
+    try {
+        val url = UserPrefs.getTrackImageUrl(track)
+        if (url.isNotEmpty()) {
+            Picasso.get().load(url)
+                .placeholder(R.drawable.app_icon_placeholder)
+                .fit()
+                .into(this, object : Callback {
+                    override fun onSuccess() {
+                        UserPrefs.setTrackImageUrl(track, url)
+                    }
 
-                override fun onError(e: java.lang.Exception?) {
-                    Picasso.get().load(track.imgUrlDef0)
-                        .error(R.drawable.app_icon_placeholder)
-                        .fit()
-                        .into(this@loadTrackImage)
-                    UserPrefs.setTrackImageUrl(track, track.imgUrlDef0)
-                }
-            })
-    } else {
-        setImageResource(R.drawable.app_icon_placeholder)
+                    override fun onError(e: java.lang.Exception?) {
+                        Picasso.get().load(track.imgUrlDef0)
+                            .error(R.drawable.app_icon_placeholder)
+                            .fit()
+                            .into(this@loadTrackImage)
+                        UserPrefs.setTrackImageUrl(track, track.imgUrlDef0)
+                    }
+                })
+        } else {
+            setImageResource(R.drawable.app_icon_placeholder)
+        }
+    } catch (e: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(e)
+    } catch (e: OutOfMemoryError) {
+        FirebaseCrashlytics.getInstance().recordException(e)
     }
 }
 
@@ -68,29 +75,35 @@ fun ImageView.loadImage(
     @DrawableRes errorImage: Int? = R.drawable.ic_music_note,
     onError: (() -> Unit) = {}
 ) {
-    if (urlImage.isNotEmpty()) {
-        Picasso.get().load(urlImage)
-            .apply {
-                placeHolder?.let {
-                    placeholder(placeHolder)
+    try {
+        if (urlImage.isNotEmpty()) {
+            Picasso.get().load(urlImage)
+                .apply {
+                    placeHolder?.let {
+                        placeholder(placeHolder)
+                    }
+                    errorImage?.let {
+                        error(errorImage)
+                    }
                 }
-                errorImage?.let {
-                    error(errorImage)
-                }
-            }
-            .fit()
-            .into(this, object : Callback {
-                override fun onSuccess() {
-                }
+                .fit()
+                .into(this, object : Callback {
+                    override fun onSuccess() {
+                    }
 
-                override fun onError(e: java.lang.Exception?) {
-                    onError()
-                }
-            })
-    } else {
-        placeHolder?.let {
-            setImageResource(placeHolder)
+                    override fun onError(e: java.lang.Exception?) {
+                        onError()
+                    }
+                })
+        } else {
+            placeHolder?.let {
+                setImageResource(placeHolder)
+            }
         }
+    } catch (e: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(e)
+    } catch (e: OutOfMemoryError) {
+        FirebaseCrashlytics.getInstance().recordException(e)
     }
 }
 
