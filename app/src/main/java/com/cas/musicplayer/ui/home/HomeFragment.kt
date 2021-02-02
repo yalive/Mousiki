@@ -4,7 +4,6 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
@@ -94,6 +93,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(
             )
         }
 
+        // Kept as local variable to prevent calling binding.recyclerView which will call getViewLifecycleOwner
+        // and Fragment.getView() may return null after .post to recyclerView
+        val recyclerView = recyclerView
         recyclerView.post {
             val holder = recyclerView.findViewHolderForAdapterPosition(2)
                     as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder
@@ -103,7 +105,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(
                 adapter.submitList(updatedList, diffCallback)
             }
         }
-
     }
 
     override fun withToolbar(): Boolean = false
