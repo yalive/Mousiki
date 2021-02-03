@@ -6,9 +6,16 @@ target 'Mousiki' do
   use_frameworks!
 
   # Pods for Mousiki
-  pod 'Alamofire', '~> 5.2'
   pod 'R.swift'
   pod 'SVProgressHUD'
   pod 'EZAlertController', :git => "https://github.com/thellimist/EZAlertController.git", :branch => 'master'
   pod 'Kingfisher', '6.0.1'
+  
+  # Firebase
+  pod 'Firebase/Messaging'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Storage'
+  pod 'Firebase/RemoteConfig'
+  pod 'Firebase/DynamicLinks'
 end
