@@ -7,7 +7,7 @@ import com.cas.common.resource.Resource
 import com.cas.common.resource.hasItems
 import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
-import com.cas.common.result.asResource
+import com.cas.common.resource.asResource
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem

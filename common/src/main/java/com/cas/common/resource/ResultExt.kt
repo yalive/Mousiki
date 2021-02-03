@@ -1,8 +1,6 @@
-package com.cas.common.result
+package com.cas.common.resource
 
-import com.cas.common.resource.Resource
 import com.mousiki.shared.domain.result.Result
-import com.mousiki.shared.utils.TextResource
 
 fun <T> Result<T>.asResource(): Resource<T> {
     return when (this) {

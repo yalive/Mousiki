@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.playlist.songs
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.resource.Resource
-import com.cas.common.result.asResource
+import com.cas.common.resource.asResource
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
