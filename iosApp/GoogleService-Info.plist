@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>905678518748-3hc3qu5a8tl6s74hnip4alggerbuvkgd.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.905678518748-3hc3qu5a8tl6s74hnip4alggerbuvkgd</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>905678518748-980v9u84n5ni89m7q87n7sn1ec7qa2t3.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDCbVz2GnYl1fMmSo1bUuPpmGvDMWTx32c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>905678518748</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mousiki.Mousiki</string>
+	<key>PROJECT_ID</key>
+	<string>mousiki-e3e22</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mousiki-e3e22.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:905678518748:ios:ea8453468874d1eb25b719</string>
+	<key>DATABASE_URL</key>
+	<string>https://mousiki-e3e22.firebaseio.com</string>
+</dict>
+</plist>

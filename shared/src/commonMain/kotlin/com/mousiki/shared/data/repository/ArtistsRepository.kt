@@ -48,9 +48,9 @@ class ArtistsRepository(
         }
     }
 
-    suspend fun getAllArtists(): List<Artist> =
-        withContext(Dispatchers.Default) {
-            val localFile = downloadArtistsFile()
+    suspend fun getAllArtists(): List<Artist> {
+        val localFile = downloadArtistsFile()
+        return withContext(Dispatchers.Default) {
             if (localFile.exists()) {
                 try {
                     val fileContent = FileSystem.readFile(localFile, ContentEncoding.Utf8).orEmpty()
@@ -63,18 +63,19 @@ class ArtistsRepository(
                         artists.addAll(map)
                     }
                     val distinctBy = artists.distinctBy { it.channelId }
-                    return@withContext distinctBy
+                    distinctBy
                 } catch (e: Exception) {
                     //FirebaseCrashlytics.getInstance().recordException(e)
+                    emptyList<Artist>()
                 }
-            }
-            return@withContext emptyList<Artist>()
+            } else emptyList<Artist>()
         }
+    }
 
 
-    suspend fun getArtistsByCountry(countryCode: String): List<Artist> =
-        withContext(Dispatchers.Default) {
-            val localFile = downloadArtistsFile()
+    suspend fun getArtistsByCountry(countryCode: String): List<Artist> {
+        val localFile = downloadArtistsFile()
+        return withContext(Dispatchers.Default) {
             if (localFile.exists()) {
                 try {
                     val fileContent = FileSystem.readFile(localFile, ContentEncoding.Utf8).orEmpty()
@@ -89,6 +90,7 @@ class ArtistsRepository(
                 }
             } else emptyList()
         }
+    }
 
     suspend fun getArtistTracks(artist: Artist): Result<List<MusicTrack>> {
         val localChannelSongs = channelLocalDataSource.getChannelSongs(artist.channelId)
@@ -105,6 +107,11 @@ class ArtistsRepository(
             .absolutePath!!
             .byAppending(LOCAL_FILE_NAME_ARTISTS)!!
 
+        println("Artists path $artistsPath")
+        if (artistsPath.exists()) {
+            println("Artists file already downloaded")
+            return artistsPath
+        }
         return storage.downloadFile(
             remoteUrl = URL_STORAGE_ARTISTS,
             path = artistsPath,

@@ -15,137 +15,10 @@ class HomeVC: UIViewController {
     
     private var homeItems = [HomeItem]()
     
+    fileprivate var viewModel: HomeVM!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        let vm = IOSInjector().homeVM
-        
-        
-        vm.loadTrending { tracks in
-            //print("Success: Number of tracks is \(tracks.count)")
-        } onError: { message in
-            //print("Got error")
-        }
-        
-        
-        //        let injector = CommonInjector()
-        //        injector.homeRepository.getHome { (result, error) in
-        //            if error == nil {
-        //                print("Yeeeeees")
-        //            } else {
-        //                print("Nooooo")
-        //            }
-        //
-        //        }
-        
-        print("")
-        //        let settingsProvider = SettingsProvider()
-        //        let preferenceHelper = PreferencesHelper(provider: settingsProvider)
-        //        preferenceHelper.setYtbApiKeys(keys: [
-        //            "AIzaSyBqhHieeAMC79qmGm67df6vm8kMQoTpnog",
-        //            "AIzaSyC40U4MYSqEjNnNp8c1389vU3g7kJ1WGCo",
-        //            "AIzaSyCnNXLH_W3I8pe0PIsNrDZWb5S9OONZ9vQ",
-        //            "AIzaSyAyV0mk3Gdx-LHG7np_1kSFLcPd62YWIqA"
-        //        ])
-        //        let client = MousikiApiImpl(preferencesHelper: preferenceHelper)
-        //        client.trending(maxResults: 30, regionCode: "ma", pageToken: "") { (resource, error) in
-        //            if error == nil {
-        //                let items = resource?.items
-        //                print("")
-        //            }
-        //            print("")
-        //        }
-        //
-        //print("\(type(of: errorRS))")
-        //print("\(type(of: successRS))")
-        
-        //        if let data = (successRS as? ResultData)?.data {
-        //            print(" data = \(data)")
-        //        }
-        //
-        //        if let error = (errorRS as? ResultError)?.error {
-        //            print(" error = \(error)")
-        //        }
-        
-        //        repo.getHome { (response, error) in
-        //            if let homeRS = response {
-        //                let compactPlaylists = homeRS.compactPlaylists
-        //                let compactPlaylistsItems = compactPlaylists.map { (compactPlaylist) in
-        //                    HomeItem.CompactPlaylists(
-        //                        playlists: compactPlaylist.playlists!,
-        //                        title: compactPlaylist.title!)
-        //                }
-        //
-        //                let simplePlaylists = homeRS.simplePlaylists
-        //                let simplePlaylistsItems = simplePlaylists.map { (simplePlaylist) in
-        //                    HomeItem.SimplePlaylists(
-        //                        playlists: simplePlaylist.playlists!,
-        //                        title: simplePlaylist.title!)
-        //                }
-        //
-        //                let videoLists = homeRS.videoLists
-        //                let videoListsItems = videoLists.map { (videoList) in
-        //                    HomeItem.VideoList(
-        //                        items: videoList.videos!.map { $0.video.toTrack().toDisplayedVideoItem() },
-        //                        title: videoList.title!)
-        //                }
-        //
-        //                self.homeItems.removeAll()
-        //                self.homeItems.append(contentsOf: videoListsItems)
-        //                self.homeItems.append(contentsOf: compactPlaylistsItems)
-        //                self.homeItems.append(contentsOf: simplePlaylistsItems)
-        //                self.homeItems.append(.GenreItem(genres: GenresRepository().loadGenres()))
-        //                self.homeItems.append(.ArtistItem(artists: FakeHomeKt.fakeArtists()))
-        //
-        //                self.tableView.reloadData()
-        //            }
-        //        }
-        
-        // Fake
-        //        let video = MusicTrack(
-        //            youtubeId: "123",
-        //            title: "Hamid El Kasri Hamid El Kasri Hamid El Kasri Hamid El Kasri",
-        //            duration: "3:32"
-        //        ).toDisplayedVideoItem()
-        //
-        //        let videos = [
-        //            video,
-        //            video,
-        //            video,
-        //            video,
-        //            video,
-        //            video,
-        //            video,
-        //            video,
-        //            video,
-        //            video
-        //        ]
-        //
-        //
-        //        let compactsPlaylists = FakeHomeKt.compactPlaylists()
-        //
-        //        // Playlist
-        //        let simplePlaylists = FakeHomeKt.simplePlaylists()
-        //
-        //        let genres = GenresRepository().loadGenres()
-        //        homeItems = [
-        //            .VideoList(items: videos, title: "Trending"),
-        //            .VideoList(items: videos, title: "New Release"),
-        //            .CompactPlaylists(playlists: compactsPlaylists, title: "Today's Biggest Hits"),
-        //            .CompactPlaylists(playlists: compactsPlaylists, title: "New & Trending Songs"),
-        //            .CompactPlaylists(playlists: compactsPlaylists, title: "Fun Throwbacks"),
-        //            .CompactPlaylists(playlists: compactsPlaylists, title: "Music for any Mood, Moment, or Vibe"),
-        //            .VideoList(items: videos, title: "Latest videos"),
-        //            .SimplePlaylists(playlists: simplePlaylists, title: "Top charts"),
-        //            .GenreItem(genres: genres),
-        //            .VideoList(items: videos, title: "Upcoming Premieres"),
-        //            .VideoList(items: videos, title: "Black Lives Matter"),
-        //            .VideoList(items: videos, title: "Classic Videos, Fresh Look"),
-        //            .VideoList(items: videos, title: "Unique Performances"),
-        //            .ArtistItem(artists: FakeHomeKt.fakeArtists())
-        //        ]
-        // End fake
         
         self.navigationController?.isNavigationBarHidden = true
         
@@ -154,6 +27,14 @@ class HomeVC: UIViewController {
         tableView.registerCellNib("CompactPlaylistsRow",identifier: "CompactPlaylistsRow")
         tableView.registerCellNib("HomeGenreCell",identifier: "HomeGenreCell")
         tableView.registerCellNib("HomeArtistRow",identifier: "HomeArtistRow")
+        
+        viewModel = HomeVM(delegate: self)
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.viewModel.loadArtists()
+        }
+        
     }
     
 }
@@ -238,26 +119,53 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-class SwiftStorage: StorageApi {
+extension HomeVC: HomeVMDelegate {
     
-    func downloadFile(
-        remoteUrl: String,
-        path: PathComponent,
-        connectivityState: ConnectivityChecker,
-        logErrorMessage: String,
-        completionHandler: @escaping (PathComponent?, Error?) -> Void) {
-        
-        print("Call to downloadFile in swift\n")
-        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-            print("Finished downloadFile in swift")
-            
-            //completionHandler(nil, )
+    func showHome(_ homeRS: HomeRS) {
+        let compactPlaylists = homeRS.compactPlaylists
+        let compactPlaylistsItems = compactPlaylists.map { (compactPlaylist) in
+            HomeItem.CompactPlaylists(
+                playlists: compactPlaylist.playlists!,
+                title: compactPlaylist.title!)
         }
+        
+        let simplePlaylists = homeRS.simplePlaylists
+        let simplePlaylistsItems = simplePlaylists.map { (simplePlaylist) in
+            HomeItem.SimplePlaylists(
+                playlists: simplePlaylist.playlists!,
+                title: simplePlaylist.title!)
+        }
+        
+        let videoLists = homeRS.videoLists
+        let videoListsItems = videoLists.map { (videoList) in
+            HomeItem.VideoList(
+                items: videoList.videos!.map { $0.video.toTrack().toDisplayedVideoItem() },
+                title: videoList.title!)
+        }
+        
+        self.homeItems.removeAll()
+        self.homeItems.append(contentsOf: videoListsItems)
+        self.homeItems.append(contentsOf: compactPlaylistsItems)
+        self.homeItems.append(contentsOf: simplePlaylistsItems)
+        self.homeItems.append(.GenreItem(genres: GenresRepository().loadGenres()))
+        
+        self.tableView.reloadData()
     }
     
-}
-
-enum MError: Error {
-   case One
+    func showTrending(_ items: [DisplayedVideoItem]) {
+        let trendingItem = HomeItem.VideoList(items: items, title: "Trending")
+        if self.homeItems.count > 1 {
+            self.homeItems.insert(trendingItem, at: 1)
+        } else {
+            self.homeItems.insert(trendingItem, at: 0)
+        }
+        self.tableView.reloadData()
+    }
+    
+    func showArtists(_ artists: [Artist]) {
+        //self.homeItems.insert(.ArtistItem(artists: artists), at: 1)
+        //self.tableView.reloadData()
+    }
+    
 }
 

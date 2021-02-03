@@ -9,10 +9,10 @@ import com.cas.common.resource.isLoading
 import com.cas.common.resource.loading
 import com.cas.common.result.asResource
 import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.ui.home.model.HeaderItem
-import com.cas.musicplayer.ui.home.model.HomeItem
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.cas.musicplayer.ui.home.model.HeaderItem
+import com.cas.musicplayer.ui.home.model.HomeItem
 import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.data.config.RemoteAppConfig
@@ -122,7 +122,7 @@ class HomeViewModel(
                     _homeItems.value = items
                     loadTrending()
                     loadGenres()
-                    loadArtists(getCurrentLocale())
+                    loadArtists()
                 }
                 is Result.Error -> showOldHome()
             }
@@ -164,10 +164,10 @@ class HomeViewModel(
         _genres.value = chartList
     }
 
-    private fun loadArtists(countryCode: String) = uiCoroutine {
+    private fun loadArtists() = uiCoroutine {
         if (!_artists.hasItems() && !_artists.isLoading()) {
             _artists.loading()
-            val result = getCountryArtists(countryCode)
+            val result = getCountryArtists()
             _artists.value = result.asResource()
         }
     }
@@ -184,8 +184,7 @@ class HomeViewModel(
         _homeItems.value = items
         loadTrending()
         loadGenres()
-        loadArtists(getCurrentLocale())
+        loadArtists()
     }
-
 }
 

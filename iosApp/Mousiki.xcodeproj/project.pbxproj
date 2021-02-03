@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C200231F94EBB0BB2E3694B0 /* Pods_Mousiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */; };
+		FA35A25A25CABBEB009885DF /* KoinDependenciesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */; };
 		FA498D1C25B8E854000DAE82 /* HomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D1B25B8E854000DAE82 /* HomeItem.swift */; };
 		FA498D2425B8F02F000DAE82 /* VideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D2225B8F02F000DAE82 /* VideoListCell.swift */; };
 		FA498D2525B8F02F000DAE82 /* VideoListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA498D2325B8F02F000DAE82 /* VideoListCell.xib */; };
@@ -52,6 +53,9 @@
 		FAABE20B25B86786001FD8C5 /* CollectionExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20A25B86786001FD8C5 /* CollectionExt.swift */; };
 		FAABE20D25B86794001FD8C5 /* Locale.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE20C25B86794001FD8C5 /* Locale.swift */; };
 		FAABE21525B86AF2001FD8C5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAABE21425B86AF2001FD8C5 /* Localizable.strings */; };
+		FAB193E225C83BB500FD7767 /* HomeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB193E125C83BB500FD7767 /* HomeVM.swift */; };
+		FAB193EB25C85C6800FD7767 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FAB193EA25C85C6700FD7767 /* GoogleService-Info.plist */; };
+		FAB1941B25C85F5500FD7767 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1941A25C85F5500FD7767 /* Storage.swift */; };
 		FAB91B2925B9FAE60080C968 /* SimplePlaylistsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB91B2725B9FAE60080C968 /* SimplePlaylistsRow.swift */; };
 		FAB91B2A25B9FAE60080C968 /* SimplePlaylistsRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB91B2825B9FAE60080C968 /* SimplePlaylistsRow.xib */; };
 		FAB91B2E25B9FB190080C968 /* SimplePlaylistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB91B2C25B9FB190080C968 /* SimplePlaylistCell.swift */; };
@@ -83,6 +87,7 @@
 		03D7859ADD3CF7DCE340599D /* Pods-Mousiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.release.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.release.xcconfig"; sourceTree = "<group>"; };
 		88A3FEA9F7E64247A44DE3DF /* Pods-Mousiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.debug.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.debug.xcconfig"; sourceTree = "<group>"; };
 		97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mousiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoinDependenciesProvider.swift; sourceTree = "<group>"; };
 		FA498D1B25B8E854000DAE82 /* HomeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItem.swift; sourceTree = "<group>"; };
 		FA498D2225B8F02F000DAE82 /* VideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListCell.swift; sourceTree = "<group>"; };
 		FA498D2325B8F02F000DAE82 /* VideoListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoListCell.xib; sourceTree = "<group>"; };
@@ -129,6 +134,9 @@
 		FAABE20A25B86786001FD8C5 /* CollectionExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExt.swift; sourceTree = "<group>"; };
 		FAABE20C25B86794001FD8C5 /* Locale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locale.swift; sourceTree = "<group>"; };
 		FAABE21425B86AF2001FD8C5 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		FAB193E125C83BB500FD7767 /* HomeVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVM.swift; sourceTree = "<group>"; };
+		FAB193EA25C85C6700FD7767 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FAB1941A25C85F5500FD7767 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		FAB91B2725B9FAE60080C968 /* SimplePlaylistsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlaylistsRow.swift; sourceTree = "<group>"; };
 		FAB91B2825B9FAE60080C968 /* SimplePlaylistsRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimplePlaylistsRow.xib; sourceTree = "<group>"; };
 		FAB91B2C25B9FB190080C968 /* SimplePlaylistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlaylistCell.swift; sourceTree = "<group>"; };
@@ -172,6 +180,14 @@
 				03D7859ADD3CF7DCE340599D /* Pods-Mousiki.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FA35A25825CABBC9009885DF /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */,
+			);
+			path = DI;
 			sourceTree = "<group>";
 		};
 		FA498D1A25B8E843000DAE82 /* Model */ = {
@@ -290,6 +306,7 @@
 				FA498D1A25B8E843000DAE82 /* Model */,
 				FA5FFCD125B8214800DA9920 /* HomeVC.swift */,
 				FA5FFCD225B8214800DA9920 /* HomeVC.xib */,
+				FAB193E125C83BB500FD7767 /* HomeVM.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -324,6 +341,8 @@
 		FA5FFCE125B8232100DA9920 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA35A25825CABBC9009885DF /* DI */,
+				FAB1941925C85F3F00FD7767 /* Firebase */,
 				FAB91B4525BA260F0080C968 /* Views */,
 				FA5FFCE325B8237100DA9920 /* Extensions */,
 				FA5FFCE225B8236700DA9920 /* Sizes */,
@@ -393,6 +412,7 @@
 			children = (
 				FAABE1E925B85B9F001FD8C5 /* R.generated.swift */,
 				FAA207DB25B6DBFC004D12CF /* Mousiki */,
+				FAB193EA25C85C6700FD7767 /* GoogleService-Info.plist */,
 				FAA207DA25B6DBFC004D12CF /* Products */,
 				C7C378B5D4F2F5DDFF218D7B /* Pods */,
 				2BCA627819188D7BC715F2CA /* Frameworks */,
@@ -413,10 +433,18 @@
 				FAA207EA25B6DBFE004D12CF /* Info.plist */,
 				FA5FFCE125B8232100DA9920 /* Common */,
 				FA5FFCC825B81F8700DA9920 /* App */,
-				FA5FFCC725B81F7A00DA9920 /* Resource */,
 				FA5FFCC925B81FDA00DA9920 /* Features */,
+				FA5FFCC725B81F7A00DA9920 /* Resource */,
 			);
 			path = Mousiki;
+			sourceTree = "<group>";
+		};
+		FAB1941925C85F3F00FD7767 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				FAB1941A25C85F5500FD7767 /* Storage.swift */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 		FAB91B2B25B9FAEB0080C968 /* Cell */ = {
@@ -527,6 +555,7 @@
 				FAB91B3925BA049E0080C968 /* CompactPlaylistsRow.xib in Resources */,
 				FA9AFFF525BDA03D00809B22 /* HomeArtistCell.xib in Resources */,
 				FABDCB1C25BB73290085ED90 /* HomeGenreCell.xib in Resources */,
+				FAB193EB25C85C6800FD7767 /* GoogleService-Info.plist in Resources */,
 				FAA207E625B6DBFE004D12CF /* Assets.xcassets in Resources */,
 				FAB91B2A25B9FAE60080C968 /* SimplePlaylistsRow.xib in Resources */,
 				FA5FFCF425B824EF00DA9920 /* Roboto-Medium.ttf in Resources */,
@@ -637,9 +666,12 @@
 				FA9AFFF425BDA03D00809B22 /* HomeArtistCell.swift in Sources */,
 				FAB91B3D25BA04E30080C968 /* CompactPlaylistCell.swift in Sources */,
 				FA5FFCD325B8214800DA9920 /* HomeVC.swift in Sources */,
+				FAB193E225C83BB500FD7767 /* HomeVM.swift in Sources */,
+				FA35A25A25CABBEB009885DF /* KoinDependenciesProvider.swift in Sources */,
 				FAA207DD25B6DBFC004D12CF /* AppDelegate.swift in Sources */,
 				FABDCB1B25BB73290085ED90 /* HomeGenreCell.swift in Sources */,
 				FAABE20B25B86786001FD8C5 /* CollectionExt.swift in Sources */,
+				FAB1941B25C85F5500FD7767 /* Storage.swift in Sources */,
 				FA5FFCE825B823AA00DA9920 /* Font.swift in Sources */,
 				FA9AFFEF25BD9FEB00809B22 /* HomeArtistRow.swift in Sources */,
 				FAA207DF25B6DBFC004D12CF /* SceneDelegate.swift in Sources */,
