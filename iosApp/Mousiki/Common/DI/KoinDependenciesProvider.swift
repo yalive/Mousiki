@@ -9,8 +9,20 @@
 import Foundation
 import shared
 
+
+/// Provides iOS specific implementation for common dependencies
 class KoinDependenciesProvider: IOSDependenciesProvider {
+    
+    
+    /// Storage api
     lazy var storage: StorageApi = MousikiAppStorage()
+    
+    
+    /// Remote config delegate
     lazy var remoteConfigDelegate: RemoteConfigDelegate = FirebaseConfigDelegate()
+    
+    
+    /// Analytics api
+    var analytics: AnalyticsApi = MousikiAnalytics()
     
 }

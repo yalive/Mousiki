@@ -3,11 +3,7 @@ package com.cas.musicplayer.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.cas.common.resource.Resource
-import com.cas.common.resource.hasItems
-import com.cas.common.resource.isLoading
-import com.cas.common.resource.loading
-import com.cas.common.resource.asResource
+import com.cas.common.resource.*
 import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
@@ -31,6 +27,7 @@ import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.ConnectivityChecker
 import com.mousiki.shared.utils.getCurrentLocale
+import com.mousiki.shared.utils.logEvent
 import kotlinx.coroutines.launch
 
 /**

@@ -15,6 +15,7 @@ import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.preference.SettingsProvider
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.logEvent
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
 

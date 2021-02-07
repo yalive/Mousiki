@@ -47,11 +47,6 @@ kotlin {
                 implementation(Deps.SqlDelight.driverAndroid)
 
                 implementation(Deps.Ktor.androidCore)
-
-                implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
-                // Firebase
-                implementation("com.google.firebase:firebase-config-ktx:20.0.2")
-                implementation("com.google.firebase:firebase-analytics:18.0.0")
             }
         }
         val iosMain by getting {
