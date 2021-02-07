@@ -8,8 +8,7 @@ class AndroidAnalytics(
     private val analytics: FirebaseAnalytics,
 ) : AnalyticsApi {
 
-    override fun logEvent(name: String, vararg params: Pair<String, Any>) {
-        analytics.logEvent(name, bundleOf(*params))
+    override fun logEvent(name: String, params: Map<String, Any>) {
+        analytics.logEvent(name, bundleOf(*params.toList().toTypedArray()))
     }
-
 }

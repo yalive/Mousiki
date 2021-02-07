@@ -6,6 +6,7 @@ import com.cas.common.resource.Resource
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.logEvent
 
 /**
  ***************************************

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C200231F94EBB0BB2E3694B0 /* Pods_Mousiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */; };
+		FA0F701F25D07A5000D9551C /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F701E25D07A5000D9551C /* Analytics.swift */; };
 		FA35A25A25CABBEB009885DF /* KoinDependenciesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */; };
 		FA498D1C25B8E854000DAE82 /* HomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D1B25B8E854000DAE82 /* HomeItem.swift */; };
 		FA498D2425B8F02F000DAE82 /* VideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D2225B8F02F000DAE82 /* VideoListCell.swift */; };
@@ -88,6 +89,7 @@
 		03D7859ADD3CF7DCE340599D /* Pods-Mousiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.release.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.release.xcconfig"; sourceTree = "<group>"; };
 		88A3FEA9F7E64247A44DE3DF /* Pods-Mousiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.debug.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.debug.xcconfig"; sourceTree = "<group>"; };
 		97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mousiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA0F701E25D07A5000D9551C /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoinDependenciesProvider.swift; sourceTree = "<group>"; };
 		FA498D1B25B8E854000DAE82 /* HomeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItem.swift; sourceTree = "<group>"; };
 		FA498D2225B8F02F000DAE82 /* VideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListCell.swift; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 			children = (
 				FAB1941A25C85F5500FD7767 /* Storage.swift */,
 				FAD6AF5625CB0EBC00F798C0 /* Config.swift */,
+				FA0F701E25D07A5000D9551C /* Analytics.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -676,6 +679,7 @@
 				FABDCB1B25BB73290085ED90 /* HomeGenreCell.swift in Sources */,
 				FAABE20B25B86786001FD8C5 /* CollectionExt.swift in Sources */,
 				FAB1941B25C85F5500FD7767 /* Storage.swift in Sources */,
+				FA0F701F25D07A5000D9551C /* Analytics.swift in Sources */,
 				FA5FFCE825B823AA00DA9920 /* Font.swift in Sources */,
 				FA9AFFEF25BD9FEB00809B22 /* HomeArtistRow.swift in Sources */,
 				FAA207DF25B6DBFC004D12CF /* SceneDelegate.swift in Sources */,
