@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
  ***************************************
  */
 @Serializable
-data class CountryKeys(
+data class YtbCountryKeys(
     @SerialName("countryCode")
     val countries: String,
     @SerialName("keys")

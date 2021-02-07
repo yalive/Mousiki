@@ -1,9 +1,9 @@
 package com.mousiki.shared.data.datasource
 
 import com.cas.musicplayer.MousikiDb
+import com.mousiki.shared.data.db.ArtistEntity
 import com.mousiki.shared.data.db.toArtist
 import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.db.Artists
 import com.mousiki.shared.db.ArtistsQueries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,7 +28,7 @@ class ArtistsLocalDataSource(
 
     suspend fun saveArtists(artists: List<Artist>) = withContext(Dispatchers.Default) {
         val artistsEntity = artists.map {
-            Artists(
+            ArtistEntity(
                 id = 0,
                 name = it.name,
                 countryCode = "", // To be reviewed

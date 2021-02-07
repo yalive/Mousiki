@@ -1,9 +1,9 @@
 package com.mousiki.shared.data.repository
 
 import com.cas.musicplayer.MousikiDb
+import com.mousiki.shared.data.db.HistoricTrackEntity
+import com.mousiki.shared.data.db.RecentPlayedTrack
 import com.mousiki.shared.data.db.toMusicTrack
-import com.mousiki.shared.db.Historic_tracks
-import com.mousiki.shared.db.Recent_played_tracks
 import com.mousiki.shared.domain.models.MusicTrack
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
@@ -26,7 +26,7 @@ class StatisticsRepository(
 
     suspend fun addTrackToRecent(track: MusicTrack) {
         recentlyPlayedTracksDao.insert(
-            Recent_played_tracks(
+            RecentPlayedTrack(
                 id = 0,
                 youtube_id = track.youtubeId,
                 title = track.title,
@@ -37,7 +37,7 @@ class StatisticsRepository(
             historicTracksDao.getByYoutubeId(track.youtubeId).executeAsOneOrNull()
         if (historicTrackEntity == null) {
             historicTracksDao.insert(
-                Historic_tracks(
+                HistoricTrackEntity(
                     id = 0,
                     youtube_id = track.youtubeId,
                     title = track.title,
@@ -60,7 +60,7 @@ class StatisticsRepository(
         return recentlyPlayedTracksDao.getSongs(max.toLong())
             .asFlow()
             .mapToList()
-            .map { it.map(Recent_played_tracks::toMusicTrack) }
+            .map { it.map(RecentPlayedTrack::toMusicTrack) }
     }
 
     suspend fun getHeavyList(max: Int = 10): List<MusicTrack> {
@@ -74,6 +74,6 @@ class StatisticsRepository(
             return@withContext historicTracksDao.getHeavyList(max.toLong())
                 .asFlow()
                 .mapToList()
-                .map { it.map(Historic_tracks::toMusicTrack) }
+                .map { it.map(HistoricTrackEntity::toMusicTrack) }
         }
 }

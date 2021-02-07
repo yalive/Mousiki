@@ -20,7 +20,9 @@ class HomeVM {
     
     init(delegate: HomeVMDelegate) {
         self.delegate = delegate
+        print("Home view model is waiting for activation of remote config")
         appConfig.awaitActivation { (kUnit, error) in
+            print("Home view model finished waiting")
             self.loadHome()
         }
     }
@@ -63,9 +65,9 @@ class HomeVM {
     }
     
     fileprivate func showOldHome() {
-        //self.loadTrending()
+        self.loadTrending()
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            //self.loadArtists()
+            self.loadArtists()
         }
         
     }

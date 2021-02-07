@@ -24,7 +24,7 @@ private val forceDemo = true
 // For Fallback
 fun SearchConfig.apiList(): List<String> {
     if (forceDemo) {
-        return listOf("https://theta-topic-205615.uc.r.appspot.com")
+        return listOf("https://mousikiapp.herokuapp.com")
     }
     if (!apis.isNullOrEmpty()) return apis
     return listOf("https://mousikiapp.herokuapp.com/")

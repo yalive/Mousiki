@@ -3,8 +3,8 @@ package com.mousiki.shared.data.repository
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.RemoteSongsDataSource
+import com.mousiki.shared.data.db.FavouriteTrackEntity
 import com.mousiki.shared.data.db.toMusicTrack
-import com.mousiki.shared.db.Favourite_tracks
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
@@ -60,12 +60,12 @@ class SongsRepository(
             return@withContext favouriteTracksDaoSql.getSongs(max.toLong())
                 .asFlow()
                 .mapToList()
-                .map { it.map(Favourite_tracks::toMusicTrack) }
+                .map { it.map(FavouriteTrackEntity::toMusicTrack) }
         }
 
     suspend fun addSongToFavourite(track: MusicTrack) = withContext(Dispatchers.Default) {
         favouriteTracksDaoSql.insert(
-            Favourite_tracks(
+            FavouriteTrackEntity(
                 id = 0,
                 youtube_id = track.youtubeId,
                 title = track.title,

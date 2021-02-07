@@ -1,7 +1,6 @@
 package com.mousiki.shared.di
 
 import com.cas.musicplayer.MousikiDb
-import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.preference.SettingsProvider
 import com.mousiki.shared.utils.AnalyticsApi
@@ -22,7 +21,6 @@ actual val platformModule = module {
 
     single { PreferencesHelper(SettingsProvider()) }
     single { NetworkUtils() }
-    single { RemoteAppConfig() }
 
     // Tempo
     single { IOSAnalytics() } bind AnalyticsApi::class

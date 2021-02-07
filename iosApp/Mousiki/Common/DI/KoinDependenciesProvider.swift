@@ -10,6 +10,7 @@ import Foundation
 import shared
 
 class KoinDependenciesProvider: IOSDependenciesProvider {
-        
     lazy var storage: StorageApi = MousikiAppStorage()
+    lazy var remoteConfigDelegate: RemoteConfigDelegate = FirebaseConfigDelegate()
+    
 }

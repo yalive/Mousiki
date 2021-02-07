@@ -1,8 +1,8 @@
 package com.mousiki.shared.data.datasource.playlist
 
 import com.cas.musicplayer.MousikiDb
+import com.mousiki.shared.data.db.PlaylistTrackEntity
 import com.mousiki.shared.data.db.toMusicTrack
-import com.mousiki.shared.db.Playlist_tracks
 import com.mousiki.shared.domain.models.MusicTrack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,7 +29,7 @@ class PlaylistSongsLocalDataSource(
     suspend fun savePlaylistSongs(playlistId: String, tracks: List<MusicTrack>) =
         withContext(Dispatchers.Default) {
             val channelSongs = tracks.map {
-                Playlist_tracks(
+                PlaylistTrackEntity(
                     id = 0,
                     youtube_id = it.youtubeId,
                     playlistId = playlistId,
