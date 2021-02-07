@@ -1,7 +1,10 @@
 package com.mousiki.shared.data.config
 
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.ConnectivityChecker
 import com.mousiki.shared.utils.getCurrentLocale
+import com.mousiki.shared.utils.logEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -16,22 +19,25 @@ import kotlinx.serialization.json.Json
 class RemoteAppConfig(
     private val delegate: RemoteConfigDelegate,
     private val json: Json,
-    private val preferencesHelper: PreferencesHelper
+    private val preferencesHelper: PreferencesHelper,
+    private val analytics: AnalyticsApi,
+    private val connectivityChecker: ConnectivityChecker
 ) {
 
     private var gotConfigResponse = false
 
     init {
-        // val connectedBefore = connectivityState.isConnected()
+        val connectedBefore = connectivityChecker.isConnected()
         delegate.fetchAndActivate { success ->
             gotConfigResponse = true
             if (!success) {
-                /* val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
-                 val bundle = Bundle()
-                 bundle.putBoolean("isConnected", connectivityState.isConnected())
-                 bundle.putBoolean("isConnectedBeforeCall", connectedBefore)
-                 bundle.putString("local", getCurrentLocale())
-                 firebaseAnalytics.logEvent("error_fetch_remote_config", bundle)*/
+                analytics.logEvent(
+                    "error_fetch_remote_config",
+                    "isConnected" to connectivityChecker.isConnected(),
+                    "isConnectedBeforeCall" to connectedBefore,
+                    "local" to getCurrentLocale(),
+
+                    )
             } else {
                 val ytbKeys = getYoutubeApiKeys()
                 if (ytbKeys.isNotEmpty()) {

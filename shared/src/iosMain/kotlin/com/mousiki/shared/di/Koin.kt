@@ -11,7 +11,7 @@ fun initIOSKoin(provider: IOSDependenciesProvider) {
     val iOSModule = module {
         single { provider.storage } bind StorageApi::class
         single { provider.analytics } bind AnalyticsApi::class
-        single { RemoteAppConfig(provider.remoteConfigDelegate, get(), get()) }
+        single { RemoteAppConfig(provider.remoteConfigDelegate, get(), get(), get(), get()) }
     }
     initKoin(iOSModule)
 }

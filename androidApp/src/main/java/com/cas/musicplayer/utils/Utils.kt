@@ -23,20 +23,22 @@ import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrl
+import com.mousiki.shared.utils.AnalyticsApi
+import org.koin.core.KoinComponent
+import org.koin.core.get
 import java.io.File
 
 
 /**
  * Created by Fayssel Yabahddou on 4/13/19.
  */
-object Utils {
+object Utils : KoinComponent {
 
     var hasShownAdsOneTime = false
 
@@ -50,7 +52,7 @@ object Utils {
         }
         if (sendIntent.resolveActivity(context.packageManager) != null) {
             context.startActivity(sendIntent)
-            context.analytics.logEvent(ANALYTICS_CREATE_TRACK_DYNAMIC_LINK, null)
+            get<AnalyticsApi>().logEvent(ANALYTICS_CREATE_TRACK_DYNAMIC_LINK)
         }
     }
 
@@ -94,7 +96,7 @@ object Utils {
         val context = MusicApp.get()
         if (sendIntent.resolveActivity(context.packageManager) != null) {
             context.startActivity(sendIntent)
-            context.analytics.logEvent(ANALYTICS_SHARE_APP_VIA, null)
+            get<AnalyticsApi>().logEvent(ANALYTICS_SHARE_APP_VIA)
         }
     }
 
@@ -167,7 +169,7 @@ object Utils {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
-            context.analytics.logEvent(ANALYTICS_OPEN_FACEBOOK_PAGE, null)
+            get<AnalyticsApi>().logEvent(ANALYTICS_OPEN_FACEBOOK_PAGE)
         }
     }
 
@@ -230,5 +232,3 @@ fun isScreenLocked(): Boolean {
 private const val ANALYTICS_CREATE_TRACK_DYNAMIC_LINK = "create_track_dynamic_link"
 private const val ANALYTICS_OPEN_FACEBOOK_PAGE = "open_facebook_page"
 private const val ANALYTICS_SHARE_APP_VIA = "share_app_with_via"
-private val Context.analytics: FirebaseAnalytics
-    get() = FirebaseAnalytics.getInstance(this.applicationContext)

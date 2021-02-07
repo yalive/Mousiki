@@ -28,7 +28,15 @@ val firebaseModule = module {
     single { provideFirebaseRemoteConfig() }
     single { AndroidAnalytics(FirebaseAnalytics.getInstance(get())) } bind AnalyticsApi::class
     single { Storage(Firebase.storage) } bind StorageApi::class
-    single { RemoteAppConfig(FirebaseConfigDelegate(provideFirebaseRemoteConfig()), get(), get()) }
+    single {
+        RemoteAppConfig(
+            FirebaseConfigDelegate(provideFirebaseRemoteConfig()),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 }
 
 private fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
