@@ -1,8 +1,8 @@
 package com.cas.musicplayer.di
 
-import android.content.Context
+import android.annotation.SuppressLint
 import com.cas.musicplayer.BuildConfig
-import com.cas.musicplayer.R
+import com.cas.musicplayer.firebase.FirebaseConfigDelegate
 import com.cas.musicplayer.utils.AndroidAnalytics
 import com.cas.musicplayer.utils.Storage
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -12,10 +12,9 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.firebase.storage.ktx.storage
 import com.mousiki.shared.data.config.RemoteAppConfig
-import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.StorageApi
-import kotlinx.serialization.json.Json
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 /**
@@ -24,11 +23,12 @@ import org.koin.dsl.module
  ***************************************
  */
 
+@SuppressLint("MissingPermission")
 val firebaseModule = module {
     single { provideFirebaseRemoteConfig() }
-    single { provideAnalytics(get()) }
-    single { providesStorage() }
-    single { providesRemoteAppConfig(get(), get(), get(), get()) }
+    single { AndroidAnalytics(FirebaseAnalytics.getInstance(get())) } bind AnalyticsApi::class
+    single { Storage(Firebase.storage) } bind StorageApi::class
+    single { RemoteAppConfig(FirebaseConfigDelegate(provideFirebaseRemoteConfig()), get(), get()) }
 }
 
 private fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
@@ -36,31 +36,7 @@ private fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
     val configSettings = remoteConfigSettings {
         minimumFetchIntervalInSeconds = if (BuildConfig.DEBUG) 160 else 1800
     }
-    remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
     remoteConfig.setConfigSettingsAsync(configSettings)
+    remoteConfig.setDefaultsAsync(RemoteAppConfig.defaultConfig())
     return remoteConfig
 }
-
-private fun provideAnalytics(
-    context: Context
-): AnalyticsApi {
-    val analytics = FirebaseAnalytics.getInstance(context)
-    return AndroidAnalytics(analytics)
-}
-
-
-private fun providesStorage(): StorageApi {
-    return Storage(Firebase.storage)
-}
-
-private fun providesRemoteAppConfig(
-    firebaseRemoteConfig: FirebaseRemoteConfig,
-    json: Json,
-    context: Context,
-    preferencesHelper: PreferencesHelper
-) = RemoteAppConfig(
-    firebaseRemoteConfig,
-    json,
-    context,
-    preferencesHelper
-)

@@ -67,6 +67,7 @@
 		FAB91B4725BA261F0080C968 /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB91B4625BA261F0080C968 /* DynamicHeightCollectionView.swift */; };
 		FABDCB1B25BB73290085ED90 /* HomeGenreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABDCB1925BB73290085ED90 /* HomeGenreCell.swift */; };
 		FABDCB1C25BB73290085ED90 /* HomeGenreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FABDCB1A25BB73290085ED90 /* HomeGenreCell.xib */; };
+		FAD6AF5725CB0EBC00F798C0 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6AF5625CB0EBC00F798C0 /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -148,6 +149,7 @@
 		FAB91B4625BA261F0080C968 /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
 		FABDCB1925BB73290085ED90 /* HomeGenreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGenreCell.swift; sourceTree = "<group>"; };
 		FABDCB1A25BB73290085ED90 /* HomeGenreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeGenreCell.xib; sourceTree = "<group>"; };
+		FAD6AF5625CB0EBC00F798C0 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -443,6 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				FAB1941A25C85F5500FD7767 /* Storage.swift */,
+				FAD6AF5625CB0EBC00F798C0 /* Config.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -664,6 +667,7 @@
 				FAABE1FA25B866C1001FD8C5 /* String+Extension.swift in Sources */,
 				FAABE1F625B8661C001FD8C5 /* UIColorExt.swift in Sources */,
 				FA9AFFF425BDA03D00809B22 /* HomeArtistCell.swift in Sources */,
+				FAD6AF5725CB0EBC00F798C0 /* Config.swift in Sources */,
 				FAB91B3D25BA04E30080C968 /* CompactPlaylistCell.swift in Sources */,
 				FA5FFCD325B8214800DA9920 /* HomeVC.swift in Sources */,
 				FAB193E225C83BB500FD7767 /* HomeVM.swift in Sources */,

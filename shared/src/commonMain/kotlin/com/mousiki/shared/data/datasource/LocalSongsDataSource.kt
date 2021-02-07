@@ -1,9 +1,9 @@
 package com.mousiki.shared.data.datasource
 
 import com.cas.musicplayer.MousikiDb
+import com.mousiki.shared.data.db.TrendingTrackEntity
 import com.mousiki.shared.data.db.toMusicTrack
 import com.mousiki.shared.db.TrendingTrackQueries
-import com.mousiki.shared.db.Trending_tracks
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.elapsedRealtime
@@ -45,7 +45,7 @@ class LocalSongsDataSource constructor(
         }
 
         val trendingTracks = tracks.map {
-            Trending_tracks(
+            TrendingTrackEntity(
                 id = 0,
                 youtube_id = it.youtubeId,
                 title = it.title,

@@ -1,12 +1,7 @@
 package com.mousiki.shared.data.datasource.search
 
 import com.cas.musicplayer.MousikiDb
-import com.mousiki.shared.data.db.toChannel
-import com.mousiki.shared.data.db.toMusicTrack
-import com.mousiki.shared.data.db.toPlaylist
-import com.mousiki.shared.db.Channel_search_result
-import com.mousiki.shared.db.Playlists_search_result
-import com.mousiki.shared.db.Songs_search_result
+import com.mousiki.shared.data.db.*
 import com.mousiki.shared.domain.models.Channel
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
@@ -32,7 +27,7 @@ class SearchLocalDataSource(
 
     suspend fun saveSongs(query: String, songs: List<MusicTrack>) {
         val searchSongEntities = songs.map {
-            Songs_search_result(
+            SongSearchEntity(
                 id = 0,
                 youtube_id = it.youtubeId,
                 duration = it.duration,
@@ -56,7 +51,7 @@ class SearchLocalDataSource(
 
     suspend fun savePlaylists(query: String, songs: List<Playlist>) {
         val searchPlaylistEntities = songs.map {
-            Playlists_search_result(
+            PlaylistSearchEntity(
                 id = 0,
                 playlist_id = it.id,
                 itemCount = it.itemCount.toLong(),
@@ -81,7 +76,7 @@ class SearchLocalDataSource(
 
     suspend fun saveChannels(query: String, songs: List<Channel>) {
         val searchChannelEntities = songs.map {
-            Channel_search_result(
+            ChannelEntity(
                 id = 0,
                 channel_id = it.id,
                 urlImage = it.urlImage,

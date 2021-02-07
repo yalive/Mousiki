@@ -12,9 +12,6 @@ object Injector : KoinComponent {
     val homeRepository: HomeRepository
         get() = get()
 
-    val appConfig: RemoteAppConfig
-        get() = get()
-
     val getCountryArtists: GetCountryArtistsUseCase
         get() = get()
 
@@ -22,5 +19,8 @@ object Injector : KoinComponent {
         get() = get()
 
     val getGenres: GetGenresUseCase
+        get() = get()
+
+    val appConfig: RemoteAppConfig
         get() = get()
 }

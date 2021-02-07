@@ -30,11 +30,6 @@ class HomeVC: UIViewController {
         
         viewModel = HomeVM(delegate: self)
         
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.viewModel.loadArtists()
-        }
-        
     }
     
 }

@@ -1,8 +1,8 @@
 package com.mousiki.shared.data.repository
 
 import com.cas.musicplayer.MousikiDb
+import com.mousiki.shared.data.db.CustomPlaylistTrackEntity
 import com.mousiki.shared.data.db.imgUrl
-import com.mousiki.shared.db.Custom_playlist_track
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 
@@ -48,7 +48,7 @@ class CustomPlaylistsRepository(
 
     suspend fun addMusicTrackToCustomPlaylist(track: MusicTrack, playlistName: String) {
         customPlaylistTrackDao.insert(
-            Custom_playlist_track(
+            CustomPlaylistTrackEntity(
                 id = 0,
                 youtube_id = track.youtubeId,
                 duration = track.duration,
