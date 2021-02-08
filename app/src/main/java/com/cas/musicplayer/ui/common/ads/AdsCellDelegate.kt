@@ -26,7 +26,7 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.item_ad)
+        val view = parent.inflate(R.layout.item_ads)
         return AdsViewHolder(view)
     }
 
