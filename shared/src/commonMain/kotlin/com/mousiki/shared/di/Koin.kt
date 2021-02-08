@@ -13,6 +13,7 @@ fun initKoin(vararg appModules: Module) {
             dataSourcesModule,
             mappersModule,
             useCasesModule,
+            kmmViewModelsModule
         )
     }
 }

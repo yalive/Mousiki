@@ -2,11 +2,12 @@ package com.cas.musicplayer.ui.genres
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.viewmodel.BaseViewModel
+import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.R
-import com.cas.musicplayer.utils.uiCoroutine
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
+import kotlinx.coroutines.launch
 
 /**
  **********************************
@@ -25,7 +26,7 @@ class GenresViewModel(
         loadAllGenres()
     }
 
-    fun loadAllGenres() = uiCoroutine {
+    fun loadAllGenres() = viewModelScope.launch {
         val listGenres = getGenres()
         val musicGenres = listGenres.filter { !it.isMood }
         val moods = listGenres.filter { it.isMood }

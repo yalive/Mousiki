@@ -1,4 +1,4 @@
-package com.cas.musicplayer.utils
+package com.mousiki.shared.utils
 
 /**
  **********************************
@@ -11,8 +11,4 @@ object Constants {
     const val FAV_PLAYLIST_NAME = "Favourite"
 
     const val MUSIC_TRACK_KEY = "MUSIC_TRACK"
-
-    object Config {
-        const val DEBUG_NETWORK = true
-    }
 }

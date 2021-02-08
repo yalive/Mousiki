@@ -7,7 +7,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.common.extensions.onClick
-import com.cas.common.fragment.BaseFragment
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentCreatePalylistBinding
 import com.cas.musicplayer.di.Injector

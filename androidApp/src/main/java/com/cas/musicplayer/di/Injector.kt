@@ -8,7 +8,7 @@ import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
-import com.cas.musicplayer.ui.home.HomeViewModel
+import com.mousiki.shared.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel

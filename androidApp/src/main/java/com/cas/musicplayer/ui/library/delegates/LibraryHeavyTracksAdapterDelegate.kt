@@ -1,12 +1,12 @@
 package com.cas.musicplayer.ui.library.delegates
 
-import com.cas.common.resource.Resource
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
+import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.cas.musicplayer.ui.library.model.LibraryItem
 
 /**

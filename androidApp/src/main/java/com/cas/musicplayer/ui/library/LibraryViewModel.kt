@@ -2,29 +2,23 @@ package com.cas.musicplayer.ui.library
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.cas.common.event.Event
-import com.cas.common.event.asEvent
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
-import com.cas.musicplayer.utils.Constants
-import com.cas.musicplayer.utils.uiCoroutine
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.domain.models.imgUrl
+import com.mousiki.shared.utils.Constants
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.mousiki.shared.domain.usecase.library.GetHeavyTracksUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
-import kotlinx.coroutines.launch
+import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.event.Event
+import com.mousiki.shared.ui.event.asEvent
+import com.mousiki.shared.utils.Strings
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 
 
 /**
@@ -39,6 +33,7 @@ class LibraryViewModel(
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val getCustomPlaylists: GetCustomPlaylistsUseCase,
     private val removeCustomPlaylist: RemoveCustomPlaylistUseCase,
+    private val strings: Strings,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -66,19 +61,19 @@ class LibraryViewModel(
         collectHeavy()
     }
 
-    private fun collectRecent() = viewModelScope.launch {
+    private fun collectRecent() = scope.launch {
         getRecentlyPlayedSongsFlow(50).collect { songs ->
             _recentSongs.postValue(tracksToDisplayableItems(songs))
         }
     }
 
-    private fun collectFavourite() = viewModelScope.launch {
+    private fun collectFavourite() = scope.launch {
         getFavouriteTracksFlow(20).collect { songs ->
             _favouriteSongs.postValue(tracksToDisplayableItems(songs))
         }
     }
 
-    private fun collectHeavy() = viewModelScope.launch {
+    private fun collectHeavy() = scope.launch {
         getHeavyTracksFlow(10)
             .filter { it.size >= 3 }
             .collect { songs ->
@@ -86,32 +81,32 @@ class LibraryViewModel(
             }
     }
 
-    fun onClickRecentTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
+    fun onClickRecentTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
         _onClickSong.value = Unit.asEvent()
         playTrackFromQueue(track, queue)
     }
 
-    fun onClickHeavyTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
+    fun onClickHeavyTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
         _onClickSong.value = Unit.asEvent()
         playTrackFromQueue(track, queue)
     }
 
-    fun onClickFavouriteTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
+    fun onClickFavouriteTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
         _onClickSong.value = Unit.asEvent()
         playTrackFromQueue(track, queue)
     }
 
     fun onClickPlaylist(playlist: Playlist) {
-        viewModelScope.launch {
+        scope.launch {
             if (playlist.id == Constants.FAV_PLAYLIST_NAME && getFavouriteTracks().isEmpty()) {
-                showToast(R.string.empty_favourite_list)
+                showToast(strings.emptyFavouriteList)
             } else {
                 _onClickPlaylist.value = playlist.asEvent()
             }
         }
     }
 
-    fun loadCustomPlaylists() = uiCoroutine {
+    fun loadCustomPlaylists() = scope.launch {
         val savedPlaylists = getCustomPlaylists().toMutableList()
         val favouriteTracks = getFavouriteTracks()
         val favouriteTrack = favouriteTracks.getOrNull(0)
@@ -130,7 +125,7 @@ class LibraryViewModel(
         _playlists.value = items
     }
 
-    fun deletePlaylist(playlist: Playlist) = uiCoroutine {
+    fun deletePlaylist(playlist: Playlist) = scope.launch {
         removeCustomPlaylist(playlist.title)
         loadCustomPlaylists()
     }

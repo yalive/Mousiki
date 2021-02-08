@@ -1,24 +1,13 @@
-package com.cas.common.resource
+package com.cas.musicplayer.tmp
 
 import androidx.lifecycle.MutableLiveData
-import com.mousiki.shared.utils.TextResource
+import com.mousiki.shared.ui.resource.Resource
 
 /**
  **********************************
  * Created by Abdelhadi on 2019-05-15.
  **********************************
  */
-/**
- * Represent a network-bound resource and its states.
- */
-sealed class Resource<out T> {
-
-    object Loading : Resource<Nothing>()
-
-    data class Success<out T>(val data: T) : Resource<T>()
-
-    data class Failure(val message: TextResource) : Resource<Nothing>()
-}
 
 fun <T> MutableLiveData<Resource<List<T>>>.hasItems(): Boolean {
     return when (val currentValue = value ?: return false) {

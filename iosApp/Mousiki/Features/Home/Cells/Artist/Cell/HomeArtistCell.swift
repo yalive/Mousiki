@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import shared
 
 class HomeArtistCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
@@ -26,6 +27,13 @@ class HomeArtistCell: UICollectionViewCell {
         let imageSize = min(120, itemWidth)
         imageHeight.constant = imageSize
         imageView.setCorner(radius: imageSize / 2)
+    }
+    
+    func bind(_ artist: Artist) {
+        txtArtistName.text = artist.name
+        if let url = URL(string: artist.imageFullPath) {
+            imageView.kf.setImage(with: url)
+        }
     }
     
     @objc func tapGesture(_ sender: UITapGestureRecognizer) {

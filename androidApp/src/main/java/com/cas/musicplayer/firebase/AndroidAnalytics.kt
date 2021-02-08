@@ -1,4 +1,4 @@
-package com.cas.musicplayer.utils
+package com.cas.musicplayer.firebase
 
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics

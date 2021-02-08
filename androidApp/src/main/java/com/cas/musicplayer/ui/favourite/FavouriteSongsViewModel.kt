@@ -2,13 +2,14 @@ package com.cas.musicplayer.ui.favourite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.utils.uiCoroutine
+import androidx.lifecycle.viewModelScope
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
+import com.mousiki.shared.player.PlaySongDelegate
+import kotlinx.coroutines.launch
 
 /**
  ***************************************
@@ -27,14 +28,14 @@ class FavouriteSongsViewModel(
         loadFavouriteSongs()
     }
 
-    private fun loadFavouriteSongs() = uiCoroutine {
+    private fun loadFavouriteSongs() = viewModelScope.launch {
         val songs = getFavouriteTracks()
         _favouritesSongs.value = songs.map { it.toDisplayedVideoItem() }
     }
 
     fun onClickFavouriteTrack(track: MusicTrack) {
         val tracks = favouritesSongs.value?.map { it.track } ?: emptyList()
-        uiCoroutine {
+        viewModelScope.launch {
             playTrackFromQueue(track, tracks)
         }
     }

@@ -13,7 +13,7 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.setMusicPlayingState
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor

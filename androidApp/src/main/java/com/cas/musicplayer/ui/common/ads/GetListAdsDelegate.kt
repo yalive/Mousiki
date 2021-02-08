@@ -1,8 +1,8 @@
 package com.cas.musicplayer.ui.common.ads
 
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.extensions.valueOrNull
-import com.cas.common.resource.Resource
+import com.mousiki.shared.ui.resource.Resource
+import com.cas.musicplayer.tmp.valueOrNull
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.utils.AnalyticsApi

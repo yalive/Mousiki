@@ -23,6 +23,11 @@ class KoinDependenciesProvider: IOSDependenciesProvider {
     
     
     /// Analytics api
-    var analytics: AnalyticsApi = MousikiAnalytics()
+    lazy var analytics: AnalyticsApi = MousikiAnalytics()
     
+    // Player
+    lazy var playSongDelegate: PlaySongDelegate = PlaySongDelegateImpl()
+    
+    
+    lazy var strings: Strings = IOSStrings()
 }

@@ -1,6 +1,6 @@
 package com.cas.musicplayer.ui.settings
 
-import com.cas.common.viewmodel.BaseViewModel
+import com.mousiki.shared.ui.base.BaseViewModel
 
 /**
  ***************************************

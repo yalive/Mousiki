@@ -1,9 +1,4 @@
-package com.cas.musicplayer.ui.home.model
-
-import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.durationFormatted
-import com.mousiki.shared.domain.models.imgUrl
+package com.mousiki.shared.domain.models
 
 /**
  ***************************************

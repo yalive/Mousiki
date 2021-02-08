@@ -1,13 +1,13 @@
-package com.cas.common.extensions
+package com.cas.musicplayer.tmp
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.cas.common.event.Event
-import com.cas.common.event.EventObserver
-import com.cas.common.resource.Resource
+import com.cas.musicplayer.utils.EventObserver
+import com.mousiki.shared.ui.event.Event
+import com.mousiki.shared.ui.resource.Resource
 
 /**
  **********************************

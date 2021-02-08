@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.addRipple
-import com.cas.common.extensions.observe
-import com.cas.common.extensions.observeEvent
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -30,6 +30,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrlDefault
 import com.mousiki.shared.preference.UserPrefs
+import com.mousiki.shared.utils.Constants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -3,14 +3,15 @@ package com.cas.musicplayer.ui.artists.list
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.resource.Resource
-import com.cas.common.resource.doOnSuccess
-import com.cas.common.resource.hasItems
-import com.cas.common.resource.isLoading
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.utils.uiCoroutine
+import androidx.lifecycle.viewModelScope
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.cas.musicplayer.tmp.doOnSuccess
+import com.cas.musicplayer.tmp.hasItems
+import com.cas.musicplayer.tmp.isLoading
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.usecase.artist.GetAllArtistsUseCase
+import com.mousiki.shared.ui.resource.Resource
+import kotlinx.coroutines.launch
 
 /**
  **********************************
@@ -29,9 +30,9 @@ class ArtistListViewModel(
 
     private var filter = ""
 
-    fun loadAllArtists() = uiCoroutine {
+    fun loadAllArtists() = viewModelScope.launch {
         if (_artists.hasItems() || _artists.isLoading()) {
-            return@uiCoroutine
+            return@launch
         }
         _artists.value = Resource.Loading
         val artistList = getAllArtists()

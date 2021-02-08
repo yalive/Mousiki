@@ -13,7 +13,7 @@ import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.Playlist
-import com.cas.musicplayer.utils.Constants
+import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.loadImage
 
 /**

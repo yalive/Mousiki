@@ -4,22 +4,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.cas.common.resource.Resource
-import com.cas.common.resource.asResource
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.ui.common.PlaySongDelegate
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
 import com.mousiki.shared.domain.usecase.search.GetRecentSearchQueriesUseCase
 import com.mousiki.shared.domain.usecase.search.SaveSearchQueryUseCase
 import com.mousiki.shared.domain.usecase.search.SearchSongsUseCase
+import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.asResource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -55,7 +54,7 @@ class SearchYoutubeViewModel(
     private var searchToken: String? = null
     private var currentPage: Int = 1
 
-    fun search(query: String) = viewModelScope.launch(coroutineContext) {
+    fun search(query: String) = viewModelScope.launch {
         if (lastQuery == query && videos.value != null) {
             return@launch
         }
@@ -107,10 +106,10 @@ class SearchYoutubeViewModel(
         populateAdsIn(_videos)
     }
 
-    fun getSuggestions(keyword: String?) = uiCoroutine {
+    fun getSuggestions(keyword: String?) = viewModelScope.launch {
         if (keyword == null || keyword.isEmpty() || keyword.length <= 1) {
             showHistoricSearch()
-            return@uiCoroutine
+            return@launch
         }
 
         val suggestionList = async {
@@ -125,12 +124,12 @@ class SearchYoutubeViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = uiCoroutine {
+    fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
         val tracks = _videos.songList()
         playTrackFromQueue(track, tracks)
     }
 
-    fun showHistoricSearch() = uiCoroutine {
+    fun showHistoricSearch() = viewModelScope.launch {
         val historicSearch = getRecentSearchQueries("").map {
             SearchSuggestion(it, true)
         }

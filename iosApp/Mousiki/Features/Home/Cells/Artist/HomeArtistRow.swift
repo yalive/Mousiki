@@ -13,7 +13,7 @@ class HomeArtistRow: UITableViewCell, UICollectionViewDelegate, UICollectionView
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var playlists = [Artist]()
+    private var artists = [Artist]()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,17 +38,17 @@ class HomeArtistRow: UITableViewCell, UICollectionViewDelegate, UICollectionView
     }
     
     func bind(items: [Artist]) {
-        self.playlists = items
+        self.artists = items
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        playlists.count
+        artists.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeArtistCell", for: indexPath as IndexPath) as! HomeArtistCell
-        //cell.bind(playlists[indexPath.row])
+        cell.bind(artists[indexPath.row])
         return cell
     }
     

@@ -2,11 +2,9 @@ package com.cas.musicplayer.ui.playlist.create
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.event.Event
-import com.cas.common.event.asEvent
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.utils.Constants
-import com.cas.musicplayer.utils.uiCoroutine
+import androidx.lifecycle.viewModelScope
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.utils.Constants
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.imgUrl
@@ -14,6 +12,9 @@ import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylist
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
+import com.mousiki.shared.ui.event.Event
+import com.mousiki.shared.ui.event.asEvent
+import kotlinx.coroutines.launch
 
 /**
  ***************************************
@@ -40,7 +41,7 @@ class AddTrackToPlaylistViewModel(
         loadCustomPlaylists()
     }
 
-    private fun loadCustomPlaylists() = uiCoroutine {
+    private fun loadCustomPlaylists() = viewModelScope.launch {
         val savedPlaylists = getCustomPlaylists().toMutableList()
         val favouriteTracks = getFavouriteTracks()
         val favouriteTrack = favouriteTracks.getOrNull(0)
@@ -55,9 +56,9 @@ class AddTrackToPlaylistViewModel(
         _playlists.value = savedPlaylists
     }
 
-    fun addTrackToPlaylist(position: Int) = uiCoroutine {
+    fun addTrackToPlaylist(position: Int) = viewModelScope.launch {
         val playlists = _playlists.value ?: emptyList()
-        val playlist = playlists.getOrNull(position) ?: return@uiCoroutine
+        val playlist = playlists.getOrNull(position) ?: return@launch
         if (position == 0) {
             addSongToFavourite(track)
         } else {

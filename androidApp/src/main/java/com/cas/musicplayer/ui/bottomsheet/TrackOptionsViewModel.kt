@@ -1,12 +1,13 @@
 package com.cas.musicplayer.ui.bottomsheet
 
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.utils.uiCoroutine
+import androidx.lifecycle.viewModelScope
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.usecase.customplaylist.DeleteTrackFromCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import kotlinx.coroutines.launch
 
 /**
  ***************************************
@@ -19,15 +20,15 @@ class TrackOptionsViewModel(
     private val deleteTrackFromCustomPlaylist: DeleteTrackFromCustomPlaylistUseCase
 ) : BaseViewModel() {
 
-    fun makeSongAsFavourite(musicTrack: MusicTrack) = uiCoroutine {
+    fun makeSongAsFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
         addSongToFavourite(musicTrack)
     }
 
-    fun removeSongFromFavourite(musicTrack: MusicTrack) = uiCoroutine {
+    fun removeSongFromFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
         removeSongFromFavouriteList(musicTrack.youtubeId)
     }
 
-    fun removeSongFromPlaylist(musicTrack: MusicTrack, playlist: Playlist) = uiCoroutine {
+    fun removeSongFromPlaylist(musicTrack: MusicTrack, playlist: Playlist) = viewModelScope.launch {
         deleteTrackFromCustomPlaylist(musicTrack, playlist.title)
     }
 }

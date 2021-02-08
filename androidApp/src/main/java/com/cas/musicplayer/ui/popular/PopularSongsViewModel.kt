@@ -2,24 +2,22 @@ package com.cas.musicplayer.ui.popular
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.extensions.valueOrNull
-import com.cas.common.resource.Resource
-import com.cas.common.resource.hasItems
-import com.cas.common.resource.isLoading
-import com.cas.common.resource.loading
-import com.cas.common.resource.asResource
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.ui.common.PlaySongDelegate
+import androidx.lifecycle.viewModelScope
+import com.cas.musicplayer.tmp.*
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.LoadingItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
+import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.asResource
+import kotlinx.coroutines.launch
 
 /**
  **********************************
@@ -43,9 +41,9 @@ class PopularSongsViewModel(
 
     private var loadingMore = false
 
-    private fun loadTrending() = uiCoroutine {
+    private fun loadTrending() = viewModelScope.launch {
         if (_newReleases.hasItems() || _newReleases.isLoading()) {
-            return@uiCoroutine
+            return@launch
         }
         loadingMore = true
         _newReleases.loading()
@@ -60,8 +58,8 @@ class PopularSongsViewModel(
         }
     }
 
-    fun loadMoreSongs() = uiCoroutine {
-        if (loadingMore) return@uiCoroutine
+    fun loadMoreSongs() = viewModelScope.launch {
+        if (loadingMore) return@launch
         val allSongs = _newReleases.songList()
         if (allSongs.isNotEmpty() && allSongs.size < MAX_VIDEOS) {
             loadingMore = true
@@ -78,13 +76,13 @@ class PopularSongsViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = uiCoroutine {
+    fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
         playTrackFromQueue(track, _newReleases.songList())
     }
 
-    fun onClickTrackPlayAll() = uiCoroutine {
+    fun onClickTrackPlayAll() = viewModelScope.launch {
         val allSongs = _newReleases.songList()
-        if (allSongs.isEmpty()) return@uiCoroutine
+        if (allSongs.isEmpty()) return@launch
         playTrackFromQueue(allSongs.first(), allSongs)
     }
 

@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.cas.common.adapter.PageableFragment
-import com.cas.common.extensions.observe
-import com.cas.common.resource.Resource
 import com.cas.musicplayer.R
+import com.mousiki.shared.ui.resource.Resource
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.popular.EndlessRecyclerOnScrollListener
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
-import com.cas.musicplayer.utils.Constants
+import com.mousiki.shared.utils.Constants
 
 /**
  **********************************

@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.artists.songs
 
 import android.os.Bundle
 import android.view.View
-import com.cas.common.extensions.observe
+import com.cas.musicplayer.tmp.observe
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST

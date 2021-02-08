@@ -9,6 +9,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.*
 import com.cas.musicplayer.ui.common.ads.AdsManager
+import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.ConnectivityState
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
@@ -16,6 +17,7 @@ import com.mousiki.shared.di.initKoin
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.ConnectivityChecker
+import com.mousiki.shared.utils.Strings
 import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -96,4 +98,5 @@ class MusicApp : Application() {
 private fun appContextModule(appContext: MusicApp) = module {
     single<Context> { appContext }
     single<ConnectivityChecker> { ConnectivityState(get()) }
+    single<Strings> { AndroidStrings }
 }

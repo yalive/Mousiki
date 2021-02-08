@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		C200231F94EBB0BB2E3694B0 /* Pods_Mousiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */; };
 		FA0F701F25D07A5000D9551C /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F701E25D07A5000D9551C /* Analytics.swift */; };
+		FA0F702225D1846D00D9551C /* PlaySongDelegateImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F702125D1846D00D9551C /* PlaySongDelegateImpl.swift */; };
+		FA0F702525D1BADD00D9551C /* IOSStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F702425D1BADD00D9551C /* IOSStrings.swift */; };
 		FA35A25A25CABBEB009885DF /* KoinDependenciesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */; };
-		FA498D1C25B8E854000DAE82 /* HomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D1B25B8E854000DAE82 /* HomeItem.swift */; };
 		FA498D2425B8F02F000DAE82 /* VideoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D2225B8F02F000DAE82 /* VideoListCell.swift */; };
 		FA498D2525B8F02F000DAE82 /* VideoListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA498D2325B8F02F000DAE82 /* VideoListCell.xib */; };
 		FA498D2925B8F181000DAE82 /* VideoCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D2725B8F181000DAE82 /* VideoCollectionCell.swift */; };
@@ -90,8 +91,9 @@
 		88A3FEA9F7E64247A44DE3DF /* Pods-Mousiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.debug.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.debug.xcconfig"; sourceTree = "<group>"; };
 		97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mousiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA0F701E25D07A5000D9551C /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		FA0F702125D1846D00D9551C /* PlaySongDelegateImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySongDelegateImpl.swift; sourceTree = "<group>"; };
+		FA0F702425D1BADD00D9551C /* IOSStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSStrings.swift; sourceTree = "<group>"; };
 		FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoinDependenciesProvider.swift; sourceTree = "<group>"; };
-		FA498D1B25B8E854000DAE82 /* HomeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItem.swift; sourceTree = "<group>"; };
 		FA498D2225B8F02F000DAE82 /* VideoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListCell.swift; sourceTree = "<group>"; };
 		FA498D2325B8F02F000DAE82 /* VideoListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoListCell.xib; sourceTree = "<group>"; };
 		FA498D2725B8F181000DAE82 /* VideoCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCollectionCell.swift; sourceTree = "<group>"; };
@@ -186,20 +188,28 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		FA0F702025D1844B00D9551C /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				FA0F702125D1846D00D9551C /* PlaySongDelegateImpl.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		FA0F702325D1BAC000D9551C /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				FA0F702425D1BADD00D9551C /* IOSStrings.swift */,
+			);
+			path = Strings;
+			sourceTree = "<group>";
+		};
 		FA35A25825CABBC9009885DF /* DI */ = {
 			isa = PBXGroup;
 			children = (
 				FA35A25925CABBEB009885DF /* KoinDependenciesProvider.swift */,
 			);
 			path = DI;
-			sourceTree = "<group>";
-		};
-		FA498D1A25B8E843000DAE82 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				FA498D1B25B8E854000DAE82 /* HomeItem.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		FA498D1D25B8EF73000DAE82 /* Cells */ = {
@@ -307,7 +317,6 @@
 			isa = PBXGroup;
 			children = (
 				FA498D1D25B8EF73000DAE82 /* Cells */,
-				FA498D1A25B8E843000DAE82 /* Model */,
 				FA5FFCD125B8214800DA9920 /* HomeVC.swift */,
 				FA5FFCD225B8214800DA9920 /* HomeVC.xib */,
 				FAB193E125C83BB500FD7767 /* HomeVM.swift */,
@@ -345,6 +354,8 @@
 		FA5FFCE125B8232100DA9920 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA0F702325D1BAC000D9551C /* Strings */,
+				FA0F702025D1844B00D9551C /* Player */,
 				FA35A25825CABBC9009885DF /* DI */,
 				FAB1941925C85F3F00FD7767 /* Firebase */,
 				FAB91B4525BA260F0080C968 /* Views */,
@@ -654,7 +665,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAABE20D25B86794001FD8C5 /* Locale.swift in Sources */,
-				FA498D1C25B8E854000DAE82 /* HomeItem.swift in Sources */,
 				FAABE20525B86735001FD8C5 /* UIViewController+Alert.swift in Sources */,
 				FAB91B4725BA261F0080C968 /* DynamicHeightCollectionView.swift in Sources */,
 				FAABE1FC25B866EE001FD8C5 /* UIViewExt.swift in Sources */,
@@ -663,6 +673,7 @@
 				FAABE1F825B86698001FD8C5 /* UIViewController+Helper.swift in Sources */,
 				FA5FFCE625B8238F00DA9920 /* Screen.swift in Sources */,
 				FAABE20925B8676B001FD8C5 /* UITableViewExt.swift in Sources */,
+				FA0F702525D1BADD00D9551C /* IOSStrings.swift in Sources */,
 				FA5FFCD725B8218C00DA9920 /* LibraryVC.swift in Sources */,
 				FAABE1EA25B85B9F001FD8C5 /* R.generated.swift in Sources */,
 				FA498D2925B8F181000DAE82 /* VideoCollectionCell.swift in Sources */,
@@ -688,6 +699,7 @@
 				FAABE20325B8671D001FD8C5 /* UIViewController+Network.swift in Sources */,
 				FAABE20725B86755001FD8C5 /* UIViewController + Keyboard.swift in Sources */,
 				FA498D2E25B900D6000DAE82 /* HomeSectionView.swift in Sources */,
+				FA0F702225D1846D00D9551C /* PlaySongDelegateImpl.swift in Sources */,
 				FA498D2425B8F02F000DAE82 /* VideoListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

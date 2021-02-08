@@ -10,7 +10,7 @@ import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.ChartModel
-import com.cas.musicplayer.ui.home.model.HomeItem
+import com.mousiki.shared.ui.home.model.HomeItem
 import com.cas.musicplayer.ui.home.adapters.HomeChartAdapter
 
 /**

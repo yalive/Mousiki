@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cas.common.dpToPixel
-import com.cas.common.extensions.observe
-import com.cas.common.fragment.BaseFragment
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.common.viewmodel.viewModel

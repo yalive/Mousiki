@@ -1,16 +1,16 @@
 package com.cas.musicplayer.ui.home.adapters
 
-import com.cas.common.resource.Resource
-import com.cas.common.resource.doOnSuccess
 import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
-import com.mousiki.shared.domain.models.ChartModel
-import com.cas.musicplayer.ui.home.model.HeaderItem
-import com.cas.musicplayer.ui.home.model.HomeItem
+import com.mousiki.shared.ui.resource.Resource
+import com.cas.musicplayer.tmp.doOnSuccess
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
-import com.cas.musicplayer.ui.home.HomeViewModel
+import com.mousiki.shared.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.home.delegates.*
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
+import com.mousiki.shared.ui.home.model.HeaderItem
+import com.mousiki.shared.ui.home.model.HomeItem
 import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.domain.models.ChartModel
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.models.MusicTrack
@@ -42,7 +42,8 @@ class HomeAdapter(
     )
 ) {
 
-    fun updatePopularSongs(resource: Resource<List<DisplayedVideoItem>>) {
+    fun updatePopularSongs(resource: Resource<List<DisplayedVideoItem>>?) {
+        if (resource == null) return
         val index = indexOfItem(HomeItem.PopularsItem::class)
         val indexOfHeader = indexOfItem(HeaderItem.PopularsHeader::class)
         if (index != -1) {
@@ -65,14 +66,16 @@ class HomeAdapter(
         }
     }
 
-    fun updateGenres(genres: List<GenreMusic>) {
+    fun updateGenres(genres: List<GenreMusic>?) {
+        if (genres == null) return
         val index = indexOfItem(HomeItem.GenreItem::class)
         if (index != -1) {
             updateItemAtIndex(index, HomeItem.GenreItem(genres))
         }
     }
 
-    fun updateArtists(resource: Resource<List<Artist>>) {
+    fun updateArtists(resource: Resource<List<Artist>>?) {
+        if (resource == null) return
         resource.doOnSuccess {
             val index = indexOfItem(HomeItem.ArtistItem::class)
             if (index != -1) {
