@@ -4,23 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
-import com.cas.common.viewmodel.BaseViewModel
 import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.cas.musicplayer.ui.common.ads.AdsItem
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.utils.uiCoroutine
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 
 /**
  ***************************************
@@ -58,11 +56,11 @@ class PlayerViewModel(
         }
     }
 
-    fun makeSongAsFavourite(musicTrack: MusicTrack) = uiCoroutine {
+    fun makeSongAsFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
         addSongToFavourite(musicTrack)
     }
 
-    fun removeSongFromFavourite(musicTrack: MusicTrack) = uiCoroutine {
+    fun removeSongFromFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
         removeSongFromFavouriteList(musicTrack.youtubeId)
     }
 

@@ -47,6 +47,7 @@ kotlin {
                 implementation(Deps.SqlDelight.driverAndroid)
 
                 implementation(Deps.Ktor.androidCore)
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
             }
         }
         val iosMain by getting {

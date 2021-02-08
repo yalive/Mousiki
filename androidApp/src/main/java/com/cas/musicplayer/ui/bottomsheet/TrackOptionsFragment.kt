@@ -19,7 +19,7 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
-import com.cas.musicplayer.utils.Constants
+import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.viewBinding

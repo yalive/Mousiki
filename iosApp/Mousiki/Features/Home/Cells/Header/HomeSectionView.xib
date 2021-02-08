@@ -37,7 +37,6 @@
                     </constraints>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
-                    <state key="normal" image="icon_more"/>
                     <connections>
                         <action selector="didTapMore:" destination="-1" eventType="touchUpInside" id="hjk-4J-2tx"/>
                     </connections>
@@ -55,7 +54,4 @@
             <point key="canvasLocation" x="-187.19999999999999" y="36.431784107946029"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon_more" width="192" height="192"/>
-    </resources>
 </document>

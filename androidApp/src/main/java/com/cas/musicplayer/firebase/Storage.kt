@@ -1,4 +1,4 @@
-package com.cas.musicplayer.utils
+package com.cas.musicplayer.firebase
 
 import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics

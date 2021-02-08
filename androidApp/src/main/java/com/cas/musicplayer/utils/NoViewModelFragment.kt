@@ -1,8 +1,8 @@
 package com.cas.musicplayer.utils
 
 import androidx.annotation.LayoutRes
-import com.cas.common.fragment.BaseFragment
-import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.ui.base.BaseFragment
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.di.Injector
 

@@ -1,4 +1,4 @@
-package com.cas.common.event
+package com.mousiki.shared.ui.event
 
 /**
  **********************************

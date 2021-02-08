@@ -3,15 +3,15 @@ package com.cas.musicplayer.ui.popular
 
 import android.os.Bundle
 import android.view.View
-import com.cas.common.extensions.observe
-import com.cas.common.resource.Resource
+import com.cas.musicplayer.tmp.observe
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
+import com.mousiki.shared.ui.resource.Resource
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.featuredImage
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 

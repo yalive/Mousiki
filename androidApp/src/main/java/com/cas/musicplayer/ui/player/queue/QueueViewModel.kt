@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cas.common.event.Event
-import com.cas.common.event.asEvent
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.ui.event.Event
+import com.mousiki.shared.ui.event.asEvent
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.launch
 

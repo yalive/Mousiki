@@ -1,11 +1,12 @@
 package com.cas.musicplayer.ui.playlist.create
 
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.utils.Constants
-import com.cas.musicplayer.utils.uiCoroutine
+import androidx.lifecycle.viewModelScope
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.utils.Constants
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
+import kotlinx.coroutines.launch
 
 /**
  ***************************************
@@ -17,7 +18,7 @@ class CreatePlaylistViewModel(
     private val addSongToFavourite: AddSongToFavouriteUseCase
 ) : BaseViewModel() {
 
-    fun createPlaylist(musicTrack: MusicTrack, playlistName: String) = uiCoroutine {
+    fun createPlaylist(musicTrack: MusicTrack, playlistName: String) = viewModelScope.launch {
         if (playlistName == Constants.FAV_PLAYLIST_NAME) {
             addSongToFavourite(musicTrack)
         } else {

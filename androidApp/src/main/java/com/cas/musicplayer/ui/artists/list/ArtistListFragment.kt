@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.hideSoftKeyboard
-import com.cas.common.extensions.observe
 import com.cas.common.extensions.visible
-import com.cas.common.fragment.BaseFragment
-import com.cas.common.resource.Resource
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentArtistsBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.ui.base.BaseFragment
+import com.mousiki.shared.ui.resource.Resource
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.sidebar.SideBar
 import com.cas.musicplayer.ui.common.songs.AppImage

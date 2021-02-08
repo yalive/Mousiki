@@ -18,12 +18,12 @@ import com.adcolony.sdk.AdColony
 import com.cas.common.extensions.bool
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.extensions.isDarkMode
-import com.cas.common.extensions.observeEvent
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp

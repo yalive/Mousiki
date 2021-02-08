@@ -15,23 +15,79 @@ class HomeVC: UIViewController {
     
     private var homeItems = [HomeItem]()
     
-    fileprivate var viewModel: HomeVM!
+    fileprivate lazy var viewModel: HomeViewModel = {
+        return Injector().homeViewModel
+    }()
+    
+    fileprivate lazy var strings = Injector().strings
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationController?.isNavigationBarHidden = true
-        
         tableView.registerCellNib("VideoListCell",identifier: "VideoListCell")
         tableView.registerCellNib("SimplePlaylistsRow",identifier: "SimplePlaylistsRow")
         tableView.registerCellNib("CompactPlaylistsRow",identifier: "CompactPlaylistsRow")
         tableView.registerCellNib("HomeGenreCell",identifier: "HomeGenreCell")
         tableView.registerCellNib("HomeArtistRow",identifier: "HomeArtistRow")
-        
-        viewModel = HomeVM(delegate: self)
-        
+        observeViewModel()
     }
     
+    func observeViewModel() {
+        viewModel.homeItemsFlow.watch { items in
+            guard let items = items else { return }
+            let homeItems = items as! [HomeItem]
+            
+            let filtredItems = homeItems.filter {
+                !($0 is HeaderItem.PopularsHeader || $0 is HeaderItem.ArtistsHeader || $0 is HeaderItem.GenresHeader)
+            }
+            
+            self.homeItems.removeAll()
+            self.homeItems.append(contentsOf: filtredItems)
+            self.tableView.reloadData()
+        }
+        
+        viewModel.newReleasesFlow.watch { resource in
+            guard let resource = resource else { return }
+            if resource is ResourceSuccess {
+                let trendingItems = (resource as! ResourceSuccess).data as! [DisplayedVideoItem]
+                let indexOfTrendingItem = self.homeItems.firstIndex {
+                    $0 is HomeItem.PopularsItem
+                }
+                if let index = indexOfTrendingItem {
+                    self.homeItems[index] = HomeItem.VideoList(title: "New Releases", items: trendingItems)
+                    let indexPath = IndexPath(item: 0, section: index)
+                    self.tableView.reloadRows(at: [indexPath], with: .fade)
+                }
+            }
+        }
+        
+        viewModel.genresFlow.watch { genres in
+            guard let genres = genres else { return }
+            let indexOfGenreItem = self.homeItems.firstIndex {
+                $0 is HomeItem.GenreItem
+            }
+            if let index = indexOfGenreItem {
+                self.homeItems[index] = HomeItem.GenreItem(genres: genres as! [GenreMusic])
+                let indexPath = IndexPath(item: 0, section: index)
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        }
+        
+        viewModel.artistsFlow.watch { resource in
+            guard let resource = resource else { return }
+            if resource is ResourceSuccess {
+                let artists = (resource as! ResourceSuccess).data as! [Artist]
+                let indexOfArtistItem = self.homeItems.firstIndex {
+                    $0 is HomeItem.ArtistItem
+                }
+                if let index = indexOfArtistItem {
+                    self.homeItems[index] = HomeItem.ArtistItem(artists: artists)
+                    let indexPath = IndexPath(item: 0, section: index)
+                    self.tableView.reloadRows(at: [indexPath], with: .fade)
+                }
+            }
+        }
+    }
 }
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
@@ -44,28 +100,34 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         
         let homeItem = homeItems[indexPath.section]
         
-        switch homeItem {
-        case .Trending(items: _):
-            break
-        case .VideoList(items: let tracks, title: _):
-            let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell") as! VideoListCell
-            cell.bind(items: tracks)
-            return cell
-        case .GenreItem(genres: let genres):
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeGenreCell") as! HomeGenreCell
-            cell.bind(genres)
-            return cell
-        case .ArtistItem(artists: let artists):
+        if homeItem is HomeItem.PopularsItem {
+            //let popularItem = homeItem as! HomeItem.PopularsItem
+            
+        } else if homeItem is HomeItem.ArtistItem {
+            let artistItem = homeItem as! HomeItem.ArtistItem
             let cell = tableView.dequeueReusableCell(withIdentifier: "HomeArtistRow") as! HomeArtistRow
-            cell.bind(items: artists)
+            cell.bind(items: artistItem.artists)
             return cell
-        case .SimplePlaylists(playlists: let playlists, title: _):
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SimplePlaylistsRow") as! SimplePlaylistsRow
-            cell.bind(items: playlists)
+            
+        } else if homeItem is HomeItem.GenreItem {
+            let genreItem = homeItem as! HomeItem.GenreItem
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeGenreCell") as! HomeGenreCell
+            cell.bind(genreItem.genres)
             return cell
-        case .CompactPlaylists(playlists: let playlists, title: _):
+        } else if homeItem is HomeItem.CompactPlaylists {
+            let compactPlaylistItem = homeItem as! HomeItem.CompactPlaylists
             let cell = tableView.dequeueReusableCell(withIdentifier: "CompactPlaylistsRow") as! CompactPlaylistsRow
-            cell.bind(items: playlists)
+            cell.bind(items: compactPlaylistItem.playlists)
+            return cell
+        } else if homeItem is HomeItem.SimplePlaylists {
+            let simplePlaylistItem = homeItem as! HomeItem.SimplePlaylists
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SimplePlaylistsRow") as! SimplePlaylistsRow
+            cell.bind(items: simplePlaylistItem.playlists)
+            return cell
+        } else if homeItem is HomeItem.VideoList {
+            let videoListItem = homeItem as! HomeItem.VideoList
+            let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell") as! VideoListCell
+            cell.bind(items: videoListItem.items)
             return cell
         }
         return UITableViewCell()
@@ -78,18 +140,20 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let homeItem = homeItems[indexPath.section]
-        switch homeItem {
-        case .VideoList(items: _, title: _):
+        
+        if homeItem is HomeItem.PopularsItem {
             return 200
-        case .CompactPlaylists(playlists: _, title: _):
-            return 240
-        case .SimplePlaylists(playlists: _, title: _):
-            return 220
-        case .GenreItem(genres: _):
-            return 460
-        case .ArtistItem(artists: _):
+        } else if homeItem is HomeItem.ArtistItem {
             return 180 * 3 + 4
-        default:
+        } else if homeItem is HomeItem.GenreItem {
+            return 460
+        } else if homeItem is HomeItem.CompactPlaylists {
+            return 240
+        } else if homeItem is HomeItem.SimplePlaylists {
+            return 220
+        } else if homeItem is HomeItem.VideoList {
+            return 200
+        } else {
             return 200
         }
     }
@@ -101,7 +165,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 60)
         let sectionView = HomeSectionView(frame:rect)
         
-        sectionView.lblTitle.text = item.title()
+        sectionView.lblTitle.text = item.title(strings: strings)
         
         sectionView.actionBlock = {
             //self.showAllVideos(section)
@@ -113,54 +177,3 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         return 60
     }
 }
-
-extension HomeVC: HomeVMDelegate {
-    
-    func showHome(_ homeRS: HomeRS) {
-        let compactPlaylists = homeRS.compactPlaylists
-        let compactPlaylistsItems = compactPlaylists.map { (compactPlaylist) in
-            HomeItem.CompactPlaylists(
-                playlists: compactPlaylist.playlists!,
-                title: compactPlaylist.title!)
-        }
-        
-        let simplePlaylists = homeRS.simplePlaylists
-        let simplePlaylistsItems = simplePlaylists.map { (simplePlaylist) in
-            HomeItem.SimplePlaylists(
-                playlists: simplePlaylist.playlists!,
-                title: simplePlaylist.title!)
-        }
-        
-        let videoLists = homeRS.videoLists
-        let videoListsItems = videoLists.map { (videoList) in
-            HomeItem.VideoList(
-                items: videoList.videos!.map { $0.video.toTrack().toDisplayedVideoItem() },
-                title: videoList.title!)
-        }
-        
-        self.homeItems.removeAll()
-        self.homeItems.append(contentsOf: videoListsItems)
-        self.homeItems.append(contentsOf: compactPlaylistsItems)
-        self.homeItems.append(contentsOf: simplePlaylistsItems)
-        self.homeItems.append(.GenreItem(genres: GenresRepository().loadGenres()))
-        
-        self.tableView.reloadData()
-    }
-    
-    func showTrending(_ items: [DisplayedVideoItem]) {
-        let trendingItem = HomeItem.VideoList(items: items, title: "Trending")
-        if self.homeItems.count > 1 {
-            self.homeItems.insert(trendingItem, at: 1)
-        } else {
-            self.homeItems.insert(trendingItem, at: 0)
-        }
-        self.tableView.reloadData()
-    }
-    
-    func showArtists(_ artists: [Artist]) {
-        //self.homeItems.insert(.ArtistItem(artists: artists), at: 1)
-        //self.tableView.reloadData()
-    }
-    
-}
-

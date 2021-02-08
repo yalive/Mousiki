@@ -12,13 +12,15 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.home.model.HeaderItem
-import com.cas.musicplayer.ui.home.HomeViewModel
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.navigateSafeAction
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.ui.home.HomeViewModel
+import com.mousiki.shared.ui.home.model.HeaderItem
+import com.mousiki.shared.ui.home.model.title
 
 /**
  ***************************************
@@ -57,7 +59,7 @@ class HomeHeaderAdapterDelegate(
         var item: HeaderItem? = null
         fun bind(headerItem: HeaderItem) {
             item = headerItem
-            txtTitle.setText(headerItem.title)
+            txtTitle.text = headerItem.title(AndroidStrings)
             if (headerItem.showMore) {
                 view.onClick { showMore(headerItem) }
                 showAll.onClick { showMore(headerItem) }

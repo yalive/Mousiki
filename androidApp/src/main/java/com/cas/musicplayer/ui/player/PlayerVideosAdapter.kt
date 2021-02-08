@@ -14,7 +14,7 @@ import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.ads.PagerAdsCellDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.screenSize

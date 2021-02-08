@@ -16,9 +16,9 @@ import com.cas.common.adapter.FragmentPageAdapter
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.hideSoftKeyboard
-import com.cas.common.extensions.observe
+import com.cas.musicplayer.tmp.observe
 import com.cas.common.extensions.visible
-import com.cas.common.fragment.BaseFragment
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSearchYoutubeBinding

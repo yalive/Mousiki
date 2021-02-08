@@ -1,4 +1,4 @@
-package com.cas.common.resource
+package com.mousiki.shared.ui.resource
 
 import com.mousiki.shared.domain.result.Result
 

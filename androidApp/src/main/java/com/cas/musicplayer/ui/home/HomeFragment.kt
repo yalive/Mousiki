@@ -7,23 +7,25 @@ import android.os.Bundle
 import android.widget.ProgressBar
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.isDarkMode
-import com.cas.common.extensions.observe
-import com.cas.common.extensions.valueOrNull
-import com.cas.common.fragment.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentHomeBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
+import com.mousiki.shared.ui.resource.valueOrNull
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.ui.home.HomeViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
@@ -108,13 +110,14 @@ class HomeFragment : BaseFragment<HomeViewModel>(
     override fun withToolbar(): Boolean = false
 
     private fun observeViewModel() {
-        observe(viewModel.homeItems) { items ->
+        observe(viewModel.homeItems.asLiveData()) { items ->
+            if (items == null) return@observe
             homeAdapter.dataItems = items.toMutableList()
             progressBar.isVisible = false
         }
-        observe(viewModel.genres, homeAdapter::updateGenres)
-        observe(viewModel.artists, homeAdapter::updateArtists)
-        observe(viewModel.newReleases, homeAdapter::updatePopularSongs)
+        observe(viewModel.genres.asLiveData(), homeAdapter::updateGenres)
+        observe(viewModel.artists.asLiveData(), homeAdapter::updateArtists)
+        observe(viewModel.newReleases.asLiveData(), homeAdapter::updatePopularSongs)
     }
 
     //region Status bar adjusment

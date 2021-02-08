@@ -1,6 +1,6 @@
 package com.cas.musicplayer.di
 
-import com.cas.musicplayer.ui.common.PlaySongDelegate
+import com.mousiki.shared.player.PlaySongDelegate
 import com.cas.musicplayer.ui.common.PlaySongDelegateImpl
 import org.koin.dsl.bind
 import org.koin.dsl.module

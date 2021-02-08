@@ -1,4 +1,4 @@
-package com.cas.common.fragment
+package com.cas.musicplayer.ui.base
 
 import android.graphics.Color
 import android.os.Build
@@ -7,9 +7,10 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.asLiveData
 import com.cas.common.extensions.isDarkMode
-import com.cas.common.extensions.observeEvent
-import com.cas.common.viewmodel.BaseViewModel
+import com.cas.musicplayer.tmp.observe
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.utils.resolve
 
 /**
@@ -27,9 +28,11 @@ abstract class BaseFragment<T : BaseViewModel>(
     override fun onResume() {
         super.onResume()
         setupToolbar()
-        observeEvent(viewModel.toast) {
-            val message = requireContext().resolve(it)
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        observe(viewModel.toast.asLiveData()) {
+            it?.getContentIfNotHandled()?.let { value ->
+                val message = requireContext().resolve(value)
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            }
         }
     }
 

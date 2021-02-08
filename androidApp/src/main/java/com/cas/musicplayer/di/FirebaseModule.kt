@@ -2,9 +2,9 @@ package com.cas.musicplayer.di
 
 import android.annotation.SuppressLint
 import com.cas.musicplayer.BuildConfig
+import com.cas.musicplayer.firebase.AndroidAnalytics
 import com.cas.musicplayer.firebase.FirebaseConfigDelegate
-import com.cas.musicplayer.utils.AndroidAnalytics
-import com.cas.musicplayer.utils.Storage
+import com.cas.musicplayer.firebase.Storage
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig

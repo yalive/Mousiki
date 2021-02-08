@@ -21,7 +21,6 @@ class HomeGenreCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        
         for (index, view) in views.enumerated() {
             view.tag = index
             view.setCorner(radius: 4)
@@ -43,6 +42,9 @@ class HomeGenreCell: UITableViewCell {
     
     
     func bind(_ genres: [GenreMusic]) {
+        if genres.isEmpty {
+            return
+        }
         self.genres = genres
         for (index, imageView) in images.enumerated() {
             let genre = genres[index]

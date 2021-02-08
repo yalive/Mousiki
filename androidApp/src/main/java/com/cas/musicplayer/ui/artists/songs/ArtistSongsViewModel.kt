@@ -2,19 +2,20 @@ package com.cas.musicplayer.ui.artists.songs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.resource.Resource
-import com.cas.common.resource.asResource
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.ui.common.PlaySongDelegate
+import androidx.lifecycle.viewModelScope
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
 import com.cas.musicplayer.ui.common.songList
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetArtistSongsUseCase
+import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.asResource
+import kotlinx.coroutines.launch
 
 /**
  **********************************
@@ -35,7 +36,7 @@ class ArtistSongsViewModel(
         loadArtistTracks(artist)
     }
 
-    fun loadArtistTracks(artist: Artist) = uiCoroutine {
+    fun loadArtistTracks(artist: Artist) = viewModelScope.launch {
         _tracks.value = Resource.Loading
         val result = getArtistSongs(artist)
         _tracks.value = result.map { tracks ->
@@ -44,14 +45,14 @@ class ArtistSongsViewModel(
         populateAdsIn(_tracks)
     }
 
-    fun onClickTrack(track: MusicTrack) = uiCoroutine {
+    fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
         playTrackFromQueue(track, _tracks.songList())
     }
 
     fun onClickTrackPlayAll() {
-        uiCoroutine {
+        viewModelScope.launch {
             val allSongs = _tracks.songList()
-            if (allSongs.isEmpty()) return@uiCoroutine
+            if (allSongs.isEmpty()) return@launch
             playTrackFromQueue(allSongs.first(), allSongs)
         }
     }

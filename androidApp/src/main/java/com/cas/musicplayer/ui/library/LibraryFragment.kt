@@ -9,9 +9,9 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.common.extensions.observe
-import com.cas.common.extensions.observeEvent
-import com.cas.common.fragment.BaseFragment
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentLibraryBinding

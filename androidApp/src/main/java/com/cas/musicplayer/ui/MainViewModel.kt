@@ -2,17 +2,18 @@ package com.cas.musicplayer.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.event.Event
-import com.cas.common.event.asEvent
-import com.cas.common.viewmodel.BaseViewModel
+import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.BuildConfig
-import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.preference.UserPrefs
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.event.Event
+import com.mousiki.shared.ui.event.asEvent
 import com.mousiki.shared.utils.AnalyticsApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  **********************************
@@ -33,16 +34,16 @@ class MainViewModel(
     val doubleClickSearch: LiveData<Event<Unit>>
         get() = _doubleClickSearch
 
-    fun playTrackFromDeepLink(track: MusicTrack) = uiCoroutine {
+    fun playTrackFromDeepLink(track: MusicTrack) = viewModelScope.launch {
         playTrackFromQueue(track, listOf(track))
     }
 
-    fun playTrackFromPushNotification(track: MusicTrack) = uiCoroutine {
+    fun playTrackFromPushNotification(track: MusicTrack) = viewModelScope.launch {
         playTrackFromQueue(track, listOf(track))
     }
 
-    fun checkToRateApp() = uiCoroutine {
-        if (BuildConfig.DEBUG) return@uiCoroutine
+    fun checkToRateApp() = viewModelScope.launch {
+        if (BuildConfig.DEBUG) return@launch
         val launchCount = UserPrefs.getLaunchCount()
         val frequencyRateAppPopup = remoteAppConfig.getFrequencyRateAppPopup()
         if (!UserPrefs.hasRatedApp() && launchCount % frequencyRateAppPopup == 0) {

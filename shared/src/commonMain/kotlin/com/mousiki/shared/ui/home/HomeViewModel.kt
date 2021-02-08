@@ -1,33 +1,28 @@
-package com.cas.musicplayer.ui.home
+package com.mousiki.shared.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.cas.common.resource.*
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.ui.common.PlaySongDelegate
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
-import com.cas.musicplayer.ui.home.model.HeaderItem
-import com.cas.musicplayer.ui.home.model.HomeItem
-import com.cas.musicplayer.ui.home.model.toDisplayedVideoItem
-import com.cas.musicplayer.utils.uiCoroutine
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
 import com.mousiki.shared.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
+import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.preference.PreferencesHelper
-import com.mousiki.shared.utils.AnalyticsApi
-import com.mousiki.shared.utils.ConnectivityChecker
-import com.mousiki.shared.utils.getCurrentLocale
-import com.mousiki.shared.utils.logEvent
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.home.model.HeaderItem
+import com.mousiki.shared.ui.home.model.HomeItem
+import com.mousiki.shared.ui.resource.*
+import com.mousiki.shared.utils.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -45,31 +40,31 @@ class HomeViewModel(
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
     private val preferencesHelper: PreferencesHelper,
-    delegate: PlaySongDelegate
-) : BaseViewModel(), PlaySongDelegate by delegate {
+    playSongDelegate: PlaySongDelegate
+) : BaseViewModel(), PlaySongDelegate by playSongDelegate {
 
-    private val _newReleases = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
-    val newReleases: LiveData<Resource<List<DisplayedVideoItem>>> = _newReleases
+    private val _newReleases =
+        MutableStateFlow<Resource<List<DisplayedVideoItem>>?>(null)
+    val newReleases: StateFlow<Resource<List<DisplayedVideoItem>>?> = _newReleases
 
-    private val _genres = MutableLiveData<List<GenreMusic>>()
-    val genres: LiveData<List<GenreMusic>> = _genres
+    private val _genres = MutableStateFlow<List<GenreMusic>?>(null)
+    val genres: StateFlow<List<GenreMusic>?> = _genres
 
-    private val _artists = MutableLiveData<Resource<List<Artist>>>()
-    val artists: LiveData<Resource<List<Artist>>> = _artists
+    private val _artists = MutableStateFlow<Resource<List<Artist>>?>(null)
+    val artists: StateFlow<Resource<List<Artist>>?> = _artists
 
-    private val _homeItems = MutableLiveData<List<HomeItem>>()
-    val homeItems: LiveData<List<HomeItem>> = _homeItems
+    private val _homeItems = MutableStateFlow<List<HomeItem>?>(null)
+    val homeItems: StateFlow<List<HomeItem>?> = _homeItems
 
     init {
         getHome()
     }
 
-    private fun getHome() = viewModelScope.launch {
+    private fun getHome() = scope.launch {
         appConfig.awaitActivation()
         if (appConfig.newHomeEnabled()) {
             when (val result = homeRepository.getHome()) {
                 is Result.Success -> {
-
                     val homeRS = result.data
                     val items = mutableListOf<HomeItem>()
 
@@ -128,7 +123,7 @@ class HomeViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack, queue: List<MusicTrack>) = uiCoroutine {
+    fun onClickTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
         playTrackFromQueue(track, queue)
     }
 
@@ -136,9 +131,9 @@ class HomeViewModel(
         loadTrending()
     }
 
-    private fun loadTrending() = uiCoroutine {
+    private fun loadTrending() = scope.launch {
         if (_newReleases.hasItems() || _newReleases.isLoading()) {
-            return@uiCoroutine
+            return@launch
         }
         val connectedBefore = connectivityState.isConnected()
         _newReleases.loading()
@@ -156,12 +151,12 @@ class HomeViewModel(
         }
     }
 
-    private fun loadGenres() = uiCoroutine {
+    private fun loadGenres() = scope.launch {
         val chartList = getGenres().take(8)
         _genres.value = chartList
     }
 
-    private fun loadArtists() = uiCoroutine {
+    private fun loadArtists() = scope.launch {
         if (!_artists.hasItems() && !_artists.isLoading()) {
             _artists.loading()
             val result = getCountryArtists()
@@ -183,5 +178,18 @@ class HomeViewModel(
         loadGenres()
         loadArtists()
     }
+
+    // For iOS
+    val newReleasesFlow: CommonFlow<Resource<List<DisplayedVideoItem>>?>
+        get() = newReleases.asCommonFlow()
+
+    val genresFlow: CommonFlow<List<GenreMusic>?>
+        get() = genres.asCommonFlow()
+
+    val artistsFlow: CommonFlow<Resource<List<Artist>>?>
+        get() = artists.asCommonFlow()
+
+    val homeItemsFlow: CommonFlow<List<HomeItem>?>
+        get() = homeItems.asCommonFlow()
 }
 

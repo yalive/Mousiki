@@ -2,10 +2,11 @@ package com.cas.musicplayer.ui.searchyoutube
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cas.common.viewmodel.BaseViewModel
-import com.cas.musicplayer.utils.uiCoroutine
+import androidx.lifecycle.viewModelScope
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
+import kotlinx.coroutines.launch
 
 /**
  ***************************************
@@ -23,7 +24,7 @@ class MainSearchViewModel(
         prepareGenres()
     }
 
-    private fun prepareGenres() = uiCoroutine {
+    private fun prepareGenres() = viewModelScope.launch {
         val chartList = getGenres()
         _genres.value = chartList
     }

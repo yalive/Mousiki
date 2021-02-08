@@ -18,7 +18,7 @@ import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.Playlist
 import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
-import com.cas.musicplayer.utils.Constants
+import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.loadImage
 
 

@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.LoadingItem
 import com.cas.musicplayer.ui.common.ads.AdsItem
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.model.SongsHeaderItem
 
 class SongsDiffUtil(

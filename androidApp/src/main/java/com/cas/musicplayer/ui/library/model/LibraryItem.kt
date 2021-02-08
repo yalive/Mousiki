@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.Playlist
-import com.cas.musicplayer.ui.home.model.DisplayedVideoItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 
 /**
  ***************************************

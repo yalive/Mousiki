@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.cas.common.dpToPixel
-import com.cas.common.extensions.observe
-import com.cas.common.extensions.observeEvent
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
 import com.cas.common.extensions.onClick
-import com.cas.common.fragment.BaseFragment
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
