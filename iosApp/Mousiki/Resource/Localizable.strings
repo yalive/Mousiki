@@ -20,3 +20,7 @@
 
 // Library
 "emptyFavouriteList" = "No favourite";
+"libraryRecent" = "Recent";
+"libraryFavourites" = "Favourites";
+"libraryPlaylists" = "Playlists";
+"libraryHeavySongs" = "Heavy songs";

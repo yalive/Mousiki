@@ -1,22 +1,13 @@
 package com.cas.musicplayer.ui.common.ads
 
-import androidx.lifecycle.MutableLiveData
-import com.mousiki.shared.ui.resource.Resource
-import com.cas.musicplayer.tmp.valueOrNull
+import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.valueOrNull
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.logEvent
-
-/**
- ***************************************
- * Created by Y.Abdelhadi on 5/3/20.
- ***************************************
- */
-interface GetListAdsDelegate {
-    suspend fun populateAdsIn(resource: MutableLiveData<Resource<List<DisplayableItem>>>)
-    suspend fun insertAdsIn(items: List<DisplayableItem>): List<DisplayableItem>
-}
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class GetListAdsDelegateImp(
     private val config: RemoteAppConfig,
@@ -24,7 +15,7 @@ class GetListAdsDelegateImp(
 ) : GetListAdsDelegate {
 
 
-    override suspend fun populateAdsIn(resource: MutableLiveData<Resource<List<DisplayableItem>>>) {
+    override suspend fun populateAdsIn(resource: MutableStateFlow<Resource<List<DisplayableItem>>?>) {
         val items = resource.valueOrNull() ?: return
         if (items.isEmpty()) return
         val itemsWithAd = insertAdsIn(items)

@@ -1,7 +1,7 @@
 package com.cas.musicplayer.ui.library.adapters
 
 import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
-import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.delegates.LibraryCreatePlaylistDelegate
 import com.cas.musicplayer.ui.library.delegates.LibraryCustomPlaylistDelegate
 

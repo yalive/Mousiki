@@ -9,8 +9,13 @@
 import UIKit
 import shared
 
+protocol HomeGenreCellDelegate {
+    func didTapGenre(_ genre: GenreMusic)
+}
+
 class HomeGenreCell: UITableViewCell {
     
+    var delegate: HomeGenreCellDelegate?
     
     @IBOutlet var views: [UIView]!
     @IBOutlet var labels: [UILabel]!
@@ -59,6 +64,7 @@ class HomeGenreCell: UITableViewCell {
         let genre = genres[index]
         sender.view?.showAnimation {
             print("Clicked \(genre.title)")
+            self.delegate?.didTapGenre(genre)
         }
         
     }

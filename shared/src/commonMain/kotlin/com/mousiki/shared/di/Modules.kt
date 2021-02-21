@@ -35,6 +35,8 @@ import com.mousiki.shared.domain.usecase.song.GetFeaturedSongsUseCase
 import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.ui.home.HomeViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
@@ -152,5 +154,7 @@ val useCasesModule = module {
 }
 
 val kmmViewModelsModule = module {
+    factory { PlaylistSongsViewModel(get(), get(), get()) }
     factory { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    factory { LibraryViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 }

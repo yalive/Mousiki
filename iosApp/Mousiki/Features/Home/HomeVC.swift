@@ -32,6 +32,10 @@ class HomeVC: UIViewController {
         observeViewModel()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     func observeViewModel() {
         viewModel.homeItemsFlow.watch { items in
             guard let items = items else { return }
@@ -112,16 +116,19 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         } else if homeItem is HomeItem.GenreItem {
             let genreItem = homeItem as! HomeItem.GenreItem
             let cell = tableView.dequeueReusableCell(withIdentifier: "HomeGenreCell") as! HomeGenreCell
+            cell.delegate = self
             cell.bind(genreItem.genres)
             return cell
         } else if homeItem is HomeItem.CompactPlaylists {
             let compactPlaylistItem = homeItem as! HomeItem.CompactPlaylists
             let cell = tableView.dequeueReusableCell(withIdentifier: "CompactPlaylistsRow") as! CompactPlaylistsRow
+            cell.delegate = self
             cell.bind(items: compactPlaylistItem.playlists)
             return cell
         } else if homeItem is HomeItem.SimplePlaylists {
             let simplePlaylistItem = homeItem as! HomeItem.SimplePlaylists
             let cell = tableView.dequeueReusableCell(withIdentifier: "SimplePlaylistsRow") as! SimplePlaylistsRow
+            cell.delegate = self
             cell.bind(items: simplePlaylistItem.playlists)
             return cell
         } else if homeItem is HomeItem.VideoList {
@@ -175,5 +182,33 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
+    }
+}
+
+extension HomeVC: HomeGenreCellDelegate {
+    
+    func didTapGenre(_ genre: GenreMusic) {
+        let vc = PlaylistSongsVC.loadFromNib()
+        vc.playlistId = genre.topTracksPlaylist
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension HomeVC: CompactPlaylistsRowDelegate {
+    
+    func didTapCompactPlaylist(_ playlist: CompactPlaylist) {
+        let vc = PlaylistSongsVC.loadFromNib()
+        vc.playlistId = playlist.playlistId
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension HomeVC: SimplePlaylistsRowDelegate {
+
+    func didTapSimplePlaylist(_ playlist: SimplePlaylist) {
+        guard let playlistId = playlist.playlistId else { return }
+        let vc = PlaylistSongsVC.loadFromNib()
+        vc.playlistId = playlistId
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

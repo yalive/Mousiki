@@ -14,27 +14,27 @@ import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.isDarkMode
-import com.cas.musicplayer.tmp.observe
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.itemsMarginDecorator
-import com.mousiki.shared.ui.base.BaseViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlaylistSongsBinding
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.mousiki.shared.ui.resource.Resource
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageRes
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageUrl
-import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.utils.Constants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.launch
@@ -143,7 +143,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         adapter.submitList(updatedList, diffCallback)
     }
 
-    protected fun updateUI(resource: Resource<List<DisplayableItem>>) {
+    protected fun updateUI(resource: Resource<List<DisplayableItem>>?) {
         when (resource) {
             is Resource.Success -> {
                 (view as? ViewGroup)?.let { viewGroup ->

@@ -1,9 +1,6 @@
-package com.cas.musicplayer.ui.library
+package com.mousiki.shared.ui.library
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
-import com.mousiki.shared.utils.Constants
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
@@ -15,7 +12,12 @@ import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.event.Event
 import com.mousiki.shared.ui.event.asEvent
+import com.mousiki.shared.utils.CommonFlow
+import com.mousiki.shared.utils.Constants
 import com.mousiki.shared.utils.Strings
+import com.mousiki.shared.utils.asCommonFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
@@ -37,23 +39,23 @@ class LibraryViewModel(
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
-    private val _recentSongs = MutableLiveData<List<DisplayedVideoItem>>()
-    val recentSongs: LiveData<List<DisplayedVideoItem>> = _recentSongs
+    private val _recentSongs = MutableStateFlow<List<DisplayedVideoItem>?>(null)
+    val recentSongs: StateFlow<List<DisplayedVideoItem>?> = _recentSongs
 
-    private val _heavySongs = MutableLiveData<List<DisplayedVideoItem>>()
-    val heavySongs: LiveData<List<DisplayedVideoItem>> = _heavySongs
+    private val _heavySongs = MutableStateFlow<List<DisplayedVideoItem>?>(null)
+    val heavySongs: StateFlow<List<DisplayedVideoItem>?> = _heavySongs
 
-    private val _favouriteSongs = MutableLiveData<List<DisplayedVideoItem>>()
-    val favouriteSongs: LiveData<List<DisplayedVideoItem>> = _favouriteSongs
+    private val _favouriteSongs = MutableStateFlow<List<DisplayedVideoItem>?>(null)
+    val favouriteSongs: StateFlow<List<DisplayedVideoItem>?> = _favouriteSongs
 
-    private val _playlists = MutableLiveData<List<LibraryPlaylistItem>>()
-    val playlists: LiveData<List<LibraryPlaylistItem>> = _playlists
+    private val _playlists = MutableStateFlow<List<LibraryPlaylistItem>?>(null)
+    val playlists: StateFlow<List<LibraryPlaylistItem>?> = _playlists
 
-    private val _onClickSong = MutableLiveData<Event<Unit>>()
-    val onClickSong: LiveData<Event<Unit>> = _onClickSong
+    private val _onClickSong = MutableStateFlow<Event<Unit>?>(null)
+    val onClickSong: StateFlow<Event<Unit>?> = _onClickSong
 
-    private val _onClickPlaylist = MutableLiveData<Event<Playlist>>()
-    val onClickPlaylist: LiveData<Event<Playlist>> = _onClickPlaylist
+    private val _onClickPlaylist = MutableStateFlow<Event<Playlist>?>(null)
+    val onClickPlaylist: StateFlow<Event<Playlist>?> = _onClickPlaylist
 
     init {
         collectRecent()
@@ -63,13 +65,13 @@ class LibraryViewModel(
 
     private fun collectRecent() = scope.launch {
         getRecentlyPlayedSongsFlow(50).collect { songs ->
-            _recentSongs.postValue(tracksToDisplayableItems(songs))
+            _recentSongs.value = tracksToDisplayableItems(songs)
         }
     }
 
     private fun collectFavourite() = scope.launch {
         getFavouriteTracksFlow(20).collect { songs ->
-            _favouriteSongs.postValue(tracksToDisplayableItems(songs))
+            _favouriteSongs.value = tracksToDisplayableItems(songs)
         }
     }
 
@@ -77,7 +79,7 @@ class LibraryViewModel(
         getHeavyTracksFlow(10)
             .filter { it.size >= 3 }
             .collect { songs ->
-                _heavySongs.postValue(tracksToDisplayableItems(songs))
+                _heavySongs.value = tracksToDisplayableItems(songs)
             }
     }
 
@@ -133,4 +135,29 @@ class LibraryViewModel(
     private fun tracksToDisplayableItems(songs: List<MusicTrack>) =
         songs.map { it.toDisplayedVideoItem() }
 
+
+    // For iOS
+    fun recentSongsFlow(): CommonFlow<List<DisplayedVideoItem>?> {
+        return recentSongs.asCommonFlow()
+    }
+
+    fun heavySongsFlow(): CommonFlow<List<DisplayedVideoItem>?> {
+        return heavySongs.asCommonFlow()
+    }
+
+    fun favouriteSongsFlow(): CommonFlow<List<DisplayedVideoItem>?> {
+        return favouriteSongs.asCommonFlow()
+    }
+
+    fun playlistsFlow(): CommonFlow<List<LibraryPlaylistItem>?> {
+        return playlists.asCommonFlow()
+    }
+
+    fun onClickSongFlow(): CommonFlow<Event<Unit>?> {
+        return onClickSong.asCommonFlow()
+    }
+
+    fun onClickPlaylistFlow(): CommonFlow<Event<Playlist>?> {
+        return onClickPlaylist.asCommonFlow()
+    }
 }

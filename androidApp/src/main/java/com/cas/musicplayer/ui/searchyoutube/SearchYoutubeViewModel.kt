@@ -1,11 +1,6 @@
 package com.cas.musicplayer.ui.searchyoutube
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
-import com.cas.musicplayer.ui.common.songList
+import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
@@ -19,7 +14,10 @@ import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.ui.resource.asResource
+import com.mousiki.shared.ui.resource.songList
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -36,12 +34,12 @@ class SearchYoutubeViewModel(
     getListAdsDelegate: GetListAdsDelegate
 ) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
 
-    private val _videos = MutableLiveData<Resource<List<DisplayableItem>>>()
-    val videos: LiveData<Resource<List<DisplayableItem>>>
+    private val _videos = MutableStateFlow<Resource<List<DisplayableItem>>?>(null)
+    val videos: StateFlow<Resource<List<DisplayableItem>>?>
         get() = _videos
 
-    private val _searchSuggestions = MutableLiveData<List<SearchSuggestion>>()
-    val searchSuggestions: LiveData<List<SearchSuggestion>>
+    private val _searchSuggestions = MutableStateFlow<List<SearchSuggestion>?>(null)
+    val searchSuggestions: StateFlow<List<SearchSuggestion>?>
         get() = _searchSuggestions
 
     private var lastQuery = ""
@@ -54,7 +52,7 @@ class SearchYoutubeViewModel(
     private var searchToken: String? = null
     private var currentPage: Int = 1
 
-    fun search(query: String) = viewModelScope.launch {
+    fun search(query: String) = scope.launch {
         if (lastQuery == query && videos.value != null) {
             return@launch
         }
@@ -66,7 +64,7 @@ class SearchYoutubeViewModel(
         saveSearchQuery(query)
     }
 
-    fun loadMore(page: Int) = viewModelScope.launch {
+    fun loadMore(page: Int) = scope.launch {
         if (searchKey == null || searchToken == null) {
             // Ignore if there is no token
             // util if data come from local data base
@@ -74,7 +72,7 @@ class SearchYoutubeViewModel(
         }
 
         if (page > 5) {
-            Log.d("load_more_search", "Ignored page $page")
+            //Log.d("load_more_search", "Ignored page $page")
             return@launch
         }
 
@@ -106,7 +104,7 @@ class SearchYoutubeViewModel(
         populateAdsIn(_videos)
     }
 
-    fun getSuggestions(keyword: String?) = viewModelScope.launch {
+    fun getSuggestions(keyword: String?) = scope.launch {
         if (keyword == null || keyword.isEmpty() || keyword.length <= 1) {
             showHistoricSearch()
             return@launch
@@ -124,12 +122,12 @@ class SearchYoutubeViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
+    fun onClickTrack(track: MusicTrack) = scope.launch {
         val tracks = _videos.songList()
         playTrackFromQueue(track, tracks)
     }
 
-    fun showHistoricSearch() = viewModelScope.launch {
+    fun showHistoricSearch() = scope.launch {
         val historicSearch = getRecentSearchQueries("").map {
             SearchSuggestion(it, true)
         }

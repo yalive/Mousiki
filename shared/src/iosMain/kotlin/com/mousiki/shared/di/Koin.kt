@@ -1,5 +1,6 @@
 package com.mousiki.shared.di
 
+import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.config.RemoteConfigDelegate
 import com.mousiki.shared.player.PlaySongDelegate
@@ -15,6 +16,7 @@ fun initIOSKoin(provider: IOSDependenciesProvider) {
         single { provider.analytics } bind AnalyticsApi::class
         single { RemoteAppConfig(provider.remoteConfigDelegate, get(), get(), get(), get()) }
         single { provider.playSongDelegate } bind PlaySongDelegate::class
+        single { provider.listAdsDelegate } bind GetListAdsDelegate::class
         single { provider.strings } bind Strings::class
     }
     initKoin(iOSModule)
@@ -27,6 +29,8 @@ interface IOSDependenciesProvider {
     val analytics: AnalyticsApi
 
     val playSongDelegate: PlaySongDelegate
+
+    val listAdsDelegate: GetListAdsDelegate
 
     val strings: Strings
 }

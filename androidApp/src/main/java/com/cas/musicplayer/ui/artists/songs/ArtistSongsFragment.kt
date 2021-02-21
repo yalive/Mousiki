@@ -3,9 +3,10 @@ package com.cas.musicplayer.ui.artists.songs
 
 import android.os.Bundle
 import android.view.View
-import com.cas.musicplayer.tmp.observe
+import androidx.lifecycle.asLiveData
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.data.models.Artist
@@ -25,7 +26,7 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init(artist)
-        observe(viewModel.tracks, this::updateUI)
+        observe(viewModel.tracks.asLiveData(), this::updateUI)
         binding.txtPlaylistName.text = artist.name
         binding.txtScreenTitle.text = artist.name
     }

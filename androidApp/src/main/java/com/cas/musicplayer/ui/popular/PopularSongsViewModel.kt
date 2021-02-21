@@ -1,11 +1,7 @@
 package com.cas.musicplayer.ui.popular
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.tmp.*
-import com.cas.musicplayer.ui.common.ads.GetListAdsDelegate
-import com.cas.musicplayer.ui.common.songList
+import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.LoadingItem
 import com.mousiki.shared.domain.models.MusicTrack
@@ -15,8 +11,9 @@ import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.ui.base.BaseViewModel
-import com.mousiki.shared.ui.resource.Resource
-import com.mousiki.shared.ui.resource.asResource
+import com.mousiki.shared.ui.resource.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -31,8 +28,8 @@ class PopularSongsViewModel(
     getListAdsDelegate: GetListAdsDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate, GetListAdsDelegate by getListAdsDelegate {
 
-    private val _newReleases = MutableLiveData<Resource<List<DisplayableItem>>>()
-    val newReleases: LiveData<Resource<List<DisplayableItem>>>
+    private val _newReleases = MutableStateFlow<Resource<List<DisplayableItem>>?>(null)
+    val newReleases: StateFlow<Resource<List<DisplayableItem>>?>
         get() = _newReleases
 
     init {
@@ -41,7 +38,7 @@ class PopularSongsViewModel(
 
     private var loadingMore = false
 
-    private fun loadTrending() = viewModelScope.launch {
+    private fun loadTrending() = scope.launch {
         if (_newReleases.hasItems() || _newReleases.isLoading()) {
             return@launch
         }
@@ -58,7 +55,7 @@ class PopularSongsViewModel(
         }
     }
 
-    fun loadMoreSongs() = viewModelScope.launch {
+    fun loadMoreSongs() = scope.launch {
         if (loadingMore) return@launch
         val allSongs = _newReleases.songList()
         if (allSongs.isNotEmpty() && allSongs.size < MAX_VIDEOS) {
@@ -76,11 +73,11 @@ class PopularSongsViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
+    fun onClickTrack(track: MusicTrack) = scope.launch {
         playTrackFromQueue(track, _newReleases.songList())
     }
 
-    fun onClickTrackPlayAll() = viewModelScope.launch {
+    fun onClickTrackPlayAll() = scope.launch {
         val allSongs = _newReleases.songList()
         if (allSongs.isEmpty()) return@launch
         playTrackFromQueue(allSongs.first(), allSongs)
@@ -90,23 +87,4 @@ class PopularSongsViewModel(
         private const val MAX_VIDEOS = 200
         private const val PAGE_SIZE = 25
     }
-}
-
-fun MutableLiveData<Resource<List<DisplayableItem>>>.removeLoading() {
-    val oldList = (valueOrNull() ?: emptyList()).toMutableList()
-    oldList.remove(LoadingItem)
-    value = Resource.Success(oldList)
-}
-
-fun MutableLiveData<Resource<List<DisplayableItem>>>.appendItems(
-    newItems: List<DisplayableItem>,
-    removeLoading: Boolean
-) {
-    val oldList = (valueOrNull() ?: emptyList()).toMutableList().apply {
-        addAll(newItems)
-    }
-    if (removeLoading) {
-        oldList.remove(LoadingItem)
-    }
-    value = Resource.Success(oldList)
 }

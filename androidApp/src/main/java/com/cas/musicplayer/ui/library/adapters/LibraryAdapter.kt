@@ -3,7 +3,7 @@ package com.cas.musicplayer.ui.library.adapters
 import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.delegates.*
 import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
 import com.cas.musicplayer.ui.library.model.LibraryItem

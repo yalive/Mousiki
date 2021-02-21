@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,14 +17,14 @@ import com.cas.common.adapter.FragmentPageAdapter
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.hideSoftKeyboard
-import com.cas.musicplayer.tmp.observe
 import com.cas.common.extensions.visible
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSearchYoutubeBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import com.cas.musicplayer.utils.viewBinding
 import kotlinx.coroutines.delay
@@ -149,16 +150,16 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
     }
 
     private fun observeViewModel() {
-        observe(viewModel.videos) {
+        observe(viewModel.videos.asLiveData()) {
             viewPager.visible()
             progressBar.gone()
             recyclerViewSuggestions.gone()
         }
-        observe(viewModel.searchSuggestions) { suggestions ->
+        observe(viewModel.searchSuggestions.asLiveData()) { suggestions ->
             recyclerViewSuggestions.visible()
             viewPager.gone()
             progressBar.gone()
-            searchSuggestionsAdapter.dataItems = suggestions.toMutableList()
+            searchSuggestionsAdapter.dataItems = suggestions.orEmpty().toMutableList()
         }
     }
 }

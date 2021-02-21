@@ -7,12 +7,47 @@
 //
 
 import UIKit
+import shared
 
 class LibraryVC: UIViewController {
 
+    fileprivate var items = [LibraryItem]()
+    lazy var viewModel: LibraryViewModel = {
+        return Injector().libraryViewModel
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = R.string.localizable.menu_library()
+        observeViewModel()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.loadCustomPlaylists()
+    }
+    
+    fileprivate func observeViewModel() {
+        viewModel.playlistsFlow().watch { items in
+            guard let items = items else { return }
+            let playlists = items as! [LibraryPlaylistItem]
+        }
+    }
+}
+
+
+extension LibraryVC: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+    }
+    
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return items.count
+    }
+    
 }

@@ -9,8 +9,14 @@
 import UIKit
 import shared
 
+protocol CompactPlaylistsRowDelegate: class {
+    func didTapCompactPlaylist(_ playlist: CompactPlaylist)
+}
+
 class CompactPlaylistsRow: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    weak var delegate: CompactPlaylistsRowDelegate?
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     private var playlists = [CompactPlaylist]()
@@ -55,6 +61,10 @@ class CompactPlaylistsRow: UITableViewCell, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didTapCompactPlaylist(playlists[indexPath.row])
     }
     
 }

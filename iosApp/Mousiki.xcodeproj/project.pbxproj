@@ -18,6 +18,11 @@
 		FA498D2A25B8F181000DAE82 /* VideoCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA498D2825B8F181000DAE82 /* VideoCollectionCell.xib */; };
 		FA498D2E25B900D6000DAE82 /* HomeSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA498D2C25B900D6000DAE82 /* HomeSectionView.swift */; };
 		FA498D2F25B900D6000DAE82 /* HomeSectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA498D2D25B900D6000DAE82 /* HomeSectionView.xib */; };
+		FA511E8125E26B0000B28E54 /* PlaylistSongsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA511E7F25E26B0000B28E54 /* PlaylistSongsVC.swift */; };
+		FA511E8225E26B0000B28E54 /* PlaylistSongsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA511E8025E26B0000B28E54 /* PlaylistSongsVC.xib */; };
+		FA511E9D25E2726200B28E54 /* LoadListAdDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA511E9C25E2726200B28E54 /* LoadListAdDelegate.swift */; };
+		FA511EA125E27FD100B28E54 /* SongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA511E9F25E27FD100B28E54 /* SongCell.swift */; };
+		FA511EA225E27FD100B28E54 /* SongCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA511EA025E27FD100B28E54 /* SongCell.xib */; };
 		FA5FFCD325B8214800DA9920 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCD125B8214800DA9920 /* HomeVC.swift */; };
 		FA5FFCD425B8214800DA9920 /* HomeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5FFCD225B8214800DA9920 /* HomeVC.xib */; };
 		FA5FFCD725B8218C00DA9920 /* LibraryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5FFCD525B8218C00DA9920 /* LibraryVC.swift */; };
@@ -100,6 +105,11 @@
 		FA498D2825B8F181000DAE82 /* VideoCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoCollectionCell.xib; sourceTree = "<group>"; };
 		FA498D2C25B900D6000DAE82 /* HomeSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeSectionView.swift; sourceTree = "<group>"; };
 		FA498D2D25B900D6000DAE82 /* HomeSectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeSectionView.xib; sourceTree = "<group>"; };
+		FA511E7F25E26B0000B28E54 /* PlaylistSongsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSongsVC.swift; sourceTree = "<group>"; };
+		FA511E8025E26B0000B28E54 /* PlaylistSongsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaylistSongsVC.xib; sourceTree = "<group>"; };
+		FA511E9C25E2726200B28E54 /* LoadListAdDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadListAdDelegate.swift; sourceTree = "<group>"; };
+		FA511E9F25E27FD100B28E54 /* SongCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongCell.swift; sourceTree = "<group>"; };
+		FA511EA025E27FD100B28E54 /* SongCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SongCell.xib; sourceTree = "<group>"; };
 		FA5FFCD125B8214800DA9920 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		FA5FFCD225B8214800DA9920 /* HomeVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeVC.xib; sourceTree = "<group>"; };
 		FA5FFCD525B8218C00DA9920 /* LibraryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryVC.swift; sourceTree = "<group>"; };
@@ -282,6 +292,33 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		FA511E7E25E26A4800B28E54 /* PlaylistSongs */ = {
+			isa = PBXGroup;
+			children = (
+				FA511E9E25E27F9900B28E54 /* Cell */,
+				FA511E7F25E26B0000B28E54 /* PlaylistSongsVC.swift */,
+				FA511E8025E26B0000B28E54 /* PlaylistSongsVC.xib */,
+			);
+			path = PlaylistSongs;
+			sourceTree = "<group>";
+		};
+		FA511E9B25E2723100B28E54 /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				FA511E9C25E2726200B28E54 /* LoadListAdDelegate.swift */,
+			);
+			path = Ads;
+			sourceTree = "<group>";
+		};
+		FA511E9E25E27F9900B28E54 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				FA511E9F25E27FD100B28E54 /* SongCell.swift */,
+				FA511EA025E27FD100B28E54 /* SongCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		FA5FFCC725B81F7A00DA9920 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,6 +342,7 @@
 		FA5FFCC925B81FDA00DA9920 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				FA511E7E25E26A4800B28E54 /* PlaylistSongs */,
 				FA5FFCCA25B8209500DA9920 /* Home */,
 				FA5FFCCB25B8209C00DA9920 /* Library */,
 				FA5FFCCC25B820A700DA9920 /* Search */,
@@ -354,6 +392,7 @@
 		FA5FFCE125B8232100DA9920 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA511E9B25E2723100B28E54 /* Ads */,
 				FA0F702325D1BAC000D9551C /* Strings */,
 				FA0F702025D1844B00D9551C /* Player */,
 				FA35A25825CABBC9009885DF /* DI */,
@@ -559,9 +598,11 @@
 				FAABE21525B86AF2001FD8C5 /* Localizable.strings in Resources */,
 				FA5FFCDC25B821A400DA9920 /* MainSearchVC.xib in Resources */,
 				FA5FFCF525B824EF00DA9920 /* Roboto-Regular.ttf in Resources */,
+				FA511EA225E27FD100B28E54 /* SongCell.xib in Resources */,
 				FA5FFCF625B824EF00DA9920 /* Roboto-Light.ttf in Resources */,
 				FA5FFCD825B8218C00DA9920 /* LibraryVC.xib in Resources */,
 				FA498D2F25B900D6000DAE82 /* HomeSectionView.xib in Resources */,
+				FA511E8225E26B0000B28E54 /* PlaylistSongsVC.xib in Resources */,
 				FAB91B3E25BA04E30080C968 /* CompactPlaylistCell.xib in Resources */,
 				FA9AFFF025BD9FEB00809B22 /* HomeArtistRow.xib in Resources */,
 				FAA207E925B6DBFE004D12CF /* LaunchScreen.storyboard in Resources */,
@@ -672,6 +713,7 @@
 				FAB91B2E25B9FB190080C968 /* SimplePlaylistCell.swift in Sources */,
 				FAABE1F825B86698001FD8C5 /* UIViewController+Helper.swift in Sources */,
 				FA5FFCE625B8238F00DA9920 /* Screen.swift in Sources */,
+				FA511EA125E27FD100B28E54 /* SongCell.swift in Sources */,
 				FAABE20925B8676B001FD8C5 /* UITableViewExt.swift in Sources */,
 				FA0F702525D1BADD00D9551C /* IOSStrings.swift in Sources */,
 				FA5FFCD725B8218C00DA9920 /* LibraryVC.swift in Sources */,
@@ -687,8 +729,10 @@
 				FAB193E225C83BB500FD7767 /* HomeVM.swift in Sources */,
 				FA35A25A25CABBEB009885DF /* KoinDependenciesProvider.swift in Sources */,
 				FAA207DD25B6DBFC004D12CF /* AppDelegate.swift in Sources */,
+				FA511E9D25E2726200B28E54 /* LoadListAdDelegate.swift in Sources */,
 				FABDCB1B25BB73290085ED90 /* HomeGenreCell.swift in Sources */,
 				FAABE20B25B86786001FD8C5 /* CollectionExt.swift in Sources */,
+				FA511E8125E26B0000B28E54 /* PlaylistSongsVC.swift in Sources */,
 				FAB1941B25C85F5500FD7767 /* Storage.swift in Sources */,
 				FA0F701F25D07A5000D9551C /* Analytics.swift in Sources */,
 				FA5FFCE825B823AA00DA9920 /* Font.swift in Sources */,

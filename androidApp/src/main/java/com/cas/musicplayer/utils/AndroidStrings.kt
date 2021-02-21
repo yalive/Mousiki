@@ -19,4 +19,12 @@ object AndroidStrings : Strings {
     // Library
     override val emptyFavouriteList: String
         get() = MusicApp.get().getString(R.string.empty_favourite_list)
+    override val libraryRecent: String
+        get() = MusicApp.get().getString(R.string.library_recent)
+    override val libraryFavourites: String
+        get() = MusicApp.get().getString(R.string.library_favourites)
+    override val libraryHeavySongs: String
+        get() = MusicApp.get().getString(R.string.library_heavy_songs)
+    override val libraryTitlePlaylist: String
+        get() = MusicApp.get().getString(R.string.title_playlist)
 }
