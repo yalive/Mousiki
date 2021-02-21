@@ -19,5 +19,9 @@ class IOSStrings: Strings {
     
     /// Library
     lazy var emptyFavouriteList: String = "No fav"
+    lazy var libraryFavourites: String = R.string.localizable.libraryFavourites()
+    lazy var libraryHeavySongs: String = R.string.localizable.libraryHeavySongs()
+    lazy var libraryRecent: String = R.string.localizable.libraryRecent()
+    lazy var libraryTitlePlaylist: String = R.string.localizable.libraryPlaylists()
 
 }

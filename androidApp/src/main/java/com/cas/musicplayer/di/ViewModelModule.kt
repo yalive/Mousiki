@@ -7,14 +7,11 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
-import com.mousiki.shared.ui.home.HomeViewModel
-import com.cas.musicplayer.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
-import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
@@ -28,10 +25,8 @@ val viewModelsModule = module {
     factory { PopularSongsViewModel(get(), get(), get()) }
     factory { ArtistListViewModel(get()) }
     factory { ArtistSongsViewModel(get(), get(), get()) }
-    factory { PlaylistSongsViewModel(get(), get(), get()) }
     factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get()) }
     factory { GenresViewModel(get()) }
-    factory { LibraryViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { FavouriteSongsViewModel(get(), get()) }
     factory { TrackOptionsViewModel(get(), get(), get()) }
     factory { PlayerViewModel(get(), get(), get(), get()) }

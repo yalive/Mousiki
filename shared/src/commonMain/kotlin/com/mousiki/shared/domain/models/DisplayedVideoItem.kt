@@ -21,3 +21,7 @@ fun MusicTrack.toDisplayedVideoItem() = DisplayedVideoItem(
     songDuration = durationFormatted,
     songImagePath = imgUrl
 )
+
+fun DisplayedVideoItem.artistName(): String {
+    return songTitle.split("-")[0]
+}

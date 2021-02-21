@@ -3,17 +3,18 @@ package com.cas.musicplayer.ui.popular
 
 import android.os.Bundle
 import android.view.View
-import com.cas.musicplayer.tmp.observe
+import androidx.lifecycle.asLiveData
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
-import com.mousiki.shared.ui.resource.Resource
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.featuredImage
-import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.ui.resource.Resource
 
 
 class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
@@ -22,9 +23,10 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
     private var gotFirstTrack = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observe(viewModel.newReleases) {
-            displayFeaturedImageIfNecessary(it)
-            updateUI(it)
+        observe(viewModel.newReleases.asLiveData()) { resource ->
+            if (resource == null) return@observe
+            displayFeaturedImageIfNecessary(resource)
+            updateUI(resource)
         }
         binding.recyclerView.addOnScrollListener(EndlessRecyclerOnScrollListener {
             viewModel.loadMoreSongs()

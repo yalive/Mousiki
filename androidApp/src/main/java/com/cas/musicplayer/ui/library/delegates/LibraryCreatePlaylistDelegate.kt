@@ -14,7 +14,7 @@ import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.EMPTY
 import com.mousiki.shared.domain.models.MusicTrack
-import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
 

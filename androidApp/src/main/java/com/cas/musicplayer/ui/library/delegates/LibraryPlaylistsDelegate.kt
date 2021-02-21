@@ -7,7 +7,7 @@ import com.cas.common.extensions.inflate
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.adapters.LibraryPlaylistsAdapter
 import com.cas.musicplayer.ui.library.model.LibraryItem
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem

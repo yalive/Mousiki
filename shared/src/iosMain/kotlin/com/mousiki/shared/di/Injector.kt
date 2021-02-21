@@ -6,6 +6,8 @@ import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.ui.home.HomeViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
 import com.mousiki.shared.utils.Strings
 import org.koin.core.KoinComponent
 import org.koin.core.get
@@ -27,6 +29,12 @@ object Injector : KoinComponent {
         get() = get()
 
     val homeViewModel: HomeViewModel
+        get() = get()
+
+    val libraryViewModel: LibraryViewModel
+        get() = get()
+
+    val playlistSongsViewModel: PlaylistSongsViewModel
         get() = get()
 
     val strings: Strings

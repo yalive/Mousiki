@@ -3,13 +3,15 @@ package com.cas.musicplayer.ui.playlist.songs
 
 import android.os.Bundle
 import android.view.View
-import com.cas.musicplayer.tmp.observe
+import androidx.lifecycle.asLiveData
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
 
 
 class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
@@ -31,7 +33,7 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
             return
         }
         artist = parcelableGenre
-        observe(viewModel.songs, this::updateUI)
+        observe(viewModel.songs.asLiveData(), this::updateUI)
         binding.txtPlaylistName.text = artist.name
         binding.txtScreenTitle.text = artist.name
     }

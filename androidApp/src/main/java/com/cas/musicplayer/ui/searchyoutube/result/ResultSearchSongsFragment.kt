@@ -3,15 +3,16 @@ package com.cas.musicplayer.ui.searchyoutube.result
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.asLiveData
 import com.cas.common.adapter.PageableFragment
 import com.cas.musicplayer.R
-import com.mousiki.shared.ui.resource.Resource
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.popular.EndlessRecyclerOnScrollListener
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
+import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.utils.Constants
 
 /**
@@ -60,7 +61,7 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
 
     private fun observeViseModel() {
         val parentFragment = parentFragment as SearchYoutubeFragment
-        observe(parentFragment.viewModel.videos) { resource ->
+        observe(parentFragment.viewModel.videos.asLiveData()) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     adapter.dataItems = resource.data.toMutableList()

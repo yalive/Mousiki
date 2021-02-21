@@ -10,4 +10,8 @@ interface Strings {
 
     // Library
     val emptyFavouriteList: String
+    val libraryRecent: String
+    val libraryFavourites: String
+    val libraryHeavySongs: String
+    val libraryTitlePlaylist: String
 }

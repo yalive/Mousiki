@@ -9,13 +9,13 @@ import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.mousiki.shared.ui.home.HomeViewModel
-import com.cas.musicplayer.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
-import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsViewModel
+import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel

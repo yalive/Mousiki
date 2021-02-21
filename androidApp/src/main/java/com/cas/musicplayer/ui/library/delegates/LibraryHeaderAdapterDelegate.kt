@@ -9,10 +9,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.library.model.LibraryHeaderItem
+import com.cas.musicplayer.ui.library.model.title
+import com.cas.musicplayer.utils.AndroidStrings
+import com.mousiki.shared.domain.models.DisplayableItem
 
 /**
  ***************************************
@@ -45,7 +47,7 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         private val txtMore: TextView = view.findViewById(R.id.txtMore)
 
         fun bind(headerItem: LibraryHeaderItem) {
-            txtTitle.setText(headerItem.title)
+            txtTitle.text = headerItem.title(AndroidStrings)
             if (headerItem.showMore) {
                 view.onClick { showMore(headerItem) }
                 showAll.onClick { showMore(headerItem) }

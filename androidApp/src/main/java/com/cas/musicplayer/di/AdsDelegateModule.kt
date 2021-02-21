@@ -3,6 +3,7 @@ package com.cas.musicplayer.di
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.ui.common.ads.*
 import com.cas.musicplayer.utils.EnvConfig
+import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import org.koin.dsl.module
 

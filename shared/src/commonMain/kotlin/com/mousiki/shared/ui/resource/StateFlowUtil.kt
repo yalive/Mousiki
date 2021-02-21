@@ -1,5 +1,7 @@
 package com.mousiki.shared.ui.resource
 
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.LoadingItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -33,4 +35,23 @@ fun <T> Resource<T>.doOnSuccess(block: (T) -> Unit) {
     when (this) {
         is Resource.Success -> block(data)
     }
+}
+
+fun MutableStateFlow<Resource<List<DisplayableItem>>?>.removeLoading() {
+    val oldList = (valueOrNull() ?: emptyList()).toMutableList()
+    oldList.remove(LoadingItem)
+    value = Resource.Success(oldList)
+}
+
+fun MutableStateFlow<Resource<List<DisplayableItem>>?>.appendItems(
+    newItems: List<DisplayableItem>,
+    removeLoading: Boolean
+) {
+    val oldList = (valueOrNull() ?: emptyList()).toMutableList().apply {
+        addAll(newItems)
+    }
+    if (removeLoading) {
+        oldList.remove(LoadingItem)
+    }
+    value = Resource.Success(oldList)
 }

@@ -7,16 +7,16 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.tmp.observeEvent
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentLibraryBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
@@ -24,6 +24,7 @@ import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.ui.library.LibraryViewModel
 
 /**
  ***************************************
@@ -89,31 +90,39 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     }
 
     private fun observeViewModel() {
-        observe(viewModel.recentSongs) {
+        observe(viewModel.recentSongs.asLiveData()) {
+            if (it == null) return@observe
             adapter.updateRecent(it)
         }
-        observe(viewModel.heavySongs) {
+        observe(viewModel.heavySongs.asLiveData()) {
+            if (it == null) return@observe
             adapter.updateHeavy(it)
         }
-        observe(viewModel.favouriteSongs) {
+        observe(viewModel.favouriteSongs.asLiveData()) {
+            if (it == null) return@observe
             adapter.updateFavourite(it)
         }
-        observe(viewModel.playlists) {
+        observe(viewModel.playlists.asLiveData()) {
+            if (it == null) return@observe
             adapter.updatePlaylists(it)
         }
-        observeEvent(viewModel.onClickSong) {
-            (activity as? MainActivity)?.collapseBottomPanel()
+        observe(viewModel.onClickSong.asLiveData()) {
+            it?.getContentIfNotHandled()?.let {
+                (activity as? MainActivity)?.collapseBottomPanel()
+            }
         }
-        observeEvent(viewModel.onClickPlaylist) { playList ->
-            findNavController().navigate(
-                R.id.action_libraryFragment_to_customPlaylistSongsFragment,
-                bundleOf(
-                    BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
-                        playList.urlImage
-                    ),
-                    CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to playList
+        observe(viewModel.onClickPlaylist.asLiveData()) {
+            it?.getContentIfNotHandled()?.let { playList ->
+                findNavController().navigate(
+                    R.id.action_libraryFragment_to_customPlaylistSongsFragment,
+                    bundleOf(
+                        BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
+                            playList.urlImage
+                        ),
+                        CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to playList
+                    )
                 )
-            )
+            }
         }
     }
 }
