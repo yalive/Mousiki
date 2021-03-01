@@ -11,21 +11,22 @@ import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.isDarkMode
+import com.cas.common.recyclerview.enforceSingleScrollDirection
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentHomeBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
-import com.mousiki.shared.ui.resource.valueOrNull
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.ui.home.HomeViewModel
+import com.mousiki.shared.ui.resource.valueOrNull
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
@@ -61,15 +62,19 @@ class HomeFragment : BaseFragment<HomeViewModel>(
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        recyclerView.addItemDecoration(HomeMarginItemDecoration())
-        recyclerView.adapter = homeAdapter
+        recyclerView.run {
+            addItemDecoration(HomeMarginItemDecoration())
+            adapter = homeAdapter
+            enforceSingleScrollDirection()
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    adjustStatusBar()
+                }
+            })
+        }
+
         observeViewModel()
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                adjustStatusBar()
-            }
-        })
         adjustStatusBar()
         darkStatusBar()
         observe(PlaybackLiveData) { state ->

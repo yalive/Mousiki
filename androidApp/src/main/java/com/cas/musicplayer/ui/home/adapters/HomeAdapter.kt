@@ -1,19 +1,21 @@
 package com.cas.musicplayer.ui.home.adapters
 
+import android.os.Parcelable
+import androidx.recyclerview.widget.RecyclerView
+import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
-import com.mousiki.shared.ui.resource.Resource
 import com.cas.musicplayer.tmp.doOnSuccess
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
-import com.mousiki.shared.ui.home.HomeViewModel
 import com.cas.musicplayer.ui.home.delegates.*
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.ui.home.model.HeaderItem
-import com.mousiki.shared.ui.home.model.HomeItem
 import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.domain.models.ChartModel
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.ui.home.HomeViewModel
+import com.mousiki.shared.ui.home.model.HeaderItem
+import com.mousiki.shared.ui.home.model.HomeItem
+import com.mousiki.shared.ui.resource.Resource
 import kotlin.reflect.KClass
 
 /**
@@ -42,6 +44,32 @@ class HomeAdapter(
     )
 ) {
 
+    private val scrollStates = mutableMapOf<Int, Parcelable?>()
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+
+        //save horizontal scroll state
+        val key = holder.layoutPosition
+        scrollStates[key] = holder.itemView
+            .findViewById<RecyclerView>(R.id.recyclerView)
+            ?.layoutManager?.onSaveInstanceState()
+    }
+
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
+        //restore horizontal scroll state if there is a recyclerview
+        val state = scrollStates[holder.layoutPosition]
+        val recyclerView = holder.itemView.findViewById<RecyclerView>(R.id.recyclerView)
+        if (state != null) {
+            recyclerView?.layoutManager?.onRestoreInstanceState(state)
+        } else {
+            recyclerView?.layoutManager?.scrollToPosition(0)
+        }
+    }
+
     fun updatePopularSongs(resource: Resource<List<DisplayedVideoItem>>?) {
         if (resource == null) return
         val index = indexOfItem(HomeItem.PopularsItem::class)
@@ -54,15 +82,6 @@ class HomeAdapter(
                 indexOfHeader,
                 HeaderItem.PopularsHeader(resource is Resource.Loading)
             )
-        }
-    }
-
-    fun updateCharts(charts: List<ChartModel>) {
-        val index = indexOfItem(HomeItem.ChartItem::class)
-        if (index != -1) {
-            val oldList = chartDelegate.adapter.dataItems
-            chartDelegate.adapter.submitList(charts, ChartsDiffUtil(oldList, charts))
-            updateItemAtIndex(index, HomeItem.ChartItem(charts))
         }
     }
 

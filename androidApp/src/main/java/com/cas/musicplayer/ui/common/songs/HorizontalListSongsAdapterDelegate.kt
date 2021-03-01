@@ -13,13 +13,13 @@ import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.ui.resource.Resource
 import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.ui.home.model.HomeItem
 import com.cas.musicplayer.utils.dpToPixel
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.ui.home.model.HomeItem
+import com.mousiki.shared.ui.resource.Resource
 
 /**
  ***************************************
