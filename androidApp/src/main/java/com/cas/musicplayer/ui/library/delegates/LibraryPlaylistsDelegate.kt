@@ -40,10 +40,7 @@ class LibraryPlaylistsDelegate(
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private var adapter =
-            LibraryPlaylistsAdapter(
-                viewModel
-            )
+        private var adapter = LibraryPlaylistsAdapter(viewModel)
         private val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
         init {
