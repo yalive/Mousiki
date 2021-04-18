@@ -151,6 +151,14 @@ class RemoteAppConfig(
         return cacheDuration
     }
 
+    fun autoRefreshAds(): Boolean {
+        return delegate.getBoolean(AUTO_REFRESH_ADS)
+    }
+
+    fun autoRefreshAdsDuration(): Int {
+        return delegate.getInt(AUTO_REFRESH_ADS_DURATION)
+    }
+
     companion object {
 
         private const val YOUTUBE_API_KEYS = "youtube_api_keys"
@@ -169,6 +177,8 @@ class RemoteAppConfig(
             "search_artist_tracks_from_mousiki_api"
         private const val HOME_CACHE_DURATION = "home_cache_duration_hours"
         private const val ENABLE_NEW_HOME = "enable_new_home"
+        private const val AUTO_REFRESH_ADS = "auto_refresh_ads"
+        private const val AUTO_REFRESH_ADS_DURATION = "auto_refresh_ads_duration_min"
 
         private const val DEF_ADS_LIST_OFFSET = 6
         private const val DEF_FREQ_POPUP_RATE = 3
@@ -194,7 +204,9 @@ class RemoteAppConfig(
             configMap[API_URLS] =
                 """{ "search": { "apis": ["https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1 }, "artistSongs": { "apis": ["https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1 }, "playlists": { "apis": ["https://mousikiapp.herokuapp.com", "https://mousikiapp2.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1 }, "home": { "apis": ["https://mousikiapp.herokuapp.com"], "maxApiToTry": 3, "retryCount": 1 } }"""
             configMap[HOME_CACHE_DURATION] = "1"
+            configMap[AUTO_REFRESH_ADS] = "true"
             configMap[ENABLE_NEW_HOME] = "false"
+            configMap[AUTO_REFRESH_ADS_DURATION] = "10"
             return configMap
         }
     }

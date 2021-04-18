@@ -45,17 +45,17 @@
 
             <KeyAttribute
                 android:alpha="0"
-                app:framePosition="85"
+                app:framePosition="30"
                 app:motionTarget="@id/tileView" />
 
             <KeyAttribute
                 android:alpha="0"
-                app:framePosition="80"
+                app:framePosition="30"
                 app:motionTarget="@id/seekBarView" />
 
             <KeyAttribute
                 android:alpha="0"
-                app:framePosition="78"
+                app:framePosition="30"
                 app:motionTarget="@id/playbackControlsView" />
 
             <KeyPosition
@@ -72,6 +72,28 @@
                 app:framePosition="20"
                 app:keyPositionType="deltaRelative"
                 app:motionTarget="@id/newPager"
+                app:percentWidth="0.5"
+                app:percentY="0.01" />
+
+            <!-- Move view fast as pager -->
+            <KeyPosition
+                app:framePosition="20"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@id/tileView"
+                app:percentWidth="0.5"
+                app:percentY="0.01" />
+
+            <KeyPosition
+                app:framePosition="20"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@id/seekBarView"
+                app:percentWidth="0.5"
+                app:percentY="0.01" />
+
+            <KeyPosition
+                app:framePosition="20"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@id/playbackControlsView"
                 app:percentWidth="0.5"
                 app:percentY="0.01" />
         </KeyFrameSet>
@@ -275,8 +297,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/twenty_four_24dp"
             android:layout_marginBottom="@dimen/sixteen_16dp"
-            app:layout_constraintBottom_toTopOf="@+id/tileView"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newPager">
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />
@@ -290,9 +312,9 @@
             android:layout_marginEnd="@dimen/thirty_two_32dp"
             android:layout_marginBottom="24dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/seekBarView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnYoutube">
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />
@@ -305,9 +327,9 @@
             android:layout_marginStart="@dimen/thirty_two_32dp"
             android:layout_marginEnd="@dimen/thirty_two_32dp"
             android:layout_marginBottom="@dimen/sixteen_16dp"
-            app:layout_constraintBottom_toTopOf="@+id/playbackControlsView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tileView">
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />
@@ -320,9 +342,9 @@
             android:layout_marginBottom="56dp"
             android:paddingTop="8dp"
             android:paddingBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBarView">
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />

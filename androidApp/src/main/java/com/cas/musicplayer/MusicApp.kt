@@ -22,6 +22,8 @@ import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.koin.core.KoinComponent
+import org.koin.core.get
 import org.koin.dsl.module
 
 
@@ -30,7 +32,7 @@ import org.koin.dsl.module
  * Created by Abdelhadi on 4/4/19.
  **********************************
  */
-class MusicApp : Application() {
+class MusicApp : Application(), KoinComponent {
 
     val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -69,7 +71,7 @@ class MusicApp : Application() {
                 _isInForeground = false
             }
         })
-        AdsManager.init(applicationScope)
+        AdsManager.init(applicationScope, get())
     }
 
     companion object {
