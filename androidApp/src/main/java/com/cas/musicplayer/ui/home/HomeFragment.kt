@@ -100,6 +100,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(
             )
         }
 
+        // Kept as local variable to prevent calling binding.recyclerView which will call getViewLifecycleOwner
+        // and Fragment.getView() may return null after .post to recyclerView
+        val recyclerView = recyclerView
         recyclerView.post {
             val holder = recyclerView.findViewHolderForAdapterPosition(2)
                     as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder

@@ -190,7 +190,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
                 val metadata: MediaMetadataCompat = mediaSession.controller.metadata ?: return
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     if (action == CustomAction.ADD_TO_FAVOURITE) {
                         val mediaId = metadata.description.mediaId
                         val title = metadata.description.title

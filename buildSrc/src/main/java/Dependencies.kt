@@ -13,7 +13,7 @@ object Versions {
     val karmok = "0.1.8"
     val koin = "3.0.0-alpha-4"
     val ktlint_gradle_plugin = "9.4.1"
-    val ktor = "1.5.0"
+    val ktor = "1.5.3"
     val junit = "4.13.1"
     val material = "1.2.1"
     val desugarJdkLibs = "1.1.1"

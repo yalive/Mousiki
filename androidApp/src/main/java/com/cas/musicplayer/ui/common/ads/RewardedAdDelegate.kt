@@ -157,7 +157,6 @@ class UnityAdsListener : IUnityAdsListener {
     }
 
     override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
-        PlayerQueue.resume()
     }
 
     override fun onUnityAdsReady(placementId: String?) {

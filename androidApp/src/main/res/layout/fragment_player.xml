@@ -72,11 +72,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fullScreenSwitchView" />
 
+    <!-- Copyright button -->
     <LinearLayout
         android:id="@+id/btnYoutube"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTitleVideoCenter"
         android:layout_marginStart="@dimen/sixteen_16dp"
         android:elevation="2dp"
         android:gravity="center_vertical"
@@ -117,6 +117,7 @@
             app:srcCompat="@drawable/ic_arrow_right" />
     </LinearLayout>
 
+    <!-- Video title -->
     <RelativeLayout
         android:id="@+id/tileView"
         android:layout_width="match_parent"
@@ -185,14 +186,15 @@
             android:layout_toStartOf="@+id/btnAddFav"
             android:layout_toEndOf="@+id/btnShareVia"
             android:alpha="0.6"
-            android:textAlignment="center"
             android:ellipsize="end"
             android:fontFamily="@font/pangram_regular"
             android:maxLines="1"
+            android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
     </RelativeLayout>
 
+    <!-- Seek bar -->
     <LinearLayout
         android:id="@+id/seekBarView"
         android:layout_width="match_parent"
@@ -236,6 +238,7 @@
             tools:text="08:04" />
     </LinearLayout>
 
+    <!-- Play/Pause-->
     <LinearLayout
         android:id="@+id/playbackControlsView"
         android:layout_width="match_parent"
@@ -335,6 +338,7 @@
         android:layout_height="@dimen/minimized_player_height"
         android:background="@color/colorDarkNavigationView" />
 
+    <!-- Pager -->
     <com.cas.musicplayer.ui.player.view.HorizontalMotionPager
         android:id="@+id/newPager"
         android:layout_width="match_parent"
@@ -349,6 +353,7 @@
             app:cardCornerRadius="4dp" />
     </com.cas.musicplayer.ui.player.view.HorizontalMotionPager>
 
+    <!-- Lock screen-->
     <com.cas.musicplayer.ui.player.view.LockScreenView
         android:id="@+id/lockScreenView"
         android:layout_width="match_parent"
