@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "androidApp/build.gradle" }}
       #      - run:
       #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
       #         command: sudo chmod +x ./gradlew
@@ -22,7 +22,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "androidApp/build.gradle" }}
       - run:
           name: Install fastlane
           command: bundle install
@@ -33,10 +33,10 @@ jobs:
           name: Distribute app
           command: bundle exec fastlane beta
       - store_artifacts:
-          path: app/build/reports
+          path: androidApp/build/reports
           destination: reports
       - store_test_results:
-          path: app/build/test-results
+          path: androidApp/build/test-results
 
 
 workflows:
