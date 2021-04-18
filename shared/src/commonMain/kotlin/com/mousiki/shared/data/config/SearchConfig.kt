@@ -19,7 +19,7 @@ data class SearchConfig(
     val retryCount: Int? = null
 )
 
-private val forceDemo = true
+private val forceDemo = false
 
 // For Fallback
 fun SearchConfig.apiList(): List<String> {

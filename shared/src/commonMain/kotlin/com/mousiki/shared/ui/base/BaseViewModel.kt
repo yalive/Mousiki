@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
  * Created by Abdelhadi on 2019-05-28.
  **********************************
  */
-expect open class BaseViewModel {
+expect open class BaseViewModel() {
 
     val scope: CoroutineScope
 

@@ -279,7 +279,7 @@
             app:layout_constraintStart_toStartOf="parent">
             <PropertySet
                 android:alpha="0"
-                android:visibility="visible" />
+                android:visibility="invisible" />
         </Constraint>
 
         <Constraint
