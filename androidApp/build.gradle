@@ -30,8 +30,8 @@ android {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 39
-        versionName "3.1.0"
+        versionCode 45
+        versionName "3.2.5"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
     }
@@ -73,8 +73,8 @@ android {
         }
 
         dev {
-            versionCode 88
-            versionName "1.88"
+            versionCode 89
+            versionName "1.89"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }
