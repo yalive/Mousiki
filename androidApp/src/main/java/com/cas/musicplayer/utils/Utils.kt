@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
+import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -225,6 +226,7 @@ object Utils : KoinComponent {
 
 
 fun isScreenLocked(): Boolean {
+    if (BuildConfig.FLAVOR == "dev") return false
     val myKM = MusicApp.get().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
     return myKM.isKeyguardLocked
 }
