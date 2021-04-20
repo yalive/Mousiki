@@ -3,13 +3,9 @@ package com.mousiki.shared.utils
 import android.content.Context
 import android.os.Build
 import android.telephony.TelephonyManager
-import com.mousiki.shared.BuildConfig
 import java.util.*
 
 actual fun getCurrentLocale(): String {
-    if (BuildConfig.DEBUG) {
-        return "MX"
-    }
     val tm = globalAppContext.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
     val countryCodeValue: String? = tm?.networkCountryIso
 

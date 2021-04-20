@@ -10,6 +10,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
+import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.toText
@@ -41,6 +42,7 @@ class LockScreenReceiver(
     private var shouldShowPopup = false
 
     override fun onReceive(context: Context, intent: Intent) {
+        if (BuildConfig.FLAVOR == "dev") return
         if (intent.action == Intent.ACTION_SCREEN_OFF) {
             val state = mediaController.playbackState?.toText()
             val isPlaying = mediaController.playbackState?.isPlaying == true
