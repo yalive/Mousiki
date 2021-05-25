@@ -10,46 +10,46 @@ import UIKit
 import shared
 
 class HomeVC: UIViewController {
-    
+
     @IBOutlet weak var tableView: UITableView!
-    
+
     private var homeItems = [HomeItem]()
-    
+
     fileprivate lazy var viewModel: HomeViewModel = {
         return Injector().homeViewModel
     }()
-    
+
     fileprivate lazy var strings = Injector().strings
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
-        tableView.registerCellNib("VideoListCell",identifier: "VideoListCell")
-        tableView.registerCellNib("SimplePlaylistsRow",identifier: "SimplePlaylistsRow")
-        tableView.registerCellNib("CompactPlaylistsRow",identifier: "CompactPlaylistsRow")
-        tableView.registerCellNib("HomeGenreCell",identifier: "HomeGenreCell")
-        tableView.registerCellNib("HomeArtistRow",identifier: "HomeArtistRow")
+        tableView.registerCellNib("VideoListCell", identifier: "VideoListCell")
+        tableView.registerCellNib("SimplePlaylistsRow", identifier: "SimplePlaylistsRow")
+        tableView.registerCellNib("CompactPlaylistsRow", identifier: "CompactPlaylistsRow")
+        tableView.registerCellNib("HomeGenreCell", identifier: "HomeGenreCell")
+        tableView.registerCellNib("HomeArtistRow", identifier: "HomeArtistRow")
         observeViewModel()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
     }
-    
+
     func observeViewModel() {
         viewModel.homeItemsFlow.watch { items in
             guard let items = items else { return }
             let homeItems = items as! [HomeItem]
-            
+
             let filtredItems = homeItems.filter {
                 !($0 is HeaderItem.PopularsHeader || $0 is HeaderItem.ArtistsHeader || $0 is HeaderItem.GenresHeader)
             }
-            
+
             self.homeItems.removeAll()
             self.homeItems.append(contentsOf: filtredItems)
             self.tableView.reloadData()
         }
-        
+
         viewModel.newReleasesFlow.watch { resource in
             guard let resource = resource else { return }
             if resource is ResourceSuccess {
@@ -64,7 +64,7 @@ class HomeVC: UIViewController {
                 }
             }
         }
-        
+
         viewModel.genresFlow.watch { genres in
             guard let genres = genres else { return }
             let indexOfGenreItem = self.homeItems.firstIndex {
@@ -76,7 +76,7 @@ class HomeVC: UIViewController {
                 self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
         }
-        
+
         viewModel.artistsFlow.watch { resource in
             guard let resource = resource else { return }
             if resource is ResourceSuccess {
@@ -95,24 +95,25 @@ class HomeVC: UIViewController {
 }
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let homeItem = homeItems[indexPath.section]
-        
+
         if homeItem is HomeItem.PopularsItem {
             //let popularItem = homeItem as! HomeItem.PopularsItem
-            
+
         } else if homeItem is HomeItem.ArtistItem {
             let artistItem = homeItem as! HomeItem.ArtistItem
             let cell = tableView.dequeueReusableCell(withIdentifier: "HomeArtistRow") as! HomeArtistRow
+            cell.delegate = self
             cell.bind(items: artistItem.artists)
             return cell
-            
+
         } else if homeItem is HomeItem.GenreItem {
             let genreItem = homeItem as! HomeItem.GenreItem
             let cell = tableView.dequeueReusableCell(withIdentifier: "HomeGenreCell") as! HomeGenreCell
@@ -134,20 +135,21 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         } else if homeItem is HomeItem.VideoList {
             let videoListItem = homeItem as! HomeItem.VideoList
             let cell = tableView.dequeueReusableCell(withIdentifier: "VideoListCell") as! VideoListCell
+            cell.delegate = self
             cell.bind(items: videoListItem.items)
             return cell
         }
         return UITableViewCell()
     }
-    
-    
+
+
     func numberOfSections(in tableView: UITableView) -> Int {
         homeItems.count
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let homeItem = homeItems[indexPath.section]
-        
+
         if homeItem is HomeItem.PopularsItem {
             return 200
         } else if homeItem is HomeItem.ArtistItem {
@@ -164,29 +166,29 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             return 200
         }
     }
-    
-    
+
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let item = homeItems[section]
-        
+
         let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 60)
-        let sectionView = HomeSectionView(frame:rect)
-        
+        let sectionView = HomeSectionView(frame: rect)
+
         sectionView.lblTitle.text = item.title(strings: strings)
-        
+
         sectionView.actionBlock = {
             //self.showAllVideos(section)
         }
         return sectionView
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
 }
 
 extension HomeVC: HomeGenreCellDelegate {
-    
+
     func didTapGenre(_ genre: GenreMusic) {
         let vc = PlaylistSongsVC.loadFromNib()
         vc.playlistId = genre.topTracksPlaylist
@@ -195,7 +197,7 @@ extension HomeVC: HomeGenreCellDelegate {
 }
 
 extension HomeVC: CompactPlaylistsRowDelegate {
-    
+
     func didTapCompactPlaylist(_ playlist: CompactPlaylist) {
         let vc = PlaylistSongsVC.loadFromNib()
         vc.playlistId = playlist.playlistId
@@ -210,5 +212,22 @@ extension HomeVC: SimplePlaylistsRowDelegate {
         let vc = PlaylistSongsVC.loadFromNib()
         vc.playlistId = playlistId
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension HomeVC: HomeArtistRowDelegate {
+
+    func didTapArtist(_ artist: Artist) {
+        let vc = ArtistSongsVC.loadFromNib()
+        vc.artist = artist
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension HomeVC: VideoListCellDelegate {
+
+    func didTapTrack(_ track: DisplayedVideoItem, queue: [DisplayedVideoItem]) {
+        playerController?.collapse()
+        playerController?.setCurrentSong(track, queue: queue)
     }
 }

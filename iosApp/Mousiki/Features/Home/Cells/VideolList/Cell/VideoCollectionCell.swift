@@ -11,18 +11,19 @@ import shared
 import Kingfisher
 
 class VideoCollectionCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var txtTitle: UILabel!
     @IBOutlet weak var txtDuration: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
 
     func bind(_ video: DisplayedVideoItem) {
         txtTitle.text = video.songTitle
+        txtDuration.text = video.songDuration
         image.setCorner(radius: 3)
         if let url = URL(string: video.songImagePath) {
             image.kf.setImage(with: url)

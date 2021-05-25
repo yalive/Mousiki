@@ -9,8 +9,13 @@
 import UIKit
 import shared
 
+protocol HomeArtistRowDelegate: class {
+    func didTapArtist(_ artist: Artist)
+}
+
 class HomeArtistRow: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    weak var delegate: HomeArtistRowDelegate?
     @IBOutlet weak var collectionView: UICollectionView!
     
     private var artists = [Artist]()
@@ -48,6 +53,11 @@ class HomeArtistRow: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeArtistCell", for: indexPath as IndexPath) as! HomeArtistCell
+        
+        cell.contentView.addTapGestureRecognizer {
+            self.delegate?.didTapArtist(self.artists[indexPath.row])
+        }
+        
         cell.bind(artists[indexPath.row])
         return cell
     }
@@ -55,6 +65,5 @@ class HomeArtistRow: UITableViewCell, UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
-    
 }
 

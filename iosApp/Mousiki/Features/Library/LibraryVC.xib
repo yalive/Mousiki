@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LibraryVC" customModule="Mousiki" customModuleProvider="target">
             <connections>
+                <outlet property="tableView" destination="HzR-dv-Cxn" id="Jdm-sP-pVZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
