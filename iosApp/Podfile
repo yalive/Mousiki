@@ -18,4 +18,7 @@ target 'Mousiki' do
   pod 'Firebase/Storage'
   pod 'Firebase/RemoteConfig'
   pod 'Firebase/DynamicLinks'
+  
+  # Utils
+  pod 'MarqueeLabel'
 end

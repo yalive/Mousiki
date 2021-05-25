@@ -1,33 +1,35 @@
 //
-//  PlaylistSongsVC.swift
+//  ArtistSongsVC.swift
 //  Mousiki
 //
-//  Created by A.Yabahddou on 2/21/21.
+//  Created by A.Yabahddou on 4/24/21.
 //  Copyright © 2021 YabaSoft. All rights reserved.
 //
 
 import UIKit
 import shared
 
-class PlaylistSongsVC: UIViewController {
+class ArtistSongsVC: UIViewController {
     
-    var playlistId = ""
-    private var songList = [DisplayableItem]()
-    lazy var viewModel: PlaylistSongsViewModel = {
-        return Injector().playlistSongsViewModel
-    }()
     @IBOutlet weak var tableView: UITableView!
+    lazy var viewModel: ArtistSongsViewModel = {
+        return Injector().artistSongsViewModel
+    }()
+    
+    var artist: Artist!
+    
+    private var songList = [DisplayableItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerCellNib("SongCell",identifier: "SongCell")
         self.navigationController?.isNavigationBarHidden = false
         observeViewModel()
-        viewModel.doInit(playlistId: playlistId)
+        viewModel.doInit(artist: artist)
     }
     
     fileprivate func observeViewModel() {
-        viewModel.songsFlow().watch { resource in
+        viewModel.tracksFlow.watch { resource in
             guard let resource = resource else { return }
             if resource is ResourceSuccess {
                 self.songList = (resource as! ResourceSuccess).data as! [DisplayableItem]
@@ -42,7 +44,7 @@ class PlaylistSongsVC: UIViewController {
 }
 
 
-extension PlaylistSongsVC: UITableViewDelegate, UITableViewDataSource {
+extension ArtistSongsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let songItem = songList[indexPath.row] as! DisplayedVideoItem

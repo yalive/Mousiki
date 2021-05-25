@@ -24,7 +24,6 @@ class SongCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
     }
     
     
@@ -36,6 +35,7 @@ class SongCell: UITableViewCell {
         if let url = URL(string: songItem.songImagePath) {
             imgSong.kf.setImage(with: url)
         }
+        
     }
     
 }

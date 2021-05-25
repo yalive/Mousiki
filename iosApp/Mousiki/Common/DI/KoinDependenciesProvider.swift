@@ -12,7 +12,7 @@ import shared
 
 /// Provides iOS specific implementation for common dependencies
 class KoinDependenciesProvider: IOSDependenciesProvider {
-    
+
     /// Storage api
     lazy var storage: StorageApi = MousikiAppStorage()
     
@@ -34,4 +34,6 @@ class KoinDependenciesProvider: IOSDependenciesProvider {
     /// Ads
     lazy var listAdsDelegate: GetListAdsDelegate = LoadListAdDelegate()
     
+    
+    lazy var extractor: Extractor = SwiftYtExtractor()
 }

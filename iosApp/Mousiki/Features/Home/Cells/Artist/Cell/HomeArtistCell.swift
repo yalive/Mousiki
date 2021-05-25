@@ -18,11 +18,6 @@ class HomeArtistCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture(_:)))
-        imageView.addGestureRecognizer(tapGesture)
-        imageView.isUserInteractionEnabled = true
-        
         let itemWidth = (UIScreen.main.bounds.width - 12*2) / 3 - 20.0
         let imageSize = min(120, itemWidth)
         imageHeight.constant = imageSize
@@ -34,12 +29,5 @@ class HomeArtistCell: UICollectionViewCell {
         if let url = URL(string: artist.imageFullPath) {
             imageView.kf.setImage(with: url)
         }
-    }
-    
-    @objc func tapGesture(_ sender: UITapGestureRecognizer) {
-        sender.view?.showAnimation {
-            
-        }
-        
     }
 }

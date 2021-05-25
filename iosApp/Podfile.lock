@@ -105,6 +105,7 @@ PODS:
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.5.0)
   - Kingfisher (6.0.1)
+  - MarqueeLabel (4.0.5)
   - nanopb (2.30907.0):
     - nanopb/decode (= 2.30907.0)
     - nanopb/encode (= 2.30907.0)
@@ -125,6 +126,7 @@ DEPENDENCIES:
   - Firebase/RemoteConfig
   - Firebase/Storage
   - Kingfisher (= 6.0.1)
+  - MarqueeLabel
   - R.swift
   - SVProgressHUD
 
@@ -147,6 +149,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - Kingfisher
+    - MarqueeLabel
     - nanopb
     - PromisesObjC
     - R.swift
@@ -182,12 +185,13 @@ SPEC CHECKSUMS:
   GoogleUtilities: d866834472f1324d080496bc67ab3ce5d0d46027
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Kingfisher: adde87a4f74f6a3845395769354efff593581740
+  MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   R.swift: 7c52cdc57a66840ffe6cbd8a823d732059d42a32
   R.swift.Library: 5ba4f1631300caf9a4d890186930da85d540769d
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: fcdd7b1ace6590329d03554d76624f4cfafe52f1
+PODFILE CHECKSUM: 1118a5a2bafaec2a4dd0c32edc99f5c90e744080
 
 COCOAPODS: 1.9.1

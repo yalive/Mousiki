@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="pagerCell" id="gTV-IL-0wX" customClass="PlayerSongCell" customModule="Mousiki" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="267" height="229"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="267" height="229"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9IP-vc-4DL">
+                        <rect key="frame" x="32" y="32" width="203" height="165"/>
+                        <color key="backgroundColor" name="colorPrimary"/>
+                    </imageView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="9IP-vc-4DL" secondAttribute="bottom" constant="32" id="B32-yL-X9r"/>
+                <constraint firstItem="9IP-vc-4DL" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="32" id="PuU-rE-xu7"/>
+                <constraint firstAttribute="trailing" secondItem="9IP-vc-4DL" secondAttribute="trailing" constant="32" id="m3E-s7-Rd9"/>
+                <constraint firstItem="9IP-vc-4DL" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="32" id="v2X-bC-lZV"/>
+            </constraints>
+            <size key="customSize" width="267" height="229"/>
+            <connections>
+                <outlet property="imgSong" destination="9IP-vc-4DL" id="QEh-d3-ofm"/>
+            </connections>
+            <point key="canvasLocation" x="294.92753623188406" y="144.30803571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="colorPrimary">
+            <color red="0.84700000286102295" green="0.10599999874830246" blue="0.37599998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
