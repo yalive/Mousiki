@@ -26,7 +26,7 @@ fun SearchConfig.apiList(): List<String> {
     if (forceDemo) {
         return listOf("https://mousikiapp.herokuapp.com")
     }
-    if (!apis.isNullOrEmpty()) return apis
+    if (!apis.isNullOrEmpty()) return apis.shuffled()
     return listOf("https://mousikiapp.herokuapp.com/")
 }
 

@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.artists.songs
+package com.mousiki.shared.ui.artist.songs
 
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.models.Artist
@@ -12,6 +12,8 @@ import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.ui.resource.songList
+import com.mousiki.shared.utils.CommonFlow
+import com.mousiki.shared.utils.asCommonFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -55,4 +57,8 @@ class ArtistSongsViewModel(
             playTrackFromQueue(allSongs.first(), allSongs)
         }
     }
+
+    // For iOS
+    val tracksFlow: CommonFlow<Resource<List<DisplayableItem>>?>
+        get() = tracks.asCommonFlow()
 }

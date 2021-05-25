@@ -3,7 +3,6 @@ package com.mousiki.shared.data.remote.api
 import com.mousiki.shared.data.models.*
 import com.mousiki.shared.preference.PreferencesHelper
 import io.ktor.client.*
-import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
@@ -24,14 +23,14 @@ class MousikiApiImpl(
             serializer = KotlinxSerializer(json)
         }
 
-         install(Logging) {
-             this.logger = object : io.ktor.client.features.logging.Logger {
-                 override fun log(message: String) {
-                     println("Network_mousiki: $message")
-                 }
-             }
-             level = LogLevel.ALL
-         }
+        install(Logging) {
+            this.logger = object : io.ktor.client.features.logging.Logger {
+                override fun log(message: String) {
+                    println("Network_mousiki: $message")
+                }
+            }
+            level = LogLevel.ALL
+        }
     }
 
     private val youtubeApi by lazy {
@@ -72,6 +71,9 @@ class MousikiApiImpl(
         return client.get("$url/api/playlists/$playlistId/songs")
     }
 
+    override suspend fun getAudioInfo(url: String, videoId: String): AudioInfoRS {
+        return client.get("$url/api/videos/$videoId/audio")
+    }
 
     /////    Ytb API   /////
 

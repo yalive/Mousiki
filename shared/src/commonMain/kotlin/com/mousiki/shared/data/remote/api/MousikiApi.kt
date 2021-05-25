@@ -1,5 +1,6 @@
 package com.mousiki.shared.data.remote.api
 
+import com.mousiki.shared.data.models.AudioInfoRS
 import com.mousiki.shared.data.models.HomeRS
 import com.mousiki.shared.data.models.MousikiSearchApiRS
 
@@ -24,4 +25,9 @@ interface MousikiApi : YoutubeApi {
         url: String,
         playlistId: String
     ): MousikiSearchApiRS
+
+    suspend fun getAudioInfo(
+        url: String,
+        videoId: String
+    ): AudioInfoRS
 }

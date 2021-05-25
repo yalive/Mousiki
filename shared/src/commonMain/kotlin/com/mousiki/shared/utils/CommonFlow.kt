@@ -19,6 +19,7 @@ class CommonFlow<T>(private val origin: Flow<T>) : Flow<T> by origin {
         return object : Closeable {
             override fun close() {
                 job.cancel()
+                println("########### closed ###########")
             }
         }
     }
