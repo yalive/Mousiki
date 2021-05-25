@@ -11,7 +11,7 @@ object Versions {
     val coroutines = "1.4.2-native-mt"
     val kermit = "0.1.8"
     val karmok = "0.1.8"
-    val koin = "3.0.0-alpha-4"
+    val koin = "3.0.1"
     val ktlint_gradle_plugin = "9.4.1"
     val ktor = "1.5.3"
     val junit = "4.13.1"
@@ -37,7 +37,7 @@ object Versions {
 
 object Deps {
 
-    val koinCore = "org.koin:koin-core:${Versions.koin}"
+    val koinCore = "io.insert-koin:koin-core:${Versions.koin}"
 
     object SqlDelight {
         val gradle = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"

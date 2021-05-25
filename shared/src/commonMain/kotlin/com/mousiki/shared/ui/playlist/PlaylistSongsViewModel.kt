@@ -1,6 +1,7 @@
 package com.mousiki.shared.ui.playlist
 
 import com.mousiki.shared.ads.GetListAdsDelegate
+import com.mousiki.shared.data.repository.AudioRepository
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
 class PlaylistSongsViewModel(
     private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase,
     playDelegate: PlaySongDelegate,
-    getListAdsDelegate: GetListAdsDelegate
+    getListAdsDelegate: GetListAdsDelegate,
+    private val audioRepository: AudioRepository
 ) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
 
     private val _songs = MutableStateFlow<Resource<List<DisplayableItem>>?>(null)
@@ -47,6 +49,9 @@ class PlaylistSongsViewModel(
 
     fun onClickTrack(track: MusicTrack) = scope.launch {
         playTrackFromQueue(track, _songs.songList())
+        print("Start")
+        val urlAudio = audioRepository.getAudioUrlLocal(track.youtubeId)
+        print("url=$urlAudio")
     }
 
     fun onClickTrackPlayAll() {
