@@ -11,6 +11,7 @@ import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 
 
 class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {

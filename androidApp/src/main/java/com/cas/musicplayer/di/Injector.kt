@@ -2,7 +2,7 @@ package com.cas.musicplayer.di
 
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
-import com.cas.musicplayer.ui.artists.songs.ArtistSongsViewModel
+import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
@@ -27,8 +27,8 @@ import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.AnalyticsApi
-import org.koin.core.KoinComponent
-import org.koin.core.get
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 object Injector : KoinComponent {
 

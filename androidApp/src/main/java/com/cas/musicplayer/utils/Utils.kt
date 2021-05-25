@@ -31,8 +31,8 @@ import com.google.firebase.ktx.Firebase
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.utils.AnalyticsApi
-import org.koin.core.KoinComponent
-import org.koin.core.get
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import java.io.File
 
 
