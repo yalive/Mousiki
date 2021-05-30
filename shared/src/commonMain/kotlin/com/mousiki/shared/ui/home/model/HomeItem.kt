@@ -1,5 +1,6 @@
 package com.mousiki.shared.ui.home.model
 
+import com.mousiki.shared.ads.NativeAdItem
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.CompactPlaylist
 import com.mousiki.shared.data.models.SimplePlaylist
@@ -31,6 +32,8 @@ sealed class HomeItem : DisplayableItem {
     data class VideoList(
         val title: String, val items: List<DisplayedVideoItem>
     ) : HomeItem()
+
+    data class FBNativeAd(val adItem: NativeAdItem) : HomeItem()
 }
 
 sealed class HeaderItem(val showMore: Boolean = true) : HomeItem() {
@@ -53,5 +56,6 @@ fun HomeItem.title(strings: Strings): String {
         is HomeItem.CompactPlaylists -> title
         is HomeItem.SimplePlaylists -> title
         is HomeItem.VideoList -> title
+        is HomeItem.FBNativeAd -> ""
     }
 }

@@ -22,6 +22,7 @@ import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.dsl.module
@@ -39,6 +40,8 @@ class MusicApp : Application(), KoinComponent {
     private var _isInForeground = false
     val isInForeground: Boolean
         get() = _isInForeground
+
+    private var admobInitialized = false
 
     override fun onCreate() {
         super.onCreate()
@@ -58,8 +61,10 @@ class MusicApp : Application(), KoinComponent {
         if (AudienceNetworkAds.isInitialized(this)) {
             return
         }
-        MobileAds.initialize(this, getString(R.string.admob_app_id))
-
+        MobileAds.initialize(this) {
+            admobInitialized = true
+            AdsManager.init(applicationScope, get())
+        }
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_START)
             fun onEnterForeground() {
@@ -71,7 +76,17 @@ class MusicApp : Application(), KoinComponent {
                 _isInForeground = false
             }
         })
-        AdsManager.init(applicationScope, get())
+    }
+
+
+    /**
+     * Ensure admob SDK is initialized
+     */
+    suspend fun awaitAdmobSdkInitialized() {
+        if (admobInitialized) return
+        while (!admobInitialized) {
+            delay(50)
+        }
     }
 
     companion object {

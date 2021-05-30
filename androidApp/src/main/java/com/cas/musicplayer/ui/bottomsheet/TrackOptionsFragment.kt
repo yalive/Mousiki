@@ -76,7 +76,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         binding.imgTrack.loadTrackImage(musicTrack)
         binding.txtTrackTitle.text = musicTrack.title
         binding.shareVia.onClick {
-            Utils.shareWithDeepLink(musicTrack, context!!)
+            Utils.shareWithDeepLink(musicTrack, requireContext())
             if (this.isVisible) {
                 this.dismiss()
             }

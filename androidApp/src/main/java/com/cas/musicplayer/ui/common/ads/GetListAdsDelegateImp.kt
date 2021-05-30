@@ -45,6 +45,16 @@ class GetListAdsDelegateImp(
         }
         return items
     }
+
+    override suspend fun getNativeAds(count: Int): List<DisplayableItem> {
+        return AdsManager.getAds(count).map {
+            AdsItem(it)
+        }
+    }
+
+    override suspend fun awaitLoadAds() {
+        AdsManager.awaitLoadAds()
+    }
 }
 
 private val KEY_EVENT_AD_TAKE_TOO_MUCH_TIME = "list_ad_take_too_much_time"

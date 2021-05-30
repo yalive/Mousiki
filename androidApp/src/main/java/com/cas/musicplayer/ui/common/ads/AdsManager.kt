@@ -1,14 +1,15 @@
 package com.cas.musicplayer.ui.common.ads
 
 import com.cas.common.extensions.randomOrNull
+import com.cas.musicplayer.MusicApp
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.mousiki.shared.data.config.RemoteAppConfig
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object AdsManager {
-    private val TAG = "AdsManager"
     private val MAX_ADS = 10
     private val nativeAds = mutableListOf<UnifiedNativeAd>()
     private var loadingAds = false
@@ -23,6 +24,7 @@ object AdsManager {
     }
 
     suspend fun getAds(count: Int): List<UnifiedNativeAd> {
+        MusicApp.get().awaitAdmobSdkInitialized()
         if (nativeAds.isEmpty()) loadAds()
         val randomList = nativeAds.shuffled()
         return if (count > randomList.size) randomList
@@ -30,6 +32,7 @@ object AdsManager {
     }
 
     suspend fun getAd(): UnifiedNativeAd? {
+        MusicApp.get().awaitAdmobSdkInitialized()
         if (nativeAds.isEmpty()) loadAds()
         return nativeAds.randomOrNull()
     }
@@ -37,7 +40,7 @@ object AdsManager {
     private suspend fun loadAds() {
         if (loadingAds) return
         loadingAds = true
-        appScope.launch {
+        appScope.launch(Dispatchers.Main) {
             val ads = loadMultipleNativeAdWithMediation(MAX_ADS)
             if (ads.isNotEmpty()) nativeAds.clear()
             nativeAds.addAll(ads)
@@ -50,6 +53,13 @@ object AdsManager {
             // Wait "duration" min
             delay(duration.toLong() * 60 * 1000)
             loadAds()
+        }
+    }
+
+    suspend fun awaitLoadAds() {
+        if (!loadingAds) return
+        while (loadingAds) {
+            delay(100)
         }
     }
 }

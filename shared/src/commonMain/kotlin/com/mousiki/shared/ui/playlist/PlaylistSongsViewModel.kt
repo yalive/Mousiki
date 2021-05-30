@@ -49,9 +49,6 @@ class PlaylistSongsViewModel(
 
     fun onClickTrack(track: MusicTrack) = scope.launch {
         playTrackFromQueue(track, _songs.songList())
-        print("Start")
-        val urlAudio = audioRepository.getAudioUrlLocal(track.youtubeId)
-        print("url=$urlAudio")
     }
 
     fun onClickTrackPlayAll() {
