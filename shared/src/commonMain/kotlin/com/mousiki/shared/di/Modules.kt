@@ -156,8 +156,8 @@ val useCasesModule = module {
 }
 
 val kmmViewModelsModule = module {
-    factory { PlaylistSongsViewModel(get(), get(), get(),get()) }
-    factory { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    factory { PlaylistSongsViewModel(get(), get(), get(), get()) }
+    factory { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),get()) }
     factory { LibraryViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { ArtistSongsViewModel(get(), get(), get()) }
 }

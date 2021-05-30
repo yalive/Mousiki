@@ -1,13 +1,11 @@
 package com.mousiki.shared.ui.home
 
+import com.mousiki.shared.ads.FacebookAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.GenreMusic
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
@@ -40,8 +38,10 @@ class HomeViewModel(
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
     private val preferencesHelper: PreferencesHelper,
-    playSongDelegate: PlaySongDelegate
-) : BaseViewModel(), PlaySongDelegate by playSongDelegate {
+    playSongDelegate: PlaySongDelegate,
+    facebookAdsDelegate: FacebookAdsDelegate,
+) : BaseViewModel(), PlaySongDelegate by playSongDelegate,
+    FacebookAdsDelegate by facebookAdsDelegate {
 
     private val _newReleases =
         MutableStateFlow<Resource<List<DisplayedVideoItem>>?>(null)
@@ -62,64 +62,65 @@ class HomeViewModel(
 
     private fun getHome() = scope.launch {
         appConfig.awaitActivation()
-        if (appConfig.newHomeEnabled()) {
-            when (val result = homeRepository.getHome()) {
-                is Result.Success -> {
-                    val homeRS = result.data
-                    val items = mutableListOf<HomeItem>()
+        if (appConfig.newHomeEnabled()) loadNewHome() else showOldHome()
+    }
 
-                    // Create compact playlists
-                    val compactPlaylists = homeRS.compactPlaylists.filter {
-                        it.playlists.orEmpty().isNotEmpty()
-                    }.map {
-                        HomeItem.CompactPlaylists(it.title.orEmpty(), it.playlists.orEmpty())
-                    }
+    private suspend fun loadNewHome() {
+        when (val result = homeRepository.getHome()) {
+            is Result.Success -> {
+                val homeRS = result.data
+                val items = mutableListOf<HomeItem>()
 
-                    // Create simple playlists
-                    val simplePlaylists = homeRS.simplePlaylists.filter {
-                        it.playlists.orEmpty().isNotEmpty()
-                    }.map {
-                        HomeItem.SimplePlaylists(it.title.orEmpty(), it.playlists.orEmpty())
-                    }
-
-                    // Create videos lists
-                    val videoLists = homeRS.videoLists.filter {
-                        it.videos.orEmpty().isNotEmpty()
-                    }.map {
-                        HomeItem.VideoList(
-                            it.title.orEmpty(),
-                            it.videos.orEmpty().map { it.video.toTrack().toDisplayedVideoItem() })
-                    }
-
-                    // Create promos
-                    val promos = HomeItem.VideoList(
-                        "Trending videos",
-                        items = homeRS.promos.map { it.video.toTrack().toDisplayedVideoItem() }
-                    )
-
-                    // Add items: this is the order in UI
-                    if (promos.items.isNotEmpty()) {
-                        items.add(promos)
-                    }
-
-                    items.add(HeaderItem.PopularsHeader(false))
-                    items.add(HomeItem.PopularsItem(Resource.Loading))
-                    items.addAll(compactPlaylists)
-                    items.add(HeaderItem.GenresHeader)
-                    items.add(HomeItem.GenreItem(emptyList()))
-                    items.addAll(simplePlaylists)
-                    items.addAll(videoLists)
-                    items.add(HeaderItem.ArtistsHeader)
-                    items.add(HomeItem.ArtistItem(emptyList()))
-                    _homeItems.value = items
-                    loadTrending()
-                    loadGenres()
-                    loadArtists()
+                // Create compact playlists
+                val compactPlaylists = homeRS.compactPlaylists.filter {
+                    it.playlists.orEmpty().isNotEmpty()
+                }.map {
+                    HomeItem.CompactPlaylists(it.title.orEmpty(), it.playlists.orEmpty())
                 }
-                is Result.Error -> showOldHome()
+
+                // Create simple playlists
+                val simplePlaylists = homeRS.simplePlaylists.filter {
+                    it.playlists.orEmpty().isNotEmpty()
+                }.map {
+                    HomeItem.SimplePlaylists(it.title.orEmpty(), it.playlists.orEmpty())
+                }
+
+                // Create videos lists
+                val videoLists = homeRS.videoLists.filter {
+                    it.videos.orEmpty().isNotEmpty()
+                }.map {
+                    HomeItem.VideoList(
+                        it.title.orEmpty(),
+                        it.videos.orEmpty().map { it.video.toTrack().toDisplayedVideoItem() })
+                }
+
+                // Create promos
+                val promos = HomeItem.VideoList(
+                    "Trending videos",
+                    items = homeRS.promos.map { it.video.toTrack().toDisplayedVideoItem() }
+                )
+
+                // Add items: this is the order in UI
+                if (promos.items.isNotEmpty()) {
+                    items.add(promos)
+                }
+
+                items.add(HeaderItem.PopularsHeader(false))
+                items.add(HomeItem.PopularsItem(Resource.Loading))
+                items.addAll(compactPlaylists)
+                items.add(HeaderItem.GenresHeader)
+                items.add(HomeItem.GenreItem(emptyList()))
+                items.addAll(simplePlaylists)
+                items.addAll(videoLists)
+                items.add(HeaderItem.ArtistsHeader)
+                items.add(HomeItem.ArtistItem(emptyList()))
+                _homeItems.value = items
+                loadTrending()
+                loadGenres()
+                loadArtists()
+                prepareAds()
             }
-        } else {
-            showOldHome()
+            is Result.Error -> showOldHome()
         }
     }
 
@@ -177,6 +178,52 @@ class HomeViewModel(
         loadTrending()
         loadGenres()
         loadArtists()
+    }
+
+    private suspend fun prepareAds() {
+        // 1 - Load Facebook native ads (3 ads)
+        val ads = getHomeFacebookNativeAds(3)
+        if (ads.isEmpty()) return
+
+        // 2 - Insert ads in specific positions
+        val homeListItems = _homeItems.value?.toMutableList() ?: return
+        homeListItems.add(1, ads[0])
+        if (ads.size > 1) {
+            // Above genres
+            val index = homeListItems.indexOfFirst { it is HeaderItem.GenresHeader }
+            if (index != -1) {
+                homeListItems.add(index - 1, ads[1])
+            }
+        }
+
+        if (ads.size > 2) {
+            // Above Artists
+            val index = homeListItems.size - 2
+            homeListItems.add(index, ads[2])
+        }
+
+        // 3 - Notify Observer
+
+        // Get current state of: Artists, new release and genres (Next: Use single observable object)
+        val popularItem = _homeItems.value?.filterIsInstance<HomeItem.PopularsItem>()?.firstOrNull()
+        val newRelease = popularItem?.copy(resource = _newReleases.value!!)
+        val indexNewRelease = homeListItems.indexOfFirst { it is HomeItem.PopularsItem }
+        homeListItems[indexNewRelease] = newRelease!!
+
+        // Genres
+        val genreItem = _homeItems.value?.filterIsInstance<HomeItem.GenreItem>()?.firstOrNull()
+        val updatedGenre = genreItem?.copy(genres = _genres.value!!)
+        val indexGenres = homeListItems.indexOfFirst { it is HomeItem.GenreItem }
+        homeListItems[indexGenres] = updatedGenre!!
+
+        // Artists
+        val currentArtistsList = (_artists.value as? Resource.Success<List<Artist>>)?.data.orEmpty()
+        val artistsItem = _homeItems.value?.filterIsInstance<HomeItem.ArtistItem>()?.firstOrNull()
+        val updatedArtists = artistsItem?.copy(artists = currentArtistsList)
+        val indexArtists = homeListItems.indexOfFirst { it is HomeItem.ArtistItem }
+        homeListItems[indexArtists] = updatedArtists!!
+
+        _homeItems.value = homeListItems
     }
 
     // For iOS

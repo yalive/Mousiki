@@ -12,4 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 interface GetListAdsDelegate {
     suspend fun populateAdsIn(resource: MutableStateFlow<Resource<List<DisplayableItem>>?>)
     suspend fun insertAdsIn(items: List<DisplayableItem>): List<DisplayableItem>
+    suspend fun getNativeAds(count: Int): List<DisplayableItem>
+    suspend fun awaitLoadAds()
 }

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.cas.musicplayer.tmp.doOnSuccess
+import com.cas.musicplayer.ui.common.ads.facebook.FBAdsCellDelegate
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.delegates.*
 import com.mousiki.shared.data.models.Artist
@@ -40,7 +41,8 @@ class HomeAdapter(
         HorizontalListSongsAdapterDelegate(
             onVideoSelected = onVideoSelected,
             onClickRetry = onClickRetryNewRelease
-        )
+        ),
+        FBAdsCellDelegate()
     )
 ) {
 
