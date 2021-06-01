@@ -5,14 +5,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.home.populateNativeAdView
-import com.google.android.gms.ads.formats.MediaView
-import com.google.android.gms.ads.formats.UnifiedNativeAd
-import com.google.android.gms.ads.formats.UnifiedNativeAdView
-
+import com.google.android.gms.ads.nativead.MediaView
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
+import com.mousiki.shared.domain.models.DisplayableItem
 
 /**
  ***************************************
@@ -48,8 +47,7 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private val adView: UnifiedNativeAdView =
-            itemView.findViewById<UnifiedNativeAdView>(R.id.ad_view).apply {
+        private val adView = itemView.findViewById<NativeAdView>(R.id.ad_view).apply {
                 mediaView = findViewById<View>(R.id.ad_media) as MediaView
                 mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 // Register the view used for each individual asset.
@@ -63,10 +61,12 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
                 advertiserView = findViewById(R.id.ad_advertiser)
             }
 
-        fun bind(ad: UnifiedNativeAd) {
+
+
+        fun bind(ad: NativeAd) {
             populateNativeAdView(ad, adView)
         }
     }
 }
 
-data class AdsItem(val ad: UnifiedNativeAd) : DisplayableItem
+data class AdsItem(val ad: NativeAd) : DisplayableItem

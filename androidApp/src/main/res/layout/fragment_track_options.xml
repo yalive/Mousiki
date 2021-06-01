@@ -223,7 +223,7 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/cardAdBackgroundColor">
 
-        <com.google.android.gms.ads.formats.UnifiedNativeAdView
+        <com.google.android.gms.ads.nativead.NativeAdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="400dp"
@@ -321,7 +321,7 @@
                     app:layout_constraintTop_toBottomOf="@id/ad_stars"
                     tools:text="Ad Body" />
 
-                <com.google.android.gms.ads.formats.MediaView
+                <com.google.android.gms.ads.nativead.MediaView
                     android:id="@+id/ad_media"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
@@ -373,6 +373,6 @@
                     tools:text="Open" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.gms.ads.formats.UnifiedNativeAdView>
+        </com.google.android.gms.ads.nativead.NativeAdView>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

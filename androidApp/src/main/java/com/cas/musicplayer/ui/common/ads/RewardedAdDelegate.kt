@@ -6,10 +6,11 @@ import android.content.SharedPreferences
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.utils.EnvConfig
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.preference.SettingsProvider
@@ -78,53 +79,52 @@ class RewardedAdDelegateImp(
             retriesCount = 0
             loadAd()
         }
-        if (!rewardedAd.isLoaded) {
-            analytics.logEvent(ANALYTICS_ERROR_LOAD_AD)
-            return
-        }
-
-
-        rewardedAd.show(activity, object : RewardedAdCallback() {
-            override fun onUserEarnedReward(p0: RewardItem) {
-                PlayerQueue.pause()
-            }
-
-            override fun onRewardedAdOpened() {
-                PlayerQueue.pause()
-            }
-
-            override fun onRewardedAdClosed() {
-                retriesCount = 0
-                loadAd()
+        rewardedAd.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
                 PlayerQueue.resume()
             }
-        })
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                PlayerQueue.resume()
+            }
+        }
+
+        rewardedAd.show(activity) { PlayerQueue.pause() }
     }
 
     private fun loadAd() {
-        rewardedAd = RewardedAd(context, context.getString(R.string.admob_rewarded_ad_id))
-        rewardedAd.loadAd(AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
-            override fun onRewardedAdFailedToLoad(errorCode: Int) {
-                errorLoadingAd = true
-                retriesCount++
-                if (retriesCount < MAX_RETRIES) {
-                    loadAd()
-                } else {
-                    analytics.logEvent(ANALYTICS_ERROR_LOAD_AD_RETRY)
+        val adRequest = AdRequest.Builder().build()
+        RewardedAd.load(
+            context,
+            context.getString(R.string.admob_rewarded_ad_id),
+            adRequest,
+            object : RewardedAdLoadCallback() {
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    errorLoadingAd = true
+                    retriesCount++
+                    if (retriesCount < MAX_RETRIES) {
+                        loadAd()
+                    } else {
+                        analytics.logEvent(ANALYTICS_ERROR_LOAD_AD_RETRY)
+                    }
                 }
-            }
 
-            override fun onRewardedAdLoaded() {
-                if (retriesCount > 0) {
-                    analytics.logEvent(
-                        ANALYTICS_GOT_REWARD_AFTER_RETRIES,
-                        "retries" to retriesCount
-                    )
+                override fun onAdLoaded(reward: RewardedAd) {
+                    rewardedAd = reward
+                    if (retriesCount > 0) {
+                        analytics.logEvent(
+                            ANALYTICS_GOT_REWARD_AFTER_RETRIES,
+                            "retries" to retriesCount
+                        )
+                    }
+                    retriesCount = 0
+                    errorLoadingAd = false
                 }
-                retriesCount = 0
-                errorLoadingAd = false
-            }
-        })
+            })
     }
 
     companion object {

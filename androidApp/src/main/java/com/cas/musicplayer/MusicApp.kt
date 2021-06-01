@@ -9,6 +9,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.*
 import com.cas.musicplayer.ui.common.ads.AdsManager
+import com.cas.musicplayer.ui.common.ads.AppOpenManager
 import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.ConnectivityState
 import com.facebook.ads.AudienceNetworkAds
@@ -36,6 +37,8 @@ import org.koin.dsl.module
 class MusicApp : Application(), KoinComponent {
 
     val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+    private var appOpenManager: AppOpenManager? = null
 
     private var _isInForeground = false
     val isInForeground: Boolean
@@ -65,6 +68,9 @@ class MusicApp : Application(), KoinComponent {
             admobInitialized = true
             AdsManager.init(applicationScope, get())
         }
+
+        appOpenManager =  AppOpenManager()
+
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_START)
             fun onEnterForeground() {
