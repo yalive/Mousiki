@@ -10,10 +10,9 @@ import com.cas.common.extensions.gone
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.MainActivity
-import com.google.android.gms.ads.formats.MediaView
-import com.google.android.gms.ads.formats.NativeAd
-import com.google.android.gms.ads.formats.UnifiedNativeAd
-import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.android.gms.ads.nativead.MediaView
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -41,9 +40,9 @@ fun MainActivity.showExitDialog(): BottomSheetDialog {
             adsViewModel.loadExitAd()
         }
     }
-    val adView = view.findViewById<UnifiedNativeAdView>(R.id.ad_view)
+    val adView = view.findViewById<NativeAdView>(R.id.ad_view)
     adView.apply {
-        mediaView = findViewById<View>(R.id.ad_media) as MediaView
+        mediaView = findViewById<MediaView>(R.id.ad_media)
         mediaView.setImageScaleType(ImageView.ScaleType.FIT_XY)
         // Register the view used for each individual asset.
         headlineView = findViewById(R.id.ad_headline)
@@ -55,7 +54,8 @@ fun MainActivity.showExitDialog(): BottomSheetDialog {
         storeView = findViewById(R.id.ad_store)
         advertiserView = findViewById(R.id.ad_advertiser)
     }
-    adsViewModel.exitAd?.let { ad ->
+
+    adsViewModel.exitAd?.let { ad: NativeAd ->
         populateNativeAdView(ad, adView)
     } ?: run {
         adView.gone()
@@ -73,8 +73,8 @@ private fun MainActivity.exitApp(dialog: BottomSheetDialog) {
 }
 
 fun populateNativeAdView(
-    nativeAd: UnifiedNativeAd,
-    adView: UnifiedNativeAdView
+    nativeAd: NativeAd,
+    adView: NativeAdView
 ) { // Some assets are guaranteed to be in every UnifiedNativeAd.
     (adView.headlineView as TextView).text = nativeAd.headline
     (adView.bodyView as TextView).text = nativeAd.body

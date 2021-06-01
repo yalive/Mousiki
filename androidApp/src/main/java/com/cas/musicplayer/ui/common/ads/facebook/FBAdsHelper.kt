@@ -8,12 +8,12 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 suspend fun getFbNativeAds(count: Int): List<NativeAd> = suspendCancellableCoroutine { cont ->
-    val adsManager = NativeAdsManager(MusicApp.get(), "145411384288363", count)
+    val adsManager = NativeAdsManager(MusicApp.get(), "134138665415635_145411384288363", count)
     val listener = object : NativeAdsManager.Listener {
         override fun onAdsLoaded() {
             val adsCount = adsManager.uniqueNativeAdCount
             val ads = mutableListOf<NativeAd>()
-            repeat(adsCount) {
+            repeat(count) {
                 ads.add(adsManager.nextNativeAd())
             }
             cont.resume(ads)

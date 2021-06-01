@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.common.ads
 import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
 import com.google.android.gms.ads.formats.UnifiedNativeAd
+import com.google.android.gms.ads.nativead.NativeAd
 import com.mousiki.shared.data.config.RemoteAppConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 
 object AdsManager {
     private val MAX_ADS = 10
-    private val nativeAds = mutableListOf<UnifiedNativeAd>()
+    private val nativeAds = mutableListOf<NativeAd>()
     private var loadingAds = false
 
     private lateinit var appScope: CoroutineScope
@@ -23,7 +24,7 @@ object AdsManager {
         }
     }
 
-    suspend fun getAds(count: Int): List<UnifiedNativeAd> {
+    suspend fun getAds(count: Int): List<NativeAd> {
         MusicApp.get().awaitAdmobSdkInitialized()
         if (nativeAds.isEmpty()) loadAds()
         val randomList = nativeAds.shuffled()
@@ -31,7 +32,7 @@ object AdsManager {
         else randomList.subList(0, count)
     }
 
-    suspend fun getAd(): UnifiedNativeAd? {
+    suspend fun getAd(): NativeAd? {
         MusicApp.get().awaitAdmobSdkInitialized()
         if (nativeAds.isEmpty()) loadAds()
         return nativeAds.randomOrNull()

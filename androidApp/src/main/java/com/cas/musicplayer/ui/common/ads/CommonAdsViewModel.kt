@@ -3,6 +3,8 @@ package com.cas.musicplayer.ui.common.ads
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.formats.UnifiedNativeAd
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
 import com.mousiki.shared.data.config.RemoteAppConfig
 import kotlinx.coroutines.launch
 
@@ -15,7 +17,7 @@ class CommonAdsViewModel constructor(
     private val appConfig: RemoteAppConfig
 ) : ViewModel() {
 
-    var exitAd: UnifiedNativeAd? = null
+    var exitAd: NativeAd? = null
         private set
         get() {
             if (field == null) {
@@ -24,7 +26,7 @@ class CommonAdsViewModel constructor(
             return field
         }
 
-    var trackOptionsAd: UnifiedNativeAd? = null
+    var trackOptionsAd: NativeAd? = null
         private set
         get() {
             if (field == null) {
@@ -39,14 +41,14 @@ class CommonAdsViewModel constructor(
     }
 
     fun loadExitAd() = viewModelScope.launch {
-        AdsManager.getAd()?.also { ad ->
+        AdsManager.getAd()?.also { ad:NativeAd ->
             exitAd = ad
         }
     }
 
     fun loadTrackOptionsAd() = viewModelScope.launch {
         if (!appConfig.showNativeAdTrackOptions()) return@launch
-        AdsManager.getAd()?.also { ad ->
+        AdsManager.getAd()?.also { ad:NativeAd ->
             trackOptionsAd = ad
         }
     }

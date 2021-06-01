@@ -23,7 +23,7 @@ import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.viewBinding
-import com.google.android.gms.ads.formats.MediaView
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -145,19 +145,8 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     }
 
     private fun configureAdView() {
-        binding.adView.apply {
-            mediaView = findViewById<View>(R.id.ad_media) as MediaView
-            // Register the view used for each individual asset.
-            headlineView = findViewById(R.id.ad_headline)
-            bodyView = findViewById(R.id.ad_body)
-            callToActionView = findViewById(R.id.ad_call_to_action)
-            iconView = findViewById(R.id.ad_icon)
-            priceView = findViewById(R.id.ad_price)
-            starRatingView = findViewById(R.id.ad_stars)
-            storeView = findViewById(R.id.ad_store)
-            advertiserView = findViewById(R.id.ad_advertiser)
-        }
-        adsViewModel.trackOptionsAd?.let { ad ->
+
+        adsViewModel.trackOptionsAd?.let { ad: NativeAd ->
             populateNativeAdView(ad, binding.adView)
         } ?: run {
             binding.adView.isVisible = false

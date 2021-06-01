@@ -8,7 +8,7 @@ import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.cas.musicplayer.ui.common.ads.AdsItem
-import com.google.android.gms.ads.formats.UnifiedNativeAd
+import com.google.android.gms.ads.nativead.NativeAd
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
@@ -39,7 +39,7 @@ class PlayerViewModel(
     private val _queue = MediatorLiveData<List<DisplayableItem>>()
     val queue: LiveData<List<DisplayableItem>> = _queue
 
-    private val nativeAds = mutableListOf<UnifiedNativeAd>()
+    private val nativeAds = mutableListOf<NativeAd>()
     private val queueObserver = Observer<List<MusicTrack>?> { newQueue ->
         newQueue?.let {
             val videoItems = newQueue.map { it.toDisplayedVideoItem() }
@@ -92,7 +92,7 @@ class PlayerViewModel(
         return songsList
     }
 
-    private fun getAdsToShowFor(listSize: Int): List<UnifiedNativeAd> {
+    private fun getAdsToShowFor(listSize: Int): List<NativeAd> {
         return if (listSize < 20 && nativeAds.size > 2) {
             nativeAds.subList(0, 2)
         } else nativeAds
