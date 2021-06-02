@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
@@ -28,6 +29,7 @@ import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
@@ -70,6 +72,7 @@ class MainActivity : BaseActivity() {
             updateBottomNavigationMenu(destination.id)
             val showBack = showBackForDestination(destination)
             supportActionBar?.setDisplayHomeAsUpEnabled(showBack)
+            enableAppBarScrollingBehavior(destination.id != R.id.libraryFragment)
         }
         adsViewModel.apply {
             // just to prepare ads
@@ -338,6 +341,13 @@ class MainActivity : BaseActivity() {
     private fun wasLaunchedFromRecent(): Boolean {
         val flags: Int = intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
         return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
+    }
+
+    private fun enableAppBarScrollingBehavior(enabled: Boolean) {
+        val yourView = binding.coordinator.get(1)
+        val params = yourView.layoutParams as CoordinatorLayout.LayoutParams
+        params.behavior = if (enabled) AppBarLayout.ScrollingViewBehavior() else null
+        yourView.requestLayout()
     }
 
     companion object {
