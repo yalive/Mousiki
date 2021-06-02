@@ -161,5 +161,13 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             progressBar.gone()
             searchSuggestionsAdapter.dataItems = suggestions.orEmpty().toMutableList()
         }
+
+        observe(viewModel.hideSearchLoading.asLiveData()) { event ->
+            event?.getContentIfNotHandled()?.let {
+                viewPager.visible()
+                progressBar.gone()
+                recyclerViewSuggestions.gone()
+            }
+        }
     }
 }

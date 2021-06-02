@@ -12,6 +12,7 @@ import com.mousiki.shared.domain.usecase.search.SaveSearchQueryUseCase
 import com.mousiki.shared.domain.usecase.search.SearchSongsUseCase
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.event.Event
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.ui.resource.songList
@@ -42,6 +43,10 @@ class SearchYoutubeViewModel(
     val searchSuggestions: StateFlow<List<SearchSuggestion>?>
         get() = _searchSuggestions
 
+    private val _hideSearchLoading = MutableStateFlow<Event<Unit>?>(null)
+    val hideSearchLoading: StateFlow<Event<Unit>?>
+        get() = _hideSearchLoading
+
     private var lastQuery = ""
 
     init {
@@ -54,6 +59,7 @@ class SearchYoutubeViewModel(
 
     fun search(query: String) = scope.launch {
         if (lastQuery == query && videos.value != null) {
+            hideSearchLoadingIndicator()
             return@launch
         }
         currentPage = 1
@@ -132,5 +138,9 @@ class SearchYoutubeViewModel(
             SearchSuggestion(it, true)
         }
         _searchSuggestions.value = historicSearch
+    }
+
+    private fun hideSearchLoadingIndicator() {
+        _hideSearchLoading.value = Event(Unit)
     }
 }
