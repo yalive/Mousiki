@@ -71,12 +71,6 @@ class MainActivity : BaseActivity() {
             val showBack = showBackForDestination(destination)
             supportActionBar?.setDisplayHomeAsUpEnabled(showBack)
         }
-
-        if (!canDrawOverApps()) {
-            Utils.requestDrawOverAppsPermission(this).also {
-                dialogDrawOverApps = it
-            }
-        }
         adsViewModel.apply {
             // just to prepare ads
         }
