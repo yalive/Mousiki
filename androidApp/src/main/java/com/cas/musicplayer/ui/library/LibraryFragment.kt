@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
@@ -45,7 +46,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
         LibraryAdapter(viewModel)
     }
 
-    private lateinit var adView: AdView
+    private var adView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +56,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
-        adView = AdView(
-            requireContext(),
-            "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID",
-            AdSize.BANNER_HEIGHT_50
-        )
-        binding.bannerContainer.addView(adView)
-        adView.loadAd()
+        setupBannerAd()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -91,7 +86,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     override fun withToolbar(): Boolean = false
 
     override fun onDestroyView() {
-        adView.destroy()
+        adView?.destroy()
         super.onDestroyView()
     }
 
@@ -135,5 +130,19 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
                 )
             }
         }
+    }
+
+    private fun setupBannerAd() {
+        if (!viewModel.bannerAdOn()) {
+            binding.bannerContainer.isVisible = false
+            return
+        }
+        adView = AdView(
+            requireContext(),
+            "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID",
+            AdSize.BANNER_HEIGHT_50
+        )
+        binding.bannerContainer.addView(adView)
+        adView!!.loadAd()
     }
 }
