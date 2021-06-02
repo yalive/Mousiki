@@ -2,14 +2,13 @@ package com.cas.musicplayer.ui.library
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.updatePadding
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentLibraryBinding
@@ -21,9 +20,12 @@ import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
+import com.facebook.ads.AdSize
+import com.facebook.ads.AdView
 import com.mousiki.shared.ui.library.LibraryViewModel
 
 /**
@@ -36,14 +38,14 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
 ) {
 
     override val viewModel by viewModel { Injector.libraryViewModel }
-    override val screenTitle by lazy {
-        getString(R.string.library)
-    }
+    override val screenTitle by lazy { "" }
     private val binding by viewBinding(FragmentLibraryBinding::bind)
 
     private val adapter by lazy {
         LibraryAdapter(viewModel)
     }
+
+    private lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,13 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
+        adView = AdView(
+            requireContext(),
+            "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID",
+            AdSize.BANNER_HEIGHT_50
+        )
+        binding.bannerContainer.addView(adView)
+        adView.loadAd()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -68,25 +77,27 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
                 }
             }
         })
+        binding.btnSettings.onClick {
+            findNavController().navigateSafeAction(R.id.action_libraryFragment_to_settingsFragment)
+        }
+
+        observe(DeviceInset) { inset ->
+            binding.mainView.updatePadding(top = inset.top)
+        }
+
         observeViewModel()
+    }
+
+    override fun withToolbar(): Boolean = false
+
+    override fun onDestroyView() {
+        adView.destroy()
+        super.onDestroyView()
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.loadCustomPlaylists()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_home, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menuSetting) {
-            findNavController().navigateSafeAction(R.id.action_libraryFragment_to_settingsFragment)
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun observeViewModel() {

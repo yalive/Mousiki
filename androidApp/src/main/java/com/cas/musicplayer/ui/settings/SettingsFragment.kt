@@ -6,11 +6,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSettingsBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.ui.settings.rate.writeFeedback
 import com.cas.musicplayer.utils.Utils
