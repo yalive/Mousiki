@@ -25,8 +25,7 @@ import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
-import com.facebook.ads.AdSize
-import com.facebook.ads.AdView
+import com.google.android.gms.ads.AdRequest
 import com.mousiki.shared.ui.library.LibraryViewModel
 
 /**
@@ -45,8 +44,6 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     private val adapter by lazy {
         LibraryAdapter(viewModel)
     }
-
-    private var adView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +83,6 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     override fun withToolbar(): Boolean = false
 
     override fun onDestroyView() {
-        adView?.destroy()
         super.onDestroyView()
     }
 
@@ -134,15 +130,9 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
 
     private fun setupBannerAd() {
         if (!viewModel.bannerAdOn()) {
-            binding.bannerContainer.isVisible = false
+            binding.bannerAdView.isVisible = false
             return
         }
-        adView = AdView(
-            requireContext(),
-            "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID",
-            AdSize.BANNER_HEIGHT_50
-        )
-        binding.bannerContainer.addView(adView)
-        adView!!.loadAd()
+        binding.bannerAdView.loadAd(AdRequest.Builder().build())
     }
 }
