@@ -6,10 +6,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
-import com.mousiki.shared.ui.base.BaseViewModel
 import com.cas.musicplayer.ui.common.ads.AdsItem
 import com.google.android.gms.ads.nativead.NativeAd
-import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
@@ -17,6 +15,7 @@ import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -29,8 +28,7 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
-    private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,
-    private val appConfig: RemoteAppConfig
+    private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase
 ) : BaseViewModel() {
 
     private val _isLiked = MediatorLiveData<Boolean>()
@@ -63,8 +61,6 @@ class PlayerViewModel(
     fun removeSongFromFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
         removeSongFromFavouriteList(musicTrack.youtubeId)
     }
-
-    fun bannerAdOn() = appConfig.bannerAdOn()
 
     fun prepareAds() {
         /* viewModelScope.launch {

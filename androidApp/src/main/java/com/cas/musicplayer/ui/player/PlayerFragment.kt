@@ -23,7 +23,6 @@ import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
-import com.cas.musicplayer.tmp.observe
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -35,11 +34,11 @@ import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
-import com.google.android.gms.ads.AdRequest
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.durationFormatted
 import com.mousiki.shared.domain.models.durationToSeconds
@@ -231,17 +230,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private fun setupView() {
         setupMotionLayout()
-        binding.btnPlayOption.setImageResource(UserPrefs.getCurrentPlaybackSort().iconId(requireContext()))
+        binding.btnPlayOption.setImageResource(
+            UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
+        )
         setUpUserEvents()
         observe(DeviceInset) { inset ->
             binding.fullScreenSwitchView.updatePadding(top = inset.top)
         }
 
-        if (viewModel.bannerAdOn()) {
-            binding.bannerAdView.loadAd(AdRequest.Builder().build())
-        } else {
-            binding.bannerAdView.isVisible = false
-        }
         binding.txtTitle.isSelected = true
     }
 
@@ -375,7 +371,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun onQueueClosed() {
-        binding.btnPlayOption.setImageResource(UserPrefs.getCurrentPlaybackSort().iconId(requireContext()))
+        binding.btnPlayOption.setImageResource(
+            UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
+        )
     }
 
     fun openBatterySaverMode() {
