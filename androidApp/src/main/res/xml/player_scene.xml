@@ -36,11 +36,6 @@
             <KeyAttribute
                 android:alpha="0"
                 app:framePosition="90"
-                app:motionTarget="@id/bannerAdView" />
-
-            <KeyAttribute
-                android:alpha="0"
-                app:framePosition="90"
                 app:motionTarget="@id/btnYoutube" />
 
             <KeyAttribute
@@ -137,7 +132,7 @@
             app:layout_constraintBottom_toTopOf="@id/tileView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bannerAdView" />
+            app:layout_constraintTop_toBottomOf="@id/fullScreenSwitchView" />
 
         <Constraint
             android:id="@+id/fullScreenSwitchView"
@@ -147,19 +142,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <PropertySet
-                android:alpha="1"
-                android:visibility="visible" />
-        </Constraint>
-
-        <Constraint
-            android:id="@+id/bannerAdView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullScreenSwitchView">
             <PropertySet
                 android:alpha="1"
                 android:visibility="visible" />
@@ -279,19 +261,6 @@
         </Constraint>
 
         <Constraint
-            android:id="@+id/bannerAdView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullScreenSwitchView">
-            <PropertySet
-                android:alpha="0"
-                android:visibility="invisible" />
-        </Constraint>
-
-        <Constraint
             android:id="@+id/btnYoutube"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -398,19 +367,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <PropertySet
-                android:alpha="0"
-                android:visibility="invisible" />
-        </Constraint>
-
-        <Constraint
-            android:id="@+id/bannerAdView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullScreenSwitchView">
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />

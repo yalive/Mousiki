@@ -60,18 +60,6 @@
 
     </LinearLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/bannerAdView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fullScreenSwitchView"
-        android:layout_centerHorizontal="true"
-        app:adSize="BANNER"
-        app:adUnitId="@string/admob_banner_id"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fullScreenSwitchView" />
-
     <!-- Copyright button -->
     <LinearLayout
         android:id="@+id/btnYoutube"

@@ -27,7 +27,7 @@ val viewModelsModule = module {
     factory { GenresViewModel(get()) }
     factory { FavouriteSongsViewModel(get(), get()) }
     factory { TrackOptionsViewModel(get(), get(), get()) }
-    factory { PlayerViewModel(get(), get(), get(), get()) }
+    factory { PlayerViewModel(get(), get(), get()) }
     factory { MainSearchViewModel(get()) }
     factory { EmptyViewModel() }
     factory { SettingsViewModel() }
