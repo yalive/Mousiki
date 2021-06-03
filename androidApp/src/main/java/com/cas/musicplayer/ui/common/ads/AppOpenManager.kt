@@ -22,7 +22,7 @@ import java.util.*
  */
 class AppOpenManager : Application.ActivityLifecycleCallbacks, LifecycleObserver {
     private val LOG_TAG = "AppOpenManager"
-    private val AD_UNIT_ID = "ca-app-pub-3940256099942544/3419835294"
+    private val AD_UNIT_ID = "ca-app-pub-6125597516229421/1325389808"
     private var appOpenAd: AppOpenAd? = null
 
     private lateinit var loadCallback: AppOpenAdLoadCallback
