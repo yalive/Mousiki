@@ -130,6 +130,10 @@ class RemoteAppConfig(
         return delegate.getBoolean(BANNER_AD_TURNED_ON)
     }
 
+    fun libraryBannerAdOn(): Boolean {
+        return delegate.getBoolean(LIBRARY_BANNER_AD_TURNED_ON)
+    }
+
     fun searchArtistTracksFromMousikiApi(): Boolean {
         return delegate.getBoolean(SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API)
     }
@@ -171,6 +175,7 @@ class RemoteAppConfig(
         private const val YOUTUBE_API_KEYS_BY_COUNTRY = "youtube_api_keys_by_country"
         private const val TURN_ON_REWARD_AD = "turn_on_reward_ad"
         private const val BANNER_AD_TURNED_ON = "turn_on_banner_ad"
+        private const val LIBRARY_BANNER_AD_TURNED_ON = "turn_on_library_banner_ad"
         private const val SHOW_REWARD_AFTER_X_CLICK = "show_reward_after_x_click"
         private const val SHOW_AD_FOR_TRACK_OPTIONS = "show_ad_for_track_options"
         private const val SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API =
@@ -198,6 +203,7 @@ class RemoteAppConfig(
             configMap[LOAD_PLAYLIST_SONGS_FROM_API] = "true"
             configMap[TURN_ON_REWARD_AD] = "true"
             configMap[BANNER_AD_TURNED_ON] = "true"
+            configMap[LIBRARY_BANNER_AD_TURNED_ON] = "false"
             configMap[SEARCH_ARTIST_TRACKS_FROM_MOUSIKI_API] = "false"
             configMap[SHOW_REWARD_AFTER_X_CLICK] = "7"
             configMap[SHOW_AD_FOR_TRACK_OPTIONS] = "true"

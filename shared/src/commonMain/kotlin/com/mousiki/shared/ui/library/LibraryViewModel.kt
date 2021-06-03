@@ -1,6 +1,7 @@
 package com.mousiki.shared.ui.library
 
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
@@ -36,6 +37,7 @@ class LibraryViewModel(
     private val getCustomPlaylists: GetCustomPlaylistsUseCase,
     private val removeCustomPlaylist: RemoveCustomPlaylistUseCase,
     private val strings: Strings,
+    private val appConfig: RemoteAppConfig,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
@@ -131,6 +133,8 @@ class LibraryViewModel(
         removeCustomPlaylist(playlist.title)
         loadCustomPlaylists()
     }
+
+    fun bannerAdOn() = appConfig.libraryBannerAdOn()
 
     private fun tracksToDisplayableItems(songs: List<MusicTrack>) =
         songs.map { it.toDisplayedVideoItem() }

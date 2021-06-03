@@ -11,6 +11,6 @@ class GetRecentSearchQueriesUseCase(
     private val repository: SearchRepository
 ) {
     suspend operator fun invoke(keyword: String): List<String> {
-        return repository.searchRecentQueries(keyword)
+        return repository.searchRecentQueries(keyword).reversed()
     }
 }
