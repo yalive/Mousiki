@@ -145,7 +145,18 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     }
 
     private fun configureAdView() {
-
+        binding.adView.apply {
+            mediaView = findViewById(R.id.ad_media)
+            // Register the view used for each individual asset.
+            headlineView = findViewById(R.id.ad_headline)
+            bodyView = findViewById(R.id.ad_body)
+            callToActionView = findViewById(R.id.ad_call_to_action)
+            iconView = findViewById(R.id.ad_icon)
+            priceView = findViewById(R.id.ad_price)
+            starRatingView = findViewById(R.id.ad_stars)
+            storeView = findViewById(R.id.ad_store)
+            advertiserView = findViewById(R.id.ad_advertiser)
+        }
         adsViewModel.trackOptionsAd?.let { ad: NativeAd ->
             populateNativeAdView(ad, binding.adView)
         } ?: run {
