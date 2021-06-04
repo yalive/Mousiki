@@ -101,7 +101,7 @@ class HomeRepository(
     private fun homeExpired(): Boolean {
         val updateDate = preferences.getHomeResponseDate()
         val cacheDuration = (elapsedRealtime - updateDate) / 1000
-        return cacheDuration - appConfig.getHomeCacheDuration() * 60 * 60 >= 0
+        return (cacheDuration - appConfig.getHomeCacheDuration() * 60 * 60) >= 0
     }
 
     private suspend fun loadHomeFromApi(): Result<HomeRS> {
