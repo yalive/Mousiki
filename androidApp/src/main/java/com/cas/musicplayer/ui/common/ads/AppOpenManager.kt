@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.common.ads
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import androidx.annotation.Keep
 import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -14,13 +15,16 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
+import com.mousiki.shared.data.config.RemoteAppConfig
 import java.util.*
 
 
 /**
  * Created by Fayssel Yabahddou on 6/1/21.
  */
-class AppOpenManager : Application.ActivityLifecycleCallbacks, LifecycleObserver {
+class AppOpenManager(
+    private val appConfig: RemoteAppConfig
+) : Application.ActivityLifecycleCallbacks, LifecycleObserver {
     private val LOG_TAG = "AppOpenManager"
     private val AD_UNIT_ID = "ca-app-pub-6125597516229421/1325389808"
     private var appOpenAd: AppOpenAd? = null
@@ -33,6 +37,7 @@ class AppOpenManager : Application.ActivityLifecycleCallbacks, LifecycleObserver
 
     private var loadTime: Long = 0
 
+    private var appOpenCount = 0
 
     init {
         MusicApp.get().registerActivityLifecycleCallbacks(this)
@@ -133,9 +138,14 @@ class AppOpenManager : Application.ActivityLifecycleCallbacks, LifecycleObserver
 
 
     /** LifecycleObserver methods  */
+    @Keep
     @OnLifecycleEvent(ON_START)
     fun onStart() {
-        showAdIfAvailable()
+        val frequency = appConfig.appOpenAdFrequency()
+        if (appOpenCount % frequency == 0) {
+            showAdIfAvailable()
+        }
+        appOpenCount++
     }
 
     /** Utility method to check if ad was loaded more than n hours ago.  */

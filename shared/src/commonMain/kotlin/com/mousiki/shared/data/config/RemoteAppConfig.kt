@@ -163,6 +163,14 @@ class RemoteAppConfig(
         return delegate.getInt(AUTO_REFRESH_ADS_DURATION)
     }
 
+    fun appOpenAdEnabled(): Boolean {
+        return delegate.getBoolean(ENABLE_APP_OPEN_AD)
+    }
+
+    fun appOpenAdFrequency(): Int {
+        return delegate.getInt(APP_OPEN_AD_FREQUENCY)
+    }
+
     companion object {
 
         private const val YOUTUBE_API_KEYS = "youtube_api_keys"
@@ -184,6 +192,8 @@ class RemoteAppConfig(
         private const val ENABLE_NEW_HOME = "enable_new_home"
         private const val AUTO_REFRESH_ADS = "auto_refresh_ads"
         private const val AUTO_REFRESH_ADS_DURATION = "auto_refresh_ads_duration_min"
+        private const val ENABLE_APP_OPEN_AD = "enable_app_open_ad"
+        private const val APP_OPEN_AD_FREQUENCY = "app_open_ad_frequency"
 
         private const val DEF_ADS_LIST_OFFSET = 6
         private const val DEF_FREQ_POPUP_RATE = 3
@@ -213,6 +223,8 @@ class RemoteAppConfig(
             configMap[AUTO_REFRESH_ADS] = "true"
             configMap[ENABLE_NEW_HOME] = "false"
             configMap[AUTO_REFRESH_ADS_DURATION] = "10"
+            configMap[ENABLE_APP_OPEN_AD] = "true"
+            configMap[APP_OPEN_AD_FREQUENCY] = "3"
             return configMap
         }
     }

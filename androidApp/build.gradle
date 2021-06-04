@@ -157,7 +157,7 @@ dependencies {
 
     // Facebook and mediation adapter
     implementation 'com.google.ads.mediation:adcolony:4.3.0.0'
-    implementation 'com.google.ads.mediation:mopub:5.15.0.1'
+    implementation 'com.google.ads.mediation:mopub:5.17.0.0'
     implementation 'com.google.ads.mediation:unity:3.6.0.0'
     implementation 'com.google.ads.mediation:facebook:6.4.0.0'
     implementation 'com.facebook.android:audience-network-sdk:6.4.0'
