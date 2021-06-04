@@ -14,6 +14,7 @@ import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.ConnectivityState
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.di.initKoin
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.preference.UserPrefs
@@ -46,6 +47,7 @@ class MusicApp : Application(), KoinComponent {
 
     private var admobInitialized = false
 
+
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -69,7 +71,10 @@ class MusicApp : Application(), KoinComponent {
             AdsManager.init(applicationScope, get())
         }
 
-        appOpenManager =  AppOpenManager()
+        val appConfig = get<RemoteAppConfig>()
+        if (appConfig.appOpenAdEnabled()) {
+            appOpenManager = AppOpenManager(appConfig)
+        }
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_START)
