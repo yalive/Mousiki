@@ -4,13 +4,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.mousiki.shared.ui.library.LibraryViewModel
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.library.adapters.LibraryPlaylistsAdapter
 import com.cas.musicplayer.ui.library.model.LibraryItem
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.ui.library.LibraryViewModel
 
 /**
  ***************************************
@@ -48,7 +48,7 @@ class LibraryPlaylistsDelegate(
         }
 
         fun bind(items: List<LibraryPlaylistItem>) {
-            adapter.dataItems = items.toMutableList()
+            adapter.submitList(items)
         }
     }
 }

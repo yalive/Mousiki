@@ -1,9 +1,10 @@
 package com.cas.musicplayer.ui.common.songs
 
-import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
-import com.mousiki.shared.domain.models.MusicTrack
+import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.ui.common.ads.AdsCellDelegate
+import com.cas.musicplayer.ui.popular.SongItemDiffUtil
 import com.cas.musicplayer.ui.popular.delegates.LoadingDelegate
+import com.mousiki.shared.domain.models.MusicTrack
 
 /**
  **********************************
@@ -13,10 +14,11 @@ import com.cas.musicplayer.ui.popular.delegates.LoadingDelegate
 class SongsAdapter(
     onVideoSelected: (MusicTrack) -> Unit,
     onClickMore: (MusicTrack) -> Unit
-) : BaseDelegationAdapter(
+) : MousikiAdapter(
     listOf(
         SongAdapterDelegate(onClickMoreOptions = onClickMore, onVideoSelected = onVideoSelected),
         AdsCellDelegate(),
         LoadingDelegate()
-    )
+    ),
+    SongItemDiffUtil()
 )

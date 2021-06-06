@@ -64,7 +64,7 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
         observe(parentFragment.viewModel.videos.asLiveData()) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    adapter.dataItems = resource.data.toMutableList()
+                    adapter.submitList(resource.data.toMutableList())
                     onLoadSearchResults()
                 }
                 Resource.Loading -> showLoading()

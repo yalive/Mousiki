@@ -4,18 +4,18 @@ package com.cas.musicplayer.ui.favourite
 import android.os.Bundle
 import android.view.View
 import com.cas.common.extensions.gone
-import com.cas.musicplayer.tmp.observe
 import com.cas.common.extensions.visible
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlayListBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
-import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.utils.Constants
 
 class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>(
     R.layout.fragment_play_list
@@ -52,7 +52,7 @@ class FavouriteSongsFragment : BaseFragment<FavouriteSongsViewModel>(
                 binding.recyclerView.visible()
                 binding.imgNoSongs.gone()
                 binding.txtError.gone()
-                adapter.dataItems = it.toMutableList()
+                adapter.submitList(it.toMutableList())
             } else {
                 binding.recyclerView.gone()
                 binding.imgNoSongs.visible()

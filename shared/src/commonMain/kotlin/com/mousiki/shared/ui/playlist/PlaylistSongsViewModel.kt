@@ -1,8 +1,8 @@
 package com.mousiki.shared.ui.playlist
 
 import com.mousiki.shared.ads.GetListAdsDelegate
-import com.mousiki.shared.data.repository.AudioRepository
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.map
@@ -25,9 +25,8 @@ import kotlinx.coroutines.launch
  */
 class PlaylistSongsViewModel(
     private val getPlaylistVideosUseCase: GetPlaylistVideosUseCase,
-    playDelegate: PlaySongDelegate,
+    val playDelegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate,
-    private val audioRepository: AudioRepository
 ) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
 
     private val _songs = MutableStateFlow<Resource<List<DisplayableItem>>?>(null)
@@ -42,7 +41,13 @@ class PlaylistSongsViewModel(
         _songs.value = Resource.Loading
         val result = getPlaylistVideosUseCase(playlistId)
         _songs.value = result.map { tracks ->
-            tracks.map { it.toDisplayedVideoItem() }
+            tracks.map {
+                val isCurrent = currentSong?.youtubeId == it.youtubeId
+                it.toDisplayedVideoItem(
+                    isCurrent = isCurrent,
+                    isPlaying = isCurrent && isPlayingASong()
+                )
+            }
         }.asResource()
         populateAdsIn(_songs)
     }
@@ -57,6 +62,24 @@ class PlaylistSongsViewModel(
             if (allSongs.isEmpty()) return@launch
             playTrackFromQueue(allSongs.first(), allSongs)
         }
+    }
+
+    fun updateCurrentPlayingItem() {
+        val resource = _songs.value ?: return
+        val currentItems = (resource as? Resource.Success)?.data ?: return
+        val updatedList = currentItems.map { item ->
+            when (item) {
+                is DisplayedVideoItem -> {
+                    val isCurrent = currentSong?.youtubeId == item.track.youtubeId
+                    item.copy(
+                        isCurrent = isCurrent,
+                        isPlaying = isCurrent && isPlayingASong()
+                    )
+                }
+                else -> item
+            }
+        }
+        _songs.value = Resource.Success(updatedList)
     }
 
     // For iOS

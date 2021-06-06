@@ -2,10 +2,7 @@ package com.cas.musicplayer.ui.popular
 
 import com.cas.musicplayer.tmp.*
 import com.mousiki.shared.ads.GetListAdsDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.LoadingItem
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
@@ -24,9 +21,10 @@ import kotlinx.coroutines.launch
 
 class PopularSongsViewModel(
     private val getPopularSongs: GetPopularSongsUseCase,
-    delegate: PlaySongDelegate,
+    private val playSongDelegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate
-) : BaseViewModel(), PlaySongDelegate by delegate, GetListAdsDelegate by getListAdsDelegate {
+) : BaseViewModel(), PlaySongDelegate by playSongDelegate,
+    GetListAdsDelegate by getListAdsDelegate {
 
     private val _newReleases = MutableStateFlow<Resource<List<DisplayableItem>>?>(null)
     val newReleases: StateFlow<Resource<List<DisplayableItem>>?>
@@ -46,7 +44,7 @@ class PopularSongsViewModel(
         _newReleases.loading()
         val result = getPopularSongs(PAGE_SIZE)
         _newReleases.value = result.map { tracks ->
-            tracks.map { it.toDisplayedVideoItem() }.toMutableList()
+            tracks.map { it.toDisplayedVideoItem(playSongDelegate) }
         }.asResource()
         populateAdsIn(_newReleases)
         loadingMore = false
@@ -81,6 +79,24 @@ class PopularSongsViewModel(
         val allSongs = _newReleases.songList()
         if (allSongs.isEmpty()) return@launch
         playTrackFromQueue(allSongs.first(), allSongs)
+    }
+
+    fun updateCurrentPlayingItem() {
+        val resource = _newReleases.value ?: return
+        val currentItems = (resource as? Resource.Success)?.data ?: return
+        val updatedList = currentItems.map { item ->
+            when (item) {
+                is DisplayedVideoItem -> {
+                    val isCurrent = currentSong?.youtubeId == item.track.youtubeId
+                    item.copy(
+                        isCurrent = isCurrent,
+                        isPlaying = isCurrent && isPlayingASong()
+                    )
+                }
+                else -> item
+            }
+        }
+        _newReleases.value = Resource.Success(updatedList)
     }
 
     companion object {

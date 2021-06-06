@@ -6,12 +6,10 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.transition.TransitionManager
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.onClick
@@ -19,7 +17,6 @@ import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlaylistSongsBinding
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
@@ -27,7 +24,6 @@ import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageRes
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageUrl
-import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.DisplayableItem
@@ -125,47 +121,37 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         }
     }
 
-    private fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        val currentItems = adapter.dataItems
-        val updatedList = currentItems.map { item ->
-            when (item) {
-                is DisplayedVideoItem -> {
-                    val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
-                    item.copy(
-                        isCurrent = isCurrent,
-                        isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)
-                    )
-                }
-                else -> item
-            }
-        }
-        val diffCallback = SongsDiffUtil(adapter.dataItems, updatedList)
-        adapter.submitList(updatedList, diffCallback)
+    open fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
+        /* val currentItems = adapter.dataItems
+         val updatedList = currentItems.map { item ->
+             when (item) {
+                 is DisplayedVideoItem -> {
+                     val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
+                     item.copy(
+                         isCurrent = isCurrent,
+                         isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)
+                     )
+                 }
+                 else -> item
+             }
+         }
+         adapter.submitList(updatedList)*/
     }
 
     protected fun updateUI(resource: Resource<List<DisplayableItem>>?) {
         when (resource) {
             is Resource.Success -> {
-                (view as? ViewGroup)?.let { viewGroup ->
-                    TransitionManager.beginDelayedTransition(viewGroup)
-                }
                 binding.btnPlayAll.alpha = 1f
                 binding.shimmerView.loadingView.alpha = 0f
                 binding.shimmerView.loadingView.stopShimmer()
                 val newList = resource.data
-
-                val diffCallback = SongsDiffUtil(adapter.dataItems, newList)
-                adapter.submitList(newList, diffCallback)
-
+                adapter.submitList(newList)
                 val size = newList.filterIsInstance<DisplayedVideoItem>().size
                 binding.txtNumberOfSongs.text = requireContext().resources.getQuantityString(
                     R.plurals.playlist_tracks_counts,
                     size,
                     size
                 )
-                PlaybackLiveData.value?.let { state ->
-                    updateCurrentPlayingItem(state)
-                }
             }
             Resource.Loading -> {
                 binding.shimmerView.loadingView.alpha = 1f

@@ -11,7 +11,7 @@ import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentMainSearchBinding
-import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
+import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
@@ -75,9 +75,7 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
     override fun withToolbar(): Boolean = false
 
     private fun observeViewModel() {
-        observe(viewModel.genres) { genres ->
-            searchGenresAdapter.dataItems = genres.toMutableList()
-        }
+        observe(viewModel.genres, searchGenresAdapter::submitList)
     }
 
     private fun startSearch() {
@@ -85,6 +83,6 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
     }
 }
 
-class SearchGenresAdapter : BaseDelegationAdapter(
+class SearchGenresAdapter : MousikiAdapter(
     listOf(GenreAdapterDelegate())
 )

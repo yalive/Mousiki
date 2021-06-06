@@ -7,14 +7,9 @@ import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.LoadingItem
 
-class SongsDiffUtil(
-    private val oldList: List<DisplayableItem>,
-    private val newList: List<DisplayableItem>
-) : DiffUtil.Callback() {
+class SongItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldItem = oldList[oldItemPosition]
-        val newItem = newList[newItemPosition]
+    override fun areItemsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
         if (oldItem is DisplayedVideoItem && newItem is DisplayedVideoItem) {
             return oldItem.track.youtubeId == newItem.track.youtubeId
         }
@@ -35,21 +30,9 @@ class SongsDiffUtil(
         return false
     }
 
-    override fun getOldListSize(): Int = oldList.size
-
-    override fun getNewListSize(): Int = newList.size
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldItem = oldList[oldItemPosition]
-        val newItem = newList[newItemPosition]
+    override fun areContentsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
         if (oldItem is DisplayedVideoItem && newItem is DisplayedVideoItem) {
-            return oldItem.track.youtubeId == newItem.track.youtubeId
-                    && oldItem.isCurrent == newItem.isCurrent
-                    && oldItem.track == newItem.track
-                    && oldItem.songDuration == newItem.songDuration
-                    && oldItem.isPlaying == newItem.isPlaying
-                    && oldItem.beforeCurrent == newItem.beforeCurrent
-                    && oldItem.songTitle == newItem.songTitle
+            return oldItem as DisplayedVideoItem == newItem as DisplayedVideoItem
         }
 
         if (oldItem is AdsItem && newItem is AdsItem) {
