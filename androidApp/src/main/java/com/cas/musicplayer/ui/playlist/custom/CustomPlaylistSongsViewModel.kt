@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.tmp.valueOrNull
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.utils.Constants
@@ -28,9 +26,8 @@ class CustomPlaylistSongsViewModel(
 ) : BaseViewModel(), PlaySongDelegate by delegate {
     lateinit var playlist: Playlist
         private set
-    private val _songs = MutableLiveData<Resource<List<DisplayedVideoItem>>>()
-    val songs: LiveData<Resource<List<DisplayedVideoItem>>>
-        get() = _songs
+    private val _songs = MutableLiveData<Resource<List<DisplayableItem>>>()
+    val songs: LiveData<Resource<List<DisplayableItem>>> get() = _songs
 
     fun init(playlist: Playlist) {
         this.playlist = playlist
@@ -54,13 +51,16 @@ class CustomPlaylistSongsViewModel(
     }
 
     fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
-        val tracks = (_songs.value as? Resource.Success)?.data?.map { it.track } ?: emptyList()
+        val tracks = (_songs.value as? Resource.Success)?.data
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track } ?: emptyList()
         playTrackFromQueue(track, tracks)
     }
 
     fun onClickTrackPlayAll() {
         viewModelScope.launch {
-            val allSongs = _songs.valueOrNull() ?: emptyList()
+            val allSongs = _songs.valueOrNull()
+                ?.filterIsInstance<DisplayedVideoItem>() ?: emptyList()
             if (allSongs.isEmpty()) return@launch
             playTrackFromQueue(allSongs.first().track, allSongs.map { it.track })
         }
@@ -70,16 +70,9 @@ class CustomPlaylistSongsViewModel(
         getPlaylistSongs()
     }
 
-    fun updateCurrentPlayingItem() {
-        val resource = _songs.value ?: return
-        val currentItems = (resource as? Resource.Success)?.data ?: return
-        val updatedList = currentItems.map { item ->
-            val isCurrent = currentSong?.youtubeId == item.track.youtubeId
-            item.copy(
-                isCurrent = isCurrent,
-                isPlaying = isCurrent && isPlayingASong()
-            )
-        }
+    fun onPlaybackStateChanged() {
+        val currentItems = _songs.valueOrNull() ?: return
+        val updatedList = updateCurrentPlaying(currentItems)
         _songs.value = Resource.Success(updatedList)
     }
 }

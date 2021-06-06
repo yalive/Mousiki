@@ -203,6 +203,10 @@ class HomeViewModel(
         _homeItems.value = homeListItems
     }
 
+    fun onPlaybackStateChanged() {
+
+    }
+
     // For iOS
     val homeItemsFlow: CommonFlow<List<HomeItem>?>
         get() = homeItems.asCommonFlow()

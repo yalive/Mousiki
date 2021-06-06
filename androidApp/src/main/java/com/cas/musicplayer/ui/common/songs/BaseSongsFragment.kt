@@ -113,6 +113,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
 
         observe(PlaybackLiveData) { state ->
             if (state == PlayerConstants.PlayerState.PLAYING
+                || state == PlayerConstants.PlayerState.BUFFERING
                 || state == PlayerConstants.PlayerState.PAUSED
                 || state == PlayerConstants.PlayerState.ENDED
             ) {
@@ -122,20 +123,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
     }
 
     open fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        /* val currentItems = adapter.dataItems
-         val updatedList = currentItems.map { item ->
-             when (item) {
-                 is DisplayedVideoItem -> {
-                     val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
-                     item.copy(
-                         isCurrent = isCurrent,
-                         isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)
-                     )
-                 }
-                 else -> item
-             }
-         }
-         adapter.submitList(updatedList)*/
+
     }
 
     protected fun updateUI(resource: Resource<List<DisplayableItem>>?) {

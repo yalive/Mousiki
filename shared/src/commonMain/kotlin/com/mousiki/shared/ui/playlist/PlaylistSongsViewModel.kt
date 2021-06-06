@@ -2,16 +2,17 @@ package com.mousiki.shared.ui.playlist
 
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.toDisplayedVideoItems
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
 import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.ui.resource.songList
+import com.mousiki.shared.ui.resource.valueOrNull
 import com.mousiki.shared.utils.CommonFlow
 import com.mousiki.shared.utils.asCommonFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,8 +31,7 @@ class PlaylistSongsViewModel(
 ) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
 
     private val _songs = MutableStateFlow<Resource<List<DisplayableItem>>?>(null)
-    val songs: StateFlow<Resource<List<DisplayableItem>>?>
-        get() = _songs
+    val songs: StateFlow<Resource<List<DisplayableItem>>?> get() = _songs
 
     fun init(playlistId: String) {
         getPlaylistSongs(playlistId)
@@ -39,16 +39,9 @@ class PlaylistSongsViewModel(
 
     private fun getPlaylistSongs(playlistId: String) = scope.launch {
         _songs.value = Resource.Loading
-        val result = getPlaylistVideosUseCase(playlistId)
-        _songs.value = result.map { tracks ->
-            tracks.map {
-                val isCurrent = currentSong?.youtubeId == it.youtubeId
-                it.toDisplayedVideoItem(
-                    isCurrent = isCurrent,
-                    isPlaying = isCurrent && isPlayingASong()
-                )
-            }
-        }.asResource()
+        _songs.value = getPlaylistVideosUseCase(playlistId)
+            .map { tracks -> tracks.toDisplayedVideoItems(playDelegate) }
+            .asResource()
         populateAdsIn(_songs)
     }
 
@@ -64,21 +57,9 @@ class PlaylistSongsViewModel(
         }
     }
 
-    fun updateCurrentPlayingItem() {
-        val resource = _songs.value ?: return
-        val currentItems = (resource as? Resource.Success)?.data ?: return
-        val updatedList = currentItems.map { item ->
-            when (item) {
-                is DisplayedVideoItem -> {
-                    val isCurrent = currentSong?.youtubeId == item.track.youtubeId
-                    item.copy(
-                        isCurrent = isCurrent,
-                        isPlaying = isCurrent && isPlayingASong()
-                    )
-                }
-                else -> item
-            }
-        }
+    fun onPlaybackStateChanged() {
+        val currentItems = _songs.valueOrNull() ?: return
+        val updatedList = updateCurrentPlaying(currentItems)
         _songs.value = Resource.Success(updatedList)
     }
 
