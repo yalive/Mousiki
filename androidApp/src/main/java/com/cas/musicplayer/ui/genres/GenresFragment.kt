@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cas.common.dpToPixel
-import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.common.viewmodel.viewModel
-import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentGenresBinding
+import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.searchyoutube.GenreAdapterDelegate
 import com.cas.musicplayer.utils.viewBinding
 
@@ -36,7 +36,7 @@ class GenresFragment : BaseFragment<GenresViewModel>(
             HeaderGenreDelegate(),
             GenreAdapterDelegate(clickItemDestination = R.id.action_genresFragment_to_playlistVideosFragment)
         )
-        object : BaseDelegationAdapter(delegates) {}
+        BaseDelegationAdapter(delegates)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

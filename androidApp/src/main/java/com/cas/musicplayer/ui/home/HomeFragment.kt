@@ -4,6 +4,7 @@ package com.cas.musicplayer.ui.home
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.View
 import android.widget.ProgressBar
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
@@ -21,13 +22,10 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
-import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
-import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.viewBinding
 import com.facebook.ads.*
 import com.mousiki.shared.ui.home.HomeViewModel
-import com.mousiki.shared.ui.resource.valueOrNull
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
@@ -61,8 +59,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(
         setHasOptionsMenu(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         recyclerView.run {
             addItemDecoration(HomeMarginItemDecoration())
             adapter = homeAdapter
@@ -91,7 +89,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(
     }
 
     private fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        val items = viewModel.newReleases.valueOrNull() ?: return
+        /*val items = viewModel.newReleases.valueOrNull() ?: return
         val updatedList = items.map { item ->
             val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
                     && state != PlayerConstants.PlayerState.UNKNOWN
@@ -112,7 +110,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(
                 val diffCallback = SongsDiffUtil(adapter.dataItems, updatedList)
                 adapter.submitList(updatedList, diffCallback)
             }
-        }
+        }*/
 
     }
 
@@ -121,12 +119,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(
     private fun observeViewModel() {
         observe(viewModel.homeItems.asLiveData()) { items ->
             if (items == null) return@observe
-            homeAdapter.dataItems = items.toMutableList()
+            homeAdapter.submitList(items)
             progressBar.isVisible = false
         }
-        observe(viewModel.genres.asLiveData(), homeAdapter::updateGenres)
-        observe(viewModel.artists.asLiveData(), homeAdapter::updateArtists)
-        observe(viewModel.newReleases.asLiveData(), homeAdapter::updatePopularSongs)
     }
 
     //region Status bar adjusment

@@ -161,7 +161,7 @@
             android:contentDescription="@string/app_name"
             android:padding="8dp"
             android:scaleType="fitXY"
-            android:tint="@color/white"
+            android:tint="@color/colorWhite"
             app:srcCompat="@drawable/ic_heart_light" />
 
         <TextView

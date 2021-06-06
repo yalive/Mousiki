@@ -2,10 +2,10 @@ package com.mousiki.shared.ui.home
 
 import com.mousiki.shared.ads.FacebookAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
-import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
-import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
@@ -17,7 +17,8 @@ import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.home.model.HeaderItem
 import com.mousiki.shared.ui.home.model.HomeItem
-import com.mousiki.shared.ui.resource.*
+import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,16 +43,6 @@ class HomeViewModel(
     facebookAdsDelegate: FacebookAdsDelegate,
 ) : BaseViewModel(), PlaySongDelegate by playSongDelegate,
     FacebookAdsDelegate by facebookAdsDelegate {
-
-    private val _newReleases =
-        MutableStateFlow<Resource<List<DisplayedVideoItem>>?>(null)
-    val newReleases: StateFlow<Resource<List<DisplayedVideoItem>>?> = _newReleases
-
-    private val _genres = MutableStateFlow<List<GenreMusic>?>(null)
-    val genres: StateFlow<List<GenreMusic>?> = _genres
-
-    private val _artists = MutableStateFlow<Resource<List<Artist>>?>(null)
-    val artists: StateFlow<Resource<List<Artist>>?> = _artists
 
     private val _homeItems = MutableStateFlow<List<HomeItem>?>(null)
     val homeItems: StateFlow<List<HomeItem>?> = _homeItems
@@ -133,15 +124,13 @@ class HomeViewModel(
     }
 
     private fun loadTrending() = scope.launch {
-        if (_newReleases.hasItems() || _newReleases.isLoading()) {
-            return@launch
-        }
         val connectedBefore = connectivityState.isConnected()
-        _newReleases.loading()
+        updateItem(HomeItem.PopularsItem(Resource.Loading), where = { it is HomeItem.PopularsItem })
         val result = getNewReleasedSongs(max = 10)
-        _newReleases.value = result.map { tracks ->
+        val resource = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
+        updateItem(HomeItem.PopularsItem(resource), where = { it is HomeItem.PopularsItem })
         if (result is Result.Error) {
             analytics.logEvent(
                 "cannot_load_trending_tracks",
@@ -153,15 +142,16 @@ class HomeViewModel(
     }
 
     private fun loadGenres() = scope.launch {
-        val chartList = getGenres().take(8)
-        _genres.value = chartList
+        val genreList = getGenres().take(8)
+        val genreItem = HomeItem.GenreItem(genreList)
+        updateItem(genreItem, where = { it is HomeItem.GenreItem })
     }
 
     private fun loadArtists() = scope.launch {
-        if (!_artists.hasItems() && !_artists.isLoading()) {
-            _artists.loading()
-            val result = getCountryArtists()
-            _artists.value = result.asResource()
+        val result = getCountryArtists()
+        if (result is Result.Success) {
+            val artistsItem = HomeItem.ArtistItem(result.data)
+            updateItem(artistsItem, where = { it is HomeItem.ArtistItem })
         }
     }
 
@@ -203,39 +193,17 @@ class HomeViewModel(
         }
 
         // 3 - Notify Observer
+        _homeItems.value = homeListItems
+    }
 
-        // Get current state of: Artists, new release and genres (Next: Use single observable object)
-        val popularItem = _homeItems.value?.filterIsInstance<HomeItem.PopularsItem>()?.firstOrNull()
-        val newRelease = popularItem?.copy(resource = _newReleases.value!!)
-        val indexNewRelease = homeListItems.indexOfFirst { it is HomeItem.PopularsItem }
-        homeListItems[indexNewRelease] = newRelease!!
-
-        // Genres
-        val genreItem = _homeItems.value?.filterIsInstance<HomeItem.GenreItem>()?.firstOrNull()
-        val updatedGenre = genreItem?.copy(genres = _genres.value!!)
-        val indexGenres = homeListItems.indexOfFirst { it is HomeItem.GenreItem }
-        homeListItems[indexGenres] = updatedGenre!!
-
-        // Artists
-        val currentArtistsList = (_artists.value as? Resource.Success<List<Artist>>)?.data.orEmpty()
-        val artistsItem = _homeItems.value?.filterIsInstance<HomeItem.ArtistItem>()?.firstOrNull()
-        val updatedArtists = artistsItem?.copy(artists = currentArtistsList)
-        val indexArtists = homeListItems.indexOfFirst { it is HomeItem.ArtistItem }
-        homeListItems[indexArtists] = updatedArtists!!
-
+    private fun updateItem(item: HomeItem, where: (HomeItem) -> Boolean) {
+        val homeListItems = _homeItems.value?.toMutableList() ?: return
+        val index = homeListItems.indexOfFirst { where(it) }
+        homeListItems[index] = item
         _homeItems.value = homeListItems
     }
 
     // For iOS
-    val newReleasesFlow: CommonFlow<Resource<List<DisplayedVideoItem>>?>
-        get() = newReleases.asCommonFlow()
-
-    val genresFlow: CommonFlow<List<GenreMusic>?>
-        get() = genres.asCommonFlow()
-
-    val artistsFlow: CommonFlow<Resource<List<Artist>>?>
-        get() = artists.asCommonFlow()
-
     val homeItemsFlow: CommonFlow<List<HomeItem>?>
         get() = homeItems.asCommonFlow()
 }
