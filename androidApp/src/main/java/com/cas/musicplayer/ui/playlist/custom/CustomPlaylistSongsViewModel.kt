@@ -3,9 +3,7 @@ package com.cas.musicplayer.ui.playlist.custom
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mousiki.shared.ui.base.BaseViewModel
 import com.cas.musicplayer.tmp.valueOrNull
-import com.mousiki.shared.utils.Constants
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
@@ -13,7 +11,9 @@ import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.utils.Constants
 import kotlinx.coroutines.launch
 
 /**
@@ -44,7 +44,11 @@ class CustomPlaylistSongsViewModel(
             else -> getCustomPlaylistTracks(playlist.title)
         }
         val items = tracks.map {
-            it.toDisplayedVideoItem()
+            val isCurrent = currentSong?.youtubeId == it.youtubeId
+            it.toDisplayedVideoItem(
+                isCurrent = isCurrent,
+                isPlaying = isCurrent && isPlayingASong()
+            )
         }
         _songs.value = Resource.Success(items)
     }
@@ -64,5 +68,18 @@ class CustomPlaylistSongsViewModel(
 
     fun refresh() {
         getPlaylistSongs()
+    }
+
+    fun updateCurrentPlayingItem() {
+        val resource = _songs.value ?: return
+        val currentItems = (resource as? Resource.Success)?.data ?: return
+        val updatedList = currentItems.map { item ->
+            val isCurrent = currentSong?.youtubeId == item.track.youtubeId
+            item.copy(
+                isCurrent = isCurrent,
+                isPlaying = isCurrent && isPlayingASong()
+            )
+        }
+        _songs.value = Resource.Success(updatedList)
     }
 }

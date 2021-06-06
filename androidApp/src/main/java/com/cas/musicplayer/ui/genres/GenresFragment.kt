@@ -9,7 +9,7 @@ import com.cas.common.recyclerview.itemsMarginDecorator
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentGenresBinding
-import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
+import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
@@ -36,7 +36,7 @@ class GenresFragment : BaseFragment<GenresViewModel>(
             HeaderGenreDelegate(),
             GenreAdapterDelegate(clickItemDestination = R.id.action_genresFragment_to_playlistVideosFragment)
         )
-        BaseDelegationAdapter(delegates)
+        MousikiAdapter(delegates)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,8 +69,6 @@ class GenresFragment : BaseFragment<GenresViewModel>(
     }
 
     private fun observeViewModel() {
-        observe(viewModel.genres) { genres ->
-            adapter.dataItems = genres.toMutableList()
-        }
+        observe(viewModel.genres, adapter::submitList)
     }
 }

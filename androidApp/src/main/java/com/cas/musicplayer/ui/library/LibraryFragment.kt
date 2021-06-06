@@ -82,10 +82,6 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
 
     override fun withToolbar(): Boolean = false
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     override fun onResume() {
         super.onResume()
         viewModel.loadCustomPlaylists()

@@ -8,7 +8,7 @@ import com.mousiki.shared.domain.models.DisplayableItem
 
 open class MousikiAdapter(
     private val delegates: List<AdapterDelegate<List<DisplayableItem>>>,
-    itemCallback: DiffUtil.ItemCallback<DisplayableItem>
+    itemCallback: DiffUtil.ItemCallback<DisplayableItem> = NoDiffUtilItem()
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val dataItems: List<DisplayableItem>
@@ -39,7 +39,7 @@ open class MousikiAdapter(
         delegateManager.onBindViewHolder(differ.currentList, position, holder)
     }
 
-    fun submitList(newList: List<DisplayableItem>) {
-        differ.submitList(newList)
+    fun submitList(newList: List<DisplayableItem>, callback: () -> Unit = {}) {
+        differ.submitList(newList, callback)
     }
 }

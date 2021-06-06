@@ -12,6 +12,7 @@ import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
 class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
@@ -44,6 +45,10 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
 
     override fun onClickTrackPlayAll() {
         viewModel.onClickTrackPlayAll()
+    }
+
+    override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
+        viewModel.updateCurrentPlayingItem()
     }
 
     companion object {

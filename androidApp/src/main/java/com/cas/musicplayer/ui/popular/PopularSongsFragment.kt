@@ -15,6 +15,7 @@ import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.ui.resource.Resource
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
 class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
@@ -33,6 +34,10 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
         })
         binding.txtPlaylistName.text = getString(R.string.title_new_release)
         binding.txtScreenTitle.text = getString(R.string.title_new_release)
+    }
+
+    override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
+        viewModel.updateCurrentPlayingItem()
     }
 
     override fun onClickTrack(track: MusicTrack) {

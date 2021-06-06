@@ -9,6 +9,7 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 /**
  ***************************************
@@ -30,6 +31,10 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
         observe(viewModel.songs, this::updateUI)
         binding.txtPlaylistName.text = viewModel.playlist.title
         binding.txtScreenTitle.text = viewModel.playlist.title
+    }
+
+    override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
+        viewModel.updateCurrentPlayingItem()
     }
 
     override fun onClickTrack(track: MusicTrack) {

@@ -1,5 +1,7 @@
 package com.mousiki.shared.domain.models
 
+import com.mousiki.shared.player.PlaySongDelegate
+
 /**
  ***************************************
  * Created by Abdelhadi on 2019-11-11.
@@ -21,6 +23,28 @@ fun MusicTrack.toDisplayedVideoItem() = DisplayedVideoItem(
     songDuration = durationFormatted,
     songImagePath = imgUrl
 )
+
+fun MusicTrack.toDisplayedVideoItem(
+    isCurrent: Boolean = false,
+    isPlaying: Boolean = false,
+) = DisplayedVideoItem(
+    track = this,
+    songTitle = title,
+    songDuration = durationFormatted,
+    songImagePath = imgUrl,
+    isCurrent = isCurrent,
+    isPlaying = isPlaying
+)
+
+fun MusicTrack.toDisplayedVideoItem(
+    playDelegate: PlaySongDelegate
+): DisplayedVideoItem {
+    val isCurrent = playDelegate.currentSong?.youtubeId == youtubeId
+    return toDisplayedVideoItem(
+        isCurrent = isCurrent,
+        isPlaying = isCurrent && playDelegate.isPlayingASong()
+    )
+}
 
 fun DisplayedVideoItem.artistName(): String {
     return songTitle.split("-")[0]
