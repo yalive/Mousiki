@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.cas.common.extensions.onClick
@@ -19,7 +20,6 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
-import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.viewBinding
@@ -30,6 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.preference.UserPrefs
+import com.mousiki.shared.utils.Constants
 import java.util.concurrent.Executors
 
 /**
@@ -167,6 +168,19 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     companion object {
         const val EXTRAS_IS_FROM_CUSTOM_PLAYLIST = "extras.is.from.custom.playlist"
         const val EXTRAS_CUSTOM_PLAYLIST = "extras.custom.playlist"
+
+        fun present(
+            fm: FragmentManager,
+            track: MusicTrack,
+            onDismissed: () -> Unit = {}
+        ) {
+            val bottomSheetFragment = TrackOptionsFragment()
+            val bundle = Bundle()
+            bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
+            bottomSheetFragment.arguments = bundle
+            bottomSheetFragment.onDismissed = onDismissed
+            bottomSheetFragment.show(fm, bottomSheetFragment.tag)
+        }
     }
 }
 

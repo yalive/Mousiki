@@ -36,6 +36,7 @@ import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
@@ -309,6 +310,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
         binding.miniPlayerView.doOnClickShowQueue {
             showQueue()
+        }
+
+        binding.btnTrackOptions.onClick {
+            val track = PlayerQueue.value ?: return@onClick
+            TrackOptionsFragment.present(childFragmentManager, track)
         }
     }
 
