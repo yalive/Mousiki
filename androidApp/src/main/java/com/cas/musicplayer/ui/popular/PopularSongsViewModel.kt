@@ -7,6 +7,7 @@ import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,9 +44,9 @@ class PopularSongsViewModel(
         loadingMore = true
         _newReleases.loading()
         val result = getPopularSongs(PAGE_SIZE)
-        _newReleases.value = result.map { tracks ->
-            tracks.map { it.toDisplayedVideoItem(playSongDelegate) }
-        }.asResource()
+        _newReleases.value = result
+            .map { tracks -> tracks.toDisplayedVideoItems(playSongDelegate) }
+            .asResource()
         populateAdsIn(_newReleases)
         loadingMore = false
         if (result is Result.Success && result.data.size < PAGE_SIZE) {
@@ -81,21 +82,9 @@ class PopularSongsViewModel(
         playTrackFromQueue(allSongs.first(), allSongs)
     }
 
-    fun updateCurrentPlayingItem() {
-        val resource = _newReleases.value ?: return
-        val currentItems = (resource as? Resource.Success)?.data ?: return
-        val updatedList = currentItems.map { item ->
-            when (item) {
-                is DisplayedVideoItem -> {
-                    val isCurrent = currentSong?.youtubeId == item.track.youtubeId
-                    item.copy(
-                        isCurrent = isCurrent,
-                        isPlaying = isCurrent && isPlayingASong()
-                    )
-                }
-                else -> item
-            }
-        }
+    fun onPlaybackStateChanged() {
+        val currentItems = _newReleases.valueOrNull() ?: return
+        val updatedList = updateCurrentPlaying(currentItems)
         _newReleases.value = Resource.Success(updatedList)
     }
 

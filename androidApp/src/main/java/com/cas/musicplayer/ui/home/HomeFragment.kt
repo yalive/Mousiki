@@ -17,7 +17,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentHomeBinding
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
@@ -83,35 +82,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(
                 || state == PlayerConstants.PlayerState.BUFFERING
                 || state == PlayerConstants.PlayerState.UNKNOWN
             ) {
-                updateCurrentPlayingItem(state)
+                viewModel.onPlaybackStateChanged()
             }
         }
-    }
-
-    private fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        /*val items = viewModel.newReleases.valueOrNull() ?: return
-        val updatedList = items.map { item ->
-            val isCurrent = PlayerQueue.value?.youtubeId == item.track.youtubeId
-                    && state != PlayerConstants.PlayerState.UNKNOWN
-            item.copy(
-                isCurrent = isCurrent,
-                isPlaying = isCurrent && (state == PlayerConstants.PlayerState.PLAYING || state == PlayerConstants.PlayerState.BUFFERING)
-            )
-        }
-
-        // Kept as local variable to prevent calling binding.recyclerView which will call getViewLifecycleOwner
-        // and Fragment.getView() may return null after .post to recyclerView
-        val recyclerView = recyclerView
-        recyclerView.post {
-            val holder = recyclerView.findViewHolderForAdapterPosition(2)
-                    as? HorizontalListSongsAdapterDelegate.HorizontalSongsListViewHolder
-            if (holder != null) {
-                val adapter = holder.adapter
-                val diffCallback = SongsDiffUtil(adapter.dataItems, updatedList)
-                adapter.submitList(updatedList, diffCallback)
-            }
-        }*/
-
     }
 
     override fun withToolbar(): Boolean = false

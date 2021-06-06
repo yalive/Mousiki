@@ -46,6 +46,12 @@ fun MusicTrack.toDisplayedVideoItem(
     )
 }
 
+fun List<MusicTrack>.toDisplayedVideoItems(
+    playDelegate: PlaySongDelegate
+): List<DisplayedVideoItem> {
+    return map { it.toDisplayedVideoItem(playDelegate) }
+}
+
 fun DisplayedVideoItem.artistName(): String {
     return songTitle.split("-")[0]
 }

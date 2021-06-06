@@ -34,7 +34,7 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
     }
 
     override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        viewModel.updateCurrentPlayingItem()
+        viewModel.onPlaybackStateChanged()
     }
 
     override fun onClickTrack(track: MusicTrack) {

@@ -48,7 +48,7 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
     }
 
     override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        viewModel.updateCurrentPlayingItem()
+        viewModel.onPlaybackStateChanged()
     }
 
     companion object {

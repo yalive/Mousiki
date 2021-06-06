@@ -2,9 +2,9 @@ package com.cas.musicplayer.ui.playlist.custom
 
 import android.os.Bundle
 import android.view.View
-import com.cas.musicplayer.tmp.observe
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.domain.models.MusicTrack
@@ -34,7 +34,7 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
     }
 
     override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
-        viewModel.updateCurrentPlayingItem()
+        viewModel.onPlaybackStateChanged()
     }
 
     override fun onClickTrack(track: MusicTrack) {
