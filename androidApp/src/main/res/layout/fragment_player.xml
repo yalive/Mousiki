@@ -52,11 +52,23 @@
             android:layout_height="32dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/app_name"
             android:tint="@color/colorWhite"
             app:srcCompat="@drawable/ic_lock_screen" />
+
+        <ImageButton
+            android:id="@+id/btnTrackOptions"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_more_vertical" />
 
     </LinearLayout>
 
