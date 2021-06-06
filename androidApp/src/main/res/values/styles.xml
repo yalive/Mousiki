@@ -10,7 +10,7 @@
     </style>
 
     <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorTransparent</item>
     </style>
 

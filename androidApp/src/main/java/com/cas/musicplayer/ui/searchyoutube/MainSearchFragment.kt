@@ -2,12 +2,10 @@ package com.cas.musicplayer.ui.searchyoutube
 
 import android.os.Bundle
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.fragment.findNavController
 import com.cas.common.dpToPixel
-import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.tmp.observeEvent
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
@@ -15,6 +13,10 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentMainSearchBinding
 import com.cas.musicplayer.delegateadapter.BaseDelegationAdapter
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
+import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
 
@@ -58,6 +60,15 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
         }
         observeEvent(mainViewModel.doubleClickSearch) {
             startSearch()
+        }
+
+        observe(DeviceInset) { inset ->
+            val constraintSet = binding.motionLayout.getConstraintSet(R.id.end)
+            constraintSet.setMargin(
+                R.id.btnStartSearch,
+                ConstraintSet.TOP,
+                inset.top + dpToPixel(8)
+            )
         }
     }
 
