@@ -128,6 +128,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         binding.viewRemoveFromCurrentPlaylist.isVisible = isFromCustomPlaylist
         binding.viewAddToPlaylist.isVisible = !isFromCustomPlaylist
 
+        binding.viewAddToQuee.isVisible = PlayerQueue.value != musicTrack
         configureAdView()
     }
 
