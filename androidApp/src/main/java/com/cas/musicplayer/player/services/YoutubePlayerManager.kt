@@ -125,13 +125,14 @@ class YoutubePlayerManager(
 
     private fun updatePlayerState(state: PlayerConstants.PlayerState) {
         when (state) {
-            PlayerConstants.PlayerState.PLAYING, PlayerConstants.PlayerState.BUFFERING -> {
+            PlayerConstants.PlayerState.PLAYING -> {
                 setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING)
             }
             PlayerConstants.PlayerState.PAUSED -> {
                 setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
             }
             else -> {
+                setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
             }
         }
     }
