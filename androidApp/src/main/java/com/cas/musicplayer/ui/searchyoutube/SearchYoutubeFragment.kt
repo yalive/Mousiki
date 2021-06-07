@@ -25,11 +25,13 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSearchYoutubeBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import com.cas.musicplayer.utils.viewBinding
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -187,6 +189,16 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
         observe(viewModel.clearHistoryVisible.asLiveData()) { event ->
             event?.getContentIfNotHandled()?.let { visible ->
                 binding.clearHistoryView.isVisible = visible
+            }
+        }
+
+        observe(PlaybackLiveData) { state ->
+            if (state == PlayerConstants.PlayerState.PLAYING
+                || state == PlayerConstants.PlayerState.BUFFERING
+                || state == PlayerConstants.PlayerState.PAUSED
+                || state == PlayerConstants.PlayerState.ENDED
+            ) {
+                viewModel.onPlaybackStateChanged()
             }
         }
     }

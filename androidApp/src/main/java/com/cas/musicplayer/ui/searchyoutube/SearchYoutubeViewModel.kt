@@ -5,15 +5,18 @@ import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.toDisplayedVideoItems
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.search.*
 import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.event.Event
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.ui.resource.songList
+import com.mousiki.shared.ui.resource.valueOrNull
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,7 +34,7 @@ class SearchYoutubeViewModel(
     private val getRecentSearchQueries: GetRecentSearchQueriesUseCase,
     private val removeSearchQuery: RemoveSearchQueryUseCase,
     private val clearSearchHistory: ClearSearchHistoryUseCase,
-    playDelegate: PlaySongDelegate,
+    private val playDelegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate
 ) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
 
@@ -69,7 +72,7 @@ class SearchYoutubeViewModel(
         searchKey = null
         searchToken = null
         lastQuery = query
-        launch { loadVideos(query) }
+        loadVideos(query)
         saveSearchQuery(query)
     }
 
@@ -108,7 +111,7 @@ class SearchYoutubeViewModel(
         _videos.value = result.map { searchResult ->
             searchKey = searchResult.key
             searchToken = searchResult.token
-            searchResult.tracks.map { it.toDisplayedVideoItem() }
+            searchResult.tracks.toDisplayedVideoItems(playDelegate)
         }.asResource()
         populateAdsIn(_videos)
     }
@@ -165,5 +168,11 @@ class SearchYoutubeViewModel(
         clearSearchHistory()
         _searchSuggestions.value = emptyList()
         _clearHistoryVisible.value = Event(false)
+    }
+
+    fun onPlaybackStateChanged() {
+        val currentItems = _videos.valueOrNull() ?: return
+        val updatedList = updateCurrentPlaying(currentItems)
+        _videos.value = Resource.Success(updatedList)
     }
 }
