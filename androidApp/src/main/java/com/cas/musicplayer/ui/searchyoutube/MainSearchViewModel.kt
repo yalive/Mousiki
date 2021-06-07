@@ -3,9 +3,9 @@ package com.cas.musicplayer.ui.searchyoutube
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
+import com.mousiki.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 /**

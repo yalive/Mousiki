@@ -23,7 +23,7 @@ val viewModelsModule = module {
     factory { CommonAdsViewModel(get()) }
     factory { PopularSongsViewModel(get(), get(), get()) }
     factory { ArtistListViewModel(get()) }
-    factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get()) }
+    factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { GenresViewModel(get()) }
     factory { FavouriteSongsViewModel(get(), get()) }
     factory { TrackOptionsViewModel(get(), get(), get()) }

@@ -147,6 +147,8 @@ val useCasesModule = module {
     factory { GetGoogleSearchSuggestionsUseCase(get()) }
     factory { GetRecentSearchQueriesUseCase(get()) }
     factory { SaveSearchQueryUseCase(get()) }
+    factory { RemoveSearchQueryUseCase(get()) }
+    factory { ClearSearchHistoryUseCase(get()) }
     factory { SearchChannelsUseCase(get()) }
     factory { SearchPlaylistsUseCase(get()) }
     factory { SearchSongsUseCase(get()) }
@@ -157,7 +159,21 @@ val useCasesModule = module {
 
 val kmmViewModelsModule = module {
     factory { PlaylistSongsViewModel(get(), get(), get()) }
-    factory { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),get()) }
+    factory {
+        HomeViewModel(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     factory { LibraryViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { ArtistSongsViewModel(get(), get(), get()) }
 }

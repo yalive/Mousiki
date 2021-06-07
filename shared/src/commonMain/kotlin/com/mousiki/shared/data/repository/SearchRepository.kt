@@ -101,7 +101,15 @@ class SearchRepository(
         searchQueryDao.insert(Search_queries(query))
     }
 
+    suspend fun removeSearchQuery(query: String) {
+        searchQueryDao.deleteSearchQuery(query)
+    }
+
     suspend fun searchRecentQueries(query: String): List<String> {
         return searchQueryDao.search("%$query%").executeAsList()
+    }
+
+    suspend fun clearSearchHistory() {
+        searchQueryDao.deleteAll()
     }
 }

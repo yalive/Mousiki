@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/eight_8dp"
+        android:alpha="?android:disabledAlpha"
         android:background="@null"
         android:contentDescription="@string/app_name"
         android:tint="?android:textColorPrimary"
@@ -44,6 +45,18 @@
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/app_name"
         android:rotation="45"
-        app:srcCompat="@drawable/ic_arrow_back"
-        android:tint="?android:textColorPrimary" />
+        android:tint="?android:textColorPrimary"
+        app:srcCompat="@drawable/ic_arrow_back" />
+
+    <ImageButton
+        android:id="@+id/btnClear"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/eight_8dp"
+        android:alpha="?android:disabledAlpha"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/app_name"
+        android:tint="?android:textColorPrimary"
+        app:srcCompat="@drawable/ic_close_16dp" />
 </LinearLayout>

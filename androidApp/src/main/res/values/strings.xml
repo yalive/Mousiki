@@ -74,6 +74,7 @@
     <string name="done">Done</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
     <string name="choose_dark_mode_theme">Choose theme</string>
     <string name="label_error">Error</string>
     <string name="label_developed_with_youtube_part1" translatable="false">Powered by</string>
@@ -149,4 +150,9 @@
     <!-- Genres List -->
     <string name="genre_music">Music</string>
     <string name="genre_mood">Mood</string>
+
+    <!-- Search -->
+    <string name="suggestion_history">History</string>
+    <string name="suggestion_clear_history_button_title">Clear</string>
+    <string name="confirm_clear_search_history_message">Are you sure you want to clear all search history?</string>
 </resources>
