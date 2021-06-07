@@ -42,6 +42,8 @@ class YoutubePlayerManager(
 
     override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
         MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
+        // Skip to next on error
+        mediaController.transportControls?.skipToNext()
     }
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
