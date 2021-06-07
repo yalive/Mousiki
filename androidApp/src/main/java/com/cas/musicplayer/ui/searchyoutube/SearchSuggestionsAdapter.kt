@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.searchyoutube
 
 import android.view.View
+import androidx.core.view.isVisible
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
@@ -15,7 +16,8 @@ import com.cas.musicplayer.databinding.ItemYoutubeSerachSuggestionBinding
  */
 class SearchSuggestionsAdapter(
     private val onClickItem: ((SearchSuggestion) -> Unit),
-    private val onClickAutocomplete: ((SearchSuggestion) -> Unit)
+    private val onClickAutocomplete: ((SearchSuggestion) -> Unit),
+    private val onClickRemoveHistoricItem: ((SearchSuggestion) -> Unit),
 ) : SimpleBaseAdapter<SearchSuggestion, SearchSuggestionsAdapter.ViewHolder>() {
 
     override val cellResId: Int = R.layout.item_youtube_serach_suggestion
@@ -29,24 +31,29 @@ class SearchSuggestionsAdapter(
         val binding: ItemYoutubeSerachSuggestionBinding
     ) : SimpleBaseViewHolder<SearchSuggestion>(binding.root) {
 
-        override fun bind(item: SearchSuggestion) {
-            binding.txtTitle.text = item.value
-            val searchIcon = if (item.fromHistoric) R.drawable.ic_history else R.drawable.ic_search
-            binding.imgSearch.setImageResource(searchIcon)
+        init {
             itemView.onClick {
-                if (adapterPosition >= 0) {
-                    onClickItem.invoke(item)
-                }
+                val item = dataItems.getOrNull(adapterPosition) ?: return@onClick
+                onClickItem.invoke(item)
             }
-            binding.btnPast.onClick {
+        }
+
+        override fun bind(item: SearchSuggestion) = with(binding) {
+            txtTitle.text = item.value
+            val searchIcon = if (item.fromHistoric) R.drawable.ic_history else R.drawable.ic_search
+            imgSearch.setImageResource(searchIcon)
+            btnPast.onClick {
                 if (adapterPosition >= 0) {
                     onClickAutocomplete.invoke(item)
                 }
             }
+            btnPast.isVisible = !item.fromHistoric
+            btnClear.isVisible = item.fromHistoric
+            btnClear.onClick {
+                onClickRemoveHistoricItem(item)
+            }
         }
     }
 }
-
-data class SearchSuggestion(val value: String, val fromHistoric: Boolean = false)
 
 

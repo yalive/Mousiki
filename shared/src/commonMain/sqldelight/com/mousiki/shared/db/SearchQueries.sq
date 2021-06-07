@@ -8,3 +8,10 @@ VALUES ?;
 
 search:
 SELECT * FROM search_queries WHERE `query` LIKE ?;
+
+deleteSearchQuery:
+DELETE  FROM search_queries WHERE `query`= ?;
+
+
+deleteAll:
+DELETE  FROM search_queries;

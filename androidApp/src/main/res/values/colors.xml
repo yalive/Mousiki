@@ -29,4 +29,7 @@
     <color name="colorBackgroundDialog">@color/colorWhite</color>
     <color name="colorBgPlayer">#00020B</color>
     <color name="cardAdBackgroundColor">#EAE9E9</color>
+
+    <color name="colorBlue">#15A1F0</color>
+
 </resources>

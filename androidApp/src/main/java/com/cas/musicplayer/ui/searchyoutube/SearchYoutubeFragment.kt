@@ -6,7 +6,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +19,7 @@ import com.cas.common.adapter.FragmentPageAdapter
 import com.cas.common.adapter.PageableFragment
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.hideSoftKeyboard
+import com.cas.common.extensions.onClick
 import com.cas.common.extensions.visible
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -84,6 +87,9 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
         },
         onClickAutocomplete = { suggestion ->
             searchView?.setQuery(suggestion.value, false)
+        },
+        onClickRemoveHistoricItem = {
+            viewModel.removeHistoricItem(it)
         }
     )
 
@@ -137,6 +143,14 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
                 RecyclerView.VERTICAL
             )
         )
+        binding.btnClearHistory.onClick {
+            AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
+                .setMessage(R.string.confirm_clear_search_history_message)
+                .setNegativeButton(R.string.cancel) { dialog, which -> }
+                .setPositiveButton(R.string.yes) { dialog, which ->
+                    viewModel.clearUserSearchHistory()
+                }.show()
+        }
         observeViewModel()
         adjustStatusBarWithTheme()
     }
@@ -167,6 +181,12 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
                 viewPager.visible()
                 progressBar.gone()
                 recyclerViewSuggestions.gone()
+            }
+        }
+
+        observe(viewModel.clearHistoryVisible.asLiveData()) { event ->
+            event?.getContentIfNotHandled()?.let { visible ->
+                binding.clearHistoryView.isVisible = visible
             }
         }
     }

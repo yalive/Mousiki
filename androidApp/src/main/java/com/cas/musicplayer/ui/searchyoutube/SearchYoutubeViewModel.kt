@@ -1,15 +1,13 @@
 package com.cas.musicplayer.ui.searchyoutube
 
+import androidx.lifecycle.viewModelScope
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
-import com.mousiki.shared.domain.usecase.search.GetGoogleSearchSuggestionsUseCase
-import com.mousiki.shared.domain.usecase.search.GetRecentSearchQueriesUseCase
-import com.mousiki.shared.domain.usecase.search.SaveSearchQueryUseCase
-import com.mousiki.shared.domain.usecase.search.SearchSongsUseCase
+import com.mousiki.shared.domain.usecase.search.*
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.event.Event
@@ -31,6 +29,8 @@ class SearchYoutubeViewModel(
     private val getGoogleSearchSuggestions: GetGoogleSearchSuggestionsUseCase,
     private val saveSearchQuery: SaveSearchQueryUseCase,
     private val getRecentSearchQueries: GetRecentSearchQueriesUseCase,
+    private val removeSearchQuery: RemoveSearchQueryUseCase,
+    private val clearSearchHistory: ClearSearchHistoryUseCase,
     playDelegate: PlaySongDelegate,
     getListAdsDelegate: GetListAdsDelegate
 ) : BaseViewModel(), PlaySongDelegate by playDelegate, GetListAdsDelegate by getListAdsDelegate {
@@ -44,8 +44,10 @@ class SearchYoutubeViewModel(
         get() = _searchSuggestions
 
     private val _hideSearchLoading = MutableStateFlow<Event<Unit>?>(null)
-    val hideSearchLoading: StateFlow<Event<Unit>?>
-        get() = _hideSearchLoading
+    val hideSearchLoading: StateFlow<Event<Unit>?> get() = _hideSearchLoading
+
+    private val _clearHistoryVisible = MutableStateFlow<Event<Boolean>?>(null)
+    val clearHistoryVisible: StateFlow<Event<Boolean>?> get() = _clearHistoryVisible
 
     private var lastQuery = ""
 
@@ -62,6 +64,7 @@ class SearchYoutubeViewModel(
             hideSearchLoadingIndicator()
             return@launch
         }
+        _clearHistoryVisible.value = Event(false)
         currentPage = 1
         searchKey = null
         searchToken = null
@@ -116,6 +119,7 @@ class SearchYoutubeViewModel(
             return@launch
         }
 
+        _clearHistoryVisible.value = Event(false)
         val suggestionList = async {
             getGoogleSearchSuggestions(keyword).map { SearchSuggestion(it) }
         }
@@ -138,9 +142,28 @@ class SearchYoutubeViewModel(
             SearchSuggestion(it, true)
         }
         _searchSuggestions.value = historicSearch
+        _clearHistoryVisible.value = Event(historicSearch.isNotEmpty())
     }
 
     private fun hideSearchLoadingIndicator() {
         _hideSearchLoading.value = Event(Unit)
+    }
+
+    fun removeHistoricItem(suggestion: SearchSuggestion) {
+        _searchSuggestions.value = _searchSuggestions.value?.filter {
+            it != suggestion
+        }
+        viewModelScope.launch {
+            removeSearchQuery(suggestion.value)
+        }
+        if (_searchSuggestions.value.orEmpty().isEmpty()) {
+            _clearHistoryVisible.value = Event(false)
+        }
+    }
+
+    fun clearUserSearchHistory() = viewModelScope.launch {
+        clearSearchHistory()
+        _searchSuggestions.value = emptyList()
+        _clearHistoryVisible.value = Event(false)
     }
 }
