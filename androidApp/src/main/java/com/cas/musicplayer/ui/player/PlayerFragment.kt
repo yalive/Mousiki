@@ -44,7 +44,7 @@ import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.durationFormatted
 import com.mousiki.shared.domain.models.durationToSeconds
 import com.mousiki.shared.preference.UserPrefs
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
@@ -143,17 +143,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             checkLockScreen(true)
         }
 
-        // Util when service is killed and fragment is resumed after that.
-        // Need to check if service is running
-        if (!requireContext().isServiceRunning(MusicPlayerService::class.java)) {
-            hidePlayer()
-        }
-
-        // check if no track currently playing
-        if (PlayerQueue.value == null) {
-            hidePlayer()
-        }
-
         // Make sure video is visible if service is bound
         showPlayerView("on resume")
     }
@@ -186,10 +175,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RQ_CODE_WRITE_SETTINGS) {
@@ -217,12 +202,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun bindServiceIfNecessary() {
         if (!serviceBound && PlayerQueue.value != null) {
             val intent = Intent(requireContext().applicationContext, MusicPlayerService::class.java)
-            val resultBind =
-                activity?.bindService(
-                    intent,
-                    serviceConnection,
-                    Context.BIND_IMPORTANT and Context.BIND_AUTO_CREATE
-                )
+            val resultBind = activity?.bindService(
+                intent,
+                serviceConnection,
+                Context.BIND_IMPORTANT and Context.BIND_AUTO_CREATE
+            )
             if (resultBind == true) {
                 serviceBound = true
             }
@@ -238,7 +222,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         observe(DeviceInset) { inset ->
             binding.fullScreenSwitchView.updatePadding(top = inset.top)
         }
-
         binding.txtTitle.isSelected = true
     }
 
@@ -355,9 +338,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun onClickPlayPause() {
         val oldState = PlaybackLiveData.value
         oldState?.let { playerState ->
-            if (playerState == PlayerConstants.PlayerState.PLAYING) {
+            if (playerState == PlayerState.PLAYING) {
                 PlayerQueue.pause()
-            } else if (playerState == PlayerConstants.PlayerState.PAUSED || playerState == PlayerConstants.PlayerState.ENDED) {
+            } else if (playerState == PlayerState.PAUSED || playerState == PlayerState.VIDEO_CUED || playerState == PlayerState.ENDED) {
                 PlayerQueue.resume()
             }
         }
@@ -612,12 +595,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun hidePlayer() {
-        binding.motionLayout.setTransition(R.id.initialState)
+        /*binding.motionLayout.setTransition(R.id.initialState)
         binding.motionLayout.progress = 0f
-        binding.motionLayout.transitionToState(R.id.hidden)
+        binding.motionLayout.transitionToState(R.id.hidden)*/
 
         // Make sure bottom bar is visible
-        ensureBottomNavBarVisible()
+        //ensureBottomNavBarVisible()
     }
 
     private fun ensureBottomNavBarVisible() {

@@ -218,6 +218,7 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.playerContainer, playerFragment)
             .commit()
+        playerFragment.collapsePlayer()
     }
 
     private fun adjustStatusBarWhenPanelCollapsed() {

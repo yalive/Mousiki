@@ -35,6 +35,13 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         checkQueueChanged(oldQueue, queue)
     }
 
+    fun cueTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
+        this.queue = queue
+        this.value = currentTrack
+        cueTrack()
+        OnChangeQueue.value = queue
+    }
+
     fun playNextTrack() {
         val nextTrack = getNextTrack()
         if (nextTrack != null) {
@@ -160,6 +167,15 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_PLAY, true)
+        MusicApp.get().startService(intent)
+    }
+
+    private fun cueTrack() {
+        if (!MusicApp.get().canDrawOverApps()) {
+            return
+        }
+        val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
+        intent.putExtra(MusicPlayerService.COMMAND_CUE, true)
         MusicApp.get().startService(intent)
     }
 

@@ -16,6 +16,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.view.*
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
@@ -39,6 +40,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -121,6 +123,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             PlayerCommand.PlayTrack -> playCurrentTrack()
             PlayerCommand.Resume -> resumePlayback()
             PlayerCommand.Pause -> mediaController.transportControls.pause()
+            PlayerCommand.CueTrack -> cueCurrentTrack()
             is PlayerCommand.SeekTo -> mediaController.transportControls.seekTo(command.seconds)
             is PlayerCommand.ScheduleTimer -> stopPlayer(command.duration)
         }
@@ -165,8 +168,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
                 if (isScreenLocked()) return
-                mediaId?.let {
-                    youtubePlayerManager.loadVideo(mediaId, 0f)
+                val videoId = mediaId ?: return
+                val cue = extras?.getBoolean("cue", false) ?: false
+                if (cue) {
+                    youtubePlayerManager.cueVideo(videoId)
+                } else {
+                    youtubePlayerManager.loadVideo(videoId, 0f)
                 }
             }
 
@@ -273,6 +280,17 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         }
     }
 
+    private fun cueCurrentTrack() {
+        val currentTrack = PlayerQueue.value ?: return
+        metadataBuilder.musicTrack = currentTrack
+        mediaSession.setMetadata(metadataBuilder.build())
+        mediaController.transportControls.playFromMediaId(
+            currentTrack.youtubeId, bundleOf(
+                "cue" to true
+            )
+        )
+    }
+
     private fun resumePlayback() {
         val currentTrack = PlayerQueue.value ?: return
         metadataBuilder.musicTrack = currentTrack
@@ -285,6 +303,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         if (intent.bool(COMMAND_RESUME)) return PlayerCommand.Resume
         if (intent.bool(COMMAND_PAUSE)) return PlayerCommand.Pause
         if (intent.bool(COMMAND_PLAY)) return PlayerCommand.PlayTrack
+        if (intent.bool(COMMAND_CUE)) return PlayerCommand.CueTrack
         val seekTo = intent.getLongExtra(COMMAND_SEEK_TO, -1)
         if (seekTo > 0) {
             return PlayerCommand.SeekTo(seekTo)
@@ -454,6 +473,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         const val COMMAND_PLAY = "play"
         const val COMMAND_RESUME = "resume"
         const val COMMAND_PAUSE = "pause"
+        const val COMMAND_CUE = "prepare_cue"
         const val COMMAND_SEEK_TO = "seek-to"
         const val COMMAND_SCHEDULE_TIMER = "schedule-timer"
 
