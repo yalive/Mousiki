@@ -14,6 +14,13 @@ interface MousikiPlayer {
      */
     fun loadVideo(videoId: String, startSeconds: Float)
 
+    /**
+     * Loads the video's thumbnail and prepares the player to play the video. Does not automatically play the video.
+     * @param videoId id of the video
+     * @param startSeconds the time from which the video should start playing
+     */
+    fun cueVideo(videoId: String, startSeconds: Float = 0f)
+
     fun play()
 
     fun pause()

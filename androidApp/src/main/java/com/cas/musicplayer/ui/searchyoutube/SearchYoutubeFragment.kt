@@ -50,9 +50,6 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
 
-    private val recyclerViewSuggestions: RecyclerView
-        get() = binding.recyclerViewSuggestions
-
     private val viewPager: ViewPager
         get() = binding.viewPager
 
@@ -62,7 +59,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
     private val queryChangeListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query ?: return true
-            recyclerViewSuggestions.gone()
+            binding.suggestionsView.gone()
             viewPager.gone()
             progressBar.visible()
             viewModel.search(query)
@@ -77,7 +74,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
 
     private var searchSuggestionsAdapter = SearchSuggestionsAdapter(
         onClickItem = { suggestion ->
-            recyclerViewSuggestions.gone()
+            binding.suggestionsView.gone()
             viewPager.gone()
             progressBar.visible()
             removeQueryListener()
@@ -138,8 +135,8 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             fragments,
             mutableListOf(getString(R.string.title_videos))
         )
-        recyclerViewSuggestions.adapter = searchSuggestionsAdapter
-        recyclerViewSuggestions.addItemDecoration(
+        binding.recyclerViewSuggestions.adapter = searchSuggestionsAdapter
+        binding.recyclerViewSuggestions.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 RecyclerView.VERTICAL
@@ -169,10 +166,10 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
         observe(viewModel.videos.asLiveData()) {
             viewPager.visible()
             progressBar.gone()
-            recyclerViewSuggestions.gone()
+            binding.suggestionsView.gone()
         }
         observe(viewModel.searchSuggestions.asLiveData()) { suggestions ->
-            recyclerViewSuggestions.visible()
+            binding.suggestionsView.visible()
             viewPager.gone()
             progressBar.gone()
             searchSuggestionsAdapter.dataItems = suggestions.orEmpty().toMutableList()
@@ -182,7 +179,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             event?.getContentIfNotHandled()?.let {
                 viewPager.visible()
                 progressBar.gone()
-                recyclerViewSuggestions.gone()
+                binding.suggestionsView.gone()
             }
         }
 

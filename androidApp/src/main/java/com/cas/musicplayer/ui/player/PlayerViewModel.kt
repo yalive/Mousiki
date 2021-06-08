@@ -15,6 +15,7 @@ import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,7 +29,8 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
-    private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase
+    private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,
+    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase
 ) : BaseViewModel() {
 
     private val _isLiked = MediatorLiveData<Boolean>()
@@ -51,6 +53,15 @@ class PlayerViewModel(
             getFavouriteTracksFlow(50).collect { songs ->
                 _isLiked.postValue(songs.contains(PlayerQueue.value))
             }
+        }
+        cueRecentTrack()
+    }
+
+    private fun cueRecentTrack() = viewModelScope.launch {
+        if (PlayerQueue.value != null) return@launch
+        val recentTracks = getRecentlyPlayedSongs()
+        if (recentTracks.isNotEmpty()) {
+            PlayerQueue.cueTrack(recentTracks.first(), recentTracks)
         }
     }
 

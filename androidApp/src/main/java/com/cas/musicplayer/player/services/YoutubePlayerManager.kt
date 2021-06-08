@@ -21,7 +21,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 
 class YoutubePlayerManager(
     private val mediaController: MediaControllerCompat,
-    private val mediaSession: MediaSessionCompat
+    private val mediaSession: MediaSessionCompat,
 ) : AbstractYouTubePlayerListener(), MousikiPlayer {
 
     private var youTubePlayer: YouTubePlayer? = null
@@ -29,9 +29,16 @@ class YoutubePlayerManager(
     private var elapsedSeconds: Int = 0
     private var seekToCalled = false
     private var stateBeforeSeek: PlayerConstants.PlayerState? = null
+    private var requestCue = false
 
     override fun onReady(youTubePlayer: YouTubePlayer) {
         this.youTubePlayer = youTubePlayer
+        if (requestCue) {
+            requestCue = false
+            val track = PlayerQueue.value ?: return
+            youTubePlayer.cueVideo(track.youtubeId, 0f)
+            return
+        }
         PlayerQueue.value?.let { currentTrack ->
             mediaController.transportControls?.playFromMediaId(
                 currentTrack.youtubeId,
@@ -42,8 +49,10 @@ class YoutubePlayerManager(
 
     override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
         MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
-        // Skip to next on error
-        mediaController.transportControls?.skipToNext()
+        if (error == PlayerConstants.PlayerError.VIDEO_NOT_PLAYABLE_IN_EMBEDDED_PLAYER || error == PlayerConstants.PlayerError.VIDEO_NOT_FOUND) {
+            // Skip to next on error
+            mediaController.transportControls?.skipToNext()
+        }
     }
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
@@ -71,6 +80,12 @@ class YoutubePlayerManager(
     override fun loadVideo(videoId: String, startSeconds: Float) {
         elapsedSeconds = 0
         youTubePlayer?.loadVideo(videoId, 0f)
+    }
+
+    override fun cueVideo(videoId: String, startSeconds: Float) {
+        elapsedSeconds = 0
+        requestCue = true
+        youTubePlayer?.cueVideo(videoId, 0f)
     }
 
     override fun play() {
