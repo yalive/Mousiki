@@ -16,11 +16,16 @@ suspend fun getFbNativeAds(count: Int): List<NativeAd> = suspendCancellableCorou
             repeat(count) {
                 ads.add(adsManager.nextNativeAd())
             }
-            cont.resume(ads)
+
+            if (cont.isActive) {
+                cont.resume(ads)
+            }
         }
 
         override fun onAdError(p0: AdError?) {
-            cont.resume(emptyList())
+            if (cont.isActive) {
+                cont.resume(emptyList())
+            }
         }
     }
     adsManager.setListener(listener)
