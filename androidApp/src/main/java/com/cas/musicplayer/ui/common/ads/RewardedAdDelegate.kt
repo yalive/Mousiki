@@ -40,7 +40,7 @@ class RewardedAdDelegateImp(
     private val MAX_RETRIES = 5
     private var retriesCount = 0
 
-    private lateinit var rewardedAd: RewardedAd
+    private var rewardedAd: RewardedAd? = null
     private var activity: Activity? = null
     private var errorLoadingAd = false
     private val preferencesListener: SharedPreferences.OnSharedPreferenceChangeListener =
@@ -79,7 +79,8 @@ class RewardedAdDelegateImp(
             retriesCount = 0
             loadAd()
         }
-        rewardedAd.fullScreenContentCallback = object : FullScreenContentCallback() {
+        if (rewardedAd == null) return
+        rewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
                 PlayerQueue.resume()
             }
@@ -93,7 +94,7 @@ class RewardedAdDelegateImp(
             }
         }
 
-        rewardedAd.show(activity) { PlayerQueue.pause() }
+        rewardedAd?.show(activity) { PlayerQueue.pause() }
     }
 
     private fun loadAd() {
