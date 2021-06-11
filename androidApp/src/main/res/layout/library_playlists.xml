@@ -13,7 +13,7 @@
         android:minHeight="100dp"
         android:orientation="horizontal"
         android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
         tools:itemCount="4"
         tools:listitem="@layout/item_new_release" />
 </FrameLayout>

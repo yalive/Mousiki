@@ -25,7 +25,7 @@
         android:layout_marginTop="@dimen/spacing_normal"
         android:orientation="horizontal"
         android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
         tools:itemCount="4"
         tools:listitem="@layout/item_home_compact_playlist" />
 </LinearLayout>
