@@ -58,7 +58,7 @@
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/padding_for_player_space"
                 android:visibility="visible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnSettings"

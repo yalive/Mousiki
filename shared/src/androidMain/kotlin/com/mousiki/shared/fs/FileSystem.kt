@@ -74,21 +74,23 @@ actual object FileSystem {
 
 
     actual fun readFile(path: String, encoding: ContentEncoding): String? {
-        val file = File(path).canonicalFile
+        try {
+            val file = File(path).canonicalFile
 
-        val charset = {
-            when (encoding) {
+            val charset = when (encoding) {
                 ContentEncoding.Ascii -> Charsets.US_ASCII
                 else -> Charsets.UTF_8
             }
-        }()
-        val reader = BufferedReader(InputStreamReader(FileInputStream(file), charset))
-        val content = reader.readLines().joinToString("\n")
+            val reader = BufferedReader(InputStreamReader(FileInputStream(file), charset))
+            val content = reader.readLines().joinToString("\n")
 
-        if (encoding == ContentEncoding.Base64) {
-            return String(Base64.decode(content, Base64.DEFAULT), Charsets.UTF_8)
+            if (encoding == ContentEncoding.Base64) {
+                return String(Base64.decode(content, Base64.DEFAULT), Charsets.UTF_8)
+            }
+            return content
+        } catch (e: OutOfMemoryError) {
+            return null
         }
-        return content
     }
 
 
@@ -98,8 +100,12 @@ actual object FileSystem {
     }
 
     actual fun readFile(path: String): ByteArray? {
-        val file = File(path).canonicalFile
-        return file.readBytes()
+        try {
+            val file = File(path).canonicalFile
+            return file.readBytes()
+        } catch (e: OutOfMemoryError) {
+            return null
+        }
     }
 
     actual fun readFile(pathComponent: PathComponent): ByteArray? {
@@ -136,12 +142,10 @@ actual object FileSystem {
             appendToFile = append
         }
 
-        val charset = {
-            when (encoding) {
-                ContentEncoding.Ascii -> Charsets.US_ASCII
-                else -> Charsets.UTF_8
-            }
-        }()
+        val charset = when (encoding) {
+            ContentEncoding.Ascii -> Charsets.US_ASCII
+            else -> Charsets.UTF_8
+        }
         val bufferedWriter =
             BufferedWriter(OutputStreamWriter(FileOutputStream(file, appendToFile), charset))
         bufferedWriter.write(finalContent)
