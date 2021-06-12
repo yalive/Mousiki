@@ -48,6 +48,7 @@ class ArtistsRepository(
         }
     }
 
+    // TODO: Handle OutOfMemory error
     suspend fun getAllArtists(): List<Artist> {
         val localFile = downloadArtistsFile()
         return withContext(Dispatchers.Default) {

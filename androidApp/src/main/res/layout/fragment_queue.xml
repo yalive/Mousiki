@@ -68,6 +68,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/topBar"
         android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
         tools:listitem="@layout/item_artist" />
 </RelativeLayout>

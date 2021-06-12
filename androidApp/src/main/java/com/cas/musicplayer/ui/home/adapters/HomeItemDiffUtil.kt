@@ -55,8 +55,8 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
     }
 
     private fun areFBAdTheSame(oldAd: NativeAdItem, newAd: NativeAdItem): Boolean {
-        val old = oldAd as NativeAd
-        val new = newAd as NativeAd
+        val old = oldAd as? NativeAd
+        val new = newAd as? NativeAd
         return old == new
     }
 
