@@ -18,10 +18,10 @@ android {
 
     signingConfigs {
         releaseConfig {
-            keyAlias 'yabahddou'
-            keyPassword 'yabahddou'
-            storeFile file('../keystore/keystore')
-            storePassword 'yabahddou'
+            keyAlias 'mousiki'
+            keyPassword '19931010'
+            storeFile file('../keystore/keystore.jks')
+            storePassword '19931010'
         }
     }
 
@@ -31,7 +31,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 45
-        versionName "3.2.5"
+        versionName "3.2.7"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
     }
