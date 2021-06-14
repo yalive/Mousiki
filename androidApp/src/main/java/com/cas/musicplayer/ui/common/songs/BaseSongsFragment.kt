@@ -184,7 +184,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         }
 
         // Background
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             var imageBitmap = imgBackground.getBitmap(featuredImage, 400)
             if (imageBitmap == null && featuredImage is AppImageUrl && featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
                 imageBitmap = imgBackground.getBitmap(featuredImage.altUrl, 400)
