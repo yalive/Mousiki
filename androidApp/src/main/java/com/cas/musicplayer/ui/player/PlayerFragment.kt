@@ -181,7 +181,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
                     && SystemSettings.canDrawOverApps(requireContext())
             if (canWriteSettings) {
-                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+                lifecycleScope.launchWhenResumed {
                     delay(500)
                     expandPlayer()
                 }
@@ -366,7 +366,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun openBatterySaverMode() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenResumed {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
                     && SystemSettings.canDrawOverApps(requireContext())
             if (!canWriteSettings) {
@@ -565,7 +565,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     /// Public API ///
     fun expandPlayer() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenResumed {
             binding.motionLayout.setTransition(R.id.mainTransition)
             binding.motionLayout.progress = 1f
             binding.motionLayout.transitionToState(R.id.expanded)
@@ -576,7 +576,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun collapsePlayer() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenResumed {
             binding.motionLayout.setTransition(R.id.mainTransition)
             binding.motionLayout.transitionToState(R.id.collapsed)
         }
