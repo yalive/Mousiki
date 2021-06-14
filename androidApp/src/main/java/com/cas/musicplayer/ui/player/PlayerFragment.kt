@@ -181,7 +181,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
                     && SystemSettings.canDrawOverApps(requireContext())
             if (canWriteSettings) {
-                lifecycleScope.launchWhenResumed {
+                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
                     delay(500)
                     expandPlayer()
                 }
@@ -366,7 +366,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun openBatterySaverMode() {
-        lifecycleScope.launchWhenResumed {
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
                     && SystemSettings.canDrawOverApps(requireContext())
             if (!canWriteSettings) {
@@ -416,7 +416,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.txtTitle.ellipsize = null
         binding.txtTitle.text = track.title
         binding.artistName.text = track.title.substringBefore("-")
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             delay(500)
             binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
         }
@@ -456,7 +456,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 val progress = seekBar.progress
                 val seconds = progress * video.durationToSeconds() / 100
                 PlayerQueue.seekTo(seconds * 1000)
-                lifecycleScope.launch {
+                viewLifecycleOwner.lifecycleScope.launch {
                     delay(500)
                     seekingDuration = false
                 }
@@ -565,7 +565,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     /// Public API ///
     fun expandPlayer() {
-        lifecycleScope.launchWhenResumed {
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             binding.motionLayout.setTransition(R.id.mainTransition)
             binding.motionLayout.progress = 1f
             binding.motionLayout.transitionToState(R.id.expanded)
@@ -576,7 +576,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     fun collapsePlayer() {
-        lifecycleScope.launchWhenResumed {
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             binding.motionLayout.setTransition(R.id.mainTransition)
             binding.motionLayout.transitionToState(R.id.collapsed)
         }

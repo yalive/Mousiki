@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.addRipple
-import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.tmp.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -23,6 +21,8 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
@@ -117,7 +117,9 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
                 topMargin = inset.top
             }
         })
-        binding.btnPlayOption.setImageResource(UserPrefs.getCurrentPlaybackSort().iconId(requireContext()))
+        binding.btnPlayOption.setImageResource(
+            UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
+        )
         binding.recyclerView.adapter = adapter
         observe(viewModel.queue) { newList ->
             val firstTime = adapter.dataItems.isEmpty()
@@ -161,7 +163,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
     }
 
     private fun loadAndBlurImage(video: MusicTrack) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val bitmap = binding.imgBlured.getBitmap(video.imgUrlDefault, 500) ?: return@launch
                 val blurredBitmap = withContext(Dispatchers.Default) {
