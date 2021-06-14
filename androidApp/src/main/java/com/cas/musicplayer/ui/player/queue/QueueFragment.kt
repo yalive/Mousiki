@@ -30,16 +30,19 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrlDefault
 import com.mousiki.shared.preference.UserPrefs
+import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.Constants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class QueueFragment : Fragment(R.layout.fragment_queue) {
+class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
 
     private val binding by viewBinding(FragmentQueueBinding::bind)
-
+    private val analyticsApi by lazy { get<AnalyticsApi>() }
     private val viewModel: QueueViewModel by viewModel {
         Injector.queueViewModel
     }
@@ -160,6 +163,11 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
             binding.btnPlayOption.setImageResource(nextSort.iconId(requireContext()))
             UserPrefs.saveSort(nextSort)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analyticsApi.logScreenView(javaClass.simpleName)
     }
 
     private fun loadAndBlurImage(video: MusicTrack) {
