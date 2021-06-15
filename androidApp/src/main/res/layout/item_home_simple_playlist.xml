@@ -71,7 +71,7 @@
                 android:layout_marginEnd="@dimen/eight_8dp"
                 android:layout_marginBottom="@dimen/twenty_four_24dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/bg_pallet"
+                android:src="@drawable/bg_pallet_simple_playlist"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/guidLine" />
 
