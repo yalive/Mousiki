@@ -70,6 +70,7 @@
     <string name="done">Hecho</string>
     <string name="ok">Okay</string>
     <string name="cancel">Cancelar</string>
+    <string name="yes">sí</string>
     <string name="choose_dark_mode_theme">Escoge un tema</string>
     <string name="label_error">Error</string>
     <string name="btn_unfavorite">Desfavorecer</string>
@@ -142,4 +143,9 @@
     <!-- Genres List -->
     <string name="genre_music">Música</string>
     <string name="genre_mood">Estado animico</string>
+
+    <!-- Search -->
+    <string name="suggestion_history">Historia</string>
+    <string name="suggestion_clear_history_button_title">Borrar</string>
+    <string name="confirm_clear_search_history_message">¿Estás seguro de que deseas borrar todo el historial de búsqueda?</string>
 </resources>
