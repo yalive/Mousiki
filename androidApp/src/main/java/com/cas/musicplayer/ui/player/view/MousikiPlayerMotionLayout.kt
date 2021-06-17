@@ -140,12 +140,8 @@ class MousikiPlayerMotionLayout @JvmOverloads constructor(
             || event.actionMasked == MotionEvent.ACTION_POINTER_UP
         ) {
             var clicked = false
-            if (touchStarted && isAClick(
-                    lastX,
-                    event.x,
-                    lastY,
-                    event.y
-                ) && event.actionMasked == MotionEvent.ACTION_UP
+            if (touchStarted && isAClick(lastX, event.x, lastY, event.y)
+                && event.actionMasked == MotionEvent.ACTION_UP
             ) {
                 clicked = true
                 transitionToState(R.id.expanded)

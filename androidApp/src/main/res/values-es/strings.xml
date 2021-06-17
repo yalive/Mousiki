@@ -148,4 +148,5 @@
     <string name="suggestion_history">Historia</string>
     <string name="suggestion_clear_history_button_title">Borrar</string>
     <string name="confirm_clear_search_history_message">¿Estás seguro de que deseas borrar todo el historial de búsqueda?</string>
+    <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
 </resources>
