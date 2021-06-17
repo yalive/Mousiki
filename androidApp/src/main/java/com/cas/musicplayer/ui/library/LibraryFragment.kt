@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.cas.common.extensions.onClick
+import com.afollestad.materialdialogs.utils.MDUtil.updatePadding
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentLibraryBinding
@@ -23,7 +22,6 @@ import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.dpToPixel
-import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
 import com.google.android.gms.ads.AdRequest
 import com.mousiki.shared.ui.library.LibraryViewModel
@@ -69,9 +67,6 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
                 }
             }
         })
-        binding.btnSettings.onClick {
-            findNavController().navigateSafeAction(R.id.action_libraryFragment_to_settingsFragment)
-        }
 
         observe(DeviceInset) { inset ->
             binding.mainView.updatePadding(top = inset.top)
