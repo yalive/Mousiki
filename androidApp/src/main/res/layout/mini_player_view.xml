@@ -22,27 +22,33 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:background="#000" />
 
-    <TextView
-        android:id="@+id/txtTitle"
+    <FrameLayout
+        android:id="@+id/vTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_small"
         android:layout_marginEnd="@dimen/spacing_small"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:fontFamily="@font/pangram_bold"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:textColor="@color/colorWhite"
-        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/artistName"
         app:layout_constraintEnd_toStartOf="@+id/btnPlayPause"
         app:layout_constraintStart_toEndOf="@+id/miniPlayerContainer"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Ya moulana" />
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/pangram_bold"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            tools:text="Ya moulana" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/artistName"
@@ -55,9 +61,9 @@
         android:textColor="@color/colorWhite"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/txtTitle"
-        app:layout_constraintStart_toStartOf="@+id/txtTitle"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+        app:layout_constraintEnd_toEndOf="@+id/vTitle"
+        app:layout_constraintStart_toStartOf="@+id/vTitle"
+        app:layout_constraintTop_toBottomOf="@+id/vTitle"
         tools:text="Hamid el kasri" />
 
     <ImageButton
