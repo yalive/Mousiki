@@ -19,6 +19,7 @@ import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
@@ -302,6 +303,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun observeViewModel() {
+
+        observe(viewModel.noRecentTrack.asLiveData()) { event ->
+            event?.getContentIfNotHandled()?.let {
+                binding.miniPlayerView.showNoTrack()
+            }
+        }
+
         observe(viewModel.queue) { items ->
         }
         observe(PlayerQueue) { video ->

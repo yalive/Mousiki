@@ -149,4 +149,5 @@
     <string name="suggestion_history">Historique</string>
     <string name="suggestion_clear_history_button_title">Effacer</string>
     <string name="confirm_clear_search_history_message">Voulez-vous vraiment effacer tout l\'historique de recherche?</string>
+    <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
 </resources>
