@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,56 +14,19 @@
         app:adSize="BANNER"
         app:adUnitId="@string/admob_library_banner_id" />
 
-    <androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+    <com.cas.musicplayer.utils.AutoRefreshRecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/btnSettings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:layout_marginEnd="@dimen/spacing_small"
-                android:background="?selectableItemBackgroundBorderless"
-                android:padding="@dimen/eight_8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_settings" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:alpha="0.9"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:text="@string/library"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="28sp"
-                app:layout_constraintBottom_toBottomOf="@id/btnSettings"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btnSettings" />
-
-            <com.cas.musicplayer.utils.AutoRefreshRecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_for_player_space"
-                android:visibility="visible"
-                app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnSettings"
-                tools:listitem="@layout/item_new_release" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_for_player_space"
+        android:visibility="visible"
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSettings"
+        tools:listitem="@layout/item_new_release" />
 </LinearLayout>
