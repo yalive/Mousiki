@@ -146,6 +146,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         // Make sure video is visible if service is bound
         showPlayerView("on resume")
+
+        // Util when user enable draw over apps for the first time only
+        binding.miniPlayerView.showTrackInfoIfNeeded()
     }
 
     override fun onPause() {
