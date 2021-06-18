@@ -379,7 +379,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     fun openBatterySaverMode() {
         lifecycleScope.launchWhenResumed {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
-                    && SystemSettings.canDrawOverApps(requireContext())
             if (!canWriteSettings) {
                 // Show popup
                 MaterialDialog(requireContext()).show {
@@ -394,7 +393,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     }
                     negativeButton(R.string.cancel)
                     getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
-                    window?.setType(windowOverlayTypeOrPhone)
                 }
                 return@launchWhenResumed
             }
