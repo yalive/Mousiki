@@ -11,7 +11,7 @@
         android:id="@+id/trackInfoGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="txtTitle,artistName,btnPlayPause,btnShowQueue" />
+        app:constraint_referenced_ids="vTitle,artistName,btnPlayPause,btnShowQueue" />
 
     <FrameLayout
         android:id="@+id/miniPlayerContainer"

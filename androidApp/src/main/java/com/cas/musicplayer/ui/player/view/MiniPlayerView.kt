@@ -63,10 +63,7 @@ class MiniPlayerView @JvmOverloads constructor(
         postDelayed(500) {
             binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
         }
-        if (MusicApp.get().canDrawOverApps()) {
-            binding.trackInfoGroup.isVisible = true
-            binding.txtEmpty.isVisible = false
-        }
+        showTrackInfoIfNeeded()
     }
 
     fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
@@ -89,5 +86,12 @@ class MiniPlayerView @JvmOverloads constructor(
     fun showNoTrack() {
         binding.trackInfoGroup.isVisible = false
         binding.txtEmpty.isVisible = true
+    }
+
+    fun showTrackInfoIfNeeded() {
+        if (MusicApp.get().canDrawOverApps()) {
+            binding.trackInfoGroup.isVisible = true
+            binding.txtEmpty.isVisible = false
+        }
     }
 }
