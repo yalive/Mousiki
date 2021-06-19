@@ -3,6 +3,7 @@ package com.cas.musicplayer.utils
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
+import android.content.ContentUris.withAppendedId
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,6 +18,7 @@ import android.webkit.WebViewClient
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
@@ -222,6 +224,8 @@ object Utils : KoinComponent {
                 }
             }.show()
     }
+
+    fun getAlbumArtUri(albumId: Long) = withAppendedId("content://media/external/audio/albumart".toUri(), albumId)
 }
 
 
