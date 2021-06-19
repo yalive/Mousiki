@@ -15,6 +15,8 @@ import com.facebook.ads.NativeAd
 import com.facebook.ads.NativeAdBase
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.ui.home.model.HomeItem
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -73,7 +75,8 @@ open class FBAdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
                 if (nativeAd.hasCallToAction()) View.VISIBLE else View.INVISIBLE
             nativeAdTitle.text = nativeAd.advertiserName
             nativeAdBody.text = nativeAd.adBodyText
-            sponsoredLabel.setText(R.string.sponsored)
+            val sponsored = adView.context.getString(R.string.sponsored)
+            sponsoredLabel.text = sponsored.capitalize(Locale.getDefault())
 
             // You can use the following to specify the clickable areas.
             val clickableViews = ArrayList<View>()
