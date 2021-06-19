@@ -19,6 +19,7 @@ import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
@@ -145,6 +146,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         // Make sure video is visible if service is bound
         showPlayerView("on resume")
+
+        // Util when user enable draw over apps for the first time only
+        binding.miniPlayerView.showTrackInfoIfNeeded()
     }
 
     override fun onPause() {
@@ -302,6 +306,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun observeViewModel() {
+
+        observe(viewModel.noRecentTrack.asLiveData()) { event ->
+            event?.getContentIfNotHandled()?.let {
+                binding.miniPlayerView.showNoTrack()
+            }
+        }
+
         observe(viewModel.queue) { items ->
         }
         observe(PlayerQueue) { video ->
@@ -368,7 +379,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     fun openBatterySaverMode() {
         lifecycleScope.launchWhenResumed {
             val canWriteSettings = SystemSettings.canWriteSettings(requireContext())
-                    && SystemSettings.canDrawOverApps(requireContext())
             if (!canWriteSettings) {
                 // Show popup
                 MaterialDialog(requireContext()).show {
@@ -383,7 +393,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     }
                     negativeButton(R.string.cancel)
                     getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
-                    window?.setType(windowOverlayTypeOrPhone)
                 }
                 return@launchWhenResumed
             }
@@ -416,7 +425,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.txtTitle.ellipsize = null
         binding.txtTitle.text = track.title
         binding.artistName.text = track.title.substringBefore("-")
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             delay(500)
             binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
         }
@@ -456,7 +465,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 val progress = seekBar.progress
                 val seconds = progress * video.durationToSeconds() / 100
                 PlayerQueue.seekTo(seconds * 1000)
-                lifecycleScope.launch {
+                viewLifecycleOwner.lifecycleScope.launch {
                     delay(500)
                     seekingDuration = false
                 }

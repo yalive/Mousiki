@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/img_genres_0" />
+                tools:src="@drawable/img_genres_0" />
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

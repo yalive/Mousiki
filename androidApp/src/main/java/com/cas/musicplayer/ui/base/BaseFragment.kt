@@ -11,7 +11,10 @@ import androidx.lifecycle.asLiveData
 import com.cas.common.extensions.isDarkMode
 import com.cas.musicplayer.tmp.observe
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.resolve
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 /**
  ***************************************
@@ -20,10 +23,12 @@ import com.mousiki.shared.utils.resolve
  */
 abstract class BaseFragment<T : BaseViewModel>(
     @LayoutRes layoutResourceId: Int
-) : Fragment(layoutResourceId) {
+) : Fragment(layoutResourceId), KoinComponent {
 
     protected abstract val viewModel: T
     protected open val screenTitle = ""
+
+    private val analyticsApi by lazy { get<AnalyticsApi>() }
 
     override fun onResume() {
         super.onResume()
@@ -34,6 +39,7 @@ abstract class BaseFragment<T : BaseViewModel>(
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
             }
         }
+        analyticsApi.logScreenView(javaClass.simpleName)
     }
 
     private fun setupToolbar() {

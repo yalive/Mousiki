@@ -114,7 +114,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
                     return false
                 }
                 view?.hideSoftKeyboard()
-                lifecycleScope.launch {
+                viewLifecycleOwner.lifecycleScope.launch {
                     delay(200)
                     findNavController().popBackStack()
                 }

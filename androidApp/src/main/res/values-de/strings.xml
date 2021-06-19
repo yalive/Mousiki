@@ -70,6 +70,7 @@
     <string name="done">Erledigt</string>
     <string name="ok">Ok</string>
     <string name="cancel">Stornieren</string>
+    <string name="yes">Ja</string>
     <string name="choose_dark_mode_theme">Wähle das Thema</string>
     <string name="label_error">Error</string>
     <string name="btn_unfavorite">Unfavorit</string>
@@ -143,4 +144,10 @@
     <!-- Genres List -->
     <string name="genre_music">Musik</string>
     <string name="genre_mood">Stimmung</string>
+
+    <!-- Search -->
+    <string name="suggestion_history">Suchverlauf</string>
+    <string name="suggestion_clear_history_button_title">klar</string>
+    <string name="confirm_clear_search_history_message">Möchten Sie wirklich den gesamten Suchverlauf löschen?</string>
+    <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
 </resources>

@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.addRipple
-import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.tmp.observeEvent
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -23,6 +21,8 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
@@ -30,16 +30,19 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrlDefault
 import com.mousiki.shared.preference.UserPrefs
+import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.Constants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class QueueFragment : Fragment(R.layout.fragment_queue) {
+class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
 
     private val binding by viewBinding(FragmentQueueBinding::bind)
-
+    private val analyticsApi by lazy { get<AnalyticsApi>() }
     private val viewModel: QueueViewModel by viewModel {
         Injector.queueViewModel
     }
@@ -117,7 +120,9 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
                 topMargin = inset.top
             }
         })
-        binding.btnPlayOption.setImageResource(UserPrefs.getCurrentPlaybackSort().iconId(requireContext()))
+        binding.btnPlayOption.setImageResource(
+            UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
+        )
         binding.recyclerView.adapter = adapter
         observe(viewModel.queue) { newList ->
             val firstTime = adapter.dataItems.isEmpty()
@@ -160,8 +165,13 @@ class QueueFragment : Fragment(R.layout.fragment_queue) {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        analyticsApi.logScreenView(javaClass.simpleName)
+    }
+
     private fun loadAndBlurImage(video: MusicTrack) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val bitmap = binding.imgBlured.getBitmap(video.imgUrlDefault, 500) ?: return@launch
                 val blurredBitmap = withContext(Dispatchers.Default) {

@@ -69,6 +69,7 @@
     <string name="done">Terminé</string>
     <string name="ok">D\'accord</string>
     <string name="cancel">Annuler</string>
+    <string name="yes">Oui</string>
     <string name="choose_dark_mode_theme">Choisissez le thème</string>
     <string name="label_error">Erreur</string>
     <string name="btn_unfavorite">Non favori</string>
@@ -143,4 +144,10 @@
     <!-- Genres List -->
     <string name="genre_music">Musique</string>
     <string name="genre_mood">Ambiance</string>
+
+    <!-- Search -->
+    <string name="suggestion_history">Historique</string>
+    <string name="suggestion_clear_history_button_title">Effacer</string>
+    <string name="confirm_clear_search_history_message">Voulez-vous vraiment effacer tout l\'historique de recherche?</string>
+    <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
 </resources>
