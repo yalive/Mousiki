@@ -29,11 +29,13 @@ class LibraryAdapter(
             viewModel.onClickFavouriteTrack(track, tracks)
         },
         LibraryHeaderAdapterDelegate(),
-        LibraryPlaylistsDelegate(viewModel)
+        LibraryPlaylistsDelegate(viewModel),
+        LibrarySettingDelegate()
     )
 ) {
     init {
         dataItems = mutableListOf(
+            LibrarySettingItem,
             LibraryHeaderItem.PlaylistsHeader,
             LibraryItem.Playlists(listOf()),
             LibraryItem.Recent(emptyList()),
@@ -93,3 +95,5 @@ class LibraryAdapter(
         return -1
     }
 }
+
+object LibrarySettingItem : DisplayableItem

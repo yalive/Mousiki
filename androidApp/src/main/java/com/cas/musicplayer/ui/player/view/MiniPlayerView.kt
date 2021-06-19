@@ -7,10 +7,13 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import com.cas.common.extensions.onClick
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.MiniPlayerViewBinding
+import com.cas.musicplayer.utils.canDrawOverApps
 import com.mousiki.shared.domain.models.MusicTrack
 
 /**
@@ -36,7 +39,6 @@ class MiniPlayerView @JvmOverloads constructor(
     }
 
     private fun init(attrs: AttributeSet?) {
-        //inflate(context, R.layout.mini_player_view, this)
         miniPlayerContainer = findViewById(R.id.miniPlayerContainer)
 
         binding.btnPlayPause.onClick {
@@ -61,6 +63,7 @@ class MiniPlayerView @JvmOverloads constructor(
         postDelayed(500) {
             binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
         }
+        showTrackInfoIfNeeded()
     }
 
     fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
@@ -78,5 +81,17 @@ class MiniPlayerView @JvmOverloads constructor(
 
     fun doOnClickPlayPause(callback: () -> Unit) {
         onClickPlayPause = callback
+    }
+
+    fun showNoTrack() {
+        binding.trackInfoGroup.isVisible = false
+        binding.txtEmpty.isVisible = true
+    }
+
+    fun showTrackInfoIfNeeded() {
+        if (MusicApp.get().canDrawOverApps()) {
+            binding.trackInfoGroup.isVisible = true
+            binding.txtEmpty.isVisible = false
+        }
     }
 }

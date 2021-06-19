@@ -40,7 +40,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers

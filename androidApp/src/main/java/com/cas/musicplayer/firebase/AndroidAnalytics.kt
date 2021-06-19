@@ -11,4 +11,12 @@ class AndroidAnalytics(
     override fun logEvent(name: String, params: Map<String, Any>) {
         analytics.logEvent(name, bundleOf(*params.toList().toTypedArray()))
     }
+
+    override fun logScreenView(screenName: String) {
+        val params = mapOf(
+            FirebaseAnalytics.Param.SCREEN_NAME to screenName,
+            /* FirebaseAnalytics.Param.SCREEN_CLASS to screenName,*/
+        )
+        logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
+    }
 }
