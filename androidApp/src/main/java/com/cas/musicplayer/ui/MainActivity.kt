@@ -109,6 +109,7 @@ class MainActivity : BaseActivity() {
                 R.id.navHome -> handleClickMenuHome()
                 R.id.navLibrary -> handleClickMenuLibrary()
                 R.id.navSearch -> handleClickMenuSearch()
+                R.id.navMusic -> handleClickMenuMusic()
                 else -> {
                 }
             }
@@ -151,11 +152,14 @@ class MainActivity : BaseActivity() {
             R.id.homeFragment -> {
                 binding.bottomNavView.menu[0].isChecked = true
             }
-            R.id.libraryFragment -> {
+            R.id.localSongsFragment -> {
                 binding.bottomNavView.menu[1].isChecked = true
             }
-            R.id.mainSearchFragment -> {
+            R.id.libraryFragment -> {
                 binding.bottomNavView.menu[2].isChecked = true
+            }
+            R.id.mainSearchFragment -> {
+                binding.bottomNavView.menu[3].isChecked = true
             }
         }
     }
@@ -179,6 +183,13 @@ class MainActivity : BaseActivity() {
         if (navController.currentDestination?.id == R.id.libraryFragment) return
         if (!navController.popBackStack(R.id.libraryFragment, false)) {
             navController.navigate(R.id.libraryFragment)
+        }
+    }
+
+    private fun handleClickMenuMusic() {
+        if (navController.currentDestination?.id == R.id.localSongsFragment) return
+        if (!navController.popBackStack(R.id.localSongsFragment, false)) {
+            navController.navigate(R.id.localSongsFragment)
         }
     }
 
