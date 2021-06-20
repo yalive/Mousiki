@@ -1,6 +1,6 @@
 package com.mousiki.shared.player
 
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 
 /**
  ***************************************
@@ -8,7 +8,7 @@ import com.mousiki.shared.domain.models.MusicTrack
  ***************************************
  */
 interface PlaySongDelegate {
-    val currentSong: MusicTrack?
-    suspend fun playTrackFromQueue(track: MusicTrack, queue: List<MusicTrack>)
+    val currentSong: Track?
+    suspend fun playTrackFromQueue(track: Track, queue: List<Track>)
     fun isPlayingASong(): Boolean
 }

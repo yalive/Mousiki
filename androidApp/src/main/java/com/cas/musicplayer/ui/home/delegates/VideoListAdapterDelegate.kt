@@ -1,11 +1,11 @@
 package com.cas.musicplayer.ui.home.delegates
 
-import com.mousiki.shared.ui.resource.Resource
-import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.ui.home.model.HomeItem
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
+import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.ui.home.model.HomeItem
+import com.mousiki.shared.ui.resource.Resource
 
 /**
  ***************************************
@@ -13,7 +13,7 @@ import com.mousiki.shared.domain.models.DisplayedVideoItem
  ***************************************
  */
 class VideoListAdapterDelegate(
-    onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit
+    onVideoSelected: (Track, List<Track>) -> Unit
 ) : HorizontalListSongsAdapterDelegate(onVideoSelected) {
 
     override val showRetryButton: Boolean = false

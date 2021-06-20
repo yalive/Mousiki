@@ -13,7 +13,7 @@ import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.common.songs.featuredImage
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.resource.Resource
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
@@ -40,7 +40,7 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
         viewModel.onPlaybackStateChanged()
     }
 
-    override fun onClickTrack(track: MusicTrack) {
+    override fun onClickTrack(track: Track) {
         viewModel.onClickTrack(track)
     }
 

@@ -29,6 +29,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.Constants
 import java.util.concurrent.Executors
@@ -172,7 +173,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
         fun present(
             fm: FragmentManager,
-            track: MusicTrack,
+            track: Track,
             onDismissed: () -> Unit = {}
         ) {
             val bottomSheetFragment = TrackOptionsFragment()

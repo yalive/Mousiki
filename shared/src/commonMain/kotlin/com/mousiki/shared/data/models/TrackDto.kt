@@ -1,7 +1,7 @@
 package com.mousiki.shared.data.models
 
-import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.Keep
+import com.mousiki.shared.domain.models.MusicTrack
 import kotlinx.serialization.Serializable
 
 /**
@@ -21,5 +21,6 @@ data class TrackDto(
 fun TrackDto.toDomainModel() = MusicTrack(
     youtubeId = youtubeId.orEmpty(),
     duration = duration.orEmpty(),
-    title = title.orEmpty()
+    title = title.orEmpty(),
+    artistName = title.orEmpty().split("-")[0]
 )

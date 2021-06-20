@@ -12,7 +12,7 @@ import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.imgUrlDef0
 import com.mousiki.shared.preference.UserPrefs
 import com.squareup.picasso.Callback
@@ -40,7 +40,7 @@ fun ImageView.tintColor(color: Int) {
 }
 
 fun ImageView.loadTrackImage(
-    track: MusicTrack
+    track: Track
 ) {
     try {
         val url = UserPrefs.getTrackImageUrl(track)

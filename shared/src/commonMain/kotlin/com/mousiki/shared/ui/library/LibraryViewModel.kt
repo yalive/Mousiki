@@ -85,17 +85,17 @@ class LibraryViewModel(
             }
     }
 
-    fun onClickRecentTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
+    fun onClickRecentTrack(track: Track, queue: List<Track>) = scope.launch {
         _onClickSong.value = Unit.asEvent()
         playTrackFromQueue(track, queue)
     }
 
-    fun onClickHeavyTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
+    fun onClickHeavyTrack(track: Track, queue: List<Track>) = scope.launch {
         _onClickSong.value = Unit.asEvent()
         playTrackFromQueue(track, queue)
     }
 
-    fun onClickFavouriteTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
+    fun onClickFavouriteTrack(track: Track, queue: List<Track>) = scope.launch {
         _onClickSong.value = Unit.asEvent()
         playTrackFromQueue(track, queue)
     }
@@ -136,7 +136,7 @@ class LibraryViewModel(
 
     fun bannerAdOn() = appConfig.libraryBannerAdOn()
 
-    private fun tracksToDisplayableItems(songs: List<MusicTrack>) =
+    private fun tracksToDisplayableItems(songs: List<Track>) =
         songs.map { it.toDisplayedVideoItem() }
 
 

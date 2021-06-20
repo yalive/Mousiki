@@ -1,6 +1,6 @@
 package com.mousiki.shared.preference
 
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.player.PlaySort
 import com.russhwolf.settings.Settings
@@ -124,13 +124,13 @@ object UserPrefs {
         settings.putBoolean(KEY_TOOL_TIP_BATTERY_SAVER, true)
     }
 
-    fun getTrackImageUrl(track: MusicTrack): String {
-        val url = settings.getString("${track.youtubeId}_preferred_url", track.imgUrl)
+    fun getTrackImageUrl(track: Track): String {
+        val url = settings.getString("${track.id}_preferred_url", track.imgUrl)
         return if (url.isNotEmpty()) url else track.imgUrl
     }
 
-    fun setTrackImageUrl(track: MusicTrack, url: String) {
-        settings.putString("${track.youtubeId}_preferred_url", url)
+    fun setTrackImageUrl(track: Track, url: String) {
+        settings.putString("${track.id}_preferred_url", url)
     }
 
     const val THEME_AUTOMATIC = 0

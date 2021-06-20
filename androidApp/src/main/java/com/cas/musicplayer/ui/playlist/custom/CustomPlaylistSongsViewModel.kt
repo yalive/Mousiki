@@ -41,7 +41,7 @@ class CustomPlaylistSongsViewModel(
             else -> getCustomPlaylistTracks(playlist.title)
         }
         val items = tracks.map {
-            val isCurrent = currentSong?.youtubeId == it.youtubeId
+            val isCurrent = currentSong?.id == it.id
             it.toDisplayedVideoItem(
                 isCurrent = isCurrent,
                 isPlaying = isCurrent && isPlayingASong()
@@ -50,7 +50,7 @@ class CustomPlaylistSongsViewModel(
         _songs.value = Resource.Success(items)
     }
 
-    fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
+    fun onClickTrack(track: Track) = viewModelScope.launch {
         val tracks = (_songs.value as? Resource.Success)?.data
             ?.filterIsInstance<DisplayedVideoItem>()
             ?.map { it.track } ?: emptyList()

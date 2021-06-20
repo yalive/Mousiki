@@ -5,6 +5,7 @@ import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 
 /**
  ***************************************
@@ -12,7 +13,7 @@ import com.mousiki.shared.domain.models.MusicTrack
  ***************************************
  */
 
-fun MutableLiveData<Resource<List<DisplayableItem>>>.songList(): List<MusicTrack> {
+fun MutableLiveData<Resource<List<DisplayableItem>>>.songList(): List<Track> {
     return (this.value as? Resource.Success)?.data?.filterIsInstance<DisplayedVideoItem>()
         ?.map { it.track }
         ?: emptyList()

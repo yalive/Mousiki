@@ -13,12 +13,12 @@ import androidx.core.view.postDelayed
 import com.cas.common.extensions.*
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LockScreenLayoutBinding
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.utils.BrightnessUtils
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.launchDelayed
+import com.mousiki.shared.domain.models.Track
 import com.ncorti.slidetoact.SlideToActView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -147,7 +147,7 @@ class LockScreenView @JvmOverloads constructor(
         else disableLock()
     }
 
-    fun setCurrentTrack(track: MusicTrack) {
+    fun setCurrentTrack(track: Track) {
         binding.txtTrackTitle.text = track.title
     }
 

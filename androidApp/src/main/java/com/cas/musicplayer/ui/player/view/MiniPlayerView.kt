@@ -14,7 +14,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.MiniPlayerViewBinding
 import com.cas.musicplayer.utils.canDrawOverApps
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 
 /**
  ***************************************
@@ -56,7 +56,7 @@ class MiniPlayerView @JvmOverloads constructor(
         binding.progressDuration.progress = newProgress
     }
 
-    fun onTrackChanged(track: MusicTrack) {
+    fun onTrackChanged(track: Track) {
         binding.artistName.text = track.title.substringBefore("-")
         binding.txtTitle.ellipsize = null
         binding.txtTitle.text = track.title

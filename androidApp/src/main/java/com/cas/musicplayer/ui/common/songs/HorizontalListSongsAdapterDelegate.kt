@@ -17,7 +17,7 @@ import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
 import com.cas.musicplayer.utils.dpToPixel
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.home.model.HomeItem
 import com.mousiki.shared.ui.resource.Resource
 
@@ -28,7 +28,7 @@ import com.mousiki.shared.ui.resource.Resource
  */
 
 open class HorizontalListSongsAdapterDelegate(
-    private val onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit,
+    private val onVideoSelected: (Track, List<Track>) -> Unit,
     private val onClickRetry: () -> Unit = {}
 ) : AdapterDelegate<List<DisplayableItem>>() {
 

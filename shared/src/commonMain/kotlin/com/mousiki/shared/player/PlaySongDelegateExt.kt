@@ -7,7 +7,7 @@ fun PlaySongDelegate.updateCurrentPlaying(items: List<DisplayableItem>): List<Di
     return items.map { item ->
         when (item) {
             is DisplayedVideoItem -> {
-                val isCurrent = currentSong?.youtubeId == item.track.youtubeId
+                val isCurrent = currentSong?.id == item.track.id
                 item.copy(
                     isCurrent = isCurrent,
                     isPlaying = isCurrent && isPlayingASong()
