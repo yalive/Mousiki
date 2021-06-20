@@ -18,7 +18,7 @@ class GenresRepository {
                     channelId = "UCE80FOXpJydkkMo-BYoJdEg",
                     topTracksPlaylist = "PLDcnymzs18LU4Kexrs91TVdfnplU3I5zs",
                     isMood = false,
-                    backgroundColor = "#706850"
+                    backgroundColor = "#8C67AC"
                 )
             )
             add(
@@ -28,7 +28,7 @@ class GenresRepository {
                     channelId = "UCUnSTiCHiHgZA9NQUG6lZkQ",
                     topTracksPlaylist = "PLxhnpe8pN3TlMilD9JLcwNmjqf2J47cRU",
                     isMood = false,
-                    backgroundColor = "#787878"
+                    backgroundColor = "#B95E17"
                 )
             )
             add(
@@ -38,7 +38,7 @@ class GenresRepository {
                     channelId = "UClYMFaf6IdjQnZmsnw9N1hQ",
                     topTracksPlaylist = "PLvLX2y1VZ-tFJCfRG7hi_OjIAyCriNUT2",
                     isMood = false,
-                    backgroundColor = "#707068"
+                    backgroundColor = "#E7125C"
                 )
             )
             add(
@@ -48,7 +48,7 @@ class GenresRepository {
                     channelId = "UCHtUkBSmt4d92XP8q17JC3w",
                     topTracksPlaylist = "PL47oRh0-pTouthHPv6AbALWPvPJHlKiF7",
                     isMood = false,
-                    backgroundColor = "#704038"
+                    backgroundColor = "#E515E5"
                 )
             )
             add(
@@ -58,7 +58,7 @@ class GenresRepository {
                     channelId = "UCh3PEQmV2_1D69MCcx-PArg",
                     topTracksPlaylist = "PLS_oEMUyvA728OZPmF9WPKjsGtfC75LiN",
                     isMood = false,
-                    backgroundColor = "#507078"
+                    backgroundColor = "#2D46BA"
                 )
             )
             add(
@@ -68,7 +68,7 @@ class GenresRepository {
                     channelId = "UCSkJDgBGvNOEXSQl4YNjDtQ",
                     topTracksPlaylist = "PLfY-m4YMsF-OM1zG80pMguej_Ufm8t0VC",
                     isMood = false,
-                    backgroundColor = "#784850"
+                    backgroundColor = "#B95E17"
                 )
             )
             add(
@@ -78,7 +78,7 @@ class GenresRepository {
                     channelId = "UCsEonk9fs_9jmtw9PwER9yg",
                     topTracksPlaylist = "PLTDluH66q5mpm-Bsq3GlwjMOHITt2bwXE",
                     isMood = false,
-                    backgroundColor = "#707870"
+                    backgroundColor = "#158A14"
                 )
             )
             add(
@@ -88,7 +88,7 @@ class GenresRepository {
                     channelId = "UCCIPrrom6DIftcrInjeMvsQ",
                     topTracksPlaylist = "PLFPg_IUxqnZNnACUGsfn50DySIOVSkiKI",
                     isMood = false,
-                    backgroundColor = "#707068"
+                    backgroundColor = "#8C67AC"
                 )
             )
             add(
@@ -98,7 +98,7 @@ class GenresRepository {
                     channelId = "UCBg69z2WJGVY2TbhJ1xG4AA",
                     topTracksPlaylist = "PLhInz4M-OzRUsuBj8wF6383E7zm2dJfqZ",
                     isMood = false,
-                    backgroundColor = "#707068"
+                    backgroundColor = "#E03318"
                 )
             )
 
@@ -109,7 +109,7 @@ class GenresRepository {
                     channelId = "UC-9-kyTW8ZkZNDHQJ6FgpwQ",
                     topTracksPlaylist = "PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI",
                     isMood = false,
-                    backgroundColor = "#888888"
+                    backgroundColor = "#8B1932"
                 )
             )
             add(
@@ -129,7 +129,7 @@ class GenresRepository {
                     channelId = "UCLwMU2tKAlCoMSbGQDuiMSg",
                     topTracksPlaylist = "PLVXq77mXV53-Np39jM456si2PeTrEm9Mj",
                     isMood = false,
-                    backgroundColor = "#A8A8A8"
+                    backgroundColor = "#1273EC"
                 )
             )
             add(
@@ -139,7 +139,7 @@ class GenresRepository {
                     channelId = "UCm-O8i4MEqBWq2wB03YGtfg",
                     topTracksPlaylist = "PLSn1U7lJJ1UnczTmNYXW8ZEjJsCxTZull",
                     isMood = false,
-                    backgroundColor = "#808080"
+                    backgroundColor = "#DB158B"
                 )
             )
 
@@ -160,7 +160,7 @@ class GenresRepository {
                     channelId = "UCDQ_5Wcc54n1_GrAzf05uWQ",
                     topTracksPlaylist = "PL0zQrw6ZA60Z6JT4lFH-lAq5AfDnO2-aE",
                     isMood = false,
-                    backgroundColor = "#808080"
+                    backgroundColor = "#8C67AC"
                 )
             )
             add(
@@ -254,7 +254,7 @@ class GenresRepository {
                     channelId = "",
                     topTracksPlaylist = "PLzCxunOM5WFIRlYt5KJngVDXt9uIqX_1B",
                     isMood = true,
-                    backgroundColor = "#A8A8A0"
+                    backgroundColor = "#DB158B"
                 )
             )
 
