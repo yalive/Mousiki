@@ -1,5 +1,6 @@
 package com.cas.musicplayer.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
@@ -199,7 +200,11 @@ object Utils : KoinComponent {
         }
     }
 
-    fun requestDrawOverAppsPermission(context: Context): AlertDialog {
+    @SuppressLint("InlinedApi")
+    inline fun requestDrawOverAppsPermission(
+        context: Context,
+        crossinline onRequested: () -> Unit
+    ): AlertDialog {
         return AlertDialog.Builder(context).setCancelable(false)
             .setMessage(R.string.message_enable_draw)
             .setNegativeButton(context.getString(R.string.btn_deny)) { _, _ ->
@@ -209,12 +214,12 @@ object Utils : KoinComponent {
                     Uri.parse("package:${context.packageName}")
                 )
                 if (intent.resolveActivity(context.packageManager) != null) {
+                    onRequested()
                     if (context is AppCompatActivity) {
                         context.startActivityForResult(intent, 10)
                     } else {
                         context.startActivity(intent)
                     }
-
                 } else {
                     MusicApp.get().toast(R.string.message_enable_draw_over_apps_manually)
                     FirebaseCrashlytics.getInstance()
