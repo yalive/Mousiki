@@ -41,7 +41,7 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.durationFormatted
 import com.mousiki.shared.domain.models.durationToSeconds
 import com.mousiki.shared.preference.UserPrefs
@@ -239,7 +239,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         binding.btnAddFav.onClick {
-            val isFav = UserPrefs.isFav(PlayerQueue.value?.youtubeId)
+            val isFav = UserPrefs.isFav(PlayerQueue.value?.id)
             if (!isFav) {
                 Executors.newSingleThreadExecutor().execute {
                     val musicTrack = PlayerQueue.value
@@ -419,7 +419,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.motionLayout.getTransition(R.id.mainTransition).setEnable(!lock)
     }
 
-    private fun onVideoChanged(track: MusicTrack) {
+    private fun onVideoChanged(track: Track) {
         binding.miniPlayerView.onTrackChanged(track)
 
         binding.txtTitle.ellipsize = null
@@ -431,7 +431,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
 
-        if (UserPrefs.isFav(track.youtubeId)) {
+        if (UserPrefs.isFav(track.id)) {
             binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
             binding.btnAddFav.tint(R.color.colorAccent)
         } else {
@@ -442,7 +442,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun configureSeekBar(video: MusicTrack) {
+    private fun configureSeekBar(video: Track) {
         binding.txtDuration.text = video.durationFormatted
         binding.txtElapsedTime.text = "00:00"
         binding.seekBarDuration.progress = 0

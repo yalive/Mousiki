@@ -7,8 +7,8 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
-import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.Track
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 /**
@@ -37,7 +37,7 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
         viewModel.onPlaybackStateChanged()
     }
 
-    override fun onClickTrack(track: MusicTrack) {
+    override fun onClickTrack(track: Track) {
         viewModel.onClickTrack(track)
     }
 

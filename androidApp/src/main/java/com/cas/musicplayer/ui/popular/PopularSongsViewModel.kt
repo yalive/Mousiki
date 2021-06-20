@@ -60,7 +60,7 @@ class PopularSongsViewModel(
         if (allSongs.isNotEmpty() && allSongs.size < MAX_VIDEOS) {
             loadingMore = true
             _newReleases.appendItems(listOf(LoadingItem), false)
-            val result = getPopularSongs(PAGE_SIZE, allSongs.lastOrNull())
+            val result = getPopularSongs(PAGE_SIZE, allSongs.lastOrNull() as? MusicTrack)
             if (result is Result.Success) {
                 val newPageMapped = result.data.map { it.toDisplayedVideoItem() }
                 val itemsWithAds = insertAdsIn(newPageMapped)
@@ -72,7 +72,7 @@ class PopularSongsViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = scope.launch {
+    fun onClickTrack(track: Track) = scope.launch {
         playTrackFromQueue(track, _newReleases.songList())
     }
 

@@ -8,7 +8,7 @@ import com.mousiki.shared.player.PlaySongDelegate
  ***************************************
  */
 data class DisplayedVideoItem(
-    val track: MusicTrack,
+    val track: Track,
     val songTitle: String,
     val songDuration: String,
     val songImagePath: String,
@@ -17,14 +17,14 @@ data class DisplayedVideoItem(
     val beforeCurrent: Boolean = false
 ) : DisplayableItem
 
-fun MusicTrack.toDisplayedVideoItem() = DisplayedVideoItem(
+fun Track.toDisplayedVideoItem() = DisplayedVideoItem(
     track = this,
     songTitle = title,
     songDuration = durationFormatted,
     songImagePath = imgUrl
 )
 
-fun MusicTrack.toDisplayedVideoItem(
+fun Track.toDisplayedVideoItem(
     isCurrent: Boolean = false,
     isPlaying: Boolean = false,
 ) = DisplayedVideoItem(
@@ -36,22 +36,23 @@ fun MusicTrack.toDisplayedVideoItem(
     isPlaying = isPlaying
 )
 
-fun MusicTrack.toDisplayedVideoItem(
+fun Track.toDisplayedVideoItem(
     playDelegate: PlaySongDelegate
 ): DisplayedVideoItem {
-    val isCurrent = playDelegate.currentSong?.youtubeId == youtubeId
+    val isCurrent = playDelegate.currentSong?.id == id
     return toDisplayedVideoItem(
         isCurrent = isCurrent,
         isPlaying = isCurrent && playDelegate.isPlayingASong()
     )
 }
 
-fun List<MusicTrack>.toDisplayedVideoItems(
+fun List<Track>.toDisplayedVideoItems(
     playDelegate: PlaySongDelegate
 ): List<DisplayedVideoItem> {
     return map { it.toDisplayedVideoItem(playDelegate) }
 }
 
+// TODO: get real artist name
 fun DisplayedVideoItem.artistName(): String {
-    return songTitle.split("-")[0]
+    return track.artistName
 }

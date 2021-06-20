@@ -8,5 +8,6 @@ typealias TrendingTrackEntity = Trending_tracks
 fun Trending_tracks.toMusicTrack() = MusicTrack(
     youtubeId = youtube_id,
     title = title,
-    duration = duration
+    duration = duration,
+    artistName = title.split("-")[0]
 )

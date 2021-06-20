@@ -8,5 +8,6 @@ typealias ChannelTrackEntity = Channel_tracks
 fun Channel_tracks.toMusicTrack() = MusicTrack(
     youtubeId = youtube_id,
     title = title,
-    duration = duration
+    duration = duration,
+    artistName = title.split("-")[0]
 )

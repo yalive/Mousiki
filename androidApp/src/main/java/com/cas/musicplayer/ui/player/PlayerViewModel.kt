@@ -8,10 +8,7 @@ import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.common.ads.AdsItem
 import com.google.android.gms.ads.nativead.NativeAd
-import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
@@ -46,7 +43,7 @@ class PlayerViewModel(
     val queue: LiveData<List<DisplayableItem>> = _queue
 
     private val nativeAds = mutableListOf<NativeAd>()
-    private val queueObserver = Observer<List<MusicTrack>?> { newQueue ->
+    private val queueObserver = Observer<List<Track>?> { newQueue ->
         newQueue?.let {
             val videoItems = newQueue.map { it.toDisplayedVideoItem() }
             _queue.value = getListWithAds(videoItems)
@@ -77,12 +74,18 @@ class PlayerViewModel(
         }
     }
 
-    fun makeSongAsFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
-        addSongToFavourite(musicTrack)
+    fun makeSongAsFavourite(musicTrack: Track) = viewModelScope.launch {
+        when (musicTrack) {
+            is LocalSong -> TODO("Not yet implemented")
+            is MusicTrack -> addSongToFavourite(musicTrack)
+        }
     }
 
-    fun removeSongFromFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
-        removeSongFromFavouriteList(musicTrack.youtubeId)
+    fun removeSongFromFavourite(musicTrack: Track) = viewModelScope.launch {
+        when (musicTrack) {
+            is LocalSong -> TODO("Not yet implemented")
+            is MusicTrack -> removeSongFromFavouriteList(musicTrack.youtubeId)
+        }
     }
 
     fun prepareAds() {
@@ -141,7 +144,7 @@ class PlayerViewModel(
 
     private fun doOnSwipe(next: Boolean) {
         val indexCurrent = _queue.value?.indexOfFirst {
-            it is DisplayedVideoItem && it.track.youtubeId == PlayerQueue.value?.youtubeId
+            it is DisplayedVideoItem && it.track.id == PlayerQueue.value?.id
         } ?: return
         val targetIndex = if (next) indexCurrent + 1 else indexCurrent - 1
         val previous = _queue.value?.getOrNull(targetIndex) as? DisplayedVideoItem

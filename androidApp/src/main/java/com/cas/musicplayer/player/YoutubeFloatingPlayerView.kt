@@ -17,7 +17,7 @@ import com.cas.common.extensions.visible
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.player.services.YoutubePlayerManager
+import com.cas.musicplayer.player.services.YTBPlayer
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.canDrawOverApps
@@ -67,7 +67,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     fun preparePlayerView(
         service: MusicPlayerService,
-        youtubePlayerManager: YoutubePlayerManager,
+        ytbPlayer: YTBPlayer,
         bottomView: View,
         batterySaverView: View,
         sessionToken: MediaSessionCompat.Token
@@ -196,7 +196,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
         if (context.canDrawOverApps()) {
             windowManager.addView(this, videoViewParams)
         }
-        youTubePlayerView.addYouTubePlayerListener(youtubePlayerManager)
+        youTubePlayerView.addYouTubePlayerListener(ytbPlayer)
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {
