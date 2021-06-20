@@ -31,7 +31,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val oldQueue = this.queue.orEmpty()
         this.queue = queue
         this.value = currentTrack
-        playTrack()
+        playCurrentTrack()
         checkQueueChanged(oldQueue, queue)
     }
 
@@ -46,7 +46,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val nextTrack = getNextTrack()
         if (nextTrack != null) {
             this.value = nextTrack
-            playTrack()
+            playCurrentTrack()
         }
     }
 
@@ -54,7 +54,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         val previousTrack = getPreviousTrack()
         if (previousTrack != null) {
             this.value = previousTrack
-            playTrack()
+            playCurrentTrack()
         }
     }
 
@@ -161,7 +161,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
     }
 
-    private fun playTrack() {
+    fun playCurrentTrack() {
         if (!MusicApp.get().canDrawOverApps()) {
             return
         }
