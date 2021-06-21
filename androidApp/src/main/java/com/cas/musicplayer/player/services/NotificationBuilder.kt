@@ -18,9 +18,9 @@ import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.receiver.DeleteNotificationReceiver
 import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.ui.MainActivity
-import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.getBitmap
 import com.cas.musicplayer.utils.isScreenLocked
+import com.mousiki.shared.preference.UserPrefs
 import com.squareup.picasso.Picasso
 
 /**

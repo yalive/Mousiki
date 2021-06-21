@@ -172,6 +172,9 @@ dependencies {
     // Tip
     implementation 'com.github.sephiroth74:android-target-tooltip:2.0.3'
 
+    // Exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.1'
+
     // Modules
     implementation project(path: ':common')
     implementation project(path: ':shared')

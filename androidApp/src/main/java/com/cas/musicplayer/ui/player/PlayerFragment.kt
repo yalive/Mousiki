@@ -41,9 +41,7 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
-import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.models.durationFormatted
-import com.mousiki.shared.domain.models.durationToSeconds
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -306,7 +304,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun observeViewModel() {
-
         observe(viewModel.noRecentTrack.asLiveData()) { event ->
             event?.getContentIfNotHandled()?.let {
                 binding.miniPlayerView.showNoTrack()
@@ -439,6 +436,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             binding.btnAddFav.tint(R.color.colorWhite)
         }
         configureSeekBar(track)
+
+        // Show
+        binding.vAudio.isVisible = track is LocalSong
+        binding.btnYoutube.alpha =
+            if (track is MusicTrack) 1.0f else 0.0f // Not working: a motion layout trick!!
     }
 
     @SuppressLint("SetTextI18n")
@@ -530,7 +532,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (playerView.parent == binding.cardPager) return
         val oldParent = playerView.parent as? ViewGroup
         oldParent?.removeView(playerView)
-        binding.cardPager.addView(playerView, 0)
+        binding.cardPager.addView(playerView, 1)
     }
 
     private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {

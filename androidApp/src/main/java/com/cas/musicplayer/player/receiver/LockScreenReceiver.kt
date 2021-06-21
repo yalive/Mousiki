@@ -14,7 +14,6 @@ import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.toText
-import com.cas.musicplayer.player.services.MusicPlayerService.Companion.CustomCommand
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.color
@@ -50,9 +49,6 @@ class LockScreenReceiver(
                 shouldShowPopup = true
                 mediaController.transportControls.pause()
             }
-
-            // Disable notification buttons
-            mediaController.sendCommand(CustomCommand.DISABLE_NOTIFICATION_ACTIONS, null, null)
         } else if (intent.action == Intent.ACTION_USER_PRESENT && context.canDrawOverApps()) {
             if (shouldShowPopup) {
                 shouldShowPopup = false
@@ -85,23 +81,18 @@ class LockScreenReceiver(
                     window?.setType(windowOverlayTypeOrPhone)
                 }
             }
-
-            // Enable notification buttons
-            mediaController.sendCommand(CustomCommand.ENABLE_NOTIFICATION_ACTIONS, null, null)
         }
     }
 
     fun register() {
-        if (!registered) {
-            context.registerReceiver(this, intentFilter)
-            registered = true
-        }
+        if (registered) return
+        context.registerReceiver(this, intentFilter)
+        registered = true
     }
 
     fun unregister() {
-        if (registered) {
-            context.unregisterReceiver(this)
-            registered = false
-        }
+        if (!registered) return
+        context.unregisterReceiver(this)
+        registered = false
     }
 }
