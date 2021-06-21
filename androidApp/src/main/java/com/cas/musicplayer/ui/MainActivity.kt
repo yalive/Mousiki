@@ -24,6 +24,7 @@ import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
@@ -53,6 +54,7 @@ class MainActivity : BaseActivity() {
     val binding by viewBinding(ActivityMainBinding::inflate)
 
     private var dialogDrawOverApps: AlertDialog? = null
+    private var drawOverAppsRequested = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -204,6 +206,11 @@ class MainActivity : BaseActivity() {
             putExtra(EXTRAS_FROM_PLAYER_SERVICE, false)
             putExtra(EXTRAS_OPEN_BATTERY_SAVER_MODE, false)
         }
+
+        if (drawOverAppsRequested) {
+            drawOverAppsRequested = false
+            PlayerQueue.playCurrentTrack()
+        }
     }
 
     override fun onDestroy() {
@@ -269,9 +276,10 @@ class MainActivity : BaseActivity() {
 
     fun collapseBottomPanel() {
         if (!canDrawOverApps()) {
-            Utils.requestDrawOverAppsPermission(this).also {
-                dialogDrawOverApps = it
+            val dialog = Utils.requestDrawOverAppsPermission(this) {
+                drawOverAppsRequested = true
             }
+            dialogDrawOverApps = dialog
             return
         }
         playerFragment.collapsePlayer()

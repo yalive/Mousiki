@@ -48,6 +48,11 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
         viewModel.onClickTrackPlayAll()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        gotFirstTrack = false
+    }
+
     private fun displayFeaturedImageIfNecessary(it: Resource<List<DisplayableItem>>) {
         if (featuredImage != null || it !is Resource.Success) return
         if (gotFirstTrack) return
