@@ -190,5 +190,9 @@ object PlayerQueue : MutableLiveData<Track>() {
     }
 }
 
+fun PlayerQueue.getTrack(id: String): Track? {
+    return queue.orEmpty().firstOrNull { it.id == id }
+}
+
 object OnChangeQueue : MutableLiveData<List<Track>>()
 

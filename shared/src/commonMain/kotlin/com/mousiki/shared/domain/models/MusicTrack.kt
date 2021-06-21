@@ -22,7 +22,8 @@ data class LocalSong(
     override val title: String,
     override val duration: String,
     override val artistName: String,
-    val path: String
+    val path: String,
+    val albumId: Long = 0
 ) : Track()
 
 @Parcelize
