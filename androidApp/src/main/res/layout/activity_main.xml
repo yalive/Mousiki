@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/main_scene">
-    
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="0dp"
@@ -56,6 +56,7 @@
         app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
         app:itemTextAppearanceInactive="@style/BottomNavigationView.Inactive"
         app:itemTextColor="@color/navigation_menu_text_color"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

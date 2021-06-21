@@ -148,5 +148,5 @@
     <string name="suggestion_history">História</string>
     <string name="suggestion_clear_history_button_title">Limpar</string>
     <string name="confirm_clear_search_history_message">Tem certeza de que deseja limpar todo o histórico de pesquisa?</string>
-    <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
+    <string name="tap_any_song_to_start_playing">Toque em uma música para tocá-la</string>
 </resources>
