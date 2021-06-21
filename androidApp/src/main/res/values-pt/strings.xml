@@ -1,0 +1,152 @@
+<resources>
+    <string name="no_equalizer">Nenhum equalizador encontrado.</string>
+    <string name="no_audio_ID">Toque uma música primeiro e tente novamente.</string>
+    <string name="favourites">Favoritas</string>
+    <string name="genres">Géneros</string>
+    <string name="artists">Artistas</string>
+    <string name="sponsored">Patrocinados</string>
+    <string name="label_share">Compartilhar</string>
+    <string name="label_add_to">Adicionar à…</string>
+    <string name="label_play_next">Tocar próximo</string>
+    <string name="common_more">Mais</string>
+    <string name="common_turn_on">LIGAR</string>
+    <string name="share_track_link_message">Aqui está uma nova música para você no <b>Mousiki</b> 🎧❀ヅ❤♫…%s.\n%s</string>
+
+    <!-- Library -->
+    <string name="library">Biblioteca</string>
+    <string name="library_recently_played">Tocado recentemente</string>
+    <string name="library_favourites">Favoritas</string>
+    <string name="library_recent">Recente</string>
+    <string name="library_heavy_songs">Músicas pesadas</string>
+    <string name="library_heavy">Músicas mais tocadas</string>
+    <string name="library_empty_recent_list">Basta começar a tocar músicas para ver \n suas faixas recentes aqui!</string>
+    <string name="library_empty_heavy_list">A lista está vazia</string>
+    <string name="library_empty_favourite_list">Você pode fazer qualquer música como favorita, \n e você pode acessar a partir daqui.</string>
+
+    <!-- Common -->
+    <string name="common_empty_song_list">Nenhuma música encontrada</string>
+    <string name="menu_settings">Definições</string>
+    <string name="message_enable_draw">Ative o "Desenhe sobre outros aplicativos" permissão para iniciar a janela do player flutuante.</string>
+    <string name="title_button_set_timer">Conjunto</string>
+    <string name="loading">Carregando…</string>
+    <string name="error_while_loading_song_list">Erro ao carregar a lista de músicas</string>
+    <string name="message_enable_draw_over_apps_manually">Vá para configurações e ative a permissão "Desenhe sobre outros aplicativos" para iniciar a janela do player flutuante.</string>
+
+    <!-- Settings -->
+    <string name="sleep_timer">Despertador</string>
+    <string name="settings_rate_app">Nos avalie</string>
+    <string name="settings_feedback">Comentários</string>
+    <string name="settings_facebook_like">Curtir a página do Facebook</string>
+    <string name="settings_policy">Política de Privacidade</string>
+    <string name="settings_size_out_video">Tamanho do vídeo</string>
+    <string name="settings_choose_out_video_size">Escolha o tamanho do vídeo</string>
+    <string name="settings_share_app">Compartilhar aplicativo com amigos</string>
+    <string name="rate_app_give_rating">Classifique 5 estrelas</string>
+    <string name="rate_app_remind_me_later">Lembre-me mais tarde</string>
+    <string name="rate_app_no_thanks">Não, obrigado</string>
+    <string name="rate_app_dialo_title">Você gostou deste app? Por favor, precisamos do seu apoio.</string>
+    <string name="rate_app_dialog_message">Não vai demorar mais de um minuto. Obrigado por seu apoio!</string>
+    <string name="search">Procurar</string>
+    <string name="search_button_title">Artistas, músicas ou podcasts</string>
+    <string name="artists_find_an_artist">Encontre um artista</string>
+
+    <!-- Playlist -->
+    <string name="add_to_playlist">Adicionar à Playlist</string>
+    <string name="new_playlist">Nova Playlist</string>
+    <string name="create_playlist">Criar lista de reprodução</string>
+    <string name="playlist_name">Nome da lista de reprodução</string>
+    <string name="give_your_playlist_a_name">Atribua um nome à sua lista de reprodução.</string>
+    <string name="create">Crio</string>
+    <string name="remove_from_this_playlist">Remover desta lista de reprodução</string>
+    <string name="playlist_favorite">Favorita</string>
+    <string name="shuffle_play">ALEATÓRIA</string>
+
+    <!-- Other -->
+    <string name="dark_mode">Modo escuro</string>
+    <string name="light_mode">Modo de luz</string>
+    <string name="default_mode">Sistema padrão</string>
+    <string name="done">Feito</string>
+    <string name="ok">Certo</string>
+    <string name="cancel">Cancelar</string>
+    <string name="yes">sim</string>
+    <string name="choose_dark_mode_theme">Escolha o tema</string>
+    <string name="label_error">Erro</string>
+    <string name="btn_unfavorite">Desfavorável</string>
+    <string name="label_no_songs">Nenhuma música</string>
+    <string name="action_delete">Excluir</string>
+    <string name="title_channels">Canais</string>
+    <string name="title_videos">Vídeos</string>
+    <string name="title_playlist">Listas de reprodução</string>
+    <string name="btn_favorite">Favorita</string>
+    <string name="btn_close">Fechar</string>
+    <string name="title_discover">Descobrir</string>
+    <string name="title_home">Página inicial</string>
+    <string name="btn_deny">NEGAR</string>
+    <string name="btn_agree">ACEITA</string>
+    <string name="title_new_release">Novos lançamentos</string>
+    <string name="title_top_charts">Principais gráficos</string>
+    <string name="no_connection">Sem conexão</string>
+    <string name="connection_back">De volta online</string>
+
+    <!-- Rating -->
+    <string name="question_feeling_about_app">Como você se sente ao usar o aplicativo Mousiki ?</string>
+    <string name="rate_app_happy">Feliz</string>
+    <string name="rate_app_mixed_feeling">Sentimentos misturados</string>
+    <string name="rate_app_not_happy">Infeliz</string>
+
+    <string name="rate_app_message_play_store">Então, você está muito feliz com Mousiki.\n\n Você se importaria de levar 1 minuto para avaliar o aplicativo? Nós amaríamos você para sempre se você nos der 5 estrelas!</string>
+    <string name="comment_about_app_dialog_title">Como podemos fazer você feliz?</string>
+    <string name="comment_about_app_dialog_subtitle">Gostaríamos muito de saber como podemos melhorar sua experiência.</string>
+    <string name="common_later">Mais tarde</string>
+    <string name="hint_your_comments">Os teus comentários…</string>
+    <string name="message_feedback_sent">Obrigado pelo seu feedback!.\n Sua mensagem foi enviada para nossa equipe de suporte.</string>
+
+    <string name="notification_channel">Tocando agora</string>
+    <string name="notification_channel_description">Mostra que música está tocando atualmente em Mousiki</string>
+
+    <!-- Player Notification -->
+    <string name="player_notification_skip_to_previous">Ir para o anterior</string>
+    <string name="player_notification_play">Toque</string>
+    <string name="player_notification_pause">Pause</string>
+    <string name="player_notification_skip_to_next">Ir para o próximo</string>
+    <string name="player_add_to_favourite">Adicionar aos favoritos</string>
+    <string name="player_remove_from_favourite">Remover dos favoritos</string>
+
+    <!-- Feedback -->
+    <string name="send">Enviar</string>
+    <string name="hint_your_feedback">Seu feedback…</string>
+    <string name="feedback_about_app_dialog_title">Dê um feedback sobre um recurso Mousiki?</string>
+    <string name="feedback_about_app_dialog_message">Deixe-nos saber como podemos melhorar sua experiência com Mousiki.</string>
+
+    <!-- Battery saver mode -->
+    <string name="battery_saver_mode_request_change_settings">O Modo de economia de energia precisa da permissão "modificar configurações do sistema" para reduzir o brilho da tela. Ative-o nas configurações.</string>
+    <string name="battery_saver_mode_instead_of_lock_screen">Para atender aos Termos de Serviço do YouTube, o Mousiki não pode reproduzir videoclipes em segundo plano. Você pode ativar o modo de economia de energia para bloquear sua tela.</string>
+    <string name="label_slide_unlock">Desbloquear</string>
+
+    <!-- Error playing youtube video -->
+    <string name="error_cannot_play_youtube_video">Desculpe, este vídeo não pode ser reproduzido!</string>
+
+    <!-- Shortcuts -->
+    <string name="app_shortcut_search">Procurar</string>
+    <string name="app_shortcut_new_releases">Tendendo</string>
+
+    <!-- Video sizes -->
+    <string name="video_size_small">Pequeno</string>
+    <string name="video_size_normal">Normal</string>
+    <string name="video_size_large">Grand</string>
+    <string name="video_size_circular">Circular</string>
+    <string name="exit">Saída</string>
+    <string name="tool_tip_battery_saver">Clique aqui para ativar o modo de economia de bateria</string>
+    <string name="queue">Fila</string>
+    <string name="empty_favourite_list">Nenhuma faixa favorita.</string>
+
+    <!-- Genres List -->
+    <string name="genre_music">Música</string>
+    <string name="genre_mood">Humor</string>
+
+    <!-- Search -->
+    <string name="suggestion_history">História</string>
+    <string name="suggestion_clear_history_button_title">Limpar</string>
+    <string name="confirm_clear_search_history_message">Tem certeza de que deseja limpar todo o histórico de pesquisa?</string>
+    <string name="tap_any_song_to_start_playing">Toque em uma música para tocá-la</string>
+</resources>

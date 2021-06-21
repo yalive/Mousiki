@@ -1,0 +1,24 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Mousiki' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Mousiki
+  pod 'R.swift'
+  pod 'SVProgressHUD'
+  pod 'EZAlertController', :git => "https://github.com/thellimist/EZAlertController.git", :branch => 'master'
+  pod 'Kingfisher', '6.0.1'
+  
+  # Firebase
+  pod 'Firebase/Messaging'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Storage'
+  pod 'Firebase/RemoteConfig'
+  pod 'Firebase/DynamicLinks'
+  
+  # Utils
+  pod 'MarqueeLabel'
+end

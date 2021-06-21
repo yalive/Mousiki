@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS historic_tracks (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`youtube_id` TEXT NOT NULL,
+`title` TEXT NOT NULL,
+`duration` TEXT NOT NULL,
+`count` INTEGER NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS `index_historic_tracks_youtube_id` ON `historic_tracks` (`youtube_id`);
+
+insert:
+INSERT OR REPLACE INTO historic_tracks(youtube_id, title,duration,count)
+VALUES ?;
+
+incrementPlayCount:
+UPDATE historic_tracks SET count=(count+1) WHERE youtube_id= ?;
+
+getHeavyList:
+SELECT * FROM historic_tracks WHERE count > 3 ORDER BY count DESC LIMIT ?;
+
+deleteMusicTrack:
+DELETE  FROM historic_tracks WHERE youtube_id= ?;
+
+getByYoutubeId:
+SELECT  * FROM historic_tracks WHERE youtube_id= ?;
+
+count:
+SELECT COUNT(*) FROM historic_tracks;
+
+clear:
+DELETE  FROM historic_tracks;

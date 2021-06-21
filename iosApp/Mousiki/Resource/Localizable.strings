@@ -1,0 +1,26 @@
+/* 
+  Localizable.strings
+  Mousiki
+
+  Created by A.Yabahddou on 1/20/21.
+  Copyright © 2021 YabaSoft. All rights reserved.
+*/
+
+// Menu
+"menu_home" = "Home";
+"menu_library" = "Library";
+"menu_search" = "Search";
+
+// Home
+"artists" = "Artists";
+"genres" = "Genres";
+"newReleases" = "New Releases";
+"topCharts" = "Top Charts";
+
+
+// Library
+"emptyFavouriteList" = "No favourite";
+"libraryRecent" = "Recent";
+"libraryFavourites" = "Favourites";
+"libraryPlaylists" = "Playlists";
+"libraryHeavySongs" = "Heavy songs";

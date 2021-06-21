@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/pangram_medium"
+        android:textColor="@color/colorWhite"
+        android:textSize="60sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="19:15" />
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pangram_medium"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/txtTime"
+        app:layout_constraintTop_toBottomOf="@+id/txtTime"
+        tools:text="2020/04/28" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="260dp"
+        android:layout_height="160dp"
+        app:cardBackgroundColor="@color/colorBlack"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintBottom_toTopOf="@+id/txtTrackTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate">
+
+        <FrameLayout
+            android:id="@+id/frameVideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/txtTrackTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/pangram_medium"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlayPrevious"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="MAALEM HAMID EL KASRI" />
+
+    <ImageButton
+        android:id="@+id/btnPlayPrevious"
+        android:layout_width="@dimen/thirty_two_32dp"
+        android:layout_height="@dimen/thirty_two_32dp"
+        android:layout_marginBottom="32dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:tint="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/slideToUnlock"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlayPause"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_skip_previous" />
+
+    <ImageButton
+        android:id="@+id/btnPlayPause"
+        android:layout_width="@dimen/thirty_two_32dp"
+        android:layout_height="@dimen/thirty_two_32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:tint="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlayPrevious"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlayNext"
+        app:layout_constraintStart_toEndOf="@+id/btnPlayPrevious"
+        app:srcCompat="@drawable/ic_pause" />
+
+    <ImageButton
+        android:id="@+id/btnPlayNext"
+        android:layout_width="@dimen/thirty_two_32dp"
+        android:layout_height="@dimen/thirty_two_32dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:tint="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlayPrevious"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnPlayPause"
+        app:srcCompat="@drawable/ic_skip_next" />
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slideToUnlock"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:elevation="6dp"
+        app:animate_completion="true"
+        app:inner_color="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:outer_color="@color/colorBlack"
+        app:rotate_icon="true"
+        app:slider_height="60dp"
+        app:slider_icon="@drawable/ic_arrow_unlock"
+        app:slider_locked="false"
+        app:text="@string/label_slide_unlock"
+        app:text_color="@color/colorWhite"
+        app:text_size="12sp" />
+</merge>

@@ -1,0 +1,14 @@
+
+CREATE TABLE IF NOT EXISTS trending_tracks (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`youtube_id` TEXT NOT NULL,
+`title` TEXT NOT NULL,
+`duration` TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS recent_played_tracks (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`youtube_id` TEXT NOT NULL,
+`title` TEXT NOT NULL,
+`duration` TEXT NOT NULL
+);

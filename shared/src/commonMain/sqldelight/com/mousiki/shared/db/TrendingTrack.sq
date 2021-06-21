@@ -1,0 +1,30 @@
+CREATE TABLE IF NOT EXISTS trending_tracks (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`youtube_id` TEXT NOT NULL,
+`title` TEXT NOT NULL,
+`duration` TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS `index_trending_tracks_youtube_id` ON `trending_tracks` (`youtube_id`);
+
+insert:
+INSERT OR REPLACE INTO trending_tracks(youtube_id, title, duration)
+VALUES ?;
+
+getSongs:
+SELECT * FROM trending_tracks LIMIT ?;
+
+getByYoutubeId:
+SELECT  * FROM trending_tracks WHERE youtube_id = ?;
+
+count:
+SELECT COUNT(*) FROM trending_tracks;
+
+clear:
+DELETE  FROM trending_tracks;
+
+deleteMusicTrack:
+DELETE  FROM trending_tracks WHERE youtube_id = ?;
+
+getSongsStartingFrom:
+SELECT * FROM trending_tracks WHERE id > ? LIMIT ?;
