@@ -1,5 +1,12 @@
 package com.mousiki.shared.domain.models
 
+val Track.imgUrlDef0: String
+    get() = when (this) {
+        is LocalSong -> albumImage
+        is MusicTrack -> this.imgUrlDef0
+    }
+
+
 val MusicTrack.imgUrlDef0: String
     get() = "https://img.youtube.com/vi/$youtubeId/0.jpg"
 
@@ -12,6 +19,34 @@ val MusicTrack.imgUrl: String
             return fullImageUrl
         }
         return "https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg"
+    }
+
+val Track.imgUrlDefault: String
+    get() = when (this) {
+        is LocalSong -> albumImage
+        is MusicTrack -> this.imgUrlDefault
+    }
+
+val Track.imgUrl: String
+    get() = when (this) {
+        is LocalSong -> albumImage
+        is MusicTrack -> this.imgUrl
+    }
+
+val Track.durationFormatted: String
+    get() = when (this) {
+        is LocalSong -> {
+            val milliseconds = duration.toLong()
+            val seconds = (milliseconds / 1000).toInt() % 60
+            val minutes = (milliseconds / (1000 * 60) % 60).toInt()
+            val hours = (milliseconds / (1000 * 60 * 60) % 24).toInt()
+            if (hours == 0) {
+                "${minutes.twoDigits()}:${seconds.twoDigits()}"
+            } else {
+                "$hours:${minutes.twoDigits()}:${seconds.twoDigits()}"
+            }
+        }
+        is MusicTrack -> this.durationFormatted
     }
 
 val MusicTrack.durationFormatted: String

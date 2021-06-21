@@ -16,7 +16,7 @@ class SongsDiffUtil(
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
         if (oldItem is DisplayedVideoItem && newItem is DisplayedVideoItem) {
-            return oldItem.track.youtubeId == newItem.track.youtubeId
+            return oldItem.track.id == newItem.track.id
         }
 
         if (oldItem is AdsItem && newItem is AdsItem) {
@@ -43,7 +43,7 @@ class SongsDiffUtil(
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
         if (oldItem is DisplayedVideoItem && newItem is DisplayedVideoItem) {
-            return oldItem.track.youtubeId == newItem.track.youtubeId
+            return oldItem.track.id == newItem.track.id
                     && oldItem.isCurrent == newItem.isCurrent
                     && oldItem.track == newItem.track
                     && oldItem.songDuration == newItem.songDuration

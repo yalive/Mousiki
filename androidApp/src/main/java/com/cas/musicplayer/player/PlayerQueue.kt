@@ -7,7 +7,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.utils.canDrawOverApps
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.player.PlaySort
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.swapped
@@ -19,11 +19,11 @@ import com.mousiki.shared.utils.swapped
  **********************************
  */
 
-object PlayerQueue : MutableLiveData<MusicTrack>() {
+object PlayerQueue : MutableLiveData<Track>() {
 
-    var queue: List<MusicTrack>? = null
+    var queue: List<Track>? = null
 
-    fun playTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
+    fun playTrack(currentTrack: Track, queue: List<Track>) {
         if (value == currentTrack) {
             resume()
             return
@@ -35,7 +35,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         checkQueueChanged(oldQueue, queue)
     }
 
-    fun cueTrack(currentTrack: MusicTrack, queue: List<MusicTrack>) {
+    fun cueTrack(currentTrack: Track, queue: List<Track>) {
         this.queue = queue
         this.value = currentTrack
         cueTrack()
@@ -58,12 +58,12 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
     }
 
-    fun addAsNext(track: MusicTrack) {
-        val newList = mutableListOf<MusicTrack>()
+    fun addAsNext(track: Track) {
+        val newList = mutableListOf<Track>()
         if (queue != null) {
             for (musicTrack in queue!!) {
                 newList.add(musicTrack)
-                if (musicTrack.youtubeId == value?.youtubeId) {
+                if (musicTrack.id == value?.id) {
                     newList.add(track)
                 }
             }
@@ -75,7 +75,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
     }
 
-    fun removeTrack(track: MusicTrack) {
+    fun removeTrack(track: Track) {
         val mutableQueue = queue?.toMutableList()
         mutableQueue?.remove(track)
         this.queue = mutableQueue
@@ -132,12 +132,12 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         MusicApp.get().startService(intent)
     }
 
-    fun isCurrentTrack(musicTrack: MusicTrack): Boolean {
+    fun isCurrentTrack(musicTrack: Track): Boolean {
         val currentTrack = value ?: return false
-        return currentTrack.youtubeId == musicTrack.youtubeId
+        return currentTrack.id == musicTrack.id
     }
 
-    private fun getNextTrack(): MusicTrack? {
+    private fun getNextTrack(): Track? {
         val mQueue = queue ?: return null
         if (mQueue.isEmpty()) return null
         val currentTrack = this.value ?: return null
@@ -149,7 +149,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
     }
 
-    private fun getPreviousTrack(): MusicTrack? {
+    private fun getPreviousTrack(): Track? {
         val mQueue = queue ?: return null
         if (mQueue.isEmpty()) return null
         val currentTrack = this.value ?: return null
@@ -179,7 +179,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         MusicApp.get().startService(intent)
     }
 
-    private fun checkQueueChanged(oldQueue: List<MusicTrack>, newQueue: List<MusicTrack>) {
+    private fun checkQueueChanged(oldQueue: List<Track>, newQueue: List<Track>) {
         if (oldQueue.size != newQueue.size) {
             OnChangeQueue.value = newQueue
             return
@@ -190,5 +190,9 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
     }
 }
 
-object OnChangeQueue : MutableLiveData<List<MusicTrack>>()
+fun PlayerQueue.getTrack(id: String): Track? {
+    return queue.orEmpty().firstOrNull { it.id == id }
+}
+
+object OnChangeQueue : MutableLiveData<List<Track>>()
 

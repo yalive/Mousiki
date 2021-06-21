@@ -41,9 +41,7 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
 import com.cas.musicplayer.utils.*
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.durationFormatted
-import com.mousiki.shared.domain.models.durationToSeconds
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -239,7 +237,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         binding.btnAddFav.onClick {
-            val isFav = UserPrefs.isFav(PlayerQueue.value?.youtubeId)
+            val isFav = UserPrefs.isFav(PlayerQueue.value?.id)
             if (!isFav) {
                 Executors.newSingleThreadExecutor().execute {
                     val musicTrack = PlayerQueue.value
@@ -306,7 +304,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun observeViewModel() {
-
         observe(viewModel.noRecentTrack.asLiveData()) { event ->
             event?.getContentIfNotHandled()?.let {
                 binding.miniPlayerView.showNoTrack()
@@ -419,7 +416,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.motionLayout.getTransition(R.id.mainTransition).setEnable(!lock)
     }
 
-    private fun onVideoChanged(track: MusicTrack) {
+    private fun onVideoChanged(track: Track) {
         binding.miniPlayerView.onTrackChanged(track)
 
         binding.txtTitle.ellipsize = null
@@ -431,7 +428,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
 
-        if (UserPrefs.isFav(track.youtubeId)) {
+        if (UserPrefs.isFav(track.id)) {
             binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
             binding.btnAddFav.tint(R.color.colorAccent)
         } else {
@@ -439,10 +436,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             binding.btnAddFav.tint(R.color.colorWhite)
         }
         configureSeekBar(track)
+
+        // Show
+        binding.vAudio.isVisible = track is LocalSong
+        binding.btnYoutube.alpha =
+            if (track is MusicTrack) 1.0f else 0.0f // Not working: a motion layout trick!!
     }
 
     @SuppressLint("SetTextI18n")
-    private fun configureSeekBar(video: MusicTrack) {
+    private fun configureSeekBar(video: Track) {
         binding.txtDuration.text = video.durationFormatted
         binding.txtElapsedTime.text = "00:00"
         binding.seekBarDuration.progress = 0
@@ -530,7 +532,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (playerView.parent == binding.cardPager) return
         val oldParent = playerView.parent as? ViewGroup
         oldParent?.removeView(playerView)
-        binding.cardPager.addView(playerView, 0)
+        binding.cardPager.addView(playerView, 1)
     }
 
     private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {

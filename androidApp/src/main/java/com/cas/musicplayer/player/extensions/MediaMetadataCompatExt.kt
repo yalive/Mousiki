@@ -2,10 +2,7 @@ package com.cas.musicplayer.player.extensions
 
 import android.graphics.Bitmap
 import android.support.v4.media.MediaMetadataCompat
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.durationToSeconds
-import com.mousiki.shared.domain.models.imgUrl
-import com.mousiki.shared.domain.models.imgUrlDefault
+import com.mousiki.shared.domain.models.*
 
 /**
  ***************************************
@@ -79,10 +76,10 @@ inline var MediaMetadataCompat.Builder.albumArt: Bitmap?
         putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, value)
     }
 
-var MediaMetadataCompat.Builder.musicTrack: MusicTrack
+var MediaMetadataCompat.Builder.musicTrack: Track
     get() = throw IllegalAccessException("Cannot get currentTrack from media session")
     set(value) {
-        id = value.youtubeId
+        id = value.id
         title = value.title
         displayTitle = value.title
         mediaUri = value.imgUrlDefault

@@ -8,5 +8,6 @@ typealias PlaylistTrackEntity = Playlist_tracks
 fun Playlist_tracks.toMusicTrack() = MusicTrack(
     youtubeId = youtube_id,
     title = title,
-    duration = duration
+    duration = duration,
+    artistName = title.split("-")[0]
 )

@@ -13,16 +13,16 @@ import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.MusicTrack
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.common.setMusicPlayingState
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
+import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.preference.UserPrefs
 
 /**
  ***************************************
@@ -30,8 +30,8 @@ import com.cas.musicplayer.utils.themeColor
  ***************************************
  */
 class SongAdapterDelegate(
-    private val onClickMoreOptions: (MusicTrack) -> Unit,
-    private val onVideoSelected: (MusicTrack) -> Unit
+    private val onClickMoreOptions: (Track) -> Unit,
+    private val onVideoSelected: (Track) -> Unit
 ) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
@@ -54,7 +54,7 @@ class SongAdapterDelegate(
 
     override fun getItemId(items: List<DisplayableItem>, position: Int): Long {
         val item = items[position] as DisplayedVideoItem
-        return item.track.youtubeId.hashCode().toLong()
+        return item.track.id.hashCode().toLong()
     }
 
     inner class PopularSongsViewHolder(
@@ -84,7 +84,7 @@ class SongAdapterDelegate(
             imgSong.loadTrackImage(item.track)
             txtTitle.text = item.songTitle
             txtDuration.text = item.songDuration
-            txtCategory.text = item.songTitle.split("-")[0]
+            txtCategory.text = item.track.artistName
             btnMore.onClick {
                 onClickMoreOptions(item.track)
             }

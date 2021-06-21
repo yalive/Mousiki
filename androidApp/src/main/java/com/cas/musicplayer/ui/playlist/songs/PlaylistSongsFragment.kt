@@ -10,7 +10,7 @@ import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
@@ -39,7 +39,7 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
         binding.txtScreenTitle.text = artist.name
     }
 
-    override fun onClickTrack(track: MusicTrack) {
+    override fun onClickTrack(track: Track) {
         viewModel.onClickTrack(track)
     }
 

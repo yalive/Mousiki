@@ -4,7 +4,7 @@ import com.mousiki.shared.ads.FacebookAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
@@ -82,13 +82,13 @@ class HomeViewModel(
                 }.map {
                     HomeItem.VideoList(
                         it.title.orEmpty(),
-                        it.videos.orEmpty().map { it.video.toTrack().toDisplayedVideoItem() })
+                        it.videos.orEmpty().map { it.video.toTrack(it.owner).toDisplayedVideoItem() })
                 }
 
                 // Create promos
                 val promos = HomeItem.VideoList(
                     "Trending videos",
-                    items = homeRS.promos.map { it.video.toTrack().toDisplayedVideoItem() }
+                    items = homeRS.promos.map { it.video.toTrack(it.owner).toDisplayedVideoItem() }
                 )
 
                 // Add items: this is the order in UI
@@ -115,7 +115,7 @@ class HomeViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack, queue: List<MusicTrack>) = scope.launch {
+    fun onClickTrack(track: Track, queue: List<Track>) = scope.launch {
         playTrackFromQueue(track, queue)
     }
 

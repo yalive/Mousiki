@@ -14,13 +14,13 @@ import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.MusicTrack
 import com.cas.musicplayer.ui.common.setMusicPlayingState
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor
+import com.mousiki.shared.domain.models.DisplayedVideoItem
+import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.preference.UserPrefs
 
 
 /**
@@ -29,7 +29,7 @@ import com.cas.musicplayer.utils.themeColor
  **********************************
  */
 class HorizontalSongsAdapter(
-    private val onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit
+    private val onVideoSelected: (Track, List<Track>) -> Unit
 ) : SimpleBaseAdapter<DisplayedVideoItem, HorizontalSongsAdapter.HorizontalSongViewHolder>() {
 
     override val cellResId: Int = R.layout.item_new_release
@@ -39,7 +39,7 @@ class HorizontalSongsAdapter(
 
     inner class HorizontalSongViewHolder(
         view: View,
-        private val onVideoSelected: (MusicTrack, List<MusicTrack>) -> Unit
+        private val onVideoSelected: (Track, List<Track>) -> Unit
     ) : SimpleBaseViewHolder<DisplayedVideoItem>(view) {
 
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)

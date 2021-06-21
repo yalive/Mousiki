@@ -2,7 +2,7 @@ package com.mousiki.shared.ui.playlist
 
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.toDisplayedVideoItems
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
@@ -45,7 +45,7 @@ class PlaylistSongsViewModel(
         populateAdsIn(_songs)
     }
 
-    fun onClickTrack(track: MusicTrack) = scope.launch {
+    fun onClickTrack(track: Track) = scope.launch {
         playTrackFromQueue(track, _songs.songList())
     }
 
