@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="gTV-IL-0wX" customClass="VideoCollectionCell" customModule="Mousiki" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="232" height="208"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="232" height="208"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="etl-e9-BF0">
+                        <rect key="frame" x="0.0" y="0.0" width="232" height="208"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hamid" translatesAutoresizingMaskIntoConstraints="NO" id="cWP-Wy-FQp">
+                                <rect key="frame" x="0.0" y="0.0" width="232" height="160"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="160" id="Gpm-9e-711"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MAALEM HAMID EL KASRI - LMIMA (EXCLUSIVE Music Video)" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="6Su-tv-4Mj">
+                                <rect key="frame" x="0.0" y="162" width="232" height="43.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="04:49" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="76c-3v-A2d">
+                                <rect key="frame" x="198.5" y="144" width="29.5" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="6Su-tv-4Mj" firstAttribute="leading" secondItem="etl-e9-BF0" secondAttribute="leading" id="3h2-j1-PCL"/>
+                            <constraint firstItem="cWP-Wy-FQp" firstAttribute="leading" secondItem="etl-e9-BF0" secondAttribute="leading" id="8JT-Yf-BbC"/>
+                            <constraint firstAttribute="bottom" secondItem="6Su-tv-4Mj" secondAttribute="bottom" constant="2.5" id="MjA-wX-8WV"/>
+                            <constraint firstAttribute="trailing" secondItem="cWP-Wy-FQp" secondAttribute="trailing" id="NaQ-IC-wEF"/>
+                            <constraint firstItem="cWP-Wy-FQp" firstAttribute="top" secondItem="etl-e9-BF0" secondAttribute="top" id="PSk-8y-kvA"/>
+                            <constraint firstItem="cWP-Wy-FQp" firstAttribute="trailing" secondItem="76c-3v-A2d" secondAttribute="trailing" constant="4" id="Vg6-vm-JBY"/>
+                            <constraint firstItem="cWP-Wy-FQp" firstAttribute="bottom" secondItem="76c-3v-A2d" secondAttribute="bottom" constant="4" id="bGi-6y-WC5"/>
+                            <constraint firstAttribute="trailing" secondItem="cWP-Wy-FQp" secondAttribute="trailing" id="gBC-Kx-m1g"/>
+                            <constraint firstItem="cWP-Wy-FQp" firstAttribute="top" secondItem="etl-e9-BF0" secondAttribute="top" id="jea-tT-LCc"/>
+                            <constraint firstItem="cWP-Wy-FQp" firstAttribute="leading" secondItem="etl-e9-BF0" secondAttribute="leading" id="jrD-kv-MZT"/>
+                            <constraint firstAttribute="trailing" secondItem="6Su-tv-4Mj" secondAttribute="trailing" id="nvq-2O-4P1"/>
+                            <constraint firstItem="6Su-tv-4Mj" firstAttribute="top" secondItem="cWP-Wy-FQp" secondAttribute="bottom" constant="2" id="rff-fU-S9h"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="etl-e9-BF0" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="7sB-0k-6jq"/>
+                <constraint firstAttribute="trailing" secondItem="etl-e9-BF0" secondAttribute="trailing" id="VYg-wq-XIj"/>
+                <constraint firstItem="etl-e9-BF0" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qgR-iw-xWY"/>
+                <constraint firstAttribute="bottom" secondItem="etl-e9-BF0" secondAttribute="bottom" id="zQQ-Pn-7nj"/>
+            </constraints>
+            <size key="customSize" width="232" height="264"/>
+            <connections>
+                <outlet property="image" destination="cWP-Wy-FQp" id="Wx7-YG-i7M"/>
+                <outlet property="mainView" destination="etl-e9-BF0" id="tAR-Rd-HSi"/>
+                <outlet property="txtDuration" destination="76c-3v-A2d" id="IVk-NN-a5X"/>
+                <outlet property="txtTitle" destination="6Su-tv-4Mj" id="ggO-8e-rir"/>
+            </connections>
+            <point key="canvasLocation" x="-314.49275362318843" y="83.035714285714278"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="hamid" width="1280" height="720"/>
+    </resources>
+</document>

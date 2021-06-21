@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS custom_playlist_track (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`youtube_id` TEXT NOT NULL,
+`title` TEXT NOT NULL,
+`duration` TEXT NOT NULL,
+`playlist_name` TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_playlist_track_youtube_id_playlist_name` ON `custom_playlist_track` (`youtube_id`, `playlist_name`);
+
+insert:
+INSERT OR REPLACE INTO custom_playlist_track(youtube_id, title, duration,playlist_name)
+VALUES ?;
+
+deleteTrackFromPlaylist:
+DELETE  FROM custom_playlist_track WHERE playlist_name= ? AND youtube_id= ?;
+
+clearCustomPlaylist:
+DELETE  FROM custom_playlist_track WHERE playlist_name= ?;
+
+getAll:
+SELECT * FROM custom_playlist_track;

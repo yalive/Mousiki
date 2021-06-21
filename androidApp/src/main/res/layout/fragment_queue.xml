@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorDarkNavigationView"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:theme="@style/Theme.MaterialComponents"
+    tools:context="com.cas.musicplayer.ui.player.queue.QueueFragment">
+
+    <ImageView
+        android:id="@+id/imgBlured"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:src="@drawable/ic_close"
+            android:tint="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_toStartOf="@+id/btnPlayOption"
+            android:layout_toEndOf="@+id/btnClose"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:text="@string/queue"
+            android:textColor="@color/colorWhite" />
+
+        <ImageButton
+            android:id="@+id/btnPlayOption"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:tint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_random" />
+    </RelativeLayout>
+
+    <com.cas.musicplayer.utils.AutoRefreshRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topBar"
+        android:visibility="visible"
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+        tools:listitem="@layout/item_artist" />
+</RelativeLayout>

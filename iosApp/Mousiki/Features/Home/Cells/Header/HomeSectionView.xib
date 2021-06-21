@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeSectionView" customModule="Mousiki" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="y5B-Xk-bin"/>
+                <outlet property="lblTitle" destination="9aO-Cw-KqD" id="Bsx-9C-Qj0"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="346" height="71"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aO-Cw-KqD">
+                    <rect key="frame" x="12" y="29" width="271" height="29"/>
+                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="24"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVt-9k-fXu">
+                    <rect key="frame" x="308" y="27.5" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="JZm-1s-QHV"/>
+                        <constraint firstAttribute="height" constant="32" id="jzr-Bj-Xpa"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
+                    <connections>
+                        <action selector="didTapMore:" destination="-1" eventType="touchUpInside" id="hjk-4J-2tx"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="hVt-9k-fXu" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="8" id="4V8-Fb-isB"/>
+                <constraint firstItem="9aO-Cw-KqD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="Owj-t4-FbG"/>
+                <constraint firstItem="9aO-Cw-KqD" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="8" id="UeO-o4-Mxx"/>
+                <constraint firstItem="hVt-9k-fXu" firstAttribute="leading" secondItem="9aO-Cw-KqD" secondAttribute="trailing" constant="25" id="fzb-Qb-SjC"/>
+                <constraint firstAttribute="trailing" secondItem="hVt-9k-fXu" secondAttribute="trailing" constant="6" id="mx1-pm-fEq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-187.19999999999999" y="36.431784107946029"/>
+        </view>
+    </objects>
+</document>
