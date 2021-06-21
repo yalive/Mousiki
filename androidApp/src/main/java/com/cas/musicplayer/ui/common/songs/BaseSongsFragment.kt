@@ -28,7 +28,7 @@ import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.utils.Constants
@@ -221,7 +221,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
 
     }
 
-    abstract fun onClickTrack(track: MusicTrack)
+    abstract fun onClickTrack(track: Track)
     abstract fun onClickTrackPlayAll()
 
     companion object {

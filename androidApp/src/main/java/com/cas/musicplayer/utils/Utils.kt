@@ -30,6 +30,7 @@ import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
 import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.utils.AnalyticsApi
 import org.koin.core.component.KoinComponent
@@ -59,8 +60,9 @@ object Utils : KoinComponent {
     }
 
 
-    fun shareWithDeepLink(track: MusicTrack?, mContext: Context) {
+    fun shareWithDeepLink(track: Track?, mContext: Context) {
         if (track == null) return
+        if (track !is MusicTrack) return
         Firebase.dynamicLinks.shortLinkAsync(ShortDynamicLink.Suffix.SHORT) {
             link = Uri.Builder()
                 .scheme("https")

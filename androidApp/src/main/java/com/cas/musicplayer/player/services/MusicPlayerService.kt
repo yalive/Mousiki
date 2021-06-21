@@ -8,7 +8,6 @@ import android.media.AudioManager
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
-import android.os.ResultReceiver
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -26,8 +25,7 @@ import com.cas.common.extensions.bool
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.YoutubeFloatingPlayerView
+import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.extensions.albumArt
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.musicTrack
@@ -59,7 +57,15 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
     private val windowManager by lazy { getSystemService(WINDOW_SERVICE) as WindowManager }
     private val notificationBuilder by lazy { NotificationBuilder(this) }
-    private val youtubePlayerManager by lazy { YoutubePlayerManager(mediaController, mediaSession) }
+
+    // Player
+    private val sessionHandler by lazy { MediaSessionHandlerImpl(mediaSession) }
+    private val ytbPlayer by lazy { YTBPlayer(mediaController, sessionHandler) }
+    private val player by lazy {
+        val localPlayer = LocalPlayer(this, lifecycleScope, sessionHandler)
+        MultiPlayer(ytbPlayer, localPlayer)
+    }
+
     private val notificationManager by lazy { NotificationManagerCompat.from(this) }
     private val binder = ServiceBinder()
     private val metadataBuilder = MediaMetadataCompat.Builder()
@@ -102,6 +108,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         super.onBind(intent)
         return binder
     }
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Move service to foreground
@@ -149,11 +156,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
                 if (isScreenLocked()) return
-                youtubePlayerManager.play()
+                player.play()
             }
 
             override fun onPause() {
-                youtubePlayerManager.pause()
+                player.pause()
             }
 
             override fun onStop() {
@@ -162,7 +169,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             override fun onSeekTo(pos: Long) {
                 if (isScreenLocked()) return
-                youtubePlayerManager.seekTo(pos.toFloat() / 1000)
+                player.seekTo(pos.toFloat() / 1000)
             }
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
@@ -170,9 +177,9 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 val videoId = mediaId ?: return
                 val cue = extras?.getBoolean("cue", false) ?: false
                 if (cue) {
-                    youtubePlayerManager.cueVideo(videoId)
+                    player.cueVideo(videoId)
                 } else {
-                    youtubePlayerManager.loadVideo(videoId, 0f)
+                    player.loadVideo(videoId, 0f)
                 }
             }
 
@@ -184,14 +191,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             override fun onSkipToPrevious() {
                 if (isScreenLocked()) return
                 PlayerQueue.playPreviousTrack()
-            }
-
-            override fun onCommand(command: String?, extras: Bundle?, cb: ResultReceiver?) {
-                if (command == CustomCommand.ENABLE_NOTIFICATION_ACTIONS) {
-                    youtubePlayerManager.onScreenUnlocked()
-                } else if (command == CustomCommand.DISABLE_NOTIFICATION_ACTIONS) {
-                    youtubePlayerManager.onScreenLocked()
-                }
             }
 
             override fun onCustomAction(action: String?, extras: Bundle?) {
@@ -269,7 +268,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         val currentTrack = PlayerQueue.value ?: return
         metadataBuilder.musicTrack = currentTrack
         mediaSession.setMetadata(metadataBuilder.build())
-        mediaController.transportControls.playFromMediaId(currentTrack.youtubeId, null)
+        mediaController.transportControls.playFromMediaId(currentTrack.id, null)
 
         lifecycleScope.launch(Dispatchers.Main) {
             Injector.addTrackToRecentlyPlayed(currentTrack)
@@ -284,9 +283,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         metadataBuilder.musicTrack = currentTrack
         mediaSession.setMetadata(metadataBuilder.build())
         mediaController.transportControls.playFromMediaId(
-            currentTrack.youtubeId, bundleOf(
-                "cue" to true
-            )
+            currentTrack.id, bundleOf("cue" to true)
         )
     }
 
@@ -371,7 +368,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
         floatingPlayerView.preparePlayerView(
             service = this,
-            youtubePlayerManager = youtubePlayerManager,
+            ytbPlayer = ytbPlayer,
             bottomView = bottomView,
             batterySaverView = batterySaverView,
             sessionToken = mediaSession.sessionToken
@@ -479,11 +476,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         object CustomAction {
             const val ADD_TO_FAVOURITE = "add_current_media_to_Favourite"
             const val REMOVE_FROM_FAVOURITE = "remove_current_media_from_Favourite"
-        }
-
-        object CustomCommand {
-            const val DISABLE_NOTIFICATION_ACTIONS = "disable_notification_actions"
-            const val ENABLE_NOTIFICATION_ACTIONS = "enable_notification_actions"
         }
     }
 }

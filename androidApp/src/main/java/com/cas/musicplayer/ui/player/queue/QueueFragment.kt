@@ -27,7 +27,7 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.imgUrlDefault
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.AnalyticsApi
@@ -170,7 +170,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
         analyticsApi.logScreenView(javaClass.simpleName)
     }
 
-    private fun loadAndBlurImage(video: MusicTrack) {
+    private fun loadAndBlurImage(video: Track) {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val bitmap = binding.imgBlured.getBitmap(video.imgUrlDefault, 500) ?: return@launch

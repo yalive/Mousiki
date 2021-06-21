@@ -9,24 +9,58 @@ import com.mousiki.shared.Parcelize
  **********************************
  */
 
+sealed class Track : Parcelable {
+    abstract val id: String /* id must be unique for any type of tracks: YTB, Local, remote... */
+    abstract val title: String
+    abstract val artistName: String
+    abstract val duration: String
+}
+
+@Parcelize
+data class LocalSong(
+    override val id: String,
+    override val title: String,
+    override val duration: String,
+    override val artistName: String,
+    val path: String,
+    val albumId: Long = 0
+) : Track()
+
 @Parcelize
 data class MusicTrack(
     val youtubeId: String,
-    val title: String,
-    val duration: String
-) : Parcelable {
+    override val title: String,
+    override val duration: String,
+    override val artistName: String = "",
+) : Track() {
+
+    override val id: String get() = youtubeId
 
     var fullImageUrl = ""
 
     companion object
 }
 
-private val REGEX_DURATION =
+private val REGEX_YTB_DURATION =
     Regex("^PT(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?$", RegexOption.IGNORE_CASE)
 
+fun Track.durationToSeconds(): Long {
+    return when (this) {
+        is LocalSong -> {
+            try {
+                val milliseconds = duration.toLong()
+                milliseconds / 1000
+            } catch (e: Exception) {
+                0
+            }
+        }
+        is MusicTrack -> this.durationToSeconds()
+    }
+}
+
 fun MusicTrack.durationToSeconds(): Long {
-    if (duration.matches(REGEX_DURATION)) {
-        val groups = REGEX_DURATION.matchEntire(duration)?.groups
+    if (duration.matches(REGEX_YTB_DURATION)) {
+        val groups = REGEX_YTB_DURATION.matchEntire(duration)?.groups
         val hr = groups?.get(1)?.value
         val min = groups?.get(2)?.value
         val sec = groups?.get(3)?.value
@@ -72,5 +106,6 @@ val MusicTrack.Companion.EMPTY: MusicTrack
     get() = MusicTrack(
         youtubeId = "",
         title = "",
-        duration = ""
+        duration = "",
+        artistName = ""
     )

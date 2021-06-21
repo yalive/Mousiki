@@ -11,7 +11,7 @@ class SongItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
 
     override fun areItemsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
         if (oldItem is DisplayedVideoItem && newItem is DisplayedVideoItem) {
-            return oldItem.track.youtubeId == newItem.track.youtubeId
+            return oldItem.track.id == newItem.track.id
         }
 
         if (oldItem is AdsItem && newItem is AdsItem) {

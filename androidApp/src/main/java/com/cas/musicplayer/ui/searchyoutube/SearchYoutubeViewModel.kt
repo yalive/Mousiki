@@ -2,10 +2,7 @@ package com.cas.musicplayer.ui.searchyoutube
 
 import androidx.lifecycle.viewModelScope
 import com.mousiki.shared.ads.GetListAdsDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.MusicTrack
-import com.mousiki.shared.domain.models.toDisplayedVideoItem
-import com.mousiki.shared.domain.models.toDisplayedVideoItems
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.search.*
@@ -135,7 +132,7 @@ class SearchYoutubeViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = scope.launch {
+    fun onClickTrack(track: Track) = scope.launch {
         val tracks = _videos.songList()
         playTrackFromQueue(track, tracks)
     }

@@ -54,7 +54,7 @@ class QueueAdapter(
         override fun bind(item: DisplayedVideoItem) {
             imgSong.loadTrackImage(item.track)
             txtTitle.text = item.songTitle
-            txtCategory.text = item.songTitle.split("-")[0]
+            txtCategory.text = item.track.artistName
             btnMore.onClick {
                 queueViewModel.onClickShowMoreOptions(item.track)
             }

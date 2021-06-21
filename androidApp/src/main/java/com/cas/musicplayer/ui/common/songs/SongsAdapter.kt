@@ -4,7 +4,7 @@ import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.ui.common.ads.AdsCellDelegate
 import com.cas.musicplayer.ui.popular.SongItemDiffUtil
 import com.cas.musicplayer.ui.popular.delegates.LoadingDelegate
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 
 /**
  **********************************
@@ -12,8 +12,8 @@ import com.mousiki.shared.domain.models.MusicTrack
  **********************************
  */
 class SongsAdapter(
-    onVideoSelected: (MusicTrack) -> Unit,
-    onClickMore: (MusicTrack) -> Unit
+    onVideoSelected: (Track) -> Unit,
+    onClickMore: (Track) -> Unit
 ) : MousikiAdapter(
     listOf(
         SongAdapterDelegate(onClickMoreOptions = onClickMore, onVideoSelected = onVideoSelected),

@@ -8,5 +8,6 @@ typealias SongSearchEntity = Songs_search_result
 fun Songs_search_result.toMusicTrack() = MusicTrack(
     youtubeId = youtube_id,
     title = title,
-    duration = duration
+    duration = duration,
+    artistName = title.split("-")[0]
 )

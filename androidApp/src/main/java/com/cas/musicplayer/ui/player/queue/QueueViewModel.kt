@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.ui.event.Event
@@ -22,8 +22,8 @@ class QueueViewModel(
     private val _queue = MediatorLiveData<List<DisplayedVideoItem>>()
     val queue: LiveData<List<DisplayedVideoItem>> = _queue
 
-    private val _onClickTrack = MediatorLiveData<Event<MusicTrack>>()
-    val onClickTrack: LiveData<Event<MusicTrack>> = _onClickTrack
+    private val _onClickTrack = MediatorLiveData<Event<Track>>()
+    val onClickTrack: LiveData<Event<Track>> = _onClickTrack
 
     private var currentQueue = listOf<DisplayedVideoItem>()
 
@@ -33,7 +33,7 @@ class QueueViewModel(
         }
     }
 
-    fun onClickTrack(track: MusicTrack) = viewModelScope.launch {
+    fun onClickTrack(track: Track) = viewModelScope.launch {
         if (PlayerQueue.isCurrentTrack(track) && (PlaybackLiveData.isPlaying() || PlaybackLiveData.isPause())) {
             PlayerQueue.togglePlayback()
         } else {
@@ -42,7 +42,7 @@ class QueueViewModel(
         }
     }
 
-    fun onClickShowMoreOptions(track: MusicTrack) {
+    fun onClickShowMoreOptions(track: Track) {
         _onClickTrack.value = track.asEvent()
     }
 
@@ -65,7 +65,7 @@ class QueueViewModel(
 
     fun swapItems(from: Int, to: Int) {
         val indexOfCurrent = currentQueue.indexOfFirst {
-            it.track.youtubeId == PlayerQueue.value?.youtubeId
+            it.track.id == PlayerQueue.value?.id
         }
         if (from <= indexOfCurrent || to <= indexOfCurrent) return
         PlayerQueue.swapTracks(from, to)
@@ -86,7 +86,7 @@ class QueueViewModel(
 
     fun isCurrentTrack(position: Int): Boolean {
         val indexOfCurrent = currentQueue.indexOfFirst {
-            it.track.youtubeId == PlayerQueue.value?.youtubeId
+            it.track.id == PlayerQueue.value?.id
         }
         return indexOfCurrent == position
     }

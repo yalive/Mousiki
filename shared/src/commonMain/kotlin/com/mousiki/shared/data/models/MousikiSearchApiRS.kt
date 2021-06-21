@@ -1,7 +1,7 @@
 package com.mousiki.shared.data.models
 
-import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.Keep
+import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.SearchTracksResult
 import kotlinx.serialization.Serializable
 
@@ -21,17 +21,18 @@ data class MousikiSearchApiRS(
 @Keep
 @Serializable
 data class MousikiSearchApiResult(
-    val video: MousikiSearchVideoItem? = null
+    val video: MousikiSearchVideoItem? = null,
+    val owner: VideoOwner? = null
 )
 
 fun MousikiSearchApiRS.tracks(): List<MusicTrack> {
-    return results?.mapNotNull { it.video?.toMusicTrack() }
+    return results?.mapNotNull { it.video?.toMusicTrack(it.owner) }
         ?.filter { it.duration.isNotEmpty() && it.youtubeId.isNotEmpty() }
         ?: emptyList()
 }
 
 fun MousikiSearchApiRS.searchResults(): SearchTracksResult {
-    val trackList = (results?.mapNotNull { it.video?.toMusicTrack() }
+    val trackList = (results?.mapNotNull { it.video?.toMusicTrack(it.owner) }
         ?.filter { it.duration.isNotEmpty() && it.youtubeId.isNotEmpty() }
         ?: emptyList())
     return SearchTracksResult(trackList, nextPageToken.orEmpty(), key.orEmpty())

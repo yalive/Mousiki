@@ -350,7 +350,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardBackgroundColor="@color/colorBlack"
-            app:cardCornerRadius="4dp" />
+            app:cardCornerRadius="4dp">
+
+            <FrameLayout
+                android:id="@+id/vAudio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBgPlayer"
+                android:elevation="20dp">
+
+                <ImageView
+                    android:id="@+id/imgAudio"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_music_note_png"
+                    app:tint="@color/colorWhite" />
+            </FrameLayout>
+        </com.cas.musicplayer.ui.player.view.PreventTouchCard>
+
     </com.cas.musicplayer.ui.player.view.HorizontalMotionPager>
 
     <!-- Lock screen-->
