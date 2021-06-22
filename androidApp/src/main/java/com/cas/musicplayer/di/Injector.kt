@@ -8,6 +8,7 @@ import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
+import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.mousiki.shared.ui.home.HomeViewModel
 import com.mousiki.shared.ui.library.LibraryViewModel
@@ -116,5 +117,8 @@ object Injector : KoinComponent {
 
 
     val localSongsViewModel: LocalSongsViewModel
+        get() = get()
+
+    val localPlaylistViewModel: LocalPlaylistsViewModel
         get() = get()
 }
