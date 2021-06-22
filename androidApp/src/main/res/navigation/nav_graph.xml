@@ -52,8 +52,8 @@
             android:id="@+id/action_homeFragment_to_mainSearchFragment"
             app:destination="@id/mainSearchFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_localSongsFragment"
-            app:destination="@id/localSongsFragment" />
+            android:id="@+id/action_homeFragment_to_localSongsContainerFragment"
+            app:destination="@id/localSongsContainerFragment" />
     </fragment>
     <fragment
         android:id="@+id/newReleaseFragment"
@@ -196,4 +196,8 @@
         android:name="com.cas.musicplayer.ui.local.songs.LocalSongsFragment"
         android:label="local_songs_fragment"
         tools:layout="@layout/local_songs_fragment" />
+    <fragment
+        android:id="@+id/localSongsContainerFragment"
+        android:name="com.cas.musicplayer.ui.local.songs.LocalSongsContainerFragment"
+        android:label="LocalSongsContainerFragment" />
 </navigation>
