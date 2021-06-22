@@ -117,4 +117,10 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
+    <style name="TextAppearance.App.Button.tabs" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

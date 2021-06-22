@@ -152,7 +152,7 @@ class MainActivity : BaseActivity() {
             R.id.homeFragment -> {
                 binding.bottomNavView.menu[0].isChecked = true
             }
-            R.id.localSongsFragment -> {
+            R.id.localSongsContainerFragment -> {
                 binding.bottomNavView.menu[1].isChecked = true
             }
             R.id.libraryFragment -> {
@@ -187,9 +187,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleClickMenuMusic() {
-        if (navController.currentDestination?.id == R.id.localSongsFragment) return
-        if (!navController.popBackStack(R.id.localSongsFragment, false)) {
-            navController.navigate(R.id.localSongsFragment)
+        if (navController.currentDestination?.id == R.id.localSongsContainerFragment) return
+        if (!navController.popBackStack(R.id.localSongsContainerFragment, false)) {
+            navController.navigate(R.id.localSongsContainerFragment)
         }
     }
 
