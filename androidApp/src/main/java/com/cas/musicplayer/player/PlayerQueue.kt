@@ -1,6 +1,7 @@
 package com.cas.musicplayer.player
 
 import android.content.Intent
+import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
@@ -100,7 +101,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_PAUSE, true)
-        MusicApp.get().startService(intent)
+        startForegroundService(intent)
     }
 
     fun resume() {
@@ -109,7 +110,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_RESUME, true)
-        MusicApp.get().startService(intent)
+        startForegroundService(intent)
     }
 
     fun seekTo(to: Long) {
@@ -119,7 +120,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
 
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
-        MusicApp.get().startService(intent)
+        startForegroundService(intent)
     }
 
     fun scheduleStopMusic(duration: Int) {
@@ -129,7 +130,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         if (value == null) return
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SCHEDULE_TIMER, duration)
-        MusicApp.get().startService(intent)
+        startForegroundService(intent)
     }
 
     fun isCurrentTrack(musicTrack: MusicTrack): Boolean {
@@ -167,7 +168,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_PLAY, true)
-        MusicApp.get().startService(intent)
+        startForegroundService(intent)
     }
 
     private fun cueTrack() {
@@ -176,7 +177,7 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_CUE, true)
-        MusicApp.get().startService(intent)
+        startForegroundService(intent)
     }
 
     private fun checkQueueChanged(oldQueue: List<MusicTrack>, newQueue: List<MusicTrack>) {
@@ -186,6 +187,14 @@ object PlayerQueue : MutableLiveData<MusicTrack>() {
         }
         if (oldQueue != newQueue) {
             OnChangeQueue.value = newQueue
+        }
+    }
+
+    private fun startForegroundService(intent: Intent) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            MusicApp.get().startForegroundService(intent)
+        } else {
+            MusicApp.get().startService(intent)
         }
     }
 }

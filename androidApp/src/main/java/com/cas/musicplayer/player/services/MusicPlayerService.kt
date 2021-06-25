@@ -258,10 +258,24 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         ).apply { register() }
     }
 
+    private var loadNotificationImage: Job? = null
     private fun moveToForeground() = lifecycleScope.launch {
-        val notification = notificationBuilder.buildNotification(mediaSession.sessionToken)
+        val notification = notificationBuilder.buildNotification(mediaSession.sessionToken, true)
         notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
         startForeground(NOW_PLAYING_NOTIFICATION, notification)
+
+        // buildNotification with image
+        loadNotificationImage?.cancel()
+        loadNotificationImage = launch {
+            val notificationWithImage =
+                notificationBuilder.buildNotification(mediaSession.sessionToken)
+            notificationManager.notify(NOW_PLAYING_NOTIFICATION, notificationWithImage)
+        }
+        try {
+            loadNotificationImage?.join()
+        } catch (e: Exception) {
+        }
+
         scheduleStopForeground()
     }
 
@@ -284,9 +298,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         metadataBuilder.musicTrack = currentTrack
         mediaSession.setMetadata(metadataBuilder.build())
         mediaController.transportControls.playFromMediaId(
-            currentTrack.youtubeId, bundleOf(
-                "cue" to true
-            )
+            currentTrack.youtubeId, bundleOf("cue" to true)
         )
     }
 
