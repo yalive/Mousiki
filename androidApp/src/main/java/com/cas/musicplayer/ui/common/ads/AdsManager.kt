@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.common.ads
 
 import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
-import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.nativead.NativeAd
 import com.mousiki.shared.data.config.RemoteAppConfig
 import kotlinx.coroutines.CoroutineScope

@@ -108,7 +108,10 @@ class NotificationBuilder(private val context: Context) {
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    suspend fun buildNotification(sessionToken: MediaSessionCompat.Token): Notification {
+    suspend fun buildNotification(
+        sessionToken: MediaSessionCompat.Token,
+        skipImage: Boolean = false
+    ): Notification {
         if (shouldCreateNowPlayingChannel()) {
             createNowPlayingChannel()
         }
@@ -153,9 +156,9 @@ class NotificationBuilder(private val context: Context) {
             .setMediaSession(sessionToken)
             .setShowActionsInCompactView(1, 2, 3)
 
-        val largeIconBitmap = description?.mediaUri?.toString()?.let {
+        val largeIconBitmap = if (!skipImage) description?.mediaUri?.toString()?.let {
             Picasso.get().getBitmap(it, 400)
-        }
+        } else null
 
         return builder.setContentIntent(controller.sessionActivity)
             .setContentText(description?.subtitle)
