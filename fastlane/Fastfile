@@ -28,28 +28,12 @@ platform :android do
           build_type: "DevRelease"
         )
         firebase_app_distribution(
-            app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
+            app: ENV["FIREBASE_APP_ID"],
             groups: "qa-team-internal",
-            firebase_cli_token: "1//03R1CNKiOIH0rCgYIARAAGAMSNwF-L9Irsh7WUY5WWQ5-ZEM4p5jYASNdoAPPR-prBWHYWMBy6UcuQj9z4rdWlZB9FszOIQOKtkE",
+            firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
             release_notes: "
-            - Fix refresh home issue
+            - Test env variable
             "
         )
     end
-
-    lane :betaMe do
-            gradle(
-              task: "assemble",
-              build_type: "DevRelease"
-            )
-            firebase_app_distribution(
-                app: "1:905678518748:android:e3d3e565fa4b5c4125b719",
-                testers: "abdelhadibahddou@gmail.com",
-                firebase_cli_path: "/Users/macbook/Firebase/firebase",
-                release_notes: "
-                - Recognize when app started from a dynamic link.
-                - Bug fixes.
-                "
-            )
-        end
 end
