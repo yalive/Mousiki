@@ -2,6 +2,9 @@ package com.cas.musicplayer.ui.local.songs
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.cas.musicplayer.ui.local.albums.LocalAlbumsFragment
+import com.cas.musicplayer.ui.local.artists.LocalArtistsFragment
+import com.cas.musicplayer.ui.local.folders.FoldersFragment
 import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsFragment
 
 /**
@@ -13,10 +16,13 @@ class LocalSongsViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(frag
 
     override fun createFragment(position: Int): Fragment {
 
-        if (position == 1) {
-            return LocalPlaylistsFragment()
+        return when (position) {
+            1 -> LocalPlaylistsFragment()
+            2 -> LocalAlbumsFragment.newInstance()
+            3 -> LocalArtistsFragment.newInstance()
+            4 -> FoldersFragment.newInstance()
+            else -> LocalSongsFragment()
         }
-        return LocalSongsFragment()
     }
 
 

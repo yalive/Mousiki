@@ -22,7 +22,8 @@ data class Song(
     val artistId: Long,
     val artistName: String,
     val composer: String?,
-    val albumArtist: String?
+    val albumArtist: String?,
+    val path:String
 ) : Parcelable {
 
 
@@ -41,7 +42,8 @@ data class Song(
             artistId = -1,
             artistName = "",
             composer = "",
-            albumArtist = ""
+            albumArtist = "",
+            path = ""
         )
     }
 }
