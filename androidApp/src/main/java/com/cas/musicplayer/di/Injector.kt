@@ -2,22 +2,21 @@ package com.cas.musicplayer.di
 
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
-import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
+import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
+import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
+import com.cas.musicplayer.ui.local.folders.FoldersViewModel
 import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
-import com.mousiki.shared.ui.home.HomeViewModel
-import com.mousiki.shared.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
-import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
@@ -28,6 +27,10 @@ import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseC
 import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
+import com.mousiki.shared.ui.home.HomeViewModel
+import com.mousiki.shared.ui.library.LibraryViewModel
+import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
 import com.mousiki.shared.utils.AnalyticsApi
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -120,5 +123,14 @@ object Injector : KoinComponent {
         get() = get()
 
     val localPlaylistViewModel: LocalPlaylistsViewModel
+        get() = get()
+
+    val localAlbumsViewModel: LocalAlbumsViewModel
+        get() = get()
+
+    val localArtistsViewModel: LocalArtistsViewModel
+        get() = get()
+
+    val foldersViewModel: FoldersViewModel
         get() = get()
 }

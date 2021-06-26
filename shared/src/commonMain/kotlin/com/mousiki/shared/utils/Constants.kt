@@ -18,4 +18,18 @@ object Constants {
 
     const val INITIALIZED_BLACKLIST = "initialized_blacklist"
 
+    const val ALBUM_DETAIL_SONG_SORT_ORDER = "album_detail_song_sort_order"
+
+    const val ALBUM_SORT_ORDER = "album_sort_order"
+
+    const val ALBUM_SONG_SORT_ORDER = "album_song_sort_order"
+
+    const val ALBUM_ARTISTS_ONLY = "album_artists_only"
+
+    const val ARTIST_SORT_ORDER = "artist_sort_order"
+
+    const val ARTIST_ALBUM_SORT_ORDER = "artist_album_sort_order"
+
+    const val ARTIST_SONG_SORT_ORDER = "artist_song_sort_order"
+
 }
