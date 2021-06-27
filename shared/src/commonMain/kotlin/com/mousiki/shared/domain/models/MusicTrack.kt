@@ -17,14 +17,14 @@ sealed class Track : Parcelable {
 }
 
 @Parcelize
-data class LocalSong(
-    override val id: String,
-    override val title: String,
-    override val duration: String,
-    override val artistName: String,
-    val path: String,
-    val albumId: Long = 0
-) : Track()
+data class LocalSong(val song: Song) : Track() {
+    override val id: String = "${song.id}"
+    override val title: String = song.title
+    override val duration: String = "${song.duration}"
+    override val artistName: String = song.artistName
+    val data: String get() = song.data
+    val albumId: Long get() = song.albumId
+}
 
 @Parcelize
 data class MusicTrack(

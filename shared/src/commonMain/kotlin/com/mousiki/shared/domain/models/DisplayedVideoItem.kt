@@ -52,7 +52,6 @@ fun List<Track>.toDisplayedVideoItems(
     return map { it.toDisplayedVideoItem(playDelegate) }
 }
 
-// TODO: get real artist name
 fun DisplayedVideoItem.artistName(): String {
     return track.artistName
 }
