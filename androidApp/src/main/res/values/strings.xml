@@ -156,4 +156,7 @@
     <string name="suggestion_clear_history_button_title">Clear</string>
     <string name="confirm_clear_search_history_message">Are you sure you want to clear all search history?</string>
     <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
+
+    <string name="internal_storage">Internal Storage</string>
+    <string name="external_storage">SD Card</string>
 </resources>

@@ -6,6 +6,11 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
+import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
+import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
+import com.cas.musicplayer.ui.local.folders.FoldersViewModel
+import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
+import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
@@ -35,4 +40,9 @@ val viewModelsModule = module {
     factory { CustomPlaylistSongsViewModel(get(), get(), get()) }
     factory { CreatePlaylistViewModel(get(), get()) }
     factory { QueueViewModel(get()) }
+    factory { LocalSongsViewModel(get()) }
+    factory { LocalPlaylistsViewModel() }
+    factory { LocalAlbumsViewModel(get()) }
+    factory { LocalArtistsViewModel(get()) }
+    factory { FoldersViewModel(get()) }
 }

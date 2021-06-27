@@ -9,9 +9,15 @@
         android:title="@string/title_home" />
 
     <item
+        android:id="@+id/navMusic"
+        android:icon="@drawable/ic_music_note"
+        android:title="@string/genre_music" />
+
+    <item
         android:id="@+id/navLibrary"
         android:icon="@drawable/selector_ic_menu_library"
         android:title="@string/library" />
+
     <item
         android:id="@+id/navSearch"
         android:icon="@drawable/selector_ic_menu_search"
