@@ -73,7 +73,7 @@ class LocalSongsRepository(private val context: Context) {
         val artistName = cursor.getStringOrNull(AudioColumns.ARTIST)
         val composer = cursor.getStringOrNull(AudioColumns.COMPOSER)
         val albumArtist = cursor.getStringOrNull("album_artist")
-        val path = if (albumId != 0L) cursor.getString(7) else cursor.getString(8)
+        val path = data.substringBeforeLast("/")
         return Song(
             id,
             title,

@@ -33,18 +33,6 @@ class FoldersAdapter :
         fun bind(folder: Folder) {
             binding.folderName.text = folder.name
             binding.txtFolderPath.text = folder.path
-            try {
-                val imageSize = itemView.context.dpToPixel(55f)
-                Picasso.get()
-                    .load(getAlbumArtUri(123))
-                    .placeholder(R.drawable.ic_music_note)
-                    .resize(imageSize, imageSize)
-                    .into(binding.imgAlbum)
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (e: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            }
         }
     }
 }
