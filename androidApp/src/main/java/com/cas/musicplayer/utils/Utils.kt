@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
+import android.content.ContentUris.withAppendedId
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,12 +13,15 @@ import android.graphics.drawable.ColorDrawable
 import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.provider.Settings
+import android.text.TextUtils
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
@@ -25,6 +29,7 @@ import com.afollestad.materialdialogs.customview.customView
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
+import com.cas.musicplayer.ui.local.artists.model.LocalArtist
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
@@ -36,6 +41,7 @@ import com.mousiki.shared.utils.AnalyticsApi
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import java.io.File
+import java.util.*
 
 
 /**
@@ -228,6 +234,41 @@ object Utils : KoinComponent {
                         .log("requestDrawOverAppsPermission intent not resolved")
                 }
             }.show()
+    }
+
+    fun getAlbumArtUri(albumId: Long) =
+        withAppendedId("content://media/external/audio/albumart".toUri(), albumId)
+
+    fun isVariousArtists(artistName: String?): Boolean {
+        if (TextUtils.isEmpty(artistName)) {
+            return false
+        }
+        if (artistName == LocalArtist.VARIOUS_ARTISTS_DISPLAY_NAME) {
+            return true
+        }
+        return false
+    }
+
+    fun isArtistNameUnknown(artistName: String?): Boolean {
+        if (TextUtils.isEmpty(artistName)) {
+            return false
+        }
+        if (artistName == LocalArtist.UNKNOWN_ARTIST_DISPLAY_NAME) {
+            return true
+        }
+        val tempName = artistName!!.trim { it <= ' ' }.toLowerCase(Locale.getDefault())
+        return tempName == "unknown" || tempName == "<unknown>"
+    }
+
+    fun getStoragePaths(context: Context): List<String> {
+        return try {
+            val paths: Array<File> = ContextCompat.getExternalFilesDirs(context, null)
+            paths.map {
+                it.path.replace("/Android/data/${context.packageName}/files", "")
+            }
+        } catch (ex: IllegalStateException) {
+            emptyList()
+        }
     }
 }
 

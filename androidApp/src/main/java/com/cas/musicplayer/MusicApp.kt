@@ -10,6 +10,10 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.*
 import com.cas.musicplayer.ui.common.ads.AdsManager
 import com.cas.musicplayer.ui.common.ads.AppOpenManager
+import com.cas.musicplayer.ui.local.repository.AlbumRepository
+import com.cas.musicplayer.ui.local.repository.FoldersRepository
+import com.cas.musicplayer.ui.local.repository.LocalArtistRepository
+import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.ConnectivityState
 import com.facebook.ads.AudienceNetworkAds
@@ -53,12 +57,20 @@ class MusicApp : Application(), KoinComponent {
         instance = this
         globalAppContext = this
         FileSystem.initialize(this)
+        val localSongsRepo = module {
+            single { LocalSongsRepository(get()) }
+            single { AlbumRepository(get()) }
+            single { LocalArtistRepository(get(), get()) }
+            single { FoldersRepository(get()) }
+        }
+
         initKoin(
             appContextModule(this),
             firebaseModule,
             playSongDelegateModule,
             adsDelegateModule,
-            viewModelsModule
+            viewModelsModule,
+            localSongsRepo
         )
 
         UserPrefs.init(Injector.preferencesHelper.provider)

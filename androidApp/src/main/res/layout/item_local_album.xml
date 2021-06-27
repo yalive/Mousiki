@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/four_4dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal"
+    tools:background="@color/colorDarkNavigationView">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="#9C9A9A"
+        app:cardCornerRadius="@dimen/eight_8dp"
+        app:cardElevation="@dimen/eight_8dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgAlbum"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:scaleType="centerInside" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="@dimen/eight_8dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtAlbumTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
+            android:maxLines="1"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp"
+            tools:text="Album name" />
+
+        <TextView
+            android:id="@+id/txtSongsCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
+            android:lines="1"
+            android:textColor="#A5A5C4"
+            android:textSize="12sp"
+            tools:text="12 tracks " />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/four_4dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="6dp"
+        app:srcCompat="@drawable/ic_more_vertical" />
+</LinearLayout>
