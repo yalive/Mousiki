@@ -64,7 +64,7 @@ class LocalPlayer(
         Log.d(TAG_PLAYER, "Local player loadVideo $videoId")
         val track = PlayerQueue.getTrack(videoId) ?: return
         if (track !is LocalSong) return
-        exoPlayer.setMediaItem(MediaItem.fromUri(track.path))
+        exoPlayer.setMediaItem(MediaItem.fromUri(track.data))
         exoPlayer.playWhenReady = true
     }
 
