@@ -155,7 +155,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private fun setUpMediaSession() {
         val mediaSessionCallback = object : MediaSessionCompat.Callback() {
             override fun onPlay() {
-                if (isScreenLocked()) return
                 player.play()
             }
 
@@ -168,12 +167,10 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onSeekTo(pos: Long) {
-                if (isScreenLocked()) return
                 player.seekTo(pos.toFloat() / 1000)
             }
 
             override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
-                if (isScreenLocked()) return
                 val videoId = mediaId ?: return
                 val cue = extras?.getBoolean("cue", false) ?: false
                 if (cue) {
@@ -184,12 +181,10 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             }
 
             override fun onSkipToNext() {
-                if (isScreenLocked()) return
                 PlayerQueue.playNextTrack()
             }
 
             override fun onSkipToPrevious() {
-                if (isScreenLocked()) return
                 PlayerQueue.playPreviousTrack()
             }
 
