@@ -12,8 +12,9 @@ class FoldersRepository(
 ) {
 
     fun getFolders(): List<Folder> {
-        return songsRepository.songs().groupBy { it.data.substringAfterLast("/") }.map {
-            Folder.fromSong(it.value.first(), it.value.toIDList(), MusicApp.get())
+        return songsRepository.songs().groupBy { it.path }.map {
+            val fromSong = Folder.fromSong(it.value.first(), it.value.toIDList(), MusicApp.get())
+            fromSong
         }.sortedBy { it.name }
     }
 

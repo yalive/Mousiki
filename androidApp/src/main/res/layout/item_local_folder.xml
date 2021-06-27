@@ -12,14 +12,14 @@
     tools:background="@color/colorDarkNavigationView">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imgAlbum"
+        android:id="@+id/imgFolder"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:scaleType="centerInside"
-        tools:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_folder" />
 
     <LinearLayout
         android:layout_width="0dp"
