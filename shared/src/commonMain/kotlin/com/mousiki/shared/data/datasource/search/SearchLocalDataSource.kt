@@ -3,7 +3,7 @@ package com.mousiki.shared.data.datasource.search
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.*
 import com.mousiki.shared.domain.models.Channel
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Playlist
 
 /**
@@ -19,13 +19,13 @@ class SearchLocalDataSource(
     private val searchPlaylistsDao by lazy { db.playlistsSearchResultQueries }
     private val searchChannelDao by lazy { db.channelSearchResultQueries }
 
-    suspend fun getSearchSongsResultForQuery(query: String): List<MusicTrack> {
+    suspend fun getSearchSongsResultForQuery(query: String): List<YtbTrack> {
         return searchSongDao.getResultForQuery(query).executeAsList().map {
             it.toMusicTrack()
         }
     }
 
-    suspend fun saveSongs(query: String, songs: List<MusicTrack>) {
+    suspend fun saveSongs(query: String, songs: List<YtbTrack>) {
         val searchSongEntities = songs.map {
             SongSearchEntity(
                 id = 0,

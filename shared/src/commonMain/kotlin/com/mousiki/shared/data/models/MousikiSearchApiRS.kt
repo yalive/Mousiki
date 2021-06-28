@@ -1,7 +1,7 @@
 package com.mousiki.shared.data.models
 
 import com.mousiki.shared.Keep
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.SearchTracksResult
 import kotlinx.serialization.Serializable
 
@@ -25,7 +25,7 @@ data class MousikiSearchApiResult(
     val owner: VideoOwner? = null
 )
 
-fun MousikiSearchApiRS.tracks(): List<MusicTrack> {
+fun MousikiSearchApiRS.tracks(): List<YtbTrack> {
     return results?.mapNotNull { it.video?.toMusicTrack(it.owner) }
         ?.filter { it.duration.isNotEmpty() && it.youtubeId.isNotEmpty() }
         ?: emptyList()

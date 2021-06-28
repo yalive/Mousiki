@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.BuildConfig
 import com.mousiki.shared.data.config.RemoteAppConfig
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.ui.base.BaseViewModel
@@ -34,11 +34,11 @@ class MainViewModel(
     val doubleClickSearch: LiveData<Event<Unit>>
         get() = _doubleClickSearch
 
-    fun playTrackFromDeepLink(track: MusicTrack) = viewModelScope.launch {
+    fun playTrackFromDeepLink(track: YtbTrack) = viewModelScope.launch {
         playTrackFromQueue(track, listOf(track))
     }
 
-    fun playTrackFromPushNotification(track: MusicTrack) = viewModelScope.launch {
+    fun playTrackFromPushNotification(track: YtbTrack) = viewModelScope.launch {
         playTrackFromQueue(track, listOf(track))
     }
 

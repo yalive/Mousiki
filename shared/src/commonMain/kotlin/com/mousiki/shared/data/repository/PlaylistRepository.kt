@@ -4,7 +4,7 @@ import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSourc
 import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsRemoteDataSource
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
@@ -23,7 +23,7 @@ class PlaylistRepository(
     private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource
 ) {
 
-    suspend fun playlistVideos(playlistId: String): Result<List<MusicTrack>> {
+    suspend fun playlistVideos(playlistId: String): Result<List<YtbTrack>> {
         val localPlaylists = playlistSongsLocalDataSource.getPlaylistSongs(playlistId)
         if (localPlaylists.isNotEmpty()) {
             return Success(localPlaylists)

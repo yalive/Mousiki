@@ -3,7 +3,7 @@ package com.mousiki.shared.data.repository
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.CustomPlaylistTrackEntity
 import com.mousiki.shared.data.db.imgUrl
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Playlist
 
 /**
@@ -33,12 +33,12 @@ class CustomPlaylistsRepository(
         }
     }
 
-    suspend fun getCustomPlaylistTracks(playlistName: String): List<MusicTrack> {
+    suspend fun getCustomPlaylistTracks(playlistName: String): List<YtbTrack> {
         val allTracks = customPlaylistTrackDao.getAll().executeAsList()
         return allTracks.filter {
             it.playlist_name == playlistName && it.youtube_id.isNotEmpty()
         }.map {
-            MusicTrack(
+            YtbTrack(
                 youtubeId = it.youtube_id,
                 title = it.title,
                 duration = it.duration
@@ -46,7 +46,7 @@ class CustomPlaylistsRepository(
         }
     }
 
-    suspend fun addMusicTrackToCustomPlaylist(track: MusicTrack, playlistName: String) {
+    suspend fun addMusicTrackToCustomPlaylist(track: YtbTrack, playlistName: String) {
         customPlaylistTrackDao.insert(
             CustomPlaylistTrackEntity(
                 id = 0,
@@ -58,7 +58,7 @@ class CustomPlaylistsRepository(
         )
     }
 
-    suspend fun deleteTrackFromCustomPlaylist(track: MusicTrack, playlistName: String) {
+    suspend fun deleteTrackFromCustomPlaylist(track: YtbTrack, playlistName: String) {
         customPlaylistTrackDao.deleteTrackFromPlaylist(
             youtube_id = track.youtubeId,
             playlist_name = playlistName

@@ -5,7 +5,7 @@ import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
@@ -93,7 +93,7 @@ class ArtistsRepository(
         }
     }
 
-    suspend fun getArtistTracks(artist: Artist): Result<List<MusicTrack>> {
+    suspend fun getArtistTracks(artist: Artist): Result<List<YtbTrack>> {
         val localChannelSongs = channelLocalDataSource.getChannelSongs(artist.channelId)
         if (localChannelSongs.isNotEmpty()) {
             return Success(localChannelSongs)

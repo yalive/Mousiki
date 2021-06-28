@@ -34,7 +34,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.utils.AnalyticsApi
@@ -51,7 +51,7 @@ object Utils : KoinComponent {
 
     var hasShownAdsOneTime = false
 
-    fun shareTrackLink(link: String?, track: MusicTrack, context: Context) {
+    fun shareTrackLink(link: String?, track: YtbTrack, context: Context) {
         val text = context.getString(R.string.share_track_link_message, track?.title, link)
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -68,7 +68,7 @@ object Utils : KoinComponent {
 
     fun shareWithDeepLink(track: Track?, mContext: Context) {
         if (track == null) return
-        if (track !is MusicTrack) return
+        if (track !is YtbTrack) return
         Firebase.dynamicLinks.shortLinkAsync(ShortDynamicLink.Suffix.SHORT) {
             link = Uri.Builder()
                 .scheme("https")

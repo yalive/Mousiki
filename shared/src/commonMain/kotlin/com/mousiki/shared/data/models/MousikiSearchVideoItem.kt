@@ -1,7 +1,7 @@
 package com.mousiki.shared.data.models
 
 import com.mousiki.shared.Keep
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.toYoutubeDuration
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,14 +24,14 @@ data class MousikiSearchVideoItem(
     val views: String? = null
 )
 
-fun MousikiSearchVideoItem.toMusicTrack(owner: VideoOwner?): MusicTrack {
+fun MousikiSearchVideoItem.toMusicTrack(owner: VideoOwner?): YtbTrack {
     var artistName = owner?.title.orEmpty()
     if (artistName.isEmpty()) {
         artistName = title.orEmpty().split("-")[0]
     }
-    return MusicTrack(
+    return YtbTrack(
         youtubeId = id.orEmpty(),
-        duration = MusicTrack.toYoutubeDuration(duration.orEmpty()),
+        duration = YtbTrack.toYoutubeDuration(duration.orEmpty()),
         title = title.orEmpty(),
         artistName = artistName
     )
