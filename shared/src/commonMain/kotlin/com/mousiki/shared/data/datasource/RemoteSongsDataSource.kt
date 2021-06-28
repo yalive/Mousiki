@@ -6,7 +6,7 @@ import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
 import com.mousiki.shared.data.remote.mapper.toListMapper
 import com.mousiki.shared.data.remote.runner.NetworkRunner
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.fs.ContentEncoding
 import com.mousiki.shared.fs.FileSystem
@@ -34,7 +34,7 @@ class RemoteSongsDataSource(
     private val storage: StorageApi
 ) {
 
-    suspend fun getTrendingSongs(max: Int): Result<List<MusicTrack>> {
+    suspend fun getTrendingSongs(max: Int): Result<List<YtbTrack>> {
         val firebaseTracks = downloadTrendingFile().musicTracks(json)
         if (firebaseTracks.isNotEmpty()) return Result.Success(firebaseTracks)
         if (getCurrentLocale().toLowerCase() == "mx") {
@@ -83,11 +83,11 @@ class RemoteSongsDataSource(
 
 private val ANALYTICS_KEY_MX_CANNOT_LOAD_TRENDING = "mexico_cannot_load_trending"
 
-suspend fun PathComponent.musicTracks(json: Json): List<MusicTrack> =
+suspend fun PathComponent.musicTracks(json: Json): List<YtbTrack> =
     withContext(Dispatchers.Default) {
         val absolutePath = component ?: return@withContext emptyList()
         return@withContext if (FileSystem.exists(absolutePath)) {
-            val tracksFromFile: List<MusicTrack> = try {
+            val tracksFromFile: List<YtbTrack> = try {
                 val fileContent = FileSystem.readFile(absolutePath, ContentEncoding.Utf8).orEmpty()
                 val trackDtos: List<TrackDto> = json.decodeFromString(fileContent)
                 trackDtos.map { it.toDomainModel() }

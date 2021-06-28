@@ -13,7 +13,7 @@ import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
 import com.mousiki.shared.domain.models.EMPTY
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.ui.library.LibraryViewModel
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
@@ -53,7 +53,7 @@ class LibraryCreatePlaylistDelegate(
             cardView.onClick {
                 itemView.findNavController().navigate(
                     R.id.action_libraryFragment_to_createPlaylistFragment, bundleOf(
-                        AddTrackToPlaylistFragment.EXTRAS_TRACK to MusicTrack.EMPTY
+                        AddTrackToPlaylistFragment.EXTRAS_TRACK to YtbTrack.EMPTY
                     )
                 )
             }

@@ -27,7 +27,7 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.preference.UserPrefs
@@ -42,7 +42,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
     var onDismissed: (() -> Unit)? = null
 
-    lateinit var musicTrack: MusicTrack
+    lateinit var ytbTrack: YtbTrack
 
     private val viewModel by lazy { Injector.trackOptionsViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
@@ -67,18 +67,18 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
                 (bottomSheet.parent as? CoordinatorLayout)?.parent?.requestLayout()
             }
         }
-        musicTrack = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
-        if (!UserPrefs.isFav(musicTrack.youtubeId)) {
+        ytbTrack = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
+        if (!UserPrefs.isFav(ytbTrack.youtubeId)) {
             binding.favIcon.setImageResource(R.drawable.ic_heart_light)
             binding.favLabel.text = getString(R.string.btn_favorite)
         } else {
             binding.favIcon.setImageResource(R.drawable.ic_heart_solid)
             binding.favLabel.text = getString(R.string.favourites)
         }
-        binding.imgTrack.loadTrackImage(musicTrack)
-        binding.txtTrackTitle.text = musicTrack.title
+        binding.imgTrack.loadTrackImage(ytbTrack)
+        binding.txtTrackTitle.text = ytbTrack.title
         binding.shareVia.onClick {
-            Utils.shareWithDeepLink(musicTrack, requireContext())
+            Utils.shareWithDeepLink(ytbTrack, requireContext())
             if (this.isVisible) {
                 this.dismiss()
             }
@@ -86,10 +86,10 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
         binding.favController.onClick {
             Executors.newSingleThreadExecutor().execute {
-                if (UserPrefs.isFav(musicTrack.youtubeId)) {
-                    viewModel.removeSongFromFavourite(musicTrack)
+                if (UserPrefs.isFav(ytbTrack.youtubeId)) {
+                    viewModel.removeSongFromFavourite(ytbTrack)
                 } else {
-                    viewModel.makeSongAsFavourite(musicTrack)
+                    viewModel.makeSongAsFavourite(ytbTrack)
                 }
             }
 
@@ -99,7 +99,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         }
 
         binding.viewAddToQuee.onClick {
-            PlayerQueue.addAsNext(musicTrack)
+            PlayerQueue.addAsNext(ytbTrack)
             this.dismiss()
         }
 
@@ -115,21 +115,21 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             }
             findNavController().navigate(
                 R.id.addTrackToPlaylistFragment, bundleOf(
-                    AddTrackToPlaylistFragment.EXTRAS_TRACK to musicTrack,
+                    AddTrackToPlaylistFragment.EXTRAS_TRACK to ytbTrack,
                     AddTrackToPlaylistFragment.EXTRAS_CURRENT_DESTINATION to findNavController().currentDestination?.id
                 ), navOptions
             )
             dismiss()
         }
         binding.viewRemoveFromCurrentPlaylist.onClick {
-            viewModel.removeSongFromPlaylist(musicTrack, customPlaylist)
+            viewModel.removeSongFromPlaylist(ytbTrack, customPlaylist)
             onDismissed?.invoke()
             dismiss()
         }
         binding.viewRemoveFromCurrentPlaylist.isVisible = isFromCustomPlaylist
         binding.viewAddToPlaylist.isVisible = !isFromCustomPlaylist
 
-        binding.viewAddToQuee.isVisible = PlayerQueue.value != musicTrack
+        binding.viewAddToQuee.isVisible = PlayerQueue.value != ytbTrack
         configureAdView()
     }
 

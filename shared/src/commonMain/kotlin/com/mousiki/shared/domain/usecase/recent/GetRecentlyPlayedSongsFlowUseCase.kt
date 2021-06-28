@@ -1,7 +1,7 @@
 package com.mousiki.shared.domain.usecase.recent
 
 import com.mousiki.shared.data.repository.StatisticsRepository
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 class GetRecentlyPlayedSongsFlowUseCase(
     private val statisticsRepository: StatisticsRepository
 ) {
-    suspend operator fun invoke(max: Int = 10): Flow<List<MusicTrack>> {
+    suspend operator fun invoke(max: Int = 10): Flow<List<YtbTrack>> {
         return statisticsRepository.getRecentlyPlayedTracksFlow(max)
     }
 }

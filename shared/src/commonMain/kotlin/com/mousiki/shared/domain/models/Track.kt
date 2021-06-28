@@ -27,7 +27,7 @@ data class LocalSong(val song: Song) : Track() {
 }
 
 @Parcelize
-data class MusicTrack(
+data class YtbTrack(
     val youtubeId: String,
     override val title: String,
     override val duration: String,
@@ -54,11 +54,11 @@ fun Track.durationToSeconds(): Long {
                 0
             }
         }
-        is MusicTrack -> this.durationToSeconds()
+        is YtbTrack -> this.durationToSeconds()
     }
 }
 
-fun MusicTrack.durationToSeconds(): Long {
+fun YtbTrack.durationToSeconds(): Long {
     if (duration.matches(REGEX_YTB_DURATION)) {
         val groups = REGEX_YTB_DURATION.matchEntire(duration)?.groups
         val hr = groups?.get(1)?.value
@@ -77,7 +77,7 @@ fun MusicTrack.durationToSeconds(): Long {
     return 0
 }
 
-fun MusicTrack.Companion.toYoutubeDuration(notificationDuration: String): String {
+fun YtbTrack.Companion.toYoutubeDuration(notificationDuration: String): String {
     val parts = notificationDuration.split(":")
     if (parts.size < 2) return ""
     if (parts.size == 2) {
@@ -102,8 +102,8 @@ private fun parseDurationPart(part: String): Int {
     }
 }
 
-val MusicTrack.Companion.EMPTY: MusicTrack
-    get() = MusicTrack(
+val YtbTrack.Companion.EMPTY: YtbTrack
+    get() = YtbTrack(
         youtubeId = "",
         title = "",
         duration = "",

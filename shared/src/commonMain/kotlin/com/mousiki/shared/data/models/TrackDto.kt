@@ -1,7 +1,7 @@
 package com.mousiki.shared.data.models
 
 import com.mousiki.shared.Keep
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import kotlinx.serialization.Serializable
 
 /**
@@ -18,7 +18,7 @@ data class TrackDto(
     val duration: String? = null
 )
 
-fun TrackDto.toDomainModel() = MusicTrack(
+fun TrackDto.toDomainModel() = YtbTrack(
     youtubeId = youtubeId.orEmpty(),
     duration = duration.orEmpty(),
     title = title.orEmpty(),

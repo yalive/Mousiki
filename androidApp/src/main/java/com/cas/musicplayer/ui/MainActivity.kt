@@ -36,7 +36,7 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.toYoutubeDuration
 import com.mousiki.shared.preference.UserPrefs
 import com.unity3d.ads.UnityAds
@@ -313,7 +313,7 @@ class MainActivity : BaseActivity() {
                     val duration = deepLink?.getQueryParameter("duration")
                     val title = deepLink?.getQueryParameter("title")
                     if (videoId != null && title != null && duration != null) {
-                        val track = MusicTrack(videoId, title, duration)
+                        val track = YtbTrack(videoId, title, duration)
                         expandBottomPanel()
                         viewModel.playTrackFromDeepLink(track)
                     }
@@ -329,7 +329,7 @@ class MainActivity : BaseActivity() {
             val duration = intent.extras?.getString("duration")
             val title = intent.extras?.getString("title")
             if (videoId != null && title != null && duration != null) {
-                val track = MusicTrack(videoId, title, MusicTrack.toYoutubeDuration(duration))
+                val track = YtbTrack(videoId, title, YtbTrack.toYoutubeDuration(duration))
                 expandBottomPanel()
                 viewModel.playTrackFromPushNotification(track)
             }
