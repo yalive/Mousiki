@@ -25,7 +25,7 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.item_ads)
+        val view = parent.inflate(R.layout.item_ad)
         return AdsViewHolder(view)
     }
 
@@ -38,29 +38,23 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
         (holder as AdsViewHolder).bind(adsItem.ad)
     }
 
-    /* override fun getItemId(items: List<DisplayableItem>, position: Int): Long {
-         val ad = (items[position] as AdsItem).ad
-         return "${ad.headline}${ad.body}${ad.callToAction}".hashCode().toLong()
-     }*/
-
     inner class AdsViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val adView = itemView.findViewById<NativeAdView>(R.id.ad_view).apply {
-                mediaView = findViewById<View>(R.id.ad_media) as MediaView
-                mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                // Register the view used for each individual asset.
-                headlineView = findViewById(R.id.ad_headline)
-                bodyView = findViewById(R.id.ad_body)
-                callToActionView = findViewById(R.id.ad_call_to_action)
-                iconView = findViewById(R.id.ad_icon)
-                priceView = findViewById(R.id.ad_price)
-                starRatingView = findViewById(R.id.ad_stars)
-                storeView = findViewById(R.id.ad_store)
-                advertiserView = findViewById(R.id.ad_advertiser)
-            }
-
+            mediaView = findViewById<View>(R.id.ad_media) as MediaView
+            mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+            // Register the view used for each individual asset.
+            headlineView = findViewById(R.id.ad_headline)
+            bodyView = findViewById(R.id.ad_body)
+            callToActionView = findViewById(R.id.ad_call_to_action)
+            iconView = findViewById(R.id.ad_icon)
+            priceView = findViewById(R.id.ad_price)
+            starRatingView = findViewById(R.id.ad_stars)
+            storeView = findViewById(R.id.ad_store)
+            advertiserView = findViewById(R.id.ad_advertiser)
+        }
 
 
         fun bind(ad: NativeAd) {
