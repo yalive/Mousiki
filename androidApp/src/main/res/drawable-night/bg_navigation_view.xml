@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/colorDarkNavigationView" />
+    <corners
+        android:topLeftRadius="@dimen/eight_8dp"
+        android:topRightRadius="@dimen/eight_8dp" />
 </shape>
