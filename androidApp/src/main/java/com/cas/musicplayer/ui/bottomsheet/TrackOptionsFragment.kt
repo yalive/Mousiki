@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -64,6 +65,8 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             bottomSheet?.let {
                 val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
                 bottomSheetBehavior.peekHeight = bottomSheet.height
+                bottomSheet.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_navigation_view)
                 (bottomSheet.parent as? CoordinatorLayout)?.parent?.requestLayout()
             }
         }
@@ -77,6 +80,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         }
         binding.imgTrack.loadTrackImage(ytbTrack)
         binding.txtTrackTitle.text = ytbTrack.title
+        binding.txtTrackArtist.text = musicTrack.artistName
         binding.shareVia.onClick {
             Utils.shareWithDeepLink(ytbTrack, requireContext())
             if (this.isVisible) {
