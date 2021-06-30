@@ -4,202 +4,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_navigation_view"
     android:baselineAligned="false"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <LinearLayout
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/scroller"
+        android:layout_width="35dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:alpha="0.6"
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="?colorOnSurface" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:layout_marginTop="@dimen/eight_8dp">
 
         <ImageView
             android:id="@+id/imgTrack"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
             android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/img_genre_latin" />
 
         <TextView
             android:id="@+id/txtTrackTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/pangram_regular"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_black"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgTrack"
+            app:layout_constraintTop_toTopOf="@id/imgTrack"
+            tools:ignore="SmallSp"
+            tools:text="Track title" />
+
+        <TextView
+            android:id="@+id/txtTrackArtist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/roboto"
             android:gravity="center"
             android:textColor="?android:textColorPrimary"
-            android:textSize="14sp"
-            tools:text="@string/app_name" />
-    </LinearLayout>
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@id/imgTrack"
+            app:layout_constraintTop_toBottomOf="@id/txtTrackTitle"
+            tools:ignore="SmallSp"
+            tools:text="Artist name" />
 
-    <LinearLayout
-        android:id="@+id/shareVia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="12dp"
-        android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="12dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:alpha="0.5"
-            android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_share_light"
-            app:tint="?android:textColorPrimary" />
-
-        <TextView
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_bold"
-            android:text="@string/label_share"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/favController"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="12dp"
-        android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="12dp">
-
-        <ImageView
-            android:id="@+id/favIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:alpha="0.5"
-            android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_heart_solid"
-            app:tint="?android:textColorPrimary" />
-
-        <TextView
-            android:id="@+id/favLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_bold"
-            android:text="@string/btn_unfavorite"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/viewRemoveFromCurrentPlaylist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="12dp"
-        android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="12dp">
-
-        <ImageButton
-            android:id="@+id/btnDeleteFromCurrentPlaylist"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:alpha="0.5"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/two_2dp"
-            android:tint="?android:textColorPrimary"
-            app:srcCompat="@drawable/ic_remove_circle" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_bold"
-            android:text="@string/remove_from_this_playlist"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/viewAddToPlaylist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="12dp"
-        android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="12dp">
-
-        <ImageButton
-            android:id="@+id/btnAddToPlaylist"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:alpha="0.5"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/two_2dp"
-            android:tint="?android:textColorPrimary"
-            app:srcCompat="@drawable/ic_playlist_add_rounded" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_bold"
-            android:text="@string/label_add_to"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="16sp" />
-
-    </LinearLayout>
+            android:layout_height="@dimen/one_1dp"
+            android:layout_marginTop="@dimen/eight_8dp"
+            android:background="#616060"
+            app:layout_constraintTop_toBottomOf="@id/imgTrack" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/viewAddToQuee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="12dp"
+        android:paddingTop="8dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="12dp">
+        android:paddingBottom="8dp">
 
         <ImageButton
             android:id="@+id/btnAddAsNext"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
@@ -212,66 +106,223 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/pangram_bold"
+            android:fontFamily="@font/roboto_black"
             android:text="@string/label_play_next"
             android:textColor="?android:textColorPrimary"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewAddToPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/btnAddToPlaylist"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/two_2dp"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_playlist_add_rounded" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_black"
+            android:text="@string/label_add_to"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/shareVia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_share_light"
+            app:tint="?android:textColorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_black"
+            android:text="@string/label_share"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/favController"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/favIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_heart_solid"
+            app:tint="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/favLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_black"
+            android:text="@string/btn_unfavorite"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewRemoveFromCurrentPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/twenty_four_24dp"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/btnDeleteFromCurrentPlaylist"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/two_2dp"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_remove_circle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_black"
+            android:text="@string/remove_from_this_playlist"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/twenty_four_24dp"
         app:cardBackgroundColor="@color/cardAdBackgroundColor">
 
         <com.google.android.gms.ads.nativead.NativeAdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="@dimen/twenty_four_24dp"
             android:paddingStart="@dimen/eight_8dp"
             android:paddingTop="@dimen/four_4dp"
             android:paddingEnd="@dimen/eight_8dp"
-            android:paddingBottom="@dimen/sixteen_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="@dimen/eight_8dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/eight_8dp"
+                android:layout_marginTop="@dimen/eight_8dp">
 
-                <ImageView
-                    android:id="@+id/ad_icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:adjustViewBounds="true"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:paddingBottom="5dp"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/ad_media_card"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toStartOf="@id/guidLine"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.gms.ads.nativead.MediaView
+                        android:id="@+id/ad_media"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        tools:background="@drawable/image_chart_latin" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.4" />
 
                 <TextView
                     android:id="@+id/ad_headline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/sixteen_16dp"
-                    android:layout_marginEnd="@dimen/sixteen_16dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="@dimen/eight_8dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/pangram_bold"
                     android:maxLines="1"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@id/ad_attribution"
-                    app:layout_constraintStart_toEndOf="@id/ad_icon"
-                    app:layout_constraintTop_toTopOf="@id/ad_icon"
+                    app:layout_constraintStart_toEndOf="@id/guidLine"
+                    app:layout_constraintTop_toTopOf="@id/ad_media_card"
                     tools:text="Test Ad" />
 
                 <TextView
                     android:id="@+id/ad_attribution"
                     android:layout_width="25dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/eight_8dp"
                     android:background="@drawable/bg_ad_attribute"
                     android:fontFamily="@font/pangram_bold"
                     android:gravity="center"
@@ -284,94 +335,105 @@
                     tools:ignore="HardcodedText,SmallSp" />
 
                 <TextView
+                    android:id="@+id/ad_body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="@dimen/four_4dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/pangram_regular"
+                    android:maxLines="2"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/ad_headline"
+                    app:layout_constraintTop_toBottomOf="@id/ad_headline"
+                    tools:text="Ad Body" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ad_call_to_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/pangram_bold"
+                    android:gravity="center"
+                    android:insetBottom="0dp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ad_media_card"
+                    app:layout_constraintStart_toStartOf="@id/ad_headline"
+                    tools:text="More info" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/vClickable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ad_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:adjustViewBounds="true"
+                    tools:src="@drawable/img_genre_latest_arabic" />
+
+                <TextView
+                    android:id="@+id/ad_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pangram_regular"
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingRight="5dp"
+                    android:textSize="11sp"
+                    tools:ignore="SmallSp"
+                    tools:text="FREE" />
+
+                <TextView
+                    android:id="@+id/ad_store"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pangram_regular"
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingRight="5dp"
+                    android:textSize="11sp"
+                    tools:ignore="SmallSp"
+                    tools:text="Google" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
                     android:id="@+id/ad_advertiser"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:alpha="0.8"
-                    android:fontFamily="@font/pangram_bold"
+                    android:fontFamily="@font/pangram_regular"
                     android:gravity="bottom"
                     android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@id/ad_headline"
-                    app:layout_constraintTop_toBottomOf="@id/ad_headline" />
+                    android:textStyle="bold" />
 
                 <RatingBar
                     android:id="@+id/ad_stars"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/eight_8dp"
                     android:isIndicator="true"
                     android:numStars="5"
-                    android:stepSize="0.5"
-                    app:layout_constraintStart_toEndOf="@id/ad_advertiser"
-                    app:layout_constraintTop_toTopOf="@id/ad_advertiser" />
-
-                <TextView
-                    android:id="@+id/ad_body"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="@dimen/eight_8dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/pangram_regular"
-                    android:maxLines="3"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/ad_headline"
-                    app:layout_constraintTop_toBottomOf="@id/ad_stars"
-                    tools:text="Ad Body" />
-
-                <com.google.android.gms.ads.nativead.MediaView
-                    android:id="@+id/ad_media"
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/ad_body" />
-
-                <TextView
-                    android:id="@+id/ad_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingEnd="5dp"
-                    android:paddingRight="5dp"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="@id/ad_headline"
-                    app:layout_constraintTop_toBottomOf="@id/ad_media"
-                    tools:text="2000 MAD" />
-
-                <TextView
-                    android:id="@+id/ad_store"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingEnd="5dp"
-                    android:paddingRight="5dp"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="@id/ad_headline"
-                    app:layout_constraintTop_toBottomOf="@id/ad_price"
-                    tools:text="Store" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/ad_call_to_action"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/thirty_two_32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="@dimen/thirty_two_32dp"
-                    android:fontFamily="@font/pangram_bold"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="16sp"
-                    app:cornerRadius="4dp"
-                    app:layout_constraintStart_toStartOf="@id/ad_headline"
-                    app:layout_constraintTop_toBottomOf="@id/ad_store"
-                    tools:text="Open" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:stepSize="0.5" />
+            </LinearLayout>
 
         </com.google.android.gms.ads.nativead.NativeAdView>
     </com.google.android.material.card.MaterialCardView>
