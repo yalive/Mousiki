@@ -24,6 +24,4 @@ class LocalSongsViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(frag
             else -> LocalSongsFragment()
         }
     }
-
-
 }

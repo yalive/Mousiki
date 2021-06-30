@@ -157,6 +157,10 @@
     <string name="confirm_clear_search_history_message">Are you sure you want to clear all search history?</string>
     <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
 
+    <!-- Local songs -->
     <string name="internal_storage">Internal Storage</string>
     <string name="external_storage">SD Card</string>
+    <string name="local_songs_no_permission_title">Allow to play music?</string>
+    <string name="local_songs_no_permission_description">Please allow Mousiki to access storage permission to play music</string>
+    <string name="allow">Allow</string>
 </resources>

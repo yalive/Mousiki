@@ -22,6 +22,12 @@ class LocalSongsViewModel(
         loadAllSongs()
     }
 
+    fun loadAllSongs() {
+        _localSongs.value = localSongsRepository.songs().map {
+            LocalSong(it).toDisplayedVideoItem()
+        }
+    }
+
     fun onClickTrack(track: Track) = scope.launch {
         val tracks = _localSongs.value
             ?.filterIsInstance<DisplayedVideoItem>()
@@ -33,11 +39,5 @@ class LocalSongsViewModel(
         val currentItems = _localSongs.value ?: return
         val updatedList = updateCurrentPlaying(currentItems)
         _localSongs.value = updatedList
-    }
-
-    private fun loadAllSongs() {
-        _localSongs.value = localSongsRepository.songs().map {
-            LocalSong(it).toDisplayedVideoItem()
-        }
     }
 }

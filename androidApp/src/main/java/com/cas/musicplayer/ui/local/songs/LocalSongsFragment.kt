@@ -14,7 +14,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 
 class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
     R.layout.local_songs_fragment
-) {
+), StoragePermissionDelegate by StoragePermissionDelegateImpl() {
 
     override val viewModel by viewModel { Injector.localSongsViewModel }
 
@@ -26,6 +26,7 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.localSongsRecyclerView.adapter = adapter
         observe(viewModel.localSongs, adapter::submitList)
         observe(PlaybackLiveData) { state ->
@@ -34,9 +35,17 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
                 || state == PlayerConstants.PlayerState.PAUSED
                 || state == PlayerConstants.PlayerState.ENDED
             ) {
-               viewModel.onPlaybackStateChanged()
+                viewModel.onPlaybackStateChanged()
             }
+        }
+        checkStoragePermission(binding.localSongsRecyclerView, binding.storagePermissionView) {
+            viewModel.loadAllSongs()
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
 }
