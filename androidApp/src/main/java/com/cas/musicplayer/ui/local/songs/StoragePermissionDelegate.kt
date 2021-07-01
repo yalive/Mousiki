@@ -1,7 +1,10 @@
 package com.cas.musicplayer.ui.local.songs
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -70,9 +73,16 @@ class StoragePermissionDelegateImpl : StoragePermissionDelegate {
             permissionView.root.isVisible = false
             mainView.isVisible = true
             StoragePermissionGranted.value = Unit
+        } else if (grantResults.first() == PackageManager.PERMISSION_DENIED) {
+            try {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val context = mainView.context
+                val uri: Uri = Uri.fromParts("package", context.packageName, null)
+                intent.data = uri
+                context.startActivity(intent)
+            } catch (e: Exception) {
+            }
         }
-
-        // TODO: Handle denied
     }
 
     companion object {
