@@ -11,7 +11,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/thirty_two_32dp"
         android:clipToPadding="false"
         android:paddingTop="32dp"
         android:paddingBottom="@dimen/padding_for_player_space"

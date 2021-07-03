@@ -5,11 +5,15 @@ import android.os.Build
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
+import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.isDarkMode
+import com.cas.musicplayer.R
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.resolve
@@ -32,7 +36,6 @@ abstract class BaseFragment<T : BaseViewModel>(
 
     override fun onResume() {
         super.onResume()
-        setupToolbar()
         observe(viewModel.toast.asLiveData()) {
             it?.getContentIfNotHandled()?.let { value ->
                 val message = requireContext().resolve(value)
@@ -41,43 +44,42 @@ abstract class BaseFragment<T : BaseViewModel>(
         }
         analyticsApi.logScreenView(javaClass.simpleName)
     }
+}
 
-    private fun setupToolbar() {
-        val compatActivity = activity as? AppCompatActivity ?: return
-        if (withToolbar()) {
-            compatActivity.title = screenTitle
-            compatActivity.supportActionBar?.show()
-        } else {
-            compatActivity.supportActionBar?.hide()
-        }
+
+fun Fragment.adjustStatusBarWithTheme() {
+    if (requireContext().isDarkMode()) {
+        requireActivity().window.statusBarColor =
+            requireContext().themeColor(R.attr.colorSurface)
+        darkStatusBar()
+    } else {
+        requireActivity().window.statusBarColor = Color.WHITE
+        lightStatusBar()
     }
+}
 
-    open fun withToolbar(): Boolean = true
-
-    fun lightStatusBar() {
-        val window = requireActivity().window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val flags = window.decorView.systemUiVisibility
-            window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+fun Fragment.lightStatusBar() {
+    val window = requireActivity().window
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val flags = window.decorView.systemUiVisibility
+        window.decorView.systemUiVisibility = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
+}
 
-    fun darkStatusBar() {
-        val window = requireActivity().window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val flags = window.decorView.systemUiVisibility
-            window.decorView.systemUiVisibility =
-                flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-        }
+fun Fragment.darkStatusBar() {
+    val window = requireActivity().window
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val flags = window.decorView.systemUiVisibility
+        window.decorView.systemUiVisibility =
+            flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
     }
+}
 
-    fun adjustStatusBarWithTheme() {
-        if (requireContext().isDarkMode()) {
-            requireActivity().window.statusBarColor = Color.BLACK
-            darkStatusBar()
-        } else {
-            requireActivity().window.statusBarColor = Color.WHITE
-            lightStatusBar()
-        }
-    }
+fun Fragment.setupToolbar(
+    toolbar: Toolbar,
+    @StringRes title: Int,
+    onBack: () -> Unit = { findNavController().popBackStack() }
+) {
+    toolbar.setTitle(title)
+    toolbar.setNavigationOnClickListener { onBack() }
 }

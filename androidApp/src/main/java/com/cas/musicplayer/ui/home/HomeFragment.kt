@@ -21,6 +21,8 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
+import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.utils.viewBinding
 import com.facebook.ads.*
@@ -34,9 +36,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(
     private val binding by viewBinding(FragmentHomeBinding::bind)
 
     override val viewModel by viewModel { Injector.homeViewModel }
-    override val screenTitle: String by lazy {
-        getString(R.string.app_name)
-    }
 
     private val recyclerView: RecyclerView
         get() = binding.recyclerView
@@ -86,8 +85,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(
             }
         }
     }
-
-    override fun withToolbar(): Boolean = false
 
     private fun observeViewModel() {
         observe(viewModel.homeItems.asLiveData()) { items ->

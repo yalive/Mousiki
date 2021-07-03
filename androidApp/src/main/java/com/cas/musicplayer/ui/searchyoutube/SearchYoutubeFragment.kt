@@ -1,16 +1,13 @@
 package com.cas.musicplayer.ui.searchyoutube
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -27,13 +24,12 @@ import com.cas.musicplayer.databinding.FragmentSearchYoutubeBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.viewBinding
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  **********************************
@@ -47,8 +43,8 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
     private val binding by viewBinding(FragmentSearchYoutubeBinding::bind)
 
     public override val viewModel by viewModel { Injector.searchYoutubeViewModel }
-    private var searchView: SearchView? = null
-    private var searchItem: MenuItem? = null
+    private val searchView: SearchView
+        get() = binding.searchView
 
     private val viewPager: ViewPager
         get() = binding.viewPager
@@ -78,51 +74,29 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             viewPager.gone()
             progressBar.visible()
             removeQueryListener()
-            searchView?.setQuery(suggestion.value, false)
+            searchView.setQuery(suggestion.value, false)
             attachQueryListener()
-            searchView?.hideSoftKeyboard()
+            searchView.hideSoftKeyboard()
             viewModel.search(suggestion.value)
-            searchView?.clearFocus()
+            searchView.clearFocus()
         },
         onClickAutocomplete = { suggestion ->
-            searchView?.setQuery(suggestion.value, false)
+            searchView.setQuery(suggestion.value, false)
         },
         onClickRemoveHistoricItem = {
             viewModel.removeHistoricItem(it)
         }
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_toolbar, menu)
-        searchItem = menu.findItem(R.id.searchYoutubeFragment)
-        searchView = searchItem?.actionView as SearchView
-        searchView?.queryHint = getString(R.string.search_button_title)
-
-        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                if ((activity as? MainActivity)?.isBottomPanelExpanded() == true) {
-                    (activity as? MainActivity)?.collapseBottomPanel()
-                    return false
-                }
-                view?.hideSoftKeyboard()
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(200)
-                    findNavController().popBackStack()
-                }
-                return true
-            }
-        })
-        searchItem?.expandActionView()
+    private fun setupSearchView() {
+        searchView.queryHint = getString(R.string.search_button_title)
+        searchView.isFocusable = true
+        searchView.isIconified = false
         attachQueryListener()
+        observe(DeviceInset) { inset ->
+            binding.root.updatePadding(top = inset.top)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -150,16 +124,18 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
                     viewModel.clearUserSearchHistory()
                 }.show()
         }
+        binding.btnBack.onClick { findNavController().popBackStack() }
         observeViewModel()
         adjustStatusBarWithTheme()
+        setupSearchView()
     }
 
     private fun removeQueryListener() {
-        searchView?.setOnQueryTextListener(null)
+        searchView.setOnQueryTextListener(null)
     }
 
     private fun attachQueryListener() {
-        searchView?.setOnQueryTextListener(queryChangeListener)
+        searchView.setOnQueryTextListener(queryChangeListener)
     }
 
     private fun observeViewModel() {
@@ -168,6 +144,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             progressBar.gone()
             binding.suggestionsView.gone()
         }
+
         observe(viewModel.searchSuggestions.asLiveData()) { suggestions ->
             binding.suggestionsView.visible()
             viewPager.gone()

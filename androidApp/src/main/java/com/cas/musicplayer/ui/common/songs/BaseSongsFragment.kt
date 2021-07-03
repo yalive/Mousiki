@@ -21,6 +21,7 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageRes
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageUrl
@@ -154,8 +155,6 @@ abstract class BaseSongsFragment<T : BaseViewModel>
             }
         }
     }
-
-    override fun withToolbar(): Boolean = false
 
     protected fun loadFeaturedImage(featuredImage: AppImage) {
         when (featuredImage) {

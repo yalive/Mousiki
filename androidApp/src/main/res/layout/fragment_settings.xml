@@ -6,6 +6,9 @@
     android:orientation="vertical"
     tools:context="com.cas.musicplayer.ui.settings.SettingsFragment">
 
+    <include
+        android:id="@+id/toolbarView"
+        layout="@layout/toolbar" />
 
     <TextView
         android:id="@+id/btnDarkMode"
