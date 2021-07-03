@@ -18,7 +18,7 @@ class LocalAlbumsViewModel(
         loadAllAlbums()
     }
 
-    private fun loadAllAlbums() {
+    fun loadAllAlbums() {
         _albums.value = albumRepository.albums()
     }
 }

@@ -18,7 +18,8 @@ class LocalArtistsViewModel(
         loadAllLocalArtists()
     }
 
-    private fun loadAllLocalArtists() {
-        _localArtists.value = localArtistRepository.artists()
+    fun loadAllLocalArtists() {
+        val artists = localArtistRepository.artists()
+        _localArtists.value = artists
     }
 }
