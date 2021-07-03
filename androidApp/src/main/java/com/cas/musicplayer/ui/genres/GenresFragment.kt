@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.genres
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cas.common.dpToPixel
 import com.cas.common.recyclerview.MarginItemDecoration
@@ -13,7 +14,10 @@ import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
+import com.cas.musicplayer.ui.base.setupToolbar
 import com.cas.musicplayer.ui.searchyoutube.GenreAdapterDelegate
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.viewBinding
 
 /**
@@ -26,9 +30,6 @@ class GenresFragment : BaseFragment<GenresViewModel>(
 ) {
 
     override val viewModel by viewModel { Injector.genresViewModel }
-    override val screenTitle: String by lazy {
-        getString(R.string.genres)
-    }
     private val binding by viewBinding(FragmentGenresBinding::bind)
 
     private val adapter by lazy {
@@ -41,7 +42,7 @@ class GenresFragment : BaseFragment<GenresViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.setTitle(R.string.genres)
+        setupToolbar(binding.toolbarView.toolbar, R.string.genres)
         val eightDp = dpToPixel(8)
         binding.recyclerView.itemsMarginDecorator(MarginItemDecoration(
             horizontalMargin = eightDp,
@@ -66,6 +67,9 @@ class GenresFragment : BaseFragment<GenresViewModel>(
             }
         adjustStatusBarWithTheme()
         observeViewModel()
+        observe(DeviceInset) { inset ->
+            binding.root.updatePadding(top = inset.top)
+        }
     }
 
     private fun observeViewModel() {

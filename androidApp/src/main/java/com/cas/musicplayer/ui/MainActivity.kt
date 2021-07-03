@@ -1,24 +1,18 @@
 package com.cas.musicplayer.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.get
-import androidx.core.view.isVisible
+import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.adcolony.sdk.AdColony
 import com.cas.common.extensions.bool
 import com.cas.common.extensions.fromDynamicLink
-import com.cas.common.extensions.isDarkMode
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
@@ -30,7 +24,6 @@ import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
@@ -59,53 +52,19 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         initMediationSDK()
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
-
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            binding.appbar.setExpanded(true, true)
-            if (destination.id == R.id.homeFragment) {
-                binding.toolbar.title = getString(R.string.app_name)
-            }
             updateBottomNavigationMenu(destination.id)
-            val showBack = showBackForDestination(destination)
-            supportActionBar?.setDisplayHomeAsUpEnabled(showBack)
-            enableAppBarScrollingBehavior(destination.id != R.id.libraryFragment)
         }
         adsViewModel.apply {
             // just to prepare ads
         }
         setupPlayerFragment()
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.coordinator) { v, insets ->
-            if (insets.systemWindowInsetTop > 0) {
-                DeviceInset.value = ScreenInset(
-                    insets.systemWindowInsetLeft,
-                    insets.systemWindowInsetTop,
-                    insets.systemWindowInsetRight,
-                    insets.systemWindowInsetBottom
-                )
-            }
-            var consumed = false
-            val viewGroup = v as ViewGroup
-            for (i in 0 until viewGroup.childCount) {
-                val child = viewGroup.getChildAt(i)
-                // Dispatch the insets to the child
-                val childResult = ViewCompat.dispatchApplyWindowInsets(child, insets)
-                // If the child consumed the insets, record it
-                if (childResult.isConsumed) {
-                    consumed = true
-                }
-            }
-            // If any of the children consumed the insets, return
-            // an appropriate value
-            if (consumed) insets.consumeSystemWindowInsets() else insets
-        }
-
         binding.bottomNavView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navHome -> handleClickMenuHome()
@@ -130,6 +89,28 @@ class MainActivity : BaseActivity() {
             }
         }
         viewModel.checkStartFromShortcut(intent.data?.toString())
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            if (insets.top > 0) {
+                DeviceInset.value =
+                    ScreenInset(insets.left, insets.top, insets.right, insets.bottom)
+            }
+            var consumed = false
+            val viewGroup = v as ViewGroup
+            for (i in 0 until viewGroup.childCount) {
+                val child = viewGroup.getChildAt(i)
+                // Dispatch the insets to the child
+                val childResult = ViewCompat.dispatchApplyWindowInsets(child, windowInsets)
+                // If the child consumed the insets, record it
+                if (childResult.isConsumed) {
+                    consumed = true
+                }
+            }
+            // If any of the children consumed the insets, return
+            // an appropriate value
+            if (consumed) WindowInsetsCompat.CONSUMED else windowInsets
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -138,15 +119,6 @@ class MainActivity : BaseActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun showBackForDestination(destination: NavDestination): Boolean {
-        return destination.id == R.id.favouriteSongsFragment
-                || destination.id == R.id.settingsFragment
-                || destination.id == R.id.genresFragment
-                || destination.id == R.id.addTrackToPlaylistFragment
-                || destination.id == R.id.createPlaylistFragment
-                || destination.id == R.id.artistsFragment
     }
 
     private fun updateBottomNavigationMenu(destinationId: Int) {
@@ -171,7 +143,6 @@ class MainActivity : BaseActivity() {
             viewModel.onDoubleClickSearchNavigation()
             return
         }
-        binding.appbar.setExpanded(true, true)
         if (!navController.popBackStack(R.id.mainSearchFragment, false)) {
             navController.navigate(R.id.mainSearchFragment)
         }
@@ -208,9 +179,7 @@ class MainActivity : BaseActivity() {
                 playerFragment.openBatterySaverMode()
             }
         }
-        ViewCompat.requestApplyInsets(binding.coordinator)
         handleDynamicLinks()
-
 
         // Clean intent
         intent = intent.apply {
@@ -237,29 +206,6 @@ class MainActivity : BaseActivity() {
             .replace(R.id.playerContainer, playerFragment)
             .commit()
         playerFragment.collapsePlayer()
-    }
-
-    private fun adjustStatusBarWhenPanelCollapsed() {
-        val id = navController.currentDestination?.id
-        if (id == R.id.settingsFragment
-            || id == R.id.libraryFragment
-            || id == R.id.mainSearchFragment
-            || id == R.id.createPlaylistFragment
-            || id == R.id.genresFragment
-            || id == R.id.favouriteSongsFragment
-            || id == R.id.artistsFragment
-        ) {
-            if (isDarkMode() || id == R.id.createPlaylistFragment) {
-                window.statusBarColor = Color.BLACK
-                darkStatusBar()
-            } else {
-                window.statusBarColor = Color.WHITE
-                lightStatusBar()
-            }
-        } else {
-            darkStatusBar()
-            window.statusBarColor = Color.TRANSPARENT
-        }
     }
 
     override fun onBackPressed() {
@@ -361,13 +307,6 @@ class MainActivity : BaseActivity() {
     private fun wasLaunchedFromRecent(): Boolean {
         val flags: Int = intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
         return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
-    }
-
-    private fun enableAppBarScrollingBehavior(enabled: Boolean) {
-        val yourView = binding.coordinator.get(1)
-        val params = yourView.layoutParams as CoordinatorLayout.LayoutParams
-        params.behavior = if (enabled) AppBarLayout.ScrollingViewBehavior() else null
-        yourView.requestLayout()
     }
 
     companion object {

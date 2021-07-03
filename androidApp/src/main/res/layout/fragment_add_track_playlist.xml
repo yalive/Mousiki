@@ -7,6 +7,10 @@
     android:minWidth="300dp"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/toolbarView"
+        layout="@layout/toolbar" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCreatePlaylist"
         android:layout_width="wrap_content"

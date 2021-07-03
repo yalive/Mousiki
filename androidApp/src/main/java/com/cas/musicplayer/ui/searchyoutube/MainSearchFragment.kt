@@ -16,6 +16,7 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
@@ -71,8 +72,6 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
             )
         }
     }
-
-    override fun withToolbar(): Boolean = false
 
     private fun observeViewModel() {
         observe(viewModel.genres, searchGenresAdapter::submitList)

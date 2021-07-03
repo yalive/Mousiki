@@ -7,10 +7,11 @@ import android.view.inputmethod.EditorInfo
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentCreatePalylistBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.utils.toast
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.domain.models.YtbTrack
@@ -54,8 +55,6 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
         view?.hideSoftKeyboard()
         findNavController().popBackStack()
     }
-
-    override fun withToolbar(): Boolean = false
 }
 
 
