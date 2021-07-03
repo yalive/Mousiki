@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/toolbarView"
+        layout="@layout/toolbar" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordGroup"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

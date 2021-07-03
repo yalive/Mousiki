@@ -3,15 +3,19 @@ package com.cas.musicplayer.ui.playlist.create
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
-import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.tmp.observeEvent
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentAddTrackPlaylistBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
+import com.cas.musicplayer.ui.base.setupToolbar
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.longToast
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.domain.models.YtbTrack
@@ -21,16 +25,13 @@ import com.mousiki.shared.domain.models.YtbTrack
  * Created by Y.Abdelhadi on 4/4/20.
  ***************************************
  */
-class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
+class AddTrackToPlaylistFragment : Fragment(
     R.layout.fragment_add_track_playlist
 ) {
-    override val viewModel by lazy {
+    val viewModel by lazy {
         Injector.addTrackToPlaylistViewModel.also {
             it.init(track)
         }
-    }
-    override val screenTitle: String by lazy {
-        getString(R.string.add_to_playlist)
     }
 
     private val binding by viewBinding(FragmentAddTrackPlaylistBinding::bind)
@@ -44,6 +45,7 @@ class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar(binding.toolbarView.toolbar, R.string.add_to_playlist)
         binding.recyclerView.adapter = adapter
         observe(viewModel.playlists) { playlists ->
             adapter.dataItems = playlists.toMutableList()
@@ -69,9 +71,10 @@ class AddTrackToPlaylistFragment : BaseFragment<AddTrackToPlaylistViewModel>(
             )
         }
         adjustStatusBarWithTheme()
+        observe(DeviceInset) { inset ->
+            binding.root.updatePadding(top = inset.top)
+        }
     }
-
-    override fun withToolbar(): Boolean = true
 
     companion object {
         val EXTRAS_TRACK = "extras.track"

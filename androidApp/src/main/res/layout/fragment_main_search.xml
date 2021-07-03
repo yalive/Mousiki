@@ -5,7 +5,6 @@
     android:id="@+id/motionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     app:layoutDescription="@xml/main_search_scene">
 
     <TextView

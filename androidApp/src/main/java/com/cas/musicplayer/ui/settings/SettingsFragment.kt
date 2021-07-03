@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSettingsBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
+import com.cas.musicplayer.ui.base.setupToolbar
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.ui.settings.rate.writeFeedback
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
@@ -22,16 +27,15 @@ import com.mousiki.shared.preference.UserPrefs
 class SettingsFragment : BaseFragment<SettingsViewModel>(
     R.layout.fragment_settings
 ) {
-
     override val viewModel by viewModel { Injector.settingsViewModel }
-    override val screenTitle: String by lazy {
-        getString(R.string.menu_settings)
-    }
-
     private val binding by viewBinding(FragmentSettingsBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observe(DeviceInset) { inset ->
+            binding.toolbarView.toolbar.updatePadding(top = inset.top)
+        }
+        setupToolbar(binding.toolbarView.toolbar, R.string.menu_settings)
         adjustStatusBarWithTheme()
         binding.btnDarkMode.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
@@ -77,7 +81,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         binding.btnShareApp.onClick {
             Utils.shareAppVia()
         }
-
         binding.btnOutVideoSize.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
                 .setSingleChoiceItems(

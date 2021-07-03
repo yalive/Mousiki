@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
@@ -24,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
+import com.cas.common.dpToPixel
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -223,6 +225,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         setUpUserEvents()
         observe(DeviceInset) { inset ->
             binding.fullScreenSwitchView.updatePadding(top = inset.top)
+            binding.playbackControlsView.updatePadding(bottom = inset.bottom)
+
+            // collapsed
+            val constraintSet = binding.motionLayout.getConstraintSet(R.id.collapsed)
+            constraintSet.setMargin(
+                R.id.miniPlayerView,
+                ConstraintSet.BOTTOM,
+                inset.bottom + dpToPixel(56)
+            )
         }
         binding.txtTitle.isSelected = true
     }
