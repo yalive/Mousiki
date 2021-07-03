@@ -13,4 +13,9 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="8"
         tools:listitem="@layout/item_local_album" />
+
+    <include
+        android:id="@+id/storagePermissionView"
+        layout="@layout/layout_no_storage_permission"
+        android:visibility="gone" />
 </FrameLayout>

@@ -3,17 +3,17 @@ package com.mousiki.shared.domain.models
 val Track.imgUrlDef0: String
     get() = when (this) {
         is LocalSong -> albumImage
-        is MusicTrack -> this.imgUrlDef0
+        is YtbTrack -> this.imgUrlDef0
     }
 
 
-val MusicTrack.imgUrlDef0: String
+val YtbTrack.imgUrlDef0: String
     get() = "https://img.youtube.com/vi/$youtubeId/0.jpg"
 
-val MusicTrack.imgUrlDefault: String
+val YtbTrack.imgUrlDefault: String
     get() = "https://img.youtube.com/vi/$youtubeId/default.jpg"
 
-val MusicTrack.imgUrl: String
+val YtbTrack.imgUrl: String
     get() {
         if (fullImageUrl.startsWith("http")) {
             return fullImageUrl
@@ -24,13 +24,13 @@ val MusicTrack.imgUrl: String
 val Track.imgUrlDefault: String
     get() = when (this) {
         is LocalSong -> albumImage
-        is MusicTrack -> this.imgUrlDefault
+        is YtbTrack -> this.imgUrlDefault
     }
 
 val Track.imgUrl: String
     get() = when (this) {
         is LocalSong -> albumImage
-        is MusicTrack -> this.imgUrl
+        is YtbTrack -> this.imgUrl
     }
 
 val Track.durationFormatted: String
@@ -46,10 +46,10 @@ val Track.durationFormatted: String
                 "$hours:${minutes.twoDigits()}:${seconds.twoDigits()}"
             }
         }
-        is MusicTrack -> this.durationFormatted
+        is YtbTrack -> this.durationFormatted
     }
 
-val MusicTrack.durationFormatted: String
+val YtbTrack.durationFormatted: String
     get() {
 
         if (!duration.startsWith("PT")) {

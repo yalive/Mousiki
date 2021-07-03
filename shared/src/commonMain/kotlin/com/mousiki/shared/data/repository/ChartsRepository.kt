@@ -1,7 +1,7 @@
 package com.mousiki.shared.data.repository
 
 import com.mousiki.shared.domain.models.ChartModel
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 
 /**
  ***************************************
@@ -112,6 +112,6 @@ class ChartsRepository() {
         } != null
     }
 
-    suspend fun loadChartLightTracks(chart: ChartModel): List<MusicTrack> =
+    suspend fun loadChartLightTracks(chart: ChartModel): List<YtbTrack> =
         emptyList()
 }

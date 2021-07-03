@@ -5,7 +5,7 @@ import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.RemoteSongsDataSource
 import com.mousiki.shared.data.db.FavouriteTrackEntity
 import com.mousiki.shared.data.db.toMusicTrack
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
 import com.mousiki.shared.preference.UserPrefs
@@ -32,8 +32,8 @@ class SongsRepository(
 
     suspend fun getTrendingSongs(
         max: Int,
-        lastKnown: MusicTrack? = null
-    ): Result<List<MusicTrack>> {
+        lastKnown: YtbTrack? = null
+    ): Result<List<YtbTrack>> {
         if (lastKnown == null) {
             // First load
             if (localDataSource.numberOfSongs() > 0 && localDataSource.expired() && networkUtils.hasNetworkConnection()) {
@@ -48,14 +48,14 @@ class SongsRepository(
         }
     }
 
-    suspend fun getFavouriteSongs(max: Int = 10): List<MusicTrack> =
+    suspend fun getFavouriteSongs(max: Int = 10): List<YtbTrack> =
         withContext(Dispatchers.Default) {
             return@withContext favouriteTracksDaoSql.getSongs(max.toLong()).executeAsList().map {
                 it.toMusicTrack()
             }
         }
 
-    suspend fun getFavouriteSongsFlow(max: Int = 10): Flow<List<MusicTrack>> =
+    suspend fun getFavouriteSongsFlow(max: Int = 10): Flow<List<YtbTrack>> =
         withContext(Dispatchers.Default) {
             return@withContext favouriteTracksDaoSql.getSongs(max.toLong())
                 .asFlow()
@@ -63,7 +63,7 @@ class SongsRepository(
                 .map { it.map(FavouriteTrackEntity::toMusicTrack) }
         }
 
-    suspend fun addSongToFavourite(track: MusicTrack) = withContext(Dispatchers.Default) {
+    suspend fun addSongToFavourite(track: YtbTrack) = withContext(Dispatchers.Default) {
         favouriteTracksDaoSql.insert(
             FavouriteTrackEntity(
                 id = 0,

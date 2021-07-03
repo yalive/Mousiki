@@ -35,7 +35,7 @@ import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -196,7 +196,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                         val title = metadata.description.title
                         val duration = PlayerQueue.value?.duration
                         if (mediaId != null && title != null && duration != null) {
-                            val track = MusicTrack(
+                            val track = YtbTrack(
                                 youtubeId = mediaId,
                                 title = title.toString(),
                                 duration = duration

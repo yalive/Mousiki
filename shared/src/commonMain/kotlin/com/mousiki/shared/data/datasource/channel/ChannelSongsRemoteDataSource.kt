@@ -9,7 +9,7 @@ import com.mousiki.shared.data.remote.mapper.YTBSearchResultToVideoId
 import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
 import com.mousiki.shared.data.remote.mapper.toListMapper
 import com.mousiki.shared.data.remote.runner.NetworkRunner
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.fs.FileSystem
@@ -34,7 +34,7 @@ class ChannelSongsRemoteDataSource(
     private val appConfig: RemoteAppConfig
 ) {
 
-    suspend fun getChannelSongs(artist: Artist): Result<List<MusicTrack>> {
+    suspend fun getChannelSongs(artist: Artist): Result<List<YtbTrack>> {
         if (appConfig.searchArtistTracksFromMousikiApi()) {
             val resultSearch = loadArtistTracksFromMousikiApi(artist)
             if (resultSearch is Result.Success && resultSearch.data.isNotEmpty()) {
@@ -66,7 +66,7 @@ class ChannelSongsRemoteDataSource(
         return loadArtistTracksFromMousikiApi(artist)
     }
 
-    private suspend fun loadArtistTracksFromMousikiApi(artist: Artist): Result<List<MusicTrack>> {
+    private suspend fun loadArtistTracksFromMousikiApi(artist: Artist): Result<List<YtbTrack>> {
         return networkRunner.loadWithRetry(appConfig.artistSongsApiConfig()) { apiUrl ->
             mousikiApi.searchChannel(apiUrl, artist.channelId).tracks()
         }

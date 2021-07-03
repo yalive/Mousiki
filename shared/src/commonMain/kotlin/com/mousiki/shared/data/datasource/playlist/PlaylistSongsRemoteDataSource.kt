@@ -10,7 +10,7 @@ import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
 import com.mousiki.shared.data.remote.mapper.toListMapper
 import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.data.repository.GenresRepository
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.fs.FileSystem
@@ -37,7 +37,7 @@ class PlaylistSongsRemoteDataSource(
     private val storage: StorageApi
 ) {
 
-    suspend fun getPlaylistSongs(playlistId: String): Result<List<MusicTrack>> {
+    suspend fun getPlaylistSongs(playlistId: String): Result<List<YtbTrack>> {
         val resultFromApi = networkRunner.loadWithRetry(appConfig.playlistApiConfig()) { apiUrl ->
             mousikiApi.getPlaylistDetail(apiUrl, playlistId).tracks()
         }

@@ -8,11 +8,13 @@ import com.cas.musicplayer.databinding.LocalAlbumsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.local.songs.StoragePermissionDelegate
+import com.cas.musicplayer.ui.local.songs.StoragePermissionDelegateImpl
 import com.cas.musicplayer.utils.viewBinding
 
 class LocalAlbumsFragment : BaseFragment<LocalAlbumsViewModel>(
     R.layout.local_albums_fragment
-) {
+), StoragePermissionDelegate by StoragePermissionDelegateImpl() {
 
     companion object {
         fun newInstance() = LocalAlbumsFragment()
@@ -29,9 +31,16 @@ class LocalAlbumsFragment : BaseFragment<LocalAlbumsViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.albumsRecyclerView.adapter = adapter
-
         observe(viewModel.albums, adapter::submitList)
-
+        checkStoragePermission(binding.albumsRecyclerView, binding.storagePermissionView) {
+            viewModel.loadAllAlbums()
+        }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
 
 }

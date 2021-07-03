@@ -2,7 +2,7 @@ package com.cas.musicplayer.ui.bottomsheet
 
 import androidx.lifecycle.viewModelScope
 import com.mousiki.shared.ui.base.BaseViewModel
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.usecase.customplaylist.DeleteTrackFromCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
@@ -20,15 +20,15 @@ class TrackOptionsViewModel(
     private val deleteTrackFromCustomPlaylist: DeleteTrackFromCustomPlaylistUseCase
 ) : BaseViewModel() {
 
-    fun makeSongAsFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
-        addSongToFavourite(musicTrack)
+    fun makeSongAsFavourite(ytbTrack: YtbTrack) = viewModelScope.launch {
+        addSongToFavourite(ytbTrack)
     }
 
-    fun removeSongFromFavourite(musicTrack: MusicTrack) = viewModelScope.launch {
-        removeSongFromFavouriteList(musicTrack.youtubeId)
+    fun removeSongFromFavourite(ytbTrack: YtbTrack) = viewModelScope.launch {
+        removeSongFromFavouriteList(ytbTrack.youtubeId)
     }
 
-    fun removeSongFromPlaylist(musicTrack: MusicTrack, playlist: Playlist) = viewModelScope.launch {
-        deleteTrackFromCustomPlaylist(musicTrack, playlist.title)
+    fun removeSongFromPlaylist(ytbTrack: YtbTrack, playlist: Playlist) = viewModelScope.launch {
+        deleteTrackFromCustomPlaylist(ytbTrack, playlist.title)
     }
 }
