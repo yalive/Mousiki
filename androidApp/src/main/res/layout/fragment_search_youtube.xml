@@ -1,84 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/eight_8dp"
-        android:background="@drawable/bg_circle"
-        android:indeterminateTint="@color/colorYellow"
-        android:padding="@dimen/four_4dp"
-        android:visibility="gone"
-        tools:visibility="gone" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
-        tools:listitem="@layout/item_fav_video"
-        tools:visibility="visible" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/suggestionsView"
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="8dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/clearHistoryView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="txtHistory,btnClearHistory" />
-
-        <TextView
-            android:id="@+id/txtHistory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_large"
-            android:text="@string/suggestion_history"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/btnClearHistory"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnClearHistory" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnClearHistory"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/suggestion_clear_history_button_title"
-            android:textColor="@color/colorBlue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="@dimen/spacing_small"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?colorOnSurface" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewSuggestions"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+            android:layout_height="38dp"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:background="@drawable/bg_search_view"
+            android:iconifiedByDefault="true"
+            app:closeIcon="@drawable/ic_close_16dp_themed"
+            app:iconifiedByDefault="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnClearHistory"
-            tools:listitem="@layout/item_youtube_serach_suggestion"
-            tools:visibility="visible" />
+            app:layout_constraintStart_toEndOf="@+id/btnBack"
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryBackground="@null"
+            app:theme="@style/AppSearchView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eight_8dp"
+            android:background="@drawable/bg_circle"
+            android:indeterminateTint="@color/colorYellow"
+            android:padding="@dimen/four_4dp"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+            tools:listitem="@layout/item_fav_video"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/suggestionsView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="8dp"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/clearHistoryView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="txtHistory,btnClearHistory" />
+
+            <TextView
+                android:id="@+id/txtHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:text="@string/suggestion_history"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/btnClearHistory"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btnClearHistory" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClearHistory"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/spacing_x_small"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/suggestion_clear_history_button_title"
+                android:textColor="@color/colorBlue"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSuggestions"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/eight_8dp"
+                android:layout_marginEnd="@dimen/eight_8dp"
+                app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnClearHistory"
+                tools:listitem="@layout/item_youtube_serach_suggestion"
+                tools:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</LinearLayout>

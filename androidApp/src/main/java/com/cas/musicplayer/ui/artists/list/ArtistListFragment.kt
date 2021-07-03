@@ -4,6 +4,7 @@ package com.cas.musicplayer.ui.artists.list
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,15 +16,18 @@ import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentArtistsBinding
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.ui.base.BaseFragment
-import com.mousiki.shared.ui.resource.Resource
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.artists.sidebar.SideBar
+import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
+import com.cas.musicplayer.ui.base.setupToolbar
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.ui.resource.Resource
 
 
 class ArtistListFragment : BaseFragment<ArtistListViewModel>(
@@ -31,9 +35,6 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
 ) {
 
     override val viewModel by activityViewModel { Injector.artistListViewModel }
-    override val screenTitle by lazy {
-        getString(R.string.artists)
-    }
     private val binding by viewBinding(FragmentArtistsBinding::bind)
 
     private lateinit var adapter: ArtistListAdapter
@@ -43,6 +44,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
+        setupToolbar(binding.toolbarView.toolbar, R.string.artists)
         sideBar = view.findViewById(R.id.sideBar)
         txtDialog = view.findViewById(R.id.txtDialog)
         setupRecyclerView()
@@ -53,6 +55,9 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
             filterArtists()
         }
         filterArtists()
+        observe(DeviceInset) { inset ->
+            binding.root.updatePadding(top = inset.top)
+        }
     }
 
     override fun onPause() {

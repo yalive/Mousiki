@@ -80,7 +80,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         }
         binding.imgTrack.loadTrackImage(ytbTrack)
         binding.txtTrackTitle.text = ytbTrack.title
-        binding.txtTrackArtist.text = musicTrack.artistName
+        binding.txtTrackArtist.text = ytbTrack.artistName
         binding.shareVia.onClick {
             Utils.shareWithDeepLink(ytbTrack, requireContext())
             if (this.isVisible) {

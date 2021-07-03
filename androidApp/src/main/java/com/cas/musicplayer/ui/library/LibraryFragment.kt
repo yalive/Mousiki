@@ -16,6 +16,7 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.library.adapters.LibraryAdapter
@@ -36,7 +37,6 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
 ) {
 
     override val viewModel by viewModel { Injector.libraryViewModel }
-    override val screenTitle by lazy { "" }
     private val binding by viewBinding(FragmentLibraryBinding::bind)
 
     private val adapter by lazy {
@@ -74,8 +74,6 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
 
         observeViewModel()
     }
-
-    override fun withToolbar(): Boolean = false
 
     override fun onResume() {
         super.onResume()

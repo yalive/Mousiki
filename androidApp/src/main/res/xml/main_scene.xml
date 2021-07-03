@@ -17,7 +17,7 @@
 
     <ConstraintSet android:id="@+id/bottomBarHidden">
         <Constraint
-            android:id="@+id/coordinator"
+            android:id="@+id/nav_host_fragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             motion:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/coordinator" />
+            motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment" />
 
         <Constraint
             android:id="@+id/queueFragmentContainer"
@@ -48,7 +48,7 @@
             motion:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
-            android:id="@+id/coordinator"
+            android:id="@+id/nav_host_fragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             motion:layout_constraintBottom_toTopOf="@+id/bottomNavView"
