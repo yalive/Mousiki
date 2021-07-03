@@ -2,7 +2,7 @@ package com.cas.musicplayer.player
 
 import android.util.Log
 import com.mousiki.shared.domain.models.LocalSong
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 
 const val TAG_PLAYER = "MultiPlayer"
 
@@ -22,7 +22,7 @@ class MultiPlayer(
                 ytbPlayer.pause()
                 localPlayer.loadVideo(videoId, startSeconds)
             }
-            is MusicTrack -> {
+            is YtbTrack -> {
                 currentPlayer = ytbPlayer
                 localPlayer.pause()
                 ytbPlayer.loadVideo(videoId, startSeconds)
@@ -39,7 +39,7 @@ class MultiPlayer(
                 ytbPlayer.pause()
                 localPlayer.cueVideo(videoId, startSeconds)
             }
-            is MusicTrack -> {
+            is YtbTrack -> {
                 currentPlayer = ytbPlayer
                 localPlayer.pause()
                 ytbPlayer.cueVideo(videoId, startSeconds)

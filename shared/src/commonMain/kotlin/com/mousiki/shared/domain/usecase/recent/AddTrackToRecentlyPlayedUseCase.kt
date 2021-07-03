@@ -2,7 +2,7 @@ package com.mousiki.shared.domain.usecase.recent
 
 import com.mousiki.shared.data.repository.StatisticsRepository
 import com.mousiki.shared.domain.models.LocalSong
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Track
 
 /**
@@ -17,7 +17,7 @@ class AddTrackToRecentlyPlayedUseCase(
         when (track) {
             is LocalSong -> {
             }/*TODO("Not yet implemented")*/
-            is MusicTrack -> statisticsRepository.addTrackToRecent(track)
+            is YtbTrack -> statisticsRepository.addTrackToRecent(track)
         }
     }
 }

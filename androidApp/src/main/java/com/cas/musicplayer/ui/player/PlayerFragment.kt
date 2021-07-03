@@ -440,7 +440,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         // Show
         binding.vAudio.isVisible = track is LocalSong
         binding.btnYoutube.alpha =
-            if (track is MusicTrack) 1.0f else 0.0f // Not working: a motion layout trick!!
+            if (track is YtbTrack) 1.0f else 0.0f // Not working: a motion layout trick!!
     }
 
     @SuppressLint("SetTextI18n")

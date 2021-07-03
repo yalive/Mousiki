@@ -4,7 +4,7 @@ import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.HistoricTrackEntity
 import com.mousiki.shared.data.db.RecentPlayedTrack
 import com.mousiki.shared.data.db.toMusicTrack
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ class StatisticsRepository(
     private val recentlyPlayedTracksDao by lazy { db.recentPlayedTracksQueries }
     private val historicTracksDao by lazy { db.historicTracksQueries }
 
-    suspend fun addTrackToRecent(track: MusicTrack) {
+    suspend fun addTrackToRecent(track: YtbTrack) {
         recentlyPlayedTracksDao.insert(
             RecentPlayedTrack(
                 id = 0,
@@ -50,26 +50,26 @@ class StatisticsRepository(
         }
     }
 
-    suspend fun getRecentlyPlayedTracks(max: Int = 10): List<MusicTrack> {
+    suspend fun getRecentlyPlayedTracks(max: Int = 10): List<YtbTrack> {
         return recentlyPlayedTracksDao.getSongs(max.toLong()).executeAsList().map {
             it.toMusicTrack()
         }
     }
 
-    suspend fun getRecentlyPlayedTracksFlow(max: Int = 10): Flow<List<MusicTrack>> {
+    suspend fun getRecentlyPlayedTracksFlow(max: Int = 10): Flow<List<YtbTrack>> {
         return recentlyPlayedTracksDao.getSongs(max.toLong())
             .asFlow()
             .mapToList()
             .map { it.map(RecentPlayedTrack::toMusicTrack) }
     }
 
-    suspend fun getHeavyList(max: Int = 10): List<MusicTrack> {
+    suspend fun getHeavyList(max: Int = 10): List<YtbTrack> {
         return historicTracksDao.getHeavyList(max.toLong()).executeAsList().map {
             it.toMusicTrack()
         }
     }
 
-    suspend fun getHeavyListFlow(max: Int = 10): Flow<List<MusicTrack>> =
+    suspend fun getHeavyListFlow(max: Int = 10): Flow<List<YtbTrack>> =
         withContext(Dispatchers.Default) {
             return@withContext historicTracksDao.getHeavyList(max.toLong())
                 .asFlow()

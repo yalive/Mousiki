@@ -17,7 +17,7 @@ class FoldersViewModel(
         loadAllFolders()
     }
 
-    private fun loadAllFolders() {
+    fun loadAllFolders() {
         val folders1 = foldersRepository.getFolders()
         _folders.value = folders1
     }

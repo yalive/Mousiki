@@ -1,11 +1,11 @@
 package com.mousiki.shared.data.db
 
 import com.mousiki.shared.db.Favourite_tracks
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 
 typealias FavouriteTrackEntity = Favourite_tracks
 
-fun Favourite_tracks.toMusicTrack() = MusicTrack(
+fun Favourite_tracks.toMusicTrack() = YtbTrack(
     youtubeId = youtube_id,
     title = title,
     duration = duration,

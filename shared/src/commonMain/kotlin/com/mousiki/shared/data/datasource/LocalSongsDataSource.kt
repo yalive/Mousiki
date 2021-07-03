@@ -4,7 +4,7 @@ import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.TrendingTrackEntity
 import com.mousiki.shared.data.db.toMusicTrack
 import com.mousiki.shared.db.TrendingTrackQueries
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.utils.elapsedRealtime
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ class LocalSongsDataSource constructor(
 
     private val trendingQuery: TrendingTrackQueries = db.trendingTrackQueries
 
-    suspend fun getTrendingSongs(max: Int, lastKnown: MusicTrack? = null): List<MusicTrack> =
+    suspend fun getTrendingSongs(max: Int, lastKnown: YtbTrack? = null): List<YtbTrack> =
         withContext(Dispatchers.Default) {
             numberOfSongs()
             val dao = db.trendingTrackQueries
@@ -39,7 +39,7 @@ class LocalSongsDataSource constructor(
                 .map { it.toMusicTrack() }
         }
 
-    suspend fun saveTrendingSongs(tracks: List<MusicTrack>) = withContext(Dispatchers.Default) {
+    suspend fun saveTrendingSongs(tracks: List<YtbTrack>) = withContext(Dispatchers.Default) {
         if (numberOfSongs() == 0) {
             preferences.setMostPopularSongsUpdateDate()
         }

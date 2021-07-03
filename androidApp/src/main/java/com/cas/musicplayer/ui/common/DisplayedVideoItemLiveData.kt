@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.Track
 
 /**

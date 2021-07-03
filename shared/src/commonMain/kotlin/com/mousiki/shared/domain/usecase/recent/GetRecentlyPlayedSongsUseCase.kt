@@ -1,7 +1,7 @@
 package com.mousiki.shared.domain.usecase.recent
 
 import com.mousiki.shared.data.repository.StatisticsRepository
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 
 /**
  ***************************************
@@ -11,7 +11,7 @@ import com.mousiki.shared.domain.models.MusicTrack
 class GetRecentlyPlayedSongsUseCase(
     private val statisticsRepository: StatisticsRepository
 ) {
-    suspend operator fun invoke(): List<MusicTrack> {
+    suspend operator fun invoke(): List<YtbTrack> {
         return statisticsRepository.getRecentlyPlayedTracks()
     }
 }

@@ -1,7 +1,7 @@
 package com.mousiki.shared.domain.usecase.library
 
 import com.mousiki.shared.data.repository.SongsRepository
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 
 /**
  ***************************************
@@ -11,7 +11,7 @@ import com.mousiki.shared.domain.models.MusicTrack
 class GetFavouriteTracksUseCase(
     private val songsRepository: SongsRepository
 ) {
-    suspend operator fun invoke(max: Int = 10): List<MusicTrack> {
+    suspend operator fun invoke(max: Int = 10): List<YtbTrack> {
         return songsRepository.getFavouriteSongs(max)
     }
 }

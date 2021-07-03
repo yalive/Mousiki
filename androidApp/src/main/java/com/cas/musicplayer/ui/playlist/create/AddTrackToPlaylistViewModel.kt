@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.utils.Constants
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
@@ -27,7 +27,7 @@ class AddTrackToPlaylistViewModel(
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val addSongToFavourite: AddSongToFavouriteUseCase
 ) : BaseViewModel() {
-    private lateinit var track: MusicTrack
+    private lateinit var track: YtbTrack
     private val _playlists = MutableLiveData<List<Playlist>>()
     val playlists: LiveData<List<Playlist>>
         get() = _playlists
@@ -36,7 +36,7 @@ class AddTrackToPlaylistViewModel(
     val trackAddedToPlaylist: LiveData<Event<Playlist>>
         get() = _trackAddedToPlaylist
 
-    fun init(track: MusicTrack) {
+    fun init(track: YtbTrack) {
         this.track = track
         loadCustomPlaylists()
     }

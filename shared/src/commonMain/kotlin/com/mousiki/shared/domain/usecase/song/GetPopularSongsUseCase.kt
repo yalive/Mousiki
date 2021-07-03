@@ -1,7 +1,7 @@
 package com.mousiki.shared.domain.usecase.song
 
 import com.mousiki.shared.data.repository.SongsRepository
-import com.mousiki.shared.domain.models.MusicTrack
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 
 /**
@@ -13,7 +13,7 @@ class GetPopularSongsUseCase(
     private val repository: SongsRepository
 ) {
 
-    suspend operator fun invoke(max: Int, lastKnown: MusicTrack? = null): Result<List<MusicTrack>> {
+    suspend operator fun invoke(max: Int, lastKnown: YtbTrack? = null): Result<List<YtbTrack>> {
         return repository.getTrendingSongs(max, lastKnown)
     }
 }
