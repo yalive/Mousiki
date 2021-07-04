@@ -11,9 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.isDarkMode
-import com.cas.musicplayer.R
 import com.cas.musicplayer.tmp.observe
-import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.resolve
@@ -30,7 +28,6 @@ abstract class BaseFragment<T : BaseViewModel>(
 ) : Fragment(layoutResourceId), KoinComponent {
 
     protected abstract val viewModel: T
-    protected open val screenTitle = ""
 
     private val analyticsApi by lazy { get<AnalyticsApi>() }
 
@@ -48,14 +45,8 @@ abstract class BaseFragment<T : BaseViewModel>(
 
 
 fun Fragment.adjustStatusBarWithTheme() {
-    if (requireContext().isDarkMode()) {
-        requireActivity().window.statusBarColor =
-            requireContext().themeColor(R.attr.colorSurface)
-        darkStatusBar()
-    } else {
-        requireActivity().window.statusBarColor = Color.WHITE
-        lightStatusBar()
-    }
+    requireActivity().window.statusBarColor = Color.TRANSPARENT
+    if (requireContext().isDarkMode()) darkStatusBar() else lightStatusBar()
 }
 
 fun Fragment.lightStatusBar() {

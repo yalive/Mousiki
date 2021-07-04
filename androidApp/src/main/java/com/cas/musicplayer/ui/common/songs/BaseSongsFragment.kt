@@ -1,7 +1,6 @@
 package com.cas.musicplayer.ui.common.songs
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Parcelable
@@ -104,7 +103,6 @@ abstract class BaseSongsFragment<T : BaseViewModel>
             binding.topGuideline.setGuidelineBegin(inset.top)
             binding.bottomGuideline.setGuidelineBegin(inset.top + dpToPixel(56))
         })
-        requireActivity().window.statusBarColor = Color.TRANSPARENT
         darkStatusBar()
         try {
             featuredImage?.let { loadFeaturedImage(it) }
