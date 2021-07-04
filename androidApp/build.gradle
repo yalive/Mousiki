@@ -145,7 +145,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
     implementation 'com.google.firebase:firebase-analytics:18.0.0'
     implementation 'com.google.firebase:firebase-config-ktx:20.0.2'
-    implementation 'com.google.firebase:firebase-ads:19.6.0'
+    implementation 'com.google.firebase:firebase-ads:20.2.0'
     implementation 'com.google.firebase:firebase-core:18.0.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
     implementation 'com.google.firebase:firebase-dynamic-links:19.1.1'
@@ -159,8 +159,8 @@ dependencies {
     implementation 'com.google.ads.mediation:adcolony:4.3.0.0'
     implementation 'com.google.ads.mediation:mopub:5.17.0.0'
     implementation 'com.google.ads.mediation:unity:3.6.0.0'
-    implementation 'com.google.ads.mediation:facebook:6.4.0.0'
-    implementation 'com.facebook.android:audience-network-sdk:6.4.0'
+    implementation 'com.google.ads.mediation:facebook:6.5.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.5.0'
     implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
 
     // Shimmer effect
