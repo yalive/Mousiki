@@ -39,14 +39,7 @@ class LibraryFragment : BaseFragment<LibraryViewModel>(
     override val viewModel by viewModel { Injector.libraryViewModel }
     private val binding by viewBinding(FragmentLibraryBinding::bind)
 
-    private val adapter by lazy {
-        LibraryAdapter(viewModel)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    private val adapter by lazy { LibraryAdapter(viewModel) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
