@@ -1,9 +1,11 @@
 package com.mousiki.shared.ui.home
 
 import com.mousiki.shared.ads.FacebookAdsDelegate
+import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.MusicTrack
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
@@ -41,11 +43,13 @@ class HomeViewModel(
     private val preferencesHelper: PreferencesHelper,
     playSongDelegate: PlaySongDelegate,
     facebookAdsDelegate: FacebookAdsDelegate,
+    getListAdsDelegate: GetListAdsDelegate
 ) : BaseViewModel(), PlaySongDelegate by playSongDelegate,
-    FacebookAdsDelegate by facebookAdsDelegate {
+    FacebookAdsDelegate by facebookAdsDelegate,
+    GetListAdsDelegate by getListAdsDelegate {
 
-    private val _homeItems = MutableStateFlow<List<HomeItem>?>(null)
-    val homeItems: StateFlow<List<HomeItem>?> = _homeItems
+    private val _homeItems = MutableStateFlow<List<DisplayableItem>?>(null)
+    val homeItems: StateFlow<List<DisplayableItem>?> = _homeItems
 
     init {
         getHome()
@@ -171,8 +175,10 @@ class HomeViewModel(
     }
 
     private suspend fun prepareAds() {
+        if (!appConfig.homeNativeAdsEnabled()) return
+        awaitLoadAds()
         // 1 - Load Facebook native ads (3 ads)
-        val ads = getHomeFacebookNativeAds(3)
+        val ads = getNativeAds(3)
         if (ads.isEmpty()) return
 
         // 2 - Insert ads in specific positions
@@ -196,7 +202,7 @@ class HomeViewModel(
         _homeItems.value = homeListItems
     }
 
-    private fun updateItem(item: HomeItem, where: (HomeItem) -> Boolean) {
+    private fun updateItem(item: DisplayableItem, where: (DisplayableItem) -> Boolean) {
         val homeListItems = _homeItems.value?.toMutableList() ?: return
         val index = homeListItems.indexOfFirst { where(it) }
         homeListItems[index] = item
@@ -208,7 +214,7 @@ class HomeViewModel(
     }
 
     // For iOS
-    val homeItemsFlow: CommonFlow<List<HomeItem>?>
+    val homeItemsFlow: CommonFlow<List<DisplayableItem>?>
         get() = homeItems.asCommonFlow()
 }
 

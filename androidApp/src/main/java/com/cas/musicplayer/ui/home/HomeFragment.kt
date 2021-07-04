@@ -11,7 +11,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.dpToPixel
 import com.cas.common.extensions.isDarkMode
+import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.enforceSingleScrollDirection
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -21,6 +23,7 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.common.ads.AdsItem
 import com.cas.musicplayer.ui.home.adapters.HomeAdapter
 import com.cas.musicplayer.utils.viewBinding
 import com.facebook.ads.*
@@ -70,6 +73,14 @@ class HomeFragment : BaseFragment<HomeViewModel>(
                     adjustStatusBar()
                 }
             })
+            addItemDecoration(MarginItemDecoration(
+                topMarginProvider = { position ->
+                    when (viewModel.homeItems.value?.get(position)) {
+                        is AdsItem -> dpToPixel(32)
+                        else -> 0
+                    }
+                }
+            ))
         }
 
         observeViewModel()
