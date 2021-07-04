@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.playlist.create
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -42,7 +41,6 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
         binding.editPlaylistName.requestFocus()
         binding.editPlaylistName.showSoftInputOnFocus = true
         darkStatusBar()
-        requireActivity().window.statusBarColor = Color.BLACK
     }
 
     private fun createPlaylist() {

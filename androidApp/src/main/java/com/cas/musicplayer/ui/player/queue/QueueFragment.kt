@@ -23,6 +23,7 @@ import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
+import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.popular.SongsDiffUtil
 import com.cas.musicplayer.utils.*
@@ -168,6 +169,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
     override fun onResume() {
         super.onResume()
         analyticsApi.logScreenView(javaClass.simpleName)
+        darkStatusBar()
     }
 
     private fun loadAndBlurImage(video: Track) {
