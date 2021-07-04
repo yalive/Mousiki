@@ -39,6 +39,8 @@ import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
+import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
@@ -382,6 +384,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.btnPlayOption.setImageResource(
             UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
         )
+        adjustStatusBarWithTheme()
     }
 
     fun openBatterySaverMode() {
@@ -514,6 +517,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     parentMotionLayout?.progress = 0.0f
                 } else if (currentId == R.id.hidden) {
                     mediaController?.transportControls?.stop()
+                }
+
+                if (currentId == R.id.expanded) {
+                    darkStatusBar()
+                } else {
+                    adjustStatusBarWithTheme()
                 }
             }
 
