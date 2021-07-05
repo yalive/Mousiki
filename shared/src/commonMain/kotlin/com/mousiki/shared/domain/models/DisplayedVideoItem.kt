@@ -55,3 +55,5 @@ fun List<Track>.toDisplayedVideoItems(
 fun DisplayedVideoItem.artistName(): String {
     return track.artistName
 }
+
+fun DisplayedVideoItem.isLocalSong(): Boolean = track is LocalSong

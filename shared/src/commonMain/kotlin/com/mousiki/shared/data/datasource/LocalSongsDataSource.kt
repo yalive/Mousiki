@@ -2,7 +2,7 @@ package com.mousiki.shared.data.datasource
 
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.TrendingTrackEntity
-import com.mousiki.shared.data.db.toMusicTrack
+import com.mousiki.shared.data.db.toTrack
 import com.mousiki.shared.db.TrendingTrackQueries
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.preference.PreferencesHelper
@@ -31,12 +31,12 @@ class LocalSongsDataSource constructor(
                 if (songEntity != null) {
                     val songs =
                         dao.getSongsStartingFrom(songEntity.id, max.toLong()).executeAsList()
-                    return@withContext songs.map { it.toMusicTrack() }
+                    return@withContext songs.map { it.toTrack() }
                 }
             }
             return@withContext dao.getSongs(max.toLong())
                 .executeAsList()
-                .map { it.toMusicTrack() }
+                .map { it.toTrack() }
         }
 
     suspend fun saveTrendingSongs(tracks: List<YtbTrack>) = withContext(Dispatchers.Default) {

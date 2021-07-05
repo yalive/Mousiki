@@ -43,7 +43,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
     var onDismissed: (() -> Unit)? = null
 
-    lateinit var ytbTrack: YtbTrack
+    lateinit var ytbTrack: Track
 
     private val viewModel by lazy { Injector.trackOptionsViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
@@ -71,7 +71,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             }
         }
         ytbTrack = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
-        if (!UserPrefs.isFav(ytbTrack.youtubeId)) {
+        if (!UserPrefs.isFav(ytbTrack.id)) {
             binding.favIcon.setImageResource(R.drawable.ic_heart_light)
             binding.favLabel.text = getString(R.string.btn_favorite)
         } else {
@@ -90,7 +90,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
         binding.favController.onClick {
             Executors.newSingleThreadExecutor().execute {
-                if (UserPrefs.isFav(ytbTrack.youtubeId)) {
+                if (UserPrefs.isFav(ytbTrack.id)) {
                     viewModel.removeSongFromFavourite(ytbTrack)
                 } else {
                     viewModel.makeSongAsFavourite(ytbTrack)

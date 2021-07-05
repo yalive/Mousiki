@@ -21,7 +21,7 @@ class SearchLocalDataSource(
 
     suspend fun getSearchSongsResultForQuery(query: String): List<YtbTrack> {
         return searchSongDao.getResultForQuery(query).executeAsList().map {
-            it.toMusicTrack()
+            it.toTrack()
         }
     }
 

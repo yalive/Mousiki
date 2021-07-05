@@ -96,27 +96,18 @@ object PlayerQueue : MutableLiveData<Track>() {
     }
 
     fun pause() {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_PAUSE, true)
         startForegroundService(intent)
     }
 
     fun resume() {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_RESUME, true)
         startForegroundService(intent)
     }
 
     fun seekTo(to: Long) {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
 
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SEEK_TO, to)
@@ -124,9 +115,6 @@ object PlayerQueue : MutableLiveData<Track>() {
     }
 
     fun scheduleStopMusic(duration: Int) {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
         if (value == null) return
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_SCHEDULE_TIMER, duration)
@@ -163,18 +151,12 @@ object PlayerQueue : MutableLiveData<Track>() {
     }
 
     fun playCurrentTrack() {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_PLAY, true)
         startForegroundService(intent)
     }
 
     private fun cueTrack() {
-        if (!MusicApp.get().canDrawOverApps()) {
-            return
-        }
         val intent = Intent(MusicApp.get(), MusicPlayerService::class.java)
         intent.putExtra(MusicPlayerService.COMMAND_CUE, true)
         startForegroundService(intent)
