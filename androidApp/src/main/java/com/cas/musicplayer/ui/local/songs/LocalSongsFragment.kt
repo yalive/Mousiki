@@ -28,7 +28,14 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         super.onViewCreated(view, savedInstanceState)
 
         binding.localSongsRecyclerView.adapter = adapter
-        observe(viewModel.localSongs, adapter::submitList)
+        observe(viewModel.localSongs) {
+            adapter.submitList(it)
+            binding.songsCount.text = resources.getQuantityString(
+                R.plurals.playlist_tracks_counts,
+                it.size,
+                it.size
+            )
+        }
         observe(PlaybackLiveData) { state ->
             if (state == PlayerConstants.PlayerState.PLAYING
                 || state == PlayerConstants.PlayerState.BUFFERING

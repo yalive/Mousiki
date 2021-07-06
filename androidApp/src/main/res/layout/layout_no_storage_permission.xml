@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/spacing_xxx_large"
         android:adjustViewBounds="true"
         android:alpha="0.5"
-        android:src="@drawable/ic_no_songs"
+        android:src="@drawable/ic_music_note"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
