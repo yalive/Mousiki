@@ -4,7 +4,8 @@ import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.RemoteSongsDataSource
 import com.mousiki.shared.data.db.FavouriteTrackEntity
-import com.mousiki.shared.data.db.toMusicTrack
+import com.mousiki.shared.data.db.toTrack
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
@@ -48,31 +49,31 @@ class SongsRepository(
         }
     }
 
-    suspend fun getFavouriteSongs(max: Int = 10): List<YtbTrack> =
+    suspend fun getFavouriteSongs(max: Int = 10): List<Track> =
         withContext(Dispatchers.Default) {
             return@withContext favouriteTracksDaoSql.getSongs(max.toLong()).executeAsList().map {
-                it.toMusicTrack()
+                it.toTrack()
             }
         }
 
-    suspend fun getFavouriteSongsFlow(max: Int = 10): Flow<List<YtbTrack>> =
+    suspend fun getFavouriteSongsFlow(max: Int = 10): Flow<List<Track>> =
         withContext(Dispatchers.Default) {
             return@withContext favouriteTracksDaoSql.getSongs(max.toLong())
                 .asFlow()
                 .mapToList()
-                .map { it.map(FavouriteTrackEntity::toMusicTrack) }
+                .map { it.map(FavouriteTrackEntity::toTrack) }
         }
 
-    suspend fun addSongToFavourite(track: YtbTrack) = withContext(Dispatchers.Default) {
+    suspend fun addSongToFavourite(track: Track) = withContext(Dispatchers.Default) {
         favouriteTracksDaoSql.insert(
             FavouriteTrackEntity(
                 id = 0,
-                youtube_id = track.youtubeId,
+                youtube_id = track.id,
                 title = track.title,
                 duration = track.duration
             )
         )
-        UserPrefs.saveFav(track.youtubeId, true)
+        UserPrefs.saveFav(track.id, true)
     }
 
     suspend fun removeSongFromFavourite(trackId: String) = withContext(Dispatchers.Default) {

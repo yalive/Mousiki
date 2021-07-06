@@ -7,8 +7,9 @@ package com.mousiki.shared.utils
  */
 object Constants {
 
-    const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
     const val FAV_PLAYLIST_NAME = "Favourite"
+    const val RECENT_PLAYLIST_NAME = "Recently_Played"
+    const val MOST_PLAYED_PLAYLIST_NAME = "Most_Played"
 
     const val MUSIC_TRACK_KEY = "MUSIC_TRACK"
 

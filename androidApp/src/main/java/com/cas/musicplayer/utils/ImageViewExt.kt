@@ -12,8 +12,7 @@ import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.models.imgUrlDef0
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -42,6 +41,16 @@ fun ImageView.tintColor(color: Int) {
 fun ImageView.loadTrackImage(
     track: Track
 ) {
+
+    if (track is LocalSong) {
+        Picasso.get().load(track.imgUrl)
+            .placeholder(R.drawable.ic_music_note)
+            .error(R.drawable.ic_music_note)
+            .fit()
+            .into(this)
+        return
+    }
+
     try {
         val url = UserPrefs.getTrackImageUrl(track)
         if (url.isNotEmpty()) {

@@ -7,7 +7,7 @@ import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCas
 import com.mousiki.shared.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
-import com.mousiki.shared.domain.usecase.library.GetHeavyTracksUseCase
+import com.mousiki.shared.domain.usecase.library.GetHeavyTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.ui.base.BaseViewModel
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
  */
 class LibraryViewModel(
     private val getRecentlyPlayedSongsFlow: GetRecentlyPlayedSongsFlowUseCase,
-    private val getHeavyTracksFlow: GetHeavyTracksUseCase,
+    private val getHeavyTracksFlowFlow: GetHeavyTracksFlowUseCase,
     private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val getCustomPlaylists: GetCustomPlaylistsUseCase,
@@ -78,7 +78,7 @@ class LibraryViewModel(
     }
 
     private fun collectHeavy() = scope.launch {
-        getHeavyTracksFlow(10)
+        getHeavyTracksFlowFlow(10)
             .filter { it.size >= 3 }
             .collect { songs ->
                 _heavySongs.value = tracksToDisplayableItems(songs)
