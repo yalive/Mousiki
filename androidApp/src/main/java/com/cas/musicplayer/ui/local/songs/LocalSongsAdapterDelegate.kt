@@ -2,11 +2,14 @@ package com.cas.musicplayer.ui.local.songs
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.dpToPixel
@@ -69,6 +72,10 @@ class LocalSongsAdapterDelegate(
             else itemView.context.themeColor(R.attr.colorOnSurface)
             binding.txtTitle.setTextColor(colorText)
             binding.indicatorPlaying.setMusicPlayingState(song)
+            binding.btnMore.onClick {
+                val fm = itemView.findFragment<Fragment>().childFragmentManager
+                TrackOptionsFragment.present(fm, song.track)
+            }
         }
     }
 }

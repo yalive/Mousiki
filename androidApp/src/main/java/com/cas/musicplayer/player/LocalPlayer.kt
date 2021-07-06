@@ -5,9 +5,12 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.audio.AudioAttributes
 import com.mousiki.shared.domain.models.LocalSong
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.*
@@ -16,7 +19,8 @@ import kotlinx.coroutines.*
 class LocalPlayer(
     private val context: Context,
     private val scope: CoroutineScope,
-    private val mediaSessionHandler: MediaSessionHandler
+    private val mediaSessionHandler: MediaSessionHandler,
+    private val localSongsRepository: LocalSongsRepository
 ) : MousikiPlayer, MediaSessionHandler by mediaSessionHandler {
 
     private var playbackProgressJob: Job? = null
@@ -57,6 +61,12 @@ class LocalPlayer(
                     if (isPlaying) updatePlaybackProgress() else playbackProgressJob?.cancel()
                 }
             })
+
+            val audioAttributes = AudioAttributes.Builder()
+                .setUsage(C.USAGE_MEDIA)
+                .setContentType(C.CONTENT_TYPE_SPEECH)
+                .build()
+            setAudioAttributes(audioAttributes, true)
         }
     }
 
@@ -64,13 +74,13 @@ class LocalPlayer(
         Log.d(TAG_PLAYER, "Local player loadVideo $videoId")
         val track = PlayerQueue.getTrack(videoId) ?: return
         if (track !is LocalSong) return
-        exoPlayer.setMediaItem(MediaItem.fromUri(track.data))
+        val data = localSongsRepository.song(videoId.toLong()).data
+        exoPlayer.setMediaItem(MediaItem.fromUri(data))
         exoPlayer.playWhenReady = true
     }
 
     override fun cueVideo(videoId: String, startSeconds: Float) {
         Log.d(TAG_PLAYER, "Local player cueVideo $videoId")
-        TODO("Not yet implemented")
     }
 
     override fun play() {

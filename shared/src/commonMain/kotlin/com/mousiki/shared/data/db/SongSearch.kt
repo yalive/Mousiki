@@ -5,7 +5,7 @@ import com.mousiki.shared.domain.models.YtbTrack
 
 typealias SongSearchEntity = Songs_search_result
 
-fun Songs_search_result.toMusicTrack() = YtbTrack(
+fun Songs_search_result.toTrack() = YtbTrack(
     youtubeId = youtube_id,
     title = title,
     duration = duration,
