@@ -59,7 +59,7 @@ class LibraryHeaderAdapterDelegate : AdapterDelegate<List<DisplayableItem>>() {
         private fun showMore(headerItem: LibraryHeaderItem) {
             val destination = when (headerItem) {
                 LibraryHeaderItem.RecentHeader -> -1
-                is LibraryHeaderItem.FavouriteHeader -> R.id.action_libraryFragment_to_favouriteSongsFragment
+                is LibraryHeaderItem.FavouriteHeader -> -1
                 LibraryHeaderItem.HeavyHeader -> -1
                 LibraryHeaderItem.PlaylistsHeader -> -1
             }

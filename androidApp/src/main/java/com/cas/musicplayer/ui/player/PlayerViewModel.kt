@@ -75,17 +75,11 @@ class PlayerViewModel(
     }
 
     fun makeSongAsFavourite(musicTrack: Track) = viewModelScope.launch {
-        when (musicTrack) {
-            is LocalSong -> TODO("Not yet implemented")
-            is YtbTrack -> addSongToFavourite(musicTrack)
-        }
+        addSongToFavourite(musicTrack)
     }
 
-    fun removeSongFromFavourite(musicTrack: Track) = viewModelScope.launch {
-        when (musicTrack) {
-            is LocalSong -> TODO("Not yet implemented")
-            is YtbTrack -> removeSongFromFavouriteList(musicTrack.youtubeId)
-        }
+    fun removeSongFromFavourite(track: Track) = viewModelScope.launch {
+        removeSongFromFavouriteList(track.id)
     }
 
     fun prepareAds() {

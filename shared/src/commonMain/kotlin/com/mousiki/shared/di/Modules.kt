@@ -139,6 +139,7 @@ val useCasesModule = module {
     factory { AddSongToFavouriteUseCase(get()) }
     factory { GetFavouriteTracksFlowUseCase(get()) }
     factory { GetFavouriteTracksUseCase(get()) }
+    factory { GetHeavyTracksFlowUseCase(get()) }
     factory { GetHeavyTracksUseCase(get()) }
     factory { RemoveSongFromFavouriteListUseCase(get()) }
     factory { AddTrackToRecentlyPlayedUseCase(get()) }
