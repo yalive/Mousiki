@@ -4,7 +4,6 @@ import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
-import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
 import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
@@ -30,14 +29,13 @@ val viewModelsModule = module {
     factory { ArtistListViewModel(get()) }
     factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { GenresViewModel(get()) }
-    factory { FavouriteSongsViewModel(get(), get()) }
     factory { TrackOptionsViewModel(get(), get(), get()) }
     factory { PlayerViewModel(get(), get(), get(), get()) }
     factory { MainSearchViewModel(get()) }
     factory { EmptyViewModel() }
     factory { SettingsViewModel() }
     factory { AddTrackToPlaylistViewModel(get(), get(), get(), get()) }
-    factory { CustomPlaylistSongsViewModel(get(), get(), get()) }
+    factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get()) }
     factory { CreatePlaylistViewModel(get(), get()) }
     factory { QueueViewModel(get()) }
     factory { LocalSongsViewModel(get(), get()) }

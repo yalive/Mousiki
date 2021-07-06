@@ -62,7 +62,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private val sessionHandler by lazy { MediaSessionHandlerImpl(mediaSession) }
     private val ytbPlayer by lazy { YTBPlayer(mediaController, sessionHandler) }
     private val player by lazy {
-        val localPlayer = LocalPlayer(this, lifecycleScope, sessionHandler)
+        val localPlayer = LocalPlayer(
+            context = this,
+            scope = lifecycleScope,
+            mediaSessionHandler = sessionHandler,
+            localSongsRepository = Injector.localSongsRepository
+        )
         MultiPlayer(ytbPlayer, localPlayer)
     }
 

@@ -3,11 +3,17 @@ package com.cas.musicplayer.ui.local.playlists
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalPlaylistBinding
+import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.mousiki.shared.domain.models.Playlist
 import com.squareup.picasso.Picasso
 
@@ -57,6 +63,17 @@ class LocalPlaylistsAdapter :
                     .into(binding.imagePlaylist)
             }
 
+            itemView.onClick {
+                itemView.findNavController().navigate(
+                    R.id.action_localSongsContainerFragment_to_customPlaylistSongsFragment,
+                    bundleOf(
+                        BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
+                            playlist.urlImage
+                        ),
+                        CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to playlist
+                    )
+                )
+            }
         }
     }
 

@@ -13,7 +13,7 @@ import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.utils.toast
 import com.cas.musicplayer.utils.viewBinding
-import com.mousiki.shared.domain.models.YtbTrack
+import com.mousiki.shared.domain.models.Track
 
 /**
  ***************************************
@@ -57,5 +57,5 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
 
 
 private val CreatePlaylistFragment.track
-    get() = arguments?.getParcelable<YtbTrack>(AddTrackToPlaylistFragment.EXTRAS_TRACK)
+    get() = arguments?.getParcelable<Track>(AddTrackToPlaylistFragment.EXTRAS_TRACK)
         ?: throw IllegalStateException("Music track not set")

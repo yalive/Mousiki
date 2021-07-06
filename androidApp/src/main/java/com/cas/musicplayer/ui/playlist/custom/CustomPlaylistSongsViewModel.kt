@@ -7,6 +7,8 @@ import com.cas.musicplayer.tmp.valueOrNull
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
+import com.mousiki.shared.domain.usecase.library.GetHeavyTracksUseCase
+import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
@@ -22,6 +24,8 @@ import kotlinx.coroutines.launch
 class CustomPlaylistSongsViewModel(
     private val getCustomPlaylistTracks: GetCustomPlaylistTracksUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
+    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase,
+    private val getHeavyTracks: GetHeavyTracksUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
     lateinit var playlist: Playlist
@@ -38,6 +42,8 @@ class CustomPlaylistSongsViewModel(
         _songs.value = Resource.Loading
         val tracks = when (playlist.id) {
             Constants.FAV_PLAYLIST_NAME -> getFavouriteTracks(100)
+            Constants.RECENT_PLAYLIST_NAME -> getRecentlyPlayedSongs()
+            Constants.MOST_PLAYED_PLAYLIST_NAME -> getHeavyTracks(100)
             else -> getCustomPlaylistTracks(playlist.title)
         }
         val items = tracks.map {
@@ -75,4 +81,5 @@ class CustomPlaylistSongsViewModel(
         val updatedList = updateCurrentPlaying(currentItems)
         _songs.value = Resource.Success(updatedList)
     }
+
 }

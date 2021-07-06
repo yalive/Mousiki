@@ -5,12 +5,12 @@ import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
-import com.cas.musicplayer.ui.favourite.FavouriteSongsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
 import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
 import com.cas.musicplayer.ui.local.folders.FoldersViewModel
 import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
+import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
@@ -65,9 +65,6 @@ object Injector : KoinComponent {
         get() = get()
 
     val libraryViewModel: LibraryViewModel
-        get() = get()
-
-    val favouriteTracksViewModel: FavouriteSongsViewModel
         get() = get()
 
     val trackOptionsViewModel: TrackOptionsViewModel
@@ -132,5 +129,8 @@ object Injector : KoinComponent {
         get() = get()
 
     val foldersViewModel: FoldersViewModel
+        get() = get()
+
+    val localSongsRepository: LocalSongsRepository
         get() = get()
 }

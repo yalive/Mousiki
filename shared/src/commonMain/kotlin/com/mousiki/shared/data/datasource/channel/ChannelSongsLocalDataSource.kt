@@ -2,7 +2,7 @@ package com.mousiki.shared.data.datasource.channel
 
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.ChannelTrackEntity
-import com.mousiki.shared.data.db.toMusicTrack
+import com.mousiki.shared.data.db.toTrack
 import com.mousiki.shared.domain.models.YtbTrack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,7 +22,7 @@ class ChannelSongsLocalDataSource(
     suspend fun getChannelSongs(channelId: String): List<YtbTrack> =
         withContext(Dispatchers.Default) {
             return@withContext channelSongsDao.getChannelTracks(channelId).executeAsList().map {
-                it.toMusicTrack()
+                it.toTrack()
             }
         }
 
