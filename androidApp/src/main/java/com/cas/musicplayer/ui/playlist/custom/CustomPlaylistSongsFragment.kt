@@ -19,6 +19,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 
 class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewModel>() {
 
+    override val screenName: String = "CustomPlaylistSongsFragment"
     override val viewModel: CustomPlaylistSongsViewModel by viewModel {
         val playlist = arguments?.getParcelable<Playlist>(EXTRAS_PLAYLIST)!!
         Injector.customPlaylistSongsViewModel.also {

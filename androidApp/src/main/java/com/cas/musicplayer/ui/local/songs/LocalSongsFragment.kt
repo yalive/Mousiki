@@ -19,6 +19,7 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
     R.layout.local_songs_fragment
 ), StoragePermissionDelegate by StoragePermissionDelegateImpl() {
 
+    override val screenName: String = "LocalSongsFragment"
     override val viewModel by viewModel { Injector.localSongsViewModel }
 
     private val binding by viewBinding(LocalSongsFragmentBinding::bind)
