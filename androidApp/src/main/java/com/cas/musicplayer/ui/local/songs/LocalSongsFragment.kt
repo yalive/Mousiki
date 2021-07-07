@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.songs
 
 import android.os.Bundle
 import android.view.View
+import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalSongsFragmentBinding
@@ -9,6 +10,8 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.bottomsheet.SortByFragment
+import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
@@ -46,6 +49,17 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
             }
         }
         checkStoragePermission(binding.localSongsRecyclerView, binding.storagePermissionView) {
+            viewModel.loadAllSongs()
+        }
+
+        binding.sortButton.onClick {
+            saveAndSetOrder()
+        }
+    }
+
+    private fun saveAndSetOrder() {
+        SortByFragment.present(childFragmentManager) { currentSortOrder ->
+            PreferenceUtil.songSortOrder = currentSortOrder
             viewModel.loadAllSongs()
         }
     }
