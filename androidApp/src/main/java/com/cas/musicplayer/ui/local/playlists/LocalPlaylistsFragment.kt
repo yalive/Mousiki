@@ -14,6 +14,7 @@ class LocalPlaylistsFragment : BaseFragment<LocalPlaylistsViewModel>(
     R.layout.local_playlists_fragment
 ) {
 
+    override val screenName: String = "LocalPlaylistsFragment"
     override val viewModel by viewModel { Injector.localPlaylistViewModel }
 
     private val binding by viewBinding(LocalPlaylistsFragmentBinding::bind)

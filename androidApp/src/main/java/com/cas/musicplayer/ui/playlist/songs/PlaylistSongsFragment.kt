@@ -17,6 +17,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 
 class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
 
+    override val screenName: String = "PlaylistSongsFragment"
     override val viewModel: PlaylistSongsViewModel by viewModel {
         val playlistId = arguments?.getString(EXTRAS_PLAYLIST_ID)!!
         Injector.playlistVideosViewModel.also {

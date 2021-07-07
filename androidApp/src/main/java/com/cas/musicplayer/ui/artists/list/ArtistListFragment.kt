@@ -34,6 +34,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     R.layout.fragment_artists
 ) {
 
+    override val screenName: String = "ArtistListFragment"
     override val viewModel by activityViewModel { Injector.artistListViewModel }
     private val binding by viewBinding(FragmentArtistsBinding::bind)
 

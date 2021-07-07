@@ -40,6 +40,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
     R.layout.fragment_search_youtube
 ) {
+    override val screenName: String = "SearchYoutubeFragment"
     private val binding by viewBinding(FragmentSearchYoutubeBinding::bind)
 
     public override val viewModel by viewModel { Injector.searchYoutubeViewModel }

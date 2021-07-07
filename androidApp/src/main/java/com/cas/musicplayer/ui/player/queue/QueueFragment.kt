@@ -168,7 +168,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
 
     override fun onResume() {
         super.onResume()
-        analyticsApi.logScreenView(javaClass.simpleName)
+        analyticsApi.logScreenView("QueueFragment")
         darkStatusBar()
     }
 

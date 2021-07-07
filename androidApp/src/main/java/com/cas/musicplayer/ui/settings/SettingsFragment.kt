@@ -23,10 +23,11 @@ import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.preference.UserPrefs
 
-
 class SettingsFragment : BaseFragment<SettingsViewModel>(
     R.layout.fragment_settings
 ) {
+
+    override val screenName: String = "SettingsFragment"
     override val viewModel by viewModel { Injector.settingsViewModel }
     private val binding by viewBinding(FragmentSettingsBinding::bind)
 
