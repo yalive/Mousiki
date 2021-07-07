@@ -163,4 +163,12 @@
     <string name="local_songs_no_permission_title">Allow to play music?</string>
     <string name="local_songs_no_permission_description">Please allow Mousiki to access storage permission to play music</string>
     <string name="allow">Allow</string>
+    <string name="label_sort_by">Sort by</string>
+    <string name="label_sort_a_z">A-Z</string>
+    <string name="label_sort_z_a">Z-A</string>
+    <string name="label_sort_album">Album</string>
+    <string name="label_sort_artist">Artist</string>
+    <string name="label_sort_duration">Duration</string>
+    <string name="label_sort_year">Year</string>
+    <string name="label_sort_last_added">Last Added</string>
 </resources>
