@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso
 
 
 class LocalPlaylistsAdapter :
-    ListAdapter<Playlist, LocalPlaylistsAdapter.ViewHolder>(LocalSongsDiffCallback()) {
+    ListAdapter<Playlist, LocalPlaylistsAdapter.ViewHolder>(PlaylistDiffCallback()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val from = LayoutInflater.from(viewGroup.context)
@@ -79,9 +79,9 @@ class LocalPlaylistsAdapter :
 
 }
 
-class LocalSongsDiffCallback : DiffUtil.ItemCallback<Playlist>() {
+class PlaylistDiffCallback : DiffUtil.ItemCallback<Playlist>() {
     override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
