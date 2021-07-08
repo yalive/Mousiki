@@ -35,7 +35,7 @@ import com.mousiki.shared.ui.library.LibraryViewModel
 class LibraryFragment : BaseFragment<LibraryViewModel>(
     R.layout.fragment_library
 ) {
-
+    override val screenName: String = "LibraryFragment"
     override val viewModel by viewModel { Injector.libraryViewModel }
     private val binding by viewBinding(FragmentLibraryBinding::bind)
 

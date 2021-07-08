@@ -30,6 +30,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 class HomeFragment : BaseFragment<HomeViewModel>(
     R.layout.fragment_home
 ) {
+    override val screenName: String = "HomeFragment"
     private val binding by viewBinding(FragmentHomeBinding::bind)
 
     override val viewModel by viewModel { Injector.homeViewModel }

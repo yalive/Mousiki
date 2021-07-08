@@ -29,6 +29,7 @@ class GenresFragment : BaseFragment<GenresViewModel>(
     R.layout.fragment_genres
 ) {
 
+    override val screenName: String = "GenresFragment"
     override val viewModel by viewModel { Injector.genresViewModel }
     private val binding by viewBinding(FragmentGenresBinding::bind)
 

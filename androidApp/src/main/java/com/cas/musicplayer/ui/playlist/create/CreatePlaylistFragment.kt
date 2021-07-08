@@ -23,6 +23,7 @@ import com.mousiki.shared.domain.models.Track
 class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
     R.layout.fragment_create_palylist
 ) {
+    override val screenName: String = "CreatePlaylistFragment"
     override val viewModel by lazy { Injector.createPlaylistViewModel }
 
     private val binding by viewBinding(FragmentCreatePalylistBinding::bind)

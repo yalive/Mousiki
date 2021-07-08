@@ -20,6 +20,7 @@ class LocalAlbumsFragment : BaseFragment<LocalAlbumsViewModel>(
         fun newInstance() = LocalAlbumsFragment()
     }
 
+    override val screenName: String = "LocalAlbumsFragment"
     override val viewModel by viewModel { Injector.localAlbumsViewModel }
 
     private val binding by viewBinding(LocalAlbumsFragmentBinding::bind)
