@@ -20,6 +20,7 @@ class LocalArtistsFragment : BaseFragment<LocalArtistsViewModel>(
         fun newInstance() = LocalArtistsFragment()
     }
 
+    override val screenName: String = "LocalArtistsFragment"
     override val viewModel by viewModel { Injector.localArtistsViewModel }
 
     private val binding by viewBinding(LocalArtistsFragmentBinding::bind)

@@ -23,10 +23,12 @@ import org.koin.core.component.get
  * Created by Abdelhadi on 2019-06-10.
  ***************************************
  */
+
 abstract class BaseFragment<T : BaseViewModel>(
     @LayoutRes layoutResourceId: Int
 ) : Fragment(layoutResourceId), KoinComponent {
 
+    protected abstract val screenName: String
     protected abstract val viewModel: T
 
     private val analyticsApi by lazy { get<AnalyticsApi>() }
@@ -39,7 +41,7 @@ abstract class BaseFragment<T : BaseViewModel>(
                 Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
             }
         }
-        analyticsApi.logScreenView(javaClass.simpleName)
+        analyticsApi.logScreenView(screenName)
     }
 }
 

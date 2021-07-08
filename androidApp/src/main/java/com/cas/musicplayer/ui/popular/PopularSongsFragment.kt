@@ -20,6 +20,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 
 class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
 
+    override val screenName: String = "PopularSongsFragment"
     override val viewModel by viewModel { Injector.popularSongsViewModel }
     private var gotFirstTrack = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
