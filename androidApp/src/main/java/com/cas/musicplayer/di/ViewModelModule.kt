@@ -5,6 +5,7 @@ import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
+import com.cas.musicplayer.ui.local.albums.AlbumDetailsViewModel
 import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
 import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
 import com.cas.musicplayer.ui.local.folders.FoldersViewModel
@@ -43,4 +44,5 @@ val viewModelsModule = module {
     factory { LocalAlbumsViewModel(get()) }
     factory { LocalArtistsViewModel(get()) }
     factory { FoldersViewModel(get()) }
+    factory { AlbumDetailsViewModel(get(), get()) }
 }
