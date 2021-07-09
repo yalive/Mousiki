@@ -127,4 +127,16 @@
     <style name="AppSearchView" parent="Widget.AppCompat.SearchView">
         <item name="android:textSize">13sp</item>
     </style>
+
+    <style name="AppTheme.SectionBackButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:drawableLeft">@drawable/ic_back</item>
+        <item name="android:text">Back</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+    </style>
 </resources>
