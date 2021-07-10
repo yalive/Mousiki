@@ -8,8 +8,7 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="horizontal"
-    tools:background="@color/colorDarkNavigationView">
+    android:orientation="horizontal">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="55dp"
@@ -26,18 +25,6 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:scaleType="centerInside" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/indicatorPlaying"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="4dp"
-            android:scaleType="centerInside"
-            android:visibility="gone"
-            app:lottie_colorFilter="@color/colorAccent"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/playing_animation" />
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
@@ -62,7 +49,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto"
                 android:maxLines="1"
-                android:textColor="@color/colorWhite"
+                android:textColor="?colorOnSurface"
                 android:textSize="15sp"
                 tools:text="Hello Test" />
         </LinearLayout>
@@ -79,6 +66,19 @@
             tools:text="Hamid " />
     </LinearLayout>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/indicatorPlaying"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="4dp"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:lottie_colorFilter="#03DAC6"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/local_songs_playing_animation"
+        app:tint="#03DAC6" />
+
     <ImageButton
         android:id="@+id/btnMore"
         android:layout_width="wrap_content"
@@ -87,5 +87,6 @@
         android:layout_marginEnd="@dimen/four_4dp"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
+        android:tint="?colorOnSurface"
         app:srcCompat="@drawable/ic_more_vertical" />
 </LinearLayout>

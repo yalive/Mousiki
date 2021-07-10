@@ -38,4 +38,5 @@
     <dimen name="radius_medium">16dp</dimen>
     <dimen name="radius_normal">8dp</dimen>
     <dimen name="radius_small">4dp</dimen>
+    <dimen name="btn_size_header">40dp</dimen>
 </resources>
