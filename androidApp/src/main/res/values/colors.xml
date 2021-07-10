@@ -32,4 +32,9 @@
 
     <color name="colorBlue">#15A1F0</color>
 
+    <color name="buttonBackgroundColor">#F1F1F1</color>
+
+    // local songs colors
+    <color name="localSongsPrimaryColor">#F3CB45</color>
+
 </resources>

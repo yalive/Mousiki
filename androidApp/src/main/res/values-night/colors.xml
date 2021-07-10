@@ -3,4 +3,5 @@
     <color name="colorBackgroundDialog">#23232D</color>
     <color name="dividerColor">#1FFFFFFF</color>
     <color name="cardAdBackgroundColor">#302F2F</color>
+    <color name="buttonBackgroundColor">#252525</color>
 </resources>

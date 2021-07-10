@@ -35,3 +35,21 @@ fun LottieAnimationView.setMusicPlayingState(item: DisplayedVideoItem) {
     val callback = LottieValueCallback<ColorFilter>(filter)
     addValueCallback(keyPath, LottieProperty.COLOR_FILTER, callback)
 }
+
+fun LottieAnimationView.setLocalMusicPlayingState(item: DisplayedVideoItem) {
+    isVisible = item.isCurrent
+    if (item.isCurrent && item.isPlaying) {
+        playAnimation()
+    } else if (item.isCurrent) {
+        pauseAnimation()
+    } else {
+        cancelAnimation()
+    }
+
+    // Set playing color!!
+    val localSongsPrimaryColor = context.color(R.color.localSongsPrimaryColor)
+    val filter = SimpleColorFilter(localSongsPrimaryColor)
+    val keyPath = KeyPath("**")
+    val callback = LottieValueCallback<ColorFilter>(filter)
+    addValueCallback(keyPath, LottieProperty.COLOR_FILTER, callback)
+}
