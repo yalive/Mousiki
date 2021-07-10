@@ -26,6 +26,7 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
     R.layout.fragment_yt_search_videos
 ), PageableFragment {
 
+    override val screenName: String = "ResultSearchSongsFragment"
     override val pageTitle: String by lazy {
         getString(R.string.title_videos)
     }

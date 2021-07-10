@@ -29,6 +29,7 @@ import com.cas.musicplayer.utils.viewBinding
 class MainSearchFragment : BaseFragment<MainSearchViewModel>(
     R.layout.fragment_main_search
 ) {
+    override val screenName: String = "MainSearchFragment"
     override val viewModel by viewModel { Injector.mainSearchViewModel }
     private val searchGenresAdapter by lazy { SearchGenresAdapter() }
 
