@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.popular
 
 import androidx.recyclerview.widget.DiffUtil
 import com.cas.musicplayer.ui.common.ads.AdsItem
+import com.cas.musicplayer.ui.local.songs.HeaderSongsActionsItem
 import com.cas.musicplayer.ui.popular.model.SongsHeaderItem
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
@@ -21,6 +22,10 @@ class SongItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
         }
 
         if (oldItem is SongsHeaderItem && newItem is SongsHeaderItem) {
+            return true
+        }
+
+        if (oldItem is HeaderSongsActionsItem && newItem is HeaderSongsActionsItem) {
             return true
         }
 

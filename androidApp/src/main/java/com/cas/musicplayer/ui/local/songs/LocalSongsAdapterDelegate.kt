@@ -10,7 +10,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
-import com.cas.musicplayer.ui.common.setMusicPlayingState
+import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.themeColor
@@ -67,11 +67,11 @@ class LocalSongsAdapterDelegate(
                 onClickTrack(song.track)
             }
 
-            val colorAccent = itemView.context.color(R.color.colorAccent)
-            val colorText = if (song.isCurrent) colorAccent
+            val localSongsPrimaryColor = itemView.context.color(R.color.localSongsPrimaryColor)
+            val colorText = if (song.isCurrent) localSongsPrimaryColor
             else itemView.context.themeColor(R.attr.colorOnSurface)
             binding.txtTitle.setTextColor(colorText)
-            binding.indicatorPlaying.setMusicPlayingState(song)
+            binding.indicatorPlaying.setLocalMusicPlayingState(song)
             binding.btnMore.onClick {
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, song.track)

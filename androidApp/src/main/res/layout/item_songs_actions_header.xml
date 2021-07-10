@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/sixteen_16dp"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/sort_song"
+        android:layout_width="@dimen/btn_size_header"
+        android:layout_height="@dimen/btn_size_header"
+        android:layout_marginEnd="@dimen/eight_8dp"
+        android:background="@drawable/btn_ripple_header_with_background"
+        android:src="@drawable/ic_sort"
+        android:tint="?colorOnSurface" />
+
+    <TextView
+        android:id="@+id/songs_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_black"
+        android:gravity="center|start"
+        android:textColor="?colorOnSurface"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/shuffle_song"
+        android:layout_width="@dimen/btn_size_header"
+        android:layout_height="@dimen/btn_size_header"
+        android:layout_marginEnd="@dimen/eight_8dp"
+        android:background="@drawable/btn_ripple_header_with_background"
+        android:src="@drawable/ic_random"
+        android:tint="?colorOnSurface" />
+
+    <ImageButton
+        android:id="@+id/play_all_song"
+        android:layout_width="@dimen/btn_size_header"
+        android:layout_height="@dimen/btn_size_header"
+        android:background="@drawable/btn_ripple_header_with_background"
+        android:src="@drawable/ic_play"
+        android:tint="?colorOnSurface" />
+</LinearLayout>
