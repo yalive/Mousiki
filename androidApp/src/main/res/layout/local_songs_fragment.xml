@@ -6,72 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.local.songs.LocalSongsFragment">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/sort_button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="@dimen/four_4dp"
-        android:layout_marginEnd="@dimen/eight_8dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_sort"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/songs_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:fontFamily="@font/roboto"
-        app:layout_constraintBottom_toBottomOf="@id/sort_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/sort_button"
-        tools:text="26 songs" />
-
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="@dimen/four_4dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sort_button">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonShuffle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/four_4dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto_black"
-            android:text="@string/shuffle_play"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_random"
-            app:iconGravity="textStart"
-            app:iconSize="20dp"
-
-            app:iconTint="@color/colorWhite" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonPlay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/four_4dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto_black"
-            android:text="@string/player_notification_play"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_play"
-            app:iconGravity="textStart"
-            app:iconTint="@color/colorWhite" />
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/local_songs_recycler_view"
         android:layout_width="match_parent"
@@ -80,7 +14,6 @@
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttons"
         tools:itemCount="12"
         tools:listitem="@layout/item_local_song" />
 

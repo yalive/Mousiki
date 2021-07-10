@@ -23,9 +23,18 @@ class LocalSongsViewModel(
     }
 
     fun loadAllSongs() {
-        _localSongs.value = localSongsRepository.songs().map {
+        val songsItems = localSongsRepository.songs().map {
             LocalSong(it).toDisplayedVideoItem()
         }
+        val displayedItems = mutableListOf<DisplayableItem>().apply {
+            add(HeaderSongsActionsItem(songsItems.size,
+                onPlayAllTracks = { onClickTrack(songsItems[0].track) },
+                onShuffleAllTracks = { onShufflePlay() }
+            ))
+            addAll(songsItems)
+        }
+
+        _localSongs.value = displayedItems
     }
 
     fun onClickTrack(track: Track) = scope.launch {
@@ -33,6 +42,14 @@ class LocalSongsViewModel(
             ?.filterIsInstance<DisplayedVideoItem>()
             ?.map { it.track } ?: return@launch
         playTrackFromQueue(track, tracks)
+    }
+
+    private fun onShufflePlay() = scope.launch {
+        val tracks = _localSongs.value
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track }?.shuffled() ?: return@launch
+
+        playTrackFromQueue(tracks.random(), tracks)
     }
 
     fun onPlaybackStateChanged() {
