@@ -195,5 +195,17 @@
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_localSongsContainerFragment_to_albumDetailsFragment"
+            app:destination="@id/albumDetailsFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right"/>
     </fragment>
+    <fragment
+        android:id="@+id/albumDetailsFragment"
+        android:name="com.cas.musicplayer.ui.local.albums.AlbumDetailsFragment"
+        android:label="album_details_fragment"
+        tools:layout="@layout/album_details_fragment" />
 </navigation>

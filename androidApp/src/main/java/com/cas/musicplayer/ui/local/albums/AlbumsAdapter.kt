@@ -2,9 +2,12 @@ package com.cas.musicplayer.ui.local.albums
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalAlbumBinding
 import com.cas.musicplayer.utils.Utils.getAlbumArtUri
@@ -49,6 +52,13 @@ class AlbumsAdapter :
                 FirebaseCrashlytics.getInstance().recordException(e)
             } catch (e: OutOfMemoryError) {
                 FirebaseCrashlytics.getInstance().recordException(e)
+            }
+
+            itemView.onClick {
+                itemView.findNavController().navigate(
+                    R.id.action_localSongsContainerFragment_to_albumDetailsFragment,
+                    bundleOf(AlbumDetailsFragment.EXTRAS_ALBUM_ID to album.id)
+                )
             }
         }
     }

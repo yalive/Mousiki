@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.local.albums.AlbumDetailsFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonBackgroundColor"
+        android:fitsSystemWindows="true"
+        android:stateListAnimator="@null">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorBackgroundDialog"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:paddingTop="@dimen/spacing_xx_large"
+                app:layout_collapseMode="parallax">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_album"
+                    android:layout_width="143dp"
+                    android:layout_height="146dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="@dimen/sixteen_16dp"
+                    app:cardCornerRadius="@dimen/twenty_four_24dp"
+                    app:cardElevation="@dimen/eight_8dp"
+                    app:cardBackgroundColor="#9C9A9A"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/albumArt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/bg_splash" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/albumName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/sixteen_16dp"
+                    android:layout_marginEnd="@dimen/sixteen_16dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/albumArtist"
+                    app:layout_constraintLeft_toRightOf="@+id/card_album"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:text="Extensions" />
+
+                <TextView
+                    android:id="@+id/albumArtist"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    app:layout_constraintBottom_toBottomOf="@+id/card_album"
+                    app:layout_constraintLeft_toLeftOf="@+id/albumName"
+                    app:layout_constraintRight_toRightOf="@+id/albumName"
+                    app:layout_constraintTop_toTopOf="@+id/card_album"
+                    tools:text="Nasty C" />
+
+                <TextView
+                    android:id="@+id/albumSongsDuration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sixteen_16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto"
+                    android:maxLines="1"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/card_album"
+                    app:layout_constraintTop_toBottomOf="@+id/card_album"
+                    tools:text="10 songs, 56 minutes" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_collapseMode="pin">
+
+                <Button
+                    android:id="@+id/sectionBackButton"
+                    style="@style/AppTheme.SectionBackButton" />
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/local_songs_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:itemCount="12"
+        tools:listitem="@layout/item_local_song" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
