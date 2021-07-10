@@ -8,8 +8,7 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="horizontal"
-    tools:background="@color/colorDarkNavigationView">
+    android:orientation="horizontal">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="55dp"
@@ -44,7 +43,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/roboto"
             android:maxLines="1"
-            android:textColor="@color/colorWhite"
+            android:textColor="?colorOnSurface"
             android:textSize="15sp"
             tools:text="Album name" />
 
@@ -68,5 +67,6 @@
         android:layout_marginEnd="@dimen/four_4dp"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_more_vertical" />
 </LinearLayout>

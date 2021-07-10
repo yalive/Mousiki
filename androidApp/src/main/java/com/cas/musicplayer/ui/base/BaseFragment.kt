@@ -11,12 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.isDarkMode
+import com.cas.musicplayer.R
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.utils.TimeUtils
+import com.mousiki.shared.domain.models.Song
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.resolve
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import java.util.concurrent.TimeUnit
 
 /**
  ***************************************
@@ -42,6 +46,15 @@ abstract class BaseFragment<T : BaseViewModel>(
             }
         }
         analyticsApi.logScreenView(screenName)
+    }
+
+    fun getSongsTotalTime(songs: List<Song>): CharSequence {
+        val secs = TimeUnit.MILLISECONDS.toSeconds(TimeUtils.getTotalSongsDuration(songs))
+        return getString(
+            R.string.two_comma_separated_values,
+            resources.getQuantityString(R.plurals.numberOfSongs, songs.size, songs.size),
+            TimeUtils.formatElapsedTime(secs, activity)
+        )
     }
 }
 
