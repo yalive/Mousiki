@@ -20,6 +20,8 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
     R.layout.album_details_fragment
 ) {
 
+    override val screenName: String = "AlbumDetailsFragment"
+
     override val viewModel by viewModel {
         val albumId = arguments?.getLong(EXTRAS_ALBUM_ID)
         Injector.albumDetailsViewModel.also { viewModel ->
@@ -30,7 +32,7 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
     private val binding by viewBinding(AlbumDetailsFragmentBinding::bind)
 
     private val adapter by lazy {
-        LocalSongsAdapter(viewModel::onClickTrack)
+        LocalSongsAdapter(viewModel::onClickTrack, {}, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
