@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.local.songs
 
 import android.os.Bundle
 import android.view.View
-import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalSongsFragmentBinding
@@ -19,26 +18,24 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
     R.layout.local_songs_fragment
 ), StoragePermissionDelegate by StoragePermissionDelegateImpl() {
 
+    override val screenName: String = "LocalSongsFragment"
     override val viewModel by viewModel { Injector.localSongsViewModel }
 
     private val binding by viewBinding(LocalSongsFragmentBinding::bind)
 
     private val adapter by lazy {
-        LocalSongsAdapter(viewModel::onClickTrack)
+        LocalSongsAdapter(
+            onClickTrack = { viewModel.onClickTrack(it) },
+            onSortClicked = { saveAndSetOrder() },
+            true
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.localSongsRecyclerView.adapter = adapter
-        observe(viewModel.localSongs) {
-            adapter.submitList(it)
-            binding.songsCount.text = resources.getQuantityString(
-                R.plurals.playlist_tracks_counts,
-                it.size,
-                it.size
-            )
-        }
+        observe(viewModel.localSongs, adapter::submitList)
         observe(PlaybackLiveData) { state ->
             if (state == PlayerConstants.PlayerState.PLAYING
                 || state == PlayerConstants.PlayerState.BUFFERING
@@ -52,9 +49,6 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
             viewModel.loadAllSongs()
         }
 
-        binding.sortButton.onClick {
-            saveAndSetOrder()
-        }
     }
 
     private fun saveAndSetOrder() {
