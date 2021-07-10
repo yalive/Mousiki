@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBackgroundDialog"
+        android:background="@color/buttonBackgroundColor"
         android:fitsSystemWindows="true"
         android:stateListAnimator="@null">
 
@@ -36,6 +36,7 @@
                     android:layout_marginTop="@dimen/sixteen_16dp"
                     app:cardCornerRadius="@dimen/twenty_four_24dp"
                     app:cardElevation="@dimen/eight_8dp"
+                    app:cardBackgroundColor="#9C9A9A"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 

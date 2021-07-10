@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.albums
 
 import android.os.Bundle
 import android.view.View
+import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.AlbumDetailsFragmentBinding
@@ -44,6 +45,9 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
 
     private fun initViews() {
         binding.localSongsRecyclerView.adapter = adapter
+        binding.sectionBackButton.onClick {
+            requireActivity().onBackPressed()
+        }
         observe(viewModel.localSongs, adapter::submitList)
 
         observe(PlaybackLiveData) { state ->
