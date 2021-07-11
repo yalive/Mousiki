@@ -89,3 +89,12 @@ fun Fragment.setupToolbar(
     toolbar.setTitle(title)
     toolbar.setNavigationOnClickListener { onBack() }
 }
+
+fun Fragment.setupToolbar(
+    toolbar: Toolbar,
+    title: String,
+    onBack: () -> Unit = { findNavController().popBackStack() }
+) {
+    toolbar.title = title
+    toolbar.setNavigationOnClickListener { onBack() }
+}
