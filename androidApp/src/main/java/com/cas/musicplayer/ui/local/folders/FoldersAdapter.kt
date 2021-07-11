@@ -2,15 +2,14 @@ package com.cas.musicplayer.ui.local.folders
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalFolderBinding
-import com.cas.musicplayer.utils.Utils.getAlbumArtUri
-import com.cas.musicplayer.utils.dpToPixel
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.squareup.picasso.Picasso
 
 
 class FoldersAdapter :
@@ -33,6 +32,16 @@ class FoldersAdapter :
         fun bind(folder: Folder) {
             binding.folderName.text = folder.name
             binding.txtFolderPath.text = folder.path
+
+            itemView.onClick {
+                itemView.findNavController().navigate(
+                    R.id.action_localSongsContainerFragment_to_folderDetailsFragment,
+                    bundleOf(
+                        FolderDetailsFragment.EXTRAS_FOLDER_PATH to folder.path,
+                        FolderDetailsFragment.EXTRAS_FOLDER_NAME to folder.name
+                    )
+                )
+            }
         }
     }
 }
