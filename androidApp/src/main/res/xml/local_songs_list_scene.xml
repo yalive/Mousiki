@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@id/imgBackground"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <PropertySet android:alpha="1" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/cardAlbumArt"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="@dimen/sixteen_16dp"
+            android:layout_marginTop="64dp"
+            android:alpha="1"
+            android:scaleX="1.0"
+            android:scaleY="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
+
+        <Constraint
+            android:id="@id/albumName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/eight_8dp"
+            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:layout_marginEnd="@dimen/eight_8dp"
+            android:alpha="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cardAlbumArt"
+            app:layout_constraintTop_toTopOf="@id/cardAlbumArt" />
+
+        <Constraint
+            android:id="@id/artistName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/eight_8dp"
+            android:layout_marginTop="@dimen/eight_8dp"
+            android:layout_marginEnd="@dimen/eight_8dp"
+            android:alpha="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/albumName"
+            app:layout_constraintTop_toBottomOf="@id/albumName" />
+
+        <Constraint
+            android:id="@id/txtNumberOfSongs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="1"
+            app:layout_constraintStart_toStartOf="@id/cardAlbumArt"
+            app:layout_constraintTop_toBottomOf="@id/cardAlbumArt" />
+
+        <Constraint
+            android:id="@id/txtScreenTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            app:layout_constraintBottom_toBottomOf="@id/viewBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/viewBack"
+            app:layout_constraintTop_toTopOf="@id/viewBack" />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@id/imgBackground"
+            android:layout_height="0dp"
+            android:alpha="0.8"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@id/cardAlbumArt"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="@dimen/sixteen_16dp"
+            android:alpha="0.0"
+            app:layout_constraintBottom_toTopOf="parent" />
+
+        <Constraint
+            android:id="@id/albumName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/eight_8dp"
+            android:layout_marginTop="@dimen/sixteen_16dp"
+            android:layout_marginEnd="@dimen/eight_8dp"
+            android:alpha="0.0"
+            app:layout_constraintStart_toEndOf="@id/cardAlbumArt"
+            app:layout_constraintTop_toTopOf="@id/cardAlbumArt" />
+
+        <Constraint
+            android:id="@id/artistName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_8dp"
+            android:alpha="0.0"
+            app:layout_constraintStart_toStartOf="@id/albumName"
+            app:layout_constraintTop_toBottomOf="@id/albumName" />
+
+        <Constraint
+            android:id="@id/txtNumberOfSongs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.0"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            app:layout_constraintStart_toStartOf="@id/cardAlbumArt"
+            app:layout_constraintTop_toBottomOf="@id/cardAlbumArt" />
+
+        <Constraint
+            android:id="@id/txtScreenTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:alpha="1"
+            app:layout_constraintBottom_toBottomOf="@id/viewBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/viewBack"
+            app:layout_constraintTop_toTopOf="@id/viewBack" />
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start">
+
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:onTouchUp="stop"
+            app:touchAnchorId="@id/local_songs_recycler_view"
+            app:touchAnchorSide="top" />
+
+        <KeyFrameSet>
+            <KeyAttribute
+                android:scaleX="1.0"
+                android:scaleY="1.0"
+                app:framePosition="50"
+                app:motionTarget="@id/txtNumberOfSongs" />
+        </KeyFrameSet>
+
+    </Transition>
+
+</MotionScene>
