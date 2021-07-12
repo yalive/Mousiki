@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.albums
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -45,8 +46,8 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
 
     private fun initViews() {
         binding.localSongsRecyclerView.adapter = adapter
-        binding.sectionBackButton.onClick {
-            requireActivity().onBackPressed()
+        binding.btnBack.onClick {
+            findNavController().popBackStack()
         }
         observe(viewModel.localSongs, adapter::submitList)
 
@@ -61,9 +62,10 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
         }
 
         observe(viewModel.album) { album ->
+            binding.txtScreenTitle.text = album.title
             binding.albumName.text = album.title
-            binding.albumArtist.text = album.artistName
-            binding.albumSongsDuration.text = getSongsTotalTime(album.songs)
+            binding.artistName.text = getString(R.string.label_by, album.artistName)
+            binding.txtNumberOfSongs.text = getSongsTotalTime(album.songs)
 
             try {
                 Picasso.get()
