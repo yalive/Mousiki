@@ -50,7 +50,6 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
             return
         }
         viewModel.createPlaylist(track, playlistName)
-        requireContext().toast("Added to $playlistName")
         view?.hideSoftKeyboard()
         findNavController().popBackStack()
     }

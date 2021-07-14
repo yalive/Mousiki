@@ -1,6 +1,6 @@
 package com.mousiki.shared.domain.usecase.song
 
-import com.mousiki.shared.data.repository.PlaylistRepository
+import com.mousiki.shared.data.repository.YtbPlaylistRepository
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 
@@ -10,9 +10,9 @@ import com.mousiki.shared.domain.result.Result
  ***************************************
  */
 class GetPlaylistVideosUseCase(
-    private val repository: PlaylistRepository
+    private val repositoryYtb: YtbPlaylistRepository
 ) {
     suspend operator fun invoke(playlistId: String): Result<List<YtbTrack>> {
-        return repository.playlistVideos(playlistId)
+        return repositoryYtb.playlistVideos(playlistId)
     }
 }

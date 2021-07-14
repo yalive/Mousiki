@@ -5,8 +5,6 @@ import com.mousiki.shared.data.datasource.search.SearchLocalDataSource
 import com.mousiki.shared.data.datasource.search.SearchRemoteDataSource
 import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.db.Search_queries
-import com.mousiki.shared.domain.models.Channel
-import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.SearchTracksResult
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.alsoWhenSuccess
@@ -45,27 +43,6 @@ class SearchRepository(
 
         return searchRemoteDataSource.searchTracks(query, key, token).alsoWhenSuccess {
             searchLocalDataSource.saveSongs(query, it.tracks)
-        }
-    }
-
-    suspend fun searchPlaylists(query: String): Result<List<Playlist>> {
-        val localResult = searchLocalDataSource.getSearchPlaylistsResultForQuery(query)
-        if (localResult.isNotEmpty()) {
-            return Result.Success(localResult)
-        }
-        return searchRemoteDataSource.searchPlaylists(query).alsoWhenSuccess {
-            searchLocalDataSource.savePlaylists(query, it)
-        }
-    }
-
-
-    suspend fun searchChannels(query: String): Result<List<Channel>> {
-        val localResult = searchLocalDataSource.getSearchChannelsResultForQuery(query)
-        if (localResult.isNotEmpty()) {
-            return Result.Success(localResult)
-        }
-        return searchRemoteDataSource.searchChannels(query).alsoWhenSuccess {
-            searchLocalDataSource.saveChannels(query, it)
         }
     }
 
