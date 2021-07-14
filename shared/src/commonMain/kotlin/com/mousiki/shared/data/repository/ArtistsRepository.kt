@@ -1,7 +1,5 @@
 package com.mousiki.shared.data.repository
 
-import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
-import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.mousiki.shared.data.models.Artist
@@ -30,23 +28,11 @@ import kotlinx.serialization.json.jsonObject
 
 class ArtistsRepository(
     private var json: Json,
-    private val localDataSource: ArtistsLocalDataSource,
-    private val remoteDataSource: ArtistsRemoteDataSource,
     private val channelLocalDataSource: ChannelSongsLocalDataSource,
     private val channelRemoteDataSource: ChannelSongsRemoteDataSource,
     private val storage: StorageApi,
     private val connectivityState: ConnectivityChecker
 ) {
-
-    suspend fun getArtistsChannels(ids: List<String>): Result<List<Artist>> {
-        val artistsDb = localDataSource.getArtists(ids)
-        if (artistsDb.isNotEmpty()) {
-            return Success(artistsDb)
-        }
-        return remoteDataSource.getArtists(ids).alsoWhenSuccess {
-            localDataSource.saveArtists(it)
-        }
-    }
 
     // TODO: Handle OutOfMemory error
     suspend fun getAllArtists(): List<Artist> {

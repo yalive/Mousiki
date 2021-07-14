@@ -12,9 +12,9 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.loadImage
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.isFavourite
 
 /**
  ***************************************
@@ -57,7 +57,7 @@ class SelectPlaylistAdapter(
         }
 
         override fun bind(data: Playlist) {
-            if (data.title == Constants.FAV_PLAYLIST_NAME) {
+            if (data.isFavourite) {
                 txtTitle.setText(R.string.favourites)
             } else {
                 txtTitle.text = data.title

@@ -1,6 +1,6 @@
 package com.mousiki.shared.domain.usecase.customplaylist
 
-import com.mousiki.shared.data.repository.CustomPlaylistsRepository
+import com.mousiki.shared.data.repository.PlaylistsRepository
 import com.mousiki.shared.domain.models.Track
 
 /**
@@ -9,10 +9,10 @@ import com.mousiki.shared.domain.models.Track
  ***************************************
  */
 class GetCustomPlaylistTracksUseCase(
-    private val repository: CustomPlaylistsRepository
+    private val repository: PlaylistsRepository
 ) {
 
-    suspend operator fun invoke(playlistName: String): List<Track> {
-        return repository.getCustomPlaylistTracks(playlistName)
+    suspend operator fun invoke(playlistId: String): List<Track> {
+        return repository.getCustomPlaylistTracks(playlistId.toLong())
     }
 }

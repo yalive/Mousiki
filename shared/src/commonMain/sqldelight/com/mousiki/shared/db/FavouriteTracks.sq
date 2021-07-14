@@ -1,21 +1,24 @@
-CREATE TABLE IF NOT EXISTS favourite_tracks (
+CREATE TABLE IF NOT EXISTS db_favouriteTrack (
 `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-`youtube_id` TEXT NOT NULL,
+`track_id` TEXT NOT NULL,
 `title` TEXT NOT NULL,
 `duration` TEXT NOT NULL
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS `index_favourite_tracks_youtube_id` ON `favourite_tracks` (`youtube_id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `index_db_favouriteTrack_track_id` ON `db_favouriteTrack` (`track_id`);
 
 insert:
-INSERT OR REPLACE INTO favourite_tracks(youtube_id, title,duration)
+INSERT OR REPLACE INTO db_favouriteTrack(track_id, title,duration)
 VALUES ?;
 
 getAll:
-SELECT * FROM favourite_tracks;
+SELECT * FROM db_favouriteTrack;
 
-getSongs:
-SELECT * FROM favourite_tracks ORDER BY id DESC LIMIT ?;
+getTracks:
+SELECT * FROM db_favouriteTrack ORDER BY id DESC LIMIT ?;
 
-deleteSong:
-DELETE  FROM favourite_tracks WHERE youtube_id= ?;
+count:
+SELECT COUNT(*) FROM db_favouriteTrack;
+
+deleteTrack:
+DELETE  FROM db_favouriteTrack WHERE track_id= ?;
