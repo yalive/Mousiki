@@ -1,11 +1,7 @@
 package com.mousiki.shared.di
 
-import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
-import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.RemoteSongsDataSource
-import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
-import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
@@ -21,7 +17,6 @@ import com.mousiki.shared.domain.usecase.artist.GetAllArtistsUseCase
 import com.mousiki.shared.domain.usecase.artist.GetAllCountryArtistsUseCase
 import com.mousiki.shared.domain.usecase.artist.GetArtistSongsUseCase
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
-import com.mousiki.shared.domain.usecase.channel.GetChannelPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.mousiki.shared.domain.usecase.chart.LoadChartLastThreeTracksUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.*
@@ -55,11 +50,11 @@ val networkModule = module {
 
 val repositoriesModule = module {
     factory { GenresRepository() }
-    factory { CustomPlaylistsRepository(get()) }
+    factory { PlaylistsRepository(get()) }
     factory { StatisticsRepository(get()) }
     single { SongsRepository(get(), get(), get(), get()) }
-    single { ArtistsRepository(get(), get(), get(), get(), get(), get(), get()) }
-    factory { PlaylistRepository(get(), get(), get(), get()) }
+    single { ArtistsRepository(get(), get(), get(), get(), get()) }
+    factory { YtbPlaylistRepository(get(), get()) }
     single { SearchRepository(get(), get(), get(), get(), get()) }
     single { HomeRepository(get(), get(), get(), get(), get()) }
     factory { ChartsRepository() }
@@ -79,16 +74,12 @@ val mappersModule = module {
 }
 
 val dataSourcesModule = module {
-    factory { ArtistsLocalDataSource(get()) }
     factory { LocalSongsDataSource(get(), get()) }
     factory { SearchLocalDataSource(get()) }
     factory { PlaylistSongsLocalDataSource(get()) }
-    factory { ChannelPlaylistsLocalDataSource(get()) }
     factory { ChannelSongsLocalDataSource(get()) }
 
     // Remote
-    factory { ChannelPlaylistsRemoteDataSource(get(), get(), get()) }
-
     factory {
         SearchRemoteDataSource(
             get(),
@@ -103,7 +94,6 @@ val dataSourcesModule = module {
             get()
         )
     }
-    factory { ArtistsRemoteDataSource(get(), get(), get()) }
     factory { RemoteSongsDataSource(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory {
         PlaylistSongsRemoteDataSource(
@@ -127,12 +117,14 @@ val useCasesModule = module {
     factory { GetAllCountryArtistsUseCase(get()) }
     factory { GetArtistSongsUseCase(get()) }
     factory { GetCountryArtistsUseCase(get()) }
-    factory { GetChannelPlaylistsUseCase(get()) }
     factory { GetUserRelevantChartsUseCase(get()) }
     factory { LoadChartLastThreeTracksUseCase(get()) }
     factory { AddTrackToCustomPlaylistUseCase(get()) }
+    factory { CreateCustomPlaylistUseCase(get()) }
     factory { DeleteTrackFromCustomPlaylistUseCase(get()) }
-    factory { GetCustomPlaylistsUseCase(get()) }
+    factory { GetLocalPlaylistsUseCase(get()) }
+    factory { GetLocalPlaylistItemCountUseCase(get()) }
+    factory { GetLocalPlaylistsFlowUseCase(get()) }
     factory { GetCustomPlaylistTracksUseCase(get()) }
     factory { RemoveCustomPlaylistUseCase(get()) }
     factory { GetGenresUseCase(get()) }
@@ -150,8 +142,6 @@ val useCasesModule = module {
     factory { SaveSearchQueryUseCase(get()) }
     factory { RemoveSearchQueryUseCase(get()) }
     factory { ClearSearchHistoryUseCase(get()) }
-    factory { SearchChannelsUseCase(get()) }
-    factory { SearchPlaylistsUseCase(get()) }
     factory { SearchSongsUseCase(get()) }
     factory { GetFeaturedSongsUseCase() }
     factory { GetPlaylistVideosUseCase(get()) }

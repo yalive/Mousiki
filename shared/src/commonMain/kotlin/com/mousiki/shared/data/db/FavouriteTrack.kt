@@ -1,16 +1,16 @@
 package com.mousiki.shared.data.db
 
-import com.mousiki.shared.db.Favourite_tracks
+import com.mousiki.shared.db.Db_favouriteTrack
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Song
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
 
-typealias FavouriteTrackEntity = Favourite_tracks
+typealias FavouriteTrackEntity = Db_favouriteTrack
 
-fun Favourite_tracks.toTrack(): Track {
+fun Db_favouriteTrack.toTrack(): Track {
     val localId = try {
-        youtube_id.toLong()
+        track_id.toLong()
     } catch (e: Exception) {
         null
     }
@@ -25,7 +25,7 @@ fun Favourite_tracks.toTrack(): Track {
         )
     }
     return YtbTrack(
-        youtubeId = youtube_id,
+        youtubeId = track_id,
         title = title,
         duration = duration,
         artistName = title.split("-")[0]

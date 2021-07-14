@@ -10,7 +10,7 @@ typealias CustomPlaylistTrackEntity = Custom_playlist_track
 
 fun Custom_playlist_track.toTrack(): Track {
     val localId = try {
-        youtube_id.toLong()
+        track_id.toLong()
     } catch (e: Exception) {
         null
     }
@@ -25,7 +25,7 @@ fun Custom_playlist_track.toTrack(): Track {
         )
     }
     return YtbTrack(
-        youtubeId = youtube_id,
+        youtubeId = track_id,
         title = title,
         duration = duration,
         artistName = title.split("-")[0]
