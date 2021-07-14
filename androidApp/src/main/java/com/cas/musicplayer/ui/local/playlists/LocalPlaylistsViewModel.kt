@@ -1,69 +1,49 @@
 package com.cas.musicplayer.ui.local.playlists
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
-import com.mousiki.shared.domain.usecase.library.GetHeavyTracksFlowUseCase
-import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.GetLocalPlaylistItemCountUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.GetLocalPlaylistsFlowUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
-import com.mousiki.shared.utils.Constants
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class LocalPlaylistsViewModel(
-    private val getFavouriteTracks: GetFavouriteTracksFlowUseCase,
-    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
-    private val getHeavyTracks: GetHeavyTracksFlowUseCase,
+    private val getLocalPlaylistsFlow: GetLocalPlaylistsFlowUseCase,
+    private val getLocalPlaylistItemCount: GetLocalPlaylistItemCountUseCase,
 ) : BaseViewModel() {
-
-    var favPlaylist = Playlist(
-        id = Constants.FAV_PLAYLIST_NAME,
-        title = "Favourite Songs",
-        itemCount = 0,
-        urlImage = ""
-    )
-    var mostPlayedPlaylist = Playlist(
-        id = Constants.MOST_PLAYED_PLAYLIST_NAME,
-        title = "Most Played",
-        itemCount = 0,
-        urlImage = ""
-    )
-    var recentlyPlayedPlaylist = Playlist(
-        id = Constants.RECENT_PLAYLIST_NAME,
-        title = "Recently Played",
-        itemCount = 0,
-        urlImage = ""
-    )
 
     private val _playlists = MutableLiveData<List<Playlist>>()
     val playlist: LiveData<List<Playlist>> get() = _playlists
 
+    private var jobCounts: Job? = null
+
     init {
-        prepareLocalPlaylists()
+        preparePlaylists()
     }
 
-    private fun prepareLocalPlaylists() = viewModelScope.launch {
-        _playlists.value = listOf(favPlaylist, mostPlayedPlaylist, recentlyPlayedPlaylist)
-        launch {
-            getFavouriteTracks(300).collect {
-                favPlaylist = favPlaylist.copy(itemCount = it.size)
-                _playlists.value = listOf(favPlaylist, mostPlayedPlaylist, recentlyPlayedPlaylist)
-            }
+    @SuppressLint("NullSafeMutableLiveData")
+    private fun preparePlaylists() = viewModelScope.launch {
+        getLocalPlaylistsFlow().collect { localPlaylists ->
+            _playlists.value = localPlaylists
+            jobCounts?.cancel()
+            jobCounts = launch { observePlaylistItemsCount(localPlaylists) }
         }
+    }
 
-        launch {
-            getRecentlyPlayedSongs(300).collect {
-                recentlyPlayedPlaylist = recentlyPlayedPlaylist.copy(itemCount = it.size)
-                _playlists.value = listOf(favPlaylist, mostPlayedPlaylist, recentlyPlayedPlaylist)
-            }
-        }
-
-        launch {
-            getHeavyTracks(100).collect {
-                mostPlayedPlaylist = mostPlayedPlaylist.copy(itemCount = it.size)
-                _playlists.value = listOf(favPlaylist, mostPlayedPlaylist, recentlyPlayedPlaylist)
+    private fun CoroutineScope.observePlaylistItemsCount(playlists: List<Playlist>) {
+        playlists.forEach { pList ->
+            launch {
+                getLocalPlaylistItemCount(pList).collect { count ->
+                    _playlists.value = _playlists.value?.map {
+                        if (it.id == pList.id) it.copy(itemCount = count) else it
+                    }
+                }
             }
         }
     }

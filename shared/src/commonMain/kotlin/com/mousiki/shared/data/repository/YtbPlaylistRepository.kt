@@ -1,11 +1,8 @@
 package com.mousiki.shared.data.repository
 
-import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsLocalDataSource
-import com.mousiki.shared.data.datasource.channel.ChannelPlaylistsRemoteDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsLocalDataSource
 import com.mousiki.shared.data.datasource.playlist.PlaylistSongsRemoteDataSource
 import com.mousiki.shared.domain.models.YtbTrack
-import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
@@ -16,9 +13,7 @@ import com.mousiki.shared.domain.result.alsoWhenSuccess
  ***************************************
  */
 
-class PlaylistRepository(
-    private val channelPlaylistsLocalDataSource: ChannelPlaylistsLocalDataSource,
-    private val channelPlaylistsRemoteDataSource: ChannelPlaylistsRemoteDataSource,
+class YtbPlaylistRepository(
     private val playlistSongsLocalDataSource: PlaylistSongsLocalDataSource,
     private val playlistSongsRemoteDataSource: PlaylistSongsRemoteDataSource
 ) {
@@ -30,16 +25,6 @@ class PlaylistRepository(
         }
         return playlistSongsRemoteDataSource.getPlaylistSongs(playlistId).alsoWhenSuccess {
             playlistSongsLocalDataSource.savePlaylistSongs(playlistId, it)
-        }
-    }
-
-    suspend fun getPlaylists(channelId: String): Result<List<Playlist>> {
-        val localPlaylists = channelPlaylistsLocalDataSource.getChannelPlaylists(channelId)
-        if (localPlaylists.isNotEmpty()) {
-            return Success(localPlaylists)
-        }
-        return channelPlaylistsRemoteDataSource.getChannelPlaylists(channelId).alsoWhenSuccess {
-            channelPlaylistsLocalDataSource.saveChannelPlaylists(channelId, it)
         }
     }
 }

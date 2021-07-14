@@ -3,7 +3,7 @@ package com.mousiki.shared.ui.library
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.domain.models.*
-import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.GetLocalPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
@@ -14,7 +14,6 @@ import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.event.Event
 import com.mousiki.shared.ui.event.asEvent
 import com.mousiki.shared.utils.CommonFlow
-import com.mousiki.shared.utils.Constants
 import com.mousiki.shared.utils.Strings
 import com.mousiki.shared.utils.asCommonFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +33,7 @@ class LibraryViewModel(
     private val getHeavyTracksFlowFlow: GetHeavyTracksFlowUseCase,
     private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
-    private val getCustomPlaylists: GetCustomPlaylistsUseCase,
+    private val getLocalPlaylists: GetLocalPlaylistsUseCase,
     private val removeCustomPlaylist: RemoveCustomPlaylistUseCase,
     private val strings: Strings,
     private val appConfig: RemoteAppConfig,
@@ -102,7 +101,7 @@ class LibraryViewModel(
 
     fun onClickPlaylist(playlist: Playlist) {
         scope.launch {
-            if (playlist.id == Constants.FAV_PLAYLIST_NAME && getFavouriteTracks().isEmpty()) {
+            if (playlist.isFavourite && getFavouriteTracks().isEmpty()) {
                 showToast(strings.emptyFavouriteList)
             } else {
                 _onClickPlaylist.value = playlist.asEvent()
@@ -111,17 +110,9 @@ class LibraryViewModel(
     }
 
     fun loadCustomPlaylists() = scope.launch {
-        val savedPlaylists = getCustomPlaylists().toMutableList()
-        val favouriteTracks = getFavouriteTracks()
-        val favouriteTrack = favouriteTracks.getOrNull(0)
-        savedPlaylists.add(
-            0, Playlist(
-                id = Constants.FAV_PLAYLIST_NAME,
-                title = Constants.FAV_PLAYLIST_NAME,
-                urlImage = favouriteTrack?.imgUrl.orEmpty(),
-                itemCount = favouriteTracks.size
-            )
-        )
+        val savedPlaylists = getLocalPlaylists().filter {
+            it.isCustom || it.isFavourite
+        }
         val items: MutableList<LibraryPlaylistItem> = savedPlaylists.map {
             LibraryPlaylistItem.CustomPlaylist(it)
         }.toMutableList()
@@ -130,7 +121,7 @@ class LibraryViewModel(
     }
 
     fun deletePlaylist(playlist: Playlist) = scope.launch {
-        removeCustomPlaylist(playlist.title)
+        removeCustomPlaylist(playlist.id)
         loadCustomPlaylists()
     }
 
