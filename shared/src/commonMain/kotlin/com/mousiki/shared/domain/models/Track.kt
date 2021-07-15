@@ -14,6 +14,17 @@ sealed class Track : Parcelable {
     abstract val title: String
     abstract val artistName: String
     abstract val duration: String
+
+    val type: String
+        get() = when (this) {
+            is LocalSong -> TYPE_LOCAL_AUDIO
+            is YtbTrack -> TYPE_YTB
+        }
+
+    companion object {
+        const val TYPE_YTB = "YTB"
+        const val TYPE_LOCAL_AUDIO = "LOCAL_AUD"
+    }
 }
 
 @Parcelize

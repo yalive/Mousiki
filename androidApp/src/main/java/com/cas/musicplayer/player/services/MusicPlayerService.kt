@@ -35,7 +35,6 @@ import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -197,15 +196,8 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 val metadata: MediaMetadataCompat = mediaSession.controller.metadata ?: return
                 lifecycleScope.launch(Dispatchers.IO) {
                     if (action == CustomAction.ADD_TO_FAVOURITE) {
-                        val mediaId = metadata.description.mediaId
-                        val title = metadata.description.title
-                        val duration = PlayerQueue.value?.duration
-                        if (mediaId != null && title != null && duration != null) {
-                            val track = YtbTrack(
-                                youtubeId = mediaId,
-                                title = title.toString(),
-                                duration = duration
-                            )
+                        val track = PlayerQueue.value
+                        if (track != null) {
                             Injector.addSongToFavourite(track)
                         }
                     } else if (action == CustomAction.REMOVE_FROM_FAVOURITE) {

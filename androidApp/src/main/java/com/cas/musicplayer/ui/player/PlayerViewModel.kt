@@ -54,7 +54,8 @@ class PlayerViewModel(
         OnChangeQueue.observeForever(queueObserver)
         viewModelScope.launch {
             getFavouriteTracksFlow(50).collect { songs ->
-                _isLiked.postValue(songs.contains(PlayerQueue.value))
+                val any = songs.any { it.id == PlayerQueue.value?.id }
+                _isLiked.postValue(any)
             }
         }
         cueRecentTrack()
