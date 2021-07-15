@@ -70,7 +70,8 @@ class SongsRepository(
                 id = 0,
                 track_id = track.id,
                 title = track.title,
-                duration = track.duration
+                duration = track.duration,
+                type = track.type
             )
         )
         UserPrefs.saveFav(track.id, true)
