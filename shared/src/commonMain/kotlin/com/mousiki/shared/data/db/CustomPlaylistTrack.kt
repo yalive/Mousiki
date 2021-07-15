@@ -9,16 +9,10 @@ import com.mousiki.shared.domain.models.YtbTrack
 typealias CustomPlaylistTrackEntity = Custom_playlist_track
 
 fun Custom_playlist_track.toTrack(): Track {
-    val localId = try {
-        track_id.toLong()
-    } catch (e: Exception) {
-        null
-    }
-
-    if (localId != null) {
+    if (type == Track.TYPE_LOCAL_AUDIO) {
         return LocalSong(
             song = Song.emptySong.copy(
-                id = localId,
+                id = track_id.toLongOrZero(),
                 title = title,
                 duration = duration.toLong()
             )

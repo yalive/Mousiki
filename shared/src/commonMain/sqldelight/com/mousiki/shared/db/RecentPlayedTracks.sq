@@ -3,13 +3,14 @@ CREATE TABLE IF NOT EXISTS db_recentTrack (
 `track_id` TEXT NOT NULL,
 `title` TEXT NOT NULL,
 `duration` TEXT NOT NULL,
-`play_count` INTEGER NOT NULL
+`play_count` INTEGER NOT NULL,
+`type` TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS `index_db_recentTrack_track_id` ON `db_recentTrack` (`track_id`);
 
 insert:
-INSERT OR REPLACE INTO db_recentTrack(track_id, title,duration,play_count)
+INSERT OR REPLACE INTO db_recentTrack(track_id, title,duration,play_count, type)
 VALUES ?;
 
 getTracks:

@@ -31,7 +31,8 @@ class StatisticsRepository(
                 track_id = track.id,
                 title = track.title,
                 duration = track.duration,
-                play_count = playCount
+                play_count = playCount,
+                type = track.type
             )
         )
     }

@@ -101,7 +101,8 @@ class PlaylistsRepository(
                 track_id = track.id,
                 duration = track.duration,
                 title = track.title,
-                playlist_id = playlistId
+                playlist_id = playlistId,
+                type = track.type
             )
         )
     }
