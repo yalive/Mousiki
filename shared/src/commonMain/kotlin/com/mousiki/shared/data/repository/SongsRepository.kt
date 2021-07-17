@@ -51,14 +51,14 @@ class SongsRepository(
 
     suspend fun getFavouriteSongs(max: Int = 10): List<Track> =
         withContext(Dispatchers.Default) {
-            return@withContext favouriteTracksDaoSql.getSongs(max.toLong()).executeAsList().map {
+            return@withContext favouriteTracksDaoSql.getTracks(max.toLong()).executeAsList().map {
                 it.toTrack()
             }
         }
 
     suspend fun getFavouriteSongsFlow(max: Int = 10): Flow<List<Track>> =
         withContext(Dispatchers.Default) {
-            return@withContext favouriteTracksDaoSql.getSongs(max.toLong())
+            return@withContext favouriteTracksDaoSql.getTracks(max.toLong())
                 .asFlow()
                 .mapToList()
                 .map { it.map(FavouriteTrackEntity::toTrack) }
@@ -68,16 +68,19 @@ class SongsRepository(
         favouriteTracksDaoSql.insert(
             FavouriteTrackEntity(
                 id = 0,
-                youtube_id = track.id,
+                track_id = track.id,
                 title = track.title,
-                duration = track.duration
+                duration = track.duration,
+                type = track.type,
+                artist_name = track.artistName,
+                artist_id = track.artistId
             )
         )
         UserPrefs.saveFav(track.id, true)
     }
 
     suspend fun removeSongFromFavourite(trackId: String) = withContext(Dispatchers.Default) {
-        favouriteTracksDaoSql.deleteSong(trackId)
+        favouriteTracksDaoSql.deleteTrack(trackId)
         UserPrefs.saveFav(trackId, false)
     }
 }

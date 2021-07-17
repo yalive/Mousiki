@@ -34,7 +34,8 @@ class ChannelSongsLocalDataSource(
                     youtube_id = it.youtubeId,
                     channelId = channelId,
                     title = it.title,
-                    duration = it.duration
+                    duration = it.duration,
+                    artist_name = it.artistName
                 )
             }
 

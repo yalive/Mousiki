@@ -259,7 +259,13 @@ class MainActivity : BaseActivity() {
                     val duration = deepLink?.getQueryParameter("duration")
                     val title = deepLink?.getQueryParameter("title")
                     if (videoId != null && title != null && duration != null) {
-                        val track = YtbTrack(videoId, title, duration)
+                        val track = YtbTrack(
+                            youtubeId = videoId,
+                            title = title,
+                            duration = duration,
+                            artistName = "",
+                            artistId = ""
+                        )
                         expandBottomPanel()
                         viewModel.playTrackFromDeepLink(track)
                     }
@@ -275,7 +281,13 @@ class MainActivity : BaseActivity() {
             val duration = intent.extras?.getString("duration")
             val title = intent.extras?.getString("title")
             if (videoId != null && title != null && duration != null) {
-                val track = YtbTrack(videoId, title, YtbTrack.toYoutubeDuration(duration))
+                val track = YtbTrack(
+                    youtubeId = videoId,
+                    title = title,
+                    duration = YtbTrack.toYoutubeDuration(duration),
+                    artistName = "",
+                    artistId = ""
+                )
                 expandBottomPanel()
                 viewModel.playTrackFromPushNotification(track)
             }

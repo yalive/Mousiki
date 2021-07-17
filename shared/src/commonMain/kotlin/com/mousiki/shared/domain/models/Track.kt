@@ -14,6 +14,18 @@ sealed class Track : Parcelable {
     abstract val title: String
     abstract val artistName: String
     abstract val duration: String
+    abstract val artistId: String
+
+    val type: String
+        get() = when (this) {
+            is LocalSong -> TYPE_LOCAL_AUDIO
+            is YtbTrack -> TYPE_YTB
+        }
+
+    companion object {
+        const val TYPE_YTB = "YTB"
+        const val TYPE_LOCAL_AUDIO = "LOCAL_AUD"
+    }
 }
 
 @Parcelize
@@ -22,6 +34,7 @@ data class LocalSong(val song: Song) : Track() {
     override val title: String = song.title
     override val duration: String = "${song.duration}"
     override val artistName: String = song.artistName
+    override val artistId: String = "${song.artistId}"
     val data: String get() = song.data
     val albumId: Long get() = song.albumId
 }
@@ -31,7 +44,8 @@ data class YtbTrack(
     val youtubeId: String,
     override val title: String,
     override val duration: String,
-    override val artistName: String = "",
+    override val artistName: String,
+    override val artistId: String
 ) : Track() {
 
     override val id: String get() = youtubeId
@@ -107,5 +121,6 @@ val YtbTrack.Companion.EMPTY: YtbTrack
         youtubeId = "",
         title = "",
         duration = "",
-        artistName = ""
+        artistName = "",
+        artistId = ""
     )

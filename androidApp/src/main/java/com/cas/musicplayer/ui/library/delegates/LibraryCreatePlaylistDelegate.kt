@@ -4,19 +4,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.EMPTY
-import com.mousiki.shared.domain.models.YtbTrack
-import com.mousiki.shared.ui.library.LibraryViewModel
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
-import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.ui.library.LibraryViewModel
 
 
 /**
@@ -51,11 +47,8 @@ class LibraryCreatePlaylistDelegate(
 
         init {
             cardView.onClick {
-                itemView.findNavController().navigate(
-                    R.id.action_libraryFragment_to_createPlaylistFragment, bundleOf(
-                        AddTrackToPlaylistFragment.EXTRAS_TRACK to YtbTrack.EMPTY
-                    )
-                )
+                itemView.findNavController()
+                    .navigate(R.id.action_libraryFragment_to_createPlaylistFragment)
             }
         }
     }

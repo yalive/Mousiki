@@ -3,17 +3,14 @@ package com.cas.musicplayer.ui.playlist.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.models.imgUrl
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
-import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistsUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.GetLocalPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.event.Event
 import com.mousiki.shared.ui.event.asEvent
-import com.mousiki.shared.utils.Constants
 import kotlinx.coroutines.launch
 
 /**
@@ -22,7 +19,7 @@ import kotlinx.coroutines.launch
  ***************************************
  */
 class AddTrackToPlaylistViewModel(
-    private val getCustomPlaylists: GetCustomPlaylistsUseCase,
+    private val getLocalPlaylists: GetLocalPlaylistsUseCase,
     private val addTrackToCustomPlaylist: AddTrackToCustomPlaylistUseCase,
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val addSongToFavourite: AddSongToFavouriteUseCase
@@ -42,17 +39,7 @@ class AddTrackToPlaylistViewModel(
     }
 
     private fun loadCustomPlaylists() = viewModelScope.launch {
-        val savedPlaylists = getCustomPlaylists().toMutableList()
-        val favouriteTracks = getFavouriteTracks()
-        val favouriteTrack = favouriteTracks.getOrNull(0)
-        savedPlaylists.add(
-            0, Playlist(
-                id = "",
-                title = Constants.FAV_PLAYLIST_NAME,
-                urlImage = favouriteTrack?.imgUrl.orEmpty(),
-                itemCount = favouriteTracks.size
-            )
-        )
+        val savedPlaylists = getLocalPlaylists().filter { it.editable }
         _playlists.value = savedPlaylists
     }
 
@@ -62,7 +49,7 @@ class AddTrackToPlaylistViewModel(
         if (position == 0) {
             addSongToFavourite(track)
         } else {
-            addTrackToCustomPlaylist.invoke(track, playlist.title)
+            addTrackToCustomPlaylist.invoke(track, playlist.id.toLong())
         }
         _trackAddedToPlaylist.value = playlist.asEvent()
     }
