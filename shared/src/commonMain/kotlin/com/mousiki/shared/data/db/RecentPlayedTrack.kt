@@ -1,33 +1,31 @@
 package com.mousiki.shared.data.db
 
-import com.mousiki.shared.db.Recent_played_tracks
+import com.mousiki.shared.db.Db_recentTrack
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Song
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
 
-typealias RecentPlayedTrack = Recent_played_tracks
+typealias RecentPlayedTrack = Db_recentTrack
 
-fun Recent_played_tracks.toTrack(): Track {
-    val localId = try {
-        youtube_id.toLong()
-    } catch (e: Exception) {
-        null
-    }
-
-    if (localId != null) {
+fun Db_recentTrack.toTrack(): Track {
+    if (type == Track.TYPE_LOCAL_AUDIO) {
         return LocalSong(
             song = Song.emptySong.copy(
-                id = localId,
+                id = track_id.toLongOrZero(),
                 title = title,
-                duration = duration.toLong()
+                duration = duration.toLong(),
+                artistName = artist_name,
+                artistId = artist_id.toLongOrZero()
             )
         )
     }
+
     return YtbTrack(
-        youtubeId = youtube_id,
+        youtubeId = track_id,
         title = title,
         duration = duration,
-        artistName = title.split("-")[0]
+        artistName = artist_name,
+        artistId = artist_id
     )
 }

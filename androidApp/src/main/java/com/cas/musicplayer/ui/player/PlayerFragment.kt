@@ -54,7 +54,6 @@ import it.sephiroth.android.library.xtooltip.Tooltip
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executors
 
 /**
  ************************************
@@ -251,23 +250,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         binding.btnAddFav.onClick {
             val isFav = UserPrefs.isFav(PlayerQueue.value?.id)
-            if (!isFav) {
-                Executors.newSingleThreadExecutor().execute {
-                    val musicTrack = PlayerQueue.value
-                    musicTrack?.let {
-                        viewModel.makeSongAsFavourite(it)
-                    }
-                }
-                binding.btnAddFav.setImageResource(R.drawable.ic_heart_solid)
-                binding.btnAddFav.tint(R.color.colorAccent)
-            } else {
-                val musicTrack = PlayerQueue.value
-                musicTrack?.let {
-                    viewModel.removeSongFromFavourite(it)
-                }
-                binding.btnAddFav.setImageResource(R.drawable.ic_heart_light)
-                binding.btnAddFav.tint(R.color.colorWhite)
-            }
             FavouriteReceiver.broadcast(requireContext().applicationContext, !isFav)
         }
 
@@ -435,7 +417,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         binding.txtTitle.ellipsize = null
         binding.txtTitle.text = track.title
-        binding.artistName.text = track.title.substringBefore("-")
+        binding.artistName.text = track.artistName
         viewLifecycleOwner.lifecycleScope.launch {
             delay(500)
             binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE

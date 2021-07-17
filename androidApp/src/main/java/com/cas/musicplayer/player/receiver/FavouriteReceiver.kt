@@ -16,11 +16,11 @@ class FavouriteReceiver(
     private val mediaController = MediaControllerCompat(context, sessionToken)
     private val favouriteIntentFilter = IntentFilter(ACTION_FAVOURITE)
     private var registered = false
+
     override fun onReceive(context: Context?, receivedIntent: Intent?) {
         if (receivedIntent?.action == ACTION_FAVOURITE) {
             val addToFav = receivedIntent.getBooleanExtra(EXTRAS_ADD_TO_FAVOURITE, false)
-            val action = if (addToFav) ADD_TO_FAVOURITE
-            else REMOVE_FROM_FAVOURITE
+            val action = if (addToFav) ADD_TO_FAVOURITE else REMOVE_FROM_FAVOURITE
             mediaController.transportControls.sendCustomAction(action, null)
         }
     }

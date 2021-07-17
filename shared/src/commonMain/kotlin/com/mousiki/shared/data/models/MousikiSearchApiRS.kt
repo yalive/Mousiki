@@ -1,8 +1,8 @@
 package com.mousiki.shared.data.models
 
 import com.mousiki.shared.Keep
-import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.SearchTracksResult
+import com.mousiki.shared.domain.models.YtbTrack
 import kotlinx.serialization.Serializable
 
 /**

@@ -29,6 +29,6 @@ class TrackOptionsViewModel(
     }
 
     fun removeSongFromPlaylist(ytbTrack: Track, playlist: Playlist) = viewModelScope.launch {
-        deleteTrackFromCustomPlaylist(ytbTrack, playlist.title)
+        deleteTrackFromCustomPlaylist(ytbTrack, playlist.id)
     }
 }

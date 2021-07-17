@@ -1,0 +1,37 @@
+CREATE TABLE IF NOT EXISTS db_playlist (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  type TEXT NOT NULL DEFAULT 'CUSTOM',
+  description TEXT NOT NULL DEFAULT '',
+  created_by TEXT NOT NULL DEFAULT 'USER',
+  created_at TEXT NOT NULL DEFAULT (datetime('now','localtime')),
+  edited_at TEXT NOT NULL DEFAULT (datetime('now','localtime')),
+  external_id TEXT DEFAULT NULL -- Identify external playlist: YTB...
+);
+
+-- insert default playlists
+INSERT INTO db_playlist(name,type,description,created_by,created_at,edited_at)
+VALUES ('Favourite','FAV','Favourite tracks','USER',datetime('now','localtime'),datetime('now','localtime'));
+
+INSERT INTO db_playlist(name,type,description,created_by,created_at,edited_at)
+VALUES ('Recent','RECENT','Recent tracks','Mousiki',datetime('now','localtime'),datetime('now','localtime'));
+
+INSERT INTO db_playlist(name,type,description,created_by,created_at,edited_at)
+VALUES ('Most played','HEAVY','Most played tracks','Mousiki',datetime('now','localtime'),datetime('now','localtime'));
+
+
+insert:
+INSERT OR REPLACE INTO db_playlist(name, type, description,created_by)
+VALUES ?;
+
+getAll:
+SELECT * FROM db_playlist;
+
+playlistWithNameExist:
+SELECT EXISTS(SELECT 1 FROM db_playlist WHERE name=?);
+
+getPlaylistWithName:
+SELECT* FROM db_playlist WHERE name=?;
+
+delete:
+DELETE  FROM db_playlist WHERE id= ?;

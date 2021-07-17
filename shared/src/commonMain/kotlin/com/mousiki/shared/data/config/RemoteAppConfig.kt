@@ -171,6 +171,10 @@ class RemoteAppConfig(
         return delegate.getInt(APP_OPEN_AD_FREQUENCY)
     }
 
+    fun homeNativeAdsEnabled(): Boolean {
+        return delegate.getBoolean(ENABLE_HOME_NATIVE_ADS)
+    }
+
     companion object {
 
         private const val YOUTUBE_API_KEYS = "youtube_api_keys"
@@ -194,6 +198,7 @@ class RemoteAppConfig(
         private const val AUTO_REFRESH_ADS_DURATION = "auto_refresh_ads_duration_min"
         private const val ENABLE_APP_OPEN_AD = "enable_app_open_ad"
         private const val APP_OPEN_AD_FREQUENCY = "app_open_ad_frequency"
+        private const val ENABLE_HOME_NATIVE_ADS = "enable_home_native_ads"
 
         private const val DEF_ADS_LIST_OFFSET = 6
         private const val DEF_FREQ_POPUP_RATE = 3
@@ -224,6 +229,7 @@ class RemoteAppConfig(
             configMap[ENABLE_NEW_HOME] = "false"
             configMap[AUTO_REFRESH_ADS_DURATION] = "10"
             configMap[ENABLE_APP_OPEN_AD] = "true"
+            configMap[ENABLE_HOME_NATIVE_ADS] = "true"
             configMap[APP_OPEN_AD_FREQUENCY] = "3"
             return configMap
         }

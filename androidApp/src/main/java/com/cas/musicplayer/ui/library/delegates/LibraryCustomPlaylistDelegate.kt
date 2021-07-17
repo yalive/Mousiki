@@ -12,14 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.ui.library.LibraryViewModel
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
-import com.mousiki.shared.utils.Constants
 import com.cas.musicplayer.utils.loadImage
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.isCustom
+import com.mousiki.shared.domain.models.isFavourite
+import com.mousiki.shared.ui.library.LibraryViewModel
 
 
 /**
@@ -59,7 +60,7 @@ class LibraryCustomPlaylistDelegate(
         private val btnMoreOptions: ImageButton = view.findViewById(R.id.btnMoreOptions)
 
         override fun bind(playlist: Playlist) {
-            if (playlist.id == Constants.FAV_PLAYLIST_NAME) {
+            if (playlist.isFavourite) {
                 txtTitle.setText(R.string.favourites)
             } else {
                 txtTitle.text = playlist.title
@@ -71,12 +72,12 @@ class LibraryCustomPlaylistDelegate(
                 playlist.itemCount
             )
             itemView.findViewById<View>(R.id.cardView).onClick {
-                viewModel.onClickPlaylist(playlist.copy(title = txtTitle.text.toString())) // Hack!!!
+                viewModel.onClickPlaylist(playlist)
             }
             btnMoreOptions.onClick {
                 showPopup(it, playlist)
             }
-            btnMoreOptions.isVisible = playlist.title != Constants.FAV_PLAYLIST_NAME
+            btnMoreOptions.isVisible = playlist.isCustom
 
             if (playlist.itemCount == 0) {
                 imgSong.setImageResource(R.drawable.ic_music_note)
