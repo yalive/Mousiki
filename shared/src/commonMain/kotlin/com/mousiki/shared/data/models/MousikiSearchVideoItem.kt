@@ -33,6 +33,7 @@ fun MousikiSearchVideoItem.toMusicTrack(owner: VideoOwner?): YtbTrack {
         youtubeId = id.orEmpty(),
         duration = YtbTrack.toYoutubeDuration(duration.orEmpty()),
         title = title.orEmpty(),
-        artistName = artistName
+        artistName = artistName,
+        artistId = owner?.channelId.orEmpty()
     )
 }

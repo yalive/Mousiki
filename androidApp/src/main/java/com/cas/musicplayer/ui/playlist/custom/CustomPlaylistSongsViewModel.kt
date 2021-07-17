@@ -13,7 +13,6 @@ import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
-import com.mousiki.shared.utils.Constants
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -41,11 +40,11 @@ class CustomPlaylistSongsViewModel(
 
     private fun getPlaylistSongs() = viewModelScope.launch {
         _songs.value = Resource.Loading
-        when (playlist.id) {
-            Constants.FAV_PLAYLIST_NAME -> getFavouriteTracks(300).collect { showTracks(it) }
-            Constants.RECENT_PLAYLIST_NAME -> getRecentlyPlayedSongs(300).collect { showTracks(it) }
-            Constants.MOST_PLAYED_PLAYLIST_NAME -> getHeavyTracks(300).collect { showTracks(it) }
-            else -> showTracks(getCustomPlaylistTracks(playlist.title))
+        when (playlist.type) {
+            Playlist.TYPE_FAV -> getFavouriteTracks(300).collect { showTracks(it) }
+            Playlist.TYPE_RECENT -> getRecentlyPlayedSongs(300).collect { showTracks(it) }
+            Playlist.TYPE_HEAVY -> getHeavyTracks(300).collect { showTracks(it) }
+            else -> showTracks(getCustomPlaylistTracks(playlist.id))
         }
     }
 

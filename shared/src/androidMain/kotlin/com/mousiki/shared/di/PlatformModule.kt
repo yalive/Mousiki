@@ -1,5 +1,6 @@
 package com.mousiki.shared.di
 
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.downloader.extractor.DefaultExtractor
 import com.mousiki.shared.downloader.extractor.Extractor

@@ -9,25 +9,22 @@ import com.mousiki.shared.domain.models.YtbTrack
 typealias CustomPlaylistTrackEntity = Custom_playlist_track
 
 fun Custom_playlist_track.toTrack(): Track {
-    val localId = try {
-        youtube_id.toLong()
-    } catch (e: Exception) {
-        null
-    }
-
-    if (localId != null) {
+    if (type == Track.TYPE_LOCAL_AUDIO) {
         return LocalSong(
             song = Song.emptySong.copy(
-                id = localId,
+                id = track_id.toLongOrZero(),
                 title = title,
-                duration = duration.toLong()
+                duration = duration.toLong(),
+                artistName = artist_name,
+                artistId = artist_id.toLongOrZero()
             )
         )
     }
     return YtbTrack(
-        youtubeId = youtube_id,
+        youtubeId = track_id,
         title = title,
         duration = duration,
-        artistName = title.split("-")[0]
+        artistName = artist_name,
+        artistId = artist_id
     )
 }

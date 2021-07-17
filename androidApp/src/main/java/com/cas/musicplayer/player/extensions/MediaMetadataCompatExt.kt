@@ -86,9 +86,5 @@ var MediaMetadataCompat.Builder.musicTrack: Track
         artUri = value.imgUrl
         albumArtUri = value.imgUrl
         duration = value.durationToSeconds() * 1000
-        artist = try {
-            value.title.substringBefore("-")
-        } catch (e: Exception) {
-            ""
-        }
+        artist = value.artistName
     }
