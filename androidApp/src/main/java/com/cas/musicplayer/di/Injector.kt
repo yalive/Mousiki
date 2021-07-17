@@ -8,6 +8,7 @@ import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.local.albums.AlbumDetailsViewModel
 import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
+import com.cas.musicplayer.ui.local.artists.ArtistDetailsViewModel
 import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
 import com.cas.musicplayer.ui.local.folders.FolderDetailsViewModel
 import com.cas.musicplayer.ui.local.folders.FoldersViewModel
@@ -137,6 +138,9 @@ object Injector : KoinComponent {
         get() = get()
 
     val folderDetailsViewModel: FolderDetailsViewModel
+        get() = get()
+
+    val artistDetailsViewModel: ArtistDetailsViewModel
         get() = get()
 
     val localSongsRepository: LocalSongsRepository

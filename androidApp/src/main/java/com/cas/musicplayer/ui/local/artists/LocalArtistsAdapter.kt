@@ -2,9 +2,12 @@ package com.cas.musicplayer.ui.local.artists
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalArtistBinding
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
@@ -38,6 +41,13 @@ class LocalArtistsAdapter :
                 artist.songCount,
                 artist.songCount
             )
+
+            itemView.onClick {
+                itemView.findNavController().navigate(
+                    R.id.action_localSongsContainerFragment_to_artistDetailsFragment,
+                    bundleOf(ArtistDetailsFragment.EXTRAS_ARTIST_ID to artist.id)
+                )
+            }
             try {
                 val imageSize = itemView.context.dpToPixel(55f)
                 Picasso.get()
