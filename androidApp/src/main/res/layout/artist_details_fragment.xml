@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/artist_details_scene"
+    tools:context=".ui.local.artists.ArtistDetailsFragment">
+
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:background="@color/buttonBackgroundColor"
+        android:scaleType="fitXY"
+        android:src="@drawable/hamid_el_kasri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/viewBack"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/colorTransparent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topGuideline">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:tint="?colorOnSurface"
+            app:srcCompat="@drawable/ic_arrow_left_light" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/txtScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_black"
+        android:textColor="?colorOnSurface"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/viewBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/viewBack"
+        app:layout_constraintTop_toTopOf="@id/viewBack"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/artistName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_black"
+        android:maxLines="2"
+        android:gravity="center"
+        android:textColor="?colorOnSurface"
+        android:textSize="20sp"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/txtNumberOfSongs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:text="40 songs"
+        android:paddingBottom="@dimen/sixteen_16dp"
+        android:textColor="?colorOnSurface"
+        android:textSize="14sp"
+        tools:text="40 songs" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/local_songs_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:paddingBottom="100dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgBackground"
+        tools:itemCount="12"
+        tools:listitem="@layout/item_local_song" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="80dp" />
+</androidx.constraintlayout.motion.widget.MotionLayout>
+

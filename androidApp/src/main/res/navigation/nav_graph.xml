@@ -209,6 +209,9 @@
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right"/>
+        <action
+            android:id="@+id/action_localSongsContainerFragment_to_artistDetailsFragment"
+            app:destination="@id/artistDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumDetailsFragment"
@@ -220,4 +223,9 @@
         android:name="com.cas.musicplayer.ui.local.folders.FolderDetailsFragment"
         android:label="folder_details_fragment"
         tools:layout="@layout/folder_details_fragment" />
+    <fragment
+        android:id="@+id/artistDetailsFragment"
+        android:name="com.cas.musicplayer.ui.local.artists.ArtistDetailsFragment"
+        android:label="artist_details_fragment"
+        tools:layout="@layout/artist_details_fragment" />
 </navigation>
