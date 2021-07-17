@@ -49,7 +49,9 @@ class LocalSongsDataSource constructor(
                 id = 0,
                 youtube_id = it.youtubeId,
                 title = it.title,
-                duration = it.duration
+                duration = it.duration,
+                artist_name = it.artistName,
+                artist_id = it.artistId
             )
         }
 

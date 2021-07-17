@@ -110,6 +110,7 @@ fun MousikiVideoRS.toTrack(owner: VideoOwner?): YtbTrack {
         youtubeId = videoId.orEmpty(),
         title = title.orEmpty(),
         duration = YtbTrack.toYoutubeDuration(duration.orEmpty()),
-        artistName = artistName
+        artistName = artistName,
+        artistId = owner?.channelId.orEmpty()
     )
 }
