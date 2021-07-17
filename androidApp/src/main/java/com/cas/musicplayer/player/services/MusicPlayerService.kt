@@ -266,8 +266,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             loadNotificationImage?.join()
         } catch (e: Exception) {
         }
-
-        scheduleStopForeground()
     }
 
     private fun playCurrentTrack() {
@@ -419,7 +417,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                     if (notification != null) {
                         notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification)
                         if (!isForegroundService) {
-                            stopForegroundJob?.cancel()
                             startForeground(NOW_PLAYING_NOTIFICATION, notification)
                             isForegroundService = true
                         }
@@ -449,17 +446,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             if (!MusicApp.get().isInForeground) {
                 VideoEmplacementLiveData.out()
             }
-        }
-    }
-
-    // Schedule stop foreground service if not playing, so user can swipe to delete notification
-    private var stopForegroundJob: Job? = null
-    private fun scheduleStopForeground() {
-        stopForegroundJob?.cancel()
-        stopForegroundJob = lifecycleScope.launch {
-            delay(5 * 1000) // 5 seconds
-            if (mediaController.playbackState?.isPlaying == true) return@launch
-            stopForeground(false)
         }
     }
 

@@ -16,7 +16,6 @@ import com.cas.musicplayer.ui.local.repository.LocalArtistRepository
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.ConnectivityState
-import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.di.initKoin
@@ -75,9 +74,7 @@ class MusicApp : Application(), KoinComponent {
 
         UserPrefs.init(Injector.preferencesHelper.provider)
         configurePreferredTheme()
-        if (AudienceNetworkAds.isInitialized(this)) {
-            return
-        }
+
         MobileAds.initialize(this) {
             admobInitialized = true
             AdsManager.init(applicationScope, get())
