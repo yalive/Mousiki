@@ -14,7 +14,9 @@ fun Db_favouriteTrack.toTrack(): Track {
             song = Song.emptySong.copy(
                 id = track_id.toLongOrZero(),
                 title = title,
-                duration = duration.toLong()
+                duration = duration.toLong(),
+                artistId = artist_id.toLongOrZero(),
+                artistName = artist_name
             )
         )
     }
@@ -22,7 +24,8 @@ fun Db_favouriteTrack.toTrack(): Track {
         youtubeId = track_id,
         title = title,
         duration = duration,
-        artistName = title.split("-")[0]
+        artistName = artist_name,
+        artistId = artist_id
     )
 }
 

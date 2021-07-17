@@ -9,5 +9,6 @@ fun Trending_tracks.toTrack() = YtbTrack(
     youtubeId = youtube_id,
     title = title,
     duration = duration,
-    artistName = title.split("-")[0]
+    artistName = artist_name,
+    artistId = artist_id
 )

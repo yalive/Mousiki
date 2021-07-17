@@ -7,6 +7,7 @@ import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
+import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.fs.ContentEncoding
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.fs.PathComponent
@@ -84,7 +85,17 @@ class ArtistsRepository(
         if (localChannelSongs.isNotEmpty()) {
             return Success(localChannelSongs)
         }
-        return channelRemoteDataSource.getChannelSongs(artist).alsoWhenSuccess {
+
+        val result = channelRemoteDataSource.getChannelSongs(artist)
+            .map { ytbTracks ->
+                ytbTracks.map { track ->
+                    track.copy(
+                        artistName = artist.name,
+                        artistId = artist.channelId
+                    )
+                }
+            }
+        return result.alsoWhenSuccess {
             channelLocalDataSource.saveChannelSongs(artist.channelId, it)
         }
     }

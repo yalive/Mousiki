@@ -2,13 +2,15 @@ CREATE TABLE IF NOT EXISTS songs_search_result (`id` INTEGER PRIMARY KEY AUTOINC
 `youtube_id` TEXT NOT NULL,
 `title` TEXT NOT NULL,
 `duration` TEXT NOT NULL,
-`query` TEXT NOT NULL
+`query` TEXT NOT NULL,
+`artist_name` TEXT NOT NULL,
+`artist_id` TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS `index_songs_search_result_youtube_id` ON `songs_search_result` (`youtube_id`);
 
 insert:
-INSERT OR REPLACE INTO songs_search_result(youtube_id, title, duration,query)
+INSERT OR REPLACE INTO songs_search_result(youtube_id, title, duration,query,artist_name,artist_id)
 VALUES ?;
 
 getResultForQuery:

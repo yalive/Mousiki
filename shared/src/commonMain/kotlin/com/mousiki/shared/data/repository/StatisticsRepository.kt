@@ -32,7 +32,9 @@ class StatisticsRepository(
                 title = track.title,
                 duration = track.duration,
                 play_count = playCount,
-                type = track.type
+                type = track.type,
+                artist_name = track.artistName,
+                artist_id = track.artistId
             )
         )
     }
