@@ -13,7 +13,13 @@ class YTBPlaylistItemToTrack : Mapper<YTBPlaylistItem, YtbTrack> {
     override suspend fun map(from: YTBPlaylistItem): YtbTrack {
         val id = from.contentDetails?.videoId.orEmpty()
         val title = from.snippet?.title.orEmpty()
-        val track = YtbTrack(id, title, "")
+        val track = YtbTrack(
+            youtubeId = id,
+            title = title,
+            duration = "",
+            artistName = from.snippet?.channelTitle.orEmpty(),
+            artistId = ""
+        )
         from.snippet?.thumbnails?.urlOrEmpty()?.let { url ->
             track.fullImageUrl = url
         }

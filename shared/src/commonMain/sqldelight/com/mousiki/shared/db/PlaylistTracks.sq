@@ -3,13 +3,15 @@ CREATE TABLE IF NOT EXISTS playlist_tracks (
 `youtube_id` TEXT NOT NULL,
 `playlistId` TEXT NOT NULL,
 `title` TEXT NOT NULL,
-`duration` TEXT NOT NULL
+`duration` TEXT NOT NULL,
+`artist_name` TEXT NOT NULL,
+`artist_id` TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS `index_playlist_tracks_youtube_id` ON `playlist_tracks` (`youtube_id`);
 
 insert:
-INSERT OR REPLACE INTO playlist_tracks(youtube_id, playlistId, title,duration)
+INSERT OR REPLACE INTO playlist_tracks(youtube_id, playlistId, title,duration, artist_name, artist_id)
 VALUES ?;
 
 getPlaylistTracks:

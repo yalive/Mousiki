@@ -4,13 +4,15 @@ CREATE TABLE IF NOT EXISTS custom_playlist_track (
 `title` TEXT NOT NULL,
 `duration` TEXT NOT NULL,
 `playlist_id` INTEGER NOT NULL,
-`type` TEXT NOT NULL
+`type` TEXT NOT NULL,
+`artist_name` TEXT NOT NULL,
+`artist_id` TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_playlist_track_track_id_playlist_id` ON `custom_playlist_track` (`track_id`, `playlist_id`);
 
 insert:
-INSERT OR REPLACE INTO custom_playlist_track(track_id, title, duration,playlist_id, type)
+INSERT OR REPLACE INTO custom_playlist_track(track_id, title, duration,playlist_id, type, artist_name, artist_id)
 VALUES ?;
 
 deleteTrackFromPlaylist:
