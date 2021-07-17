@@ -29,7 +29,9 @@ class SearchLocalDataSource(
                 youtube_id = it.youtubeId,
                 duration = it.duration,
                 title = it.title,
-                query = query
+                query = query,
+                artist_name = it.artistName,
+                artist_id = it.artistId
             )
         }
         db.transaction {

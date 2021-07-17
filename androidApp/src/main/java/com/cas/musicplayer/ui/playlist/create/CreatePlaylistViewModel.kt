@@ -20,10 +20,11 @@ class CreatePlaylistViewModel(
     private val addSongToFavourite: AddSongToFavouriteUseCase
 ) : BaseViewModel() {
 
-    fun createPlaylist(ytbTrack: Track, playlistName: String) = viewModelScope.launch {
+    fun createPlaylist(track: Track?, playlistName: String) = viewModelScope.launch {
         when (val result = createCustomPlaylist(playlistName)) {
             is CreatePlaylistResult.Created -> {
-                addTrackToCustomPlaylist.invoke(ytbTrack, result.playlist.id.toLong())
+                if (track == null) return@launch
+                addTrackToCustomPlaylist.invoke(track, result.playlist.id.toLong())
                 showToast("Added to $playlistName")
             }
             CreatePlaylistResult.NameAlreadyExist -> showToast("Playlist $playlistName existed")

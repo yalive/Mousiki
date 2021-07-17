@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 -- #############  Drop unused tables  ################ --
 DROP TABLE IF EXISTS playlists_search_result;
 DROP TABLE IF EXISTS channel_search_result;
@@ -74,6 +64,9 @@ WHERE
     );
 DROP TABLE historic_tracks;
 
+-- Add artist name and artist id
+ALTER TABLE db_recentTrack ADD COLUMN artist_name TEXT NOT NULL DEFAULT '';
+ALTER TABLE db_recentTrack ADD COLUMN artist_id TEXT NOT NULL DEFAULT '';
 
 -- #############  Favourite track migration  ################ --
 -- Rename table
@@ -100,6 +93,9 @@ ALTER TABLE db_favouriteTrackTemp RENAME TO db_favouriteTrack;
 
 COMMIT;
 
+-- Add artist name and artist id
+ALTER TABLE db_favouriteTrack ADD COLUMN artist_name TEXT NOT NULL DEFAULT '';
+ALTER TABLE db_favouriteTrack ADD COLUMN artist_id TEXT NOT NULL DEFAULT '';
 
 -- #############  Custom playlist track migration  ################ --
 -- Rename youtube_id to track_id
@@ -152,4 +148,23 @@ DROP TABLE custom_playlist_track;
 ALTER TABLE custom_playlist_trackTemp RENAME TO custom_playlist_track;
 
 COMMIT;
+
+ALTER TABLE custom_playlist_track ADD COLUMN artist_name TEXT NOT NULL DEFAULT '';
+ALTER TABLE custom_playlist_track ADD COLUMN artist_id TEXT NOT NULL DEFAULT '';
+
+-- #############  Trending Table  ################ --
+ALTER TABLE trending_tracks ADD COLUMN artist_name TEXT NOT NULL DEFAULT '';
+ALTER TABLE trending_tracks ADD COLUMN artist_id TEXT NOT NULL DEFAULT '';
+
+-- #############  songs_search_result Table  ################ --
+ALTER TABLE songs_search_result ADD COLUMN artist_name TEXT NOT NULL DEFAULT '';
+ALTER TABLE songs_search_result ADD COLUMN artist_id TEXT NOT NULL DEFAULT '';
+
+-- #############  channel_tracks Table  ################ --
+ALTER TABLE channel_tracks ADD COLUMN artist_name TEXT NOT NULL DEFAULT '';
+
+-- #############  playlist_tracks Table  ################ --
+ALTER TABLE playlist_tracks ADD COLUMN artist_name TEXT NOT NULL DEFAULT '';
+ALTER TABLE playlist_tracks ADD COLUMN artist_id TEXT NOT NULL DEFAULT '';
+
 

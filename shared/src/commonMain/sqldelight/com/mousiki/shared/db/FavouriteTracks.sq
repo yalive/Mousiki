@@ -3,13 +3,15 @@ CREATE TABLE IF NOT EXISTS db_favouriteTrack (
 `track_id` TEXT NOT NULL,
 `title` TEXT NOT NULL,
 `duration` TEXT NOT NULL,
-`type` TEXT NOT NULL
+`type` TEXT NOT NULL,
+`artist_name` TEXT NOT NULL,
+`artist_id` TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS `index_db_favouriteTrack_track_id` ON `db_favouriteTrack` (`track_id`);
 
 insert:
-INSERT OR REPLACE INTO db_favouriteTrack(track_id, title,duration, type)
+INSERT OR REPLACE INTO db_favouriteTrack(track_id, title,duration, type, artist_name, artist_id)
 VALUES ?;
 
 getAll:
