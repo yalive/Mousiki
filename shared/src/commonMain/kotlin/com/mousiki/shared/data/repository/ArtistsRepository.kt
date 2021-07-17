@@ -1,7 +1,5 @@
 package com.mousiki.shared.data.repository
 
-import com.mousiki.shared.data.datasource.ArtistsLocalDataSource
-import com.mousiki.shared.data.datasource.ArtistsRemoteDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsLocalDataSource
 import com.mousiki.shared.data.datasource.channel.ChannelSongsRemoteDataSource
 import com.mousiki.shared.data.models.Artist
@@ -9,6 +7,7 @@ import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.Result.Success
 import com.mousiki.shared.domain.result.alsoWhenSuccess
+import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.fs.ContentEncoding
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.fs.PathComponent
@@ -30,23 +29,11 @@ import kotlinx.serialization.json.jsonObject
 
 class ArtistsRepository(
     private var json: Json,
-    private val localDataSource: ArtistsLocalDataSource,
-    private val remoteDataSource: ArtistsRemoteDataSource,
     private val channelLocalDataSource: ChannelSongsLocalDataSource,
     private val channelRemoteDataSource: ChannelSongsRemoteDataSource,
     private val storage: StorageApi,
     private val connectivityState: ConnectivityChecker
 ) {
-
-    suspend fun getArtistsChannels(ids: List<String>): Result<List<Artist>> {
-        val artistsDb = localDataSource.getArtists(ids)
-        if (artistsDb.isNotEmpty()) {
-            return Success(artistsDb)
-        }
-        return remoteDataSource.getArtists(ids).alsoWhenSuccess {
-            localDataSource.saveArtists(it)
-        }
-    }
 
     // TODO: Handle OutOfMemory error
     suspend fun getAllArtists(): List<Artist> {
@@ -98,7 +85,17 @@ class ArtistsRepository(
         if (localChannelSongs.isNotEmpty()) {
             return Success(localChannelSongs)
         }
-        return channelRemoteDataSource.getChannelSongs(artist).alsoWhenSuccess {
+
+        val result = channelRemoteDataSource.getChannelSongs(artist)
+            .map { ytbTracks ->
+                ytbTracks.map { track ->
+                    track.copy(
+                        artistName = artist.name,
+                        artistId = artist.channelId
+                    )
+                }
+            }
+        return result.alsoWhenSuccess {
             channelLocalDataSource.saveChannelSongs(artist.channelId, it)
         }
     }

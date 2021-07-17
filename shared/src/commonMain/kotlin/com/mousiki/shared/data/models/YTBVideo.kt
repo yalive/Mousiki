@@ -21,7 +21,8 @@ data class YTBVideo(
 data class YTBVideoSnippet(
     val title: String? = null,
     var thumbnails: YTThumbnails? = null,
-    val channelTitle: String? = null
+    val channelTitle: String? = null,
+    val channelId: String? = null,
 )
 
 @Keep

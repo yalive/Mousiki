@@ -22,5 +22,6 @@ fun TrackDto.toDomainModel() = YtbTrack(
     youtubeId = youtubeId.orEmpty(),
     duration = duration.orEmpty(),
     title = title.orEmpty(),
-    artistName = title.orEmpty().split("-")[0]
+    artistName = title.orEmpty().split("-")[0],
+    artistId = ""
 )

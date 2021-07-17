@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 
 /**
  **********************************
- * Created by @author on 14/07/2021.
+ * Created by Fayssel on 14/07/2021.
  **********************************
  */
 
@@ -38,34 +38,6 @@ class HorizontalAlbumsAdapter(
     ) : SimpleBaseViewHolder<Album>(binding.root) {
         private val albumName: TextView = binding.albumName
         private val artistName: TextView = binding.artistName
-
-        init {
-            /* binding.cardView.onClick {
-                 if (adapterPosition >= 0) {
-                     val item = items[adapterPosition]
-                     val artist = Artist(item.title, "US", item.playlistId)
-                     val bundle = bundleOf(
-                         PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
-                         EXTRAS_ARTIST to artist,
-                         BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
-                             item.featuredImage
-                         )
-                     )
-
-                     itemView.findNavController()
-                         .navigateSafeAction(
-                             R.id.action_homeFragment_to_playlistVideosFragment,
-                             bundle
-                         )
-
-                     if (!Utils.hasShownAdsOneTime) {
-                         Utils.hasShownAdsOneTime = true
-                         RequestAdsLiveData.value = AdsOrigin("CompactPlaylists")
-                     }
-                 }
-             }*/
-        }
-
 
         override fun bind(data: Album) {
             albumName.text = data.title

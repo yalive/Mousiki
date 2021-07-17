@@ -11,7 +11,6 @@ import com.cas.musicplayer.databinding.FragmentCreatePalylistBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.base.darkStatusBar
-import com.cas.musicplayer.utils.toast
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.domain.models.Track
 
@@ -50,7 +49,6 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
             return
         }
         viewModel.createPlaylist(track, playlistName)
-        requireContext().toast("Added to $playlistName")
         view?.hideSoftKeyboard()
         findNavController().popBackStack()
     }
@@ -59,4 +57,3 @@ class CreatePlaylistFragment : BaseFragment<CreatePlaylistViewModel>(
 
 private val CreatePlaylistFragment.track
     get() = arguments?.getParcelable<Track>(AddTrackToPlaylistFragment.EXTRAS_TRACK)
-        ?: throw IllegalStateException("Music track not set")

@@ -1,27 +1,37 @@
-CREATE TABLE IF NOT EXISTS recent_played_tracks (
+CREATE TABLE IF NOT EXISTS db_recentTrack (
 `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-`youtube_id` TEXT NOT NULL,
+`track_id` TEXT NOT NULL,
 `title` TEXT NOT NULL,
-`duration` TEXT NOT NULL
+`duration` TEXT NOT NULL,
+`play_count` INTEGER NOT NULL,
+`type` TEXT NOT NULL,
+`artist_name` TEXT NOT NULL,
+`artist_id` TEXT NOT NULL
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS `index_recent_played_tracks_youtube_id` ON `recent_played_tracks` (`youtube_id`);
+CREATE UNIQUE INDEX IF NOT EXISTS `index_db_recentTrack_track_id` ON `db_recentTrack` (`track_id`);
 
 insert:
-INSERT OR REPLACE INTO recent_played_tracks(youtube_id, title,duration)
+INSERT OR REPLACE INTO db_recentTrack(track_id, title,duration,play_count, type,artist_name,artist_id)
 VALUES ?;
 
-getSongs:
-SELECT * FROM recent_played_tracks ORDER BY id DESC LIMIT ?;
+getTracks:
+SELECT * FROM db_recentTrack ORDER BY id DESC LIMIT ?;
 
-deleteMusicTrack:
-DELETE  FROM recent_played_tracks WHERE youtube_id= ?;
+deleteTrack:
+DELETE  FROM db_recentTrack WHERE track_id= ?;
 
-getByYoutubeId:
-SELECT  * FROM recent_played_tracks WHERE youtube_id= ?;
+getByTrackId:
+SELECT  * FROM db_recentTrack WHERE track_id= ?;
+
+getHeavyList:
+SELECT * FROM db_recentTrack WHERE play_count > 3 ORDER BY play_count DESC LIMIT ?;
 
 count:
-SELECT COUNT(*) FROM recent_played_tracks;
+SELECT COUNT(*) FROM db_recentTrack;
+
+heavyCount:
+SELECT COUNT(*) FROM db_recentTrack WHERE play_count > 3;
 
 clear:
-DELETE  FROM recent_played_tracks;
+DELETE  FROM db_recentTrack;

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.MousikiAdapter
+import com.cas.musicplayer.ui.common.ads.AdsCellDelegate
 import com.cas.musicplayer.ui.common.ads.facebook.FBAdsCellDelegate
 import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.delegates.*
@@ -33,7 +34,8 @@ class HomeAdapter(
             onVideoSelected = onVideoSelected,
             onClickRetry = onClickRetryNewRelease
         ),
-        FBAdsCellDelegate()
+        FBAdsCellDelegate(),
+        AdsCellDelegate()
     ),
     HomeItemDiffUtil()
 ) {
