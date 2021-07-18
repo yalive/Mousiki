@@ -5,13 +5,15 @@ import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.SortOrder
 import com.mousiki.shared.domain.models.Album
 import com.mousiki.shared.domain.models.Song
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Created by Fayssel Yabahddou on 6/25/21.
  */
 class AlbumRepository(private val songRepository: LocalSongsRepository) {
 
-    fun albums(): List<Album> {
+    suspend fun albums(): List<Album> = withContext(Dispatchers.IO) {
         val songs = songRepository.songs(
             songRepository.makeSongCursor(
                 null,
@@ -19,7 +21,7 @@ class AlbumRepository(private val songRepository: LocalSongsRepository) {
                 getSongLoaderSortOrder()
             )
         )
-        return splitIntoAlbums(songs)
+        return@withContext splitIntoAlbums(songs)
     }
 
     fun albums(query: String): List<Album> {

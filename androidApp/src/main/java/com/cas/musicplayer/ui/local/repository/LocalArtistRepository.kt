@@ -4,6 +4,8 @@ import android.provider.MediaStore
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.mousiki.shared.domain.models.Album
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Created by Fayssel Yabahddou on 6/25/21.
@@ -44,14 +46,14 @@ class LocalArtistRepository(
         return LocalArtist(artistId, albumRepository.splitIntoAlbums(songs))
     }
 
-    fun artists(): List<LocalArtist> {
+    suspend fun artists(): List<LocalArtist> = withContext(Dispatchers.IO) {
         val songs = songRepository.songs(
             songRepository.makeSongCursor(
                 null, null,
                 getSongLoaderSortOrder()
             )
         )
-        return splitIntoArtists(albumRepository.splitIntoAlbums(songs))
+        return@withContext splitIntoArtists(albumRepository.splitIntoAlbums(songs))
     }
 
     fun albumArtists(): List<LocalArtist> {

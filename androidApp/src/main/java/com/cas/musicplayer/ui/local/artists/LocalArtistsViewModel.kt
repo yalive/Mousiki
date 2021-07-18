@@ -2,9 +2,11 @@ package com.cas.musicplayer.ui.local.artists
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
 import com.cas.musicplayer.ui.local.repository.LocalArtistRepository
 import com.mousiki.shared.ui.base.BaseViewModel
+import kotlinx.coroutines.launch
 
 class LocalArtistsViewModel(
     private val localArtistRepository: LocalArtistRepository
@@ -18,7 +20,7 @@ class LocalArtistsViewModel(
         loadAllLocalArtists()
     }
 
-    fun loadAllLocalArtists() {
+    fun loadAllLocalArtists() = viewModelScope.launch {
         val artists = localArtistRepository.artists()
         _localArtists.value = artists
     }

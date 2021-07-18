@@ -14,7 +14,7 @@ class GetLocalPlaylistItemCountUseCase(
     private val repository: PlaylistsRepository
 ) {
 
-    suspend operator fun invoke(playlist: Playlist): Flow<Int> {
+    operator fun invoke(playlist: Playlist): Flow<Int> {
         return repository.getPlaylistItemsCount(playlist).map { it.toInt() }
     }
 }
