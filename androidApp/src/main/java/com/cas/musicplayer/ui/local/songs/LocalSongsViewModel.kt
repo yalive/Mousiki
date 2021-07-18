@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.songs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.player.PlaySongDelegate
@@ -22,7 +23,7 @@ class LocalSongsViewModel(
         loadAllSongs()
     }
 
-    fun loadAllSongs() {
+    fun loadAllSongs() = viewModelScope.launch {
         val songsItems = localSongsRepository.songs().map {
             LocalSong(it).toDisplayedVideoItem()
         }
@@ -33,7 +34,6 @@ class LocalSongsViewModel(
             ))
             addAll(songsItems)
         }
-
         _localSongs.value = displayedItems
     }
 

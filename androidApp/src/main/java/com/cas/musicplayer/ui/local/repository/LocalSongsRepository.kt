@@ -9,14 +9,16 @@ import android.provider.MediaStore.Audio.AudioColumns.IS_MUSIC
 import android.provider.MediaStore.Audio.Media
 import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.Song
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Created by Fayssel Yabahddou on 6/18/21.
  */
 class LocalSongsRepository(private val context: Context) {
 
-    fun songs(): List<Song> {
-        return songs(makeSongCursor(null, null))
+    suspend fun songs(): List<Song> = withContext(Dispatchers.IO) {
+        return@withContext songs(makeSongCursor(null, null))
     }
 
     fun songs(cursor: Cursor?): List<Song> {
