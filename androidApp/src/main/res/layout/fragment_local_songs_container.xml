@@ -9,9 +9,9 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/localSongsPrimaryColor"
         app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/localSongsPrimaryColor"
-        app:tabIndicatorColor="@color/localSongsPrimaryColor"
         app:tabTextAppearance="@style/TextAppearance.App.Button.tabs" />
 
     <androidx.viewpager2.widget.ViewPager2
