@@ -50,11 +50,9 @@ class LocalSongsAdapterDelegate(
             binding.txtTitle.text = song.songTitle
             binding.txtArtist.text = song.artistName()
             try {
-                val imageSize = itemView.context.dpToPixel(55f)
                 Picasso.get()
                     .load(song.track.imgUrl)
-                    .placeholder(R.drawable.ic_music_note)
-                    .resize(imageSize, imageSize)
+                    .placeholder(R.drawable.ic_note_placeholder)
                     .into(binding.imgSong)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)

@@ -24,15 +24,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/eight_8dp">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgTrack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="@dimen/dimen_local_song_image"
+            android:layout_height="@dimen/dimen_local_song_image"
+            android:layout_marginStart="@dimen/sixteen_16dp"
+            android:elevation="@dimen/four_4dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/img_genre_latin" />
+            app:shapeAppearanceOverlay="@style/rounded_corner" />
 
         <TextView
             android:id="@+id/txtTrackTitle"
@@ -45,6 +46,7 @@
             android:fontFamily="@font/roboto_black"
             android:gravity="center_vertical"
             android:maxLines="1"
+            android:textDirection="ltr"
             android:textColor="?android:textColorPrimary"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
