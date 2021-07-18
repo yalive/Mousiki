@@ -44,8 +44,8 @@ fun ImageView.loadTrackImage(
 
     if (track is LocalSong) {
         Picasso.get().load(track.imgUrl)
-            .placeholder(R.drawable.ic_music_note)
-            .error(R.drawable.ic_music_note)
+            .placeholder(R.drawable.ic_note_placeholder)
+            .error(R.drawable.ic_note_placeholder)
             .fit()
             .into(this)
         return
