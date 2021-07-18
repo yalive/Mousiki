@@ -6,6 +6,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalPlaylistsFragmentBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.launchWhenViewResumed
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.utils.viewBinding
@@ -23,13 +24,14 @@ class LocalPlaylistsFragment : BaseFragment<LocalPlaylistsViewModel>(
         LocalPlaylistsAdapter()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.localPlaylistRecyclerView.adapter = adapter
-
-        observe(viewModel.playlist, adapter::submitList)
-
+    init {
+        launchWhenViewResumed {
+            observe(viewModel.playlist, adapter::submitList)
+        }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.localPlaylistRecyclerView.adapter = adapter
+    }
 }

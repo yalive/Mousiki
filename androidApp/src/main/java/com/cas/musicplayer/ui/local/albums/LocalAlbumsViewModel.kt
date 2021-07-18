@@ -2,9 +2,11 @@ package com.cas.musicplayer.ui.local.albums
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.ui.local.repository.AlbumRepository
 import com.mousiki.shared.domain.models.Album
 import com.mousiki.shared.ui.base.BaseViewModel
+import kotlinx.coroutines.launch
 
 class LocalAlbumsViewModel(
     private val albumRepository: AlbumRepository
@@ -18,7 +20,7 @@ class LocalAlbumsViewModel(
         loadAllAlbums()
     }
 
-    fun loadAllAlbums() {
+    fun loadAllAlbums() = viewModelScope.launch {
         _albums.value = albumRepository.albums()
     }
 }
