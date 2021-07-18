@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.folders
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.cas.musicplayer.ui.local.songs.HeaderSongsActionsItem
@@ -22,7 +23,7 @@ class FolderDetailsViewModel(
     val localSongs: LiveData<List<DisplayableItem>>
         get() = _localSongs
 
-    fun loadSongsFromPath(path: String) {
+    fun loadSongsFromPath(path: String) = viewModelScope.launch {
         val songsItems = localSongsRepository.songs()
             .filter { File(it.path).fixedPath(MusicApp.get()) == path }
             .map { song -> LocalSong(song).toDisplayedVideoItem() }
