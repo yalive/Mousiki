@@ -1,13 +1,12 @@
 package com.cas.musicplayer.tmp
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import com.cas.musicplayer.utils.EventObserver
 import com.mousiki.shared.ui.event.Event
 import com.mousiki.shared.ui.resource.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 
 /**
  **********************************
@@ -30,3 +29,9 @@ fun <T> LifecycleOwner.observeEvent(liveData: LiveData<Event<T>>, body: (T) -> U
 }
 
 fun <T> MutableLiveData<T>.toImmutableLiveData() = this as LiveData<T>
+
+fun Fragment.launchWhenViewResumed(
+    block: suspend CoroutineScope.() -> Unit
+): Job = lifecycleScope.launchWhenResumed {
+    viewLifecycleOwner.lifecycleScope.launchWhenResumed(block)
+}

@@ -2,8 +2,10 @@ package com.cas.musicplayer.ui.local.folders
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.ui.local.repository.FoldersRepository
 import com.mousiki.shared.ui.base.BaseViewModel
+import kotlinx.coroutines.launch
 
 class FoldersViewModel(
     private val foldersRepository: FoldersRepository
@@ -17,9 +19,8 @@ class FoldersViewModel(
         loadAllFolders()
     }
 
-    fun loadAllFolders() {
+    fun loadAllFolders() = viewModelScope.launch {
         val folders1 = foldersRepository.getFolders()
         _folders.value = folders1
     }
-
 }

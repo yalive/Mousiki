@@ -13,6 +13,7 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOne
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -66,8 +67,8 @@ class PlaylistsRepository(
             }
     }
 
-    suspend fun getPlaylistsFlow(): Flow<List<Playlist>> = withContext(Dispatchers.Default) {
-        return@withContext playlistsDao.getAll().asFlow()
+    fun getPlaylistsFlow(): Flow<List<Playlist>> {
+        return playlistsDao.getAll().asFlow()
             .mapToList()
             .map { playlists ->
                 playlists.map {
@@ -80,7 +81,7 @@ class PlaylistsRepository(
                     }.toInt()
                     it.asPlaylist(itemCount = count)
                 }
-            }
+            }.flowOn(Dispatchers.Default)
     }
 
     suspend fun getCustomPlaylistTracks(
@@ -123,16 +124,16 @@ class PlaylistsRepository(
         playlistsDao.delete(playlistId)
     }
 
-    suspend fun getPlaylistItemsCount(
+    fun getPlaylistItemsCount(
         playlist: Playlist
-    ): Flow<Long> = withContext(Dispatchers.Default) {
-        return@withContext when (playlist.type) {
+    ): Flow<Long> {
+        return when (playlist.type) {
             Playlist.TYPE_FAV -> favouriteDao.count().asFlow().mapToOne()
             Playlist.TYPE_RECENT -> recentDao.count().asFlow().mapToOne()
             Playlist.TYPE_HEAVY -> recentDao.heavyCount().asFlow().mapToOne()
             Playlist.TYPE_YTB -> TODO("To be implemented")
             else -> customPlaylistTrackDao.playlistTracksCount(playlist.id.toLong())
                 .asFlow().mapToOne()
-        }
+        }.flowOn(Dispatchers.Default)
     }
 }
