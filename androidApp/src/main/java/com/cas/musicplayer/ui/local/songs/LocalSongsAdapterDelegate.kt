@@ -12,7 +12,6 @@ import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
 import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.themeColor
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.*
@@ -48,13 +47,15 @@ class LocalSongsAdapterDelegate(
 
         fun bind(song: DisplayedVideoItem) {
             binding.txtTitle.text = song.songTitle
-            binding.txtArtist.text = song.artistName()
+            binding.txtArtist.text = itemView.context.getString(
+                R.string.label_artist_name_and_duration,
+                song.artistName(),
+                song.songDuration
+            )
             try {
-                val imageSize = itemView.context.dpToPixel(55f)
                 Picasso.get()
                     .load(song.track.imgUrl)
-                    .placeholder(R.drawable.ic_music_note)
-                    .resize(imageSize, imageSize)
+                    .placeholder(R.drawable.ic_note_placeholder)
                     .into(binding.imgSong)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
