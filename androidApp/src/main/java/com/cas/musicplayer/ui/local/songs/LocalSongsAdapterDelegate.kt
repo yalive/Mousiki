@@ -1,10 +1,13 @@
 package com.cas.musicplayer.ui.local.songs
 
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
@@ -12,12 +15,9 @@ import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
 import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.dpToPixel
 import com.cas.musicplayer.utils.themeColor
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
-import com.squareup.picasso.Picasso
 
 class LocalSongsAdapterDelegate(
     private val onClickTrack: (Track) -> Unit
@@ -49,17 +49,19 @@ class LocalSongsAdapterDelegate(
         fun bind(song: DisplayedVideoItem) {
             binding.txtTitle.text = song.songTitle
             binding.txtArtist.text = song.artistName()
+            val localSong = song.track as LocalSong
+            val context = itemView.context
             try {
-                val imageSize = itemView.context.dpToPixel(55f)
-                Picasso.get()
-                    .load(song.track.imgUrl)
+                val imageRetriever = MediaMetadataRetriever()
+                imageRetriever.setDataSource(localSong.data)
+                val imageBytes = imageRetriever.embeddedPicture!!
+                Glide.with(context)
+                    .load(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size))
                     .placeholder(R.drawable.ic_music_note)
-                    .resize(imageSize, imageSize)
                     .into(binding.imgSong)
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (e: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(e)
+            } catch (error: Exception) {
+                Glide.with(context).load(R.drawable.ic_music_note)
+                    .into(binding.imgSong)
             }
 
             itemView.onClick {
