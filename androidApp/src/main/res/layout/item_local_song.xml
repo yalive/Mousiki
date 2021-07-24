@@ -10,22 +10,17 @@
     android:focusable="true"
     android:orientation="horizontal">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="#9C9A9A"
-        app:cardCornerRadius="@dimen/eight_8dp"
-        app:cardElevation="@dimen/eight_8dp">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgSong"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:scaleType="centerInside" />
-    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgSong"
+        android:layout_width="@dimen/dimen_local_song_image"
+        android:layout_height="@dimen/dimen_local_song_image"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:layout_marginBottom="@dimen/eight_8dp"
+        android:elevation="@dimen/four_4dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/rounded_corner"
+        app:srcCompat="@drawable/ic_note_placeholder" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -50,6 +45,7 @@
                 android:fontFamily="@font/roboto"
                 android:maxLines="1"
                 android:textColor="?colorOnSurface"
+                android:textDirection="ltr"
                 android:textSize="15sp"
                 tools:text="Hello Test" />
         </LinearLayout>
@@ -68,16 +64,14 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/indicatorPlaying"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/sixteen_16dp"
+        android:layout_height="@dimen/sixteen_16dp"
         android:layout_gravity="center"
         android:layout_marginEnd="4dp"
         android:scaleType="centerInside"
         android:visibility="gone"
-        app:lottie_colorFilter="#03DAC6"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/local_songs_playing_animation"
-        app:tint="#03DAC6" />
+        app:lottie_rawRes="@raw/local_songs_playing_animation" />
 
     <ImageButton
         android:id="@+id/btnMore"

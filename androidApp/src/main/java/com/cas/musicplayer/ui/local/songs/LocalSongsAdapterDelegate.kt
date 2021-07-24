@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.local.songs
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.cas.common.bitmap.resize
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
@@ -18,6 +20,10 @@ import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LocalSongsAdapterDelegate(
     private val onClickTrack: (Track) -> Unit
@@ -48,19 +54,18 @@ class LocalSongsAdapterDelegate(
 
         fun bind(song: DisplayedVideoItem) {
             binding.txtTitle.text = song.songTitle
-            binding.txtArtist.text = song.artistName()
+            binding.txtArtist.text = itemView.context.getString(
+                R.string.label_artist_name_and_duration,
+                song.artistName(),
+                song.songDuration
+            )
             val localSong = song.track as LocalSong
             val context = itemView.context
-            try {
-                val imageRetriever = MediaMetadataRetriever()
-                imageRetriever.setDataSource(localSong.data)
-                val imageBytes = imageRetriever.embeddedPicture!!
+
+            GlobalScope.launch(Dispatchers.Main) {
                 Glide.with(context)
-                    .load(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size))
-                    .placeholder(R.drawable.ic_music_note)
-                    .into(binding.imgSong)
-            } catch (error: Exception) {
-                Glide.with(context).load(R.drawable.ic_music_note)
+                    .load(loadBitmap(localSong.data))
+                    .placeholder(R.drawable.ic_note_placeholder)
                     .into(binding.imgSong)
             }
 
@@ -78,6 +83,16 @@ class LocalSongsAdapterDelegate(
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, song.track)
             }
+        }
+
+        private suspend fun loadBitmap(data: String): Bitmap? = withContext(Dispatchers.IO) {
+            val imageRetriever = MediaMetadataRetriever()
+            imageRetriever.setDataSource(data)
+            val imageBytes = imageRetriever.embeddedPicture
+            val bitmap = imageBytes?.size?.let {
+                BitmapFactory.decodeByteArray(imageBytes, 0, it)
+            }
+            return@withContext bitmap?.resize(40, 40)
         }
     }
 }
