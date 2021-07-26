@@ -1,19 +1,18 @@
 package com.cas.musicplayer.ui.local.songs
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.cas.common.bitmap.resize
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
 import com.cas.musicplayer.utils.color
@@ -21,7 +20,6 @@ import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -62,11 +60,16 @@ class LocalSongsAdapterDelegate(
             val localSong = song.track as LocalSong
             val context = itemView.context
 
-            GlobalScope.launch(Dispatchers.Main) {
-                Glide.with(context)
-                    .load(loadBitmap(localSong.data))
-                    .placeholder(R.drawable.ic_note_placeholder)
-                    .into(binding.imgSong)
+            val activity = context as MainActivity
+            activity.lifecycleScope.launch(Dispatchers.IO) {
+                val imgByte = getSongThumbnail(localSong.data)
+                withContext(Dispatchers.Main) {
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(imgByte)
+                        .placeholder(R.drawable.ic_note_placeholder)
+                        .into(binding.imgSong)
+                }
             }
 
             itemView.onClick {
@@ -85,14 +88,18 @@ class LocalSongsAdapterDelegate(
             }
         }
 
-        private suspend fun loadBitmap(data: String): Bitmap? = withContext(Dispatchers.IO) {
-            val imageRetriever = MediaMetadataRetriever()
-            imageRetriever.setDataSource(data)
-            val imageBytes = imageRetriever.embeddedPicture
-            val bitmap = imageBytes?.size?.let {
-                BitmapFactory.decodeByteArray(imageBytes, 0, it)
+        private fun getSongThumbnail(songPath: String): ByteArray? {
+            var imgByte: ByteArray?
+            MediaMetadataRetriever().also {
+                try {
+                    it.setDataSource(songPath)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                imgByte = it.embeddedPicture
+                it.release()
             }
-            return@withContext bitmap?.resize(40, 40)
+            return imgByte
         }
     }
 }
