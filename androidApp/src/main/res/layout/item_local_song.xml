@@ -19,7 +19,8 @@
         android:layout_marginBottom="@dimen/eight_8dp"
         android:elevation="@dimen/four_4dp"
         android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/rounded_corner" />
+        app:shapeAppearanceOverlay="@style/rounded_corner"
+        app:srcCompat="@drawable/ic_note_placeholder" />
 
     <LinearLayout
         android:layout_width="0dp"

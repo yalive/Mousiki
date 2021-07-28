@@ -1,22 +1,27 @@
 package com.cas.musicplayer.ui.local.songs
 
+import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.themeColor
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
-import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LocalSongsAdapterDelegate(
     private val onClickTrack: (Track) -> Unit
@@ -52,15 +57,19 @@ class LocalSongsAdapterDelegate(
                 song.artistName(),
                 song.songDuration
             )
-            try {
-                Picasso.get()
-                    .load(song.track.imgUrl)
-                    .placeholder(R.drawable.ic_note_placeholder)
-                    .into(binding.imgSong)
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (e: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(e)
+            val localSong = song.track as LocalSong
+            val context = itemView.context
+
+            val activity = context as MainActivity
+            activity.lifecycleScope.launch(Dispatchers.IO) {
+                val imgByte = getSongThumbnail(localSong.data)
+                withContext(Dispatchers.Main) {
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(imgByte)
+                        .placeholder(R.drawable.ic_note_placeholder)
+                        .into(binding.imgSong)
+                }
             }
 
             itemView.onClick {
@@ -77,6 +86,20 @@ class LocalSongsAdapterDelegate(
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, song.track)
             }
+        }
+
+        private fun getSongThumbnail(songPath: String): ByteArray? {
+            var imgByte: ByteArray?
+            MediaMetadataRetriever().also {
+                try {
+                    it.setDataSource(songPath)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                imgByte = it.embeddedPicture
+                it.release()
+            }
+            return imgByte
         }
     }
 }
