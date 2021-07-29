@@ -152,4 +152,8 @@
         <item name="backgroundTint">@color/buttonBackgroundColor</item>
         <item name="iconTint">?colorOnSurface</item>
     </style>
+
+    <style name="rounded_corner">
+        <item name="cornerSize">4dp</item>
+    </style>
 </resources>
