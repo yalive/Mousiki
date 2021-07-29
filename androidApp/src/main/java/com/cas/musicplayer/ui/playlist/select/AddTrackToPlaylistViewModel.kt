@@ -1,9 +1,12 @@
-package com.cas.musicplayer.ui.playlist.create
+package com.cas.musicplayer.ui.playlist.select
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.editable
+import com.mousiki.shared.domain.models.isFavourite
 import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.GetLocalPlaylistsUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
@@ -30,8 +33,7 @@ class AddTrackToPlaylistViewModel(
         get() = _playlists
 
     private val _trackAddedToPlaylist = MutableLiveData<Event<Playlist>>()
-    val trackAddedToPlaylist: LiveData<Event<Playlist>>
-        get() = _trackAddedToPlaylist
+    val trackAddedToPlaylist: LiveData<Event<Playlist>> get() = _trackAddedToPlaylist
 
     fun init(track: Track) {
         this.track = track
@@ -43,10 +45,8 @@ class AddTrackToPlaylistViewModel(
         _playlists.value = savedPlaylists
     }
 
-    fun addTrackToPlaylist(position: Int) = viewModelScope.launch {
-        val playlists = _playlists.value ?: emptyList()
-        val playlist = playlists.getOrNull(position) ?: return@launch
-        if (position == 0) {
+    fun addTrackToPlaylist(playlist: Playlist) = viewModelScope.launch {
+        if (playlist.isFavourite) {
             addSongToFavourite(track)
         } else {
             addTrackToCustomPlaylist.invoke(track, playlist.id.toLong())

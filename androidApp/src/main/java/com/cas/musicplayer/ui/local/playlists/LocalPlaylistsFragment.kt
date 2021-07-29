@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.playlists
 
 import android.os.Bundle
 import android.view.View
+import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalPlaylistsFragmentBinding
@@ -9,6 +10,7 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.launchWhenViewResumed
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment
 import com.cas.musicplayer.utils.viewBinding
 
 class LocalPlaylistsFragment : BaseFragment<LocalPlaylistsViewModel>(
@@ -33,5 +35,8 @@ class LocalPlaylistsFragment : BaseFragment<LocalPlaylistsViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.localPlaylistRecyclerView.adapter = adapter
+        binding.itemAddPlaylist.root.onClick {
+            CreatePlaylistFragment.present(childFragmentManager)
+        }
     }
 }

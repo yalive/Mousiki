@@ -3,14 +3,15 @@ package com.cas.musicplayer.ui.library.delegates
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.library.model.LibraryPlaylistItem
+import com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.ui.library.LibraryViewModel
 
@@ -47,8 +48,9 @@ class LibraryCreatePlaylistDelegate(
 
         init {
             cardView.onClick {
-                itemView.findNavController()
-                    .navigate(R.id.action_libraryFragment_to_createPlaylistFragment)
+                val fm = (itemView.context as? AppCompatActivity)
+                    ?.supportFragmentManager ?: return@onClick
+                CreatePlaylistFragment.present(fm)
             }
         }
     }
