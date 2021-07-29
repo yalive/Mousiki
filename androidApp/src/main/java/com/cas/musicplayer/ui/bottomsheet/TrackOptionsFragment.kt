@@ -7,11 +7,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
@@ -20,7 +17,7 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
-import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment
+import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.viewBinding
@@ -110,17 +107,9 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             if ((activity as MainActivity).isBottomPanelExpanded()) {
                 (activity as MainActivity).collapseBottomPanel()
             }
-            val navOptions = navOptions {
-                anim {
-                    enter = R.anim.fad_in
-                    exit = R.anim.fad_out
-                }
-            }
-            findNavController().navigate(
-                R.id.addTrackToPlaylistFragment, bundleOf(
-                    AddTrackToPlaylistFragment.EXTRAS_TRACK to ytbTrack,
-                    AddTrackToPlaylistFragment.EXTRAS_CURRENT_DESTINATION to findNavController().currentDestination?.id
-                ), navOptions
+            AddTrackToPlaylistFragment.present(
+                fm = requireActivity().supportFragmentManager,
+                track = ytbTrack
             )
             dismiss()
         }

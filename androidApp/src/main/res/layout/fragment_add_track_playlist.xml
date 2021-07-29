@@ -3,33 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minWidth="300dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbarView"
-        layout="@layout/toolbar" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCreatePlaylist"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/scroller"
+        android:layout_width="35dp"
+        android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/sixteen_16dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:alpha="0.6"
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="?colorOnSurface" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:layout_marginTop="@dimen/spacing_medium"
         android:fontFamily="@font/pangram_bold"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:stateListAnimator="@null"
-        android:text="@string/new_playlist"
-        android:textColor="@color/colorWhite"
-        app:cornerRadius="20dp" />
+        android:text="@string/add_to_playlist"
+        android:textColor="?colorOnSurface"
+        android:textSize="20sp" />
+
+    <include
+        android:id="@+id/createPlaylistView"
+        layout="@layout/item_select_custom_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
         tools:itemCount="4"
         tools:listitem="@layout/item_select_custom_playlist" />
