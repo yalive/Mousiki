@@ -186,5 +186,6 @@
     <string name="comma">,\u0020</string>
 
     <string name="label_by">by %s</string>
+    <string name="label_artist_name_and_duration">%s • %s</string>
 
 </resources>
