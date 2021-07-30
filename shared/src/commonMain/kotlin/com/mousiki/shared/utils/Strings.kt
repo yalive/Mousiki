@@ -14,4 +14,9 @@ interface Strings {
     val libraryFavourites: String
     val libraryHeavySongs: String
     val libraryTitlePlaylist: String
+
+    // Create playlist
+    fun playlistExist(playlistName: String): String
+    fun playlistCreated(playlistName: String): String
+    fun trackAddedToPlaylist(playlistName: String): String
 }

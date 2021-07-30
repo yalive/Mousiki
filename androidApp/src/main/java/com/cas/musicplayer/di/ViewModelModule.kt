@@ -15,9 +15,9 @@ import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
-import com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
+import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
@@ -39,7 +39,7 @@ val viewModelsModule = module {
     factory { SettingsViewModel() }
     factory { AddTrackToPlaylistViewModel(get(), get(), get(), get()) }
     factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get()) }
-    factory { CreatePlaylistViewModel(get(), get(), get()) }
+    factory { CreatePlaylistViewModel(get(), get()) }
     factory { QueueViewModel(get()) }
     factory { LocalSongsViewModel(get(), get()) }
     factory { LocalPlaylistsViewModel(get(), get()) }
