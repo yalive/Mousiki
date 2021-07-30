@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -120,6 +121,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
             binding.topBar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = inset.top
             }
+            binding.recyclerView.updatePadding(bottom = inset.bottom)
         })
         binding.btnPlayOption.setImageResource(
             UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
