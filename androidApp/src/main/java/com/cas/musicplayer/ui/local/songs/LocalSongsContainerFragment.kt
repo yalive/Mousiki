@@ -36,7 +36,7 @@ class LocalSongsContainerFragment : Fragment(R.layout.fragment_local_songs_conta
         TabLayoutMediator(binding.tabLayout, pager) { tab, position ->
             tab.text = titles[position]
         }.attach()
-        observe(DeviceInset){ inset->
+        observe(DeviceInset) { inset ->
             binding.root.updatePadding(top = inset.top)
         }
 
