@@ -200,7 +200,6 @@ class MousikiPlayerMotionLayout @JvmOverloads constructor(
         return when (id) {
             R.id.collapsed -> "Collapsed"
             R.id.expanded -> "Expanded"
-            R.id.hidden -> "Hidden"
             else -> "Unknown"
         }
     }
