@@ -27,4 +27,17 @@ object AndroidStrings : Strings {
         get() = MusicApp.get().getString(R.string.library_heavy_songs)
     override val libraryTitlePlaylist: String
         get() = MusicApp.get().getString(R.string.title_playlist)
+
+    // Create playlist
+    override fun playlistExist(playlistName: String): String {
+        return MusicApp.get().getString(R.string.playlist_exist_message, playlistName)
+    }
+
+    override fun playlistCreated(playlistName: String): String {
+        return MusicApp.get().getString(R.string.playlist_created, playlistName)
+    }
+
+    override fun trackAddedToPlaylist(playlistName: String): String {
+        return MusicApp.get().getString(R.string.track_added_to_playlist, playlistName)
+    }
 }

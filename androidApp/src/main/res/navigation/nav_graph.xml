@@ -117,13 +117,6 @@
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
-        <action
-            android:id="@+id/action_libraryFragment_to_createPlaylistFragment"
-            app:destination="@id/createPlaylistFragment"
-            app:enterAnim="@anim/custom_slide_in_right"
-            app:exitAnim="@anim/custom_slide_out_left"
-            app:popEnterAnim="@anim/custom_slide_in_left"
-            app:popExitAnim="@anim/custom_slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -159,21 +152,7 @@
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
     </fragment>
-    <fragment
-        android:id="@+id/addTrackToPlaylistFragment"
-        android:name="com.cas.musicplayer.ui.playlist.create.AddTrackToPlaylistFragment"
-        android:label="AddTrackToPlaylistDialog"
-        tools:layout="@layout/fragment_add_track_playlist">
-        <action
-            android:id="@+id/action_addTrackToPlaylistFragment_to_createPlaylistFragment"
-            app:destination="@id/createPlaylistFragment" />
-    </fragment>
 
-    <fragment
-        android:id="@+id/createPlaylistFragment"
-        android:name="com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment"
-        android:label="CreatePlaylistDialog"
-        tools:layout="@layout/fragment_create_palylist" />
     <fragment
         android:id="@+id/customPlaylistSongsFragment"
         android:name="com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment"
@@ -201,14 +180,14 @@
             app:enterAnim="@anim/custom_slide_in_right"
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
-            app:popExitAnim="@anim/custom_slide_out_right"/>
+            app:popExitAnim="@anim/custom_slide_out_right" />
         <action
             android:id="@+id/action_localSongsContainerFragment_to_folderDetailsFragment"
             app:destination="@id/folderDetailsFragment"
             app:enterAnim="@anim/custom_slide_in_right"
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
-            app:popExitAnim="@anim/custom_slide_out_right"/>
+            app:popExitAnim="@anim/custom_slide_out_right" />
         <action
             android:id="@+id/action_localSongsContainerFragment_to_artistDetailsFragment"
             app:destination="@id/artistDetailsFragment" />

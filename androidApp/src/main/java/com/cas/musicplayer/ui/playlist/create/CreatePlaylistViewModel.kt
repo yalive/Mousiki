@@ -1,12 +1,14 @@
 package com.cas.musicplayer.ui.playlist.create
 
-import androidx.lifecycle.viewModelScope
-import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.usecase.customplaylist.AddTrackToCustomPlaylistUseCase
+import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.usecase.customplaylist.CreateCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.CreatePlaylistResult
-import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.event.Event
+import com.mousiki.shared.ui.event.asEvent
+import com.mousiki.shared.utils.Strings
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -15,19 +17,25 @@ import kotlinx.coroutines.launch
  ***************************************
  */
 class CreatePlaylistViewModel(
-    private val addTrackToCustomPlaylist: AddTrackToCustomPlaylistUseCase,
     private val createCustomPlaylist: CreateCustomPlaylistUseCase,
-    private val addSongToFavourite: AddSongToFavouriteUseCase
+    private val strings: Strings
 ) : BaseViewModel() {
 
-    fun createPlaylist(track: Track?, playlistName: String) = viewModelScope.launch {
-        when (val result = createCustomPlaylist(playlistName)) {
-            is CreatePlaylistResult.Created -> {
-                if (track == null) return@launch
-                addTrackToCustomPlaylist.invoke(track, result.playlist.id.toLong())
-                showToast("Added to $playlistName")
+    private val _playlistCreated = MutableStateFlow<Event<Playlist>?>(null)
+    val playlistCreated: StateFlow<Event<Playlist>?> = _playlistCreated
+
+    fun createPlaylist(playlistName: String) {
+        if (playlistName.isEmpty()) return
+        scope.launch {
+            when (val result = createCustomPlaylist(playlistName)) {
+                is CreatePlaylistResult.Created -> {
+                    showToast(strings.playlistCreated(playlistName))
+                    _playlistCreated.value = result.playlist.asEvent()
+                }
+                CreatePlaylistResult.NameAlreadyExist -> showToast(
+                    strings.playlistExist(playlistName)
+                )
             }
-            CreatePlaylistResult.NameAlreadyExist -> showToast("Playlist $playlistName existed")
         }
     }
 }
