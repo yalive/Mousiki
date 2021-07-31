@@ -14,7 +14,6 @@
         android:layout_height="260dp"
         android:background="@color/buttonBackgroundColor"
         android:scaleType="fitXY"
-        android:src="@drawable/hamid_el_kasri"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
