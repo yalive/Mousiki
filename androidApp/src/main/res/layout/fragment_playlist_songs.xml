@@ -112,7 +112,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgBackground"
         tools:itemCount="20"
-        tools:listitem="@layout/item_new_release_video" />
+        tools:listitem="@layout/item_ytb_track" />
 
     <include
         android:id="@+id/shimmerView"
