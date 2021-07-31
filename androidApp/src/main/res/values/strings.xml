@@ -174,8 +174,9 @@
     <string name="label_sort_duration">Duration</string>
     <string name="label_sort_year">Year</string>
     <string name="label_sort_last_added">Last Added</string>
+    <string name="confirm_delete_playlist">Do you want to delete this playlist: %s</string>
 
-    // time values
+    <!--    time values -->
     <string name="two_comma_separated_values">%s, %s</string>
     <string name="min">\u0020 minute</string>
     <string name="mins">\u0020 minutes</string>
