@@ -38,11 +38,11 @@ val viewModelsModule = module {
     factory { EmptyViewModel() }
     factory { SettingsViewModel() }
     factory { AddTrackToPlaylistViewModel(get(), get(), get(), get()) }
-    factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get()) }
+    factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get(), get()) }
     factory { CreatePlaylistViewModel(get(), get()) }
     factory { QueueViewModel(get()) }
     factory { LocalSongsViewModel(get(), get()) }
-    factory { LocalPlaylistsViewModel(get(), get(), get(), get()) }
+    factory { LocalPlaylistsViewModel(get(), get(), get(), get(), get()) }
     factory { LocalAlbumsViewModel(get()) }
     factory { LocalArtistsViewModel(get()) }
     factory { FoldersViewModel(get()) }

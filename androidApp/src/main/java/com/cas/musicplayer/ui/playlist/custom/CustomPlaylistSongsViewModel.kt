@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.tmp.valueOrNull
 import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.usecase.customplaylist.CustomPlaylistFirstYtbTrackUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.GetHeavyTracksFlowUseCase
@@ -13,10 +14,8 @@ import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  ***************************************
@@ -28,6 +27,7 @@ class CustomPlaylistSongsViewModel(
     private val getFavouriteTracks: GetFavouriteTracksFlowUseCase,
     private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
     private val getHeavyTracks: GetHeavyTracksFlowUseCase,
+    private val getCustomPlaylistFirstYtbTrack: CustomPlaylistFirstYtbTrackUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
     lateinit var playlist: Playlist
@@ -93,13 +93,10 @@ class CustomPlaylistSongsViewModel(
         _songs.value = Resource.Success(updatedList)
     }
 
-    private suspend fun Playlist.withImage(): Playlist = withContext(Dispatchers.IO) {
-        if (isCustom) {
-            val tracks = getCustomPlaylistTracks(id)
-            val ytbTrack = tracks.firstOrNull { it.type == Track.TYPE_YTB }
-            return@withContext copy(urlImage = ytbTrack?.imgUrl.orEmpty())
-        } else {
-            return@withContext this@withImage
-        }
+    private suspend fun Playlist.withImage(): Playlist {
+        return if (isCustom) {
+            val ytbTrack = getCustomPlaylistFirstYtbTrack(id)
+            copy(urlImage = ytbTrack?.imgUrlDef0.orEmpty())
+        } else this
     }
 }

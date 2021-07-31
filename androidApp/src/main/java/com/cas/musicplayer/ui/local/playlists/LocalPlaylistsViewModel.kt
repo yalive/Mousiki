@@ -5,22 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mousiki.shared.domain.models.Playlist
-import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.models.imgUrl
+import com.mousiki.shared.domain.models.imgUrlDef0
 import com.mousiki.shared.domain.models.isCustom
-import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
-import com.mousiki.shared.domain.usecase.customplaylist.GetLocalPlaylistItemCountUseCase
-import com.mousiki.shared.domain.usecase.customplaylist.GetLocalPlaylistsFlowUseCase
-import com.mousiki.shared.domain.usecase.customplaylist.RemoveCustomPlaylistUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.*
 import com.mousiki.shared.ui.base.BaseViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class LocalPlaylistsViewModel(
     private val getLocalPlaylistsFlow: GetLocalPlaylistsFlowUseCase,
     private val getCustomPlaylistTracks: GetCustomPlaylistTracksUseCase,
     private val getLocalPlaylistItemCount: GetLocalPlaylistItemCountUseCase,
     private val removeCustomPlaylist: RemoveCustomPlaylistUseCase,
+    private val getCustomPlaylistFirstYtbTrack: CustomPlaylistFirstYtbTrackUseCase,
 ) : BaseViewModel() {
 
     private val _playlists = MutableLiveData<List<Playlist>>()
@@ -64,13 +63,10 @@ class LocalPlaylistsViewModel(
         preparePlaylists()
     }
 
-    private suspend fun Playlist.withImage(): Playlist = withContext(Dispatchers.IO) {
-        if (isCustom) {
-            val tracks = getCustomPlaylistTracks(id)
-            val ytbTrack = tracks.firstOrNull { it.type == Track.TYPE_YTB }
-            return@withContext copy(urlImage = ytbTrack?.imgUrl.orEmpty())
-        } else {
-            return@withContext this@withImage
-        }
+    private suspend fun Playlist.withImage(): Playlist {
+        return if (isCustom) {
+            val ytbTrack = getCustomPlaylistFirstYtbTrack(id)
+            copy(urlImage = ytbTrack?.imgUrlDef0.orEmpty())
+        } else this
     }
 }
