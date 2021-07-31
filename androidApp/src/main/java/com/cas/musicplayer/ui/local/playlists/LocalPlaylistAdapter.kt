@@ -2,8 +2,9 @@ package com.cas.musicplayer.ui.local.playlists
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.ImageView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,13 +14,16 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalPlaylistBinding
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.library.delegates.onPlaylistOption
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.isCustom
 import com.squareup.picasso.Picasso
 
 
-class LocalPlaylistsAdapter :
-    ListAdapter<Playlist, LocalPlaylistsAdapter.ViewHolder>(PlaylistDiffCallback()) {
+class LocalPlaylistsAdapter(
+    private val doDeletePlaylist: (Playlist) -> Unit
+) : ListAdapter<Playlist, LocalPlaylistsAdapter.ViewHolder>(PlaylistDiffCallback()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val from = LayoutInflater.from(viewGroup.context)
@@ -38,6 +42,9 @@ class LocalPlaylistsAdapter :
         fun bind(playlist: Playlist, position: Int) {
             val context = itemView.context
 
+            binding.imagePlaylist.scaleType =
+                if (playlist.isCustom) ImageView.ScaleType.CENTER_CROP
+                else ImageView.ScaleType.CENTER
             binding.playlistName.text = playlist.title
             binding.songsCount.text = context.resources.getQuantityString(
                 R.plurals.playlist_tracks_counts,
@@ -45,23 +52,23 @@ class LocalPlaylistsAdapter :
                 playlist.itemCount
             )
 
+            binding.btnMore.isVisible = playlist.isCustom
+            binding.btnMore.onPlaylistOption(playlist, onDelete = {
+                doDeletePlaylist(playlist)
+            })
 
-            val drawable = when (position) {
-                0 -> ContextCompat.getDrawable(context, R.drawable.fav_playlist)
-                1 -> ContextCompat.getDrawable(context, R.drawable.most_played_playlist)
-                2 -> ContextCompat.getDrawable(context, R.drawable.recently_played_playlist)
-
-                else -> return
+            val drawable = when (playlist.type) {
+                Playlist.TYPE_FAV -> R.drawable.fav_playlist
+                Playlist.TYPE_HEAVY -> R.drawable.most_played_playlist
+                Playlist.TYPE_RECENT -> R.drawable.recently_played_playlist
+                else -> R.drawable.playlist_placeholder_image
             }
 
             val urlImage = if (playlist.urlImage.isNotEmpty()) playlist.urlImage else null
-
-            drawable?.let {
-                Picasso.get()
-                    .load(urlImage)
-                    .placeholder(it)
-                    .into(binding.imagePlaylist)
-            }
+            Picasso.get()
+                .load(urlImage)
+                .placeholder(drawable)
+                .into(binding.imagePlaylist)
 
             itemView.onClick {
                 itemView.findNavController().navigate(

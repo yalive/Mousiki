@@ -54,9 +54,9 @@ fun ImageView.loadTrackImage(
     try {
         val url = UserPrefs.getTrackImageUrl(track)
         if (url.isNotEmpty()) {
-            Picasso.get()
-                .load(url)
+            Picasso.get().load(url)
                 .placeholder(R.drawable.ic_note_placeholder)
+                .fit()
                 .into(this, object : Callback {
                     override fun onSuccess() {
                         UserPrefs.setTrackImageUrl(track, url)

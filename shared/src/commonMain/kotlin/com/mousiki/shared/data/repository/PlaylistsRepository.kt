@@ -6,6 +6,7 @@ import com.mousiki.shared.db.Custom_playlist_track
 import com.mousiki.shared.db.Db_playlist
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.imgUrlDef0
 import com.mousiki.shared.utils.DB_DATE_FORMAT
 import com.mousiki.shared.utils.KMPDate
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -54,34 +55,17 @@ class PlaylistsRepository(
     }
 
     suspend fun getPlaylists(): List<Playlist> = withContext(Dispatchers.Default) {
-        return@withContext playlistsDao.getAll().executeAsList()
-            .map {
-                val count = when (it.type) {
-                    Playlist.TYPE_FAV -> favouriteDao.count().executeAsOne()
-                    Playlist.TYPE_RECENT -> recentDao.count().executeAsOne()
-                    Playlist.TYPE_HEAVY -> recentDao.heavyCount().executeAsOne()
-                    Playlist.TYPE_YTB -> TODO("To be implemented")
-                    else -> customPlaylistTrackDao.playlistTracksCount(it.id).executeAsOne()
-                }.toInt()
-                it.asPlaylist(itemCount = count)
-            }
+        return@withContext playlistsDao.getAll()
+            .executeAsList()
+            .map { buildPlaylist(it) }
     }
 
     fun getPlaylistsFlow(): Flow<List<Playlist>> {
-        return playlistsDao.getAll().asFlow()
+        return playlistsDao.getAll()
+            .asFlow()
             .mapToList()
-            .map { playlists ->
-                playlists.map {
-                    val count = when (it.type) {
-                        Playlist.TYPE_FAV -> favouriteDao.count().executeAsOne()
-                        Playlist.TYPE_RECENT -> recentDao.count().executeAsOne()
-                        Playlist.TYPE_HEAVY -> recentDao.heavyCount().executeAsOne()
-                        Playlist.TYPE_YTB -> TODO("To be implemented")
-                        else -> customPlaylistTrackDao.playlistTracksCount(it.id).executeAsOne()
-                    }.toInt()
-                    it.asPlaylist(itemCount = count)
-                }
-            }.flowOn(Dispatchers.Default)
+            .map { playlists -> playlists.map { this.buildPlaylist(it) } }
+            .flowOn(Dispatchers.Default)
     }
 
     suspend fun getCustomPlaylistTracks(
@@ -135,5 +119,29 @@ class PlaylistsRepository(
             else -> customPlaylistTrackDao.playlistTracksCount(playlist.id.toLong())
                 .asFlow().mapToOne()
         }.flowOn(Dispatchers.Default)
+    }
+
+    suspend fun getCustomPlaylistFirstYtbTrack(playlistId: Long): Track? =
+        withContext(Dispatchers.Default) {
+            return@withContext customPlaylistTrackDao
+                .playlistFirstTrack(playlist_id = playlistId, type = Track.TYPE_YTB)
+                .executeAsOneOrNull()
+                ?.toTrack()
+        }
+
+    private suspend fun buildPlaylist(dbPlaylist: Db_playlist): Playlist {
+        val urlImage = when (dbPlaylist.type) {
+            Playlist.TYPE_CUSTOM -> getCustomPlaylistFirstYtbTrack(dbPlaylist.id)
+            else -> null
+        }?.imgUrlDef0.orEmpty()
+
+        val count = when (dbPlaylist.type) {
+            Playlist.TYPE_FAV -> favouriteDao.count().executeAsOne()
+            Playlist.TYPE_RECENT -> recentDao.count().executeAsOne()
+            Playlist.TYPE_HEAVY -> recentDao.heavyCount().executeAsOne()
+            Playlist.TYPE_YTB -> TODO("To be implemented")
+            else -> customPlaylistTrackDao.playlistTracksCount(dbPlaylist.id).executeAsOne()
+        }.toInt()
+        return dbPlaylist.asPlaylist(itemCount = count, urlFirstTrack = urlImage)
     }
 }

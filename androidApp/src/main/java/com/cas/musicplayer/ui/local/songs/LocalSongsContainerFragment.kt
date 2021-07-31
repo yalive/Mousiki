@@ -32,6 +32,7 @@ class LocalSongsContainerFragment : Fragment(R.layout.fragment_local_songs_conta
         val pager: ViewPager2 = binding.pager
 
         pager.adapter = adapter
+        pager.offscreenPageLimit = 4
 
         TabLayoutMediator(binding.tabLayout, pager) { tab, position ->
             tab.text = titles[position]

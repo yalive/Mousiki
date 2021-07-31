@@ -8,9 +8,10 @@ import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
-import com.cas.musicplayer.utils.loadImage
 import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.isCustom
 import com.mousiki.shared.domain.models.isFavourite
+import com.squareup.picasso.Picasso
 
 /**
  ***************************************
@@ -40,19 +41,32 @@ class SelectPlaylistAdapter(
             }
         }
 
-        override fun bind(data: Playlist) {
-            if (data.isFavourite) {
+        override fun bind(playlist: Playlist) {
+            imgPlaylist.scaleType =
+                if (playlist.isCustom) ImageView.ScaleType.CENTER_CROP
+                else ImageView.ScaleType.CENTER
+            if (playlist.isFavourite) {
                 txtTitle.setText(R.string.favourites)
             } else {
-                txtTitle.text = data.title
+                txtTitle.text = playlist.title
             }
             txtTracksCount.text = context.resources.getQuantityString(
                 R.plurals.playlist_tracks_counts,
-                data.itemCount,
-                data.itemCount
+                playlist.itemCount,
+                playlist.itemCount
             )
-            val urlImage = data.urlImage
-            imgPlaylist.loadImage(urlImage)
+            val drawable = when (playlist.type) {
+                Playlist.TYPE_FAV -> R.drawable.fav_playlist
+                Playlist.TYPE_HEAVY -> R.drawable.most_played_playlist
+                Playlist.TYPE_RECENT -> R.drawable.recently_played_playlist
+                else -> R.drawable.playlist_placeholder_image
+            }
+
+            val urlImage = if (playlist.urlImage.isNotEmpty()) playlist.urlImage else null
+            Picasso.get()
+                .load(urlImage)
+                .placeholder(drawable)
+                .into(imgPlaylist)
         }
     }
 }
