@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.tmp.valueOrNull
 import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.usecase.customplaylist.CustomPlaylistFirstYtbTrackUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.GetHeavyTracksFlowUseCase
@@ -26,12 +27,16 @@ class CustomPlaylistSongsViewModel(
     private val getFavouriteTracks: GetFavouriteTracksFlowUseCase,
     private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
     private val getHeavyTracks: GetHeavyTracksFlowUseCase,
+    private val getCustomPlaylistFirstYtbTrack: CustomPlaylistFirstYtbTrackUseCase,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
     lateinit var playlist: Playlist
         private set
     private val _songs = MutableLiveData<Resource<List<DisplayableItem>>>()
     val songs: LiveData<Resource<List<DisplayableItem>>> get() = _songs
+
+    private val _playlistImageUrl = MutableLiveData<String>()
+    val playlistImageUrl: LiveData<String> get() = _playlistImageUrl
 
     fun init(playlist: Playlist) {
         this.playlist = playlist
@@ -40,6 +45,9 @@ class CustomPlaylistSongsViewModel(
 
     private fun getPlaylistSongs() = viewModelScope.launch {
         _songs.value = Resource.Loading
+        launch {
+            _playlistImageUrl.value = playlist.withImage().urlImage
+        }
         when (playlist.type) {
             Playlist.TYPE_FAV -> getFavouriteTracks(300).collect { showTracks(it) }
             Playlist.TYPE_RECENT -> getRecentlyPlayedSongs(300).collect { showTracks(it) }
@@ -85,4 +93,10 @@ class CustomPlaylistSongsViewModel(
         _songs.value = Resource.Success(updatedList)
     }
 
+    private suspend fun Playlist.withImage(): Playlist {
+        return if (isCustom) {
+            val ytbTrack = getCustomPlaylistFirstYtbTrack(id)
+            copy(urlImage = ytbTrack?.imgUrlDef0.orEmpty())
+        } else this
+    }
 }

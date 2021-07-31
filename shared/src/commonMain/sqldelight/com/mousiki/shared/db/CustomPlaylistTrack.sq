@@ -29,3 +29,6 @@ SELECT * FROM custom_playlist_track WHERE playlist_id= ?;
 
 playlistTracksCount:
 SELECT COUNT(*) FROM custom_playlist_track WHERE playlist_id= ?;
+
+playlistFirstTrack:
+SELECT * FROM custom_playlist_track WHERE playlist_id= ? AND type= ? LIMIT 1;
