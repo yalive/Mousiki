@@ -44,10 +44,9 @@ class LocalPlayer(
                     }
                     updateMediaSessionState(state)
 
-                    // This may trigger exception while app in background
-                    /*if (state == Player.STATE_ENDED) {
+                    if (state == Player.STATE_ENDED) {
                         PlayerQueue.playNextTrack()
-                    }*/
+                    }
                 }
 
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
