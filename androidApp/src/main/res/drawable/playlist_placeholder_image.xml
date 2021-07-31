@@ -2,5 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
     <item android:drawable="@color/color_on_surface_50" />
-    <item android:drawable="@drawable/ic_music_note" />
+    <item
+        android:bottom="16dp"
+        android:drawable="@drawable/ic_app_player_notification"
+        android:gravity="center"
+        android:left="16dp"
+        android:right="16dp"
+        android:top="16dp" />
 </layer-list>

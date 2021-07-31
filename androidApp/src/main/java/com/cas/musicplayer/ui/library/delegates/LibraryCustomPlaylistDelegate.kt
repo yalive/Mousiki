@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
@@ -74,8 +75,8 @@ class LibraryCustomPlaylistDelegate(
             itemView.findViewById<View>(R.id.cardView).onClick {
                 viewModel.onClickPlaylist(playlist)
             }
-            btnMoreOptions.onClick {
-                showPopup(it, playlist)
+            btnMoreOptions.onPlaylistOption(playlist) {
+                viewModel.deletePlaylist(playlist)
             }
             btnMoreOptions.isVisible = playlist.isCustom
 
@@ -94,22 +95,35 @@ class LibraryCustomPlaylistDelegate(
                 imgSong.alpha = 1.0f
             }
         }
-
-        private fun showPopup(v: View, playlist: Playlist) {
-            val popup = PopupMenu(itemView.context, v)
-            val inflater: MenuInflater = popup.menuInflater
-            inflater.inflate(R.menu.menu_custom_playlist, popup.menu)
-            popup.setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.btnActionDelete -> {
-                        viewModel.deletePlaylist(playlist)
-                        true
-                    }
-                    else -> false
-                }
-            }
-            popup.show()
-        }
     }
 }
 
+inline fun View.onPlaylistOption(
+    playlist: Playlist,
+    crossinline onDelete: () -> Unit
+) {
+    onClick {
+        val popup = PopupMenu(context, this)
+        val inflater: MenuInflater = popup.menuInflater
+        inflater.inflate(R.menu.menu_custom_playlist, popup.menu)
+        popup.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.btnActionDelete -> {
+                    MaterialDialog(context).show {
+                        message(
+                            text = context.getString(
+                                R.string.confirm_delete_playlist,
+                                playlist.title
+                            )
+                        )
+                        positiveButton(res = R.string.ok) { onDelete() }
+                        negativeButton(res = R.string.cancel)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
+    }
+}

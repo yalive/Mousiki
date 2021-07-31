@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:background="?selectableItemBackground"
     tools:ignore="UseCompoundDrawables">
 
-    <ImageView
-        android:id="@+id/imgPlaylist"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/img_genre_jaz" />
+        android:layout_marginStart="@dimen/eight_8dp"
+        app:cardCornerRadius="@dimen/four_4dp"
+        app:cardElevation="@dimen/four_4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/fav_playlist" />
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/spacing_small"
         android:layout_weight="1"
         android:orientation="vertical">
 

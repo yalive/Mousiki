@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
     android:layout_marginTop="@dimen/eight_8dp"
+    android:background="?attr/selectableItemBackground"
     android:paddingTop="@dimen/four_4dp"
     android:paddingBottom="@dimen/four_4dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/image_card"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_playlist"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="@dimen/eight_8dp"
-        app:cardCornerRadius="@dimen/four_4dp"
-        app:cardElevation="@dimen/four_4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image_playlist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/fav_playlist" />
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/rounded_corner"
+        app:srcCompat="@drawable/fav_playlist" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -31,26 +25,26 @@
         android:layout_marginStart="@dimen/sixteen_16dp"
         android:layout_marginEnd="@dimen/eight_8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@id/image_card"
+        app:layout_constraintBottom_toBottomOf="@id/image_playlist"
         app:layout_constraintEnd_toStartOf="@id/btnMore"
-        app:layout_constraintStart_toEndOf="@id/image_card"
-        app:layout_constraintTop_toTopOf="@id/image_card">
+        app:layout_constraintStart_toEndOf="@id/image_playlist"
+        app:layout_constraintTop_toTopOf="@id/image_playlist">
 
         <TextView
             android:id="@+id/playlist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
-            android:text="Favourite Songs"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            tools:text="Favourite Songs" />
 
         <TextView
             android:id="@+id/songs_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:text="19 Songs"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:text="19 Songs" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -61,8 +55,8 @@
         android:layout_marginEnd="@dimen/four_4dp"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
-        app:layout_constraintBottom_toBottomOf="@id/image_card"
+        app:layout_constraintBottom_toBottomOf="@id/image_playlist"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/image_card"
+        app:layout_constraintTop_toTopOf="@id/image_playlist"
         app:srcCompat="@drawable/ic_more_vertical" />
 </androidx.constraintlayout.widget.ConstraintLayout>
