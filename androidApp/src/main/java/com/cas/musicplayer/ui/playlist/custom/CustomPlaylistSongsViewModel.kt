@@ -13,8 +13,10 @@ import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  ***************************************
@@ -33,6 +35,9 @@ class CustomPlaylistSongsViewModel(
     private val _songs = MutableLiveData<Resource<List<DisplayableItem>>>()
     val songs: LiveData<Resource<List<DisplayableItem>>> get() = _songs
 
+    private val _playlistImageUrl = MutableLiveData<String>()
+    val playlistImageUrl: LiveData<String> get() = _playlistImageUrl
+
     fun init(playlist: Playlist) {
         this.playlist = playlist
         getPlaylistSongs()
@@ -40,6 +45,9 @@ class CustomPlaylistSongsViewModel(
 
     private fun getPlaylistSongs() = viewModelScope.launch {
         _songs.value = Resource.Loading
+        launch {
+            _playlistImageUrl.value = playlist.withImage().urlImage
+        }
         when (playlist.type) {
             Playlist.TYPE_FAV -> getFavouriteTracks(300).collect { showTracks(it) }
             Playlist.TYPE_RECENT -> getRecentlyPlayedSongs(300).collect { showTracks(it) }
@@ -85,4 +93,13 @@ class CustomPlaylistSongsViewModel(
         _songs.value = Resource.Success(updatedList)
     }
 
+    private suspend fun Playlist.withImage(): Playlist = withContext(Dispatchers.IO) {
+        if (isCustom) {
+            val tracks = getCustomPlaylistTracks(id)
+            val ytbTrack = tracks.firstOrNull { it.type == Track.TYPE_YTB }
+            return@withContext copy(urlImage = ytbTrack?.imgUrl.orEmpty())
+        } else {
+            return@withContext this@withImage
+        }
+    }
 }

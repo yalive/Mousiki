@@ -6,6 +6,7 @@ import com.mousiki.shared.db.Custom_playlist_track
 import com.mousiki.shared.db.Db_playlist
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.utils.DB_DATE_FORMAT
 import com.mousiki.shared.utils.KMPDate
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -56,6 +57,16 @@ class PlaylistsRepository(
     suspend fun getPlaylists(): List<Playlist> = withContext(Dispatchers.Default) {
         return@withContext playlistsDao.getAll().executeAsList()
             .map {
+
+                val urlImage = when (it.type) {
+                    Playlist.TYPE_FAV -> null
+                    Playlist.TYPE_RECENT -> null
+                    Playlist.TYPE_HEAVY -> null
+                    Playlist.TYPE_YTB -> TODO("To be implemented")
+                    else -> customPlaylistTrackDao.playlistFirstTrack(it.id)
+                        .executeAsOneOrNull()
+                }?.toTrack()?.imgUrl.orEmpty()
+
                 val count = when (it.type) {
                     Playlist.TYPE_FAV -> favouriteDao.count().executeAsOne()
                     Playlist.TYPE_RECENT -> recentDao.count().executeAsOne()
@@ -63,7 +74,7 @@ class PlaylistsRepository(
                     Playlist.TYPE_YTB -> TODO("To be implemented")
                     else -> customPlaylistTrackDao.playlistTracksCount(it.id).executeAsOne()
                 }.toInt()
-                it.asPlaylist(itemCount = count)
+                it.asPlaylist(itemCount = count, urlFirstTrack = urlImage)
             }
     }
 
@@ -72,6 +83,16 @@ class PlaylistsRepository(
             .mapToList()
             .map { playlists ->
                 playlists.map {
+                    val urlImage = when (it.type) {
+                        Playlist.TYPE_FAV -> null
+                        Playlist.TYPE_RECENT -> null
+                        Playlist.TYPE_HEAVY -> null
+                        Playlist.TYPE_YTB -> TODO("To be implemented")
+                        else -> customPlaylistTrackDao.playlistFirstTrack(it.id)
+                            .executeAsOneOrNull()
+                    }?.toTrack()?.imgUrl.orEmpty()
+
+
                     val count = when (it.type) {
                         Playlist.TYPE_FAV -> favouriteDao.count().executeAsOne()
                         Playlist.TYPE_RECENT -> recentDao.count().executeAsOne()
@@ -79,7 +100,7 @@ class PlaylistsRepository(
                         Playlist.TYPE_YTB -> TODO("To be implemented")
                         else -> customPlaylistTrackDao.playlistTracksCount(it.id).executeAsOne()
                     }.toInt()
-                    it.asPlaylist(itemCount = count)
+                    it.asPlaylist(itemCount = count, urlFirstTrack = urlImage)
                 }
             }.flowOn(Dispatchers.Default)
     }

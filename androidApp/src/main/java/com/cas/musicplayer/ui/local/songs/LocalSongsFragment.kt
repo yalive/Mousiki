@@ -7,7 +7,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalSongsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.tmp.launchWhenViewResumed
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.SortByFragment
@@ -32,20 +31,6 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         )
     }
 
-    init {
-        launchWhenViewResumed {
-            observe(viewModel.localSongs) {
-                adapter.submitList(it)
-            }
-            checkStoragePermission(
-                binding.localSongsRecyclerView,
-                binding.storagePermissionView
-            ) {
-                viewModel.loadAllSongs()
-            }
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.localSongsRecyclerView.adapter = adapter
@@ -57,6 +42,17 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
             ) {
                 viewModel.onPlaybackStateChanged()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observe(viewModel.localSongs) { adapter.submitList(it) }
+        checkStoragePermission(
+            binding.localSongsRecyclerView,
+            binding.storagePermissionView
+        ) {
+            viewModel.loadAllSongs()
         }
     }
 
