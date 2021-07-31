@@ -27,13 +27,13 @@ data class LocalArtist(
 
     val name: String
         get() {
-            val name = safeGetFirstAlbum().safeGetFirstSong().albumArtist
-            if (PreferenceUtil.albumArtistsOnly && Utils.isVariousArtists(name)) {
+            val artistName = safeGetFirstAlbum().safeGetFirstSong().artistName
+            if (PreferenceUtil.albumArtistsOnly && Utils.isVariousArtists(artistName)) {
                 return VARIOUS_ARTISTS_DISPLAY_NAME
             }
-            return if (Utils.isArtistNameUnknown(name)) {
+            return if (Utils.isArtistNameUnknown(artistName)) {
                 UNKNOWN_ARTIST_DISPLAY_NAME
-            } else safeGetFirstAlbum().safeGetFirstSong().artistName
+            } else artistName
         }
 
     val songCount: Int
