@@ -121,6 +121,7 @@ val useCasesModule = module {
     factory { LoadChartLastThreeTracksUseCase(get()) }
     factory { AddTrackToCustomPlaylistUseCase(get()) }
     factory { CreateCustomPlaylistUseCase(get()) }
+    factory { CustomPlaylistFirstYtbTrackUseCase(get()) }
     factory { DeleteTrackFromCustomPlaylistUseCase(get()) }
     factory { GetLocalPlaylistsUseCase(get()) }
     factory { GetLocalPlaylistItemCountUseCase(get()) }

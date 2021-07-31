@@ -25,8 +25,10 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.isCustom
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.Constants
 import java.util.concurrent.Executors
@@ -39,7 +41,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
     var onDismissed: (() -> Unit)? = null
 
-    lateinit var ytbTrack: Track
+    lateinit var track: Track
 
     private val viewModel by lazy { Injector.trackOptionsViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
@@ -66,30 +68,30 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
                 (bottomSheet.parent as? CoordinatorLayout)?.parent?.requestLayout()
             }
         }
-        ytbTrack = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
-        if (!UserPrefs.isFav(ytbTrack.id)) {
+        track = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
+        if (!UserPrefs.isFav(track.id)) {
             binding.favIcon.setImageResource(R.drawable.ic_heart_light)
             binding.favLabel.text = getString(R.string.btn_favorite)
         } else {
             binding.favIcon.setImageResource(R.drawable.ic_heart_solid)
             binding.favLabel.text = getString(R.string.favourites)
         }
-        binding.imgTrack.loadTrackImage(ytbTrack)
-        binding.txtTrackTitle.text = ytbTrack.title
-        binding.txtTrackArtist.text = ytbTrack.artistName
+        binding.imgTrack.loadTrackImage(track)
+        binding.txtTrackTitle.text = track.title
+        binding.txtTrackArtist.text = track.artistName
         binding.shareVia.onClick {
-            Utils.shareWithDeepLink(ytbTrack, requireContext())
+            Utils.shareWithDeepLink(track, requireContext())
             if (this.isVisible) {
                 this.dismiss()
             }
         }
-
+        binding.shareVia.isVisible = track !is LocalSong
         binding.favController.onClick {
             Executors.newSingleThreadExecutor().execute {
-                if (UserPrefs.isFav(ytbTrack.id)) {
-                    viewModel.removeSongFromFavourite(ytbTrack)
+                if (UserPrefs.isFav(track.id)) {
+                    viewModel.removeSongFromFavourite(track)
                 } else {
-                    viewModel.makeSongAsFavourite(ytbTrack)
+                    viewModel.makeSongAsFavourite(track)
                 }
             }
 
@@ -99,7 +101,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         }
 
         binding.viewAddToQuee.onClick {
-            PlayerQueue.addAsNext(ytbTrack)
+            PlayerQueue.addAsNext(track)
             this.dismiss()
         }
 
@@ -109,19 +111,21 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             }
             AddTrackToPlaylistFragment.present(
                 fm = requireActivity().supportFragmentManager,
-                track = ytbTrack
+                track = track
             )
             dismiss()
         }
-        binding.viewRemoveFromCurrentPlaylist.onClick {
-            viewModel.removeSongFromPlaylist(ytbTrack, customPlaylist)
-            onDismissed?.invoke()
-            dismiss()
-        }
-        binding.viewRemoveFromCurrentPlaylist.isVisible = isFromCustomPlaylist
-        binding.viewAddToPlaylist.isVisible = !isFromCustomPlaylist
 
-        binding.viewAddToQuee.isVisible = PlayerQueue.value != ytbTrack
+        val playlist = customPlaylist
+        if (playlist != null) {
+            binding.viewRemoveFromCurrentPlaylist.onClick {
+                viewModel.removeSongFromPlaylist(track, playlist)
+                onDismissed?.invoke()
+                dismiss()
+            }
+        }
+        binding.viewRemoveFromCurrentPlaylist.isVisible = playlist != null && playlist.isCustom
+        binding.viewAddToQuee.isVisible = PlayerQueue.value != track
         configureAdView()
     }
 
@@ -160,7 +164,6 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val EXTRAS_IS_FROM_CUSTOM_PLAYLIST = "extras.is.from.custom.playlist"
         const val EXTRAS_CUSTOM_PLAYLIST = "extras.custom.playlist"
 
         fun present(
@@ -178,10 +181,5 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     }
 }
 
-private val TrackOptionsFragment.customPlaylist
+private val TrackOptionsFragment.customPlaylist: Playlist?
     get() = arguments?.getParcelable<Playlist>(TrackOptionsFragment.EXTRAS_CUSTOM_PLAYLIST)
-        ?: throw IllegalStateException("Custom playlist not set")
-
-private val TrackOptionsFragment.isFromCustomPlaylist
-    get() = arguments?.getBoolean(TrackOptionsFragment.EXTRAS_IS_FROM_CUSTOM_PLAYLIST)
-        ?: false

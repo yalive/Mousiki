@@ -6,6 +6,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
+import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
@@ -30,6 +31,9 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe(viewModel.songs, this::updateUI)
+        observe(viewModel.playlistImageUrl) { url ->
+            loadFeaturedImage(AppImage.AppImageUrl(url))
+        }
         binding.txtPlaylistName.text = viewModel.playlist.title
         binding.txtScreenTitle.text = viewModel.playlist.title
     }
@@ -51,7 +55,6 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
     }
 
     override fun addExtrasArgumentToBottomMenu(bundle: Bundle) {
-        bundle.putBoolean(TrackOptionsFragment.EXTRAS_IS_FROM_CUSTOM_PLAYLIST, true)
         bundle.putParcelable(TrackOptionsFragment.EXTRAS_CUSTOM_PLAYLIST, viewModel.playlist)
     }
 
