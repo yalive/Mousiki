@@ -12,8 +12,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalArtistBinding
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
 import com.cas.musicplayer.utils.Utils.getAlbumArtUri
-import com.cas.musicplayer.utils.dpToPixel
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.Picasso
 
 
@@ -37,7 +35,7 @@ class LocalArtistsAdapter :
         fun bind(artist: LocalArtist) {
             binding.artistName.text = artist.name
             binding.txtSongsCount.text = itemView.context.resources.getQuantityString(
-                R.plurals.playlist_tracks_counts,
+                R.plurals.numberOfSongs,
                 artist.songCount,
                 artist.songCount
             )
@@ -48,16 +46,11 @@ class LocalArtistsAdapter :
                     bundleOf(ArtistDetailsFragment.EXTRAS_ARTIST_ID to artist.id)
                 )
             }
-            try {
-                Picasso.get()
-                    .load(getAlbumArtUri(artist.safeGetFirstAlbum().id))
-                    .placeholder(R.drawable.ic_artist_placeholder)
-                    .into(binding.imgArtist)
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (e: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            }
+
+            Picasso.get()
+                .load(getAlbumArtUri(artist.safeGetFirstAlbum().id))
+                .placeholder(R.drawable.ic_artist_placeholder)
+                .into(binding.imgArtist)
         }
     }
 }

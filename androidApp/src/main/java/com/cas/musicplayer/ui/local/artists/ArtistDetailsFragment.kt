@@ -2,7 +2,6 @@ package com.cas.musicplayer.ui.local.artists
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
@@ -11,8 +10,9 @@ import com.cas.musicplayer.databinding.ArtistDetailsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
-import com.cas.musicplayer.utils.DeviceInset
+import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.viewBinding
+import com.squareup.picasso.Picasso
 
 class ArtistDetailsFragment : BaseFragment<ArtistDetailsViewModel>(
     R.layout.artist_details_fragment
@@ -39,9 +39,20 @@ class ArtistDetailsFragment : BaseFragment<ArtistDetailsViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observe(viewModel.artistName) { artistName ->
-            binding.artistName.text = artistName
-            binding.txtScreenTitle.text = artistName
+        observe(viewModel.artist) { artist ->
+            binding.artistName.text = artist.name
+            binding.txtScreenTitle.text = artist.name
+            binding.txtNumberOfSongs.text = resources.getQuantityString(
+                R.plurals.numberOfSongs,
+                artist.songCount,
+                artist.songCount
+            )
+
+            Picasso.get()
+                .load(Utils.getAlbumArtUri(artist.safeGetFirstAlbum().id))
+                .placeholder(R.drawable.ic_artist_placeholder)
+                .into(binding.imgBackground)
+
         }
         binding.localSongsRecyclerView.adapter = adapter
         binding.btnBack.onClick {
