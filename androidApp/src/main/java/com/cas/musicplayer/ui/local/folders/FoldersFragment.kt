@@ -6,7 +6,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FoldersFragmentBinding
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.tmp.launchWhenViewResumed
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.local.songs.StoragePermissionDelegate
@@ -30,18 +29,17 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
         FoldersAdapter()
     }
 
-    init {
-        launchWhenViewResumed {
-            observe(viewModel.folders, adapter::submitList)
-            checkStoragePermission(binding.folderRecyclerView, binding.storagePermissionView) {
-                viewModel.loadAllFolders()
-            }
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.folderRecyclerView.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observe(viewModel.folders, adapter::submitList)
+        checkStoragePermission(binding.folderRecyclerView, binding.storagePermissionView) {
+            viewModel.loadAllFolders()
+        }
     }
 
     override fun onRequestPermissionsResult(

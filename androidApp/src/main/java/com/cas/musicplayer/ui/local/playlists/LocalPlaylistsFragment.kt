@@ -7,7 +7,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalPlaylistsFragmentBinding
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.tmp.launchWhenViewResumed
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment
@@ -23,12 +22,13 @@ class LocalPlaylistsFragment : BaseFragment<LocalPlaylistsViewModel>(
     private val binding by viewBinding(LocalPlaylistsFragmentBinding::bind)
 
     private val adapter by lazy {
-        LocalPlaylistsAdapter()
+        LocalPlaylistsAdapter { viewModel.deletePlaylist(it) }
     }
 
-    init {
-        launchWhenViewResumed {
-            observe(viewModel.playlist, adapter::submitList)
+    override fun onResume() {
+        super.onResume()
+        observe(viewModel.playlist) {
+            adapter.submitList(it)
         }
     }
 
@@ -36,6 +36,9 @@ class LocalPlaylistsFragment : BaseFragment<LocalPlaylistsViewModel>(
         super.onViewCreated(view, savedInstanceState)
         binding.localPlaylistRecyclerView.adapter = adapter
         binding.itemAddPlaylist.root.onClick {
+            CreatePlaylistFragment.present(childFragmentManager)
+        }
+        binding.itemAddPlaylist.imagePlaylist.onClick {
             CreatePlaylistFragment.present(childFragmentManager)
         }
     }
