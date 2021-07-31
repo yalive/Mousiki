@@ -1,19 +1,15 @@
 package com.cas.musicplayer.ui.common.songs
 
+import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
-import com.airbnb.lottie.LottieAnimationView
-import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
+import com.cas.musicplayer.databinding.ItemYtbTrackBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.utils.color
@@ -22,6 +18,7 @@ import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.artistName
 import com.mousiki.shared.preference.UserPrefs
 
 /**
@@ -39,8 +36,9 @@ class SongAdapterDelegate(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.item_new_release_video)
-        return PopularSongsViewHolder(view)
+        val binding = ItemYtbTrackBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return PopularSongsViewHolder(binding)
     }
 
     override fun onBindViewHolder(
@@ -58,16 +56,8 @@ class SongAdapterDelegate(
     }
 
     inner class PopularSongsViewHolder(
-        itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
-
-        private val imgSong: ImageView = itemView.findViewById(R.id.imgSong)
-        private val indicatorPlaying: LottieAnimationView =
-            itemView.findViewById(R.id.indicatorPlaying)
-        private val btnMore: ImageButton = itemView.findViewById(R.id.btnMore)
-        private val txtTitle: TextView = itemView.findViewById(R.id.txtTitle)
-        private val txtDuration: TextView = itemView.findViewById(R.id.txtDuration)
-        private val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
+        val binding: ItemYtbTrackBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnTouchListener { v, event ->
@@ -81,11 +71,14 @@ class SongAdapterDelegate(
         }
 
         fun bind(item: DisplayedVideoItem) {
-            imgSong.loadTrackImage(item.track)
-            txtTitle.text = item.songTitle
-            txtDuration.text = item.songDuration
-            txtCategory.text = item.track.artistName
-            btnMore.onClick {
+            binding.imgSong.loadTrackImage(item.track)
+            binding.txtTitle.text = item.songTitle
+            binding.txtCategory.text = itemView.context.getString(
+                R.string.label_artist_name_and_duration,
+                item.artistName(),
+                item.songDuration
+            )
+            binding.btnMore.onClick {
                 onClickMoreOptions(item.track)
             }
             itemView.onClick {
@@ -98,9 +91,9 @@ class SongAdapterDelegate(
             val colorAccent = itemView.context.color(R.color.colorAccent)
             val colorText = if (item.isCurrent) colorAccent
             else itemView.context.themeColor(R.attr.colorOnSurface)
-            txtTitle.setTextColor(colorText)
+            binding.txtTitle.setTextColor(colorText)
 
-            indicatorPlaying.setMusicPlayingState(item)
+            binding.indicatorPlaying.setMusicPlayingState(item)
         }
     }
 }
