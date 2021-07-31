@@ -87,10 +87,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             mediaController = MediaControllerCompat(requireContext(), service.mediaSession)
             mediaController?.registerCallback(mediaControllerCallback)
             mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
-            showPlayerView("service connected")
-            if (PlayerQueue.value != null) {
-                ensurePlayerVisible()
-            }
+            showPlayerView()
         }
 
         override fun onBindingDied(name: ComponentName?) {
@@ -107,10 +104,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private val mediaControllerCallback = object : MediaControllerCompat.Callback() {
-        override fun binderDied() {
-            super.binderDied()
-            hidePlayer()
-        }
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             state?.let { onPlayMusicStateChanged(state) }
@@ -118,10 +111,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         override fun onSessionDestroyed() {
             serviceBound = false
-            hidePlayer()
             bindServiceIfNecessary()
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -146,7 +137,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         // Make sure video is visible if service is bound
-        showPlayerView("on resume")
+        showPlayerView()
 
         // Util when user enable draw over apps for the first time only
         binding.miniPlayerView.showTrackInfoIfNeeded()
@@ -406,7 +397,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (lock) {
             binding.lockScreenView.acquirePlayer(reusedPlayerView)
         } else {
-            showPlayerView("lock")
+            showPlayerView()
         }
         // Disable/Enable motion transition
         binding.motionLayout.getTransition(R.id.mainTransition).setEnable(!lock)
@@ -486,9 +477,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 endId: Int,
                 progress: Float
             ) {
-                if (endId != R.id.hidden && startId != R.id.hidden) {
-                    (activity as? MainActivity)?.binding?.motionLayout?.progress = progress
-                }
+                (activity as? MainActivity)?.binding?.motionLayout?.progress = progress
             }
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
@@ -497,10 +486,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     parentMotionLayout?.progress = 1.0f
                 } else if (currentId == R.id.collapsed) {
                     parentMotionLayout?.progress = 0.0f
-                } else if (currentId == R.id.hidden) {
-                    mediaController?.transportControls?.stop()
                 }
-
                 if (currentId == R.id.expanded) {
                     darkStatusBar()
                 } else {
@@ -529,7 +515,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     //endregion
-    fun showPlayerView(from: String) {
+    fun showPlayerView() {
         val playerView = reusedPlayerView ?: return
         if (playerView.parent == binding.cardPager) return
         val oldParent = playerView.parent as? ViewGroup
@@ -546,8 +532,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         } else if (state == PlaybackStateCompat.STATE_PAUSED) {
             binding.btnPlayPauseMain.setImageResource(R.drawable.ic_play)
             binding.lockScreenView.onPlayBackStateChanged()
-        } else if (state == PlaybackStateCompat.STATE_STOPPED) {
-            hidePlayer()
         }
     }
 
@@ -599,21 +583,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         return binding.motionLayout.currentState == R.id.expanded
     }
 
-    fun isPlayerHidden(): Boolean {
-        return binding.motionLayout.currentState == R.id.hidden
-    }
-
     fun isCollapsed(): Boolean {
         return binding.motionLayout.currentState == R.id.collapsed
-    }
-
-    fun hidePlayer() {
-        /*binding.motionLayout.setTransition(R.id.initialState)
-        binding.motionLayout.progress = 0f
-        binding.motionLayout.transitionToState(R.id.hidden)*/
-
-        // Make sure bottom bar is visible
-        //ensureBottomNavBarVisible()
     }
 
     private fun ensureBottomNavBarVisible() {
@@ -622,33 +593,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private fun ensureBottomNavBarHidden() {
         (activity as? MainActivity)?.binding?.motionLayout?.progress = 1f
-    }
-
-    private fun ensurePlayerVisible() {
-        if (isPlayerHidden()) {
-            collapsePlayer()
-        }
-    }
-
-    private fun stateName(id: Int): String {
-        return when (id) {
-            R.id.collapsed -> "Collapsed"
-            R.id.expanded -> "Expanded"
-            R.id.hidden -> "Hidden"
-            else -> "Unknown"
-        }
-    }
-
-    private fun transitionInfo(): String {
-        return "State: (start,end, current) = (${stateName(binding.motionLayout.startState)},${
-            stateName(
-                binding.motionLayout.endState
-            )
-        },${
-            stateName(
-                binding.motionLayout.currentState
-            )
-        }) progress=${binding.motionLayout.progress}"
     }
 
     companion object {

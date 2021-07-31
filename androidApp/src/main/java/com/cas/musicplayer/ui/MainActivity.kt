@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -95,6 +96,9 @@ class MainActivity : BaseActivity() {
             if (insets.top > 0) {
                 DeviceInset.value =
                     ScreenInset(insets.left, insets.top, insets.right, insets.bottom)
+            }
+            binding.bottomNavView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomMargin = insets.bottom
             }
             var consumed = false
             val viewGroup = v as ViewGroup
