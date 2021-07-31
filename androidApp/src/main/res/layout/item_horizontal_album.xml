@@ -24,14 +24,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ImageButton
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAlbumDetail"
+            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+            android:layout_width="@dimen/btn_size_header"
+            android:layout_height="@dimen/btn_size_header"
             android:layout_gravity="bottom|start"
             android:layout_margin="@dimen/eight_8dp"
-            android:background="@drawable/btn_ripple_header_with_background"
-            android:src="@drawable/ic_play"
-            android:tint="?colorOnSurface" />
+            app:icon="@drawable/ic_play" />
     </androidx.cardview.widget.CardView>
 
     <TextView

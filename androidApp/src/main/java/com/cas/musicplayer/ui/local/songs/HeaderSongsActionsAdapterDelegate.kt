@@ -51,7 +51,7 @@ class HeaderSongsActionsAdapterDelegate(
                 sortSong.invisible()
             }
             songsCount.text = itemView.context.resources.getQuantityString(
-                R.plurals.playlist_tracks_counts,
+                R.plurals.numberOfSongs,
                 header.songsCount,
                 header.songsCount
             )

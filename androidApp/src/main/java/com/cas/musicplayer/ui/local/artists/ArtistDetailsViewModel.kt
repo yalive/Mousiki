@@ -2,7 +2,9 @@ package com.cas.musicplayer.ui.local.artists
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.cas.musicplayer.ui.local.artists.model.LocalArtist
 import com.cas.musicplayer.ui.local.repository.LocalArtistRepository
+import com.cas.musicplayer.ui.local.songs.HeaderSongsActionsItem
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
@@ -20,19 +22,22 @@ class ArtistDetailsViewModel(
     private val _albums = MutableLiveData<List<Album>>()
     val albums: LiveData<List<Album>> get() = _albums
 
-    private val _artistName = MutableLiveData<String>()
-    val artistName: LiveData<String> get() = _artistName
+    private val _artist = MutableLiveData<LocalArtist>()
+    val artist: LiveData<LocalArtist> get() = _artist
 
     fun loadArtistSongsAndAlbums(artistId: Long) {
         val artist = localArtistRepository.artist(artistId)
-        _artistName.value = artist.name
+        _artist.value = artist
         val songsItems = artist.songs.map { song ->
             LocalSong(song).toDisplayedVideoItem()
         }
 
         val displayedItems = mutableListOf<DisplayableItem>().apply {
+            add(HeaderSongsActionsItem(songsItems.size,
+                onPlayAllTracks = { onClickTrack(songsItems[0].track) },
+                onShuffleAllTracks = { onShufflePlay() }
+            ))
             addAll(songsItems)
-            add(HorizontalAlbumsItem("Featured in", artist.albums))
         }
 
         _localSongs.value = displayedItems
@@ -44,6 +49,14 @@ class ArtistDetailsViewModel(
             ?.filterIsInstance<DisplayedVideoItem>()
             ?.map { it.track } ?: return@launch
         playTrackFromQueue(track, tracks)
+    }
+
+    private fun onShufflePlay() = scope.launch {
+        val tracks = _localSongs.value
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track }?.shuffled() ?: return@launch
+
+        playTrackFromQueue(tracks.random(), tracks)
     }
 
     fun onPlaybackStateChanged() {
