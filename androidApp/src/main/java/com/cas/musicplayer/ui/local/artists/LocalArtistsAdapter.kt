@@ -49,12 +49,10 @@ class LocalArtistsAdapter :
                 )
             }
             try {
-                val imageSize = itemView.context.dpToPixel(55f)
                 Picasso.get()
-                    .load(getAlbumArtUri(artist.id))
-                    .placeholder(R.drawable.ic_music_note)
-                    .resize(imageSize, imageSize)
-                    .into(binding.imgAlbum)
+                    .load(getAlbumArtUri(artist.safeGetFirstAlbum().id))
+                    .placeholder(R.drawable.ic_artist_placeholder)
+                    .into(binding.imgArtist)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
             } catch (e: OutOfMemoryError) {
