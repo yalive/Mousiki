@@ -1,12 +1,10 @@
 package com.cas.musicplayer.ui.common.songs
 
-import android.graphics.Bitmap
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.ImageView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.cas.common.dpToPixel
@@ -99,13 +97,13 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         binding.btnBack.onClick {
             findNavController().popBackStack()
         }
-        DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
+        DeviceInset.observe(viewLifecycleOwner, { inset ->
             binding.topGuideline.setGuidelineBegin(inset.top)
             binding.bottomGuideline.setGuidelineBegin(inset.top + dpToPixel(56))
         })
         darkStatusBar()
         try {
-            featuredImage?.let { loadFeaturedImage(it) }
+            featuredImage?.let { setupHeaderImage(it) }
         } catch (e: OutOfMemoryError) {
             FirebaseCrashlytics.getInstance().recordException(e)
         }
@@ -154,7 +152,8 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         }
     }
 
-    protected fun loadFeaturedImage(featuredImage: AppImage) {
+    protected fun setupHeaderImage(featuredImage: AppImage) {
+        // Set header image
         when (featuredImage) {
             is AppImageRes -> imgArtist.setImageResource(featuredImage.resId)
             is AppImage.AppImageName -> {
@@ -163,50 +162,30 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 )
                 imgArtist.setImageResource(resourceId)
             }
-            is AppImageUrl -> {
-                imgArtist.loadImage(
-                    urlImage = featuredImage.url,
-                    errorImage = R.drawable.app_icon_placeholder,
-                    placeHolder = R.drawable.app_icon_placeholder
-                ) {
-                    if (featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
-                        imgArtist.loadImage(
-                            urlImage = featuredImage.altUrl,
-                            errorImage = R.drawable.app_icon_placeholder,
-                            placeHolder = R.drawable.app_icon_placeholder
-                        )
-                    }
-                }
-            }
-        }
-
-        // Background
-        viewLifecycleOwner.lifecycleScope.launch {
-            var imageBitmap = imgBackground.getBitmap(featuredImage, 400)
-            if (imageBitmap == null && featuredImage is AppImageUrl && featuredImage.altUrl != null && featuredImage.altUrl.isNotEmpty()) {
-                imageBitmap = imgBackground.getBitmap(featuredImage.altUrl, 400)
-            }
-            imageBitmap?.let { bitmap ->
-                findDominantColors(bitmap)
-            }
-        }
-    }
-
-    private suspend fun findDominantColors(drawableBitmap: Bitmap) {
-        val palette = drawableBitmap.getPalette() ?: return
-        val colorSurface = requireContext().themeColor(R.attr.colorSurface)
-        val dominantColor = palette.getMutedColor(
-            requireContext().color(R.color.colorPrimary)
-        )
-        val isDarkMode = context?.isDarkMode() ?: false
-        if (isDarkMode) {
-            val colors = intArrayOf(dominantColor, colorSurface)
-            val gradient = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM, colors
+            is AppImageUrl -> imgArtist.loadImage(
+                urlImage = featuredImage.url,
+                errorImage = R.drawable.app_icon_placeholder,
+                placeHolder = R.drawable.app_icon_placeholder
             )
-            imgBackground.setImageDrawable(gradient)
-        } else {
-            imgBackground.setBackgroundColor(dominantColor)
+        }
+
+        // Make blurred background
+        viewLifecycleOwner.lifecycleScope.launch {
+            val imageBitmap = imgBackground.getBitmap(featuredImage, 400) ?: return@launch
+            val palette = imageBitmap.getPalette() ?: return@launch
+            val colorSurface = requireContext().themeColor(R.attr.colorSurface)
+            var mainColor = palette.getMutedColor(-1)
+            if (mainColor == -1) {
+                mainColor = palette.getDominantColor(requireContext().color(R.color.colorPrimary))
+            }
+            val isDarkMode = context?.isDarkMode() ?: false
+            if (isDarkMode) {
+                val colors = intArrayOf(mainColor, colorSurface)
+                val gradient = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors)
+                imgBackground.setImageDrawable(gradient)
+            } else {
+                imgBackground.setBackgroundColor(mainColor)
+            }
         }
     }
 
@@ -232,11 +211,11 @@ val BaseSongsFragment<*>.featuredImage: AppImage?
 
 sealed class AppImage : Parcelable {
     @Parcelize
-    data class AppImageRes(val resId: Int) : AppImage()
+    data class AppImageRes(val resId: Int, val isXml: Boolean = false) : AppImage()
 
     @Parcelize
     data class AppImageName(val name: String) : AppImage()
 
     @Parcelize
-    data class AppImageUrl(val url: String, val altUrl: String? = null) : AppImage()
+    data class AppImageUrl(val url: String) : AppImage()
 }
