@@ -6,7 +6,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
-import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
@@ -21,6 +20,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewModel>() {
 
     override val screenName: String = "CustomPlaylistSongsFragment"
+
     override val viewModel: CustomPlaylistSongsViewModel by viewModel {
         val playlist = arguments?.getParcelable<Playlist>(EXTRAS_PLAYLIST)!!
         Injector.customPlaylistSongsViewModel.also {
@@ -30,10 +30,8 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observe(viewModel.songs, this::updateUI)
-        observe(viewModel.playlistImageUrl) { url ->
-            loadFeaturedImage(AppImage.AppImageUrl(url))
-        }
+        observe(viewModel.songs, ::updateUI)
+        observe(viewModel.playlistImage, ::setupHeaderImage)
         binding.txtPlaylistName.text = viewModel.playlist.title
         binding.txtScreenTitle.text = viewModel.playlist.title
     }
@@ -59,6 +57,6 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
     }
 
     companion object {
-        val EXTRAS_PLAYLIST = "extras.playlist"
+        const val EXTRAS_PLAYLIST = "extras.playlist"
     }
 }

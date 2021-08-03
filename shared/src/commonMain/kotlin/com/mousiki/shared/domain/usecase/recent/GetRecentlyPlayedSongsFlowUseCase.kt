@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 class GetRecentlyPlayedSongsFlowUseCase(
     private val statisticsRepository: StatisticsRepository
 ) {
-    suspend operator fun invoke(max: Int = 10): Flow<List<Track>> {
+    operator fun invoke(max: Int = 10): Flow<List<Track>> {
         return statisticsRepository.getRecentlyPlayedTracksFlow(max)
     }
 }

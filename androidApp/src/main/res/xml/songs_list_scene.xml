@@ -147,7 +147,7 @@
             <KeyAttribute
                 android:scaleX="1.0"
                 android:scaleY="1.0"
-                app:framePosition="30"
+                app:framePosition="5"
                 app:motionTarget="@id/imgArtist" />
         </KeyFrameSet>
 
