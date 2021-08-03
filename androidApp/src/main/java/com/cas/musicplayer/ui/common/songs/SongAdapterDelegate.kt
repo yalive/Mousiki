@@ -15,10 +15,7 @@ import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor
-import com.mousiki.shared.domain.models.DisplayableItem
-import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.models.artistName
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
 
 /**
@@ -73,11 +70,16 @@ class SongAdapterDelegate(
         fun bind(item: DisplayedVideoItem) {
             binding.imgSong.loadTrackImage(item.track)
             binding.txtTitle.text = item.songTitle
-            binding.txtCategory.text = itemView.context.getString(
-                R.string.label_artist_name_and_duration,
-                item.artistName(),
-                item.songDuration
-            )
+            binding.txtCategory.apply {
+                text = itemView.context.getString(
+                    R.string.label_artist_name_and_duration,
+                    item.artistName(),
+                    item.songDuration
+                )
+                if (item.track is YtbTrack) {
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_music_video, 0, 0, 0)
+                }
+            }
             binding.btnMore.onClick {
                 onClickMoreOptions(item.track)
             }
