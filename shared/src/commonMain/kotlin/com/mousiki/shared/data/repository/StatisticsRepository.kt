@@ -9,8 +9,8 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 /**
  ***************************************
@@ -45,11 +45,12 @@ class StatisticsRepository(
         }
     }
 
-    suspend fun getRecentlyPlayedTracksFlow(max: Int = 10): Flow<List<Track>> {
+    fun getRecentlyPlayedTracksFlow(max: Int = 10): Flow<List<Track>> {
         return recentDao.getTracks(max.toLong())
             .asFlow()
             .mapToList()
             .map { it.map(RecentPlayedTrack::toTrack) }
+            .flowOn(Dispatchers.Default)
     }
 
     suspend fun getHeavyList(max: Int = 10): List<Track> {
@@ -58,11 +59,12 @@ class StatisticsRepository(
         }
     }
 
-    suspend fun getHeavyListFlow(max: Int = 10): Flow<List<Track>> =
-        withContext(Dispatchers.Default) {
-            return@withContext recentDao.getHeavyList(max.toLong())
-                .asFlow()
-                .mapToList()
-                .map { it.map(Db_recentTrack::toTrack) }
-        }
+    fun getHeavyListFlow(max: Int = 10): Flow<List<Track>> {
+        return recentDao.getHeavyList(max.toLong())
+            .asFlow()
+            .mapToList()
+            .map { it.map(Db_recentTrack::toTrack) }
+            .flowOn(Dispatchers.Default)
+    }
+
 }
