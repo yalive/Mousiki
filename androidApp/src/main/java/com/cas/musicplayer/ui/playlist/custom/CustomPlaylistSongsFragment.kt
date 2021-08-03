@@ -30,7 +30,7 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observe(viewModel.songs, this::updateUI)
+        observe(viewModel.songs, ::updateUI)
         observe(viewModel.playlistImage, ::setupHeaderImage)
         binding.txtPlaylistName.text = viewModel.playlist.title
         binding.txtScreenTitle.text = viewModel.playlist.title

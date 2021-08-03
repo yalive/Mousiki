@@ -15,6 +15,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -56,13 +57,13 @@ class SongsRepository(
             }
         }
 
-    suspend fun getFavouriteSongsFlow(max: Int = 10): Flow<List<Track>> =
-        withContext(Dispatchers.Default) {
-            return@withContext favouriteTracksDaoSql.getTracks(max.toLong())
-                .asFlow()
-                .mapToList()
-                .map { it.map(FavouriteTrackEntity::toTrack) }
-        }
+    fun getFavouriteSongsFlow(max: Int = 10): Flow<List<Track>> {
+        return favouriteTracksDaoSql.getTracks(max.toLong())
+            .asFlow()
+            .mapToList()
+            .map { it.map(FavouriteTrackEntity::toTrack) }
+            .flowOn(Dispatchers.Default)
+    }
 
     suspend fun addSongToFavourite(track: Track) = withContext(Dispatchers.Default) {
         favouriteTracksDaoSql.insert(
