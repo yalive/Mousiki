@@ -8,6 +8,8 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.ImageViewCompat
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.songs.AppImage
@@ -152,7 +154,12 @@ suspend fun ImageView.getBitmap(appImage: AppImage, maxHeight: Int): Bitmap? =
         val picasso = Picasso.get()
         when (appImage) {
             is AppImage.AppImageRes -> {
-                picasso.load(appImage.resId).resize(0, maxHeight).into(target)
+                if (appImage.isXml) {
+                    val bitmap = AppCompatResources.getDrawable(context, appImage.resId)?.toBitmap()
+                    continuation.resume(bitmap)
+                } else {
+                    picasso.load(appImage.resId).resize(0, maxHeight).into(target)
+                }
             }
             is AppImage.AppImageUrl -> {
                 picasso.load(appImage.url).resize(0, maxHeight).into(target)
