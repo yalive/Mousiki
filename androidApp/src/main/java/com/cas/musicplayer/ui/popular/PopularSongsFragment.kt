@@ -60,7 +60,7 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
         val item = it.data.getOrNull(0) as? DisplayedVideoItem
         item?.let {
             gotFirstTrack = true
-            loadFeaturedImage(AppImage.AppImageUrl(item.songImagePath))
+            setupHeaderImage(AppImage.AppImageUrl(item.songImagePath))
         }
     }
 }

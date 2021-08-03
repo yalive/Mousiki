@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalPlaylistBinding
-import com.cas.musicplayer.ui.common.songs.AppImage
-import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.library.delegates.onPlaylistOption
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.mousiki.shared.domain.models.Playlist
@@ -74,9 +72,6 @@ class LocalPlaylistsAdapter(
                 itemView.findNavController().navigate(
                     R.id.action_localSongsContainerFragment_to_customPlaylistSongsFragment,
                     bundleOf(
-                        BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
-                            playlist.urlImage
-                        ),
                         CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to playlist
                     )
                 )
