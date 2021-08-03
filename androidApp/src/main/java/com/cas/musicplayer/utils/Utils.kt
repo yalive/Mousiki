@@ -26,7 +26,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.customview.customView
-import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
@@ -34,8 +33,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
-import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.utils.AnalyticsApi
 import org.koin.core.component.KoinComponent
@@ -274,7 +273,6 @@ object Utils : KoinComponent {
 
 
 fun isScreenLocked(): Boolean {
-    if (BuildConfig.FLAVOR == "dev") return false
     val myKM = MusicApp.get().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
     return myKM.isKeyguardLocked
 }
