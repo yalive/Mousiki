@@ -57,7 +57,7 @@ fun ImageView.loadTrackImage(
         val url = UserPrefs.getTrackImageUrl(track)
         if (url.isNotEmpty()) {
             Picasso.get().load(url)
-                .placeholder(R.drawable.ic_note_placeholder)
+                .placeholder(R.drawable.ic_mousiki_placeholder)
                 .fit()
                 .into(this, object : Callback {
                     override fun onSuccess() {
@@ -66,14 +66,14 @@ fun ImageView.loadTrackImage(
 
                     override fun onError(e: java.lang.Exception?) {
                         Picasso.get().load(track.imgUrlDef0)
-                            .error(R.drawable.ic_note_placeholder)
+                            .error(R.drawable.ic_mousiki_placeholder)
                             .fit()
                             .into(this@loadTrackImage)
                         UserPrefs.setTrackImageUrl(track, track.imgUrlDef0)
                     }
                 })
         } else {
-            setImageResource(R.drawable.ic_note_placeholder)
+            setImageResource(R.drawable.ic_mousiki_placeholder)
         }
     } catch (e: Exception) {
         FirebaseCrashlytics.getInstance().recordException(e)
