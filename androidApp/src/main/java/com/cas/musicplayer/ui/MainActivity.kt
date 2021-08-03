@@ -115,6 +115,9 @@ class MainActivity : BaseActivity() {
             // an appropriate value
             if (consumed) WindowInsetsCompat.CONSUMED else windowInsets
         }
+
+        if (!PreferenceUtil.musicSeen)
+            binding.bottomNavView.getOrCreateBadge(R.id.navMusic)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -167,6 +170,10 @@ class MainActivity : BaseActivity() {
         if (navController.currentDestination?.id == R.id.localSongsContainerFragment) return
         if (!navController.popBackStack(R.id.localSongsContainerFragment, false)) {
             navController.navigate(R.id.localSongsContainerFragment)
+        }
+        if (!PreferenceUtil.musicSeen){
+            binding.bottomNavView.removeBadge(R.id.navMusic)
+            PreferenceUtil.musicSeen = true
         }
     }
 
