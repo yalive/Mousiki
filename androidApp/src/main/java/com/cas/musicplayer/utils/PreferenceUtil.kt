@@ -13,6 +13,7 @@ import com.mousiki.shared.utils.Constants.ARTIST_SONG_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_SORT_ORDER
 import com.mousiki.shared.utils.Constants.FILTER_SONG
 import com.mousiki.shared.utils.Constants.INITIALIZED_BLACKLIST
+import com.mousiki.shared.utils.Constants.MUSIC_SEEN
 import com.mousiki.shared.utils.Constants.SONG_SORT_ORDER
 
 
@@ -90,6 +91,13 @@ object PreferenceUtil {
             ARTIST_SONG_SORT_ORDER,
             SortOrder.AlbumSongSortOrder.SONG_TRACK_LIST
         )
+
+    var musicSeen
+        get() = sharedPreferences.getBoolean(
+            MUSIC_SEEN,
+            false
+        )
+        set(value) = sharedPreferences.edit { putBoolean(MUSIC_SEEN, value) }
 }
 
 fun SharedPreferences.getStringOrDefault(key: String, default: String): String {
