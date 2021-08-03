@@ -60,7 +60,6 @@
             android:lines="1"
             android:textColor="#A5A5C4"
             android:textSize="12sp"
-            app:drawableStartCompat="@drawable/ic_music_video"
             tools:text="Hamid " />
     </LinearLayout>
 
