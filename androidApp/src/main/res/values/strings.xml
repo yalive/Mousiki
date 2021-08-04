@@ -161,32 +161,33 @@
     <string name="tap_any_song_to_start_playing">Tap any song to start playing</string>
 
     <!-- Local songs -->
-    <string name="internal_storage">Internal Storage</string>
-    <string name="external_storage">SD Card</string>
+    <string name="internal_storage" translatable="false">Internal Storage</string>
+    <string name="external_storage" translatable="false">SD Card</string>
+    <string name="label_sort_a_z" translatable="false">A-Z</string>
+    <string name="label_sort_z_a" translatable="false">Z-A</string>
+
     <string name="local_songs_no_permission_title">Allow to play music?</string>
     <string name="local_songs_no_permission_description">Please allow Mousiki to access storage permission to play music</string>
     <string name="allow">Allow</string>
     <string name="label_sort_by">Sort by</string>
-    <string name="label_sort_a_z">A-Z</string>
-    <string name="label_sort_z_a">Z-A</string>
     <string name="label_sort_album">Album</string>
     <string name="label_sort_artist">Artist</string>
     <string name="label_sort_duration">Duration</string>
     <string name="label_sort_year">Year</string>
-    <string name="label_sort_last_added">Last Added</string>
     <string name="confirm_delete_playlist">Do you want to delete this playlist: %s</string>
 
     <!--    time values -->
-    <string name="two_comma_separated_values">%s, %s</string>
+    <string name="two_comma_separated_values" translatable="false">%s, %s</string>
     <string name="min">\u0020 minute</string>
     <string name="mins">\u0020 minutes</string>
     <string name="sec">\u0020 second</string>
     <string name="secs">\u0020 seconds</string>
     <string name="hour">\u0020 hour</string>
     <string name="hours">\u0020 hours</string>
-    <string name="comma">,\u0020</string>
+    <string name="comma" translatable="false">,\u0020</string>
 
     <string name="label_by">by %s</string>
-    <string name="label_artist_name_and_duration">%s • %s</string>
+    <string name="label_artist_name_and_duration" translatable="false">%s • %s</string>
+    <string name="label_sort_last_added">Last Added</string>
 
 </resources>

@@ -61,6 +61,9 @@
     <string name="remove_from_this_playlist">Supprimer de cette playlist</string>
     <string name="playlist_favorite">Favourite</string>
     <string name="shuffle_play">ALÉATOIRE</string>
+    <string name="playlist_exist_message">La liste de lecture %s existait</string>
+    <string name="track_added_to_playlist">Ajouté à %s</string>
+    <string name="playlist_created">Liste de lecture %s créée</string>
 
     <!-- Other -->
     <string name="dark_mode">Mode sombre</string>
@@ -150,4 +153,26 @@
     <string name="suggestion_clear_history_button_title">Effacer</string>
     <string name="confirm_clear_search_history_message">Voulez-vous vraiment effacer tout l\'historique de recherche?</string>
     <string name="tap_any_song_to_start_playing">Appuyez sur une chanson pour la jouer</string>
+
+    <!-- Local songs -->
+    <string name="local_songs_no_permission_title">Autoriser à jouer de la musique ?</string>
+    <string name="local_songs_no_permission_description">Veuillez autoriser Mousiki à accéder à l\'autorisation de stockage pour jouer de la musique</string>
+    <string name="allow">Autoriser</string>
+    <string name="label_sort_by">Trier par</string>
+    <string name="label_sort_album">Album</string>
+    <string name="label_sort_artist">Artiste</string>
+    <string name="label_sort_duration">Durée</string>
+    <string name="label_sort_year">Année</string>
+    <string name="label_sort_last_added">Dernier ajouté</string>
+    <string name="confirm_delete_playlist">Voulez-vous supprimer cette liste de lecture: %s</string>
+
+    <!--    time values -->
+    <string name="min">\u0020 minute</string>
+    <string name="mins">\u0020 minutes</string>
+    <string name="sec">\u0020 seconde</string>
+    <string name="secs">\u0020 secondes</string>
+    <string name="hour">\u0020 heure</string>
+    <string name="hours">\u0020 heures</string>
+
+    <string name="label_by">par %s</string>
 </resources>
