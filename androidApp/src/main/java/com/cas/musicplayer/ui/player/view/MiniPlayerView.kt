@@ -66,8 +66,7 @@ class MiniPlayerView @JvmOverloads constructor(
         showTrackInfoIfNeeded()
     }
 
-    fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
-        val state = stateCompat.state
+    fun onPlayMusicStateChanged(state: Int) {
         if (state == PlaybackStateCompat.STATE_PLAYING || state == PlaybackStateCompat.STATE_BUFFERING) {
             binding.btnPlayPause.setImageResource(R.drawable.ic_pause)
         } else if (state == PlaybackStateCompat.STATE_PAUSED) {
