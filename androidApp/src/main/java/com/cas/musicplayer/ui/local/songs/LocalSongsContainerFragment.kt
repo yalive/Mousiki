@@ -13,6 +13,7 @@ import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.readStoragePermissionsGranted
+import com.cas.musicplayer.utils.reduceDragSensitivity
 import com.cas.musicplayer.utils.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -44,6 +45,7 @@ class LocalSongsContainerFragment : Fragment(R.layout.fragment_local_songs_conta
         if (!readStoragePermissionsGranted()) {
             requestPermissions(READ_STORAGE_PERMISSION, REQ_CODE_STORAGE_PERMISSION)
         }
+        binding.pager.reduceDragSensitivity()
     }
 
     override fun onRequestPermissionsResult(
