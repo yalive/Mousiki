@@ -149,4 +149,24 @@
     <string name="suggestion_clear_history_button_title">Limpar</string>
     <string name="confirm_clear_search_history_message">Tem certeza de que deseja limpar todo o histórico de pesquisa?</string>
     <string name="tap_any_song_to_start_playing">Toque em uma música para tocá-la</string>
+    <string name="playlist_exist_message">Lista de reprodução% s existente</string>
+    <string name="track_added_to_playlist">Adicionado a% s</string>
+    <string name="playlist_created">Playlist% s criada</string>
+    <string name="local_songs_no_permission_title">Permitir tocar música?</string>
+    <string name="local_songs_no_permission_description">Permita que o Mousiki acesse permissão de armazenamento para reproduzir música</string>
+    <string name="allow">Permitir</string>
+    <string name="label_sort_by">Ordenar por</string>
+    <string name="label_sort_album">Álbum</string>
+    <string name="label_sort_artist">Artista</string>
+    <string name="label_sort_duration">Duração</string>
+    <string name="label_sort_year">Ano</string>
+    <string name="label_sort_last_added">Último adicionado</string>
+    <string name="confirm_delete_playlist">Você quer deletar esta lista de reprodução: %s</string>
+    <string name="min">\\u0020 minuto</string>
+    <string name="mins">\\u0020 minutos</string>
+    <string name="sec">\\u0020 segundo</string>
+    <string name="secs">\\u0020 segundos</string>
+    <string name="hour">\\u0020 hora</string>
+    <string name="hours">\\u0020 horas</string>
+    <string name="label_by">por %s</string>
 </resources>

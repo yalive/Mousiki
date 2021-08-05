@@ -16,6 +16,7 @@ import android.view.*
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
@@ -27,7 +28,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.extensions.albumArt
-import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.player.receiver.BecomingNoisyReceiver
 import com.cas.musicplayer.player.receiver.DeleteNotificationReceiver
@@ -35,6 +35,7 @@ import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -89,7 +90,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
     override fun onCreate() {
         super.onCreate()
-
         // Prepare media session
         setUpMediaSession()
 
@@ -106,6 +106,10 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
         // Move service to foreground
         moveToForeground()
+
+        PlayerQueue.observe(this) { currentTrack ->
+            floatingPlayerView.isInvisible = currentTrack is LocalSong
+        }
     }
 
     override fun onBind(intent: Intent): IBinder {

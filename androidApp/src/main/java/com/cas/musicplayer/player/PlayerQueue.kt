@@ -7,7 +7,8 @@ import com.cas.common.extensions.randomOrNull
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.player.services.MusicPlayerService
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.utils.canDrawOverApps
+import com.cas.musicplayer.utils.isScreenLocked
+import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.player.PlaySort
 import com.mousiki.shared.preference.UserPrefs
@@ -127,7 +128,10 @@ object PlayerQueue : MutableLiveData<Track>() {
     }
 
     private fun getNextTrack(): Track? {
-        val mQueue = queue ?: return null
+        var mQueue = queue ?: return null
+        if (isScreenLocked()) {
+            mQueue = mQueue.filterIsInstance<LocalSong>()
+        }
         if (mQueue.isEmpty()) return null
         val currentTrack = this.value ?: return null
         return when (UserPrefs.getCurrentPlaybackSort()) {
@@ -139,7 +143,10 @@ object PlayerQueue : MutableLiveData<Track>() {
     }
 
     private fun getPreviousTrack(): Track? {
-        val mQueue = queue ?: return null
+        var mQueue = queue ?: return null
+        if (isScreenLocked()) {
+            mQueue = mQueue.filterIsInstance<LocalSong>()
+        }
         if (mQueue.isEmpty()) return null
         val currentTrack = this.value ?: return null
         return when (UserPrefs.getCurrentPlaybackSort()) {

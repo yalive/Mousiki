@@ -20,6 +20,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.home.showExitDialog
 import com.cas.musicplayer.ui.player.PlayerFragment
@@ -30,6 +31,7 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mopub.common.MoPub
 import com.mopub.common.SdkConfiguration
+import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.toYoutubeDuration
 import com.mousiki.shared.preference.UserPrefs
@@ -118,6 +120,15 @@ class MainActivity : BaseActivity() {
 
         if (!PreferenceUtil.musicSeen)
             binding.bottomNavView.getOrCreateBadge(R.id.navMusic)
+
+        observe(PlayerQueue) { currentTrack ->
+            if (!canDrawOverApps() && currentTrack !is LocalSong) {
+                val dialog = Utils.requestDrawOverAppsPermission(this) {
+                    drawOverAppsRequested = true
+                }
+                dialogDrawOverApps = dialog
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -243,13 +254,6 @@ class MainActivity : BaseActivity() {
     }
 
     fun collapseBottomPanel() {
-        if (!canDrawOverApps()) {
-            val dialog = Utils.requestDrawOverAppsPermission(this) {
-                drawOverAppsRequested = true
-            }
-            dialogDrawOverApps = dialog
-            return
-        }
         playerFragment.collapsePlayer()
     }
 

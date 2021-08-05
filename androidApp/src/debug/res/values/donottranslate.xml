@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="admob_library_banner_id">ca-app-pub-6125597516229421/5970130251</string>
-    <string name="admob_native_id">ca-app-pub-3940256099942544/8135179316</string>
-    <string name="admob_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="admob_rewarded_ad_id">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_library_banner_id" translatable="false">ca-app-pub-6125597516229421/5970130251</string>
+    <string name="admob_native_id" translatable="false">ca-app-pub-3940256099942544/8135179316</string>
+    <string name="admob_interstitial_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_rewarded_ad_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
 </resources>

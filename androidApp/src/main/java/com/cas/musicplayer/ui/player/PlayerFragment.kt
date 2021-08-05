@@ -330,13 +330,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     // TODO: move outside fragment
     private fun onClickPlayPause() {
-        val oldState = PlaybackLiveData.value
-        oldState?.let { playerState ->
-            if (playerState == PlayerState.PLAYING) {
-                PlayerQueue.pause()
-            } else if (playerState == PlayerState.PAUSED || playerState == PlayerState.VIDEO_CUED || playerState == PlayerState.ENDED) {
-                PlayerQueue.resume()
-            }
+        val playerState = PlaybackLiveData.value ?: return
+        if (playerState == PlayerState.PLAYING) {
+            PlayerQueue.pause()
+        } else if (playerState == PlayerState.PAUSED || playerState == PlayerState.VIDEO_CUED || playerState == PlayerState.ENDED) {
+            PlayerQueue.resume()
+        } else if (playerState == PlayerState.UNKNOWN) {
+            PlayerQueue.playCurrentTrack()
         }
     }
 

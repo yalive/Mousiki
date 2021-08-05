@@ -19,7 +19,6 @@ import com.cas.musicplayer.player.receiver.DeleteNotificationReceiver
 import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.getBitmap
-import com.cas.musicplayer.utils.isScreenLocked
 import com.mousiki.shared.preference.UserPrefs
 import com.squareup.picasso.Picasso
 
@@ -46,13 +45,6 @@ class NotificationBuilder(private val context: Context) {
         )
     )
 
-    private val skipToPreviousActionDisabled = NotificationCompat.Action(
-        R.drawable.ic_skip_previous,
-        context.getString(R.string.player_notification_skip_to_previous),
-        null
-    )
-
-
     private val playAction = NotificationCompat.Action(
         R.drawable.ic_play,
         context.getString(R.string.player_notification_play),
@@ -62,22 +54,7 @@ class NotificationBuilder(private val context: Context) {
         )
     )
 
-    private val playActionDisabled = NotificationCompat.Action(
-        R.drawable.ic_play,
-        context.getString(R.string.player_notification_play),
-        null
-    )
-
     private val pauseAction = NotificationCompat.Action(
-        R.drawable.ic_pause,
-        context.getString(R.string.player_notification_pause),
-        MediaButtonReceiver.buildMediaButtonPendingIntent(
-            context,
-            PlaybackStateCompat.ACTION_PAUSE
-        )
-    )
-
-    private val pauseActionDisabled = NotificationCompat.Action(
         R.drawable.ic_pause,
         context.getString(R.string.player_notification_pause),
         MediaButtonReceiver.buildMediaButtonPendingIntent(
@@ -93,12 +70,6 @@ class NotificationBuilder(private val context: Context) {
             context,
             PlaybackStateCompat.ACTION_SKIP_TO_NEXT
         )
-    )
-
-    private val skipToNextActionDisabled = NotificationCompat.Action(
-        R.drawable.ic_skip_next,
-        context.getString(R.string.player_notification_skip_to_next),
-        null
     )
 
     private val stopPendingIntent = PendingIntent.getBroadcast(
@@ -120,37 +91,29 @@ class NotificationBuilder(private val context: Context) {
         val description = controller.metadata?.description
         val playbackState: PlaybackStateCompat? = controller.playbackState
         val builder = NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL)
-        val screenLocked = isScreenLocked()
 
         if (UserPrefs.isFav(description?.mediaId)) {
             builder.addAction(
                 R.drawable.ic_heart_solid,
                 context.getString(R.string.player_remove_from_favourite),
-                if (screenLocked) null else createFavouriteIntent(false)
+                createFavouriteIntent(false)
             )
         } else {
             builder.addAction(
                 R.drawable.ic_heart_light,
                 context.getString(R.string.player_add_to_favourite),
-                if (screenLocked) null else createFavouriteIntent(true)
+                createFavouriteIntent(true)
             )
         }
 
-        val globalPlayAction = if (screenLocked) playActionDisabled else playAction
-        val globalPauseAction = if (screenLocked) pauseActionDisabled else pauseAction
-        val globalSkipToNextAction =
-            if (screenLocked) skipToNextActionDisabled else skipToNextAction
-        val globalSkipToPreviousAction =
-            if (screenLocked) skipToPreviousActionDisabled else skipToPreviousAction
-
         // Only add actions for skip back, play/pause, skip forward, based on what's enabled.
-        builder.addAction(globalSkipToPreviousAction)
+        builder.addAction(skipToPreviousAction)
         if (playbackState?.isPlaying == true) {
-            builder.addAction(globalPauseAction)
+            builder.addAction(pauseAction)
         } else {
-            builder.addAction(globalPlayAction)
+            builder.addAction(playAction)
         }
-        builder.addAction(globalSkipToNextAction)
+        builder.addAction(skipToNextAction)
 
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
             .setMediaSession(sessionToken)
