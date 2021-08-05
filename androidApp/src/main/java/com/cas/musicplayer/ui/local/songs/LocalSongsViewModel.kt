@@ -34,7 +34,7 @@ class LocalSongsViewModel(
             ))
             addAll(songsItems)
         }
-        _localSongs.value = displayedItems
+        _localSongs.value = updateCurrentPlaying(displayedItems)
     }
 
     fun onClickTrack(track: Track) = scope.launch {
