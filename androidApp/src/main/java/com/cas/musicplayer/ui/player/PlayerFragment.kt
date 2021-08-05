@@ -143,12 +143,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         // Util when user enable draw over apps for the first time only
         binding.miniPlayerView.showTrackInfoIfNeeded()
-
-        if (PlaybackLiveData.isUnknown()) {
-            binding.btnPlayPauseMain.setImageResource(R.drawable.ic_play)
-            binding.lockScreenView.onPlayBackStateChanged()
-            binding.miniPlayerView.onPlayMusicStateChanged(PlaybackStateCompat.STATE_PAUSED)
-        }
     }
 
     override fun onPause() {

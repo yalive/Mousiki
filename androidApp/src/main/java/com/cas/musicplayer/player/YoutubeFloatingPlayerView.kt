@@ -10,6 +10,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.util.AttributeSet
 import android.view.*
 import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleService
 import com.cas.common.extensions.gone
@@ -145,7 +146,9 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
                 batterySaverView.isVisible = false
 
                 if (bottomView.isActivated) {
-                    service.stopSelf()
+                    isInvisible = true
+                    mediaController.transportControls.pause()
+                    VideoEmplacementLiveData.out()
                 } else if (batterySaverView.isActivated) {
                     // Save energy mode
                     val intent = Intent(context, MainActivity::class.java)

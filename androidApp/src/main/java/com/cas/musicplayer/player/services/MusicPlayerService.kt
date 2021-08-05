@@ -28,6 +28,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.extensions.albumArt
+import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.player.receiver.BecomingNoisyReceiver
 import com.cas.musicplayer.player.receiver.DeleteNotificationReceiver
@@ -403,6 +404,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             state ?: return
             updateNotification(state)
+
+            // Ensure floating video is visible
+            if (state.isPlaying) {
+                floatingPlayerView.isVisible = true
+            }
         }
 
         private fun updateNotification(state: PlaybackStateCompat) = lifecycleScope.launch {
