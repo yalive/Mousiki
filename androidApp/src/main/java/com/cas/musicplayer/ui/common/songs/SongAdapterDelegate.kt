@@ -78,6 +78,8 @@ class SongAdapterDelegate(
                 )
                 if (item.track is YtbTrack) {
                     setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_music_video, 0, 0, 0)
+                } else {
+                    setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
             binding.btnMore.onClick {
