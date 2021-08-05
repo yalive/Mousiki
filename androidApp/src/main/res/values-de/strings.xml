@@ -150,4 +150,24 @@
     <string name="suggestion_clear_history_button_title">klar</string>
     <string name="confirm_clear_search_history_message">Möchten Sie wirklich den gesamten Suchverlauf löschen?</string>
     <string name="tap_any_song_to_start_playing">Tippe auf ein Lied, um es abzuspielen</string>
+    <string name="playlist_exist_message">Playlist %s existierte</string>
+    <string name="track_added_to_playlist">Zu %s hinzugefügt</string>
+    <string name="playlist_created">Playlist %s erstellt</string>
+    <string name="local_songs_no_permission_title">Musik abspielen zulassen?</string>
+    <string name="local_songs_no_permission_description">Bitte erlauben Sie Mousiki, auf die Speicherberechtigung zuzugreifen, um Musik abzuspielen</string>
+    <string name="allow">Erlauben</string>
+    <string name="label_sort_by">Sortiere nach</string>
+    <string name="label_sort_album">Album</string>
+    <string name="label_sort_artist">Künstler</string>
+    <string name="label_sort_duration">Dauer</string>
+    <string name="label_sort_year">Jahr</string>
+    <string name="label_sort_last_added">Zuletzt hinzugefügt</string>
+    <string name="confirm_delete_playlist">Möchten Sie diese Wiedergabeliste löschen: %s</string>
+    <string name="min">\\u0020 minute</string>
+    <string name="mins">\\u0020 minutes</string>
+    <string name="sec">\\u0020 sekunde</string>
+    <string name="secs">\\u0020 sekunden</string>
+    <string name="hour">\\u0020 stunde</string>
+    <string name="hours">\\u0020 stunden</string>
+    <string name="label_by">von %s</string>
 </resources>
