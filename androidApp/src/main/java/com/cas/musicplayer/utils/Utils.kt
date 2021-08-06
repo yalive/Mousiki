@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaMetadataRetriever
 import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.provider.Settings
@@ -268,6 +269,20 @@ object Utils : KoinComponent {
         } catch (ex: IllegalStateException) {
             emptyList()
         }
+    }
+
+     fun getSongThumbnail(songPath: String): ByteArray? {
+        var imgByte: ByteArray?
+        MediaMetadataRetriever().also {
+            try {
+                it.setDataSource(songPath)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            imgByte = it.embeddedPicture
+            it.release()
+        }
+        return imgByte
     }
 }
 

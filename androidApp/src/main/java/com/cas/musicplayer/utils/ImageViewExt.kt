@@ -11,6 +11,8 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.ImageViewCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -214,4 +216,16 @@ fun ImageView.updateBitmap(
         }
     })
     startAnimation(animOut)
+}
+
+fun ImageView.loadLocalTrackImageFromByte(
+    imgByte: ByteArray?,
+    size: Int
+) {
+    Glide.with(context)
+        .asBitmap()
+        .load(imgByte)
+        .apply(RequestOptions().override(size, size))
+        .placeholder(R.drawable.ic_note_placeholder)
+        .into(this)
 }
