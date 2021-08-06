@@ -9,6 +9,7 @@ import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.utils.isScreenLocked
 import com.cas.musicplayer.utils.toast
+import com.mousiki.shared.domain.models.YtbTrack
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -40,7 +41,9 @@ class YTBPlayer(
             youTubePlayer.cueVideo(track.id, 0f)
             return
         }
-        mediaController.transportControls?.playFromMediaId(track.id, null)
+        if (track is YtbTrack) {
+            mediaController.transportControls?.playFromMediaId(track.id, null)
+        }
     }
 
     override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
