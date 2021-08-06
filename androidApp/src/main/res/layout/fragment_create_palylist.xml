@@ -17,7 +17,7 @@
         android:background="?selectableItemBackgroundBorderless"
         android:padding="4dp"
         android:src="@drawable/ic_close"
-        android:tint="@color/colorWhite"
+        android:tint="?colorOnSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +29,7 @@
         android:layout_marginEnd="@dimen/spacing_medium"
         android:fontFamily="@font/pangram_medium"
         android:text="@string/give_your_playlist_a_name"
-        android:textColor="@color/colorWhite"
+        android:textColor="?colorOnSurface"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/btnClose"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +59,7 @@
             android:inputType="textCapSentences"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
-            android:textColor="@color/colorWhite"
+            android:textColor="?colorOnSurface"
             android:textCursorDrawable="@null"
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
