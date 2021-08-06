@@ -37,6 +37,7 @@ import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -406,7 +407,8 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             updateNotification(state)
 
             // Ensure floating video is visible
-            if (state.isPlaying) {
+            val track = PlayerQueue.value
+            if (state.isPlaying && track is YtbTrack) {
                 floatingPlayerView.isVisible = true
             }
         }
