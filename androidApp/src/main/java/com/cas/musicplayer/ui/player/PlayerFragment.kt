@@ -480,7 +480,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun updateCurrentTrackTime(elapsedSeconds: Int) {
         val minutes = elapsedSeconds / 60
         val seconds = elapsedSeconds % 60
-        binding.txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
+        binding.txtElapsedTime.text = String.format("%02d:%02d", minutes, seconds)
     }
 
     //region Motion Layout Transition
