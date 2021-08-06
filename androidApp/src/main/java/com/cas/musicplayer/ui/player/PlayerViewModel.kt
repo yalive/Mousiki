@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.player.OnChangeQueue
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.common.ads.AdsItem
+import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.google.android.gms.ads.nativead.NativeAd
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
@@ -30,7 +31,8 @@ class PlayerViewModel(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
     private val getFavouriteTracksFlow: GetFavouriteTracksFlowUseCase,
-    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase
+    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsUseCase,
+    private val localSongsRepository: LocalSongsRepository
 ) : BaseViewModel() {
 
     private val _isLiked = MediatorLiveData<Boolean>()
@@ -69,7 +71,12 @@ class PlayerViewModel(
 
     private fun cueRecentTrack() = viewModelScope.launch {
         if (PlayerQueue.value != null) return@launch
-        val recentTracks = getRecentlyPlayedSongs()
+        val recentTracks = getRecentlyPlayedSongs().map {
+            when (it) {
+                is LocalSong -> LocalSong(localSongsRepository.song(it.song.id))
+                is YtbTrack -> it
+            }
+        }
         if (recentTracks.isNotEmpty()) {
             PlayerQueue.cueTrack(recentTracks.first(), recentTracks)
         }
