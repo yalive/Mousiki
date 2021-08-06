@@ -33,12 +33,12 @@ val viewModelsModule = module {
     factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { GenresViewModel(get()) }
     factory { TrackOptionsViewModel(get(), get(), get()) }
-    factory { PlayerViewModel(get(), get(), get(), get()) }
+    factory { PlayerViewModel(get(), get(), get(), get(), get()) }
     factory { MainSearchViewModel(get()) }
     factory { EmptyViewModel() }
     factory { SettingsViewModel() }
     factory { AddTrackToPlaylistViewModel(get(), get(), get(), get()) }
-    factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get(), get()) }
+    factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get(), get(), get()) }
     factory { CreatePlaylistViewModel(get(), get()) }
     factory { QueueViewModel(get()) }
     factory { LocalSongsViewModel(get(), get()) }

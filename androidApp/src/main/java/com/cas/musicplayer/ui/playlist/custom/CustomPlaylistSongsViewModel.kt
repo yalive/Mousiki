@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.R
 import com.cas.musicplayer.tmp.valueOrNull
 import com.cas.musicplayer.ui.common.songs.AppImage
+import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.CustomPlaylistFirstYtbTrackUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
@@ -30,6 +31,7 @@ class CustomPlaylistSongsViewModel(
     private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
     private val getHeavyTracks: GetHeavyTracksFlowUseCase,
     private val getCustomPlaylistFirstYtbTrack: CustomPlaylistFirstYtbTrackUseCase,
+    private val localSongsRepository: LocalSongsRepository,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
     lateinit var playlist: Playlist
@@ -49,11 +51,21 @@ class CustomPlaylistSongsViewModel(
     private fun getPlaylistSongs() = viewModelScope.launch {
         _songs.value = Resource.Loading
         when (playlist.type) {
-            Playlist.TYPE_FAV -> getFavouriteTracks(300).collect { showTracks(it) }
-            Playlist.TYPE_RECENT -> getRecentlyPlayedSongs(300).collect { showTracks(it) }
-            Playlist.TYPE_HEAVY -> getHeavyTracks(300).collect { showTracks(it) }
-            else -> showTracks(getCustomPlaylistTracks(playlist.id))
+            Playlist.TYPE_FAV -> getFavouriteTracks(300).collect { tracksMapper(it) }
+            Playlist.TYPE_RECENT -> getRecentlyPlayedSongs(300).collect { tracksMapper(it) }
+            Playlist.TYPE_HEAVY -> getHeavyTracks(300).collect { tracksMapper(it) }
+            else -> tracksMapper(getCustomPlaylistTracks(playlist.id))
         }
+    }
+
+    private fun tracksMapper(tracks: List<Track>) {
+        val mappedTracks = tracks.map {
+            when (it) {
+                is LocalSong -> LocalSong(localSongsRepository.song(it.song.id))
+                is YtbTrack -> it
+            }
+        }
+        showTracks(mappedTracks)
     }
 
     private fun prepareHeaderImage() {

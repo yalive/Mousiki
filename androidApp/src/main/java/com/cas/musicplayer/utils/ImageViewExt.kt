@@ -45,16 +45,6 @@ fun ImageView.tintColor(color: Int) {
 fun ImageView.loadTrackImage(
     track: Track
 ) {
-
-    if (track is LocalSong) {
-        Picasso.get().load(track.imgUrl)
-            .placeholder(R.drawable.ic_note_placeholder)
-            .error(R.drawable.ic_note_placeholder)
-            .fit()
-            .into(this)
-        return
-    }
-
     try {
         val url = UserPrefs.getTrackImageUrl(track)
         if (url.isNotEmpty()) {
