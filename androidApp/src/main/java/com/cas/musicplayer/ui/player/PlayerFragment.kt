@@ -113,6 +113,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
@@ -128,8 +132,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     override fun onResume() {
         super.onResume()
-
-        mediaController?.playbackState?.let { onPlayMusicStateChanged(it) }
         if (binding.lockScreenView.isVisible) {
             checkLockScreen(true)
         }
@@ -328,12 +330,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     // TODO: move outside fragment
     private fun onClickPlayPause() {
-        val playerState = PlaybackLiveData.value ?: return
+        val playerState = PlaybackLiveData.value
         if (playerState == PlayerState.PLAYING) {
             PlayerQueue.pause()
         } else if (playerState == PlayerState.PAUSED || playerState == PlayerState.VIDEO_CUED || playerState == PlayerState.ENDED) {
             PlayerQueue.resume()
-        } else if (playerState == PlayerState.UNKNOWN) {
+        } else {
             PlayerQueue.playCurrentTrack()
         }
     }
@@ -539,8 +541,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun onPlayMusicStateChanged(stateCompat: PlaybackStateCompat) {
-        binding.miniPlayerView.onPlayMusicStateChanged(stateCompat)
         val state = stateCompat.state
+        binding.miniPlayerView.onPlayMusicStateChanged(state)
         if (state == PlaybackStateCompat.STATE_PLAYING || state == PlaybackStateCompat.STATE_BUFFERING) {
             binding.btnPlayPauseMain.setImageResource(R.drawable.ic_pause)
             binding.lockScreenView.onPlayBackStateChanged()

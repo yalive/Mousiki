@@ -8,8 +8,8 @@ import com.airbnb.lottie.SimpleColorFilter
 import com.airbnb.lottie.model.KeyPath
 import com.airbnb.lottie.value.LottieValueCallback
 import com.cas.musicplayer.R
-import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.cas.musicplayer.utils.color
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 
 /**
  ***************************************
@@ -21,7 +21,7 @@ import com.cas.musicplayer.utils.color
 fun LottieAnimationView.setMusicPlayingState(item: DisplayedVideoItem) {
     isVisible = item.isCurrent
     if (item.isCurrent && item.isPlaying) {
-        playAnimation()
+        post { playAnimation() }
     } else if (item.isCurrent) {
         pauseAnimation()
     } else {
@@ -39,7 +39,7 @@ fun LottieAnimationView.setMusicPlayingState(item: DisplayedVideoItem) {
 fun LottieAnimationView.setLocalMusicPlayingState(item: DisplayedVideoItem) {
     isVisible = item.isCurrent
     if (item.isCurrent && item.isPlaying) {
-        playAnimation()
+        post { playAnimation() }
     } else if (item.isCurrent) {
         pauseAnimation()
     } else {
