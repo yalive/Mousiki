@@ -1,13 +1,11 @@
 package com.cas.musicplayer.ui.local.songs
 
-import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
@@ -15,8 +13,7 @@ import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
-import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.themeColor
+import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
 import kotlinx.coroutines.Dispatchers
@@ -62,13 +59,10 @@ class LocalSongsAdapterDelegate(
 
             val activity = context as MainActivity
             activity.lifecycleScope.launch(Dispatchers.IO) {
-                val imgByte = getSongThumbnail(localSong.data)
+                val imgByte = Utils.getSongThumbnail(localSong.data)
+                val size = context.dpToPixel(180f)
                 withContext(Dispatchers.Main) {
-                    Glide.with(context)
-                        .asBitmap()
-                        .load(imgByte)
-                        .placeholder(R.drawable.ic_note_placeholder)
-                        .into(binding.imgSong)
+                    binding.imgSong.loadLocalTrackImageFromByte(imgByte, size)
                 }
             }
 
@@ -86,20 +80,6 @@ class LocalSongsAdapterDelegate(
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, song.track)
             }
-        }
-
-        private fun getSongThumbnail(songPath: String): ByteArray? {
-            var imgByte: ByteArray?
-            MediaMetadataRetriever().also {
-                try {
-                    it.setDataSource(songPath)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                imgByte = it.embeddedPicture
-                it.release()
-            }
-            return imgByte
         }
     }
 }

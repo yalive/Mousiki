@@ -115,18 +115,17 @@
             app:layout_constraintTop_toTopOf="parent">
             <CustomAttribute
                 app:attributeName="backgroundColor"
-                app:customColorValue="@color/colorBgPlayer" />
+                app:customColorValue="#2E2F33" />
         </Constraint>
 
         <Constraint
             android:id="@id/newPager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginStart="@dimen/sixteen_16dp"
             android:layout_marginTop="@dimen/spacing_x_large"
+            android:layout_marginEnd="@dimen/sixteen_16dp"
             android:layout_marginBottom="@dimen/sixteen_16dp"
-            app:layout_constraintBottom_toTopOf="@id/tileView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fullScreenSwitchView" />
 
         <Constraint
