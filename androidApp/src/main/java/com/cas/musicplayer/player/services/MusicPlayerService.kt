@@ -28,6 +28,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.*
 import com.cas.musicplayer.player.extensions.albumArt
+import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.player.extensions.musicTrack
 import com.cas.musicplayer.player.receiver.BecomingNoisyReceiver
 import com.cas.musicplayer.player.receiver.DeleteNotificationReceiver
@@ -36,6 +37,7 @@ import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -403,6 +405,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             state ?: return
             updateNotification(state)
+
+            // Ensure floating video is visible
+            val track = PlayerQueue.value
+            if (state.isPlaying && track is YtbTrack) {
+                floatingPlayerView.isVisible = true
+            }
         }
 
         private fun updateNotification(state: PlaybackStateCompat) = lifecycleScope.launch {
