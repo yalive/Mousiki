@@ -443,6 +443,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         // Show
         binding.imgAudio.isVisible = isLocalSong
+        binding.btnLockScreen.isVisible = !isLocalSong
         binding.btnYoutube.alpha =
             if (track is YtbTrack) 1.0f else 0.0f // Not working: a motion layout trick!!
     }
