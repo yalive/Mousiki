@@ -36,7 +36,7 @@
         android:layout_marginEnd="@dimen/eight_8dp"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/new_playlist"
-        android:textColor="@color/colorWhite"
+        android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/image_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/image_card"

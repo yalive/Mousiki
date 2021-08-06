@@ -37,7 +37,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/roboto"
             android:maxLines="1"
-            android:textColor="@color/colorWhite"
+            android:textColor="?colorOnSurface"
             android:textSize="15sp"
             tools:text="Folder name" />
 
@@ -61,5 +61,6 @@
         android:layout_marginEnd="@dimen/four_4dp"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
+        android:tint="?colorOnSurface"
         app:srcCompat="@drawable/ic_more_vertical" />
 </LinearLayout>
