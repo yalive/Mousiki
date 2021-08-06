@@ -1,8 +1,9 @@
 name: Upload beta version to firebase app distribution
-on:[push, pull_request]:
+on:
+  push:
     branches:
       - develop
-
+  pull_request:
 jobs:
   Deploy:
     name: Deploy to Firebase
