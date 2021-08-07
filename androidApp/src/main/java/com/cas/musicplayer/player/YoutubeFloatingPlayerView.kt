@@ -139,31 +139,6 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
                 return super.onScroll(event0, event, distanceX, distanceY)
             }
 
-            override fun onFling(
-                e1: MotionEvent?,
-                e2: MotionEvent?,
-                velocityX: Float,
-                velocityY: Float
-            ): Boolean {
-                bottomView.isVisible = false
-                batterySaverView.isVisible = false
-
-                if (bottomView.isActivated) {
-                    isInvisible = true
-                    mediaController.transportControls.pause()
-                    VideoEmplacementLiveData.out()
-                } else if (batterySaverView.isActivated) {
-                    // Save energy mode
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.putExtra(MainActivity.EXTRAS_FROM_PLAYER_SERVICE, true)
-                    intent.putExtra(MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE, true)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
-                }
-
-                return super.onFling(e1, e2, velocityX, velocityY)
-            }
-
             override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                 bottomView.isVisible = false
                 batterySaverView.isVisible = false
@@ -194,6 +169,19 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
                 if (event.action == MotionEvent.ACTION_UP) {
                     bottomView.isVisible = false
                     batterySaverView.isVisible = false
+
+                    if (bottomView.isActivated) {
+                        isInvisible = true
+                        mediaController.transportControls.pause()
+                        VideoEmplacementLiveData.out()
+                    } else if (batterySaverView.isActivated) {
+                        // Save energy mode
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.putExtra(MainActivity.EXTRAS_FROM_PLAYER_SERVICE, true)
+                        intent.putExtra(MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE, true)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    }
                 }
                 return true
             }
