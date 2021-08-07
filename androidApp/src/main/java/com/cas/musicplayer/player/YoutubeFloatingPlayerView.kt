@@ -25,6 +25,7 @@ import com.cas.musicplayer.utils.screenSize
 import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.YtbTrack
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 /**
@@ -46,6 +47,8 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     private val screenSize by lazy {
         context.screenSize()
     }
+
+    private var addedToWindow = false
 
     init {
         init(attrs)
@@ -196,6 +199,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
             }
         })
         if (context.canDrawOverApps()) {
+            addedToWindow = true
             windowManager.addView(this, videoViewParams)
         }
         youTubePlayerView.addYouTubePlayerListener(ytbPlayer)
@@ -225,15 +229,35 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
         this.alpha = 1f
         if (emplacement is EmplacementOut) {
             acquirePlayer()
+
+            // Pause YTB playback if draw over apps is not enabled
+            if (!context.canDrawOverApps() && PlayerQueue.value is YtbTrack) {
+                PlayerQueue.pause()
+            }
         }
     }
 
     private fun acquirePlayer() {
-        val parent = youTubePlayerView.parent
-        if (parent != this) {
-            (parent as? ViewGroup)?.removeView(youTubePlayerView)
-            addView(youTubePlayerView, 0)
+        val canDrawOverApps = context.canDrawOverApps()
+        if (!canDrawOverApps) return
+
+        // Make sure this view is added to window manager
+        if (!addedToWindow && canDrawOverApps) {
+            val wasPlayingYtb = PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack
+
+            // This may cause playback to pause
+            windowManager.addView(this, videoViewParams)
+            addedToWindow = true
+
+            // Ensure player keep playing
+            if (wasPlayingYtb) PlayerQueue.resume()
         }
+
+        // Attach player if needed
+        val parent = youTubePlayerView.parent
+        if (parent == this) return
+        (parent as? ViewGroup)?.removeView(youTubePlayerView)
+        addView(youTubePlayerView, 0)
     }
 
     fun removeFromWindow() {
@@ -266,9 +290,8 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
     }
 
     private fun updateLayout() {
-        if (windowToken != null) {
-            windowManager.updateViewLayout(this, videoViewParams)
-        }
+        if (windowToken == null) return
+        windowManager.updateViewLayout(this, videoViewParams)
     }
 
     fun playerView(): YouTubePlayerView {

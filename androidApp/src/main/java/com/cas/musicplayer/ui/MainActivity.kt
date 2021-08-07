@@ -211,7 +211,7 @@ class MainActivity : BaseActivity() {
 
         if (drawOverAppsRequested) {
             drawOverAppsRequested = false
-            PlayerQueue.playCurrentTrack()
+            PlayerQueue.resume()
         }
     }
 
