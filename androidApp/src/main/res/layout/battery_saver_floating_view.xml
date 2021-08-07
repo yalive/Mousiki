@@ -6,12 +6,12 @@
 
     <ImageButton
         android:id="@+id/btnClose"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_margin="16dp"
         android:layout_centerInParent="true"
         android:background="@null"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_battery_charging_full"
-        android:tint="@color/colorWhite" />
+        android:src="@drawable/ic_battery_charging_full" />
 </RelativeLayout>

@@ -345,7 +345,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
         bottomViewParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            dpToPixel(56f),
+            WindowManager.LayoutParams.WRAP_CONTENT,
             windowOverlayTypeOrPhone,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
@@ -367,7 +367,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             .apply { isVisible = false }
         batterySaverViewParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            dpToPixel(56f),
+            WindowManager.LayoutParams.WRAP_CONTENT,
             windowOverlayTypeOrPhone,
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_FULLSCREEN,
             PixelFormat.TRANSLUCENT
