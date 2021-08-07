@@ -51,9 +51,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  ************************************
@@ -406,6 +404,23 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun onVideoChanged(track: Track) {
+
+        val isLocalSong = track is LocalSong
+
+        if (isLocalSong) {
+            binding.poweredByValue.setText(R.string.app_name)
+            track as LocalSong
+            val activity = context as MainActivity
+            activity.lifecycleScope.launch(Dispatchers.IO) {
+                val imgByte = Utils.getSongThumbnail(track.data)
+                val size = dpToPixel(600)
+                withContext(Dispatchers.Main) {
+                    binding.imgAudio.loadLocalTrackImageFromByte(imgByte, size)
+                }
+            }
+        } else {
+            binding.poweredByValue.setText(R.string.label_developed_with_youtube_part2)
+        }
         binding.miniPlayerView.onTrackChanged(track)
 
         binding.txtTitle.ellipsize = null
@@ -427,7 +442,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         configureSeekBar(track)
 
         // Show
-        binding.vAudio.isVisible = track is LocalSong
+        binding.imgAudio.isVisible = isLocalSong
+        binding.btnLockScreen.isVisible = !isLocalSong
         binding.btnYoutube.alpha =
             if (track is YtbTrack) 1.0f else 0.0f // Not working: a motion layout trick!!
     }
@@ -467,7 +483,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun updateCurrentTrackTime(elapsedSeconds: Int) {
         val minutes = elapsedSeconds / 60
         val seconds = elapsedSeconds % 60
-        binding.txtElapsedTime.text = String.format("%d:%02d", minutes, seconds)
+        binding.txtElapsedTime.text = String.format("%02d:%02d", minutes, seconds)
     }
 
     //region Motion Layout Transition
