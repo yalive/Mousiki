@@ -87,8 +87,11 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
     // Over apps views
     private lateinit var bottomView: View
+    private lateinit var bottomViewParams: WindowManager.LayoutParams
     private lateinit var batterySaverView: View
+    private lateinit var batterySaverViewParams: WindowManager.LayoutParams
     private lateinit var floatingPlayerView: YoutubeFloatingPlayerView
+    private var addedViewsToWindow = false
 
     override fun onCreate() {
         super.onCreate()
@@ -325,6 +328,13 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private fun observeForegroundToggle() {
         VideoEmplacementLiveData.observe(this, Observer { emplacement ->
             floatingPlayerView.onVideoEmplacementChanged(emplacement)
+
+            // Ensure views are added to window manager
+            if (!addedViewsToWindow && canDrawOverApps()) {
+                addedViewsToWindow = true
+                windowManager.addView(bottomView, bottomViewParams)
+                windowManager.addView(batterySaverView, batterySaverViewParams)
+            }
         })
     }
 
@@ -333,7 +343,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             .inflate(R.layout.bottom_floating_player, null)
             .apply { isVisible = false }
 
-        val bottomViewParams = WindowManager.LayoutParams(
+        bottomViewParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
             dpToPixel(56f),
             windowOverlayTypeOrPhone,
@@ -346,6 +356,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         bottomViewParams.y = 0
 
         if (canDrawOverApps()) {
+            addedViewsToWindow = true
             windowManager.addView(bottomView, bottomViewParams)
         }
     }
@@ -354,7 +365,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         batterySaverView = LayoutInflater.from(this)
             .inflate(R.layout.battery_saver_floating_view, null)
             .apply { isVisible = false }
-        val batterySaverViewParams = WindowManager.LayoutParams(
+        batterySaverViewParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
             dpToPixel(56f),
             windowOverlayTypeOrPhone,
@@ -367,6 +378,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         batterySaverViewParams.y = 0
 
         if (canDrawOverApps()) {
+            addedViewsToWindow = true
             windowManager.addView(batterySaverView, batterySaverViewParams)
         }
     }
