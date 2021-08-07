@@ -124,11 +124,12 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/sixteen_16dp"
             android:layout_marginEnd="@dimen/sixteen_16dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnYoutube"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fullScreenSwitchView"
-            app:layout_constraintBottom_toTopOf="@+id/btnYoutube"/>
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <Constraint
             android:id="@+id/fullScreenSwitchView"
@@ -165,7 +166,8 @@
             android:layout_marginTop="@dimen/spacing_x_small"
             android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toTopOf="@+id/tileView"
-            app:layout_constraintStart_toStartOf="@+id/newPager">
+            app:layout_constraintStart_toStartOf="@+id/newPager"
+            app:layout_constraintTop_toBottomOf="@+id/newPager">
             <PropertySet
                 android:alpha="1"
                 android:visibility="visible" />
