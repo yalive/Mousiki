@@ -120,12 +120,15 @@
 
         <Constraint
             android:id="@id/newPager"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/sixteen_16dp"
             android:layout_marginTop="@dimen/spacing_x_large"
             android:layout_marginEnd="@dimen/sixteen_16dp"
             android:layout_marginBottom="@dimen/sixteen_16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fullScreenSwitchView" />
 
         <Constraint
@@ -161,9 +164,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/twenty_four_24dp"
+            android:layout_marginTop="@dimen/spacing_x_small"
             android:layout_marginBottom="@dimen/sixteen_16dp"
             app:layout_constraintBottom_toTopOf="@+id/tileView"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newPager"
+            app:layout_constraintVertical_bias="0">
             <PropertySet
                 android:alpha="1"
                 android:visibility="visible" />
