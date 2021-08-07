@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.common.songs
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.cas.common.extensions.onClick
@@ -11,12 +12,14 @@ import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemYtbTrackBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.setMusicPlayingState
-import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.loadTrackImage
-import com.cas.musicplayer.utils.themeColor
+import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  ***************************************
@@ -68,7 +71,6 @@ class SongAdapterDelegate(
         }
 
         fun bind(item: DisplayedVideoItem) {
-            binding.imgSong.loadTrackImage(item.track)
             binding.txtTitle.text = item.songTitle
             binding.txtCategory.apply {
                 text = itemView.context.getString(
@@ -82,6 +84,8 @@ class SongAdapterDelegate(
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
+
+            loadTrackImage(item)
             binding.btnMore.onClick {
                 onClickMoreOptions(item.track)
             }
@@ -98,6 +102,23 @@ class SongAdapterDelegate(
             binding.txtTitle.setTextColor(colorText)
 
             binding.indicatorPlaying.setMusicPlayingState(item)
+        }
+
+        private fun loadTrackImage(item: DisplayedVideoItem) {
+            if (item.track is YtbTrack) {
+                binding.imgSong.loadTrackImage(item.track)
+
+            } else {
+                val localSong = item.track as LocalSong
+                val activity = itemView.context as MainActivity
+                activity.lifecycleScope.launch(Dispatchers.IO) {
+                    val imgByte = Utils.getSongThumbnail(localSong.data)
+                    val size = itemView.context.dpToPixel(180f)
+                    withContext(Dispatchers.Main) {
+                        binding.imgSong.loadLocalTrackImageFromByte(imgByte, size)
+                    }
+                }
+            }
         }
     }
 }

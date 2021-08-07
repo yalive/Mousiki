@@ -97,13 +97,13 @@
             tools:ignore="SmallSp" />
 
         <TextView
+            android:id="@+id/poweredByValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.8"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="bottom"
             android:letterSpacing="-0.05"
-            android:text="@string/label_developed_with_youtube_part2"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"
@@ -352,20 +352,14 @@
             app:cardBackgroundColor="@color/colorBlack"
             app:cardCornerRadius="4dp">
 
-            <FrameLayout
-                android:id="@+id/vAudio"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAudio"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorBgPlayer"
-                android:elevation="20dp">
-
-                <ImageView
-                    android:id="@+id/imgAudio"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_music_note_png"
-                    app:tint="@color/colorWhite" />
-            </FrameLayout>
+                android:elevation="@dimen/eight_8dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/rounded_corner"
+                app:srcCompat="@drawable/ic_note_placeholder" />
         </com.cas.musicplayer.ui.player.view.PreventTouchCard>
 
     </com.cas.musicplayer.ui.player.view.HorizontalMotionPager>
