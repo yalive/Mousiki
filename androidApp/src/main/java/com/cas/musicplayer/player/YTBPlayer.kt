@@ -7,6 +7,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.isScreenLocked
 import com.cas.musicplayer.utils.toast
 import com.mousiki.shared.domain.models.YtbTrack
@@ -79,7 +80,7 @@ class YTBPlayer(
     }
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
-        if (isScreenLocked()) return
+        if (!ytbPolicyRespected()) return
         Log.d(TAG_PLAYER, "YTB player loadVideo")
         elapsedSeconds = 0
         youTubePlayer?.loadVideo(videoId, 0f)
@@ -93,7 +94,7 @@ class YTBPlayer(
     }
 
     override fun play() {
-        if (isScreenLocked()) return
+        if (!ytbPolicyRespected()) return
         Log.d(TAG_PLAYER, "YTB player play")
         if (PlaybackLiveData.value == PlayerConstants.PlayerState.ENDED) {
             mediaController.transportControls?.skipToNext()
@@ -113,7 +114,7 @@ class YTBPlayer(
     }
 
     override fun seekTo(time: Float) {
-        if (isScreenLocked()) return
+        if (!ytbPolicyRespected()) return
         Log.d(TAG_PLAYER, "YTB player seekTo $time")
         stateBeforeSeek = PlaybackLiveData.value
         elapsedSeconds = time.toInt()
@@ -137,5 +138,11 @@ class YTBPlayer(
             else -> PlaybackStateCompat.STATE_PAUSED
         }
         setMediaPlaybackState(playbackState, elapsedSeconds * 1000L)
+    }
+
+    private fun ytbPolicyRespected(): Boolean {
+        if (isScreenLocked()) return false
+        val context = MusicApp.get()
+        return context.canDrawOverApps() || context.isInForeground
     }
 }
