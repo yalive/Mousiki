@@ -31,9 +31,7 @@ platform :android do
             app: ENV["FIREBASE_APP_ID"],
             groups: "qa-team-internal",
             firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-            release_notes: "
-            - player new design
-            "
+            release_notes: ENV["NOTES"]
         )
     end
 end
