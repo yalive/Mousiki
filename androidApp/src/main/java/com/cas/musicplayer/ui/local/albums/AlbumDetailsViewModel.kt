@@ -29,7 +29,10 @@ class AlbumDetailsViewModel(
         }
         val displayedItems = mutableListOf<DisplayableItem>().apply {
             add(HeaderSongsActionsItem(songsItems.size,
-                onPlayAllTracks = { onClickTrack(songsItems[0].track) },
+                onPlayAllTracks = {
+                    if (songsItems.isEmpty()) return@HeaderSongsActionsItem
+                    onClickTrack(songsItems[0].track)
+                },
                 onShuffleAllTracks = { onShufflePlay() }
             ))
             addAll(songsItems)
@@ -50,6 +53,7 @@ class AlbumDetailsViewModel(
             ?.filterIsInstance<DisplayedVideoItem>()
             ?.map { it.track }?.shuffled() ?: return@launch
 
+        if (tracks.isEmpty()) return@launch
         playTrackFromQueue(tracks.random(), tracks)
     }
 
