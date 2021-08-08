@@ -27,11 +27,18 @@ platform :android do
           task: "assemble",
           build_type: "DevRelease"
         )
+
+        commit = last_git_commit
         firebase_app_distribution(
             app: ENV["FIREBASE_APP_ID"],
             groups: "qa-team-internal",
             firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-            release_notes: ENV["NOTES"]
+            release_notes: "
+            - "+ commit[:message] + "
+            - By: "+commit[:author] + "
+            - Branch: " + git_branch + "
+
+            "
         )
     end
 end
