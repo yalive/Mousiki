@@ -46,55 +46,21 @@
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <RelativeLayout
-        android:id="@+id/listContainer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/twenty_four_24dp"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/twenty_four_24dp"
+        android:paddingBottom="@dimen/padding_for_player_space"
         android:visibility="gone"
-        tools:visibility="visible">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/padding_for_player_space"
-            app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
-            tools:listitem="@layout/item_list_artist" />
-
-
-        <com.cas.musicplayer.ui.artists.sidebar.SideBar
-            android:id="@+id/sideBar"
-            android:layout_width="20dp"
-            android:layout_height="380dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_sidebar" />
-
-        <TextView
-            android:id="@+id/txtDialog"
-            android:layout_width="45.5dp"
-            android:layout_height="45.5dp"
-            android:layout_alignTop="@+id/sideBar"
-            android:layout_marginEnd="9dp"
-            android:layout_toStartOf="@+id/sideBar"
-            android:background="@drawable/bg_text_dialog"
-            android:backgroundTint="@color/colorAccent"
-            android:fontFamily="@font/pangram_regular"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:textSize="22sp"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
-
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+        tools:listitem="@layout/item_list_artist"
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="30dp"
-
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/eight_8dp"
