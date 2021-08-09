@@ -149,9 +149,9 @@
     <string name="suggestion_clear_history_button_title">Borrar</string>
     <string name="confirm_clear_search_history_message">¿Estás seguro de que deseas borrar todo el historial de búsqueda?</string>
     <string name="tap_any_song_to_start_playing">Toca una canción para reproducirla</string>
-    <string name="playlist_exist_message">Existía la lista de reproducción% s</string>
-    <string name="track_added_to_playlist">Añadida a% s</string>
-    <string name="playlist_created">Lista de reproducción% s creada</string>
+    <string name="playlist_exist_message">Existía la lista de reproducción %s</string>
+    <string name="track_added_to_playlist">Añadida a %s</string>
+    <string name="playlist_created">Lista de reproducción %s creada</string>
     <string name="local_songs_no_permission_title">¿Permitir reproducir música?</string>
     <string name="local_songs_no_permission_description">Permita que Mousiki acceda al permiso de almacenamiento para reproducir música</string>
     <string name="allow">Permitir</string>
