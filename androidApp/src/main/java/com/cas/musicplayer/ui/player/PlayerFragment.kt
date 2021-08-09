@@ -236,7 +236,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         binding.btnShareVia.onClick {
-            Utils.shareWithDeepLink(PlayerQueue.value, requireContext())
+            Utils.shareTrack(PlayerQueue.value, requireContext())
         }
 
         binding.btnAddFav.onClick {
