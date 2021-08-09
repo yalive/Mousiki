@@ -182,7 +182,7 @@ class MainActivity : BaseActivity() {
         if (!navController.popBackStack(R.id.localSongsContainerFragment, false)) {
             navController.navigate(R.id.localSongsContainerFragment)
         }
-        if (!PreferenceUtil.musicSeen){
+        if (!PreferenceUtil.musicSeen) {
             binding.bottomNavView.removeBadge(R.id.navMusic)
             PreferenceUtil.musicSeen = true
         }
@@ -202,6 +202,14 @@ class MainActivity : BaseActivity() {
             }
         }
         handleDynamicLinks()
+
+        // Check open audio track with Mousiki/ or via share
+        val uri = intent?.data ?: intent?.getParcelableExtra(Intent.EXTRA_STREAM)
+        if (uri != null) {
+            SongsUtil.playFromUri(this, uri)
+            expandBottomPanel()
+            intent = Intent()
+        }
 
         // Clean intent
         intent = intent.apply {
