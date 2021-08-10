@@ -58,6 +58,7 @@ class YTBPlayer(
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
         Log.d(TAG_PLAYER, "YTB player onStateChange $state")
+        if (PlayerQueue.value !is YtbTrack) return
         PlaybackLiveData.value = state
         if (state == PlayerConstants.PlayerState.ENDED) {
             if (seekToCalled && stateBeforeSeek == PlayerConstants.PlayerState.PAUSED) {
