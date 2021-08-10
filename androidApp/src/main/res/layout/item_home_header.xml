@@ -19,7 +19,7 @@
         android:fontFamily="@font/roboto_condensed_bold"
         android:textAppearance="@style/TextAppearance.Mousiki.HeaderTitle"
         android:textColor="?android:textColorPrimary"
-        android:textSize="32sp"
+        android:textSize="@dimen/home_header_txt_size"
         tools:text="New releases" />
 
     <ProgressBar
