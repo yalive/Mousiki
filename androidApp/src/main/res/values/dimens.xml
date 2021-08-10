@@ -41,4 +41,7 @@
     <dimen name="btn_size_header">36dp</dimen>
     <dimen name="dimen_local_song_image">40dp</dimen>
     <dimen name="dimen_ytb_song_image">50dp</dimen>
+
+    <!-- Text Sizes-->
+    <dimen name="home_header_txt_size">26sp</dimen>
 </resources>
