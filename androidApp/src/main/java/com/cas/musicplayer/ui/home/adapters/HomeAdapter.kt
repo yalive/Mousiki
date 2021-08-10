@@ -23,6 +23,7 @@ class HomeAdapter(
     onClickRetryNewRelease: () -> Unit
 ) : MousikiAdapter(
     listOf(
+        HomeRecentSongsAdapterDelegate(onVideoSelected),
         CompactPlaylistSectionDelegate(),
         SimplePlaylistSectionDelegate(),
         VideoListAdapterDelegate(onVideoSelected),

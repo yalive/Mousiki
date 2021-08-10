@@ -6,6 +6,7 @@ import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
@@ -13,9 +14,10 @@ import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
 import com.mousiki.shared.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
+import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.player.PlaySongDelegate
-import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.home.model.HeaderItem
 import com.mousiki.shared.ui.home.model.HomeItem
@@ -24,6 +26,7 @@ import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -40,7 +43,7 @@ class HomeViewModel(
     private val connectivityState: ConnectivityChecker,
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
-    private val preferencesHelper: PreferencesHelper,
+    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
     playSongDelegate: PlaySongDelegate,
     facebookAdsDelegate: FacebookAdsDelegate,
     getListAdsDelegate: GetListAdsDelegate
@@ -65,6 +68,7 @@ class HomeViewModel(
             is Result.Success -> {
                 val homeRS = result.data
                 val items = mutableListOf<HomeItem>()
+                items.add(HomeItem.Recent(emptyList()))
 
                 // Create compact playlists
                 val compactPlaylists = homeRS.compactPlaylists.filter {
@@ -86,7 +90,8 @@ class HomeViewModel(
                 }.map {
                     HomeItem.VideoList(
                         it.title.orEmpty(),
-                        it.videos.orEmpty().map { it.video.toTrack(it.owner).toDisplayedVideoItem() })
+                        it.videos.orEmpty()
+                            .map { it.video.toTrack(it.owner).toDisplayedVideoItem() })
                 }
 
                 // Create promos
@@ -113,6 +118,7 @@ class HomeViewModel(
                 loadTrending()
                 loadGenres()
                 loadArtists()
+                observeRecent()
                 prepareAds()
             }
             is Result.Error -> showOldHome()
@@ -125,6 +131,13 @@ class HomeViewModel(
 
     fun onClickRetryNewRelease() {
         loadTrending()
+    }
+
+    private fun observeRecent() = scope.launch {
+        getRecentlyPlayedSongs(300).collect { tracks ->
+            val recentTracks = tracks.map { it.toDisplayedVideoItem(this@HomeViewModel) }
+            updateItem(HomeItem.Recent(recentTracks), where = { it is HomeItem.Recent })
+        }
     }
 
     private fun loadTrending() = scope.launch {
@@ -161,6 +174,7 @@ class HomeViewModel(
 
     private fun showOldHome() {
         val items = mutableListOf<HomeItem>()
+        items.add(HomeItem.Recent(emptyList()))
         items.add(HeaderItem.PopularsHeader(false))
         items.add(HomeItem.PopularsItem(Resource.Loading))
         items.add(HeaderItem.GenresHeader)
@@ -172,6 +186,7 @@ class HomeViewModel(
         loadTrending()
         loadGenres()
         loadArtists()
+        observeRecent()
     }
 
     private suspend fun prepareAds() {
@@ -210,7 +225,10 @@ class HomeViewModel(
     }
 
     fun onPlaybackStateChanged() {
-
+        val tracks = _homeItems.value?.filterIsInstance<HomeItem.Recent>()
+            ?.firstOrNull()?.tracks ?: return
+        val recentTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
+        updateItem(HomeItem.Recent(recentTracks), where = { it is HomeItem.Recent })
     }
 
     // For iOS

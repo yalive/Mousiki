@@ -1,6 +1,9 @@
 package com.cas.musicplayer.ui.home.adapters
 
 import androidx.recyclerview.widget.DiffUtil
+import com.cas.musicplayer.ui.common.ads.AdsItem
+import com.cas.musicplayer.ui.common.ads.sameAs
+import com.cas.musicplayer.ui.common.ads.sameContentAs
 import com.facebook.ads.NativeAd
 import com.mousiki.shared.ads.NativeAdItem
 import com.mousiki.shared.data.models.Artist
@@ -15,6 +18,10 @@ import com.mousiki.shared.ui.resource.Resource
 
 class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
     override fun areItemsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
+        if (oldItem is AdsItem && newItem is AdsItem) {
+            return oldItem.ad.sameAs(newItem.ad)
+        }
+
         if (oldItem !is HomeItem || newItem !is HomeItem) return false
         return when (oldItem) {
             is HomeItem.ArtistItem -> newItem is HomeItem.ArtistItem
@@ -29,11 +36,15 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
             is HomeItem.PopularsItem -> newItem is HomeItem.PopularsItem
             is HomeItem.SimplePlaylists -> newItem is HomeItem.SimplePlaylists && newItem.title == oldItem.title
             is HomeItem.VideoList -> newItem is HomeItem.VideoList && newItem.title == oldItem.title
+            is HomeItem.Recent -> newItem is HomeItem.Recent
         }
-        //return false
     }
 
     override fun areContentsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
+        if (oldItem is AdsItem && newItem is AdsItem) {
+            return oldItem.ad.sameContentAs(newItem.ad)
+        }
+
         if (oldItem !is HomeItem || newItem !is HomeItem) return false
         return when (oldItem) {
             is HomeItem.ArtistItem -> areArtistListTheSame(oldItem.artists, newItem)
@@ -51,6 +62,7 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
             is HomeItem.PopularsItem -> arePopularItemsTheSame(oldItem.resource, newItem)
             is HomeItem.SimplePlaylists -> areSimplePlayListTheSame(oldItem.playlists, newItem)
             is HomeItem.VideoList -> areVideoListTheSame(oldItem.items, newItem)
+            is HomeItem.Recent -> areRecentTheSame(oldItem.tracks, newItem)
         }
     }
 
@@ -109,5 +121,14 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
         if (newItem !is HomeItem.VideoList) return false
         val newVideos = newItem.items
         return newVideos == videos
+    }
+
+    private fun areRecentTheSame(
+        tracks: List<DisplayedVideoItem>,
+        newItem: HomeItem
+    ): Boolean {
+        if (newItem !is HomeItem.Recent) return false
+        val newTracks = newItem.tracks
+        return newTracks == tracks
     }
 }
