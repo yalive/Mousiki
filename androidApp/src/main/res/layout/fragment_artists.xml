@@ -1,32 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    app:layoutDescription="@xml/artist_list_scene">
 
-    <include
-        android:id="@+id/toolbarView"
-        layout="@layout/toolbar" />
+    <FrameLayout
+        android:id="@+id/viewBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransparent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/eight_8dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:minWidth="32dp"
+            android:tint="?colorOnSurface"
+            app:srcCompat="@drawable/ic_arrow_left_light" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/txtScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pangram_bold"
+        android:gravity="center"
+        android:text="@string/artists"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="20sp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordGroup"
+        android:id="@+id/searchView"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/sixteen_16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="@dimen/sixteen_16dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
         android:theme="@style/ThemeOverlay.MaterialComponents.Light"
         app:boxBackgroundColor="@color/colorBgSearchArtist"
         app:boxCollapsedPaddingTop="0dp"
-        app:boxCornerRadiusBottomEnd="@dimen/sixteen_16dp"
-        app:boxCornerRadiusBottomStart="@dimen/sixteen_16dp"
-        app:boxCornerRadiusTopEnd="@dimen/sixteen_16dp"
-        app:boxCornerRadiusTopStart="@dimen/sixteen_16dp"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="@color/psw_box_stroke_color"
         app:boxStrokeWidthFocused="0.0dp"
         app:endIconTint="@color/colorGrayPager"
@@ -48,10 +70,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_small"
         android:clipToPadding="false"
-        android:paddingTop="@dimen/twenty_four_24dp"
+        android:paddingTop="@dimen/sixteen_16dp"
         android:paddingBottom="@dimen/padding_for_player_space"
         android:visibility="gone"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
@@ -68,6 +91,10 @@
         android:indeterminateTint="?colorPrimary"
         android:padding="@dimen/four_4dp"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
 
-</LinearLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
