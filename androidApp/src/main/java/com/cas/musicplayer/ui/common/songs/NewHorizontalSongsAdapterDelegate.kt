@@ -68,8 +68,6 @@ open class NewHorizontalSongsAdapterDelegate(
         holder: RecyclerView.ViewHolder,
         payloads: List<Any>
     ) {
-        super.onBindViewHolder(items, position, holder, payloads)
-
         val item = items[position] as HomeItem.PopularsItem
         val viewHolder = holder as HorizontalSongsListViewHolder
         if (payloads.isEmpty() || payloads[0] !is Bundle) {
