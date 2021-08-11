@@ -1,6 +1,6 @@
 package com.cas.musicplayer.ui.home.delegates
 
-import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
+import com.cas.musicplayer.ui.common.songs.NewHorizontalSongsAdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
@@ -14,7 +14,7 @@ import com.mousiki.shared.ui.resource.Resource
  */
 class VideoListAdapterDelegate(
     onVideoSelected: (Track, List<Track>) -> Unit
-) : HorizontalListSongsAdapterDelegate(onVideoSelected) {
+) : NewHorizontalSongsAdapterDelegate(onVideoSelected) {
 
     override val showRetryButton: Boolean = false
 
