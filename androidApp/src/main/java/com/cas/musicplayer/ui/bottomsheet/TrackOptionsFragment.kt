@@ -82,8 +82,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         if (track is YtbTrack) {
             binding.imgTrack.loadTrackImage(track)
         } else {
-            val activity = context as MainActivity
-            activity.lifecycleScope.launch(Dispatchers.IO) {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 val imgByte = Utils.getSongThumbnail((track as LocalSong).data)
                 val size = dpToPixel(600)
                 withContext(Dispatchers.Main) {
