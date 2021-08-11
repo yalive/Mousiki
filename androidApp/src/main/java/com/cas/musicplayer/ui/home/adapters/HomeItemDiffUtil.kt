@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.home.adapters
 
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import com.cas.musicplayer.ui.common.ads.AdsItem
 import com.cas.musicplayer.ui.common.ads.sameAs
@@ -17,6 +18,25 @@ import com.mousiki.shared.ui.home.model.HomeItem
 import com.mousiki.shared.ui.resource.Resource
 
 class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
+
+    override fun getChangePayload(oldItem: DisplayableItem, newItem: DisplayableItem): Any? {
+        if (oldItem is HomeItem.Recent && newItem is HomeItem.Recent) {
+            if (oldItem.tracks.size == newItem.tracks.size) { // Can be improved!
+                return bundleOf()
+            }
+        }
+
+        if (oldItem is HomeItem.PopularsItem && newItem is HomeItem.PopularsItem) {
+            val resourceOld = oldItem.resource
+            val resourceNew = newItem.resource
+            if (resourceOld is Resource.Success && resourceNew is Resource.Success && resourceOld.data.size == resourceNew.data.size) {
+                return bundleOf()
+            }
+        }
+
+        return super.getChangePayload(oldItem, newItem)
+    }
+
     override fun areItemsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
         if (oldItem is AdsItem && newItem is AdsItem) {
             return oldItem.ad.sameAs(newItem.ad)

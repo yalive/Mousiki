@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.common.songs
 
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -19,11 +20,13 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
+import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.dpToPixel
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.home.model.HomeItem
+import com.mousiki.shared.ui.home.model.title
 import com.mousiki.shared.ui.resource.Resource
 
 /**
@@ -59,6 +62,24 @@ open class NewHorizontalSongsAdapterDelegate(
         (holder as HorizontalSongsListViewHolder).bind(title, songs, title.isNotEmpty())
     }
 
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        payloads: List<Any>
+    ) {
+        super.onBindViewHolder(items, position, holder, payloads)
+
+        val item = items[position] as HomeItem.PopularsItem
+        val viewHolder = holder as HorizontalSongsListViewHolder
+        if (payloads.isEmpty() || payloads[0] !is Bundle) {
+            viewHolder.bind(item.title(AndroidStrings), item.resource, false)
+        } else {
+            viewHolder.update((item.resource as Resource.Success).data)
+        }
+    }
+
+
     protected open fun songsFromItem(
         item: DisplayableItem
     ): Resource<List<DisplayedVideoItem>> {
@@ -77,9 +98,11 @@ open class NewHorizontalSongsAdapterDelegate(
     inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view),
         HomeMarginProvider {
 
+        private var tracks: List<Track> = emptyList()
+
         private val adapter = SongsAdapter(
             onVideoSelected = { track ->
-                onVideoSelected(track, emptyList())
+                onVideoSelected(track, tracks)
             },
             onClickMore = { track ->
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
@@ -130,6 +153,8 @@ open class NewHorizontalSongsAdapterDelegate(
                     viewError.isVisible = resource.data.isEmpty()
                     progressBar.isVisible = false
                     recyclerView.isInvisible = false
+
+                    this.tracks = resource.data.map { it.track }
                 }
                 is Resource.Failure -> {
                     viewError.isVisible = true
@@ -142,6 +167,15 @@ open class NewHorizontalSongsAdapterDelegate(
         override fun topMargin(): Int {
             if (!txtTitle.isVisible) return 0
             return itemView.context.dpToPixel(24f)
+        }
+
+        fun update(items: List<DisplayedVideoItem>) {
+            adapter.submitList(items)
+            viewError.isVisible = items.isEmpty()
+            progressBar.isVisible = false
+            recyclerView.isInvisible = false
+
+            this.tracks = items.map { it.track }
         }
     }
 }

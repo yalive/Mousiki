@@ -39,6 +39,14 @@ open class MousikiAdapter(
         delegateManager.onBindViewHolder(differ.currentList, position, holder)
     }
 
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        delegateManager.onBindViewHolder(differ.currentList, position, holder, payloads)
+    }
+
     fun submitList(newList: List<DisplayableItem>, callback: () -> Unit = {}) {
         differ.submitList(newList, callback)
     }
