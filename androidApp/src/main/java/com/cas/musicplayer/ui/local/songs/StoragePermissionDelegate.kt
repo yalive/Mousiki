@@ -69,15 +69,15 @@ class StoragePermissionDelegateImpl : StoragePermissionDelegate {
         permissions: Array<out String>,
         grantResults: IntArray,
     ) {
-        if (requestCode == REQ_CODE_STORAGE_PERMISSION && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQ_CODE_STORAGE_PERMISSION && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
             permissionView.root.isVisible = false
             mainView.isVisible = true
             StoragePermissionGranted.value = Unit
-        } else if (grantResults.first() == PackageManager.PERMISSION_DENIED) {
+        } else if (grantResults.firstOrNull() == PackageManager.PERMISSION_DENIED) {
             try {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 val context = mainView.context
-                val uri: Uri = Uri.fromParts("package", context.packageName, null)
+                val uri = Uri.fromParts("package", context.packageName, null)
                 intent.data = uri
                 context.startActivity(intent)
             } catch (e: Exception) {

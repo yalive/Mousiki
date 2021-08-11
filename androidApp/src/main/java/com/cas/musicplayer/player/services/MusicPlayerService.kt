@@ -281,6 +281,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         val currentTrack = PlayerQueue.value ?: return
         metadataBuilder.musicTrack = currentTrack
         mediaSession.setMetadata(metadataBuilder.build())
+        if (currentTrack.id.isEmpty()) return
         mediaController.transportControls.playFromMediaId(currentTrack.id, null)
 
         lifecycleScope.launch(Dispatchers.Main) {
@@ -295,6 +296,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         val currentTrack = PlayerQueue.value ?: return
         metadataBuilder.musicTrack = currentTrack
         mediaSession.setMetadata(metadataBuilder.build())
+        if (currentTrack.id.isEmpty()) return
         mediaController.transportControls.playFromMediaId(
             currentTrack.id, bundleOf("cue" to true)
         )

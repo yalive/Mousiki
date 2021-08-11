@@ -262,16 +262,16 @@ object Utils : KoinComponent {
 
     fun getStoragePaths(context: Context): List<String> {
         return try {
-            val paths: Array<File> = ContextCompat.getExternalFilesDirs(context, null)
+            val paths = ContextCompat.getExternalFilesDirs(context, null).filterNotNull()
             paths.map {
                 it.path.replace("/Android/data/${context.packageName}/files", "")
             }
-        } catch (ex: IllegalStateException) {
+        } catch (ex: Exception) {
             emptyList()
         }
     }
 
-     fun getSongThumbnail(songPath: String): ByteArray? {
+    fun getSongThumbnail(songPath: String): ByteArray? {
         var imgByte: ByteArray?
         MediaMetadataRetriever().also {
             try {
