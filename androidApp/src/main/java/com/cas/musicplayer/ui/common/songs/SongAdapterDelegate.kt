@@ -1,11 +1,11 @@
 package com.cas.musicplayer.ui.common.songs
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
 import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
@@ -48,6 +48,21 @@ class SongAdapterDelegate(
     ) {
         val viewHolder = holder as PopularSongsViewHolder
         viewHolder.bind(items[position] as DisplayedVideoItem)
+    }
+
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        payloads: List<Any>
+    ) {
+        val item = items[position] as DisplayedVideoItem
+        val viewHolder = holder as PopularSongsViewHolder
+        if (payloads.isEmpty() || payloads[0] !is Bundle) {
+            viewHolder.bind(item)
+        } else {
+            viewHolder.update(item)
+        }
     }
 
     override fun getItemId(items: List<DisplayableItem>, position: Int): Long {
@@ -95,7 +110,15 @@ class SongAdapterDelegate(
             }
 
             // Configure playing track
-            TransitionManager.beginDelayedTransition(itemView as ViewGroup)
+            val colorAccent = itemView.context.color(R.color.colorAccent)
+            val colorText = if (item.isCurrent) colorAccent
+            else itemView.context.themeColor(R.attr.colorOnSurface)
+            binding.txtTitle.setTextColor(colorText)
+
+            binding.indicatorPlaying.setMusicPlayingState(item)
+        }
+
+        fun update(item: DisplayedVideoItem) {
             val colorAccent = itemView.context.color(R.color.colorAccent)
             val colorText = if (item.isCurrent) colorAccent
             else itemView.context.themeColor(R.attr.colorOnSurface)

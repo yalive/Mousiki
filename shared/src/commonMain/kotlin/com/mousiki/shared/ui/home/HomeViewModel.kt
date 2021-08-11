@@ -225,10 +225,27 @@ class HomeViewModel(
     }
 
     fun onPlaybackStateChanged() {
-        val tracks = _homeItems.value?.filterIsInstance<HomeItem.Recent>()
-            ?.firstOrNull()?.tracks ?: return
-        val recentTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
-        updateItem(HomeItem.Recent(recentTracks), where = { it is HomeItem.Recent })
+
+        // Update recent
+        scope.launch {
+            val tracks = _homeItems.value?.filterIsInstance<HomeItem.Recent>()
+                ?.firstOrNull()?.tracks ?: return@launch
+            val recentTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
+            updateItem(HomeItem.Recent(recentTracks), where = { it is HomeItem.Recent })
+        }
+
+        // Update new release
+        scope.launch {
+            val resource = _homeItems.value?.filterIsInstance<HomeItem.PopularsItem>()
+                ?.firstOrNull()?.resource ?: return@launch
+            if (resource !is Resource.Success) return@launch
+            val tracks = resource.data
+            val updatedTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
+            val updatedResource = Resource.Success(updatedTracks)
+            updateItem(
+                HomeItem.PopularsItem(updatedResource),
+                where = { it is HomeItem.PopularsItem })
+        }
     }
 
     // For iOS
