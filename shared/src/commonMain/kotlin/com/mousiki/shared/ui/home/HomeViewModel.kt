@@ -68,7 +68,6 @@ class HomeViewModel(
             is Result.Success -> {
                 val homeRS = result.data
                 val items = mutableListOf<HomeItem>()
-                items.add(HomeItem.Recent(emptyList()))
 
                 // Create compact playlists
                 val compactPlaylists = homeRS.compactPlaylists.filter {
@@ -135,15 +134,16 @@ class HomeViewModel(
 
     private fun observeRecent() = scope.launch {
         getRecentlyPlayedSongs(300).collect { tracks ->
+            if (tracks.isEmpty()) return@collect
             val recentTracks = tracks.map { it.toDisplayedVideoItem(this@HomeViewModel) }
-            updateItem(HomeItem.Recent(recentTracks), where = { it is HomeItem.Recent })
+            updateOrAddItem(HomeItem.Recent(recentTracks), 0, where = { it is HomeItem.Recent })
         }
     }
 
     private fun loadTrending() = scope.launch {
         val connectedBefore = connectivityState.isConnected()
         updateItem(HomeItem.PopularsItem(Resource.Loading), where = { it is HomeItem.PopularsItem })
-        val result = getNewReleasedSongs(max = 10)
+        val result = getNewReleasedSongs(max = 15)
         val resource = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
@@ -174,7 +174,6 @@ class HomeViewModel(
 
     private fun showOldHome() {
         val items = mutableListOf<HomeItem>()
-        items.add(HomeItem.Recent(emptyList()))
         items.add(HeaderItem.PopularsHeader(false))
         items.add(HomeItem.PopularsItem(Resource.Loading))
         items.add(HeaderItem.GenresHeader)
@@ -214,6 +213,21 @@ class HomeViewModel(
         }
 
         // 3 - Notify Observer
+        _homeItems.value = homeListItems
+    }
+
+    private fun updateOrAddItem(
+        item: DisplayableItem,
+        addAt: Int,
+        where: (DisplayableItem) -> Boolean
+    ) {
+        val homeListItems = _homeItems.value?.toMutableList() ?: return
+        val index = homeListItems.indexOfFirst { where(it) }
+        if (index == -1) {
+            homeListItems.add(addAt, item)
+        } else {
+            homeListItems[index] = item
+        }
         _homeItems.value = homeListItems
     }
 
