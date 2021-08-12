@@ -34,6 +34,12 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
             }
         }
 
+        if (oldItem is HomeItem.VideoList && newItem is HomeItem.VideoList) {
+            if (oldItem.items.size == newItem.items.size) {
+                return bundleOf()
+            }
+        }
+
         return super.getChangePayload(oldItem, newItem)
     }
 
