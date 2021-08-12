@@ -20,13 +20,11 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
-import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.dpToPixel
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.home.model.HomeItem
-import com.mousiki.shared.ui.home.model.title
 import com.mousiki.shared.ui.resource.Resource
 
 /**
@@ -68,18 +66,22 @@ open class NewHorizontalSongsAdapterDelegate(
         holder: RecyclerView.ViewHolder,
         payloads: List<Any>
     ) {
-        val displayableItem = items[position]
-        if (displayableItem !is HomeItem.PopularsItem) {
-            onBindViewHolder(items, position, holder)
-            return
+        val item = items[position]
+        val tracks = when (item) {
+            is HomeItem.PopularsItem -> (item.resource as? Resource.Success)?.data
+            is HomeItem.VideoList -> item.items
+            else -> null
         }
 
-        val item = displayableItem as HomeItem.PopularsItem
         val viewHolder = holder as HorizontalSongsListViewHolder
         if (payloads.isEmpty() || payloads[0] !is Bundle) {
-            viewHolder.bind(item.title(AndroidStrings), item.resource, false)
+            viewHolder.bind(
+                getHeaderTitle(items, position),
+                Resource.Success(tracks.orEmpty()),
+                item is HomeItem.VideoList
+            )
         } else {
-            viewHolder.update((item.resource as Resource.Success).data)
+            viewHolder.update(tracks.orEmpty())
         }
     }
 
