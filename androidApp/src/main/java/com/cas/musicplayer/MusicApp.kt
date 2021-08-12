@@ -10,10 +10,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.*
 import com.cas.musicplayer.ui.common.ads.AdsManager
 import com.cas.musicplayer.ui.common.ads.AppOpenManager
-import com.cas.musicplayer.ui.local.repository.AlbumRepository
-import com.cas.musicplayer.ui.local.repository.FoldersRepository
-import com.cas.musicplayer.ui.local.repository.LocalArtistRepository
-import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
+import com.cas.musicplayer.ui.local.repository.*
 import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.ConnectivityState
 import com.google.android.gms.ads.MobileAds
@@ -22,6 +19,7 @@ import com.mousiki.shared.di.initKoin
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.ConnectivityChecker
+import com.mousiki.shared.data.repository.LocalTrackMapper
 import com.mousiki.shared.utils.Strings
 import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
@@ -58,6 +56,7 @@ class MusicApp : Application(), KoinComponent {
         FileSystem.initialize(this)
         val localSongsRepo = module {
             single { LocalSongsRepository(get()) }
+            single { LocalTrackMapper(AndroidLocalSongProvider(get())) }
             single { AlbumRepository(get()) }
             single { LocalArtistRepository(get(), get()) }
             single { FoldersRepository(get()) }

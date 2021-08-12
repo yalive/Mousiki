@@ -5,6 +5,7 @@ import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
+import com.mousiki.shared.data.repository.LocalTrackMapper
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
@@ -12,7 +13,6 @@ import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
-import com.mousiki.shared.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val getNewReleasedSongs: GetPopularSongsUseCase,
     private val getCountryArtists: GetCountryArtistsUseCase,
-    private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
+    private val localTrackMapper: LocalTrackMapper,
     private val getGenres: GetGenresUseCase,
     private val analytics: AnalyticsApi,
     private val connectivityState: ConnectivityChecker,
@@ -135,7 +135,8 @@ class HomeViewModel(
     private fun observeRecent() = scope.launch {
         getRecentlyPlayedSongs(300).collect { tracks ->
             if (tracks.isEmpty()) return@collect
-            val recentTracks = tracks.map { it.toDisplayedVideoItem(this@HomeViewModel) }
+            val recentTracks = localTrackMapper.mapTracks(tracks)
+                .map { it.toDisplayedVideoItem(this@HomeViewModel) }
             updateOrAddItem(HomeItem.Recent(recentTracks), 0, where = { it is HomeItem.Recent })
         }
     }
