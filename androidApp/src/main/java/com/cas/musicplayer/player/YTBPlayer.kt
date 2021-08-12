@@ -43,6 +43,7 @@ class YTBPlayer(
             return
         }
         if (track is YtbTrack) {
+            if (track.id.isEmpty()) return
             mediaController.transportControls?.playFromMediaId(track.id, null)
         }
     }
