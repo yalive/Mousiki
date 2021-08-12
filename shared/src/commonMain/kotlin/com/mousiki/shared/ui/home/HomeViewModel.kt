@@ -5,17 +5,19 @@ import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
+import com.mousiki.shared.data.repository.LocalTrackMapper
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
-import com.mousiki.shared.domain.usecase.chart.GetUserRelevantChartsUseCase
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
+import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.player.PlaySongDelegate
-import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.home.model.HeaderItem
 import com.mousiki.shared.ui.home.model.HomeItem
@@ -24,6 +26,7 @@ import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -34,13 +37,13 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val getNewReleasedSongs: GetPopularSongsUseCase,
     private val getCountryArtists: GetCountryArtistsUseCase,
-    private val getUserRelevantCharts: GetUserRelevantChartsUseCase,
+    private val localTrackMapper: LocalTrackMapper,
     private val getGenres: GetGenresUseCase,
     private val analytics: AnalyticsApi,
     private val connectivityState: ConnectivityChecker,
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
-    private val preferencesHelper: PreferencesHelper,
+    private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
     playSongDelegate: PlaySongDelegate,
     facebookAdsDelegate: FacebookAdsDelegate,
     getListAdsDelegate: GetListAdsDelegate
@@ -86,7 +89,8 @@ class HomeViewModel(
                 }.map {
                     HomeItem.VideoList(
                         it.title.orEmpty(),
-                        it.videos.orEmpty().map { it.video.toTrack(it.owner).toDisplayedVideoItem() })
+                        it.videos.orEmpty()
+                            .map { it.video.toTrack(it.owner).toDisplayedVideoItem() })
                 }
 
                 // Create promos
@@ -113,6 +117,7 @@ class HomeViewModel(
                 loadTrending()
                 loadGenres()
                 loadArtists()
+                observeRecent()
                 prepareAds()
             }
             is Result.Error -> showOldHome()
@@ -127,10 +132,19 @@ class HomeViewModel(
         loadTrending()
     }
 
+    private fun observeRecent() = scope.launch {
+        getRecentlyPlayedSongs(300).collect { tracks ->
+            if (tracks.isEmpty()) return@collect
+            val recentTracks = localTrackMapper.mapTracks(tracks)
+                .map { it.toDisplayedVideoItem(this@HomeViewModel) }
+            updateOrAddItem(HomeItem.Recent(recentTracks), 0, where = { it is HomeItem.Recent })
+        }
+    }
+
     private fun loadTrending() = scope.launch {
         val connectedBefore = connectivityState.isConnected()
         updateItem(HomeItem.PopularsItem(Resource.Loading), where = { it is HomeItem.PopularsItem })
-        val result = getNewReleasedSongs(max = 10)
+        val result = getNewReleasedSongs(max = 15)
         val resource = result.map { tracks ->
             tracks.map { it.toDisplayedVideoItem() }
         }.asResource()
@@ -172,6 +186,7 @@ class HomeViewModel(
         loadTrending()
         loadGenres()
         loadArtists()
+        observeRecent()
     }
 
     private suspend fun prepareAds() {
@@ -202,6 +217,21 @@ class HomeViewModel(
         _homeItems.value = homeListItems
     }
 
+    private fun updateOrAddItem(
+        item: DisplayableItem,
+        addAt: Int,
+        where: (DisplayableItem) -> Boolean
+    ) {
+        val homeListItems = _homeItems.value?.toMutableList() ?: return
+        val index = homeListItems.indexOfFirst { where(it) }
+        if (index == -1) {
+            homeListItems.add(addAt, item)
+        } else {
+            homeListItems[index] = item
+        }
+        _homeItems.value = homeListItems
+    }
+
     private fun updateItem(item: DisplayableItem, where: (DisplayableItem) -> Boolean) {
         val homeListItems = _homeItems.value?.toMutableList() ?: return
         val index = homeListItems.indexOfFirst { where(it) }
@@ -211,6 +241,26 @@ class HomeViewModel(
 
     fun onPlaybackStateChanged() {
 
+        // Update recent
+        scope.launch {
+            val tracks = _homeItems.value?.filterIsInstance<HomeItem.Recent>()
+                ?.firstOrNull()?.tracks ?: return@launch
+            val recentTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
+            updateItem(HomeItem.Recent(recentTracks), where = { it is HomeItem.Recent })
+        }
+
+        // Update new release
+        scope.launch {
+            val resource = _homeItems.value?.filterIsInstance<HomeItem.PopularsItem>()
+                ?.firstOrNull()?.resource ?: return@launch
+            if (resource !is Resource.Success) return@launch
+            val tracks = resource.data
+            val updatedTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
+            val updatedResource = Resource.Success(updatedTracks)
+            updateItem(
+                HomeItem.PopularsItem(updatedResource),
+                where = { it is HomeItem.PopularsItem })
+        }
     }
 
     // For iOS

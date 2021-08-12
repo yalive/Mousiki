@@ -19,4 +19,13 @@ abstract class AdapterDelegate<T> {
     open fun getItemId(items: T, position: Int): Long {
         return position.toLong()
     }
+
+    open fun onBindViewHolder(
+        items: T,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        payloads: List<Any>
+    ) {
+        onBindViewHolder(items, position, holder)
+    }
 }
