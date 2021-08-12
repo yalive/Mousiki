@@ -115,8 +115,8 @@ class HomeRecentSongsAdapterDelegate(
         private fun adjustSpanCount(itemsCount: Int) {
             val manager = binding.recyclerView.layoutManager as? GridLayoutManager
             val spanCount = manager?.spanCount ?: 1
-            if (itemsCount < DEF_SPAN_COUNT && tracks.isNotEmpty()) {
-                manager?.spanCount = itemsCount
+            if (itemsCount < DEF_SPAN_COUNT) {
+                manager?.spanCount = if (itemsCount > 0) itemsCount else 1
             } else if (spanCount != DEF_SPAN_COUNT) {
                 manager?.spanCount = DEF_SPAN_COUNT
             }
