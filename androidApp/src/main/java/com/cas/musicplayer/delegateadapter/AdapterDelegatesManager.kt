@@ -49,4 +49,15 @@ class AdapterDelegatesManager<T> {
             ?: throw NullPointerException("No delegate found for item at position $position for viewType ${holder.itemViewType}")
         delegate.onBindViewHolder(items, position, holder)
     }
+
+    fun onBindViewHolder(
+        items: T,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        payloads: List<Any>
+    ) {
+        val delegate = delegates.get(holder.itemViewType)
+            ?: throw NullPointerException("No delegate found for item at position $position for viewType ${holder.itemViewType}")
+        delegate.onBindViewHolder(items, position, holder, payloads)
+    }
 }

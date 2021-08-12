@@ -14,6 +14,8 @@ open class MousikiAdapter(
     val dataItems: List<DisplayableItem>
         get() = differ.currentList
 
+    private var recyclerView: RecyclerView? = null
+
     private val delegateManager = AdapterDelegatesManager<List<DisplayableItem>>().apply {
         delegates.forEach { delegate ->
             addaDelegate(delegate)
@@ -39,7 +41,27 @@ open class MousikiAdapter(
         delegateManager.onBindViewHolder(differ.currentList, position, holder)
     }
 
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        delegateManager.onBindViewHolder(differ.currentList, position, holder, payloads)
+    }
+
     fun submitList(newList: List<DisplayableItem>, callback: () -> Unit = {}) {
+        val recyclerViewState = recyclerView?.layoutManager?.onSaveInstanceState()
         differ.submitList(newList, callback)
+        recyclerView?.post {
+            recyclerView?.layoutManager?.onRestoreInstanceState(recyclerViewState)
+        }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = recyclerView
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = null
     }
 }

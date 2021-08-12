@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.isDarkMode
 import com.cas.common.extensions.onClick
@@ -74,6 +75,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
+        (binding.recyclerView.itemAnimator as? SimpleItemAnimator)?.moveDuration = 400
         binding.recyclerView.itemsMarginDecorator(MarginItemDecoration(
             topMarginProvider = { position ->
                 when (position) {

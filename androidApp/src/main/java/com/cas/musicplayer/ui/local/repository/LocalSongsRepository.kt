@@ -46,8 +46,8 @@ class LocalSongsRepository(private val context: Context) {
         return songs(makeSongCursor(AudioColumns.TITLE + " LIKE ?", arrayOf("%$query%")))
     }
 
-    fun song(songId: Long): Song {
-        return song(makeSongCursor(AudioColumns._ID + "=?", arrayOf(songId.toString())))
+    suspend fun song(songId: Long): Song = withContext(Dispatchers.IO) {
+        return@withContext song(makeSongCursor(AudioColumns._ID + "=?", arrayOf(songId.toString())))
     }
 
     fun songsByFilePath(filePath: String): List<Song> {

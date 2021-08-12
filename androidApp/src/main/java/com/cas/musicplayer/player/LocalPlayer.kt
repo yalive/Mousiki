@@ -73,9 +73,11 @@ class LocalPlayer(
         Log.d(TAG_PLAYER, "Local player loadVideo $videoId")
         val track = PlayerQueue.getTrack(videoId) ?: return
         if (track !is LocalSong) return
-        val data = localSongsRepository.song(videoId.toLong()).data
-        exoPlayer.setMediaItem(MediaItem.fromUri(data))
-        exoPlayer.playWhenReady = true
+        scope.launch {
+            val data = localSongsRepository.song(videoId.toLong()).data
+            exoPlayer.setMediaItem(MediaItem.fromUri(data))
+            exoPlayer.playWhenReady = true
+        }
     }
 
     override fun cueVideo(videoId: String, startSeconds: Float) {

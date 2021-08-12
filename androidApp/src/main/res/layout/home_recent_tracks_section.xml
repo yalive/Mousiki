@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/headerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="@dimen/four_4dp">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:alpha="0.9"
+            android:fontFamily="@font/roboto_condensed_bold"
+            android:text="@string/library_recently_played"
+            android:textAppearance="@style/TextAppearance.Mousiki.HeaderTitle"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/home_header_txt_size" />
+
+
+        <TextView
+            android:id="@+id/txtMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_toStartOf="@+id/showAll"
+            android:alpha="0.8"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:text="@string/common_more"
+            android:textAllCaps="true"
+            android:textColor="?colorOnSurface"
+            android:textSize="12sp" />
+
+        <ImageButton
+            android:id="@+id/showAll"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignTop="@+id/txtMore"
+            android:layout_alignBottom="@+id/txtMore"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.8"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:tint="?colorOnSurface"
+            app:srcCompat="@drawable/ic_arrow_right" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_ytb_track"
+        tools:spanCount="3" />
+</LinearLayout>

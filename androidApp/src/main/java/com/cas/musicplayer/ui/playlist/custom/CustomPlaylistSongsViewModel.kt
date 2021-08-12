@@ -58,7 +58,7 @@ class CustomPlaylistSongsViewModel(
         }
     }
 
-    private fun tracksMapper(tracks: List<Track>) {
+    private suspend fun tracksMapper(tracks: List<Track>) {
         val mappedTracks = tracks.map {
             when (it) {
                 is LocalSong -> LocalSong(localSongsRepository.song(it.song.id))

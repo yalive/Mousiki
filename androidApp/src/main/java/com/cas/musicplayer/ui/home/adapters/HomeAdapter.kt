@@ -6,7 +6,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.ui.common.ads.AdsCellDelegate
 import com.cas.musicplayer.ui.common.ads.facebook.FBAdsCellDelegate
-import com.cas.musicplayer.ui.common.songs.HorizontalListSongsAdapterDelegate
+import com.cas.musicplayer.ui.common.songs.NewHorizontalSongsAdapterDelegate
 import com.cas.musicplayer.ui.home.delegates.*
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.home.HomeViewModel
@@ -23,6 +23,7 @@ class HomeAdapter(
     onClickRetryNewRelease: () -> Unit
 ) : MousikiAdapter(
     listOf(
+        HomeRecentSongsAdapterDelegate(onVideoSelected),
         CompactPlaylistSectionDelegate(),
         SimplePlaylistSectionDelegate(),
         VideoListAdapterDelegate(onVideoSelected),
@@ -30,7 +31,7 @@ class HomeAdapter(
         chartDelegate,
         HomeGenreAdapterDelegate(),
         HomeHeaderAdapterDelegate(viewModel),
-        HorizontalListSongsAdapterDelegate(
+        NewHorizontalSongsAdapterDelegate(
             onVideoSelected = onVideoSelected,
             onClickRetry = onClickRetryNewRelease
         ),
