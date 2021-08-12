@@ -261,6 +261,15 @@ class HomeViewModel(
                 HomeItem.PopularsItem(updatedResource),
                 where = { it is HomeItem.PopularsItem })
         }
+
+        // Update video list
+        scope.launch {
+            _homeItems.value = _homeItems.value?.map {
+                if (it is HomeItem.VideoList) {
+                    it.copy(items = updateCurrentPlaying(it.items).filterIsInstance<DisplayedVideoItem>())
+                } else it
+            }
+        }
     }
 
     // For iOS
