@@ -409,15 +409,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         if (isLocalSong) {
             binding.poweredByValue.setText(R.string.app_name)
-            track as LocalSong
-            val activity = context as MainActivity
-            activity.lifecycleScope.launch(Dispatchers.IO) {
-                val imgByte = Utils.getSongThumbnail(track.data)
-                val size = dpToPixel(600)
-                withContext(Dispatchers.Main) {
-                    binding.imgAudio.loadLocalTrackImageFromByte(imgByte, size)
-                }
-            }
+            binding.imgAudio.loadLocalTrackImage(track as LocalSong, dpToPixel(600))
         } else {
             binding.poweredByValue.setText(R.string.label_developed_with_youtube_part2)
         }
