@@ -16,6 +16,7 @@ import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.color
+import com.cas.musicplayer.utils.vibrate
 import com.cas.musicplayer.utils.windowOverlayTypeOrPhone
 import com.mousiki.shared.domain.models.LocalSong
 
@@ -48,10 +49,12 @@ class LockScreenReceiver(
             if (isPlaying) {
                 shouldShowPopup = true
                 mediaController.transportControls.pause()
+                context.vibrate(longArrayOf(0, 150, 150, 150))
             }
         } else if (intent.action == Intent.ACTION_USER_PRESENT && context.canDrawOverApps()) {
             if (shouldShowPopup) {
                 shouldShowPopup = false
+
                 MaterialDialog(context).show {
                     message(R.string.battery_saver_mode_instead_of_lock_screen) {
                         messageTextView.setTextColor(context.color(R.color.colorWhite))
