@@ -409,7 +409,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         val isLocalSong = track is LocalSong
         if (isLocalSong) {
             binding.poweredByValue.setText(R.string.app_name)
-            binding.imgAudio.loadTrackImage(track)
+            binding.imgAudio.loadTrackImage(track, false)
         } else {
             binding.poweredByValue.setText(R.string.label_developed_with_youtube_part2)
         }
