@@ -12,6 +12,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import android.view.*
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
@@ -23,6 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.media.session.MediaButtonReceiver
 import com.cas.common.extensions.bool
+import com.cas.common.extensions.dumpData
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
@@ -94,6 +96,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private var addedViewsToWindow = false
 
     override fun onCreate() {
+        Log.d(TAG_PLAYER, "onCreate service")
         super.onCreate()
         // Prepare media session
         setUpMediaSession()
@@ -109,9 +112,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         // React to player position
         observeForegroundToggle()
 
-        // Move service to foreground
-        moveToForeground()
-
         PlayerQueue.observe(this) { currentTrack ->
             floatingPlayerView.isInvisible = currentTrack is LocalSong
         }
@@ -124,12 +124,16 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG_PLAYER, "onStartCommand: ${intent?.dumpData()}")
+        if (intent == null) {
+            return super.onStartCommand(intent, flags, startId)
+        }
         // Move service to foreground
         moveToForeground()
 
         // check last media session
-        if (intent?.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
-            val event = intent?.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
+        if (intent.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
+            val event = intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
             if (event?.action == KeyEvent.ACTION_DOWN && intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
                 handleLastSessionSysMediaButton()
             } else {
