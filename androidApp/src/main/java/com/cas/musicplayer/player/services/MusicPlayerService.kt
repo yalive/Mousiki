@@ -154,6 +154,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onDestroy() {
+        Log.d(TAG_PLAYER, "onDestroy service")
         super.onDestroy()
         deleteNotificationReceiver.unregister()
         lockScreenReceiver.unregister()
