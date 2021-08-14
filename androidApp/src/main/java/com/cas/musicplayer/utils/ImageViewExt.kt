@@ -46,7 +46,8 @@ fun ImageView.tintColor(color: Int) {
 }
 
 fun ImageView.loadTrackImage(
-    track: Track
+    track: Track,
+    fit: Boolean = true
 ) {
     val url = when (track) {
         is LocalSong -> {
@@ -63,8 +64,8 @@ fun ImageView.loadTrackImage(
                 if (track is LocalSong) {
                     error(R.drawable.ic_mousiki_placeholder)
                 }
+                if (fit) fit()
             }
-            .fit()
             .into(this, object : Callback {
                 override fun onSuccess() {
                     if (track is YtbTrack) {
