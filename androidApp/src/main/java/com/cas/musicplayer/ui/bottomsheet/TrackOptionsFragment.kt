@@ -9,8 +9,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.lifecycleScope
-import com.cas.common.dpToPixel
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
@@ -21,19 +19,17 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.loadLocalTrackImageFromByte
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.viewBinding
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.models.Playlist
+import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.isCustom
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 
 /**
@@ -79,17 +75,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             binding.favIcon.setImageResource(R.drawable.ic_heart_solid)
             binding.favLabel.text = getString(R.string.favourites)
         }
-        if (track is YtbTrack) {
-            binding.imgTrack.loadTrackImage(track)
-        } else {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val imgByte = Utils.getSongThumbnail((track as LocalSong).data)
-                val size = dpToPixel(600)
-                withContext(Dispatchers.Main) {
-                    binding.imgTrack.loadLocalTrackImageFromByte(imgByte, size)
-                }
-            }
-        }
+        binding.imgTrack.loadTrackImage(track)
         binding.txtTrackTitle.text = track.title
         binding.txtTrackArtist.text = track.artistName
         binding.shareVia.onClick {

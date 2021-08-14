@@ -51,8 +51,8 @@ class YTBPlayer(
 
     override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
         Log.d(TAG_PLAYER, "YTB player onError")
-        MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
         if (error == PlayerConstants.PlayerError.VIDEO_NOT_PLAYABLE_IN_EMBEDDED_PLAYER || error == PlayerConstants.PlayerError.VIDEO_NOT_FOUND) {
+            MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
             // Skip to next on error
             mediaController.transportControls?.skipToNext()
         }
