@@ -12,8 +12,7 @@ import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
 import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.dpToPixel
-import com.cas.musicplayer.utils.loadLocalTrackImage
+import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
@@ -53,8 +52,7 @@ class LocalSongsAdapterDelegate(
                 song.songDuration
             )
             val localSong = song.track as LocalSong
-            val size = itemView.context.dpToPixel(180f)
-            binding.imgSong.loadLocalTrackImage(localSong, size)
+            binding.imgSong.loadTrackImage(localSong)
             itemView.onClick {
                 UserPrefs.onClickTrack()
                 onClickTrack(song.track)

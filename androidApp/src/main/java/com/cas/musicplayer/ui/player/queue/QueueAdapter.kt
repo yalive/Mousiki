@@ -13,10 +13,10 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.setMusicPlayingState
-import com.cas.musicplayer.utils.*
+import com.cas.musicplayer.utils.color
+import com.cas.musicplayer.utils.loadTrackImage
+import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.domain.models.DisplayedVideoItem
-import com.mousiki.shared.domain.models.LocalSong
-import com.mousiki.shared.domain.models.YtbTrack
 
 /**
  ***************************************
@@ -52,13 +52,7 @@ class QueueAdapter(
         }
 
         override fun bind(item: DisplayedVideoItem) {
-            when (val track = item.track) {
-                is LocalSong -> {
-                    val size = itemView.context.dpToPixel(180f)
-                    imgSong.loadLocalTrackImage(track, size)
-                }
-                is YtbTrack -> imgSong.loadTrackImage(item.track)
-            }
+            imgSong.loadTrackImage(item.track)
             txtTitle.text = item.songTitle
             txtCategory.text = item.track.artistName
             btnMore.onClick {

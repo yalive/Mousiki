@@ -404,12 +404,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun onVideoChanged(track: Track) {
-
         val isLocalSong = track is LocalSong
-
         if (isLocalSong) {
             binding.poweredByValue.setText(R.string.app_name)
-            binding.imgAudio.loadLocalTrackImage(track as LocalSong, dpToPixel(600))
+            binding.imgAudio.loadTrackImage(track)
         } else {
             binding.poweredByValue.setText(R.string.label_developed_with_youtube_part2)
         }
