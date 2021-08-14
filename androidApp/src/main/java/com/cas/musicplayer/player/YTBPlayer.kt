@@ -7,6 +7,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.isScreenLocked
 import com.cas.musicplayer.utils.toast
@@ -83,6 +84,9 @@ class YTBPlayer(
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
         if (!ytbPolicyRespected()) return
+        if (!MusicApp.get().isInForeground) {
+            VideoEmplacementLiveData.out()
+        }
         Log.d(TAG_PLAYER, "YTB player loadVideo")
         elapsedSeconds = 0
         youTubePlayer?.loadVideo(videoId, 0f)
@@ -97,6 +101,9 @@ class YTBPlayer(
 
     override fun play() {
         if (!ytbPolicyRespected()) return
+        if (!MusicApp.get().isInForeground) {
+            VideoEmplacementLiveData.out()
+        }
         Log.d(TAG_PLAYER, "YTB player play")
         if (PlaybackLiveData.value == PlayerConstants.PlayerState.ENDED) {
             mediaController.transportControls?.skipToNext()
