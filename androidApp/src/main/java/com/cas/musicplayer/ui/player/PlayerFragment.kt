@@ -154,7 +154,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     override fun onStop() {
         super.onStop()
         // Movable video
-        VideoEmplacementLiveData.out()
+        if (PlaybackLiveData.isPlaying()) {
+            VideoEmplacementLiveData.out()
+        }
     }
 
     override fun onDestroyView() {
