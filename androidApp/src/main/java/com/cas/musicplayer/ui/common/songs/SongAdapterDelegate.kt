@@ -95,7 +95,7 @@ class SongAdapterDelegate(
                 }
             }
 
-            loadTrackImage(item)
+            binding.imgSong.loadTrackImage(item.track)
             binding.btnMore.onClick {
                 onClickMoreOptions(item.track)
             }
@@ -120,15 +120,6 @@ class SongAdapterDelegate(
             binding.txtTitle.setTextColor(colorText)
 
             binding.indicatorPlaying.setMusicPlayingState(item)
-        }
-
-        private fun loadTrackImage(item: DisplayedVideoItem) {
-            if (item.track is YtbTrack) {
-                binding.imgSong.loadTrackImage(item.track)
-            } else {
-                val size = itemView.context.dpToPixel(180f)
-                binding.imgSong.loadLocalTrackImage(item.track as LocalSong, size)
-            }
         }
     }
 }

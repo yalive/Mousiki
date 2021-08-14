@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
@@ -37,6 +38,7 @@ import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -46,6 +48,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 
 /**
  **********************************
@@ -286,9 +289,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
         lifecycleScope.launch(Dispatchers.Main) {
             Injector.addTrackToRecentlyPlayed(currentTrack)
-            val loadBitmap = Picasso.get().getBitmap(currentTrack.imgUrl, 320)
-            metadataBuilder.albumArt = loadBitmap
-            mediaSession.setMetadata(metadataBuilder.build())
+            updateAlbumArt(currentTrack)
         }
     }
 
@@ -300,6 +301,24 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         mediaController.transportControls.playFromMediaId(
             currentTrack.id, bundleOf("cue" to true)
         )
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            updateAlbumArt(currentTrack)
+        }
+    }
+
+    private suspend fun updateAlbumArt(currentTrack: Track) {
+        val imgUrl = when (currentTrack) {
+            is LocalSong -> {
+                val cacheDir = File(MusicApp.get().filesDir, SongsUtil.CACHE_IMAGE_DIR)
+                val file = File(cacheDir, "${currentTrack.id}.jpeg")
+                Uri.fromFile(file).toString()
+            }
+            is YtbTrack -> currentTrack.imgUrl
+        }
+        val loadBitmap = Picasso.get().getBitmap(imgUrl, 320)
+        metadataBuilder.albumArt = loadBitmap
+        mediaSession.setMetadata(metadataBuilder.build())
     }
 
     private fun resumePlayback() {
