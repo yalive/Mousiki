@@ -32,19 +32,15 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.folderRecyclerView.adapter = adapter
+        registerForActivityResult(this, binding.folderRecyclerView, binding.storagePermissionView)
     }
 
     override fun onResume() {
         super.onResume()
         observe(viewModel.folders, adapter::submitList)
-        checkStoragePermission(binding.folderRecyclerView, binding.storagePermissionView) {
+        checkStoragePermission() {
             viewModel.loadAllFolders()
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
 }

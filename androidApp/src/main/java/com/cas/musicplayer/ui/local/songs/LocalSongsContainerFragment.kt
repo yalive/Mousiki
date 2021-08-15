@@ -48,17 +48,6 @@ class LocalSongsContainerFragment : Fragment(R.layout.fragment_local_songs_conta
         binding.pager.reduceDragSensitivity()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == REQ_CODE_STORAGE_PERMISSION && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
-            StoragePermissionGranted.value = Unit
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     companion object {
         private const val REQ_CODE_STORAGE_PERMISSION = 12
         private val READ_STORAGE_PERMISSION = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
