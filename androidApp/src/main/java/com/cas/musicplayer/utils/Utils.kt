@@ -38,6 +38,8 @@ import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.utils.AnalyticsApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import java.io.File
@@ -300,7 +302,7 @@ object Utils : KoinComponent {
         }
     }
 
-    fun getSongThumbnail(songPath: String): ByteArray? {
+    suspend fun getSongThumbnail(songPath: String): ByteArray? = withContext(Dispatchers.Default) {
         var imgByte: ByteArray?
         MediaMetadataRetriever().also {
             try {
@@ -311,7 +313,7 @@ object Utils : KoinComponent {
             imgByte = it.embeddedPicture
             it.release()
         }
-        return imgByte
+        return@withContext imgByte
     }
 }
 

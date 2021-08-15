@@ -2,7 +2,6 @@ package com.cas.musicplayer.utils
 
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Environment
@@ -15,6 +14,8 @@ import java.io.File
 
 object SongsUtil {
 
+
+    const val CACHE_IMAGE_DIR = "tracksImages"
 
     fun playFromUri(context: Context, uri: Uri) {
         val songRepository = Injector.localSongsRepository

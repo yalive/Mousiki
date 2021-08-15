@@ -154,7 +154,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     override fun onStop() {
         super.onStop()
         // Movable video
-        VideoEmplacementLiveData.out()
+        if (PlaybackLiveData.isPlaying()) {
+            VideoEmplacementLiveData.out()
+        }
     }
 
     override fun onDestroyView() {
@@ -404,20 +406,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun onVideoChanged(track: Track) {
-
         val isLocalSong = track is LocalSong
-
         if (isLocalSong) {
             binding.poweredByValue.setText(R.string.app_name)
-            track as LocalSong
-            val activity = context as MainActivity
-            activity.lifecycleScope.launch(Dispatchers.IO) {
-                val imgByte = Utils.getSongThumbnail(track.data)
-                val size = dpToPixel(600)
-                withContext(Dispatchers.Main) {
-                    binding.imgAudio.loadLocalTrackImageFromByte(imgByte, size)
-                }
-            }
+            binding.imgAudio.loadTrackImage(track, false)
         } else {
             binding.poweredByValue.setText(R.string.label_developed_with_youtube_part2)
         }

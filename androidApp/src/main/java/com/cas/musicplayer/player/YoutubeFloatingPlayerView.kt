@@ -191,6 +191,7 @@ class YoutubeFloatingPlayerView @JvmOverloads constructor(
             windowManager.addView(this, videoViewParams)
         }
         youTubePlayerView.addYouTubePlayerListener(ytbPlayer)
+        isInvisible = true
     }
 
     fun onVideoEmplacementChanged(emplacement: VideoEmplacement) {

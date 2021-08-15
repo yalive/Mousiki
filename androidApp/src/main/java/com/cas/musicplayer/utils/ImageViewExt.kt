@@ -3,6 +3,7 @@ package com.cas.musicplayer.utils
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -13,6 +14,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -23,6 +25,7 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.io.File
 import kotlin.coroutines.resume
 
 
@@ -43,34 +46,45 @@ fun ImageView.tintColor(color: Int) {
 }
 
 fun ImageView.loadTrackImage(
-    track: Track
+    track: Track,
+    fit: Boolean = true
 ) {
-    try {
-        val url = UserPrefs.getTrackImageUrl(track)
-        if (url.isNotEmpty()) {
-            Picasso.get().load(url)
-                .placeholder(R.drawable.ic_mousiki_placeholder)
-                .fit()
-                .into(this, object : Callback {
-                    override fun onSuccess() {
+    val url = when (track) {
+        is LocalSong -> {
+            val cacheDir = File(MusicApp.get().filesDir, SongsUtil.CACHE_IMAGE_DIR)
+            val file = File(cacheDir, "${track.id}.jpeg")
+            Uri.fromFile(file).toString()
+        }
+        is YtbTrack -> UserPrefs.getTrackImageUrl(track)
+    }
+    if (url.isNotEmpty()) {
+        Picasso.get().load(url)
+            .placeholder(R.drawable.ic_mousiki_placeholder)
+            .apply {
+                if (track is LocalSong) {
+                    error(R.drawable.ic_mousiki_placeholder)
+                }
+                if (fit) fit()
+            }
+            .into(this, object : Callback {
+                override fun onSuccess() {
+                    if (track is YtbTrack) {
                         UserPrefs.setTrackImageUrl(track, url)
                     }
+                }
 
-                    override fun onError(e: java.lang.Exception?) {
+                override fun onError(e: java.lang.Exception?) {
+                    if (track is YtbTrack) {
                         Picasso.get().load(track.imgUrlDef0)
                             .error(R.drawable.ic_mousiki_placeholder)
                             .fit()
                             .into(this@loadTrackImage)
                         UserPrefs.setTrackImageUrl(track, track.imgUrlDef0)
                     }
-                })
-        } else {
-            setImageResource(R.drawable.ic_mousiki_placeholder)
-        }
-    } catch (e: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(e)
-    } catch (e: OutOfMemoryError) {
-        FirebaseCrashlytics.getInstance().recordException(e)
+                }
+            })
+    } else {
+        setImageResource(R.drawable.ic_mousiki_placeholder)
     }
 }
 
@@ -208,14 +222,16 @@ fun ImageView.updateBitmap(
     startAnimation(animOut)
 }
 
-fun ImageView.loadLocalTrackImageFromByte(
-    imgByte: ByteArray?,
+fun ImageView.loadLocalTrackImage(
+    track: LocalSong,
     size: Int
 ) {
+    val cacheDir = File(MusicApp.get().filesDir, SongsUtil.CACHE_IMAGE_DIR)
+    val file = File(cacheDir, "${track.id}.jpeg")
     Glide.with(context)
-        .asBitmap()
-        .load(imgByte)
+        .load(file)
         .apply(RequestOptions().override(size, size))
         .placeholder(R.drawable.ic_note_placeholder)
+        .error(R.drawable.ic_note_placeholder)
         .into(this)
 }
