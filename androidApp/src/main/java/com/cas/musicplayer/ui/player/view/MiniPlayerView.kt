@@ -10,10 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import com.cas.common.extensions.onClick
-import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.MiniPlayerViewBinding
-import com.cas.musicplayer.utils.canDrawOverApps
 import com.mousiki.shared.domain.models.Track
 
 /**
@@ -63,7 +61,6 @@ class MiniPlayerView @JvmOverloads constructor(
         postDelayed(500) {
             binding.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
         }
-        showTrackInfoIfNeeded()
     }
 
     fun onPlayMusicStateChanged(state: Int) {
@@ -82,15 +79,8 @@ class MiniPlayerView @JvmOverloads constructor(
         onClickPlayPause = callback
     }
 
-    fun showNoTrack() {
-        binding.trackInfoGroup.isVisible = false
-        binding.txtEmpty.isVisible = true
-    }
-
-    fun showTrackInfoIfNeeded() {
-        if (MusicApp.get().canDrawOverApps()) {
-            binding.trackInfoGroup.isVisible = true
-            binding.txtEmpty.isVisible = false
-        }
+    fun showNoTrack(noTrack: Boolean) {
+        binding.trackInfoGroup.isVisible = !noTrack
+        binding.txtEmpty.isVisible = noTrack
     }
 }
