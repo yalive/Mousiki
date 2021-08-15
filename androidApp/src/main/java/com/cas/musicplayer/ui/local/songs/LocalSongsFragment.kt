@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.local.songs
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -52,7 +53,10 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
 
     override fun onResume() {
         super.onResume()
-        observe(viewModel.localSongs) { adapter.submitList(it) }
+        observe(viewModel.localSongs) {
+            Log.d("LocalSongsFragment","localSongs value changed")
+            adapter.submitList(it)
+        }
         checkStoragePermission(
         ) {
             viewModel.loadAllSongs()
