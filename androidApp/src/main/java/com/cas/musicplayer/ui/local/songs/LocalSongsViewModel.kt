@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.local.songs
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -24,9 +25,11 @@ class LocalSongsViewModel(
     }
 
     fun loadAllSongs() = viewModelScope.launch {
+        Log.d("LocalSongsViewModel","fun called : loadAllSongs")
         val songsItems = localSongsRepository.songs().map {
             LocalSong(it).toDisplayedVideoItem()
         }
+        Log.d("LocalSongsViewModel","loadAllSongs result songsItems : ${songsItems.size}")
         val displayedItems = mutableListOf<DisplayableItem>().apply {
             add(HeaderSongsActionsItem(songsItems.size,
                 onPlayAllTracks = {
@@ -37,6 +40,7 @@ class LocalSongsViewModel(
             ))
             addAll(songsItems)
         }
+        Log.d("LocalSongsViewModel","loadAllSongs result displayedItems : ${songsItems.size}")
         _localSongs.value = updateCurrentPlaying(displayedItems)
     }
 

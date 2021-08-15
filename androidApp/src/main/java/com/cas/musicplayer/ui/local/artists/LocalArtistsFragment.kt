@@ -32,22 +32,20 @@ class LocalArtistsFragment : BaseFragment<LocalArtistsViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.localArtistsRecyclerView.adapter = adapter
+        registerForActivityResult(
+            this,
+            binding.localArtistsRecyclerView,
+            binding.storagePermissionView
+        )
     }
 
     override fun onResume() {
         super.onResume()
         observe(viewModel.localArtists, adapter::submitList)
         checkStoragePermission(
-            binding.localArtistsRecyclerView,
-            binding.storagePermissionView
         ) {
             viewModel.loadAllLocalArtists()
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
 }

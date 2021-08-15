@@ -43,14 +43,17 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
                 viewModel.onPlaybackStateChanged()
             }
         }
+        registerForActivityResult(
+            this,
+            binding.localSongsRecyclerView,
+            binding.storagePermissionView
+        )
     }
 
     override fun onResume() {
         super.onResume()
         observe(viewModel.localSongs) { adapter.submitList(it) }
         checkStoragePermission(
-            binding.localSongsRecyclerView,
-            binding.storagePermissionView
         ) {
             viewModel.loadAllSongs()
         }
@@ -63,9 +66,4 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
 }
