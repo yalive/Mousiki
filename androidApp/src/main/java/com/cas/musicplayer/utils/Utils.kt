@@ -18,10 +18,12 @@ import android.text.TextUtils
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
@@ -34,10 +36,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
-import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.models.YtbTrack
-import com.mousiki.shared.domain.models.imgUrl
+import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.utils.AnalyticsApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import java.io.File
@@ -51,7 +53,41 @@ object Utils : KoinComponent {
 
     var hasShownAdsOneTime = false
 
-    fun shareTrackLink(link: String?, track: YtbTrack, context: Context) {
+    fun shareTrack(track: Track?, mContext: Context) {
+        if (track == null) return
+        if (track is LocalSong) {
+            val intent = createShareSongFileIntent(track.song, mContext)
+            if (intent?.resolveActivity(mContext.packageManager) != null) {
+                mContext.startActivity(intent)
+                get<AnalyticsApi>().logEvent(ANALYTICS_CREATE_TRACK_DYNAMIC_LINK)
+            }
+        } else if (track is YtbTrack) {
+            Firebase.dynamicLinks.shortLinkAsync(ShortDynamicLink.Suffix.SHORT) {
+                link = Uri.Builder()
+                    .scheme("https")
+                    .authority("www.mouziki.com")
+                    .appendQueryParameter("videoId", track.youtubeId)
+                    .appendQueryParameter("title", track.title)
+                    .appendQueryParameter("duration", track.duration)
+                    .build()
+                domainUriPrefix = "https://mouziki.page.link"
+                androidParameters {
+                }
+                iosParameters("com.mouziki.ios") { }
+                socialMetaTagParameters {
+                    title = track.title
+                    description = ""
+                    imageUrl = Uri.parse(track.imgUrl)
+
+                }
+            }.addOnSuccessListener { result ->
+                val shortLink = result.shortLink
+                shareYtbTrackLink(shortLink.toString(), track, mContext)
+            }
+        }
+    }
+
+    private fun shareYtbTrackLink(link: String?, track: YtbTrack, context: Context) {
         val text = context.getString(R.string.share_track_link_message, track?.title, link)
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -65,33 +101,28 @@ object Utils : KoinComponent {
         }
     }
 
-
-    fun shareWithDeepLink(track: Track?, mContext: Context) {
-        if (track == null) return
-        if (track !is YtbTrack) return
-        Firebase.dynamicLinks.shortLinkAsync(ShortDynamicLink.Suffix.SHORT) {
-            link = Uri.Builder()
-                .scheme("https")
-                .authority("www.mouziki.com")
-                .appendQueryParameter("videoId", track.youtubeId)
-                .appendQueryParameter("title", track.title)
-                .appendQueryParameter("duration", track.duration)
-                .build()
-            domainUriPrefix = "https://mouziki.page.link"
-            androidParameters {
-            }
-            iosParameters("com.mouziki.ios") { }
-            socialMetaTagParameters {
-                title = track.title
-                description = ""
-                imageUrl = Uri.parse(track.imgUrl)
-
-            }
-        }.addOnSuccessListener { result ->
-            val shortLink = result.shortLink
-            shareTrackLink(shortLink.toString(), track, mContext)
+    private fun createShareSongFileIntent(song: Song, context: Context): Intent? {
+        return try {
+            Intent().setAction(Intent.ACTION_SEND).putExtra(
+                Intent.EXTRA_STREAM,
+                FileProvider.getUriForFile(
+                    context,
+                    context.applicationContext.packageName,
+                    File(song.data)
+                )
+            ).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION).setType("audio/*")
+        } catch (e: IllegalArgumentException) {
+            // TODO the path is most likely not like /storage/emulated/0/... but something like /storage/28C7-75B0/...
+            e.printStackTrace()
+            Toast.makeText(
+                context,
+                "Could not share this file, I'm aware of the issue.",
+                Toast.LENGTH_SHORT
+            ).show()
+            Intent()
         }
     }
+
 
     fun shareAppVia() {
         val sendIntent: Intent = Intent().apply {
@@ -271,7 +302,7 @@ object Utils : KoinComponent {
         }
     }
 
-    fun getSongThumbnail(songPath: String): ByteArray? {
+    suspend fun getSongThumbnail(songPath: String): ByteArray? = withContext(Dispatchers.Default) {
         var imgByte: ByteArray?
         MediaMetadataRetriever().also {
             try {
@@ -282,7 +313,7 @@ object Utils : KoinComponent {
             imgByte = it.embeddedPicture
             it.release()
         }
-        return imgByte
+        return@withContext imgByte
     }
 }
 

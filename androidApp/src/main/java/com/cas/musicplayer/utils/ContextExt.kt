@@ -15,6 +15,12 @@ import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import android.os.VibrationEffect
+
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.os.Vibrator
+
 
 /**
  **********************************
@@ -100,6 +106,25 @@ fun Context.toastCentred(message: String) {
     val toast = Toast.makeText(this, message, Toast.LENGTH_LONG)
     toast.setGravity(Gravity.CENTER, 0, 0)
     toast.show()
+}
+
+fun Context.vibrate(duration: Long) {
+    val v = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        v!!.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
+    } else {
+        v!!.vibrate(duration)
+    }
+}
+
+fun Context.vibrate(duration: LongArray) {
+
+    val v = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        v!!.vibrate(VibrationEffect.createWaveform(duration, -1))
+    } else {
+        v!!.vibrate(duration, -1)
+    }
 }
 
 fun View?.visibleInScreen(): Boolean {
