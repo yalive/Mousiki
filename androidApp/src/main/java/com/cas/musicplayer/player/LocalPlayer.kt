@@ -71,15 +71,12 @@ class LocalPlayer(
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
         Log.d(TAG_PLAYER, "Local player loadVideo $videoId")
-        val track = PlayerQueue.getTrack(videoId) ?: return
-        if (track !is LocalSong) return
-        val data = localSongsRepository.song(videoId.toLong()).data
-        exoPlayer.setMediaItem(MediaItem.fromUri(data))
-        exoPlayer.playWhenReady = true
+        setCurrentPlayingTrack(videoId, true)
     }
 
     override fun cueVideo(videoId: String, startSeconds: Float) {
         Log.d(TAG_PLAYER, "Local player cueVideo $videoId")
+        setCurrentPlayingTrack(videoId, false)
     }
 
     override fun play() {
@@ -101,6 +98,16 @@ class LocalPlayer(
         Log.d(TAG_PLAYER, "Local player seekTo $time")
         exoPlayer.seekTo(time.toLong() * 1000)
         PlaybackDuration.value = time.toInt()
+    }
+
+    private fun setCurrentPlayingTrack(videoId: String, playWhenReady: Boolean) {
+        val track = PlayerQueue.getTrack(videoId) ?: return
+        if (track !is LocalSong) return
+        scope.launch {
+            val data = localSongsRepository.song(videoId.toLong()).data
+            exoPlayer.setMediaItem(MediaItem.fromUri(data))
+            exoPlayer.playWhenReady = playWhenReady
+        }
     }
 
     private fun updatePlaybackProgress() {

@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
@@ -12,6 +13,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import android.view.*
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationManagerCompat
@@ -23,6 +25,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.media.session.MediaButtonReceiver
 import com.cas.common.extensions.bool
+import com.cas.common.extensions.dumpData
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
@@ -37,6 +40,7 @@ import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.imgUrl
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -46,6 +50,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 
 /**
  **********************************
@@ -94,6 +99,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     private var addedViewsToWindow = false
 
     override fun onCreate() {
+        Log.d(TAG_PLAYER, "onCreate service")
         super.onCreate()
         // Prepare media session
         setUpMediaSession()
@@ -109,9 +115,6 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         // React to player position
         observeForegroundToggle()
 
-        // Move service to foreground
-        moveToForeground()
-
         PlayerQueue.observe(this) { currentTrack ->
             floatingPlayerView.isInvisible = currentTrack is LocalSong
         }
@@ -124,12 +127,16 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG_PLAYER, "onStartCommand: ${intent?.dumpData()}")
+        if (intent == null) {
+            return super.onStartCommand(intent, flags, startId)
+        }
         // Move service to foreground
         moveToForeground()
 
         // check last media session
-        if (intent?.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
-            val event = intent?.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
+        if (intent.action.equals(Intent.ACTION_MEDIA_BUTTON)) {
+            val event = intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
             if (event?.action == KeyEvent.ACTION_DOWN && intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
                 handleLastSessionSysMediaButton()
             } else {
@@ -150,6 +157,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
     }
 
     override fun onDestroy() {
+        Log.d(TAG_PLAYER, "onDestroy service")
         super.onDestroy()
         deleteNotificationReceiver.unregister()
         lockScreenReceiver.unregister()
@@ -286,9 +294,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
         lifecycleScope.launch(Dispatchers.Main) {
             Injector.addTrackToRecentlyPlayed(currentTrack)
-            val loadBitmap = Picasso.get().getBitmap(currentTrack.imgUrl, 320)
-            metadataBuilder.albumArt = loadBitmap
-            mediaSession.setMetadata(metadataBuilder.build())
+            updateAlbumArt(currentTrack)
         }
     }
 
@@ -300,6 +306,24 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         mediaController.transportControls.playFromMediaId(
             currentTrack.id, bundleOf("cue" to true)
         )
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            updateAlbumArt(currentTrack)
+        }
+    }
+
+    private suspend fun updateAlbumArt(currentTrack: Track) {
+        val imgUrl = when (currentTrack) {
+            is LocalSong -> {
+                val cacheDir = File(MusicApp.get().filesDir, SongsUtil.CACHE_IMAGE_DIR)
+                val file = File(cacheDir, "${currentTrack.id}.jpeg")
+                Uri.fromFile(file).toString()
+            }
+            is YtbTrack -> currentTrack.imgUrl
+        }
+        val loadBitmap = Picasso.get().getBitmap(imgUrl, 320)
+        metadataBuilder.albumArt = loadBitmap
+        mediaSession.setMetadata(metadataBuilder.build())
     }
 
     private fun resumePlayback() {

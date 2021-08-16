@@ -53,7 +53,7 @@ class LocalSongsContainerFragment : Fragment(R.layout.fragment_local_songs_conta
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQ_CODE_STORAGE_PERMISSION && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQ_CODE_STORAGE_PERMISSION && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
             StoragePermissionGranted.value = Unit
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

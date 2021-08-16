@@ -64,3 +64,18 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
 }
 
 data class AdsItem(val ad: NativeAd) : DisplayableItem
+
+fun NativeAd.sameAs(other: NativeAd): Boolean {
+    return other.headline == headline
+            && other.body == body
+            && other.callToAction == callToAction
+}
+
+fun NativeAd.sameContentAs(other: NativeAd): Boolean {
+    return other.headline == headline
+            && other.body == body
+            && other.callToAction == callToAction
+            && other.price == price
+            && other.advertiser == advertiser
+            && other.store == store
+}

@@ -1,25 +1,20 @@
 package com.cas.musicplayer.ui.common.songs
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
 import com.cas.common.extensions.onClick
 import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemYtbTrackBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.common.setMusicPlayingState
 import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  ***************************************
@@ -48,6 +43,21 @@ class SongAdapterDelegate(
     ) {
         val viewHolder = holder as PopularSongsViewHolder
         viewHolder.bind(items[position] as DisplayedVideoItem)
+    }
+
+    override fun onBindViewHolder(
+        items: List<DisplayableItem>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        payloads: List<Any>
+    ) {
+        val item = items[position] as DisplayedVideoItem
+        val viewHolder = holder as PopularSongsViewHolder
+        if (payloads.isEmpty() || payloads[0] !is Bundle) {
+            viewHolder.bind(item)
+        } else {
+            viewHolder.update(item)
+        }
     }
 
     override fun getItemId(items: List<DisplayableItem>, position: Int): Long {
@@ -85,7 +95,7 @@ class SongAdapterDelegate(
                 }
             }
 
-            loadTrackImage(item)
+            binding.imgSong.loadTrackImage(item.track)
             binding.btnMore.onClick {
                 onClickMoreOptions(item.track)
             }
@@ -95,7 +105,6 @@ class SongAdapterDelegate(
             }
 
             // Configure playing track
-            TransitionManager.beginDelayedTransition(itemView as ViewGroup)
             val colorAccent = itemView.context.color(R.color.colorAccent)
             val colorText = if (item.isCurrent) colorAccent
             else itemView.context.themeColor(R.attr.colorOnSurface)
@@ -104,21 +113,13 @@ class SongAdapterDelegate(
             binding.indicatorPlaying.setMusicPlayingState(item)
         }
 
-        private fun loadTrackImage(item: DisplayedVideoItem) {
-            if (item.track is YtbTrack) {
-                binding.imgSong.loadTrackImage(item.track)
+        fun update(item: DisplayedVideoItem) {
+            val colorAccent = itemView.context.color(R.color.colorAccent)
+            val colorText = if (item.isCurrent) colorAccent
+            else itemView.context.themeColor(R.attr.colorOnSurface)
+            binding.txtTitle.setTextColor(colorText)
 
-            } else {
-                val localSong = item.track as LocalSong
-                val activity = itemView.context as MainActivity
-                activity.lifecycleScope.launch(Dispatchers.IO) {
-                    val imgByte = Utils.getSongThumbnail(localSong.data)
-                    val size = itemView.context.dpToPixel(180f)
-                    withContext(Dispatchers.Main) {
-                        binding.imgSong.loadLocalTrackImageFromByte(imgByte, size)
-                    }
-                }
-            }
+            binding.indicatorPlaying.setMusicPlayingState(item)
         }
     }
 }

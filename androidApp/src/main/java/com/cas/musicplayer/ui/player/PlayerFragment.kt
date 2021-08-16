@@ -20,7 +20,6 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
@@ -138,9 +137,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         // Make sure video is visible if service is bound
         showPlayerView()
-
-        // Util when user enable draw over apps for the first time only
-        binding.miniPlayerView.showTrackInfoIfNeeded()
     }
 
     override fun onPause() {
@@ -154,7 +150,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     override fun onStop() {
         super.onStop()
         // Movable video
-        VideoEmplacementLiveData.out()
+        if (PlaybackLiveData.isPlaying()) {
+            VideoEmplacementLiveData.out()
+        }
     }
 
     override fun onDestroyView() {
@@ -236,7 +234,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         binding.btnShareVia.onClick {
-            Utils.shareWithDeepLink(PlayerQueue.value, requireContext())
+            Utils.shareTrack(PlayerQueue.value, requireContext())
         }
 
         binding.btnAddFav.onClick {
@@ -290,14 +288,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun observeViewModel() {
-        observe(viewModel.noRecentTrack.asLiveData()) { event ->
-            event?.getContentIfNotHandled()?.let {
-                binding.miniPlayerView.showNoTrack()
-            }
+        observe(viewModel.queue) { items ->
+            binding.miniPlayerView.showNoTrack(items.isEmpty())
         }
 
-        observe(viewModel.queue) { items ->
-        }
         observe(PlayerQueue) { video ->
             onVideoChanged(video)
             binding.lockScreenView.setCurrentTrack(video)
@@ -404,20 +398,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun onVideoChanged(track: Track) {
-
         val isLocalSong = track is LocalSong
-
         if (isLocalSong) {
             binding.poweredByValue.setText(R.string.app_name)
-            track as LocalSong
-            val activity = context as MainActivity
-            activity.lifecycleScope.launch(Dispatchers.IO) {
-                val imgByte = Utils.getSongThumbnail(track.data)
-                val size = dpToPixel(600)
-                withContext(Dispatchers.Main) {
-                    binding.imgAudio.loadLocalTrackImageFromByte(imgByte, size)
-                }
-            }
+            binding.imgAudio.loadTrackImage(track, false)
         } else {
             binding.poweredByValue.setText(R.string.label_developed_with_youtube_part2)
         }

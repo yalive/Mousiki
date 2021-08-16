@@ -15,9 +15,6 @@ import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
-import com.mousiki.shared.ui.event.Event
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -38,18 +35,14 @@ class PlayerViewModel(
     private val _isLiked = MediatorLiveData<Boolean>()
     val isLiked: LiveData<Boolean> = _isLiked
 
-    private val _noRecentTrack = MutableStateFlow<Event<Unit>?>(null)
-    val noRecentTrack: StateFlow<Event<Unit>?> = _noRecentTrack
-
     private val _queue = MediatorLiveData<List<DisplayableItem>>()
     val queue: LiveData<List<DisplayableItem>> = _queue
 
     private val nativeAds = mutableListOf<NativeAd>()
-    private val queueObserver = Observer<List<Track>?> { newQueue ->
-        newQueue?.let {
-            val videoItems = newQueue.map { it.toDisplayedVideoItem() }
-            _queue.value = getListWithAds(videoItems)
-        }
+    private val queueObserver = Observer<List<Track>?> { it ->
+        val newQueue = it ?: return@Observer
+        val videoItems = newQueue.map { it.toDisplayedVideoItem() }
+        _queue.value = getListWithAds(videoItems)
     }
 
     init {
@@ -61,12 +54,6 @@ class PlayerViewModel(
             }
         }
         cueRecentTrack()
-
-        viewModelScope.launch {
-            if (getRecentlyPlayedSongs().isEmpty()) {
-                _noRecentTrack.value = Event(Unit)
-            }
-        }
     }
 
     private fun cueRecentTrack() = viewModelScope.launch {

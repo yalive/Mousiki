@@ -15,7 +15,7 @@
         android:alpha="0.9"
         android:fontFamily="@font/roboto_condensed_bold"
         android:textColor="?android:textColorPrimary"
-        android:textSize="32sp"
+        android:textSize="@dimen/home_header_txt_size"
         tools:text="أجمل الأغاني اليوم" />
 
     <androidx.recyclerview.widget.RecyclerView

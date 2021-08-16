@@ -7,6 +7,7 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.utils.VideoEmplacementLiveData
 import com.cas.musicplayer.utils.canDrawOverApps
 import com.cas.musicplayer.utils.isScreenLocked
 import com.cas.musicplayer.utils.toast
@@ -50,8 +51,8 @@ class YTBPlayer(
 
     override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
         Log.d(TAG_PLAYER, "YTB player onError")
-        MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
         if (error == PlayerConstants.PlayerError.VIDEO_NOT_PLAYABLE_IN_EMBEDDED_PLAYER || error == PlayerConstants.PlayerError.VIDEO_NOT_FOUND) {
+            MusicApp.get().toast(R.string.error_cannot_play_youtube_video)
             // Skip to next on error
             mediaController.transportControls?.skipToNext()
         }
@@ -59,6 +60,7 @@ class YTBPlayer(
 
     override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
         Log.d(TAG_PLAYER, "YTB player onStateChange $state")
+        if (PlayerQueue.value !is YtbTrack) return
         PlaybackLiveData.value = state
         if (state == PlayerConstants.PlayerState.ENDED) {
             if (seekToCalled && stateBeforeSeek == PlayerConstants.PlayerState.PAUSED) {
@@ -82,6 +84,9 @@ class YTBPlayer(
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
         if (!ytbPolicyRespected()) return
+        if (!MusicApp.get().isInForeground) {
+            VideoEmplacementLiveData.out()
+        }
         Log.d(TAG_PLAYER, "YTB player loadVideo")
         elapsedSeconds = 0
         youTubePlayer?.loadVideo(videoId, 0f)
@@ -96,6 +101,9 @@ class YTBPlayer(
 
     override fun play() {
         if (!ytbPolicyRespected()) return
+        if (!MusicApp.get().isInForeground) {
+            VideoEmplacementLiveData.out()
+        }
         Log.d(TAG_PLAYER, "YTB player play")
         if (PlaybackLiveData.value == PlayerConstants.PlayerState.ENDED) {
             mediaController.transportControls?.skipToNext()

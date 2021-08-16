@@ -25,7 +25,6 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.isCustom
@@ -80,12 +79,9 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         binding.txtTrackTitle.text = track.title
         binding.txtTrackArtist.text = track.artistName
         binding.shareVia.onClick {
-            Utils.shareWithDeepLink(track, requireContext())
-            if (this.isVisible) {
-                this.dismiss()
-            }
+            Utils.shareTrack(track, requireContext())
+            if (this.isVisible) this.dismiss()
         }
-        binding.shareVia.isVisible = track !is LocalSong
         binding.favController.onClick {
             Executors.newSingleThreadExecutor().execute {
                 if (UserPrefs.isFav(track.id)) {
