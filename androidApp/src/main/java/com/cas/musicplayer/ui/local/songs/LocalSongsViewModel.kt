@@ -4,12 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
+import com.cas.musicplayer.utils.SongsUtil
+import com.cas.musicplayer.utils.Utils
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.io.File
 
 class LocalSongsViewModel(
     private val localSongsRepository: LocalSongsRepository,
@@ -25,11 +29,11 @@ class LocalSongsViewModel(
     }
 
     fun loadAllSongs() = viewModelScope.launch {
-        Log.d("LocalSongsViewModel","fun called : loadAllSongs")
-        val songsItems = localSongsRepository.songs().map {
+        val songs = localSongsRepository.songs()
+        val songsItems = songs.map {
             LocalSong(it).toDisplayedVideoItem()
         }
-        Log.d("LocalSongsViewModel","loadAllSongs result songsItems : ${songsItems.size}")
+
         val displayedItems = mutableListOf<DisplayableItem>().apply {
             add(HeaderSongsActionsItem(songsItems.size,
                 onPlayAllTracks = {
@@ -42,6 +46,9 @@ class LocalSongsViewModel(
         }
         Log.d("LocalSongsViewModel","loadAllSongs result displayedItems : ${songsItems.size}")
         _localSongs.value = updateCurrentPlaying(displayedItems)
+
+        // cache images if needed
+        syncSongsImages(songs)
     }
 
     fun onClickTrack(track: Track) = scope.launch {
@@ -64,5 +71,19 @@ class LocalSongsViewModel(
         val currentItems = _localSongs.value ?: return
         val updatedList = updateCurrentPlaying(currentItems)
         _localSongs.value = updatedList
+    }
+
+    private fun CoroutineScope.syncSongsImages(songs: List<Song>) = launch(Dispatchers.Default) {
+        val cacheDir = File(MusicApp.get().filesDir, SongsUtil.CACHE_IMAGE_DIR)
+        if (!cacheDir.exists()) cacheDir.mkdir()
+        songs.forEach { song ->
+            val file = File(cacheDir, "${song.id}.jpeg")
+            if (!file.exists()) {
+                val byteArray = Utils.getSongThumbnail(song.data)
+                if (byteArray != null) {
+                    file.writeBytes(byteArray)
+                }
+            }
+        }
     }
 }

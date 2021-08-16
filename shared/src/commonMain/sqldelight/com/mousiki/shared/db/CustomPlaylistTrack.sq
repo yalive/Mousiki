@@ -25,10 +25,10 @@ getAll:
 SELECT * FROM custom_playlist_track;
 
 getPlaylistTracks:
-SELECT * FROM custom_playlist_track WHERE playlist_id= ?;
+SELECT * FROM custom_playlist_track WHERE playlist_id= ? AND track_id != '';
 
 playlistTracksCount:
-SELECT COUNT(*) FROM custom_playlist_track WHERE playlist_id= ?;
+SELECT COUNT(*) FROM custom_playlist_track WHERE playlist_id= ? AND track_id != '';
 
 playlistFirstTrack:
-SELECT * FROM custom_playlist_track WHERE playlist_id= ? AND type= ? LIMIT 1;
+SELECT * FROM custom_playlist_track WHERE playlist_id= ? AND type= ? AND track_id != '' LIMIT 1;
