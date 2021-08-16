@@ -18,6 +18,7 @@ import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
 import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistFragment
+import com.cas.musicplayer.utils.RingtoneManager
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.viewBinding
@@ -25,6 +26,7 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.isCustom
@@ -78,6 +80,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         binding.imgTrack.loadTrackImage(track)
         binding.txtTrackTitle.text = track.title
         binding.txtTrackArtist.text = track.artistName
+        binding.setAsRingtoneView.isVisible = track is LocalSong
         binding.shareVia.onClick {
             Utils.shareTrack(track, requireContext())
             if (this.isVisible) this.dismiss()
@@ -110,6 +113,17 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
                 track = track
             )
             dismiss()
+        }
+
+        binding.setAsRingtoneView.onClick {
+            val song = (track as? LocalSong)?.song ?: return@onClick
+            val context = requireContext()
+            if (RingtoneManager.requiresDialog(context)) {
+                RingtoneManager.showDialog(context)
+            } else {
+                RingtoneManager(context).setRingtone(song)
+                dismiss()
+            }
         }
 
         val playlist = customPlaylist

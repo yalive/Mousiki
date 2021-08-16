@@ -46,8 +46,8 @@
             android:fontFamily="@font/roboto_black"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:textDirection="ltr"
             android:textColor="?android:textColorPrimary"
+            android:textDirection="ltr"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgTrack"
@@ -215,6 +215,42 @@
             android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto_black"
             android:text="@string/btn_unfavorite"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/setAsRingtoneView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/imgBell"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:padding="@dimen/two_2dp"
+            android:src="@drawable/ic_heart_solid"
+            app:tint="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/txtSetAsRingtone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_black"
+            android:text="@string/action_set_as_ringtone"
             android:textColor="?android:textColorPrimary"
             android:textSize="12sp" />
 
