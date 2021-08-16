@@ -1,5 +1,6 @@
 package com.cas.musicplayer.utils
 
+import android.app.RecoverableSecurityException
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -16,12 +18,7 @@ import com.mousiki.shared.domain.models.Song
 
 class RingtoneManager(val context: Context) {
 
-    fun setRingtone(song: Song) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            context.toast("Not supported above Android 10")
-            return
-        }
-
+    fun setRingtone(song: Song): Boolean {
         val resolver = context.contentResolver
         val uri = song.getFileUri()
         try {
@@ -29,8 +26,14 @@ class RingtoneManager(val context: Context) {
             values.put(MediaStore.Audio.AudioColumns.IS_RINGTONE, "1")
             values.put(MediaStore.Audio.AudioColumns.IS_ALARM, "1")
             resolver.update(uri, values, null, null)
-        } catch (securityException: Exception) {
-            return
+        } catch (exception: Exception) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val rsException = exception as? RecoverableSecurityException ?: return false
+                val intentSender = rsException.userAction.actionIntent.intentSender ?: return false
+                val activity = context as? AppCompatActivity
+                activity?.startIntentSenderForResult(intentSender, 10, null, 0, 0, 0, null)
+            }
+            return false
         }
 
         try {
@@ -49,8 +52,10 @@ class RingtoneManager(val context: Context) {
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
             }
+            return true
         } catch (ignored: SecurityException) {
         }
+        return false
     }
 
     companion object {
