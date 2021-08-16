@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.local.songs.LocalSongsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.cas.musicplayer.utils.AutoRefreshRecyclerView
         android:id="@+id/local_songs_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

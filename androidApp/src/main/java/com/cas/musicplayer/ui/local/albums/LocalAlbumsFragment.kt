@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.albums
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalAlbumsFragmentBinding
@@ -33,11 +34,14 @@ class LocalAlbumsFragment : BaseFragment<LocalAlbumsViewModel>(
         super.onViewCreated(view, savedInstanceState)
         binding.albumsRecyclerView.adapter = adapter
         registerForActivityResult(this, binding.albumsRecyclerView, binding.storagePermissionView)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            observe(viewModel.albums, adapter::submitList)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        observe(viewModel.albums, adapter::submitList)
         checkStoragePermission() {
             viewModel.loadAllAlbums()
         }
