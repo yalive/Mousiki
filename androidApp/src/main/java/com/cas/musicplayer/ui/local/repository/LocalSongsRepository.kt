@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
 import android.provider.MediaStore.Audio.AudioColumns.IS_MUSIC
 import android.provider.MediaStore.Audio.Media
+import android.util.Log
 import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.Song
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ class LocalSongsRepository(private val context: Context) {
     }
 
     fun songs(cursor: Cursor?): List<Song> {
+        Log.i("LocalSongsRepository", "fun called : songs, Cursor : ${cursor != null}")
         val songs = arrayListOf<Song>()
         if (cursor != null && cursor.moveToFirst()) {
             do {
