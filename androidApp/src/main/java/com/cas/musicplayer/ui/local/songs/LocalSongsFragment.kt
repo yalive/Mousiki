@@ -1,8 +1,8 @@
 package com.cas.musicplayer.ui.local.songs
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalSongsFragmentBinding
@@ -49,14 +49,16 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
             binding.localSongsRecyclerView,
             binding.storagePermissionView
         )
+
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            observe(viewModel.localSongs) {
+                adapter.submitList(it)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        observe(viewModel.localSongs) {
-            Log.d("LocalSongsFragment","localSongs value changed")
-            adapter.submitList(it)
-        }
         checkStoragePermission(
         ) {
             viewModel.loadAllSongs()
