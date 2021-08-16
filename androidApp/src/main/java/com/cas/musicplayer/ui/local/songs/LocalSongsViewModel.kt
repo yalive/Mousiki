@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.local.songs
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -43,6 +44,7 @@ class LocalSongsViewModel(
             ))
             addAll(songsItems)
         }
+        Log.d("LocalSongsViewModel","loadAllSongs result displayedItems : ${songsItems.size}")
         _localSongs.value = updateCurrentPlaying(displayedItems)
 
         // cache images if needed
