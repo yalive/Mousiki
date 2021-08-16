@@ -120,8 +120,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             val context = requireContext()
             if (RingtoneManager.requiresDialog(context)) {
                 RingtoneManager.showDialog(context)
-            } else {
-                RingtoneManager(context).setRingtone(song)
+            } else if (RingtoneManager(context).setRingtone(song)) {
                 dismiss()
             }
         }

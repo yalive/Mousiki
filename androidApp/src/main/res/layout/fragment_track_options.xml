@@ -240,7 +240,7 @@
             android:layout_gravity="center"
             android:alpha="0.5"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_heart_solid"
+            android:src="@drawable/ic_bell"
             app:tint="?android:textColorPrimary" />
 
         <TextView
