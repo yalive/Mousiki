@@ -11,7 +11,9 @@
         android:id="@+id/trackInfoGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="vTitle,artistName,btnPlayPause,btnShowQueue" />
+        android:visibility="gone"
+        app:constraint_referenced_ids="vTitle,artistName,btnPlayPause,btnShowQueue"
+        tools:visibility="visible" />
 
     <FrameLayout
         android:id="@+id/miniPlayerContainer"
@@ -108,11 +110,12 @@
         android:text="@string/tap_any_song_to_start_playing"
         android:textColor="@color/colorBlue"
         android:textSize="14sp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/miniPlayerContainer"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressDuration"
