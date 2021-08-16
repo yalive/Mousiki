@@ -15,9 +15,7 @@ import com.cas.common.extensions.scaleDown
 import com.cas.common.extensions.scaleOriginal
 import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.common.setMusicPlayingState
-import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.loadTrackImage
-import com.cas.musicplayer.utils.themeColor
+import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.preference.UserPrefs
