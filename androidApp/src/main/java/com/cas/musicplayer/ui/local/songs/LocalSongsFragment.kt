@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.songs
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalSongsFragmentBinding
@@ -43,14 +44,22 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
                 viewModel.onPlaybackStateChanged()
             }
         }
+        registerForActivityResult(
+            this,
+            binding.localSongsRecyclerView,
+            binding.storagePermissionView
+        )
+
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            observe(viewModel.localSongs) {
+                adapter.submitList(it)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        observe(viewModel.localSongs) { adapter.submitList(it) }
         checkStoragePermission(
-            binding.localSongsRecyclerView,
-            binding.storagePermissionView
         ) {
             viewModel.loadAllSongs()
         }
@@ -63,9 +72,4 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
 }
