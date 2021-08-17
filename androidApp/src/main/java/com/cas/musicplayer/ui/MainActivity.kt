@@ -204,8 +204,9 @@ class MainActivity : BaseActivity() {
         handleDynamicLinks()
 
         // Check open audio track with Mousiki/ or via share
+        // exclude search and new_releases shortcuts
         val uri = intent?.data ?: intent?.getParcelableExtra(Intent.EXTRA_STREAM)
-        if (uri != null) {
+        if (uri != null && !uri.toString().startsWith("mousiki", true)) {
             SongsUtil.playFromUri(this, uri)
             expandBottomPanel()
             intent = Intent()
