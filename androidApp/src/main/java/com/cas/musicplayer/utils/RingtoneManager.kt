@@ -3,13 +3,13 @@ package com.cas.musicplayer.utils
 import android.app.RecoverableSecurityException
 import android.content.ContentValues
 import android.content.Context
+import android.content.IntentSender
 import android.graphics.Color
 import android.os.Build
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -18,7 +18,11 @@ import com.mousiki.shared.domain.models.Song
 
 class RingtoneManager(val context: Context) {
 
-    fun setRingtone(song: Song): Boolean {
+    fun setRingtone(
+        song: Song,
+        onSetRingtone: () -> Unit,
+        onNeedPermission: (IntentSender) -> Unit
+    ) {
         val resolver = context.contentResolver
         val uri = song.getFileUri()
         try {
@@ -28,12 +32,11 @@ class RingtoneManager(val context: Context) {
             resolver.update(uri, values, null, null)
         } catch (exception: Exception) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val rsException = exception as? RecoverableSecurityException ?: return false
-                val intentSender = rsException.userAction.actionIntent.intentSender ?: return false
-                val activity = context as? AppCompatActivity
-                activity?.startIntentSenderForResult(intentSender, 10, null, 0, 0, 0, null)
+                val rsException = exception as? RecoverableSecurityException ?: return
+                val intentSender = rsException.userAction.actionIntent.intentSender ?: return
+                onNeedPermission(intentSender)
             }
-            return false
+            return
         }
 
         try {
@@ -50,12 +53,11 @@ class RingtoneManager(val context: Context) {
                     val message = context
                         .getString(R.string.x_has_been_set_as_ringtone, cursorSong.getString(0))
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    onSetRingtone()
                 }
             }
-            return true
         } catch (ignored: SecurityException) {
         }
-        return false
     }
 
     companion object {

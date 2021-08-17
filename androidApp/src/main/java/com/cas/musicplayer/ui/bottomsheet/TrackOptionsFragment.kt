@@ -1,10 +1,14 @@
 package com.cas.musicplayer.ui.bottomsheet
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -47,6 +51,15 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
     private val viewModel by lazy { Injector.trackOptionsViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
     private val binding by viewBinding(FragmentTrackOptionsBinding::bind)
+
+    private val intentSenderPermission =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
+            when (result.resultCode) {
+                Activity.RESULT_OK -> setAsRingtone()
+                else -> Unit
+            }
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,12 +129,11 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         }
 
         binding.setAsRingtoneView.onClick {
-            val song = (track as? LocalSong)?.song ?: return@onClick
             val context = requireContext()
             if (RingtoneManager.requiresDialog(context)) {
                 RingtoneManager.showDialog(context)
-            } else if (RingtoneManager(context).setRingtone(song)) {
-                dismiss()
+            } else {
+                setAsRingtone()
             }
         }
 
@@ -170,6 +182,18 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         } ?: run {
             binding.adView.isVisible = false
         }
+    }
+
+    private fun setAsRingtone() {
+        val song = (track as? LocalSong)?.song ?: return
+        val ringtoneManager = RingtoneManager(requireContext())
+        ringtoneManager.setRingtone(
+            song = song,
+            onNeedPermission = { intentSender ->
+                intentSenderPermission.launch(IntentSenderRequest.Builder(intentSender).build())
+            },
+            onSetRingtone = { dismiss() }
+        )
     }
 
     companion object {
