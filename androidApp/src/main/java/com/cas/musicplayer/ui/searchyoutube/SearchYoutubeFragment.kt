@@ -98,6 +98,9 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
         observe(DeviceInset) { inset ->
             binding.root.updatePadding(top = inset.top)
         }
+        searchView.setOnCloseListener {
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
