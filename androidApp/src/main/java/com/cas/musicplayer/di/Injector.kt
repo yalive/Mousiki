@@ -15,11 +15,12 @@ import com.cas.musicplayer.ui.local.folders.FoldersViewModel
 import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
+import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
-import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
+import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistViewModel
 import com.cas.musicplayer.ui.popular.PopularSongsViewModel
 import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
@@ -118,8 +119,10 @@ object Injector : KoinComponent {
     val rewardedAdDelegate: RewardedAdDelegate
         get() = get()
 
-
     val localSongsViewModel: LocalSongsViewModel
+        get() = get()
+
+    val localSongsSettingsViewModel: LocalSongsSettingsViewModel
         get() = get()
 
     val localPlaylistViewModel: LocalPlaylistsViewModel

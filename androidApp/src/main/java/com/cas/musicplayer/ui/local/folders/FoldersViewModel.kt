@@ -20,7 +20,6 @@ class FoldersViewModel(
     }
 
     fun loadAllFolders() = viewModelScope.launch {
-        val folders1 = foldersRepository.getFolders()
-        _folders.value = folders1
+        _folders.value = foldersRepository.getFolders()
     }
 }

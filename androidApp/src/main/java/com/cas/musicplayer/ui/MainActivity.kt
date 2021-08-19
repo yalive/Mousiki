@@ -37,6 +37,7 @@ import com.mousiki.shared.domain.models.toYoutubeDuration
 import com.mousiki.shared.preference.UserPrefs
 import com.unity3d.ads.UnityAds
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity() {
 
@@ -242,10 +243,15 @@ class MainActivity : BaseActivity() {
     override fun onBackPressed() {
         if (binding.queueFragmentContainer.isVisible) {
             supportFragmentManager.findFragmentById(R.id.queueFragmentContainer)?.let {
-                supportFragmentManager.beginTransaction().remove(it).commit()
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(0, R.anim.slide_out_bottom).remove(it)
+                    .commit()
             }
-            binding.queueFragmentContainer.isVisible = false
             playerFragment.onQueueClosed()
+            lifecycleScope.launch {
+                delay(600)
+                binding.queueFragmentContainer.isVisible = false
+            }
             return
         }
 
