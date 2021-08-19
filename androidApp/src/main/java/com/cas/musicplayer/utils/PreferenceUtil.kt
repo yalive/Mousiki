@@ -12,6 +12,8 @@ import com.mousiki.shared.utils.Constants.ARTIST_ALBUM_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_SONG_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_SORT_ORDER
 import com.mousiki.shared.utils.Constants.FILTER_SONG
+import com.mousiki.shared.utils.Constants.FILTER_SONGS_LESS_THAN_100k
+import com.mousiki.shared.utils.Constants.FILTER_SONGS_LESS_THAN_60S
 import com.mousiki.shared.utils.Constants.INITIALIZED_BLACKLIST
 import com.mousiki.shared.utils.Constants.MUSIC_SEEN
 import com.mousiki.shared.utils.Constants.SONG_SORT_ORDER
@@ -33,6 +35,7 @@ object PreferenceUtil {
         }
 
     val filterLength get() = sharedPreferences.getInt(FILTER_SONG, 20)
+    val filterSizeKb get() = sharedPreferences.getInt(FILTER_SONG, 100)
 
     var isInitializedBlacklist
         get() = sharedPreferences.getBoolean(
@@ -40,6 +43,22 @@ object PreferenceUtil {
         )
         set(value) = sharedPreferences.edit {
             putBoolean(INITIALIZED_BLACKLIST, value)
+        }
+
+    var filterAudioLessThanDuration
+        get() = sharedPreferences.getBoolean(
+            FILTER_SONGS_LESS_THAN_60S, false
+        )
+        set(value) = sharedPreferences.edit {
+            putBoolean(FILTER_SONGS_LESS_THAN_60S, value)
+        }
+
+    var filterAudioLessThanSize
+        get() = sharedPreferences.getBoolean(
+            FILTER_SONGS_LESS_THAN_100k, false
+        )
+        set(value) = sharedPreferences.edit {
+            putBoolean(FILTER_SONGS_LESS_THAN_100k, value)
         }
 
     var albumDetailSongSortOrder
@@ -98,6 +117,15 @@ object PreferenceUtil {
             false
         )
         set(value) = sharedPreferences.edit { putBoolean(MUSIC_SEEN, value) }
+
+    fun toggleFolderVisibility(path: String) {
+        val hidden = sharedPreferences.getBoolean(path, false)
+        sharedPreferences.edit { putBoolean(path, !hidden) }
+    }
+
+    fun isFolderHidden(path: String): Boolean {
+        return sharedPreferences.getBoolean(path, false)
+    }
 }
 
 fun SharedPreferences.getStringOrDefault(key: String, default: String): String {
