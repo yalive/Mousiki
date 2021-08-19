@@ -32,7 +32,13 @@ class FolderDetailsFragment : BaseFragment<FolderDetailsViewModel>(
     private val binding by viewBinding(FolderDetailsFragmentBinding::bind)
 
     private val adapter by lazy {
-        LocalSongsAdapter(viewModel::onClickTrack, {}, false)
+        LocalSongsAdapter(
+            onClickTrack = viewModel::onClickTrack,
+            onSortClicked = {},
+            onFilterClicked = {},
+            showCountsAndSortButton = false,
+            showFilter = false
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

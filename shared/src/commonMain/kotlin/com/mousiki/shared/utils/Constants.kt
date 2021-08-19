@@ -15,6 +15,9 @@ object Constants {
 
     const val INITIALIZED_BLACKLIST = "initialized_blacklist"
 
+    const val FILTER_SONGS_LESS_THAN_60S = "filter_songs_less_than_60s"
+    const val FILTER_SONGS_LESS_THAN_100k = "filter_songs_less_than_100k"
+
     const val ALBUM_DETAIL_SONG_SORT_ORDER = "album_detail_song_sort_order"
 
     const val ALBUM_SORT_ORDER = "album_sort_order"

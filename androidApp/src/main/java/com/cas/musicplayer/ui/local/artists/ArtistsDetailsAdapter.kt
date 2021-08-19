@@ -12,7 +12,12 @@ class ArtistsDetailsAdapter(
     listOf(
         LocalSongsAdapterDelegate(onClickTrack),
         HorizontalAlbumsAdapterDelegate(),
-        HeaderSongsActionsAdapterDelegate({ }, false)
+        HeaderSongsActionsAdapterDelegate(
+            onSortClicked = {},
+            onFilterClicked = { },
+            showCountsAndSortButton = false,
+            showFilter = false
+        )
     ),
     SongItemDiffUtil()
 )

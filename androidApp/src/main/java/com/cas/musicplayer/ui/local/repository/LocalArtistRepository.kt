@@ -52,7 +52,7 @@ class LocalArtistRepository(
                 null, null,
                 getSongLoaderSortOrder()
             )
-        )
+        ).filterNotHidden()
         return@withContext splitIntoArtists(albumRepository.splitIntoAlbums(songs))
     }
 
