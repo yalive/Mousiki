@@ -34,7 +34,13 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
     private val binding by viewBinding(AlbumDetailsFragmentBinding::bind)
 
     private val adapter by lazy {
-        LocalSongsAdapter(viewModel::onClickTrack, {}, false)
+        LocalSongsAdapter(
+            onClickTrack = viewModel::onClickTrack,
+            onSortClicked = {},
+            onFilterClicked = {},
+            showCountsAndSortButton = false,
+            showFilter = false
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

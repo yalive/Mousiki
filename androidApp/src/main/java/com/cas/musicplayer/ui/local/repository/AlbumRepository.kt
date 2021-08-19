@@ -20,7 +20,7 @@ class AlbumRepository(private val songRepository: LocalSongsRepository) {
                 null,
                 getSongLoaderSortOrder()
             )
-        )
+        ).filterNotHidden()
         return@withContext splitIntoAlbums(songs)
     }
 

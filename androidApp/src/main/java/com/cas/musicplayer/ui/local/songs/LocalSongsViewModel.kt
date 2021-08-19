@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
+import com.cas.musicplayer.ui.local.repository.filterNotHidden
 import com.cas.musicplayer.utils.SongsUtil
 import com.cas.musicplayer.utils.Utils
 import com.mousiki.shared.domain.models.*
@@ -31,7 +32,7 @@ class LocalSongsViewModel(
     }
 
     fun loadAllSongs() = viewModelScope.launch {
-        val songs = localSongsRepository.songs()
+        val songs = localSongsRepository.songs().filterNotHidden()
         val songsItems = songs.map {
             LocalSong(it).toDisplayedVideoItem()
         }
