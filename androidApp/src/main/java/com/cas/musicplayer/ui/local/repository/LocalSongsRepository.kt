@@ -108,9 +108,9 @@ class LocalSongsRepository(private val context: Context) {
         var selectionFinal = selection
         var selectionValuesFinal = selectionValues
         selectionFinal = if (selection != null && selection.trim { it <= ' ' } != "") {
-            "(${AudioColumns.IS_MUSIC} OR ${AudioColumns.IS_NOTIFICATION} OR ${AudioColumns.IS_PODCAST} OR ${AudioColumns.IS_RINGTONE} OR ${AudioColumns.IS_AUDIOBOOK} OR ${AudioColumns.IS_ALARM}) AND $selectionFinal"
+            "(${AudioColumns.IS_MUSIC} OR ${AudioColumns.IS_NOTIFICATION} OR ${AudioColumns.IS_PODCAST} OR ${AudioColumns.IS_RINGTONE} OR ${AudioColumns.IS_ALARM}) AND $selectionFinal"
         } else {
-            "(${AudioColumns.IS_MUSIC} OR ${AudioColumns.IS_NOTIFICATION} OR ${AudioColumns.IS_PODCAST} OR ${AudioColumns.IS_RINGTONE} OR ${AudioColumns.IS_AUDIOBOOK} OR ${AudioColumns.IS_ALARM}) "
+            "(${AudioColumns.IS_MUSIC} OR ${AudioColumns.IS_NOTIFICATION} OR ${AudioColumns.IS_PODCAST} OR ${AudioColumns.IS_RINGTONE} OR ${AudioColumns.IS_ALARM}) "
         }
 
         if (PreferenceUtil.filterAudioLessThanDuration) {
