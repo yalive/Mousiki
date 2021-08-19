@@ -1,6 +1,8 @@
 package com.cas.musicplayer.player
 
+import android.content.ContentUris
 import android.content.Context
+import android.provider.MediaStore
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import com.cas.musicplayer.player.services.PlaybackDuration
@@ -104,8 +106,12 @@ class LocalPlayer(
         val track = PlayerQueue.getTrack(videoId) ?: return
         if (track !is LocalSong) return
         scope.launch {
-            val data = localSongsRepository.song(videoId.toLong()).data
-            exoPlayer.setMediaItem(MediaItem.fromUri(data))
+            val uri = ContentUris.withAppendedId(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                videoId.toLong()
+            )
+
+            exoPlayer.setMediaItem(MediaItem.fromUri(uri))
             exoPlayer.playWhenReady = playWhenReady
         }
     }

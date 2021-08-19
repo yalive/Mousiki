@@ -15,6 +15,7 @@ import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -302,11 +303,11 @@ object Utils : KoinComponent {
         }
     }
 
-    suspend fun getSongThumbnail(songPath: String): ByteArray? = withContext(Dispatchers.Default) {
+    suspend fun getSongThumbnail(songPath: Uri): ByteArray? = withContext(Dispatchers.Default) {
         var imgByte: ByteArray?
         MediaMetadataRetriever().also {
             try {
-                it.setDataSource(songPath)
+                it.setDataSource(MusicApp.get(), songPath)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
