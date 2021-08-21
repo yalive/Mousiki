@@ -35,6 +35,9 @@ class LocalSongsSettingsFragment : BaseFragment<LocalSongsSettingsViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.setOnClickListener {
+            // Just to prevent underline click detection
+        }
         binding.recyclerView.adapter = adapter
         binding.btnClose.onClick {
             activity?.onBackPressed()
