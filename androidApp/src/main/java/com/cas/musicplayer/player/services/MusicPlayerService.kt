@@ -142,7 +142,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             } else if (event?.keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
                 lifecycleScope.launch {
                     mediaController.transportControls.pause()
-                    delay(1000) // hack!
+                    delay(900) // hack!
                     stopForeground(true)
                 }
             } else {
