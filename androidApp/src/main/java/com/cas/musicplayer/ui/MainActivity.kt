@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -219,8 +220,17 @@ class MainActivity : BaseActivity() {
         // exclude search and new_releases shortcuts
         val uri = intent?.data ?: intent?.getParcelableExtra(Intent.EXTRA_STREAM)
         if (uri != null && !uri.toString().startsWith("mousiki", true)) {
-            SongsUtil.playFromUri(this, uri)
-            expandBottomPanel()
+            if (SongsUtil.playFromUri(this, uri)) {
+                expandBottomPanel()
+            } else {
+                //error can't play this song
+                Toast.makeText(
+                    this,
+                    getString(R.string.error_cannot_play_local_song),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
             intent = Intent()
         }
 
