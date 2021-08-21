@@ -72,15 +72,6 @@ class NotificationBuilder(private val context: Context) {
         )
     )
 
-    private val forceCloseAction = NotificationCompat.Action(
-        R.drawable.ic_close,
-        context.getString(R.string.player_notification_skip_to_next),
-        MediaButtonReceiver.buildMediaButtonPendingIntent(
-            context,
-            PlaybackStateCompat.ACTION_STOP
-        )
-    )
-
     private val stopPendingIntent = PendingIntent.getBroadcast(
         context,
         0,
@@ -123,7 +114,6 @@ class NotificationBuilder(private val context: Context) {
             builder.addAction(playAction)
         }
         builder.addAction(skipToNextAction)
-        builder.addAction(forceCloseAction)
 
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
             .setMediaSession(sessionToken)
