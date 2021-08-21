@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.repository
 
 import android.content.Context
 import android.database.Cursor
+import android.net.Uri
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
@@ -50,7 +51,13 @@ class LocalSongsRepository(private val context: Context) {
     }
 
     suspend fun song(songId: Long): Song = withContext(Dispatchers.IO) {
-        return@withContext song(makeSongCursor(AudioColumns._ID + "=?", arrayOf(songId.toString())))
+        return@withContext song(
+            makeSongCursor(
+                selection = AudioColumns._ID + "=?",
+                selectionValues = arrayOf(songId.toString()),
+                withFilter = false
+            )
+        )
     }
 
     fun songsByFilePath(filePath: String): List<Song> {
@@ -103,7 +110,8 @@ class LocalSongsRepository(private val context: Context) {
     fun makeSongCursor(
         selection: String?,
         selectionValues: Array<String>?,
-        sortOrder: String = PreferenceUtil.songSortOrder
+        sortOrder: String = PreferenceUtil.songSortOrder,
+        withFilter: Boolean = true // util when making selection by id
     ): Cursor? {
         var selectionFinal = selection
         var selectionValuesFinal = selectionValues
@@ -113,24 +121,20 @@ class LocalSongsRepository(private val context: Context) {
             "(${AudioColumns.IS_MUSIC} OR ${AudioColumns.IS_NOTIFICATION} OR ${AudioColumns.IS_PODCAST} OR ${AudioColumns.IS_RINGTONE} OR ${AudioColumns.IS_ALARM}) "
         }
 
-        if (PreferenceUtil.filterAudioLessThanDuration) {
-            selectionFinal =
-                selectionFinal + " AND " + Media.DURATION + ">= " + (PreferenceUtil.filterLength * 1000)
+        if (withFilter) {
+
+            val minDuration =
+                if (PreferenceUtil.filterAudioLessThanDuration) PreferenceUtil.filterLength * 1000 else DEF_MIN_DURATION * 1000
+            selectionFinal = selectionFinal + " AND " + Media.DURATION + ">= " + minDuration
+            if (PreferenceUtil.filterAudioLessThanSize) {
+                selectionFinal =
+                    selectionFinal + " AND " + Media.SIZE + ">= " + (PreferenceUtil.filterSizeKb * 1000)
+            }
         }
 
-        if (PreferenceUtil.filterAudioLessThanSize) {
-            selectionFinal =
-                selectionFinal + " AND " + Media.SIZE + ">= " + (PreferenceUtil.filterSizeKb * 1000)
-        }
-
-        val uri = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
-        } else {
-            Media.EXTERNAL_CONTENT_URI
-        }
         return try {
             context.contentResolver.query(
-                uri,
+                mediaUri(),
                 baseProjection,
                 selectionFinal,
                 selectionValuesFinal,
@@ -138,6 +142,14 @@ class LocalSongsRepository(private val context: Context) {
             )
         } catch (ex: SecurityException) {
             return null
+        }
+    }
+
+    private fun mediaUri(): Uri {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            Media.EXTERNAL_CONTENT_URI
         }
     }
 
@@ -170,6 +182,10 @@ class LocalSongsRepository(private val context: Context) {
             newSelectionValues[i] = paths[i - selectionValuesFinal.size] + "%"
         }
         return newSelectionValues
+    }
+
+    companion object {
+        private const val DEF_MIN_DURATION = 2
     }
 }
 
