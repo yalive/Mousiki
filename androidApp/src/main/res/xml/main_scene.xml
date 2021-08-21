@@ -33,7 +33,7 @@
             motion:layout_constraintTop_toBottomOf="@+id/nav_host_fragment" />
 
         <Constraint
-            android:id="@+id/queueFragmentContainer"
+            android:id="@+id/slideUpContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             motion:visibilityMode="ignore" />
@@ -57,7 +57,7 @@
             motion:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@+id/queueFragmentContainer"
+            android:id="@+id/slideUpContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             motion:visibilityMode="ignore" />

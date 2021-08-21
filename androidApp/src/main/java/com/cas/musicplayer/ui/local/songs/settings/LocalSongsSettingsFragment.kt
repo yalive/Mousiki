@@ -2,12 +2,11 @@ package com.cas.musicplayer.ui.local.songs.settings
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.cas.common.extensions.onClick
@@ -17,8 +16,7 @@ import com.cas.musicplayer.databinding.LocalSongsSettingsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
-import com.cas.musicplayer.utils.DeviceInset
-import com.cas.musicplayer.utils.viewBinding
+import com.cas.musicplayer.utils.*
 import kotlinx.coroutines.delay
 
 class LocalSongsSettingsFragment : BaseFragment<LocalSongsSettingsViewModel>(
@@ -36,10 +34,7 @@ class LocalSongsSettingsFragment : BaseFragment<LocalSongsSettingsViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
-        binding.btnClose.onClick {
-            activity?.onBackPressed()
-            onChangeSettings?.invoke()
-        }
+        binding.btnClose.onClick { activity?.onBackPressed() }
 
         observe(DeviceInset) { inset ->
             binding.topBar.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -57,24 +52,22 @@ class LocalSongsSettingsFragment : BaseFragment<LocalSongsSettingsViewModel>(
                 adapter.submitList(items)
             }
         }
+    }
 
-        // TODO: detect when user go back using navigation buttons
-        // TODO: Use onBackPressedDispatcher instead of handling all back press inside activity
+    override fun onResume() {
+        super.onResume()
+        onBackPressCallback {
+            isEnabled = false // Disable back press listener
+            slideDown()
+            onChangeSettings?.invoke()
+        }
     }
 
     companion object {
 
-        fun present(activity: AppCompatActivity, onChangeSettings: (() -> Unit)) {
-            activity.findViewById<ViewGroup>(R.id.queueFragmentContainer).isVisible = true
-            val fragment = activity.supportFragmentManager
-                .findFragmentById(R.id.queueFragmentContainer)
-                ?: LocalSongsSettingsFragment()
-            (fragment as? LocalSongsSettingsFragment)?.onChangeSettings = onChangeSettings
-            val fm = activity.supportFragmentManager
-            fm.beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
-                .replace(R.id.queueFragmentContainer, fragment)
-                .commit()
+        fun present(activity: FragmentActivity, onChangeSettings: (() -> Unit)) {
+            val fragment = activity.slideUpFragment<LocalSongsSettingsFragment>()
+            fragment.onChangeSettings = onChangeSettings
         }
     }
 }
