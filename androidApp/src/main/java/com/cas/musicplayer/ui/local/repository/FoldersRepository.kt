@@ -13,11 +13,14 @@ class FoldersRepository(
     private val songsRepository: LocalSongsRepository
 ) {
 
-    suspend fun getFolders(): List<Folder> = withContext(Dispatchers.IO) {
-        return@withContext songsRepository.songs().groupBy { it.path }.map {
-            val fromSong = Folder.fromSong(it.value.first(), it.value.toIDList(), MusicApp.get())
-            fromSong
-        }.sortedBy { it.name }
+    suspend fun getFolders(
+        showHidden: Boolean = false
+    ): List<Folder> = withContext(Dispatchers.IO) {
+        return@withContext songsRepository.songs()
+            .run { if (showHidden) this else filterNotHidden() }
+            .groupBy { it.path }.map {
+                Folder.fromSong(it.value.first(), it.value.toIDList(), MusicApp.get())
+            }.sortedBy { it.name }
     }
 
     suspend fun getFolder(id: Long): Folder = withContext(Dispatchers.IO) {
