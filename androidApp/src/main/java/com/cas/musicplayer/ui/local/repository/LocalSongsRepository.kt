@@ -5,12 +5,14 @@ import android.database.Cursor
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
-import android.provider.MediaStore.Audio.AudioColumns.IS_MUSIC
 import android.provider.MediaStore.Audio.Media
+import android.util.Log
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.Song
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 
 /**
  * Created by Fayssel Yabahddou on 6/18/21.
@@ -22,6 +24,7 @@ class LocalSongsRepository(private val context: Context) {
     }
 
     fun songs(cursor: Cursor?): List<Song> {
+        Log.i("LocalSongsRepository", "fun called : songs, Cursor : ${cursor != null}")
         val songs = arrayListOf<Song>()
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -76,27 +79,28 @@ class LocalSongsRepository(private val context: Context) {
         val composer = cursor.getStringOrNull(AudioColumns.COMPOSER)
         val albumArtist = cursor.getStringOrNull("album_artist")
         val path = data.substringBeforeLast("/")
+        val size = cursor.getLong(AudioColumns.SIZE)
         return Song(
-            id,
-            title,
-            trackNumber,
-            year,
-            duration,
-            data,
-            dateModified,
-            albumId,
-            albumName ?: "",
-            artistId,
-            artistName ?: "",
-            composer ?: "",
-            albumArtist ?: "",
-            path
+            id = id,
+            title = title,
+            trackNumber = trackNumber,
+            year = year,
+            duration = duration,
+            data = data,
+            dateModified = dateModified,
+            albumId = albumId,
+            albumName = albumName ?: "",
+            artistId = artistId,
+            artistName = artistName ?: "",
+            composer = composer ?: "",
+            albumArtist = albumArtist ?: "",
+            path = path,
+            size = size
         )
     }
 
     @JvmOverloads
     fun makeSongCursor(
-
         selection: String?,
         selectionValues: Array<String>?,
         sortOrder: String = PreferenceUtil.songSortOrder
@@ -104,19 +108,20 @@ class LocalSongsRepository(private val context: Context) {
         var selectionFinal = selection
         var selectionValuesFinal = selectionValues
         selectionFinal = if (selection != null && selection.trim { it <= ' ' } != "") {
-            "$IS_MUSIC AND $selectionFinal"
+            "(${AudioColumns.IS_MUSIC} OR ${AudioColumns.IS_NOTIFICATION} OR ${AudioColumns.IS_PODCAST} OR ${AudioColumns.IS_RINGTONE} OR ${AudioColumns.IS_ALARM}) AND $selectionFinal"
         } else {
-            IS_MUSIC
+            "(${AudioColumns.IS_MUSIC} OR ${AudioColumns.IS_NOTIFICATION} OR ${AudioColumns.IS_PODCAST} OR ${AudioColumns.IS_RINGTONE} OR ${AudioColumns.IS_ALARM}) "
         }
 
-        // Blacklist
-        val paths = BlacklistStore.getInstance(context).paths
-        if (paths.isNotEmpty()) {
-            selectionFinal = generateBlacklistSelection(selectionFinal, paths.size)
-            selectionValuesFinal = addBlacklistSelectionValues(selectionValuesFinal, paths)
+        if (PreferenceUtil.filterAudioLessThanDuration) {
+            selectionFinal =
+                selectionFinal + " AND " + Media.DURATION + ">= " + (PreferenceUtil.filterLength * 1000)
         }
-        selectionFinal =
-            selectionFinal + " AND " + Media.DURATION + ">= " + (PreferenceUtil.filterLength * 1000)
+
+        if (PreferenceUtil.filterAudioLessThanSize) {
+            selectionFinal =
+                selectionFinal + " AND " + Media.SIZE + ">= " + (PreferenceUtil.filterSizeKb * 1000)
+        }
 
         val uri = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
@@ -168,6 +173,12 @@ class LocalSongsRepository(private val context: Context) {
     }
 }
 
+fun List<Song>.filterNotHidden(): List<Song> {
+    return filter {
+        !PreferenceUtil.isFolderHidden(File(it.path).fixedPath(MusicApp.get()))
+    }
+}
+
 val baseProjection = arrayOf(
     BaseColumns._ID, // 0
     AudioColumns.TITLE, // 1
@@ -181,5 +192,6 @@ val baseProjection = arrayOf(
     AudioColumns.ARTIST_ID, // 9
     AudioColumns.ARTIST, // 10
     AudioColumns.COMPOSER, // 11
+    AudioColumns.SIZE, // 11
     "album_artist" // 12
 )

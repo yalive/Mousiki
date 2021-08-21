@@ -49,7 +49,7 @@ class LockScreenReceiver(
             if (isPlaying) {
                 shouldShowPopup = true
                 mediaController.transportControls.pause()
-                context.vibrate(longArrayOf(0, 150, 150, 150))
+                context.vibrate(longArrayOf(0, 350, 150, 350))
             }
         } else if (intent.action == Intent.ACTION_USER_PRESENT && context.canDrawOverApps()) {
             if (shouldShowPopup) {

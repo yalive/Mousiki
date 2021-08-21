@@ -6,6 +6,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
@@ -14,22 +17,18 @@ import com.cas.common.extensions.onClick
 import com.cas.musicplayer.databinding.LayoutNoStoragePermissionBinding
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.utils.readStoragePermissionsGranted
+import java.lang.ref.WeakReference
 
 interface StoragePermissionDelegate {
 
-    fun checkStoragePermission(
+    fun registerForActivityResult(
+        fragment: Fragment,
         mainView: View,
-        permissionView: LayoutNoStoragePermissionBinding,
-        onUserGrantPermission: () -> Unit
+        permissionView: LayoutNoStoragePermissionBinding
     )
 
-    /**
-     * Fragment should call this method when got permission result
-     */
-    fun onRequestPermissionsResultDelegate(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+    fun checkStoragePermission(
+        onUserGrantPermission: () -> Unit
     )
 }
 
@@ -37,58 +36,67 @@ class StoragePermissionDelegateImpl : StoragePermissionDelegate {
 
     lateinit var mainView: View
     lateinit var permissionView: LayoutNoStoragePermissionBinding
+    private lateinit var mPermissionResult: ActivityResultLauncher<String>
+    private lateinit var fragmentRef: WeakReference<Fragment>
+    private var shouldShowRequestPermissionRationale = true
 
-    private var notified = false
-
-    override fun checkStoragePermission(
+    override fun registerForActivityResult(
+        fragment: Fragment,
         mainView: View,
-        permissionView: LayoutNoStoragePermissionBinding,
-        onUserGrantPermission: () -> Unit
+        permissionView: LayoutNoStoragePermissionBinding
     ) {
         this.mainView = mainView
         this.permissionView = permissionView
-        val fragment = permissionView.root.findFragment<Fragment>()
+        this.fragmentRef = WeakReference(fragment)
+
         permissionView.btnAllowPermission.onClick {
-            fragment.requestPermissions(READ_STORAGE_PERMISSION, REQ_CODE_STORAGE_PERMISSION)
+            shouldShowRequestPermissionRationale = shouldShowRequestPermissionRationale(
+                fragmentRef.get()!!.requireActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            mPermissionResult.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
 
-        val readStoragePermissionsGranted = fragment.readStoragePermissionsGranted()
-        mainView.isVisible = readStoragePermissionsGranted
-        permissionView.root.isVisible = !readStoragePermissionsGranted
-        fragment.observe(StoragePermissionGranted) {
-            if (notified) return@observe
-            onUserGrantPermission()
-            notified = true
-            permissionView.root.isVisible = false
-            mainView.isVisible = true
-        }
+        mPermissionResult =
+            fragmentRef.get()
+                ?.registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                    if (!it) {
+                        val perResult = shouldShowRequestPermissionRationale(
+                            fragmentRef.get()!!.requireActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        )
+                        if (!perResult && !shouldShowRequestPermissionRationale) {
+                            openAppSettings()
+                        }
+                    }
+                } as ActivityResultLauncher<String>
     }
 
-    override fun onRequestPermissionsResultDelegate(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
+    override fun checkStoragePermission(
+        onUserGrantPermission: () -> Unit
     ) {
-        if (requestCode == REQ_CODE_STORAGE_PERMISSION && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+
+        val readStoragePermissionsGranted = fragmentRef.get()?.readStoragePermissionsGranted()
+
+        if (readStoragePermissionsGranted != null && readStoragePermissionsGranted) {
             permissionView.root.isVisible = false
             mainView.isVisible = true
-            StoragePermissionGranted.value = Unit
-        } else if (grantResults.firstOrNull() == PackageManager.PERMISSION_DENIED) {
-            try {
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                val context = mainView.context
-                val uri = Uri.fromParts("package", context.packageName, null)
-                intent.data = uri
-                context.startActivity(intent)
-            } catch (e: Exception) {
-            }
+            onUserGrantPermission()
+        } else {
+            permissionView.root.isVisible = true
+            mainView.isVisible = false
         }
     }
 
-    companion object {
-        private const val REQ_CODE_STORAGE_PERMISSION = 12
-        private val READ_STORAGE_PERMISSION = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+    private fun openAppSettings() {
+        try {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val context = mainView.context
+            val uri = Uri.fromParts("package", context.packageName, null)
+            intent.data = uri
+            context.startActivity(intent)
+        } catch (e: Exception) {
+        }
     }
-}
 
-object StoragePermissionGranted : MutableLiveData<Unit>()
+}

@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.artists
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalArtistsFragmentBinding
@@ -32,22 +33,22 @@ class LocalArtistsFragment : BaseFragment<LocalArtistsViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.localArtistsRecyclerView.adapter = adapter
+        registerForActivityResult(
+            this,
+            binding.localArtistsRecyclerView,
+            binding.storagePermissionView
+        )
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            observe(viewModel.localArtists, adapter::submitList)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        observe(viewModel.localArtists, adapter::submitList)
         checkStoragePermission(
-            binding.localArtistsRecyclerView,
-            binding.storagePermissionView
         ) {
             viewModel.loadAllLocalArtists()
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
 }

@@ -2,6 +2,8 @@ package com.cas.musicplayer.ui.local.songs
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalSongsFragmentBinding
@@ -10,6 +12,7 @@ import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.SortByFragment
+import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -27,7 +30,9 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         LocalSongsAdapter(
             onClickTrack = { viewModel.onClickTrack(it) },
             onSortClicked = { saveAndSetOrder() },
-            true
+            onFilterClicked = { showFilterScreen() },
+            showCountsAndSortButton = true,
+            showFilter = true
         )
     }
 
@@ -43,15 +48,22 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
                 viewModel.onPlaybackStateChanged()
             }
         }
+        registerForActivityResult(
+            this,
+            binding.localSongsRecyclerView,
+            binding.storagePermissionView
+        )
+
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            observe(viewModel.localSongs) {
+                adapter.submitList(it)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        observe(viewModel.localSongs) { adapter.submitList(it) }
-        checkStoragePermission(
-            binding.localSongsRecyclerView,
-            binding.storagePermissionView
-        ) {
+        checkStoragePermission {
             viewModel.loadAllSongs()
         }
     }
@@ -63,9 +75,9 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) = onRequestPermissionsResultDelegate(requestCode, permissions, grantResults)
+    private fun showFilterScreen() {
+        LocalSongsSettingsFragment.present(requireActivity() as AppCompatActivity) {
+            viewModel.loadAllSongs()
+        }
+    }
 }

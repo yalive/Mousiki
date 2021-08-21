@@ -28,6 +28,14 @@
         android:textSize="14sp" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/filter_songs"
+        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+        android:layout_width="@dimen/btn_size_header"
+        android:layout_height="@dimen/btn_size_header"
+        android:layout_marginEnd="@dimen/eight_8dp"
+        app:icon="@drawable/ic_filter_24" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/shuffle_song"
         style="@style/Widget.App.Button.OutlinedButton.IconOnly"
         android:layout_width="@dimen/btn_size_header"

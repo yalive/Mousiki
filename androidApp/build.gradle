@@ -30,8 +30,8 @@ android {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 55
-        versionName "4.1.0"
+        versionCode 56
+        versionName "4.1.1"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
     }
@@ -73,8 +73,8 @@ android {
         }
 
         dev {
-            versionCode 92
-            versionName "1.92"
+            versionCode 93
+            versionName "1.93"
             applicationIdSuffix ".dev"
             resValue("string", "app_name", "Mousiki β")
         }
@@ -103,8 +103,8 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
     // Activity && Fragment KTX
-    implementation 'androidx.activity:activity-ktx:1.2.0-rc01'
-    implementation 'androidx.fragment:fragment-ktx:1.3.0-rc01'
+    implementation 'androidx.activity:activity-ktx:1.3.1'
+    implementation 'androidx.fragment:fragment-ktx:1.4.0-alpha06'
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
@@ -129,6 +130,17 @@ class MainActivity : BaseActivity() {
                 dialogDrawOverApps = dialog
             }
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (playerFragment.handleBackPress()) return
+                if (navController.isHome()) {
+                    exitDialog = showExitDialog()
+                } else {
+                    navController.popBackStack()
+                }
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -204,8 +216,9 @@ class MainActivity : BaseActivity() {
         handleDynamicLinks()
 
         // Check open audio track with Mousiki/ or via share
+        // exclude search and new_releases shortcuts
         val uri = intent?.data ?: intent?.getParcelableExtra(Intent.EXTRA_STREAM)
-        if (uri != null) {
+        if (uri != null && !uri.toString().startsWith("mousiki", true)) {
             SongsUtil.playFromUri(this, uri)
             expandBottomPanel()
             intent = Intent()
@@ -236,25 +249,6 @@ class MainActivity : BaseActivity() {
             .replace(R.id.playerContainer, playerFragment)
             .commit()
         playerFragment.collapsePlayer()
-    }
-
-    override fun onBackPressed() {
-        if (binding.queueFragmentContainer.isVisible) {
-            supportFragmentManager.findFragmentById(R.id.queueFragmentContainer)?.let {
-                supportFragmentManager.beginTransaction().remove(it).commit()
-            }
-            binding.queueFragmentContainer.isVisible = false
-            playerFragment.onQueueClosed()
-            return
-        }
-
-        if (playerFragment.handleBackPress()) return
-
-        if (navController.isHome()) {
-            exitDialog = showExitDialog()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     fun expandBottomPanel() {

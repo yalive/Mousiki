@@ -20,7 +20,6 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
@@ -138,9 +137,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         // Make sure video is visible if service is bound
         showPlayerView()
-
-        // Util when user enable draw over apps for the first time only
-        binding.miniPlayerView.showTrackInfoIfNeeded()
     }
 
     override fun onPause() {
@@ -292,14 +288,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun observeViewModel() {
-        observe(viewModel.noRecentTrack.asLiveData()) { event ->
-            event?.getContentIfNotHandled()?.let {
-                binding.miniPlayerView.showNoTrack()
-            }
+        observe(viewModel.queue) { items ->
+            binding.miniPlayerView.showNoTrack(items.isEmpty())
         }
 
-        observe(viewModel.queue) { items ->
-        }
         observe(PlayerQueue) { video ->
             onVideoChanged(video)
             binding.lockScreenView.setCurrentTrack(video)
@@ -343,23 +335,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun showQueue() {
-        activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = true
-        val fragment = activity?.supportFragmentManager
-            ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()
-        val fm = activity?.supportFragmentManager
-        fm?.beginTransaction()?.setCustomAnimations(
-            R.anim.slide_in_up, R.anim.slide_out_up
-        )?.replace(R.id.queueFragmentContainer, fragment)?.commit()
-        (fragment as? QueueFragment)?.doOnClose {
-            onQueueClosed()
+        QueueFragment.present(requireActivity()) {
+            binding.btnPlayOption.setImageResource(
+                UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
+            )
+            adjustStatusBarWithTheme()
         }
-    }
-
-    fun onQueueClosed() {
-        binding.btnPlayOption.setImageResource(
-            UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
-        )
-        adjustStatusBarWithTheme()
     }
 
     fun openBatterySaverMode() {

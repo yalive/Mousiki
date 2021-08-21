@@ -1,10 +1,14 @@
 package com.cas.musicplayer.ui.local.songs
 
+import android.content.ContentUris
+import android.provider.MediaStore
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
+import com.cas.musicplayer.ui.local.repository.filterNotHidden
 import com.cas.musicplayer.utils.SongsUtil
 import com.cas.musicplayer.utils.Utils
 import com.mousiki.shared.domain.models.*
@@ -28,7 +32,7 @@ class LocalSongsViewModel(
     }
 
     fun loadAllSongs() = viewModelScope.launch {
-        val songs = localSongsRepository.songs()
+        val songs = localSongsRepository.songs().filterNotHidden()
         val songsItems = songs.map {
             LocalSong(it).toDisplayedVideoItem()
         }
@@ -43,6 +47,7 @@ class LocalSongsViewModel(
             ))
             addAll(songsItems)
         }
+        Log.d("LocalSongsViewModel", "loadAllSongs result displayedItems : ${songsItems.size}")
         _localSongs.value = updateCurrentPlaying(displayedItems)
 
         // cache images if needed
@@ -77,7 +82,11 @@ class LocalSongsViewModel(
         songs.forEach { song ->
             val file = File(cacheDir, "${song.id}.jpeg")
             if (!file.exists()) {
-                val byteArray = Utils.getSongThumbnail(song.data)
+                val uri = ContentUris.withAppendedId(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    song.id
+                )
+                val byteArray = Utils.getSongThumbnail(uri)
                 if (byteArray != null) {
                     file.writeBytes(byteArray)
                 }
