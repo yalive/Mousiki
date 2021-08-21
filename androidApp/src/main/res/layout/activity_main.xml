@@ -45,9 +45,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
-        android:id="@+id/queueFragmentContainer"
+        android:id="@+id/slideUpContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="24dp"
-        android:visibility="gone" />
+        android:elevation="24dp" />
 </androidx.constraintlayout.motion.widget.MotionLayout>

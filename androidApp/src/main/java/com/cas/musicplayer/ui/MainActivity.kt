@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
@@ -37,7 +38,6 @@ import com.mousiki.shared.domain.models.toYoutubeDuration
 import com.mousiki.shared.preference.UserPrefs
 import com.unity3d.ads.UnityAds
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity() {
 
@@ -130,6 +130,17 @@ class MainActivity : BaseActivity() {
                 dialogDrawOverApps = dialog
             }
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (playerFragment.handleBackPress()) return
+                if (navController.isHome()) {
+                    exitDialog = showExitDialog()
+                } else {
+                    navController.popBackStack()
+                }
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -238,30 +249,6 @@ class MainActivity : BaseActivity() {
             .replace(R.id.playerContainer, playerFragment)
             .commit()
         playerFragment.collapsePlayer()
-    }
-
-    override fun onBackPressed() {
-        if (binding.queueFragmentContainer.isVisible) {
-            supportFragmentManager.findFragmentById(R.id.queueFragmentContainer)?.let {
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(0, R.anim.slide_out_bottom).remove(it)
-                    .commit()
-            }
-            playerFragment.onQueueClosed()
-            lifecycleScope.launch {
-                delay(600)
-                binding.queueFragmentContainer.isVisible = false
-            }
-            return
-        }
-
-        if (playerFragment.handleBackPress()) return
-
-        if (navController.isHome()) {
-            exitDialog = showExitDialog()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     fun expandBottomPanel() {
