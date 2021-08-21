@@ -4,10 +4,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -105,18 +105,14 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
         ItemTouchHelper(callback)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.setOnClickListener {
             // Just to prevent player slide trigger
         }
+
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
-        binding.btnClose.onClick {
-            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
-            activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = false
-            onCloseQueue?.invoke()
-        }
+        binding.btnClose.onClick { activity?.onBackPressed() }
         DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
             binding.topBar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = inset.top
@@ -172,6 +168,12 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
         super.onResume()
         analyticsApi.logScreenView("QueueFragment")
         darkStatusBar()
+
+        onBackPressCallback {
+            isEnabled = false // Disable back press listener
+            slideDown()
+            onCloseQueue?.invoke()
+        }
     }
 
     private fun loadAndBlurImage(video: Track) {
@@ -190,7 +192,11 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
         }
     }
 
-    fun doOnClose(callback: () -> Unit) {
-        this.onCloseQueue = callback
+    companion object {
+
+        fun present(activity: FragmentActivity, onCloseQueue: (() -> Unit)) {
+            val fragment = activity.slideUpFragment<QueueFragment>()
+            fragment.onCloseQueue = onCloseQueue
+        }
     }
 }

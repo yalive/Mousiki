@@ -335,23 +335,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun showQueue() {
-        activity?.findViewById<ViewGroup>(R.id.queueFragmentContainer)?.isVisible = true
-        val fragment = activity?.supportFragmentManager
-            ?.findFragmentById(R.id.queueFragmentContainer) ?: QueueFragment()
-        val fm = activity?.supportFragmentManager
-        fm?.beginTransaction()?.setCustomAnimations(
-            R.anim.slide_in_up, R.anim.slide_out_up
-        )?.replace(R.id.queueFragmentContainer, fragment)?.commit()
-        (fragment as? QueueFragment)?.doOnClose {
-            onQueueClosed()
+        QueueFragment.present(requireActivity()) {
+            binding.btnPlayOption.setImageResource(
+                UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
+            )
+            adjustStatusBarWithTheme()
         }
-    }
-
-    fun onQueueClosed() {
-        binding.btnPlayOption.setImageResource(
-            UserPrefs.getCurrentPlaybackSort().iconId(requireContext())
-        )
-        adjustStatusBarWithTheme()
     }
 
     fun openBatterySaverMode() {
