@@ -56,6 +56,8 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
         bundle.putParcelable(TrackOptionsFragment.EXTRAS_CUSTOM_PLAYLIST, viewModel.playlist)
     }
 
+    override fun isRecentlyPlayed() = viewModel.isRecentlyPlayed()
+
     companion object {
         const val EXTRAS_PLAYLIST = "extras.playlist"
     }

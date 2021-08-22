@@ -75,7 +75,7 @@ class HomeRecentSongsAdapterDelegate(
             },
             onClickMore = { track ->
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
-                TrackOptionsFragment.present(fm, track)
+                TrackOptionsFragment.present(fm, track, true)
             }
         )
 

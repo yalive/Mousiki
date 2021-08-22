@@ -33,7 +33,7 @@ val viewModelsModule = module {
     factory { ArtistListViewModel(get()) }
     factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { GenresViewModel(get()) }
-    factory { TrackOptionsViewModel(get(), get(), get()) }
+    factory { TrackOptionsViewModel(get(), get(), get(), get()) }
     factory { PlayerViewModel(get(), get(), get(), get(), get()) }
     factory { MainSearchViewModel(get()) }
     factory { EmptyViewModel() }
