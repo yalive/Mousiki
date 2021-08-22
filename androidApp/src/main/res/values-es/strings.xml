@@ -178,4 +178,5 @@
     <string name="x_has_been_set_as_ringtone">Establece %1$s como tono de llamada.</string>
     <string name="folder_hidden_message">Carpeta \"%s\" oculta, puede recuperarla desde la configuración de archivos de audio.</string>
     <string name="dialog_message_confirm_hide_folder">¿Está seguro de que desea ocultar la carpeta \"%s\" de Mousiki Player?</string>
+    <string name="remove_from_recently_played">Eliminar de reproducido recientemente</string>
 </resources>

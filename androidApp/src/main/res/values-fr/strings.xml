@@ -184,4 +184,5 @@
     <string name="x_has_been_set_as_ringtone">Définissez %1$s comme sonnerie.</string>
     <string name="folder_hidden_message">Dossier \"%s\" caché, vous pouvez le récupérer à partir des paramètres des fichiers audio.</string>
     <string name="dialog_message_confirm_hide_folder">Êtes-vous sûr de vouloir masquer le dossier \"%s\" de Mousiki Player ?</string>
+    <string name="remove_from_recently_played">Supprimer de récemment joué</string>
 </resources>
