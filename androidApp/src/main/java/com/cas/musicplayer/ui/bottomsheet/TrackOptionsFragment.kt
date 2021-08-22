@@ -48,6 +48,8 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
 
     lateinit var track: Track
 
+    var isRecentlyPlayed = false
+
     private val viewModel by lazy { Injector.trackOptionsViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
     private val binding by viewBinding(FragmentTrackOptionsBinding::bind)
@@ -136,6 +138,12 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
                 setAsRingtone()
             }
         }
+        binding.viewRemoveFromRecentlyPlayed.isVisible = isRecentlyPlayed
+        binding.viewRemoveFromRecentlyPlayed.onClick {
+            viewModel.removeSongFromRecentlyPlayed(track)
+            onDismissed?.invoke()
+            dismiss()
+        }
 
         val playlist = customPlaylist
         if (playlist != null) {
@@ -146,6 +154,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             }
         }
         binding.viewRemoveFromCurrentPlaylist.isVisible = playlist != null && playlist.isCustom
+
         binding.viewAddToQuee.isVisible = PlayerQueue.value != track
         configureAdView()
     }
@@ -202,6 +211,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
         fun present(
             fm: FragmentManager,
             track: Track,
+            isRecentlyPlayed: Boolean = false,
             onDismissed: () -> Unit = {}
         ) {
             val bottomSheetFragment = TrackOptionsFragment()
@@ -209,6 +219,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
             bottomSheetFragment.arguments = bundle
             bottomSheetFragment.onDismissed = onDismissed
+            bottomSheetFragment.isRecentlyPlayed = isRecentlyPlayed
             bottomSheetFragment.show(fm, bottomSheetFragment.tag)
         }
     }
