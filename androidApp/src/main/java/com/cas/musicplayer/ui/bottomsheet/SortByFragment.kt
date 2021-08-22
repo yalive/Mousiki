@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSortByBinding
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.SortOrder
+import com.cas.musicplayer.utils.ensureRoundedBackground
 import com.cas.musicplayer.utils.viewBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 /**
@@ -40,18 +36,7 @@ class SortByFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog?.setOnShowListener {
-            val bottomSheetDialog = it as? BottomSheetDialog
-            val bottomSheet = bottomSheetDialog?.findViewById<FrameLayout>(R.id.design_bottom_sheet)
-            bottomSheet?.let {
-                val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-                bottomSheetBehavior.peekHeight = bottomSheet.height
-                bottomSheet.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_navigation_view)
-                (bottomSheet.parent as? CoordinatorLayout)?.parent?.requestLayout()
-            }
-        }
-
+        ensureRoundedBackground()
         val buttonSortAZ = binding.buttonSortAZ
         val buttonSortZA = binding.buttonSortZA
         val buttonSortAlbum = binding.buttonSortAlbum

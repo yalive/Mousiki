@@ -139,6 +139,12 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
             val event = intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
             if (event?.action == KeyEvent.ACTION_DOWN && intent.hasExtra(Intent.EXTRA_PACKAGE_NAME)) {
                 handleLastSessionSysMediaButton()
+            } else if (event?.keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
+                lifecycleScope.launch {
+                    mediaController.transportControls.pause()
+                    delay(900) // hack!
+                    stopForeground(true)
+                }
             } else {
                 MediaButtonReceiver.handleIntent(mediaSession, intent)
             }
