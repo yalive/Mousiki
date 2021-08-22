@@ -36,7 +36,8 @@ class FoldersAdapter(
 
         fun bind(folder: Folder) {
             binding.folderName.text = folder.name
-            binding.txtFolderPath.text = folder.path
+            binding.txtFolderPath.text = folder.shortPath
+            binding.txtSongsCount.text = "${folder.ids.count()}"
             binding.btnMore.onClick {
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 FolderOptionsFragment.present(fm, folder) {
