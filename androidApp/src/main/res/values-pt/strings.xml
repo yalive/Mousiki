@@ -178,4 +178,5 @@
     <string name="x_has_been_set_as_ringtone">Defina %1$s como seu toque.</string>
     <string name="folder_hidden_message">Pasta \"%s\" oculta, você pode recuperá-la nas configurações dos arquivos de áudio.</string>
     <string name="dialog_message_confirm_hide_folder">Tem certeza que deseja ocultar a pasta \"%s\" do Mousiki Player?</string>
+    <string name="remove_from_recently_played">Remover de reproduzido recentemente</string>
 </resources>
