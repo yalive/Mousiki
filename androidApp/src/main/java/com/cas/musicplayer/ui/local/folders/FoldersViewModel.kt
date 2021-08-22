@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.local.folders
 
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -23,3 +24,10 @@ class FoldersViewModel(
         _folders.value = foldersRepository.getFolders()
     }
 }
+
+val Folder.shortPath: String
+    get() {
+        val pathSegments = path.toUri().pathSegments.toMutableList()
+        pathSegments.removeAt(0)
+        return "/${pathSegments.joinToString("/")}"
+    }
