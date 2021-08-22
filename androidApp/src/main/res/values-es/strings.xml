@@ -169,4 +169,13 @@
     <string name="hour">\\u0020 hora</string>
     <string name="hours">\\u0020 horas</string>
     <string name="label_by">por %s</string>
+    <string name="label_hide">Esconder</string>
+    <string name="error_cannot_play_local_song">Lo sentimos, ¡este audio no se puede reproducir!</string>
+    <string name="dialog_title_confirm_hide_folder">Ocultar carpeta</string>
+    <string name="dialog_title_set_ringtone">Establecer tono de llamada</string>
+    <string name="action_set_as_ringtone">Establecer como tono de llamada</string>
+    <string name="dialog_message_set_ringtone">Permitir que Mousiki modifique la configuración de audio</string>
+    <string name="x_has_been_set_as_ringtone">Establece %1$s como tono de llamada.</string>
+    <string name="folder_hidden_message">Carpeta \"%s\" oculta, puede recuperarla desde la configuración de archivos de audio.</string>
+    <string name="dialog_message_confirm_hide_folder">¿Está seguro de que desea ocultar la carpeta \"%s\" de Mousiki Player?</string>
 </resources>
