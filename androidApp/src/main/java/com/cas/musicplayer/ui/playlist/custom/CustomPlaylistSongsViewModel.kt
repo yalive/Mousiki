@@ -127,4 +127,6 @@ class CustomPlaylistSongsViewModel(
             copy(urlImage = ytbTrack?.imgUrlDef0.orEmpty())
         } else this
     }
+
+    fun isRecentlyPlayed() = playlist.type == Playlist.TYPE_RECENT
 }
