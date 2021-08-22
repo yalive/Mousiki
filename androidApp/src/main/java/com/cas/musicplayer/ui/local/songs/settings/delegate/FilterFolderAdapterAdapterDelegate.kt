@@ -55,6 +55,7 @@ class FilterFolderAdapterAdapterDelegate : AdapterDelegate<List<DisplayableItem>
             binding.checkbox.isChecked = item.hidden
             binding.folderName.text = folder.name
             binding.txtFolderPath.text = item.subtitle
+            binding.txtSongsCount.text = "${item.folder.ids.count()}"
 
             itemView.onClick {
                 item.listener(folder)
