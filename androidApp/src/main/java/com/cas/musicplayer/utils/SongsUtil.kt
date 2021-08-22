@@ -17,7 +17,7 @@ object SongsUtil {
 
     const val CACHE_IMAGE_DIR = "tracksImages"
 
-    fun playFromUri(context: Context, uri: Uri) {
+    fun playFromUri(context: Context, uri: Uri): Boolean {
         val songRepository = Injector.localSongsRepository
         var songs: List<Song>? = null
         if (uri.scheme != null && uri.authority != null) {
@@ -54,12 +54,14 @@ object SongsUtil {
             }
         }
 
-        if (songs != null && songs.isNotEmpty()) {
+        return if (songs != null && songs.isNotEmpty()) {
             val tracks = songs.map { LocalSong(it) }
             PlayerQueue.playTrack(tracks.first(), tracks)
+            true
         } else {
             // TODO the file is not listed in the media store
             println("The file is not listed in the media store")
+            false
         }
     }
 

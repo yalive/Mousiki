@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -17,7 +16,6 @@ import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistFragment
 import com.cas.musicplayer.ui.playlist.create.SelectPlaylistAdapter
 import com.cas.musicplayer.utils.*
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mousiki.shared.domain.models.Track
 
@@ -88,15 +86,6 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
             bottomSheetFragment.arguments = bundle
             bottomSheetFragment.show(fm, bottomSheetFragment.tag)
         }
-    }
-}
-
-fun BottomSheetDialogFragment.ensureRoundedBackground() {
-    dialog?.setOnShowListener {
-        val bottomSheetDialog = it as? BottomSheetDialog
-        val bottomSheet = bottomSheetDialog?.findViewById<FrameLayout>(R.id.design_bottom_sheet)
-            ?: return@setOnShowListener
-        bottomSheet.background = context?.drawable(R.drawable.bg_navigation_view)
     }
 }
 

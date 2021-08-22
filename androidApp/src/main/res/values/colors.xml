@@ -25,7 +25,7 @@
 
     <color name="colorBgSearchArtist">#F5F6FF</color>
 
-    <color name="colorDarkNavigationView">#23232D</color>
+    <color name="colorDarkNavigationView">#1C2326</color>
     <color name="colorBackgroundDialog">@color/colorWhite</color>
     <color name="colorBgPlayer">#00020B</color>
     <color name="cardAdBackgroundColor">#EAE9E9</color>
