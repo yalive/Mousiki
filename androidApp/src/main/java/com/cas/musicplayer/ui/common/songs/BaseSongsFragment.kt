@@ -64,6 +64,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 addExtrasArgumentToBottomMenu(bundle)
                 bottomSheetFragment.arguments = bundle
+                bottomSheetFragment.isRecentlyPlayed = isRecentlyPlayed()
                 bottomSheetFragment.onDismissed = {
                     onBottomOptionsMenuDismissed()
                 }
@@ -194,6 +195,8 @@ abstract class BaseSongsFragment<T : BaseViewModel>
     open fun addExtrasArgumentToBottomMenu(bundle: Bundle) {
 
     }
+
+    open fun isRecentlyPlayed() = false
 
     open fun onBottomOptionsMenuDismissed() {
 
