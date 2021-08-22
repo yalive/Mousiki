@@ -170,4 +170,13 @@
     <string name="hour">\\u0020 stunde</string>
     <string name="hours">\\u0020 stunden</string>
     <string name="label_by">von %s</string>
+    <string name="label_hide">Verstecken</string>
+    <string name="error_cannot_play_local_song">Dieses Audio kann leider nicht abgespielt werden!</string>
+    <string name="dialog_title_confirm_hide_folder">Ordner ausblenden</string>
+    <string name="dialog_title_set_ringtone">Klingelton einstellen</string>
+    <string name="action_set_as_ringtone">Als Klingelton einstellen</string>
+    <string name="dialog_message_set_ringtone">Erlaube Mousiki, die Audioeinstellungen zu ändern</string>
+    <string name="x_has_been_set_as_ringtone">Legen Sie %1$s als Klingelton fest.</string>
+    <string name="folder_hidden_message">Ordner \"%s\" versteckt, Sie können ihn über die Audiodateieinstellungen wiederherstellen.</string>
+    <string name="dialog_message_confirm_hide_folder">Möchten Sie den Ordner \"%s\" wirklich im Mousiki Player ausblenden?</string>
 </resources>
