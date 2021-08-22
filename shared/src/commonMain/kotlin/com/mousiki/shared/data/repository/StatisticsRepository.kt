@@ -39,6 +39,12 @@ class StatisticsRepository(
         )
     }
 
+    suspend fun removeTrackFromRecent(trackId: String) {
+        recentDao.deleteTrack(
+            trackId
+        )
+    }
+
     suspend fun getRecentlyPlayedTracks(max: Int = 10): List<Track> {
         return recentDao.getTracks(max.toLong()).executeAsList().map {
             it.toTrack()
