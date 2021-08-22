@@ -6,6 +6,7 @@ import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.usecase.customplaylist.DeleteTrackFromCustomPlaylistUseCase
 import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromRecentlyPlayedUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class TrackOptionsViewModel(
     private val addSongToFavourite: AddSongToFavouriteUseCase,
     private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
-    private val deleteTrackFromCustomPlaylist: DeleteTrackFromCustomPlaylistUseCase
+    private val deleteTrackFromCustomPlaylist: DeleteTrackFromCustomPlaylistUseCase,
+    private val deleteRemoveFromRecentlyPlayed: RemoveSongFromRecentlyPlayedUseCase
 ) : BaseViewModel() {
 
     fun makeSongAsFavourite(ytbTrack: Track) = viewModelScope.launch {
@@ -30,5 +32,9 @@ class TrackOptionsViewModel(
 
     fun removeSongFromPlaylist(ytbTrack: Track, playlist: Playlist) = viewModelScope.launch {
         deleteTrackFromCustomPlaylist(ytbTrack, playlist.id)
+    }
+
+    fun removeSongFromRecentlyPlayed(ytbTrack: Track) = viewModelScope.launch {
+        deleteRemoveFromRecentlyPlayed(ytbTrack.id)
     }
 }
