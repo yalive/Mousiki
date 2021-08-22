@@ -22,15 +22,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/eight_8dp">
+        android:layout_marginTop="@dimen/four_4dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgTrack"
-            android:layout_width="@dimen/dimen_local_song_image"
-            android:layout_height="@dimen/dimen_local_song_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="@dimen/sixteen_16dp"
             android:elevation="@dimen/four_4dp"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded_corner" />
@@ -40,18 +41,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
-            android:fontFamily="@font/roboto_black"
-            android:gravity="center_vertical"
+            android:fontFamily="@font/roboto_medium"
             android:maxLines="1"
             android:textColor="?android:textColorPrimary"
             android:textDirection="ltr"
-            android:textSize="10sp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtTrackArtist"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgTrack"
             app:layout_constraintTop_toTopOf="@id/imgTrack"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:ignore="SmallSp"
             tools:text="Track title" />
 
@@ -61,41 +62,44 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:alpha="0.5"
             android:fontFamily="@font/roboto"
-            android:gravity="center"
+            android:gravity="start"
             android:textColor="?android:textColorPrimary"
             android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgTrack"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgTrack"
             app:layout_constraintTop_toBottomOf="@id/txtTrackTitle"
             tools:ignore="SmallSp"
             tools:text="Artist name" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/one_1dp"
-            android:layout_marginTop="@dimen/eight_8dp"
-            android:background="#616060"
-            app:layout_constraintTop_toBottomOf="@id/imgTrack" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/half_05dp"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:alpha="0.5"
+        android:background="#616060" />
 
     <LinearLayout
         android:id="@+id/viewAddToQuee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/spacing_small"
         android:layout_weight="1"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageButton
             android:id="@+id/btnAddAsNext"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
@@ -108,10 +112,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_black"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/label_play_next"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -123,14 +127,14 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageButton
             android:id="@+id/btnAddToPlaylist"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
@@ -143,10 +147,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_black"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/label_add_to"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -159,13 +163,13 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:padding="@dimen/two_2dp"
@@ -177,10 +181,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_black"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/label_share"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -193,14 +197,14 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/favIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:padding="@dimen/two_2dp"
@@ -213,10 +217,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_black"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/btn_unfavorite"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -229,14 +233,14 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/imgBell"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:padding="@dimen/two_2dp"
@@ -249,10 +253,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_black"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/action_set_as_ringtone"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -266,14 +270,14 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="12dp">
 
         <ImageButton
             android:id="@+id/btnDeleteFromCurrentPlaylist"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:background="?selectableItemBackgroundBorderless"
@@ -286,10 +290,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_black"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/remove_from_this_playlist"
             android:textColor="?android:textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
