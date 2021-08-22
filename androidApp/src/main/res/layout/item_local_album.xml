@@ -11,8 +11,8 @@
     android:orientation="horizontal">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -22,8 +22,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgAlbum"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:scaleType="centerInside" />
     </com.google.android.material.card.MaterialCardView>
 

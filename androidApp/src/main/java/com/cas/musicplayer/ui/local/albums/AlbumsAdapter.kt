@@ -45,7 +45,7 @@ class AlbumsAdapter :
                 val imageSize = itemView.context.dpToPixel(55f)
                 Picasso.get()
                     .load(getAlbumArtUri(album.id))
-                    .placeholder(R.drawable.ic_music_note)
+                    .placeholder(R.drawable.ic_album_placeholder)
                     .resize(imageSize, imageSize)
                     .into(binding.imgAlbum)
             } catch (e: Exception) {
