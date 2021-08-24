@@ -22,29 +22,27 @@
 
     <ImageButton
         android:id="@+id/btnSearch"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="@dimen/spacing_small"
-        android:alpha="0.5"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:alpha="0.7"
         android:background="?selectableItemBackgroundBorderless"
-        android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/btnSettings"
         app:layout_constraintEnd_toStartOf="@+id/btnSettings"
         app:layout_constraintTop_toTopOf="@id/btnSettings"
-        app:srcCompat="@drawable/ic_search_light"
+        app:srcCompat="@drawable/ic_search_regular_20dp"
         app:tint="?colorOnSurface" />
 
     <ImageButton
         android:id="@+id/btnSettings"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginEnd="@dimen/spacing_small"
-        android:alpha="0.5"
+        android:alpha="0.7"
         android:background="?selectableItemBackgroundBorderless"
-        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_outline_settings_24"
+        app:srcCompat="@drawable/ic_cog_light_20dp"
         app:tint="?colorOnSurface" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
