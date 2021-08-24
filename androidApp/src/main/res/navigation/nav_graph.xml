@@ -61,6 +61,13 @@
             app:exitAnim="@anim/custom_slide_out_left"
             app:popEnterAnim="@anim/custom_slide_in_left"
             app:popExitAnim="@anim/custom_slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchYoutubeFragment"
+            app:destination="@id/searchYoutubeFragment"
+            app:enterAnim="@anim/custom_slide_in_right"
+            app:exitAnim="@anim/custom_slide_out_left"
+            app:popEnterAnim="@anim/custom_slide_in_left"
+            app:popExitAnim="@anim/custom_slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/newReleaseFragment"

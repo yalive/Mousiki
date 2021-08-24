@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.updatePadding
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.FragmentActivity
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -17,10 +17,7 @@ import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.ui.base.setupToolbar
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.ui.settings.rate.writeFeedback
-import com.cas.musicplayer.utils.DeviceInset
-import com.cas.musicplayer.utils.Utils
-import com.cas.musicplayer.utils.navigateSafeAction
-import com.cas.musicplayer.utils.viewBinding
+import com.cas.musicplayer.utils.*
 import com.mousiki.shared.preference.UserPrefs
 
 class SettingsFragment : BaseFragment<SettingsViewModel>(
@@ -36,7 +33,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         observe(DeviceInset) { inset ->
             binding.toolbarView.toolbar.updatePadding(top = inset.top)
         }
-        setupToolbar(binding.toolbarView.toolbar, R.string.menu_settings)
+        setupToolbar(binding.toolbarView.toolbar, R.string.menu_settings) {
+            activity?.onBackPressed()
+        }
         adjustStatusBarWithTheme()
         binding.btnDarkMode.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
@@ -64,8 +63,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
                 .show()
         }
         binding.btnTimer.onClick {
-            findNavController().navigateSafeAction(R.id.action_settingsFragment_to_timerDialog)
+            TimerDialog.present(childFragmentManager)
         }
+
         binding.btnFeedback.onClick {
             context?.writeFeedback()
         }
@@ -107,6 +107,21 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
                     UserPrefs.setOutVideoSize(size)
                 }
                 .show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onBackPressCallback {
+            isEnabled = false // Disable back press listener
+            slideDown()
+        }
+    }
+
+    companion object {
+
+        fun present(activity: FragmentActivity) {
+            activity.slideUpFragment<SettingsFragment>()
         }
     }
 }
