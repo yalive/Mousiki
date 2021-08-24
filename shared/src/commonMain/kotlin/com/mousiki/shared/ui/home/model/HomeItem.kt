@@ -44,6 +44,8 @@ sealed class HeaderItem(val showMore: Boolean = true) : HomeItem() {
     object GenresHeader : HeaderItem()
 }
 
+object MousikiTopBarItem : DisplayableItem
+
 fun HomeItem.title(strings: Strings): String {
     return when (this) {
         is HeaderItem.PopularsHeader -> strings.titleNewRelease

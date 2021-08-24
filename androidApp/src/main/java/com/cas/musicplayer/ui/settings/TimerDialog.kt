@@ -2,12 +2,13 @@ package com.cas.musicplayer.ui.settings
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.FragmentManager
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.TimerDialogBinding
 import com.cas.musicplayer.player.PlayerQueue
-import com.mousiki.shared.preference.UserPrefs
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.preference.UserPrefs
 
 /**
  ***************************************
@@ -15,6 +16,7 @@ import com.cas.musicplayer.utils.viewBinding
  ***************************************
  */
 class TimerDialog : BaseDialogFragment() {
+
     override val layoutResourceId = R.layout.timer_dialog
 
     private val binding by viewBinding(TimerDialogBinding::bind)
@@ -53,5 +55,13 @@ class TimerDialog : BaseDialogFragment() {
 
     private fun formatDuration(duration: Int): String {
         return "$duration min"
+    }
+
+    companion object {
+
+        fun present(fm: FragmentManager) {
+            val dialog = TimerDialog()
+            dialog.show(fm, "TimerDialog")
+        }
     }
 }
