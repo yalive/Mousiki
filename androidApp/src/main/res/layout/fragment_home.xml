@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="32dp"
+        android:paddingTop="@dimen/spacing_medium"
         android:paddingBottom="@dimen/padding_for_player_space"
         android:visibility="visible"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"

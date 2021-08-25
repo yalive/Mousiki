@@ -36,7 +36,8 @@ class HomeAdapter(
             onClickRetry = onClickRetryNewRelease
         ),
         FBAdsCellDelegate(),
-        AdsCellDelegate()
+        AdsCellDelegate(),
+        MousikiTopBarDelegate()
     ),
     HomeItemDiffUtil()
 ) {
