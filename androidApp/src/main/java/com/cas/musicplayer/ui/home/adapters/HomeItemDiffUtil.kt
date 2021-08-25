@@ -15,6 +15,7 @@ import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.GenreMusic
 import com.mousiki.shared.ui.home.model.HeaderItem
 import com.mousiki.shared.ui.home.model.HomeItem
+import com.mousiki.shared.ui.home.model.MousikiTopBarItem
 import com.mousiki.shared.ui.resource.Resource
 
 class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
@@ -44,6 +45,10 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
     }
 
     override fun areItemsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
+        if (oldItem is MousikiTopBarItem && newItem is MousikiTopBarItem) {
+            return true
+        }
+
         if (oldItem is AdsItem && newItem is AdsItem) {
             return oldItem.ad.sameAs(newItem.ad)
         }
@@ -67,6 +72,10 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
     }
 
     override fun areContentsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
+        if (oldItem is MousikiTopBarItem && newItem is MousikiTopBarItem) {
+            return true
+        }
+
         if (oldItem is AdsItem && newItem is AdsItem) {
             return oldItem.ad.sameContentAs(newItem.ad)
         }

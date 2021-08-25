@@ -21,6 +21,7 @@ import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.home.model.HeaderItem
 import com.mousiki.shared.ui.home.model.HomeItem
+import com.mousiki.shared.ui.home.model.MousikiTopBarItem
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.ui.resource.asResource
 import com.mousiki.shared.utils.*
@@ -67,8 +68,9 @@ class HomeViewModel(
         when (val result = homeRepository.getHome()) {
             is Result.Success -> {
                 val homeRS = result.data
-                val items = mutableListOf<HomeItem>()
+                val items = mutableListOf<DisplayableItem>()
 
+                items.add(MousikiTopBarItem)
                 // Create compact playlists
                 val compactPlaylists = homeRS.compactPlaylists.filter {
                     it.playlists.orEmpty().isNotEmpty()
@@ -137,7 +139,7 @@ class HomeViewModel(
             if (tracks.isEmpty()) return@collect
             val recentTracks = localTrackMapper.mapTracks(tracks)
                 .map { it.toDisplayedVideoItem(this@HomeViewModel) }
-            updateOrAddItem(HomeItem.Recent(recentTracks), 0, where = { it is HomeItem.Recent })
+            updateOrAddItem(HomeItem.Recent(recentTracks), 1, where = { it is HomeItem.Recent })
         }
     }
 
@@ -174,7 +176,8 @@ class HomeViewModel(
     }
 
     private fun showOldHome() {
-        val items = mutableListOf<HomeItem>()
+        val items = mutableListOf<DisplayableItem>()
+        items.add(MousikiTopBarItem)
         items.add(HeaderItem.PopularsHeader(false))
         items.add(HomeItem.PopularsItem(Resource.Loading))
         items.add(HeaderItem.GenresHeader)
@@ -198,7 +201,7 @@ class HomeViewModel(
 
         // 2 - Insert ads in specific positions
         val homeListItems = _homeItems.value?.toMutableList() ?: return
-        homeListItems.add(1, ads[0])
+        homeListItems.add(2, ads[0])
         if (ads.size > 1) {
             // Above genres
             val index = homeListItems.indexOfFirst { it is HeaderItem.GenresHeader }
