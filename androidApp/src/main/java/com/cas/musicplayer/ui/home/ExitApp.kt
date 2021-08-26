@@ -1,5 +1,7 @@
 package com.cas.musicplayer.ui.home
 
+import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -9,13 +11,17 @@ import androidx.lifecycle.lifecycleScope
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
+import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.utils.PreferenceUtil
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.YtbTrack
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -64,11 +70,16 @@ fun MainActivity.showExitDialog(): BottomSheetDialog {
     return dialog
 }
 
+@SuppressLint("NewApi")
 private fun MainActivity.exitApp(dialog: BottomSheetDialog) {
     dialog.dismiss()
-    lifecycleScope.launch {
-        delay(200)
-        finish()
+    if (PreferenceUtil.usingPip() && PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
+        enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+    } else {
+        lifecycleScope.launch {
+            delay(200)
+            finish()
+        }
     }
 }
 

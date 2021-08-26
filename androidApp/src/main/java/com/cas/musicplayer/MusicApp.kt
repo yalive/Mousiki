@@ -2,12 +2,14 @@ package com.cas.musicplayer
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.musicplayer.di.*
+import com.cas.musicplayer.player.TAG_PLAYER
 import com.cas.musicplayer.ui.common.ads.AdsManager
 import com.cas.musicplayer.ui.common.ads.AppOpenManager
 import com.cas.musicplayer.ui.local.repository.*
@@ -15,11 +17,11 @@ import com.cas.musicplayer.utils.AndroidStrings
 import com.cas.musicplayer.utils.ConnectivityState
 import com.google.android.gms.ads.MobileAds
 import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.data.repository.LocalTrackMapper
 import com.mousiki.shared.di.initKoin
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.utils.ConnectivityChecker
-import com.mousiki.shared.data.repository.LocalTrackMapper
 import com.mousiki.shared.utils.Strings
 import com.mousiki.shared.utils.globalAppContext
 import kotlinx.coroutines.CoroutineScope
@@ -87,11 +89,13 @@ class MusicApp : Application(), KoinComponent {
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_START)
             fun onEnterForeground() {
+                Log.d(TAG_PLAYER, "onEnterForeground() called")
                 _isInForeground = true
             }
 
             @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
             fun onEnterBackground() {
+                Log.d(TAG_PLAYER, "onEnterBackground() called")
                 _isInForeground = false
             }
         })
