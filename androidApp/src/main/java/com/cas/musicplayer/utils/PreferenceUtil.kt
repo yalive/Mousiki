@@ -25,6 +25,8 @@ import com.mousiki.shared.utils.Constants.SONG_SORT_ORDER
 object PreferenceUtil {
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MusicApp.get())
 
+    private val pipEnabled = true
+
     var songSortOrder
         get() = sharedPreferences.getStringOrDefault(
             SONG_SORT_ORDER,
@@ -125,6 +127,10 @@ object PreferenceUtil {
 
     fun isFolderHidden(path: String): Boolean {
         return sharedPreferences.getBoolean(path, false)
+    }
+
+    fun usingPip(): Boolean {
+        return pipEnabled && SystemSettings.canEnterPiPMode()
     }
 }
 

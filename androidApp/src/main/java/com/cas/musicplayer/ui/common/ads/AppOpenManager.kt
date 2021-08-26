@@ -4,11 +4,13 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.annotation.Keep
-import androidx.lifecycle.Lifecycle.Event.ON_START
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.cas.common.extensions.isInPictureInPictureModeCompact
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.ui.MainActivity
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -139,8 +141,12 @@ class AppOpenManager(
 
     /** LifecycleObserver methods  */
     @Keep
-    @OnLifecycleEvent(ON_START)
-    fun onStart() {
+    @OnLifecycleEvent(ON_RESUME)
+    fun onResume() {
+        val activity = currentActivity
+        if (activity != null && activity is MainActivity && activity.isInPictureInPictureModeCompact) {
+            return
+        }
         val frequency = appConfig.appOpenAdFrequency()
         if (appOpenCount % frequency == 0) {
             showAdIfAvailable()

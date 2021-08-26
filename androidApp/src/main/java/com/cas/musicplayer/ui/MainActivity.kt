@@ -1,8 +1,12 @@
 package com.cas.musicplayer.ui
 
+import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,10 +22,13 @@ import com.cas.common.extensions.bool
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.BuildConfig
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.TAG_PLAYER
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.home.showExitDialog
@@ -40,6 +47,8 @@ import com.mousiki.shared.preference.UserPrefs
 import com.unity3d.ads.UnityAds
 import kotlinx.coroutines.delay
 
+const val EXTRA_START_PIP = "start_pip"
+
 class MainActivity : BaseActivity() {
 
     val adsViewModel by viewModel { Injector.adsViewModel }
@@ -55,6 +64,7 @@ class MainActivity : BaseActivity() {
     private var drawOverAppsRequested = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG_PLAYER, "onCreate: Activity")
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -124,7 +134,7 @@ class MainActivity : BaseActivity() {
             binding.bottomNavView.getOrCreateBadge(R.id.navMusic)
 
         observe(PlayerQueue) { currentTrack ->
-            if (!canDrawOverApps() && currentTrack !is LocalSong) {
+            if (!PreferenceUtil.usingPip() && !canDrawOverApps() && currentTrack !is LocalSong) {
                 val dialog = Utils.requestDrawOverAppsPermission(this) {
                     drawOverAppsRequested = true
                 }
@@ -142,6 +152,40 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
+    }
+
+    @SuppressLint("NewApi")
+    override fun onUserLeaveHint() {
+        Log.d(TAG_PLAYER, "onUserLeaveHint: Activity")
+        super.onUserLeaveHint()
+        if (PreferenceUtil.usingPip() && PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
+            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+        }
+    }
+
+    override fun onPictureInPictureModeChanged(
+        isInPictureInPictureMode: Boolean,
+        newConfig: Configuration?
+    ) {
+        Log.d(TAG_PLAYER, "onPictureInPictureModeChanged: $isInPictureInPictureMode")
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        binding.pipVideoView.isVisible = isInPictureInPictureMode
+        if (isInPictureInPictureMode) {
+            showPipPlayerView()
+        } else if (!MusicApp.get().isInForeground) {
+            // Make sure to pause player if playing Ytb track
+            if (PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
+                PlayerQueue.pause()
+            }
+        }
+    }
+
+    fun showPipPlayerView() {
+        val playerView = playerFragment.reusedPlayerView ?: return
+        if (playerView.parent == binding.pipVideoView) return
+        val oldParent = playerView.parent as? ViewGroup
+        oldParent?.removeView(playerView)
+        binding.pipVideoView.addView(playerView, 0)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -202,11 +246,19 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onNewIntent(intent: Intent?) {
+        Log.d(TAG_PLAYER, "onNewIntent")
         super.onNewIntent(intent)
         setIntent(intent)
     }
 
+    override fun onStart() {
+        Log.d(TAG_PLAYER, "onStart: activity")
+        super.onStart()
+    }
+
+    @SuppressLint("NewApi")
     override fun onResume() {
+        Log.d(TAG_PLAYER, "onResume: activity")
         super.onResume()
         if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
             expandBottomPanel()
@@ -244,9 +296,29 @@ class MainActivity : BaseActivity() {
             drawOverAppsRequested = false
             PlayerQueue.resume()
         }
+
+        // Check PIP
+        if (PreferenceUtil.usingPip() && intent.getBooleanExtra(EXTRA_START_PIP, false)) {
+            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            intent = intent.apply {
+                putExtra(EXTRA_START_PIP, false)
+            }
+            PlayerQueue.resume()
+        }
+    }
+
+    override fun onPause() {
+        Log.d(TAG_PLAYER, "onPause: activity")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.d(TAG_PLAYER, "onStop: activity")
+        super.onStop()
     }
 
     override fun onDestroy() {
+        Log.d(TAG_PLAYER, "onDestroy: activity")
         exitDialog?.dismiss()
         dialogDrawOverApps?.dismiss()
         super.onDestroy()

@@ -1,5 +1,6 @@
 package com.cas.musicplayer.player
 
+import android.content.Intent
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
@@ -7,10 +8,9 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.utils.VideoEmplacementLiveData
-import com.cas.musicplayer.utils.canDrawOverApps
-import com.cas.musicplayer.utils.isScreenLocked
-import com.cas.musicplayer.utils.toast
+import com.cas.musicplayer.ui.EXTRA_START_PIP
+import com.cas.musicplayer.ui.MainActivity
+import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.YtbTrack
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -100,11 +100,20 @@ class YTBPlayer(
     }
 
     override fun play() {
+        if (PreferenceUtil.usingPip() && !isScreenLocked() && !MusicApp.get().isInForeground) {
+            // Force activity in PIP mode
+            val intent = Intent(MusicApp.get(), MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra(EXTRA_START_PIP, true)
+            }
+            MusicApp.get().startActivity(intent)
+            return
+        }
         if (!ytbPolicyRespected()) return
         if (!MusicApp.get().isInForeground) {
             VideoEmplacementLiveData.out()
         }
-        Log.d(TAG_PLAYER, "YTB player play")
+        Log.d(TAG_PLAYER, "YTB player play (isInForeground:${MusicApp.get().isInForeground})")
         if (PlaybackLiveData.value == PlayerConstants.PlayerState.ENDED) {
             mediaController.transportControls?.skipToNext()
         } else {
@@ -152,6 +161,7 @@ class YTBPlayer(
     private fun ytbPolicyRespected(): Boolean {
         if (isScreenLocked()) return false
         val context = MusicApp.get()
+        if (PreferenceUtil.usingPip()) return context.isInForeground
         return context.canDrawOverApps() || context.isInForeground
     }
 }
