@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.artists
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.cas.musicplayer.tmp.trigger
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
 import com.cas.musicplayer.ui.local.repository.LocalArtistRepository
 import com.cas.musicplayer.ui.local.songs.HeaderSongsActionsItem
@@ -9,6 +10,7 @@ import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.event.Event
 import kotlinx.coroutines.launch
 
 class ArtistDetailsViewModel(
@@ -25,6 +27,10 @@ class ArtistDetailsViewModel(
     private val _artist = MutableLiveData<LocalArtist>()
     val artist: LiveData<LocalArtist> get() = _artist
 
+    private val _showMultiSelection = MutableLiveData<Event<Unit>>()
+    val showMultiSelection: LiveData<Event<Unit>> get() = _showMultiSelection
+
+
     fun loadArtistSongsAndAlbums(artistId: Long) {
         val artist = localArtistRepository.artist(artistId)
         _artist.value = artist
@@ -38,7 +44,8 @@ class ArtistDetailsViewModel(
                     if (songsItems.isEmpty()) return@HeaderSongsActionsItem
                     onClickTrack(songsItems[0].track)
                 },
-                onShuffleAllTracks = { onShufflePlay() }
+                onShuffleAllTracks = { onShufflePlay() },
+                onMultiSelectTracks = { _showMultiSelection.trigger() }
             ))
             addAll(songsItems)
         }

@@ -23,7 +23,8 @@ import com.mousiki.shared.preference.UserPrefs
  */
 class SongAdapterDelegate(
     private val onClickMoreOptions: (Track) -> Unit,
-    private val onVideoSelected: (Track) -> Unit
+    private val onVideoSelected: (Track) -> Unit,
+    private val onLongPressTrack: (Track) -> Unit
 ) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
@@ -104,6 +105,10 @@ class SongAdapterDelegate(
                 onVideoSelected(item.track)
             }
 
+            binding.root.setOnLongClickListener {
+                onLongPressTrack(item.track)
+                true
+            }
             // Configure playing track
             val colorAccent = itemView.context.color(R.color.colorAccent)
             val colorText = if (item.isCurrent) colorAccent

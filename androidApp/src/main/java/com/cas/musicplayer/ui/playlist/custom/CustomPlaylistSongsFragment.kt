@@ -5,8 +5,10 @@ import android.view.View
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.valueOrNull
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -18,6 +20,11 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
  */
 
 class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewModel>() {
+
+    override val tracks: List<Track>
+        get() = viewModel.songs.valueOrNull()
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track }.orEmpty()
 
     override val screenName: String = "CustomPlaylistSongsFragment"
 

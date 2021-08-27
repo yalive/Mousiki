@@ -10,12 +10,19 @@ import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
+import com.mousiki.shared.ui.resource.valueOrNull
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
 class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
+
+    override val tracks: List<Track>
+        get() = viewModel.tracks.valueOrNull()
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track }.orEmpty()
 
     override val screenName: String = "ArtistSongsFragment"
     override val viewModel by viewModel {
