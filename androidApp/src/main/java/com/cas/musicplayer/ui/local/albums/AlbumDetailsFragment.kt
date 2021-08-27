@@ -10,7 +10,10 @@ import com.cas.musicplayer.databinding.AlbumDetailsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
+import com.cas.musicplayer.tmp.tracks
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.local.songs.LocalSongsAdapter
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.viewBinding
@@ -36,6 +39,10 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
     private val adapter by lazy {
         LocalSongsAdapter(
             onClickTrack = viewModel::onClickTrack,
+            onLongPressTrack = { track ->
+                val tracks = viewModel.localSongs.tracks
+                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
+            },
             onSortClicked = {},
             onFilterClicked = {},
             showCountsAndSortButton = false,
@@ -83,6 +90,11 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
             } catch (e: OutOfMemoryError) {
                 FirebaseCrashlytics.getInstance().recordException(e)
             }
+        }
+
+        observeEvent(viewModel.showMultiSelection) {
+            val tracks = viewModel.localSongs.tracks
+            MultiSelectTrackFragment.present(requireActivity(), tracks)
         }
     }
 

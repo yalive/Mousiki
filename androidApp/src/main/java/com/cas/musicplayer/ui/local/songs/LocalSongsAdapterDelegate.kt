@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.local.songs
 
-import android.text.format.Formatter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -19,7 +18,8 @@ import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
 
 class LocalSongsAdapterDelegate(
-    private val onClickTrack: (Track) -> Unit
+    private val onClickTrack: (Track) -> Unit,
+    private val onLongPressTrack: (Track) -> Unit
 ) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
@@ -67,6 +67,11 @@ class LocalSongsAdapterDelegate(
             binding.btnMore.onClick {
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, song.track)
+            }
+
+            binding.root.setOnLongClickListener {
+                onLongPressTrack(song.track)
+                true
             }
         }
     }

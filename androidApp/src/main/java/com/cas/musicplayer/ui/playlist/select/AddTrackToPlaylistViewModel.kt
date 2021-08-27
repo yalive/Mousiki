@@ -14,6 +14,8 @@ import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.event.Event
 import com.mousiki.shared.ui.event.asEvent
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 /**
@@ -27,7 +29,7 @@ class AddTrackToPlaylistViewModel(
     private val getFavouriteTracks: GetFavouriteTracksUseCase,
     private val addSongToFavourite: AddSongToFavouriteUseCase
 ) : BaseViewModel() {
-    private lateinit var track: Track
+    private lateinit var tracks: List<Track>
     private val _playlists = MutableLiveData<List<Playlist>>()
     val playlists: LiveData<List<Playlist>>
         get() = _playlists
@@ -35,8 +37,8 @@ class AddTrackToPlaylistViewModel(
     private val _trackAddedToPlaylist = MutableLiveData<Event<Playlist>>()
     val trackAddedToPlaylist: LiveData<Event<Playlist>> get() = _trackAddedToPlaylist
 
-    fun init(track: Track) {
-        this.track = track
+    fun init(tracks: List<Track>) {
+        this.tracks = tracks
         loadCustomPlaylists()
     }
 
@@ -47,9 +49,11 @@ class AddTrackToPlaylistViewModel(
 
     fun addTrackToPlaylist(playlist: Playlist) = viewModelScope.launch {
         if (playlist.isFavourite) {
-            addSongToFavourite(track)
+            tracks.map { async { addSongToFavourite(it) } }.awaitAll()
         } else {
-            addTrackToCustomPlaylist.invoke(track, playlist.id.toLong())
+            tracks.map {
+                async { addTrackToCustomPlaylist.invoke(it, playlist.id.toLong()) }
+            }.awaitAll()
         }
         _trackAddedToPlaylist.value = playlist.asEvent()
     }

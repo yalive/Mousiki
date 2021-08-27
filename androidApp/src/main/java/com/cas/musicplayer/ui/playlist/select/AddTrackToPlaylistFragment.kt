@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import com.cas.common.extensions.onClick
@@ -26,14 +27,20 @@ import com.mousiki.shared.domain.models.Track
  */
 class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
 
+    private val tracks: List<Track>
+        @Suppress("UNCHECKED_CAST") // Checked
+        get() = arguments?.getParcelableArray(EXTRAS_TRACKS)!!.toList() as List<Track>
+
     private val viewModel by lazy {
         Injector.addTrackToPlaylistViewModel
-            .also { vm -> vm.init(track) }
+            .also { vm -> vm.init(tracks) }
     }
     private val binding by viewBinding(FragmentAddTrackPlaylistBinding::bind)
     private val adapter by lazy {
         SelectPlaylistAdapter(context = requireContext(), viewModel::addTrackToPlaylist)
     }
+
+    private var onAddedToPlaylist: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +59,7 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
         }
         observeEvent(viewModel.trackAddedToPlaylist) { playlist ->
             requireContext().longToast(AndroidStrings.trackAddedToPlaylist(playlist.title))
+            onAddedToPlaylist?.invoke()
             dismiss()
         }
         setupCreatePlaylistRow()
@@ -73,22 +81,19 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
         }
     }
 
+
     companion object {
-        const val EXTRAS_TRACK = "extras.track"
+        private const val EXTRAS_TRACKS = "extras.tracks"
 
         fun present(
             fm: FragmentManager,
-            track: Track
+            tracks: List<Track>,
+            onAddedToPlaylist: () -> Unit = {}
         ) {
-            val bottomSheetFragment = AddTrackToPlaylistFragment()
-            val bundle = Bundle()
-            bundle.putParcelable(EXTRAS_TRACK, track)
-            bottomSheetFragment.arguments = bundle
-            bottomSheetFragment.show(fm, bottomSheetFragment.tag)
+            AddTrackToPlaylistFragment().apply {
+                arguments = bundleOf(EXTRAS_TRACKS to tracks.toTypedArray())
+                this.onAddedToPlaylist = onAddedToPlaylist
+            }.show(fm, "AddTrackToPlaylist")
         }
     }
 }
-
-private val AddTrackToPlaylistFragment.track
-    get() = arguments?.getParcelable<Track>(AddTrackToPlaylistFragment.EXTRAS_TRACK)
-        ?: throw IllegalStateException("Music track not set")

@@ -70,6 +70,10 @@ class HeaderSongsActionsAdapterDelegate(
             binding.filterSongs.onClick {
                 onFilterClicked()
             }
+
+            binding.btnMultiSelect.onClick {
+                header.onMultiSelectTracks()
+            }
         }
     }
 }
@@ -78,4 +82,5 @@ data class HeaderSongsActionsItem(
     val songsCount: Int,
     val onPlayAllTracks: () -> Unit,
     val onShuffleAllTracks: () -> Unit,
+    val onMultiSelectTracks: () -> Unit,
 ) : DisplayableItem
