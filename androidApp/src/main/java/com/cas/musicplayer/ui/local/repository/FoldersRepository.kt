@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.repository
 
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.ui.local.folders.Folder
+import com.cas.musicplayer.ui.local.folders.FolderType
 import com.mousiki.shared.domain.models.Song
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -10,13 +11,21 @@ import kotlinx.coroutines.withContext
  * Created by Fayssel Yabahddou on 6/25/21.
  */
 class FoldersRepository(
-    private val songsRepository: LocalSongsRepository
+    private val songsRepository: LocalSongsRepository,
+    private val videosRepository: LocalVideosRepository
 ) {
 
     suspend fun getFolders(
+        folderType: FolderType,
         showHidden: Boolean = false
     ): List<Folder> = withContext(Dispatchers.IO) {
-        return@withContext songsRepository.songs()
+        return@withContext if (folderType == FolderType.VIDEO) {
+            videosRepository.videos()
+                .run { if (showHidden) this else filterNotHidden() }
+                .groupBy { it.path }.map {
+                    Folder.fromSong(it.value.first(), it.value.toIDList(), MusicApp.get())
+                }.sortedBy { it.name }
+        } else return@withContext songsRepository.songs()
             .run { if (showHidden) this else filterNotHidden() }
             .groupBy { it.path }.map {
                 Folder.fromSong(it.value.first(), it.value.toIDList(), MusicApp.get())

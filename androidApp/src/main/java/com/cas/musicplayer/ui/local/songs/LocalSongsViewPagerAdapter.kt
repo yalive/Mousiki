@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.cas.musicplayer.ui.local.albums.LocalAlbumsFragment
 import com.cas.musicplayer.ui.local.artists.LocalArtistsFragment
+import com.cas.musicplayer.ui.local.folders.FolderType
 import com.cas.musicplayer.ui.local.folders.FoldersFragment
 import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsFragment
 
@@ -20,7 +21,7 @@ class LocalSongsViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(frag
             1 -> LocalPlaylistsFragment()
             2 -> LocalAlbumsFragment.newInstance()
             3 -> LocalArtistsFragment.newInstance()
-            4 -> FoldersFragment.newInstance()
+            4 -> FoldersFragment.newInstance(FolderType.SONG)
             else -> LocalSongsFragment()
         }
     }
