@@ -15,10 +15,16 @@ import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.valueOrNull
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 
 class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
+
+    override val tracks: List<Track>
+        get() = viewModel.newReleases.valueOrNull()
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track }.orEmpty()
 
     override val screenName: String = "PopularSongsFragment"
     override val viewModel by viewModel { Injector.popularSongsViewModel }

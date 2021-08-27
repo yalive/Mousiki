@@ -9,10 +9,13 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.popular.EndlessRecyclerOnScrollListener
 import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeFragment
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.valueOrNull
 import com.mousiki.shared.utils.Constants
 
 /**
@@ -45,6 +48,13 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
                 bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
                 bottomSheetFragment.arguments = bundle
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+            },
+            onLongPressTrack = { track ->
+                val parentFragment = parentFragment as? SearchYoutubeFragment
+                val tracks = parentFragment?.viewModel?.videos?.valueOrNull()
+                    ?.filterIsInstance<DisplayedVideoItem>()?.map { it.track }
+                    ?: return@SongsAdapter
+                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
             }
         )
     }

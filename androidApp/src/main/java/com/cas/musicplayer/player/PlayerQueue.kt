@@ -60,13 +60,13 @@ object PlayerQueue : MutableLiveData<Track>() {
         }
     }
 
-    fun addAsNext(track: Track) {
+    fun addAsNext(vararg track: Track) {
         val newList = mutableListOf<Track>()
         if (queue != null) {
             for (musicTrack in queue!!) {
                 newList.add(musicTrack)
                 if (musicTrack.id == value?.id) {
-                    newList.add(track)
+                    newList.addAll(track.asList())
                 }
             }
 

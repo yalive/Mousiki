@@ -10,8 +10,10 @@ import androidx.annotation.StringRes
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.activity
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.common.recyclerview.AlignLeftPagerSnapHelper
@@ -19,6 +21,7 @@ import com.cas.common.recyclerview.PercentGridLayoutManager
 import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
 import com.cas.musicplayer.utils.dpToPixel
 import com.mousiki.shared.domain.models.DisplayableItem
@@ -113,6 +116,10 @@ open class NewHorizontalSongsAdapterDelegate(
             onClickMore = { track ->
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, track)
+            },
+            onLongPressTrack = { track ->
+                val activity = itemView.activity as? FragmentActivity ?: return@SongsAdapter
+                MultiSelectTrackFragment.present(activity, tracks, track)
             }
         )
         private val txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
