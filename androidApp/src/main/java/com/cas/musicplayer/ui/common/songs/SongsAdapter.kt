@@ -13,10 +13,15 @@ import com.mousiki.shared.domain.models.Track
  */
 class SongsAdapter(
     onVideoSelected: (Track) -> Unit,
+    onLongPressTrack: (Track) -> Unit,
     onClickMore: (Track) -> Unit
 ) : MousikiAdapter(
     listOf(
-        SongAdapterDelegate(onClickMoreOptions = onClickMore, onVideoSelected = onVideoSelected),
+        SongAdapterDelegate(
+            onClickMoreOptions = onClickMore,
+            onVideoSelected = onVideoSelected,
+            onLongPressTrack = onLongPressTrack
+        ),
         AdsCellDelegate(),
         LoadingDelegate()
     ),

@@ -6,13 +6,14 @@ import com.mousiki.shared.domain.models.Track
 
 class LocalSongsAdapter(
     onClickTrack: (Track) -> Unit,
+    onLongPressTrack: (Track) -> Unit,
     onSortClicked: () -> Unit,
     onFilterClicked: () -> Unit,
     showCountsAndSortButton: Boolean,
     showFilter: Boolean
 ) : MousikiAdapter(
     listOf(
-        LocalSongsAdapterDelegate(onClickTrack),
+        LocalSongsAdapterDelegate(onClickTrack, onLongPressTrack),
         HeaderSongsActionsAdapterDelegate(
             onSortClicked = onSortClicked,
             onFilterClicked = onFilterClicked,

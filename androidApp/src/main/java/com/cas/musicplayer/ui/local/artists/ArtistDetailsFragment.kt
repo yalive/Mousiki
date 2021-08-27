@@ -9,7 +9,10 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ArtistDetailsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
+import com.cas.musicplayer.tmp.tracks
 import com.cas.musicplayer.ui.base.BaseFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.viewBinding
 import com.squareup.picasso.Picasso
@@ -30,7 +33,13 @@ class ArtistDetailsFragment : BaseFragment<ArtistDetailsViewModel>(
     private val binding by viewBinding(ArtistDetailsFragmentBinding::bind)
 
     private val adapter by lazy {
-        ArtistsDetailsAdapter(viewModel::onClickTrack)
+        ArtistsDetailsAdapter(
+            onClickTrack = viewModel::onClickTrack,
+            onLongPressTrack = { track ->
+                val tracks = viewModel.localSongs.tracks
+                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
+            }
+        )
     }
 
     companion object {
@@ -60,6 +69,9 @@ class ArtistDetailsFragment : BaseFragment<ArtistDetailsViewModel>(
         }
         observe(viewModel.localSongs, adapter::submitList)
 
+        observeEvent(viewModel.showMultiSelection) {
+            val tracks = viewModel.localSongs.tracks
+            MultiSelectTrackFragment.present(requireActivity(), tracks)
+        }
     }
-
 }

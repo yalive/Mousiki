@@ -201,5 +201,9 @@
     <string name="label_by">by %s</string>
     <string name="label_artist_name_and_duration" translatable="false">%s • %s</string>
     <string name="label_sort_last_added">Last Added</string>
+    <string name="btn_select_all_title">All</string>
+
+    <!-- Multi select songs-->
+    <string name="added_to_play_next">Added to next</string>
 
 </resources>

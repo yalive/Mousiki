@@ -7,10 +7,11 @@ import com.cas.musicplayer.ui.popular.SongItemDiffUtil
 import com.mousiki.shared.domain.models.Track
 
 class ArtistsDetailsAdapter(
-    onClickTrack: (Track) -> Unit
+    onClickTrack: (Track) -> Unit,
+    onLongPressTrack: (Track) -> Unit
 ) : MousikiAdapter(
     listOf(
-        LocalSongsAdapterDelegate(onClickTrack),
+        LocalSongsAdapterDelegate(onClickTrack, onLongPressTrack),
         HorizontalAlbumsAdapterDelegate(),
         HeaderSongsActionsAdapterDelegate(
             onSortClicked = {},

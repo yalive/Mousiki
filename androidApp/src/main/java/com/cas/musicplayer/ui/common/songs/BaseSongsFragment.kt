@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -21,6 +22,7 @@ import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageRes
 import com.cas.musicplayer.ui.common.songs.AppImage.AppImageUrl
 import com.cas.musicplayer.utils.*
@@ -44,6 +46,8 @@ import kotlinx.parcelize.Parcelize
 abstract class BaseSongsFragment<T : BaseViewModel>
     : BaseFragment<T>(R.layout.fragment_playlist_songs) {
 
+    protected abstract val tracks: List<Track>
+
     private val imgArtist: ImageView
         get() = binding.imgArtist
 
@@ -57,6 +61,9 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
                 onClickTrack(track)
+            },
+            onLongPressTrack = { track ->
+                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
             },
             onClickMore = { track ->
                 val bottomSheetFragment = TrackOptionsFragment()
@@ -120,6 +127,10 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 updateCurrentPlayingItem(state)
             }
         }
+
+        binding.btnMultiSelect.onClick {
+            MultiSelectTrackFragment.present(requireActivity(), tracks)
+        }
     }
 
     open fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
@@ -127,6 +138,8 @@ abstract class BaseSongsFragment<T : BaseViewModel>
     }
 
     protected fun updateUI(resource: Resource<List<DisplayableItem>>?) {
+        binding.btnMultiSelect.isVisible =
+            resource is Resource.Success && resource.data.isNotEmpty()
         when (resource) {
             is Resource.Success -> {
                 binding.btnPlayAll.alpha = 1f

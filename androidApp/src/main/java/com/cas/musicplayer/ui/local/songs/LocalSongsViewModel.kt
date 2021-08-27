@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.tmp.trigger
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.cas.musicplayer.ui.local.repository.filterNotHidden
 import com.cas.musicplayer.utils.SongsUtil
@@ -15,6 +16,7 @@ import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.event.Event
 import kotlinx.coroutines.*
 import java.io.File
 
@@ -26,6 +28,9 @@ class LocalSongsViewModel(
     private val _localSongs = MutableLiveData<List<DisplayableItem>>()
     val localSongs: LiveData<List<DisplayableItem>>
         get() = _localSongs
+
+    private val _showMultiSelection = MutableLiveData<Event<Unit>>()
+    val showMultiSelection: LiveData<Event<Unit>> get() = _showMultiSelection
 
     init {
         loadAllSongs()
@@ -43,7 +48,8 @@ class LocalSongsViewModel(
                     if (songsItems.isEmpty()) return@HeaderSongsActionsItem
                     onClickTrack(songsItems[0].track)
                 },
-                onShuffleAllTracks = { onShufflePlay() }
+                onShuffleAllTracks = { onShufflePlay() },
+                onMultiSelectTracks = { _showMultiSelection.trigger() }
             ))
             addAll(songsItems)
         }
