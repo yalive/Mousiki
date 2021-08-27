@@ -11,11 +11,14 @@ import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
 import com.cas.musicplayer.ui.local.artists.ArtistDetailsViewModel
 import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
 import com.cas.musicplayer.ui.local.folders.FolderDetailsViewModel
+import com.cas.musicplayer.ui.local.folders.FolderVideoDetailsViewModel
 import com.cas.musicplayer.ui.local.folders.FoldersViewModel
 import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
+import com.cas.musicplayer.ui.local.repository.LocalVideosRepository
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsViewModel
+import com.cas.musicplayer.ui.local.videos.LocalVideoViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
@@ -122,6 +125,9 @@ object Injector : KoinComponent {
     val localSongsViewModel: LocalSongsViewModel
         get() = get()
 
+    val localVideoViewModel: LocalVideoViewModel
+        get() = get()
+
     val localSongsSettingsViewModel: LocalSongsSettingsViewModel
         get() = get()
 
@@ -143,9 +149,15 @@ object Injector : KoinComponent {
     val folderDetailsViewModel: FolderDetailsViewModel
         get() = get()
 
+    val folderVideoDetailsViewModel: FolderVideoDetailsViewModel
+        get() = get()
+
     val artistDetailsViewModel: ArtistDetailsViewModel
         get() = get()
 
     val localSongsRepository: LocalSongsRepository
+        get() = get()
+
+    val localVideosRepository: LocalVideosRepository
         get() = get()
 }

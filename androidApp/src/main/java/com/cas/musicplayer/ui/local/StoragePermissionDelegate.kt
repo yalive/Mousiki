@@ -1,8 +1,7 @@
-package com.cas.musicplayer.ui.local.songs
+package com.cas.musicplayer.ui.local
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.view.View
@@ -11,11 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
-import androidx.lifecycle.MutableLiveData
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.databinding.LayoutNoStoragePermissionBinding
-import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.utils.readStoragePermissionsGranted
 import java.lang.ref.WeakReference
 

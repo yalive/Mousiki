@@ -56,10 +56,15 @@ class MusicApp : Application(), KoinComponent {
         FileSystem.initialize(this)
         val localSongsRepo = module {
             single { LocalSongsRepository(get()) }
-            single { LocalTrackMapper(AndroidLocalSongProvider(get())) }
+            single { LocalVideosRepository(get()) }
+            single {
+                LocalTrackMapper(
+                    AndroidLocalSongProvider(get())
+                )
+            }
             single { AlbumRepository(get()) }
             single { LocalArtistRepository(get(), get()) }
-            single { FoldersRepository(get()) }
+            single { FoldersRepository(get(),get()) }
         }
 
         initKoin(

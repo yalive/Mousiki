@@ -19,6 +19,7 @@
 
     <!-- Library -->
     <string name="library">Library</string>
+    <string name="video">Video</string>
     <string name="library_recently_played">Recently played</string>
     <string name="library_favourites">Favourites</string>
     <string name="library_recent">Recent</string>
