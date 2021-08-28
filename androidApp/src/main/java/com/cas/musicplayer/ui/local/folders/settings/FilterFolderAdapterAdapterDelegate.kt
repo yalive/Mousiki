@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.local.songs.settings.delegate
+package com.cas.musicplayer.ui.local.folders.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.databinding.ItemSettingsFolderBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.cas.musicplayer.ui.local.songs.settings.model.FolderUiModel
 import com.mousiki.shared.domain.models.DisplayableItem
 
 

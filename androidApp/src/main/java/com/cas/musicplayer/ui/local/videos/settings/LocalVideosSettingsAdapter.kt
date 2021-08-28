@@ -1,23 +1,23 @@
-package com.cas.musicplayer.ui.local.songs.settings
+package com.cas.musicplayer.ui.local.videos.settings
 
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import com.cas.musicplayer.delegateadapter.MousikiAdapter
-import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterAudioSettingsAdapterDelegate
-import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterAudioSettingsItem
 import com.cas.musicplayer.ui.local.folders.settings.FilterFolderAdapterAdapterDelegate
 import com.cas.musicplayer.ui.local.folders.settings.FolderUiModel
+import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterAudioSettingsItem
+import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterVideoSettingsAdapterDelegate
 import com.mousiki.shared.domain.models.DisplayableItem
 
-class LocalSongsSettingsAdapter : MousikiAdapter(
+class LocalVideosSettingsAdapter : MousikiAdapter(
     listOf(
-        FilterAudioSettingsAdapterDelegate(),
+        FilterVideoSettingsAdapterDelegate(),
         FilterFolderAdapterAdapterDelegate()
     ),
-    SongsSettingsDiffCallback()
+    VideosSettingsDiffCallback()
 )
 
-class SongsSettingsDiffCallback : DiffUtil.ItemCallback<DisplayableItem>() {
+class VideosSettingsDiffCallback : DiffUtil.ItemCallback<DisplayableItem>() {
     override fun areItemsTheSame(oldItem: DisplayableItem, newItem: DisplayableItem): Boolean {
         if (oldItem is FilterAudioSettingsItem && newItem is FilterAudioSettingsItem) {
             return true

@@ -11,10 +11,10 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
-import com.cas.musicplayer.ui.bottomsheet.SortByFragment
+import com.cas.musicplayer.ui.bottomsheet.SortVideoByFragment
 import com.cas.musicplayer.ui.local.StoragePermissionDelegate
 import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
-import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsFragment
+import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -71,14 +71,14 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
     }
 
     private fun saveAndSetOrder() {
-        SortByFragment.present(childFragmentManager) { currentSortOrder ->
-            PreferenceUtil.songSortOrder = currentSortOrder
+        SortVideoByFragment.present(childFragmentManager) { currentSortOrder ->
+            PreferenceUtil.videoSortOrder = currentSortOrder
             viewModel.loadAllVideos()
         }
     }
 
     private fun showFilterScreen() {
-        LocalSongsSettingsFragment.present(requireActivity() as AppCompatActivity) {
+        LocalVideosSettingsFragment.present(requireActivity() as AppCompatActivity) {
             viewModel.loadAllVideos()
         }
     }

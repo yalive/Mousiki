@@ -36,7 +36,7 @@ class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
             onClickTrack = viewModel::onClickTrack,
             onSortClicked = {},
             onFilterClicked = {},
-            showCountsAndSortButton = false,
+            showCountsAndSortButton = true,
             showFilter = false
         )
     }

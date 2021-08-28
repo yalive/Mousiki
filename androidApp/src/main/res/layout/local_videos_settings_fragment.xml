@@ -37,7 +37,7 @@
             android:fontFamily="@font/roboto_medium"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:text="@string/audio_file_settings"
+            android:text="@string/video_file_settings"
             android:textColor="?colorOnSurface"
             android:textSize="18sp" />
 

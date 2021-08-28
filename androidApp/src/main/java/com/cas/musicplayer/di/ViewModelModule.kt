@@ -16,6 +16,7 @@ import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsViewModel
 import com.cas.musicplayer.ui.local.videos.LocalVideoViewModel
+import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
@@ -47,6 +48,7 @@ val viewModelsModule = module {
     factory { LocalSongsViewModel(get(), get()) }
     factory { LocalVideoViewModel(get(), get()) }
     factory { LocalSongsSettingsViewModel(get(), get()) }
+    factory { LocalVideosSettingsViewModel(get()) }
     factory { LocalPlaylistsViewModel(get(), get(), get(), get(), get()) }
     factory { LocalAlbumsViewModel(get()) }
     factory { LocalArtistsViewModel(get()) }
