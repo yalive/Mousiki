@@ -10,6 +10,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
+import com.cas.musicplayer.ui.bottomsheet.VideoOptionsFragment
 import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
 import com.cas.musicplayer.utils.color
 import com.cas.musicplayer.utils.loadTrackImage
@@ -65,7 +66,7 @@ class LocalVideoAdapterDelegate(
             binding.indicatorPlaying.setLocalMusicPlayingState(video)
             binding.btnMore.onClick {
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
-                TrackOptionsFragment.present(fm, video.track)
+                VideoOptionsFragment.present(fm, video.track)
             }
         }
     }

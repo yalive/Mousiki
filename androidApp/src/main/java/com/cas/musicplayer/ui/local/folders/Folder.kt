@@ -18,7 +18,8 @@ data class Folder(
     val name: String = "",
     val albumId: Long = -1,
     val path: String = "",
-    val ids: LongArray = longArrayOf()
+    val ids: LongArray = longArrayOf(),
+    var folderType: FolderType = FolderType.SONG
 ) : Parcelable {
 
     companion object {
@@ -28,7 +29,18 @@ data class Folder(
                 File(song.path).fixedName(context),
                 song.albumId,
                 File(song.path).fixedPath(context),
-                songs
+                songs,
+                FolderType.SONG
+            )
+        }
+        fun fromVideo(song: Song, songs: LongArray, context: Context): Folder {
+            return Folder(
+                song.id,
+                File(song.path).fixedName(context),
+                song.albumId,
+                File(song.path).fixedPath(context),
+                songs,
+                FolderType.VIDEO
             )
         }
     }

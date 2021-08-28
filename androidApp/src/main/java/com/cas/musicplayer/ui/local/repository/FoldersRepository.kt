@@ -23,7 +23,7 @@ class FoldersRepository(
             videosRepository.videos()
                 .run { if (showHidden) this else filterNotHidden() }
                 .groupBy { it.path }.map {
-                    Folder.fromSong(it.value.first(), it.value.toIDList(), MusicApp.get())
+                    Folder.fromVideo(it.value.first(), it.value.toIDList(), MusicApp.get())
                 }.sortedBy { it.name }
         } else return@withContext songsRepository.songs()
             .run { if (showHidden) this else filterNotHidden() }

@@ -14,9 +14,14 @@ import com.mousiki.shared.utils.Constants.ARTIST_SORT_ORDER
 import com.mousiki.shared.utils.Constants.FILTER_SONG
 import com.mousiki.shared.utils.Constants.FILTER_SONGS_LESS_THAN_100k
 import com.mousiki.shared.utils.Constants.FILTER_SONGS_LESS_THAN_60S
+import com.mousiki.shared.utils.Constants.FILTER_VIDEOS_LESS_THAN_100k
+import com.mousiki.shared.utils.Constants.FILTER_VIDEOS_LESS_THAN_60S
+import com.mousiki.shared.utils.Constants.FILTER_VIDEO_DURATION
+import com.mousiki.shared.utils.Constants.FILTER_VIDEO_SIZE
 import com.mousiki.shared.utils.Constants.INITIALIZED_BLACKLIST
 import com.mousiki.shared.utils.Constants.MUSIC_SEEN
 import com.mousiki.shared.utils.Constants.SONG_SORT_ORDER
+import com.mousiki.shared.utils.Constants.VIDEO_SORT_ORDER
 
 
 /**
@@ -34,8 +39,20 @@ object PreferenceUtil {
             putString(SONG_SORT_ORDER, value)
         }
 
+    var videoSortOrder
+        get() = sharedPreferences.getStringOrDefault(
+            VIDEO_SORT_ORDER,
+            SortOrder.VideoSortOrder.SONG_A_Z
+        )
+        set(value) = sharedPreferences.edit {
+            putString(VIDEO_SORT_ORDER, value)
+        }
+
     val filterLength get() = sharedPreferences.getInt(FILTER_SONG, 20)
     val filterSizeKb get() = sharedPreferences.getInt(FILTER_SONG, 100)
+
+    val filterVideoLength get() = sharedPreferences.getInt(FILTER_VIDEO_DURATION, 20)
+    val filterVideoSizeKb get() = sharedPreferences.getInt(FILTER_VIDEO_SIZE, 100)
 
     var isInitializedBlacklist
         get() = sharedPreferences.getBoolean(
@@ -59,6 +76,22 @@ object PreferenceUtil {
         )
         set(value) = sharedPreferences.edit {
             putBoolean(FILTER_SONGS_LESS_THAN_100k, value)
+        }
+
+    var filterVideoLessThanDuration
+        get() = sharedPreferences.getBoolean(
+            FILTER_VIDEOS_LESS_THAN_60S, false
+        )
+        set(value) = sharedPreferences.edit {
+            putBoolean(FILTER_VIDEOS_LESS_THAN_60S, value)
+        }
+
+    var filterVideoLessThanSize
+        get() = sharedPreferences.getBoolean(
+            FILTER_VIDEOS_LESS_THAN_100k, false
+        )
+        set(value) = sharedPreferences.edit {
+            putBoolean(FILTER_VIDEOS_LESS_THAN_100k, value)
         }
 
     var albumDetailSongSortOrder
@@ -124,6 +157,15 @@ object PreferenceUtil {
     }
 
     fun isFolderHidden(path: String): Boolean {
+        return sharedPreferences.getBoolean(path, false)
+    }
+
+    fun toggleVideosFolderVisibility(path: String) {
+        val hidden = sharedPreferences.getBoolean(path, false)
+        sharedPreferences.edit { putBoolean(path, !hidden) }
+    }
+
+    fun isVideoFolderHidden(path: String): Boolean {
         return sharedPreferences.getBoolean(path, false)
     }
 }

@@ -14,6 +14,7 @@ import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentFolderOptionsBinding
 import com.cas.musicplayer.ui.local.folders.Folder
+import com.cas.musicplayer.ui.local.folders.FolderType
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.ensureRoundedBackground
 import com.cas.musicplayer.utils.viewBinding
@@ -51,7 +52,12 @@ class FolderOptionsFragment : BottomSheetDialogFragment() {
                     message(text = message)
                     title(R.string.dialog_title_confirm_hide_folder)
                     positiveButton(R.string.label_hide) {
-                        PreferenceUtil.toggleFolderVisibility(folder.path)
+                        if (folder.folderType == FolderType.SONG) {
+                            PreferenceUtil.toggleFolderVisibility(folder.path)
+                        } else if (folder.folderType == FolderType.VIDEO) {
+                            PreferenceUtil.toggleVideosFolderVisibility(folder.path)
+                        }
+
                         onOption?.invoke(FolderOption.Hidden)
                         this@FolderOptionsFragment.dismiss()
                     }

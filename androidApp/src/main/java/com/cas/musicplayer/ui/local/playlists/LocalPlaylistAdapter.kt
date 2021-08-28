@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalPlaylistBinding
-import com.cas.musicplayer.ui.library.delegates.onPlaylistOption
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.isCustom
@@ -51,9 +50,9 @@ class LocalPlaylistsAdapter(
             )
 
             binding.btnMore.isVisible = playlist.isCustom
-            binding.btnMore.onPlaylistOption(playlist, onDelete = {
-                doDeletePlaylist(playlist)
-            })
+            //binding.btnMore.onPlaylistOption(playlist, onDelete = {
+            //    doDeletePlaylist(playlist)
+            //})
 
             val drawable = when (playlist.type) {
                 Playlist.TYPE_FAV -> R.drawable.fav_playlist

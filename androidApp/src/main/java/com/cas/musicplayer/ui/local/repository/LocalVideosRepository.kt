@@ -77,7 +77,6 @@ class LocalVideosRepository(private val context: Context) {
         val data = cursor.getString(MediaStore.Video.VideoColumns.DATA)
         val albumName = cursor.getStringOrNull(MediaStore.Video.VideoColumns.ALBUM)
         val artistName = cursor.getStringOrNull(MediaStore.Video.VideoColumns.ARTIST)
-        val albumArtist = cursor.getStringOrNull("album_artist")
         val path = data.substringBeforeLast("/")
         val size = cursor.getLong(MediaStore.Video.VideoColumns.SIZE)
         return Song(
@@ -93,7 +92,7 @@ class LocalVideosRepository(private val context: Context) {
             artistId = 0,
             artistName = artistName ?: "",
             composer = "",
-            albumArtist = albumArtist ?: "",
+            albumArtist = "",
             path = path,
             size = size
         )
@@ -103,17 +102,40 @@ class LocalVideosRepository(private val context: Context) {
     fun makeVideoCursor(
         selection: String?,
         selectionValues: Array<String>?,
-        sortOrder: String = PreferenceUtil.songSortOrder,
-        withFilter: Boolean = true // util when making selection by id
+        sortOrder: String = PreferenceUtil.videoSortOrder,
+        withFilter: Boolean = true
     ): Cursor? {
+
+        var selectionFinal = selection
+        selectionFinal = if (selection != null && selection.trim { it <= ' ' } != "") {
+            "$selectionFinal"
+        } else {
+            ""
+        }
+
+        if (withFilter) {
+            val minDuration =
+                if (PreferenceUtil.filterVideoLessThanDuration) PreferenceUtil.filterVideoLength * 1000 else DEF_MIN_DURATION * 1000
+            selectionFinal = if (selectionFinal.isNullOrEmpty() || selectionFinal.isNullOrBlank()) {
+                MediaStore.Video.VideoColumns.DURATION + ">= " + minDuration
+            } else {
+                selectionFinal + " AND " + MediaStore.Video.VideoColumns.DURATION + ">= " + minDuration
+            }
+            selectionFinal =
+                selectionFinal + " AND " + MediaStore.Video.VideoColumns.DURATION + ">= " + minDuration
+            if (PreferenceUtil.filterVideoLessThanSize) {
+                selectionFinal =
+                    selectionFinal + " AND " + MediaStore.Video.VideoColumns.SIZE + ">= " + (PreferenceUtil.filterVideoSizeKb * 1000)
+            }
+        }
 
         return try {
             context.contentResolver.query(
                 mediaUri(),
                 videoBaseProjection,
-                null as String?,
-                null as Array<String?>?,
-                null as String?
+                selectionFinal,
+                selectionValues,
+                sortOrder
             )
         } catch (ex: SecurityException) {
             return null
@@ -156,7 +178,7 @@ class LocalVideosRepository(private val context: Context) {
     }
 
     companion object {
-        private const val DEF_MIN_DURATION = 2
+        private const val DEF_MIN_DURATION = 1
     }
 }
 
@@ -167,8 +189,6 @@ val videoBaseProjection = arrayOf(
     MediaStore.Video.VideoColumns.DURATION, // 4
     MediaStore.Video.VideoColumns.DATA, // 5
     MediaStore.Video.VideoColumns.ALBUM, // 8
-    MediaStore.Video.VideoColumns.ALBUM_ARTIST, // 9
     MediaStore.Video.VideoColumns.ARTIST, // 10
-    MediaStore.Video.VideoColumns.COMPOSER, // 11
     MediaStore.Video.VideoColumns.SIZE, // 11
 )
