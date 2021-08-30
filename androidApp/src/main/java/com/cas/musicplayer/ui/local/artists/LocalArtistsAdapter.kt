@@ -3,14 +3,17 @@ package com.cas.musicplayer.ui.local.artists
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.activity
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalArtistBinding
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
+import com.cas.musicplayer.ui.local.artists.options.ArtistOptionsFragment
 import com.cas.musicplayer.utils.Utils.getAlbumArtUri
 import com.squareup.picasso.Picasso
 
@@ -45,6 +48,12 @@ class LocalArtistsAdapter :
                     R.id.action_localSongsContainerFragment_to_artistDetailsFragment,
                     bundleOf(ArtistDetailsFragment.EXTRAS_ARTIST_ID to artist.id)
                 )
+            }
+
+            binding.btnMore.onClick {
+                val fm = (itemView.activity as? FragmentActivity)?.supportFragmentManager
+                    ?: return@onClick
+                ArtistOptionsFragment.present(fm, artist)
             }
 
             Picasso.get()
