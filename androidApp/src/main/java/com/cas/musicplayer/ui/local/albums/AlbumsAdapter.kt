@@ -3,6 +3,8 @@ package com.cas.musicplayer.ui.local.albums
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalAlbumBinding
+import com.cas.musicplayer.ui.local.albums.options.AlbumOptionsFragment
 import com.cas.musicplayer.utils.Utils.getAlbumArtUri
-import com.cas.musicplayer.utils.dpToPixel
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.Album
 import com.squareup.picasso.Picasso
 
@@ -41,18 +42,17 @@ class AlbumsAdapter :
                 album.songCount,
                 album.songCount
             )
-            try {
-                val imageSize = itemView.context.dpToPixel(55f)
-                Picasso.get()
-                    .load(getAlbumArtUri(album.id))
-                    .placeholder(R.drawable.ic_album_placeholder)
-                    .resize(imageSize, imageSize)
-                    .into(binding.imgAlbum)
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (e: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(e)
+
+            binding.btnMore.onClick {
+                val fm = itemView.findFragment<Fragment>().childFragmentManager
+                AlbumOptionsFragment.present(fm, album)
             }
+
+            Picasso.get()
+                .load(getAlbumArtUri(album.id))
+                .placeholder(R.drawable.ic_album_placeholder)
+                .fit()
+                .into(binding.imgAlbum)
 
             itemView.onClick {
                 itemView.findNavController().navigate(
