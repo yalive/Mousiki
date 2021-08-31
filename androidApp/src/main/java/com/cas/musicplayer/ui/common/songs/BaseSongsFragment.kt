@@ -29,6 +29,7 @@ import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
+import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.base.BaseViewModel
 import com.mousiki.shared.ui.resource.Resource
@@ -47,6 +48,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
     : BaseFragment<T>(R.layout.fragment_playlist_songs) {
 
     protected abstract val tracks: List<Track>
+    protected open val playlist: Playlist? = null
 
     private val imgArtist: ImageView
         get() = binding.imgArtist
@@ -63,7 +65,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 onClickTrack(track)
             },
             onLongPressTrack = { track ->
-                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
+                MultiSelectTrackFragment.present(requireActivity(), tracks, track, playlist)
             },
             onClickMore = { track ->
                 val bottomSheetFragment = TrackOptionsFragment()
@@ -129,7 +131,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         }
 
         binding.btnMultiSelect.onClick {
-            MultiSelectTrackFragment.present(requireActivity(), tracks)
+            MultiSelectTrackFragment.present(requireActivity(), tracks, playlist = playlist)
         }
     }
 
