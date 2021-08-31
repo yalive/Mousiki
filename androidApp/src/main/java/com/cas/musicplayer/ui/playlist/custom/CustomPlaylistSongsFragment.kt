@@ -30,6 +30,9 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
             ?.filterIsInstance<DisplayedVideoItem>()
             ?.map { it.track }.orEmpty()
 
+    override val playlist: Playlist?
+        get() = viewModel.playlist
+
     override val screenName: String = "CustomPlaylistSongsFragment"
 
     override val viewModel: CustomPlaylistSongsViewModel by viewModel {
