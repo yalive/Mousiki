@@ -176,7 +176,12 @@ dependencies {
     implementation 'com.github.sephiroth74:android-target-tooltip:2.0.3'
 
     // Exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.0'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.0'
+
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
+    implementation 'com.arthenica:ffmpeg-kit-full:4.4.LTS'
+    implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'
 
     // Modules
     implementation project(path: ':common')

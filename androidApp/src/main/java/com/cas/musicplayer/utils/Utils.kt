@@ -8,14 +8,20 @@ import android.content.ContentUris.withAppendedId
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaMetadataRetriever
+import android.media.ThumbnailUtils
 import android.media.audiofx.AudioEffect
 import android.net.Uri
+import android.os.Build
+import android.os.CancellationSignal
+import android.provider.MediaStore
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import android.util.Size
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -43,6 +49,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 
@@ -315,6 +322,16 @@ object Utils : KoinComponent {
             it.release()
         }
         return@withContext imgByte
+    }
+
+    suspend fun getVideoThumbnail(songPath: Uri): ByteArray? = withContext(Dispatchers.Default) {
+        var bmThumbnail = ThumbnailUtils.createVideoThumbnail(
+            songPath.path!!,
+            MediaStore.Video.Thumbnails.MICRO_KIND
+        )
+        val stream = ByteArrayOutputStream()
+        bmThumbnail?.compress(Bitmap.CompressFormat.PNG, 90, stream)
+        return@withContext stream.toByteArray()
     }
 }
 

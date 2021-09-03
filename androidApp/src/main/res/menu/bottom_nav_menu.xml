@@ -14,9 +14,9 @@
         android:title="@string/genre_music" />
 
     <item
-        android:id="@+id/navLibrary"
-        android:icon="@drawable/selector_ic_menu_library"
-        android:title="@string/library" />
+        android:id="@+id/navVideo"
+        android:icon="@drawable/selector_ic_menu_video"
+        android:title="@string/video" />
 
     <item
         android:id="@+id/navSearch"

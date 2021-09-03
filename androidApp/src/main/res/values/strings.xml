@@ -17,8 +17,10 @@
     <string name="common_turn_on">TURN ON</string>
     <string name="share_track_link_message">Here\'s a new song for you on <b>Mousiki</b> 🎧❀ヅ❤♫…%s.\n%s</string>
 
-    <!-- Library -->
+    <!-- Videos -->
     <string name="library">Library</string>
+    <string name="video">Video</string>
+    <string name="video_file_settings">Video files settings</string>
     <string name="library_recently_played">Recently played</string>
     <string name="library_favourites">Favourites</string>
     <string name="library_recent">Recent</string>
@@ -55,6 +57,11 @@
     <string name="search">Search</string>
     <string name="search_button_title">Artists, songs, or podcasts</string>
     <string name="artists_find_an_artist">Find an artist</string>
+    <string name="turn_on_to_hide">Turn on to hide</string>
+    <string name="audio_duration_less_than">Filter audio files less than 60s</string>
+    <string name="audio_size_less_than">Filter audio files less than 100k</string>
+    <string name="video_duration_less_than">Filter video files less than 60s</string>
+    <string name="video_size_less_than">Filter video files less than 100k</string>
 
     <!-- Playlist -->
     <string name="add_to_playlist">Add to playlist</string>
@@ -168,6 +175,7 @@
     <string name="external_storage" translatable="false">SD Card</string>
     <string name="label_sort_a_z" translatable="false">A-Z</string>
     <string name="label_sort_z_a" translatable="false">Z-A</string>
+    <string name="audio_file_settings">Audio files settings</string>
 
     <string name="local_songs_no_permission_title">Allow to play music?</string>
     <string name="local_songs_no_permission_description">Please allow Mousiki to access storage permission to play music</string>
@@ -205,5 +213,24 @@
 
     <!-- Multi select songs-->
     <string name="added_to_play_next">Added to next</string>
+
+    <string name="video_resize_fit">Fit</string>
+    <string name="video_resize_crop">Crop</string>
+
+    <string name="video_orientation_video">Video orientation</string>
+    <string name="video_orientation_sensor">Auto-rotate</string>
+
+    <string name="onboarding_open_title">Choose a video to play</string>
+    <string name="onboarding_open_description">Tap to open a video file. Long tap to load external subtitles.</string>
+
+    <string name="open_subtitles">Load subtitles</string>
+
+    <string name="error_details">Details</string>
+    <string name="error_files_missing">Files app is disabled or missing</string>
+
+    <string name="request_scope">To automatically load external subtitles or enable skipping to next file in a directory, grant %s access to the topmost folder containing your videos (e.g. Movies).</string>
+
+    <string name="delete_query">Delete this file\?</string>
+    <string name="delete_confirmation">Delete</string>
 
 </resources>

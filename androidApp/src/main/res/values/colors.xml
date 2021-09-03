@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">@color/colorAccent</color>
     <color name="colorPrimaryDark">@color/colorTransparent</color>
     <color name="colorAccent">#D81B60</color>
@@ -37,4 +37,14 @@
     // local songs colors
     <color name="localSongsPrimaryColor">#F3CB45</color>
 
+    <color name="ui_controls_background">#98000000</color>
+    <color name="exo_bottom_bar_background" tools:keep="@color/exo_bottom_bar_background">@color/ui_controls_background</color>
+    <color name="exo_black_opacity_70" tools:keep="@color/exo_black_opacity_70">@color/ui_controls_background</color>
+    <color name="exo_styled_error_message_background" tools:keep="@color/exo_styled_error_message_background">@color/ui_controls_background</color>
+    <color name="dtpv_yt_tap_circle_color">#18FFFFFF</color>
+    <color name="dtpv_yt_background_circle_color">#20EEEEEE</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#3DDC84</color>
 </resources>

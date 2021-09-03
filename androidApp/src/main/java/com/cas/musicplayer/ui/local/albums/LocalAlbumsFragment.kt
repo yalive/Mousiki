@@ -9,8 +9,8 @@ import com.cas.musicplayer.databinding.LocalAlbumsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
-import com.cas.musicplayer.ui.local.songs.StoragePermissionDelegate
-import com.cas.musicplayer.ui.local.songs.StoragePermissionDelegateImpl
+import com.cas.musicplayer.ui.local.StoragePermissionDelegate
+import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
 import com.cas.musicplayer.utils.viewBinding
 
 class LocalAlbumsFragment : BaseFragment<LocalAlbumsViewModel>(

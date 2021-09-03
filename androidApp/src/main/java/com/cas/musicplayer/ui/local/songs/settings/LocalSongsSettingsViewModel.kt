@@ -3,10 +3,11 @@ package com.cas.musicplayer.ui.local.songs.settings
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.ui.local.folders.Folder
+import com.cas.musicplayer.ui.local.folders.FolderType
 import com.cas.musicplayer.ui.local.folders.shortPath
 import com.cas.musicplayer.ui.local.repository.FoldersRepository
 import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterAudioSettingsItem
-import com.cas.musicplayer.ui.local.songs.settings.model.FolderUiModel
+import com.cas.musicplayer.ui.local.folders.settings.FolderUiModel
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.ui.base.BaseViewModel
@@ -36,7 +37,7 @@ class LocalSongsSettingsViewModel(
         val items: List<DisplayableItem> = listOf(filterItem)
         _settingItems.value = items
 
-        val folders = foldersRepository.getFolders(true).map { folder ->
+        val folders = foldersRepository.getFolders(FolderType.SONG,true).map { folder ->
             val hidden = PreferenceUtil.isFolderHidden(folder.path)
             FolderUiModel(folder, folder.shortPath, hidden, ::onClickFolder)
         }

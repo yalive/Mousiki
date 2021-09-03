@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/scroller"
+        android:layout_width="35dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:alpha="0.6"
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="?colorOnSurface" />
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_black"
+        android:text="@string/label_sort_by"
+        android:textAllCaps="true"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="14sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSortAZ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto"
+        android:gravity="start|center_vertical"
+        android:text="@string/label_sort_a_z"
+        android:textColor="?colorOnSurface" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSortZA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto"
+        android:gravity="start|center_vertical"
+        android:text="@string/label_sort_z_a"
+        android:textColor="?colorOnSurface" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSortDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto"
+        android:gravity="start|center_vertical"
+        android:text="@string/label_sort_duration"
+        android:textAllCaps="false"
+        android:textColor="?colorOnSurface" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSortLastAdded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sixteen_16dp"
+        android:layout_marginEnd="@dimen/sixteen_16dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/roboto"
+        android:gravity="start|center_vertical"
+        android:text="@string/label_sort_last_added"
+        android:textAllCaps="false"
+        android:textColor="?colorOnSurface" />
+
+</LinearLayout>
