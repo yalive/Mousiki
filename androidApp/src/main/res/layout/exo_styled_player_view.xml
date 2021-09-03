@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.cas.musicplayer.ui.local.videos.player.dtpv.youtube.YouTubeOverlay
+    <com.cas.musicplayer.ui.local.videos.vplayer.YouTubeOverlay
         android:id="@+id/youtube_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

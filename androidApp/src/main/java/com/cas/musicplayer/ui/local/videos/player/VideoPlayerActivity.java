@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.UriPermission;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -141,6 +140,7 @@ public class VideoPlayerActivity extends Activity {
     public boolean frameRendered;
     public boolean focusPlay = false;
     private String videoType = "";
+    private String videoName = "";
     private Uri currentUri;
     private boolean isTvBox;
 
@@ -151,7 +151,6 @@ public class VideoPlayerActivity extends Activity {
     final Rational rationalLimitTall = new Rational(100, 239);
 
     boolean apiAccess;
-    boolean intentReturnResult;
     boolean playbackFinished;
 
 
@@ -167,8 +166,9 @@ public class VideoPlayerActivity extends Activity {
         }
 
         long videoId = getIntent().getLongExtra("video_id", 0);
-        currentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, videoId);
+        currentUri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoId);
         videoType = getIntent().getStringExtra("video_type");
+        videoName = getIntent().getStringExtra("video_name");
 
         isTvBox = Utils.isTvBox(this);
 
@@ -237,8 +237,7 @@ public class VideoPlayerActivity extends Activity {
             buttonPiP.setOnClickListener(view -> enterPiP());
 
             buttonPiP.setOnLongClickListener(v -> {
-                buttonPiP.performHapticFeedback(mPrefs.toggleAutoPiP() ?
-                        HapticFeedbackConstants.VIRTUAL_KEY : HapticFeedbackConstants.LONG_PRESS);
+                buttonPiP.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 resetHideCallbacks();
                 return true;
             });
@@ -382,10 +381,10 @@ public class VideoPlayerActivity extends Activity {
         playerView.setControllerVisibilityListener(new StyledPlayerControlView.VisibilityListener() {
             @Override
             public void onVisibilityChange(int visibility) {
-                controllerVisible = visibility == View.VISIBLE;
+                playerView.setControllerVisible(visibility == View.VISIBLE);
 
-                if (restoreControllerTimeout) {
-                    restoreControllerTimeout = false;
+                if (playerView.getRestoreControllerTimeout()) {
+                    playerView.setRestoreControllerTimeout(false);
                     if (player == null || !player.isPlaying()) {
                         playerView.setControllerShowTimeoutMs(-1);
                     } else {
@@ -400,7 +399,7 @@ public class VideoPlayerActivity extends Activity {
                     Utils.hideSystemUi(playerView);
                 }
 
-                if (controllerVisible && playerView.isControllerFullyVisible()) {
+                if (playerView.getControllerVisible() && playerView.isControllerFullyVisible()) {
                     if (errorToShow != null) {
                         showError(errorToShow);
                         errorToShow = null;
@@ -410,38 +409,10 @@ public class VideoPlayerActivity extends Activity {
         });
     }
 
-    private void startPlayer() {
-        boolean uriAlreadyTaken = false;
-
-        final ContentResolver contentResolver = getContentResolver();
-        for (UriPermission persistedUri : contentResolver.getPersistedUriPermissions()) {
-            if (persistedUri.getUri().equals(currentUri)) {
-                uriAlreadyTaken = true;
-            } else {
-                try {
-                    contentResolver.releasePersistableUriPermission(persistedUri.getUri(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        if (!uriAlreadyTaken) {
-            try {
-                contentResolver.takePersistableUriPermission(currentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
     @Override
     public void onStart() {
         super.onStart();
-        updateSubtitleStyle();
         initializePlayer();
-        startPlayer();
     }
 
     @Override
@@ -459,6 +430,8 @@ public class VideoPlayerActivity extends Activity {
         }
     }
 
+    private int boostLevel = 0;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -469,7 +442,7 @@ public class VideoPlayerActivity extends Activity {
             case KeyEvent.KEYCODE_VOLUME_UP:
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 playerView.removeCallbacks(playerView.textClearRunnable);
-                Utils.adjustVolume(mAudioManager, playerView, keyCode == KeyEvent.KEYCODE_VOLUME_UP, event.getRepeatCount() == 0);
+                boostLevel = Utils.adjustVolume(mAudioManager, playerView, keyCode == KeyEvent.KEYCODE_VOLUME_UP, event.getRepeatCount() == 0, loudnessEnhancer, boostLevel);
                 return true;
             case KeyEvent.KEYCODE_BUTTON_SELECT:
             case KeyEvent.KEYCODE_BUTTON_START:
@@ -596,9 +569,7 @@ public class VideoPlayerActivity extends Activity {
             };
             registerReceiver(mReceiver, new IntentFilter(ACTION_MEDIA_CONTROL));
         } else {
-            if (mPrefs.resizeMode == AspectRatioFrameLayout.RESIZE_MODE_ZOOM) {
-                playerView.setScale(mPrefs.scale);
-            }
+            //playerView.setScale(mPrefs.scale);
             if (mReceiver != null) {
                 unregisterReceiver(mReceiver);
                 mReceiver = null;
@@ -683,14 +654,11 @@ public class VideoPlayerActivity extends Activity {
         mediaSessionConnector.setPlayer(player);
 
         mediaSessionConnector.setMediaMetadataProvider(player -> {
-            final String title = Utils.getFileName(this, currentUri);
-            if (title == null)
-                return null;
-            else
-                return new MediaMetadataCompat.Builder()
-                        .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, title)
-                        .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
-                        .build();
+            return new MediaMetadataCompat.Builder()
+                    .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, videoName)
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, videoName)
+                    .build();
+
         });
 
         playerView.setControllerShowTimeoutMs(-1);
@@ -699,21 +667,23 @@ public class VideoPlayerActivity extends Activity {
 
         timeBar.setBufferedColor(DefaultTimeBar.DEFAULT_BUFFERED_COLOR);
 
-        playerView.setResizeMode(mPrefs.resizeMode);
+        //playerView.setResizeMode(mPrefs.resizeMode);
 
         playerView.setScale(1.f);
 
         MediaItem.Builder mediaItemBuilder = new MediaItem.Builder()
                 .setUri(currentUri)
-                .setMimeType(videoType);
+                .setMimeType("video/mp4");
 
         player.setMediaItem(mediaItemBuilder.build());
+        player.setPlayWhenReady(true);
 
         if (loudnessEnhancer != null) {
             loudnessEnhancer.release();
         }
         try {
             loudnessEnhancer = new LoudnessEnhancer(player.getAudioSessionId());
+            playerView.setLoudnessEnhancer(loudnessEnhancer);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -728,9 +698,9 @@ public class VideoPlayerActivity extends Activity {
             play = true;
         }
 
-        player.seekTo(mPrefs.getPosition());
+        //player.seekTo(mPrefs.getPosition());
 
-        titleView.setText(Utils.getFileName(this, mPrefs.mediaUri));
+        titleView.setText(videoName);
         titleView.setVisibility(View.VISIBLE);
 
         if (buttonPiP != null)
@@ -806,7 +776,7 @@ public class VideoPlayerActivity extends Activity {
                     if (shortControllerTimeout) {
                         playerView.setControllerShowTimeoutMs(CONTROLLER_TIMEOUT / 3);
                         shortControllerTimeout = false;
-                        restoreControllerTimeout = true;
+                        playerView.setRestoreControllerTimeout(false);
                     } else {
                         playerView.setControllerShowTimeoutMs(CONTROLLER_TIMEOUT);
                     }
@@ -843,17 +813,15 @@ public class VideoPlayerActivity extends Activity {
                     float frameRateExo = Format.NO_VALUE;
 
                     if (format != null) {
-                        if (mPrefs.orientation == Utils.Orientation.VIDEO) {
-                            if (Utils.isPortrait(format)) {
-                                VideoPlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-                            } else {
-                                VideoPlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-                            }
+                        if (Utils.isPortrait(format)) {
+                            //this.(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                        } else {
+                            //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
                         }
                         frameRateExo = format.frameRate;
                     }
 
-                    boolean switched = Utils.switchFrameRate(VideoPlayerActivity.this, frameRateExo, mPrefs.mediaUri, play);
+                    boolean switched = Utils.switchFrameRate(VideoPlayerActivity.this, frameRateExo, currentUri, play);
                     if (play) {
                         play = false;
                         if (!switched) {
@@ -863,11 +831,13 @@ public class VideoPlayerActivity extends Activity {
                     }
 
                     updateLoading(false);
-
+/*
                     if (mPrefs.audioTrack != -1 && mPrefs.audioTrackFfmpeg != -1) {
                         setSelectedTrackAudio(mPrefs.audioTrack, false);
                         setSelectedTrackAudio(mPrefs.audioTrackFfmpeg, true);
                     }
+
+ */
                 }
             } else if (state == Player.STATE_ENDED) {
                 playbackFinished = true;
@@ -895,7 +865,7 @@ public class VideoPlayerActivity extends Activity {
         try {
             if (Settings.System.getInt(getContentResolver(), Settings.System.ACCELEROMETER_ROTATION) == 0) {
                 Settings.System.putInt(getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 1);
-                restoreOrientationLock = true;
+                //playerView.setRestoreOrientationLock = true;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -975,21 +945,6 @@ public class VideoPlayerActivity extends Activity {
             }
             trackSelector.setParameters(parametersBuilder);
         }
-    }
-
-    public int getTrackCountSubtitle() {
-        if (trackSelector != null) {
-            final MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
-            if (mappedTrackInfo != null) {
-                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
-                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_TEXT) {
-                        final TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(rendererIndex);
-                        return trackGroups.length;
-                    }
-                }
-            }
-        }
-        return 0;
     }
 
     boolean isPiPSupported() {

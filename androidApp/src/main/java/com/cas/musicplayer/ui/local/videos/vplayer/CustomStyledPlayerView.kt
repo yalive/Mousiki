@@ -13,6 +13,7 @@ import com.cas.musicplayer.ui.local.videos.vplayer.Utils.adjustVolume
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import android.view.ScaleGestureDetector.OnScaleGestureListener
 import android.media.AudioManager
+import android.media.audiofx.LoudnessEnhancer
 import android.os.Build
 import android.util.AttributeSet
 import android.view.*
@@ -24,6 +25,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
 import com.cas.musicplayer.utils.BrightnessUtils
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.SimpleExoPlayer
 
 /**
  * *********************************
@@ -66,6 +68,10 @@ open class CustomStyledPlayerView @JvmOverloads constructor(
 
     var locked = false
 
+    var player: SimpleExoPlayer? = null
+
+    var loudnessEnhancer: LoudnessEnhancer? = null
+
     @JvmField
     val textClearRunnable = Runnable {
         setCustomErrorMessage(null)
@@ -90,14 +96,15 @@ open class CustomStyledPlayerView @JvmOverloads constructor(
             ev
         )
         when (ev.actionMasked) {
-            MotionEvent.ACTION_DOWN -> handleTouch =
-                if (VideoPlayerActivity.snackbar.isShown) {
-                    VideoPlayerActivity.snackbar.dismiss()
+            /*MotionEvent.ACTION_DOWN -> handleTouch =
+                if (snackbar.isShown) {
+                    //snackbar.dismiss()
                     false
                 } else {
                     removeCallbacks(textClearRunnable)
                     true
-                }
+                }*/
+
             MotionEvent.ACTION_UP -> if (handleTouch) {
                 if (gestureOrientation == Orientation.HORIZONTAL) {
                     setCustomErrorMessage(null)
@@ -109,7 +116,7 @@ open class CustomStyledPlayerView @JvmOverloads constructor(
                 }
                 if (restorePlayState) {
                     restorePlayState = false
-                    VideoPlayerActivity.player.play()
+                    player?.play()
                 }
                 controllerAutoShow = true
             }
@@ -142,7 +149,7 @@ open class CustomStyledPlayerView @JvmOverloads constructor(
         if (!controllerVisibleFully) {
             showController()
             return true
-        } else if (VideoPlayerActivity.haveMedia && VideoPlayerActivity.player != null && VideoPlayerActivity.player.isPlaying) {
+        } else if (player!!.isPlaying) {
             hideController()
             return true
         }
@@ -155,7 +162,7 @@ open class CustomStyledPlayerView @JvmOverloads constructor(
         distanceX: Float,
         distanceY: Float
     ): Boolean {
-        if (mScaleDetector.isInProgress || VideoPlayerActivity.player == null || locked) return false
+        if (mScaleDetector.isInProgress || locked) return false
 
         // Exclude edge areas
         if (motionEvent.y < IGNORE_BORDER || motionEvent.x < IGNORE_BORDER || motionEvent.y > height - IGNORE_BORDER || motionEvent.x > width - IGNORE_BORDER) return false
@@ -173,41 +180,39 @@ open class CustomStyledPlayerView @JvmOverloads constructor(
                 // Do not show controller if not already visible
                 controllerAutoShow = false
                 if (gestureOrientation == Orientation.UNKNOWN) {
-                    if (VideoPlayerActivity.player.isPlaying) {
+                    if (player!!.isPlaying) {
                         restorePlayState = true
-                        VideoPlayerActivity.player.pause()
+                        player?.pause()
                     }
                     clearIcon()
-                    seekStart = VideoPlayerActivity.player.currentPosition
+                    seekStart = player!!.currentPosition
                     seekChange = 0L
-                    seekMax = VideoPlayerActivity.player.duration
+                    seekMax = player!!.duration
                 }
                 gestureOrientation = Orientation.HORIZONTAL
                 val position: Long
                 val distanceDiff = Math.max(0.5f, Math.min(Math.abs(pxToDp(distanceX) / 4), 10f))
-                if (VideoPlayerActivity.haveMedia) {
                     if (gestureScrollX > 0) {
                         if (seekStart + seekChange - SEEK_STEP * distanceDiff >= 0) {
-                            VideoPlayerActivity.player.setSeekParameters(SeekParameters.PREVIOUS_SYNC)
+                            player?.setSeekParameters(SeekParameters.PREVIOUS_SYNC)
                             seekChange -= (SEEK_STEP * distanceDiff).toLong()
                             position = seekStart + seekChange
-                            VideoPlayerActivity.player.seekTo(position)
+                            player?.seekTo(position)
                         }
                     } else {
-                        VideoPlayerActivity.player.setSeekParameters(SeekParameters.NEXT_SYNC)
+                        player?.setSeekParameters(SeekParameters.NEXT_SYNC)
                         if (seekMax == C.TIME_UNSET) {
                             seekChange += (SEEK_STEP * distanceDiff).toLong()
                             position = seekStart + seekChange
-                            VideoPlayerActivity.player.seekTo(position)
+                            player?.seekTo(position)
                         } else if (seekStart + seekChange + SEEK_STEP < seekMax) {
                             seekChange += (SEEK_STEP * distanceDiff).toLong()
                             position = seekStart + seekChange
-                            VideoPlayerActivity.player.seekTo(position)
+                            player?.seekTo(position)
                         }
                     }
                     setCustomErrorMessage(formatMilisSign(seekChange))
                     gestureScrollX = 0.0001f
-                }
             }
         }
 
@@ -228,7 +233,7 @@ open class CustomStyledPlayerView @JvmOverloads constructor(
                         canSetAutoBrightness
                     )
                 } else {
-                    adjustVolume(mAudioManager, this, gestureScrollY > 0, canBoostVolume)
+                    adjustVolume(mAudioManager, this, gestureScrollY > 0, canBoostVolume,loudnessEnhancer!!,0)
                 }
                 gestureScrollY = 0.0001f
             }
