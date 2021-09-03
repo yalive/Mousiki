@@ -26,18 +26,18 @@
         android:layout_marginTop="@dimen/four_4dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imgTrack"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:id="@+id/imgPlaylist"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="@dimen/sixteen_16dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded_corner"
-            app:srcCompat="@drawable/ic_folder" />
+            app:srcCompat="@drawable/fav_playlist" />
 
         <TextView
-            android:id="@+id/txtTrackTitle"
+            android:id="@+id/txtPlaylistTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -49,16 +49,16 @@
             android:textColor="?android:textColorPrimary"
             android:textDirection="ltr"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/txtTrackArtist"
+            app:layout_constraintBottom_toTopOf="@+id/txtTracksCount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/imgTrack"
-            app:layout_constraintTop_toTopOf="@id/imgTrack"
+            app:layout_constraintStart_toEndOf="@id/imgPlaylist"
+            app:layout_constraintTop_toTopOf="@id/imgPlaylist"
             app:layout_constraintVertical_chainStyle="packed"
             tools:ignore="SmallSp"
             tools:text="Download" />
 
         <TextView
-            android:id="@+id/txtTrackArtist"
+            android:id="@+id/txtTracksCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -68,9 +68,9 @@
             android:gravity="center"
             android:textColor="?android:textColorPrimary"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgTrack"
-            app:layout_constraintStart_toEndOf="@id/imgTrack"
-            app:layout_constraintTop_toBottomOf="@id/txtTrackTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/imgPlaylist"
+            app:layout_constraintStart_toEndOf="@id/imgPlaylist"
+            app:layout_constraintTop_toBottomOf="@id/txtPlaylistTitle"
             tools:ignore="SmallSp"
             tools:text="10 songs" />
 
@@ -82,7 +82,7 @@
         android:layout_marginTop="@dimen/spacing_small"
         android:alpha="0.5"
         android:background="#616060"
-        app:layout_constraintTop_toBottomOf="@id/imgTrack" />
+        app:layout_constraintTop_toBottomOf="@id/imgPlaylist" />
 
     <LinearLayout
         android:id="@+id/viewPlay"
@@ -156,43 +156,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/viewAddTo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingLeft="@dimen/sixteen_16dp"
-        android:paddingTop="12dp"
-        android:paddingRight="@dimen/sixteen_16dp"
-        android:paddingBottom="12dp">
-
-        <ImageButton
-            android:id="@+id/btnAddToPlaylist"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:alpha="0.7"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/two_2dp"
-            android:tint="?android:textColorPrimary"
-            app:srcCompat="@drawable/ic_playlist_add_rounded" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/label_add_to"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btnHide"
+        android:id="@+id/btnDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -210,7 +174,7 @@
             android:layout_gravity="center"
             android:alpha="0.7"
             android:padding="@dimen/two_2dp"
-            android:src="@drawable/ic_visibility_off_24"
+            app:srcCompat="@drawable/ic_trash"
             app:tint="?android:textColorPrimary" />
 
         <TextView
@@ -219,7 +183,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto_medium"
-            android:text="@string/label_hide"
+            android:text="@string/action_delete"
             android:textColor="?android:textColorPrimary"
             android:textSize="14sp" />
 

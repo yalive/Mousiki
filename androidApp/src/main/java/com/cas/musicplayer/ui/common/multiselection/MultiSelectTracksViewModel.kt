@@ -1,15 +1,25 @@
 package com.cas.musicplayer.ui.common.multiselection
 
 import androidx.lifecycle.viewModelScope
-import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.usecase.customplaylist.DeleteTrackFromCustomPlaylistUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
+import com.mousiki.shared.domain.usecase.library.RemoveSongFromRecentlyPlayedUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.event.Event
+import com.mousiki.shared.ui.event.asEvent
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MultiSelectTracksViewModel(
     private val initialTrack: Track?,
-    private val songs: List<Track>
+    private val songs: List<Track>,
+    private val deleteTrackFromCustomPlaylist: DeleteTrackFromCustomPlaylistUseCase,
+    private val removeSongFromFavouriteList: RemoveSongFromFavouriteListUseCase,
+    private val removeSongFromRecentlyPlayed: RemoveSongFromRecentlyPlayedUseCase,
 ) : BaseViewModel() {
 
     private val _tracks = MutableStateFlow<List<SelectableTrack>?>(null)
@@ -20,6 +30,9 @@ class MultiSelectTracksViewModel(
 
     private val _cancelVisible = MutableStateFlow(false)
     val cancelVisible: StateFlow<Boolean> = _cancelVisible
+
+    private val _tracksDeleted = MutableStateFlow<Event<Unit>?>(null)
+    val tracksDeleted: StateFlow<Event<Unit>?> = _tracksDeleted
 
     init {
         prepare()
@@ -55,5 +68,23 @@ class MultiSelectTracksViewModel(
 
     fun selectedTracks(): List<Track> {
         return _tracks.value?.filter { it.selected }?.map { it.track }.orEmpty()
+    }
+
+    fun deleteSelectedTracksFrom(playlist: Playlist) = scope.launch {
+        if (playlist.isFavourite) {
+            selectedTracks().map {
+                async { removeSongFromFavouriteList(it.id) }
+            }.awaitAll()
+        } else if (playlist.isRecent || playlist.isHeavy) {
+            selectedTracks().map {
+                async { removeSongFromRecentlyPlayed(it.id) }
+            }.awaitAll()
+        } else {
+            selectedTracks().map {
+                async { deleteTrackFromCustomPlaylist(it, playlist.id) }
+            }.awaitAll()
+        }
+
+        _tracksDeleted.value = Unit.asEvent()
     }
 }

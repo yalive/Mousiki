@@ -16,14 +16,17 @@ package com.cas.musicplayer.ui.local.artists.model
 
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.Utils
+import com.mousiki.shared.Parcelable
+import com.mousiki.shared.Parcelize
 import com.mousiki.shared.domain.models.Album
 import com.mousiki.shared.domain.models.Song
 
 
+@Parcelize
 data class LocalArtist(
     val id: Long,
     val albums: List<Album>
-) {
+) : Parcelable {
 
     val name: String
         get() {
@@ -60,6 +63,5 @@ data class LocalArtist(
         const val VARIOUS_ARTISTS_DISPLAY_NAME = "Various Artists"
         const val VARIOUS_ARTISTS_ID: Long = -2
         val empty = LocalArtist(-1, emptyList())
-
     }
 }
