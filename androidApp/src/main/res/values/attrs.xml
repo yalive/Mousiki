@@ -35,4 +35,29 @@
     <color name="progress_gray">#FFD8D8D8</color>
     <color name="progress_gray_dark">#FF383838</color>
     <color name="default_blue_light">#ff33b5e5</color>
+
+    <public name="YouTubeOverlay_yt_playerView" type="attr" />
+    <public name="YouTubeOverlay_yt_seekSeconds" type="attr" />
+    <public name="YouTubeOverlay_yt_animationDuration" type="attr" />
+    <public name="YouTubeOverlay_yt_arcSize" type="attr" />
+    <public name="YouTubeOverlay_yt_tapCircleColor" type="attr" />
+    <public name="YouTubeOverlay_yt_backgroundCircleColor" type="attr" />
+    <public name="YouTubeOverlay_yt_textAppearance" type="attr" />
+    <public name="YouTubeOverlay_yt_iconAnimationDuration" type="attr" />
+    <public name="YouTubeOverlay_yt_icon" type="attr" />
+
+    <public name="DoubleTapPlayerView_dtpv_controller" type="attr" />
+
+    <declare-styleable name="YouTubeOverlay">
+        <attr name="yt_playerView" format="reference" />
+        <attr name="yt_seekSeconds" format="integer" />
+        <attr name="yt_animationDuration" format="integer" />
+        <attr name="yt_iconAnimationDuration" format="integer" />
+        <attr name="yt_arcSize" format="dimension" />
+        <attr name="yt_tapCircleColor" format="color" />
+        <attr name="yt_backgroundCircleColor" format="color" />
+
+        <attr name="yt_textAppearance" format="reference" />
+        <attr name="yt_icon" format="reference" />
+    </declare-styleable>
 </resources>

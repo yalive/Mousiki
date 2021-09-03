@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.local.videos
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +15,11 @@ import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.SortVideoByFragment
 import com.cas.musicplayer.ui.local.StoragePermissionDelegate
 import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
+import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
 import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.domain.models.Track
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
@@ -30,7 +33,7 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
 
     private val adapter by lazy {
         LocalVideoAdapter(
-            onClickTrack = { viewModel.onClickTrack(it) },
+            onClickTrack = { playVideo(it) },
             onSortClicked = { saveAndSetOrder() },
             onFilterClicked = { showFilterScreen() },
             showCountsAndSortButton = true,
@@ -38,18 +41,17 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
         )
     }
 
+    private fun playVideo(track: Track) {
+        val intent = Intent(activity, VideoPlayerActivity::class.java)
+        intent.putExtra("video_type", track.type)
+        intent.putExtra("video_id", track.id.toLong())
+        startActivity(intent)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.localVideosRecyclerViewView.adapter = adapter
-        observe(PlaybackLiveData) { state ->
-            if (state == PlayerConstants.PlayerState.PLAYING
-                || state == PlayerConstants.PlayerState.BUFFERING
-                || state == PlayerConstants.PlayerState.PAUSED
-                || state == PlayerConstants.PlayerState.ENDED
-            ) {
-                viewModel.onPlaybackStateChanged()
-            }
-        }
+
         registerForActivityResult(
             this,
             binding.localVideosRecyclerViewView,
