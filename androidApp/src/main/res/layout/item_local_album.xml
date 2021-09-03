@@ -24,7 +24,7 @@
             android:id="@+id/imgAlbum"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="centerInside" />
+            android:scaleType="centerCrop" />
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
@@ -67,6 +67,6 @@
         android:layout_marginEnd="@dimen/four_4dp"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="6dp"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_more_vertical" />
+        app:srcCompat="@drawable/ic_more_vertical"
+        app:tint="?colorOnSurface" />
 </LinearLayout>

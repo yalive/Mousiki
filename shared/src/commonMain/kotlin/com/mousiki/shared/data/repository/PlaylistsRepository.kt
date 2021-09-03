@@ -76,6 +76,15 @@ class PlaylistsRepository(
             .map(Custom_playlist_track::toTrack)
     }
 
+    fun getCustomPlaylistTracksFlow(
+        playlistId: Long
+    ): Flow<List<Track>> {
+        return customPlaylistTrackDao.getPlaylistTracks(playlistId)
+            .asFlow()
+            .mapToList()
+            .map { dbTracks -> dbTracks.map(Custom_playlist_track::toTrack) }
+            .flowOn(Dispatchers.Default)
+    }
 
     suspend fun addTrackToCustomPlaylist(
         track: Track, playlistId: Long

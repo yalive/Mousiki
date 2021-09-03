@@ -10,6 +10,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import com.afollestad.materialdialogs.MaterialDialog
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -19,8 +20,10 @@ import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
+import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
 import kotlinx.coroutines.delay
+import org.koin.core.component.get
 
 class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
     R.layout.multi_select_tracks_fragment
@@ -30,7 +33,11 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
         val tracks = requireArguments().getParcelableArray(EXTRAS_TRACKS)!!.toList()
         val track = requireArguments().getParcelable<Track?>(EXTRAS_TRACK)
         @Suppress("UNCHECKED_CAST") // Checked
-        MultiSelectTracksViewModel(track, tracks as List<Track>)
+        MultiSelectTracksViewModel(track, tracks as List<Track>, get(), get(), get())
+    }
+
+    private val playlist by lazy {
+        requireArguments().getParcelable<Playlist?>(EXTRAS_PLAYLIST)
     }
 
     private val binding by viewBinding(MultiSelectTracksFragmentBinding::bind)
@@ -42,6 +49,7 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
             // Just to prevent underline click detection
         }
         binding.recyclerView.adapter = adapter
+        binding.btnRemoveFromPlaylist.isVisible = playlist != null
         binding.btnClose.onClick { activity?.onBackPressed() }
         binding.btnSelectAll.onClick { viewModel.selectAll() }
         binding.btnCancel.onClick { viewModel.deselectAll() }
@@ -57,6 +65,20 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
                 onAddedToPlaylist = { activity?.onBackPressed() },
                 tracks = viewModel.selectedTracks()
             )
+        }
+
+        binding.btnRemoveFromPlaylist.onClick {
+            val count = viewModel.selectedTracks().count()
+            MaterialDialog(requireContext()).show {
+                message(
+                    text = context.resources.getQuantityString(
+                        R.plurals.confirm_delete_tracks_from_playlist,
+                        count, count
+                    )
+                )
+                positiveButton(res = R.string.ok) { viewModel.deleteSelectedTracksFrom(playlist!!) }
+                negativeButton(res = R.string.cancel)
+            }
         }
         observeChanges()
     }
@@ -74,6 +96,7 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
 
             binding.btnPlayNext.isEnabled = count > 0
             binding.btnAddToPlaylist.isEnabled = count > 0
+            binding.btnRemoveFromPlaylist.isEnabled = count > 0
         }
 
         observe(viewModel.cancelVisible.asLiveData()) { cancelVisible ->
@@ -89,6 +112,10 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
                 adapter.submitList(items)
             }
         }
+
+        observeEvent(viewModel.tracksDeleted) {
+            activity?.onBackPressed()
+        }
     }
 
     override fun onResume() {
@@ -103,14 +130,17 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
 
         private const val EXTRAS_TRACKS = "tracks"
         private const val EXTRAS_TRACK = "track"
+        private const val EXTRAS_PLAYLIST = "playlist"
 
         fun present(
             activity: FragmentActivity,
             tracks: List<Track>,
-            track: Track? = null
+            track: Track? = null,
+            playlist: Playlist? = null
         ) {
             activity.slideUpFragment<MultiSelectTrackFragment>().apply {
                 arguments = bundleOf(
+                    EXTRAS_PLAYLIST to playlist,
                     EXTRAS_TRACK to track,
                     EXTRAS_TRACKS to tracks.toTypedArray()
                 )
