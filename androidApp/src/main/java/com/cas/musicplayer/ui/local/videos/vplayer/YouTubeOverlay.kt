@@ -233,7 +233,7 @@ class YouTubeOverlay(context: Context, private val attrs: AttributeSet?) :
         get() = (findViewById<View>(R.id.seconds_view) as SecondsView).getTextView()
 
     override fun onDoubleTapStarted(posX: Float, posY: Float) {
-        if (VideoPlayerActivity.locked) return
+//        if (VideoPlayerActivity.locked) return
         if ((player != null) && (player!!.currentPosition >= 0L) && (playerView != null) && (playerView!!.width > 0)) {
             if (posX >= playerView!!.width * 0.35 && posX <= playerView!!.width * 0.65) {
                 if (player!!.isPlaying) {
@@ -250,7 +250,7 @@ class YouTubeOverlay(context: Context, private val attrs: AttributeSet?) :
     }
 
     override fun onDoubleTapProgressUp(posX: Float, posY: Float) {
-        if (VideoPlayerActivity.locked) return
+//        if (VideoPlayerActivity.locked) return
 
         if ((player == null) || (player!!.mediaItemCount < 1) || (player!!.currentPosition < 0) || (playerView == null) || (playerView!!.width < 0)) return
         val current = player?.currentPosition

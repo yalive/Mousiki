@@ -6,14 +6,14 @@
     android:id="@+id/root_constraint_layout"
     android:layout_height="match_parent">
 
-    <com.cas.musicplayer.ui.local.videos.player.dtpv.youtube.views.CircleClipTapView
+    <com.cas.musicplayer.ui.local.videos.vplayer.CircleClipTapView
         android:id="@+id/circle_clip_tap_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
         android:focusable="false" />
 
-    <com.cas.musicplayer.ui.local.videos.player.dtpv.youtube.views.SecondsView
+    <com.cas.musicplayer.ui.local.videos.vplayer.SecondsView
         android:id="@+id/seconds_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
