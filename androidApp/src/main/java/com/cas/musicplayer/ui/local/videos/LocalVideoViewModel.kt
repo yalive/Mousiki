@@ -66,7 +66,7 @@ class LocalVideoViewModel(
             val file = File(cacheDir, "${song.id}.jpeg")
             if (!file.exists()) {
                 val uri = ContentUris.withAppendedId(
-                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                     song.id
                 )
                 val byteArray = Utils.getVideoThumbnail(uri)
