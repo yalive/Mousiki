@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
-        android:text="Turn on to hide"
+        android:text="@string/turn_on_to_hide"
         android:textAllCaps="true"
         android:textColor="@color/color_on_surface_50"
         android:textSize="11sp"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
         android:fontFamily="@font/roboto_medium"
-        android:text="Filter audio files less than 60s"
+        android:text="@string/audio_duration_less_than"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
@@ -36,7 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
-        android:text="Filter audio files less than 100k"
+        android:text="@string/audio_size_less_than"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkboxFilterPerDuration" />

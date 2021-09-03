@@ -9,19 +9,15 @@ import com.mousiki.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class FoldersViewModel(
-    private val foldersRepository: FoldersRepository
+    private val foldersRepository: FoldersRepository,
 ) : BaseViewModel() {
 
     private val _folders = MutableLiveData<List<Folder>>()
     val folders: LiveData<List<Folder>>
         get() = _folders
 
-    init {
-        loadAllFolders()
-    }
-
-    fun loadAllFolders() = viewModelScope.launch {
-        _folders.value = foldersRepository.getFolders()
+    fun loadAllFolders(folderType: FolderType) = viewModelScope.launch {
+        _folders.value = foldersRepository.getFolders(folderType)
     }
 }
 

@@ -10,8 +10,8 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.local.folders.options.FolderOption
-import com.cas.musicplayer.ui.local.songs.StoragePermissionDelegate
-import com.cas.musicplayer.ui.local.songs.StoragePermissionDelegateImpl
+import com.cas.musicplayer.ui.local.StoragePermissionDelegate
+import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
 import com.cas.musicplayer.utils.toast
 import com.cas.musicplayer.utils.viewBinding
 
@@ -40,7 +40,7 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
     override fun onResume() {
         super.onResume()
         checkStoragePermission() {
-            viewModel.loadAllFolders()
+            viewModel.loadAllFolders(folderType)
         }
     }
 
@@ -48,13 +48,16 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
         when (option) {
             FolderOption.Hidden -> {
                 context?.toast(getString(R.string.folder_hidden_message, folder.name))
-                viewModel.loadAllFolders()
+                viewModel.loadAllFolders(folderType)
             }
             else -> Unit
         }
     }
 
+    private var folderType = FolderType.SONG
+
     companion object {
-        fun newInstance() = FoldersFragment()
+        fun newInstance(folderType: FolderType) =
+            FoldersFragment().also { it.folderType = folderType }
     }
 }
