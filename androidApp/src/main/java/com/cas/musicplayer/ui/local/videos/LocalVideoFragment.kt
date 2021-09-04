@@ -9,7 +9,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalVideoFragmentBinding
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.SortVideoByFragment
@@ -20,7 +19,6 @@ import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.domain.models.Track
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
     R.layout.local_video_fragment
