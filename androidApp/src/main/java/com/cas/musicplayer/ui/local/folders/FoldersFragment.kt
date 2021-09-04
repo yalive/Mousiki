@@ -20,6 +20,7 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
 ), StoragePermissionDelegate by StoragePermissionDelegateImpl() {
 
     override val screenName: String = "FoldersFragment"
+
     override val viewModel by viewModel { Injector.foldersViewModel }
 
     private val binding by viewBinding(FoldersFragmentBinding::bind)
