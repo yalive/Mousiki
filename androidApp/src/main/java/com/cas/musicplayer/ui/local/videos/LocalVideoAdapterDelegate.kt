@@ -1,10 +1,12 @@
 package com.cas.musicplayer.ui.local.videos
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalSongBinding
@@ -17,6 +19,7 @@ import com.cas.musicplayer.utils.loadTrackImage
 import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
+import java.io.File
 
 class LocalVideoAdapterDelegate(
     private val onClickTrack: (Track) -> Unit
@@ -53,7 +56,10 @@ class LocalVideoAdapterDelegate(
                 video.songDuration
             )
             val localSong = video.track as LocalSong
-            binding.imgSong.loadTrackImage(localSong)
+            val uri = Uri.fromFile(File(localSong.data))
+            Glide.with(itemView.context)
+                .load(uri)
+                .into(binding.imgSong)
             itemView.onClick {
                 UserPrefs.onClickTrack()
                 onClickTrack(video.track)
