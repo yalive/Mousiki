@@ -142,7 +142,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/ad_media_card"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             app:layout_constraintEnd_toStartOf="@id/guidLine"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
