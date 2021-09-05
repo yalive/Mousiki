@@ -72,7 +72,7 @@ class LocalVideosRepository(private val context: Context) {
     ): Song {
 
         val id = cursor.getLong(MediaStore.Video.Media._ID)
-        val title = cursor.getString(MediaStore.Video.Media.DISPLAY_NAME)
+        val title = cursor.getString(MediaStore.Video.Media.TITLE)
         val duration = cursor.getLong(MediaStore.Video.VideoColumns.DURATION)
         val data = cursor.getString(MediaStore.Video.VideoColumns.DATA)
         val albumName = cursor.getStringOrNull(MediaStore.Video.VideoColumns.ALBUM)
@@ -184,7 +184,7 @@ class LocalVideosRepository(private val context: Context) {
 
 val videoBaseProjection = arrayOf(
     MediaStore.Video.Media._ID, // 0
-    MediaStore.Video.Media.DISPLAY_NAME, // 1
+    MediaStore.Video.Media.TITLE, // 1
     MediaStore.Video.Thumbnails.DATA, // 2
     MediaStore.Video.VideoColumns.DURATION, // 4
     MediaStore.Video.VideoColumns.DATA, // 5
