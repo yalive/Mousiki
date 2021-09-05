@@ -70,5 +70,5 @@
         android:clipToPadding="false"
         android:visibility="visible"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
-        tools:listitem="@layout/item_artist" />
+        tools:listitem="@layout/item_queue_track" />
 </RelativeLayout>
