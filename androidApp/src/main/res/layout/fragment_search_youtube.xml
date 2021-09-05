@@ -68,7 +68,6 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
-            tools:listitem="@layout/item_fav_video"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
