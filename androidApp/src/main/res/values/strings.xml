@@ -208,6 +208,7 @@
 
     <string name="label_by">by %s</string>
     <string name="label_artist_name_and_duration" translatable="false">%s • %s</string>
+    <string name="label_resolution_and_size" translatable="false">%s | %s</string>
     <string name="label_sort_last_added">Last Added</string>
     <string name="btn_select_all_title">All</string>
 
