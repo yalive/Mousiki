@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
-        tools:listitem="@layout/item_fav_video"
+        tools:listitem="@layout/item_ytb_track"
         tools:visibility="visible" />
 
     <ImageView

@@ -9,15 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
-import com.cas.musicplayer.databinding.ItemLocalSongBinding
+import com.cas.musicplayer.databinding.ItemLocalVideoBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.bottomsheet.VideoOptionsFragment
-import com.cas.musicplayer.ui.common.setLocalMusicPlayingState
+import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.loadTrackImage
+import com.cas.musicplayer.utils.sizeMB
 import com.cas.musicplayer.utils.themeColor
-import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
+import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.preference.UserPrefs
 import java.io.File
 
@@ -31,7 +33,7 @@ class LocalVideoAdapterDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val from = LayoutInflater.from(parent.context)
-        val binding = ItemLocalSongBinding.inflate(from, parent, false)
+        val binding = ItemLocalVideoBinding.inflate(from, parent, false)
         return ViewHolder(binding)
     }
 
@@ -45,21 +47,23 @@ class LocalVideoAdapterDelegate(
         viewHolder.bind(items[position] as DisplayedVideoItem)
     }
 
-    inner class ViewHolder(val binding: ItemLocalSongBinding) :
+    inner class ViewHolder(val binding: ItemLocalVideoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(video: DisplayedVideoItem) {
             binding.txtTitle.text = video.songTitle
-            binding.txtArtist.text = itemView.context.getString(
-                R.string.label_artist_name_and_duration,
-                video.artistName(),
-                video.songDuration
-            )
+            binding.txtDuration.text = video.songDuration
             val localSong = video.track as LocalSong
-            val uri = Uri.fromFile(File(localSong.data))
+            val file = File(localSong.data)
+            val uri = Uri.fromFile(file)
             Glide.with(itemView.context)
                 .load(uri)
                 .into(binding.imgSong)
+            binding.txtCategory.text = itemView.context.getString(
+                R.string.label_resolution_and_size,
+                file.sizeMB(),
+                Utils.getResolution(localSong.song.resolution)
+            )
             itemView.onClick {
                 UserPrefs.onClickTrack()
                 onClickTrack(video.track)
@@ -69,7 +73,6 @@ class LocalVideoAdapterDelegate(
             val colorText = if (video.isCurrent) localSongsPrimaryColor
             else itemView.context.themeColor(R.attr.colorOnSurface)
             binding.txtTitle.setTextColor(colorText)
-            binding.indicatorPlaying.setLocalMusicPlayingState(video)
             binding.btnMore.onClick {
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 VideoOptionsFragment.present(fm, video.track)

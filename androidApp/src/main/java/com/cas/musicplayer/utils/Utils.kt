@@ -15,13 +15,9 @@ import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils
 import android.media.audiofx.AudioEffect
 import android.net.Uri
-import android.os.Build
-import android.os.CancellationSignal
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.TextUtils
-import android.util.Log
-import android.util.Size
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -332,6 +328,14 @@ object Utils : KoinComponent {
         val stream = ByteArrayOutputStream()
         bmThumbnail?.compress(Bitmap.CompressFormat.PNG, 90, stream)
         return@withContext stream.toByteArray()
+    }
+
+    fun getResolution(resolution: String): String {
+        return if (resolution.isEmpty()) {
+            "144p"
+        } else {
+            "${resolution.substringAfter("×")}p"
+        }
     }
 }
 

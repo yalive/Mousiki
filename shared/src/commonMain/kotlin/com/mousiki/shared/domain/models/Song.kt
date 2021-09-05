@@ -24,7 +24,8 @@ data class Song(
     val composer: String?,
     val albumArtist: String?,
     val path: String,
-    val size: Long
+    val size: Long,
+    val resolution: String = ""
 ) : Parcelable {
 
 
