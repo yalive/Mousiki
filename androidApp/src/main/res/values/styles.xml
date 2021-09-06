@@ -178,7 +178,7 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <declare-styleable name="DoubleTapPlayerView">
+    <declare-styleable name="CustomStyledPlayerView">
         <attr name="dtpv_controller" format="reference" />
     </declare-styleable>
     <style name="YTOSecondsTextAppearance">
