@@ -46,7 +46,7 @@
     <public name="YouTubeOverlay_yt_iconAnimationDuration" type="attr" />
     <public name="YouTubeOverlay_yt_icon" type="attr" />
 
-    <public name="DoubleTapPlayerView_dtpv_controller" type="attr" />
+    <public name="CustomStyledPlayerView_dtpv_controller" type="attr" />
 
     <declare-styleable name="YouTubeOverlay">
         <attr name="yt_playerView" format="reference" />

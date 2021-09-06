@@ -51,4 +51,9 @@ object SystemSettings {
             }
         }
     }
+    fun isPiPSupported(context: Context): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && context.packageManager.hasSystemFeature(
+            PackageManager.FEATURE_PICTURE_IN_PICTURE
+        )
+    }
 }
