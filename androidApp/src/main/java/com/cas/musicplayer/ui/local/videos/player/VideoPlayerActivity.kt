@@ -124,7 +124,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         val controls = horizontalScrollView.findViewById<LinearLayout>(R.id.controls)
 
         if (SystemSettings.isPiPSupported(this)) {
-            controls.addView(buttonPiP)
+            //controls.addView(buttonPiP)
         }
         //controls.addView(buttonAspectRatio)
         //controls.addView(buttonRotation)
