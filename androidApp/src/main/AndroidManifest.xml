@@ -90,7 +90,9 @@
         <activity
             android:name=".ui.local.videos.player.VideoPlayerActivity"
             android:supportsPictureInPicture="true"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:resizeableActivity="true"
+            android:launchMode="singleTask"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
