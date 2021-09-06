@@ -250,14 +250,6 @@ class VideoPlayerActivity : AppCompatActivity() {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onUserLeaveHint() {
-        super.onUserLeaveHint()
-        val params = PictureInPictureParams.Builder()
-            .build()
-        enterPictureInPictureMode(params)
-    }
-
     override fun onPictureInPictureModeChanged(
         isInPictureInPictureMode: Boolean,
         newConfig: Configuration?
