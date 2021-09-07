@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS dbRecentPlayedVideo (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`video_id` TEXT NOT NULL,
+`duration` INTEGER NOT NULL,
+`play_count` INTEGER NOT NULL,
+`stop_at` INTEGER DEFAULT 0
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS `index_dbRecentPlayedVideo_video_id` ON `dbRecentPlayedVideo` (`video_id`);
