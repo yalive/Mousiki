@@ -19,6 +19,7 @@ import com.cas.musicplayer.ui.local.repository.LocalVideosRepository
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsViewModel
 import com.cas.musicplayer.ui.local.videos.LocalVideoViewModel
+import com.cas.musicplayer.ui.local.videos.history.PlayedVideoViewModel
 import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
@@ -127,6 +128,9 @@ object Injector : KoinComponent {
         get() = get()
 
     val localVideoViewModel: LocalVideoViewModel
+        get() = get()
+
+    val playedVideoViewModel: PlayedVideoViewModel
         get() = get()
 
     val localSongsSettingsViewModel: LocalSongsSettingsViewModel
