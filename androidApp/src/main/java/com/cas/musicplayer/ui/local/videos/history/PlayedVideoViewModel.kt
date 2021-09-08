@@ -4,17 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cas.musicplayer.ui.local.repository.LocalVideosRepository
-import com.cas.musicplayer.ui.local.repository.filterNotHidden
-import com.mousiki.shared.domain.models.*
-import com.mousiki.shared.player.PlaySongDelegate
-import com.mousiki.shared.player.updateCurrentPlaying
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.toDisplayedVideoItem
+import com.mousiki.shared.domain.usecase.recent.AddVideoToRecentlyPlayedUseCase
+import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedVideosFlowUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class PlayedVideoViewModel(
-    private val localSongsRepository: LocalVideosRepository,
-    private val playSongsDelegate: PlaySongDelegate,
-) : BaseViewModel(), PlaySongDelegate by playSongsDelegate {
+    private val localVideosRepository: LocalVideosRepository,
+    private val getRecentlyPlayedVideosFlow: GetRecentlyPlayedVideosFlowUseCase,
+    private val addVideoToRecentlyPlayed: AddVideoToRecentlyPlayedUseCase,
+) : BaseViewModel() {
 
     private val _playedVideos = MutableLiveData<List<DisplayableItem>>()
     val playedVideos: LiveData<List<DisplayableItem>>
@@ -25,25 +29,14 @@ class PlayedVideoViewModel(
     }
 
     fun getAllPlayedVideos() = viewModelScope.launch {
-        val videos = localSongsRepository.videos().filterNotHidden()
-        val videosItems = videos.map {
-            LocalSong(it).toDisplayedVideoItem()
+        getRecentlyPlayedVideosFlow(300).collect { videos ->
+            _playedVideos.value = videos.map {
+                LocalSong(localVideosRepository.video(it.id.toLong())).toDisplayedVideoItem()
+            }
         }
-
-        _playedVideos.value = updateCurrentPlaying(videosItems)
-
     }
 
-    fun onClickTrack(track: Track) = scope.launch {
-        val tracks = _playedVideos.value
-            ?.filterIsInstance<DisplayedVideoItem>()
-            ?.map { it.track } ?: return@launch
-        playTrackFromQueue(track, tracks)
-    }
-
-    fun onPlaybackStateChanged() {
-        val currentItems = _playedVideos.value ?: return
-        val updatedList = updateCurrentPlaying(currentItems)
-        _playedVideos.value = updatedList
+    fun onPlayVideo(track: Track) = viewModelScope.launch {
+        addVideoToRecentlyPlayed(track)
     }
 }
