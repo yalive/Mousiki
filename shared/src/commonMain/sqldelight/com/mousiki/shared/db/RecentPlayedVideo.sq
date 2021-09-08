@@ -1,0 +1,34 @@
+CREATE TABLE IF NOT EXISTS dbRecentPlayedVideo (
+`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+`video_id` TEXT NOT NULL,
+`duration` INTEGER NOT NULL,
+`play_count` INTEGER NOT NULL,
+`stop_at` INTEGER DEFAULT 0
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS `index_dbRecentPlayedVideo_video_id` ON `dbRecentPlayedVideo` (`video_id`);
+
+insert:
+INSERT OR REPLACE INTO dbRecentPlayedVideo(video_id,duration,play_count)
+VALUES ?;
+
+getVideos:
+SELECT * FROM dbRecentPlayedVideo ORDER BY id DESC LIMIT ?;
+
+deleteVideo:
+DELETE  FROM dbRecentPlayedVideo WHERE video_id= ?;
+
+getByVideoId:
+SELECT  * FROM dbRecentPlayedVideo WHERE video_id= ?;
+
+getHeavyList:
+SELECT * FROM dbRecentPlayedVideo WHERE play_count > 3 ORDER BY play_count DESC LIMIT ?;
+
+count:
+SELECT COUNT(*) FROM dbRecentPlayedVideo;
+
+heavyCount:
+SELECT COUNT(*) FROM dbRecentPlayedVideo WHERE play_count > 3;
+
+clear:
+DELETE  FROM dbRecentPlayedVideo;
