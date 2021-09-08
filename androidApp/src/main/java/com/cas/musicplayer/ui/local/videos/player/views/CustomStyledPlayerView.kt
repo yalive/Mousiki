@@ -684,6 +684,6 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
 
 }
 
-private enum class Orientation {
+enum class Orientation {
     HORIZONTAL, VERTICAL, UNKNOWN
 }

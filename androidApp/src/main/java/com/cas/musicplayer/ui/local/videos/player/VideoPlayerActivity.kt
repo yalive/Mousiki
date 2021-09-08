@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.app.PictureInPictureParams
 import android.app.RemoteAction
 import android.content.*
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Icon
@@ -17,7 +18,6 @@ import android.os.Bundle
 import android.os.Process
 import android.provider.MediaStore
 import android.text.TextUtils
-import android.util.Log
 import android.util.Rational
 import android.util.TypedValue
 import android.view.*
@@ -25,6 +25,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityVideoPlayerBinding
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
@@ -85,6 +86,8 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     private var mReceiver: BroadcastReceiver? = null
 
+    private var currentOrientation = Orientation.PORTRAIT
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
@@ -122,7 +125,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             controls.addView(buttonPiP)
         }
         //controls.addView(buttonAspectRatio)
-        //controls.addView(buttonRotation)
+        controls.addView(buttonRotation)
         controls.addView(exoSettings)
 
         exoBasicControls.addView(horizontalScrollView)
@@ -257,8 +260,18 @@ class VideoPlayerActivity : AppCompatActivity() {
                 mReceiver,
                 IntentFilter(ACTION_MEDIA_CONTROL)
             )
+            if(currentOrientation == Orientation.LANDSCAPE){
+                buttonRotation?.setImageResource(R.drawable.ic_screen_rotation_auto)
+                currentOrientation = Orientation.SENSOR
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+            }
         } else {
             unregisterReceiver(mReceiver)
+
+            //finish activity when user click on close button in PiP Mode
+            if (lifecycle.currentState != Lifecycle.State.STARTED) {
+                finish()
+            }
         }
     }
 
@@ -422,10 +435,27 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     private fun setupRotate() {
         buttonRotation = ImageButton(this, null, 0, R.style.ExoStyledControls_Button_Bottom)
-        buttonRotation?.setImageResource(R.drawable.ic_auto_rotate_24dp)
-        buttonRotation?.setOnClickListener { view: View? ->
-            //Utils.setOrientation(this@PlayerActivity, mPrefs.orientation)
-            //viewBinding.videoView.showText(getString(mPrefs.orientation.description), 2500)
+        buttonRotation?.setImageResource(R.drawable.ic_screen_lock_portrait)
+        buttonRotation?.setOnClickListener {
+
+            requestedOrientation = when (currentOrientation) {
+                Orientation.PORTRAIT -> {
+                    buttonRotation?.setImageResource(R.drawable.ic_screen_lock_landscape)
+                    currentOrientation = Orientation.LANDSCAPE
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                }
+                Orientation.LANDSCAPE -> {
+                    buttonRotation?.setImageResource(R.drawable.ic_screen_rotation_auto)
+                    currentOrientation = Orientation.SENSOR
+                    ActivityInfo.SCREEN_ORIENTATION_SENSOR
+                }
+                Orientation.SENSOR -> {
+                    buttonRotation?.setImageResource(R.drawable.ic_screen_lock_portrait)
+                    currentOrientation = Orientation.PORTRAIT
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
+            }
+
             resetHideCallbacks()
         }
     }
@@ -594,5 +624,9 @@ class VideoPlayerActivity : AppCompatActivity() {
     companion object {
         const val TAG = "VideoPlayerActivity1"
     }
+}
+
+enum class Orientation {
+    PORTRAIT, LANDSCAPE, SENSOR
 }
 
