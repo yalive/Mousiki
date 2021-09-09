@@ -1,4 +1,4 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
@@ -6,9 +6,47 @@
 
     <com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
         android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:show_subtitle_button="false"
-        app:dtpv_controller="@id/youtube_overlay"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:dtpv_controller="@id/youtube_overlay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:show_subtitle_button="false" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#03000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:background="?selectableItemBackground"
+            app:srcCompat="@drawable/ic_back" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnShowQueue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="?selectableItemBackground"
+            app:srcCompat="@drawable/ic_queue_music" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

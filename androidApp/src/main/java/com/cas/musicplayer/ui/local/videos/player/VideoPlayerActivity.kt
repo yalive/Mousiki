@@ -1,15 +1,11 @@
 package com.cas.musicplayer.ui.local.videos.player
 
-import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.AppOpsManager
 import android.app.PendingIntent
 import android.app.PictureInPictureParams
 import android.app.RemoteAction
-import android.content.ContentUris
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Icon
@@ -19,30 +15,32 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Rational
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.transition.Slide
+import androidx.transition.TransitionManager
+import com.cas.common.extensions.onClick
+import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityVideoPlayerBinding
+import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
 import com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
+import com.cas.musicplayer.ui.local.videos.queue.VideosQueueFragment
 import com.cas.musicplayer.utils.SystemSettings
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.ui.TimeBar.OnScrubListener
-import java.lang.RuntimeException
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.abs
-import android.util.DisplayMetrics
-import com.cas.musicplayer.ui.MainActivity
 
 
 /**
@@ -56,7 +54,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         ActivityVideoPlayerBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: VideoPlayerViewModel by viewModels()
+    private val viewModel: VideoPlayerViewModel by viewModel { Injector.videoPlayerViewModel }
 
     private var mPictureInPictureParamsBuilder: Any? = null
 
@@ -136,7 +134,8 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
 
         viewBinding.videoView.setControllerVisibilityListener { visibility ->
-
+            TransitionManager.beginDelayedTransition(viewBinding.topBar, Slide(Gravity.TOP))
+            viewBinding.topBar.isVisible = visibility == View.VISIBLE
             viewBinding.videoView.controllerVisible = visibility == View.VISIBLE
             if (viewBinding.videoView.restoreControllerTimeout) {
                 viewBinding.videoView.restoreControllerTimeout = false
@@ -248,6 +247,11 @@ class VideoPlayerActivity : AppCompatActivity() {
                 }
             }
         })
+
+        viewBinding.btnBack.onClick { onBackPressed() }
+        viewBinding.btnShowQueue.onClick {
+            VideosQueueFragment.present(supportFragmentManager)
+        }
     }
 
     override fun onPictureInPictureModeChanged(
@@ -277,7 +281,6 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onPause() {
         super.onPause()
         viewModel.playWhenReady = false
@@ -292,11 +295,9 @@ class VideoPlayerActivity : AppCompatActivity() {
     private fun getVideoInfoFromIntent(intent: Intent?) {
         val videoId = intent?.getLongExtra("video_id", 0)
         if (videoId != null) {
-            val currentUri =
-                ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoId)
             val videoType = intent.getStringExtra("video_type")
             val videoName = intent.getStringExtra("video_name")
-            viewModel.currentUri = currentUri
+            viewModel.setCurrentVideo(videoId)
         }
 
         if (intent != null) {
