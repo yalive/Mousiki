@@ -28,6 +28,7 @@ class VideoPlayerViewModel(
     private var playbackPosition = 0L
 
     private var currentUri: Uri? = null
+    var currentId: Long = 0L
 
     init {
         initializePlayer()
