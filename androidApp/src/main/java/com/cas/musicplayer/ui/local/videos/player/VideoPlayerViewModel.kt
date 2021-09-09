@@ -1,18 +1,24 @@
 package com.cas.musicplayer.ui.local.videos.player
 
-import android.app.Application
+import android.content.ContentUris
+import android.content.Context
 import android.media.audiofx.LoudnessEnhancer
 import android.net.Uri
-import androidx.lifecycle.AndroidViewModel
-import com.cas.musicplayer.MusicApp
+import android.provider.MediaStore
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.MimeTypes
-import java.lang.RuntimeException
+import com.mousiki.shared.ui.base.BaseViewModel
 
-class VideoPlayerViewModel(application: Application) : AndroidViewModel(application) {
+class VideoPlayerViewModel(
+    private val appContext: Context
+) : BaseViewModel() {
 
+    private val _currentVideo = MutableLiveData<Long>()
+    val currentVideo: LiveData<Long> = _currentVideo
 
     var player: SimpleExoPlayer? = null
     var loudnessEnhancer: LoudnessEnhancer? = null
@@ -21,7 +27,7 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
     private var currentWindow = 0
     private var playbackPosition = 0L
 
-    var currentUri: Uri? = null
+    private var currentUri: Uri? = null
 
     init {
         initializePlayer()
@@ -33,10 +39,10 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun initializePlayer() {
-        val trackSelector = DefaultTrackSelector(getApplication() as MusicApp).apply {
+        val trackSelector = DefaultTrackSelector(appContext).apply {
             setParameters(buildUponParameters().setMaxVideoSizeSd())
         }
-        player = SimpleExoPlayer.Builder(getApplication() as MusicApp)
+        player = SimpleExoPlayer.Builder(appContext)
             .setTrackSelector(trackSelector)
             .build()
             .also { exoPlayer ->
@@ -49,6 +55,13 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
         } catch (e: RuntimeException) {
             e.printStackTrace()
         }
+    }
+
+    fun setCurrentVideo(videoId: Long, startPlayback: Boolean = false) {
+        _currentVideo.value = videoId
+        currentUri =
+            ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoId)
+        if (startPlayback) start()
     }
 
     fun start() {
