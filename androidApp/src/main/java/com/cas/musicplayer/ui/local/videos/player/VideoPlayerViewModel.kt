@@ -22,6 +22,7 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
     private var playbackPosition = 0L
 
     var currentUri: Uri? = null
+    var currentId: Long = 0L
 
     init {
         initializePlayer()
