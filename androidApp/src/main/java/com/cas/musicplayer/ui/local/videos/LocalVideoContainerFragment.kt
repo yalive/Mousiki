@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class LocalVideoContainerFragment : Fragment(R.layout.fragment_local_songs_container) {
 
-    private val titles = listOf("History", "Videos", "Folders")
+    private val titles = listOf("Videos", "Folders", "History")
 
     private val binding by viewBinding(FragmentLocalVideosContainerBinding::bind)
 
