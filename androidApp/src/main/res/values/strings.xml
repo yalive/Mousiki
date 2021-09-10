@@ -234,4 +234,16 @@
     <string name="delete_query">Delete this file\?</string>
     <string name="delete_confirmation">Delete</string>
 
+    <!-- Screen orientation-->
+    <string name="screen_portrait">Portrait</string>
+    <string name="screen_landscape">Landscape</string>
+    <string name="screen_auto">Auto</string>
+
+    <!-- Screen ratio-->
+    <string name="screen_fit">Fit</string>
+    <string name="screen_fill">Fill</string>
+    <string name="screen_zoom">Zoom</string>
+    <string name="screen_fixed_w">Fixed width</string>
+    <string name="screen_fixed_h">Fixed height</string>
+
 </resources>
