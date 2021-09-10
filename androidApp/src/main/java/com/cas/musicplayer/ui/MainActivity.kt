@@ -123,6 +123,9 @@ class MainActivity : BaseActivity() {
         if (!PreferenceUtil.musicSeen)
             binding.bottomNavView.getOrCreateBadge(R.id.navMusic)
 
+        if (!PreferenceUtil.videoSeen)
+            binding.bottomNavView.getOrCreateBadge(R.id.navVideo)
+
         observe(PlayerQueue) { currentTrack ->
             if (!canDrawOverApps() && currentTrack !is LocalSong) {
                 val dialog = Utils.requestDrawOverAppsPermission(this) {
@@ -187,6 +190,10 @@ class MainActivity : BaseActivity() {
         if (navController.currentDestination?.id == R.id.localVideoContainerFragment) return
         if (!navController.popBackStack(R.id.localVideoContainerFragment, false)) {
             navController.navigate(R.id.localVideoContainerFragment)
+        }
+        if (!PreferenceUtil.videoSeen) {
+            binding.bottomNavView.removeBadge(R.id.navVideo)
+            PreferenceUtil.videoSeen = true
         }
     }
 

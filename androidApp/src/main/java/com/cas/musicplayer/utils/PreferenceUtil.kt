@@ -21,6 +21,7 @@ import com.mousiki.shared.utils.Constants.FILTER_VIDEO_SIZE
 import com.mousiki.shared.utils.Constants.INITIALIZED_BLACKLIST
 import com.mousiki.shared.utils.Constants.MUSIC_SEEN
 import com.mousiki.shared.utils.Constants.SONG_SORT_ORDER
+import com.mousiki.shared.utils.Constants.VIDEO_SEEN
 import com.mousiki.shared.utils.Constants.VIDEO_SORT_ORDER
 
 
@@ -150,6 +151,13 @@ object PreferenceUtil {
             false
         )
         set(value) = sharedPreferences.edit { putBoolean(MUSIC_SEEN, value) }
+
+    var videoSeen
+        get() = sharedPreferences.getBoolean(
+            VIDEO_SEEN,
+            false
+        )
+        set(value) = sharedPreferences.edit { putBoolean(VIDEO_SEEN, value) }
 
     fun toggleFolderVisibility(path: String) {
         val hidden = sharedPreferences.getBoolean(path, false)
