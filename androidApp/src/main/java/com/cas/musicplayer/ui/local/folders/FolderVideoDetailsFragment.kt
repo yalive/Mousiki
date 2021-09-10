@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.local.folders
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
@@ -12,8 +13,10 @@ import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.base.setupToolbar
 import com.cas.musicplayer.ui.local.videos.LocalVideoAdapter
+import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.domain.models.Track
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
@@ -33,12 +36,21 @@ class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
 
     private val adapter by lazy {
         LocalVideoAdapter(
-            onClickTrack = viewModel::onClickTrack,
+            onClickTrack = {playVideo(it)},
             onSortClicked = {},
             onFilterClicked = {},
             showCountsAndSortButton = true,
             showFilter = false
         )
+    }
+
+    private fun playVideo(track: Track) {
+        viewModel.onPlayVideo(track)
+        val intent = Intent(activity, VideoPlayerActivity::class.java)
+        intent.putExtra(VideoPlayerActivity.VIDEO_TYPE, track.type)
+        intent.putExtra(VideoPlayerActivity.VIDEO_ID, track.id.toLong())
+        intent.putExtra(VideoPlayerActivity.VIDEO_NAME, track.title)
+        startActivity(intent)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
