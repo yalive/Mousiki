@@ -57,6 +57,6 @@ val viewModelsModule = module {
     factory { FoldersViewModel(get()) }
     factory { AlbumDetailsViewModel(get(), get()) }
     factory { FolderDetailsViewModel(get(), get()) }
-    factory { FolderVideoDetailsViewModel(get(), get()) }
+    factory { FolderVideoDetailsViewModel(get(), get(),get()) }
     factory { ArtistDetailsViewModel(get(), get()) }
 }
