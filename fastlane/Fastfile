@@ -32,7 +32,7 @@ platform :android do
             groups: "qa-team-internal",
             firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
             release_notes: "
-            - screen rotation portrait,landscape and sensor
+            - start video from video folder
             "
         )
     end

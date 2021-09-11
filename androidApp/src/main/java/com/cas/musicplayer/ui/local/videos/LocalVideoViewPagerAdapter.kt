@@ -13,9 +13,9 @@ class LocalVideoViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(frag
     override fun createFragment(position: Int): Fragment {
 
         return when (position) {
-            2 -> FoldersFragment.newInstance(FolderType.VIDEO)
-            1 -> LocalVideoFragment()
-            else -> PlayedVideoFragment()
+            2 -> PlayedVideoFragment()
+            1 -> FoldersFragment.newInstance(FolderType.VIDEO)
+            else -> LocalVideoFragment()
         }
     }
 }

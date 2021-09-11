@@ -9,6 +9,7 @@ import com.cas.musicplayer.ui.local.songs.HeaderSongsActionsItem
 import com.cas.musicplayer.ui.local.videos.HeaderVideosActionsItem
 import com.cas.musicplayer.utils.fixedPath
 import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.usecase.recent.AddVideoToRecentlyPlayedUseCase
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
@@ -17,6 +18,7 @@ import java.io.File
 
 class FolderVideoDetailsViewModel(
     private val localVideosRepository: LocalVideosRepository,
+    private val addVideoToRecentlyPlayed: AddVideoToRecentlyPlayedUseCase,
     private val playSongDelegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by playSongDelegate {
 
@@ -48,5 +50,8 @@ class FolderVideoDetailsViewModel(
         val currentItems = _localSongs.value ?: return
         val updatedList = updateCurrentPlaying(currentItems)
         _localSongs.value = updatedList
+    }
+    fun onPlayVideo(track: Track) = viewModelScope.launch {
+        addVideoToRecentlyPlayed(track)
     }
 }
