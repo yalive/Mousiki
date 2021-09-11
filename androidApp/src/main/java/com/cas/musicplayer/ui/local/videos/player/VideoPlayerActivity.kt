@@ -61,14 +61,6 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     private var mPictureInPictureParamsBuilder: Any? = null
 
-    private val ACTION_MEDIA_CONTROL = "media_control"
-    private val EXTRA_CONTROL_TYPE = "control_type"
-
-    private val REQUEST_PLAY = 1
-    private val REQUEST_PAUSE = 2
-    private val CONTROL_TYPE_PLAY = 1
-    private val CONTROL_TYPE_PAUSE = 2
-
     private val rationalLimitWide = Rational(239, 100)
     private val rationalLimitTall = Rational(100, 239)
 
@@ -96,7 +88,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
-        getVideoInfoFromIntent(intent)
+
         viewBinding.videoView.player = viewModel.player
         viewBinding.videoView.player?.addListener(playbackStateListener)
         viewBinding.videoView.loudnessEnhancer = viewModel.loudnessEnhancer
@@ -129,7 +121,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         if (SystemSettings.isPiPSupported(this)) {
             controls.addView(buttonPiP)
         }
-        //controls.addView(buttonAspectRatio)
+        controls.addView(buttonAspectRatio)
         controls.addView(buttonRotation)
         controls.addView(exoSettings)
 
@@ -138,10 +130,9 @@ class VideoPlayerActivity : AppCompatActivity() {
             horizontalScrollView.setOnScrollChangeListener { view: View?, i: Int, i1: Int, i2: Int, i3: Int -> resetHideCallbacks() }
         }
 
-        viewBinding.videoView.setControllerVisibilityListener { visibility ->
+        viewBinding.videoView.setControllerVisibilityListener {
             TransitionManager.beginDelayedTransition(viewBinding.topBar, Slide(Gravity.TOP))
-            viewBinding.topBar.isVisible = visibility == View.VISIBLE
-            viewBinding.videoView.controllerVisible = visibility == View.VISIBLE
+            viewBinding.topBar.isVisible = it == View.VISIBLE
             if (viewBinding.videoView.restoreControllerTimeout) {
                 viewBinding.videoView.restoreControllerTimeout = false
                 if (viewModel.player == null || !viewModel.player?.isPlaying!!) {
@@ -152,7 +143,7 @@ class VideoPlayerActivity : AppCompatActivity() {
                 }
             }
 
-            if (viewBinding.videoView.controllerVisible && viewBinding.videoView.isControllerFullyVisible) {
+            if (viewBinding.videoView.isControllerFullyVisible) {
                 /*if (errorToShow != null) {
                     showError(errorToShow)
                     errorToShow = null
@@ -259,6 +250,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             VideosQueueFragment.present(supportFragmentManager)
         }
         setupMediaReceiver()
+        getVideoInfoFromIntent(intent)
     }
 
     override fun onPictureInPictureModeChanged(
@@ -271,7 +263,7 @@ class VideoPlayerActivity : AppCompatActivity() {
                 mReceiver,
                 IntentFilter(ACTION_MEDIA_CONTROL)
             )
-            if(currentOrientation == Orientation.LANDSCAPE){
+            if (currentOrientation == Orientation.LANDSCAPE) {
                 buttonRotation?.setImageResource(R.drawable.ic_screen_rotation_auto)
                 currentOrientation = Orientation.SENSOR
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
@@ -315,10 +307,11 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     private fun getVideoInfoFromIntent(intent: Intent?): Boolean {
         var newVideo = false
-        val videoId = intent?.getLongExtra("video_id", 0)
+        val videoId = intent?.getLongExtra(VIDEO_ID, 0)
         if (videoId != null) {
-            val videoType = intent.getStringExtra("video_type")
-            val videoName = intent.getStringExtra("video_name")
+            val videoType = intent.getStringExtra(VIDEO_TYPE)
+            val videoName = intent.getStringExtra(VIDEO_NAME)
+            titleView?.text = videoName
             val previousId = viewModel.currentId
             viewModel.setCurrentVideo(videoId)
             if (videoId != previousId)
@@ -370,7 +363,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             )
         ) {
             val intent = Intent(
-                "android.settings.PICTURE_IN_PICTURE_SETTINGS", Uri.fromParts(
+                PIP_SETTINGS, Uri.fromParts(
                     "package",
                     packageName, null
                 )
@@ -429,16 +422,36 @@ class VideoPlayerActivity : AppCompatActivity() {
     private fun setupRatioButton() {
         buttonAspectRatio = ImageButton(this, null, 0, R.style.ExoStyledControls_Button_Bottom)
         buttonAspectRatio?.setImageResource(R.drawable.ic_aspect_ratio_24dp)
-        buttonAspectRatio?.setOnClickListener(View.OnClickListener { view: View? ->
+        buttonAspectRatio?.setOnClickListener { view: View? ->
             viewBinding.videoView.setScale(1f)
-            if (viewBinding.videoView.getResizeMode() === AspectRatioFrameLayout.RESIZE_MODE_FIT) {
-                viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-            } else {
-                // Default mode
-                viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            viewBinding.videoView.resizeMode = when (viewBinding.videoView.resizeMode) {
+                AspectRatioFrameLayout.RESIZE_MODE_FIT -> {
+                    viewBinding.videoView.showText(getString(R.string.screen_fixed_w))
+                    AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
+                }
+                AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH -> {
+                    viewBinding.videoView.showText(getString(R.string.screen_fixed_h))
+                    AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT
+                }
+                AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT -> {
+                    viewBinding.videoView.showText(getString(R.string.screen_fill))
+                    AspectRatioFrameLayout.RESIZE_MODE_FILL
+                }
+                AspectRatioFrameLayout.RESIZE_MODE_FILL -> {
+                    viewBinding.videoView.showText(getString(R.string.screen_zoom))
+                    AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                }
+                AspectRatioFrameLayout.RESIZE_MODE_ZOOM -> {
+                    viewBinding.videoView.showText(getString(R.string.screen_fit))
+                    AspectRatioFrameLayout.RESIZE_MODE_FIT
+                }
+                else -> {
+                    viewBinding.videoView.showText(getString(R.string.screen_fit))
+                    AspectRatioFrameLayout.RESIZE_MODE_FIT
+                }
             }
             resetHideCallbacks()
-        })
+        }
     }
 
     private fun setupRotate() {
@@ -450,16 +463,19 @@ class VideoPlayerActivity : AppCompatActivity() {
                 Orientation.PORTRAIT -> {
                     buttonRotation?.setImageResource(R.drawable.ic_screen_lock_landscape)
                     currentOrientation = Orientation.LANDSCAPE
+                    viewBinding.videoView.showText(getString(R.string.screen_landscape))
                     ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                 }
                 Orientation.LANDSCAPE -> {
                     buttonRotation?.setImageResource(R.drawable.ic_screen_rotation_auto)
                     currentOrientation = Orientation.SENSOR
+                    viewBinding.videoView.showText(getString(R.string.screen_auto))
                     ActivityInfo.SCREEN_ORIENTATION_SENSOR
                 }
                 Orientation.SENSOR -> {
                     buttonRotation?.setImageResource(R.drawable.ic_screen_lock_portrait)
                     currentOrientation = Orientation.PORTRAIT
+                    viewBinding.videoView.showText(getString(R.string.screen_portrait))
                     ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                 }
             }
@@ -500,7 +516,6 @@ class VideoPlayerActivity : AppCompatActivity() {
             titleViewPadding
         )
         titleView?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        titleView?.visibility = View.GONE
         titleView?.maxLines = 1
         titleView?.ellipsize = TextUtils.TruncateAt.END
         titleView?.textDirection = View.TEXT_DIRECTION_LOCALE
@@ -631,6 +646,17 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "VideoPlayerActivity1"
+        const val ACTION_MEDIA_CONTROL = "media_control"
+        const val EXTRA_CONTROL_TYPE = "control_type"
+        const val VIDEO_ID = "video_id"
+        const val VIDEO_NAME = "video_name"
+        const val VIDEO_TYPE = "video_type"
+        const val PIP_SETTINGS = "android.settings.PICTURE_IN_PICTURE_SETTINGS"
+
+        const val REQUEST_PLAY = 1
+        const val REQUEST_PAUSE = 2
+        const val CONTROL_TYPE_PLAY = 1
+        const val CONTROL_TYPE_PAUSE = 2
     }
 }
 
