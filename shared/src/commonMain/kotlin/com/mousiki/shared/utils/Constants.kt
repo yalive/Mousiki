@@ -41,5 +41,6 @@ object Constants {
     const val ARTIST_SONG_SORT_ORDER = "artist_song_sort_order"
 
     const val MUSIC_SEEN = "music_seen"
+    const val VIDEO_SEEN = "video_seen"
 
 }
