@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.LocalVideoFragmentBinding
+import com.cas.musicplayer.databinding.PlayedVideoFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
@@ -21,13 +22,13 @@ import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.resource.Resource
 
 class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
-    R.layout.local_video_fragment
+    R.layout.played_video_fragment
 ), StoragePermissionDelegate by StoragePermissionDelegateImpl() {
 
     override val screenName: String = "PlayedVideoFragment"
     override val viewModel by viewModel { Injector.playedVideoViewModel }
 
-    private val binding by viewBinding(LocalVideoFragmentBinding::bind)
+    private val binding by viewBinding(PlayedVideoFragmentBinding::bind)
 
     private val adapter by lazy {
         LocalVideoAdapter(
