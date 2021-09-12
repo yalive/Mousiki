@@ -8,18 +8,18 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentVideoQueueBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.ui.local.videos.player.VideoQueueType
 import com.cas.musicplayer.utils.DeviceInset
-import com.cas.musicplayer.utils.ensureRoundedBackground
+import com.cas.musicplayer.utils.ensureRoundedBackgroundWithDismissIndicator
 import com.cas.musicplayer.utils.screenSize
 import com.cas.musicplayer.utils.viewBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mousiki.shared.utils.AnalyticsApi
 import org.koin.core.component.KoinComponent
@@ -39,7 +39,7 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
         LocalVideoQueueAdapter(
             onClickTrack = {
                 dismiss()
-                videoPlayerViewModel.setCurrentVideo(it.id.toLong(), true)
+                videoPlayerViewModel.playVideo(it.id.toLong())
             }
         )
     }
@@ -54,14 +54,15 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ensureRoundedBackground()
+        ensureRoundedBackgroundWithDismissIndicator()
 
-        val offsetFromTop = requireContext().screenSize().heightPx * (1 - HEIGHT_RATIO)
+
+        /*val offsetFromTop = requireContext().screenSize().heightPx * (1 - HEIGHT_RATIO)
         (dialog as? BottomSheetDialog)?.behavior?.apply {
             isFitToContents = false
             expandedOffset = offsetFromTop.toInt()
             state = BottomSheetBehavior.STATE_EXPANDED
-        }
+        }*/
 
         view.setOnClickListener {
             // Just to prevent player slide trigger
@@ -71,8 +72,9 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
             binding.recyclerView.updatePadding(bottom = inset.bottom)
         })
 
+        binding.btnDismiss.onClick { dismiss() }
         binding.recyclerView.adapter = adapter
-        observe(viewModel.localVideos) { videos ->
+        observe(videoPlayerViewModel.queue) { videos ->
             adapter.submitList(videos)
             val currentTrackIndex = videos.indexOfFirst { it.isCurrent }
             (binding.recyclerView.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(
@@ -84,6 +86,14 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
         observe(videoPlayerViewModel.currentVideo) {
             viewModel.onVideoChanged(it)
         }
+
+        val title = when (val currentQueueType = videoPlayerViewModel.currentQueueType) {
+            VideoQueueType.AllVideos -> getString(R.string.video_player_queue_all)
+            is VideoQueueType.FolderLocation -> currentQueueType.folder.name
+            VideoQueueType.History -> getString(R.string.video_player_queue_history)
+            null -> ""
+        }
+        binding.txtTitle.text = title
     }
 
     override fun onResume() {

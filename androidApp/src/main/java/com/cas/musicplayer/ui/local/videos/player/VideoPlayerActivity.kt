@@ -5,7 +5,6 @@ import android.app.AppOpsManager
 import android.app.PendingIntent
 import android.app.PictureInPictureParams
 import android.app.RemoteAction
-import android.content.Intent
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
@@ -25,17 +24,18 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
-import androidx.lifecycle.Lifecycle
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityVideoPlayerBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
 import com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
 import com.cas.musicplayer.ui.local.videos.queue.VideosQueueFragment
+import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.SystemSettings
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
@@ -249,6 +249,15 @@ class VideoPlayerActivity : AppCompatActivity() {
         viewBinding.btnShowQueue.onClick {
             VideosQueueFragment.present(supportFragmentManager)
         }
+        viewBinding.switchAutoNext.isChecked = PreferenceUtil.autoPlayNextVideo
+        viewBinding.switchAutoNext.setOnCheckedChangeListener { _, isChecked ->
+            PreferenceUtil.autoPlayNextVideo = isChecked
+            val toast = when (isChecked) {
+                true -> R.string.video_auto_play_next_on
+                false -> R.string.video_auto_play_next_off
+            }
+            viewBinding.videoView.showText(getString(toast))
+        }
         setupMediaReceiver()
         getVideoInfoFromIntent(intent)
     }
@@ -306,22 +315,20 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     private fun getVideoInfoFromIntent(intent: Intent?): Boolean {
+        if (intent == null) return false
         var newVideo = false
-        val videoId = intent?.getLongExtra(VIDEO_ID, 0)
-        if (videoId != null) {
+        val videoId = intent.getLongExtra(VIDEO_ID, 0)
+        if (videoId != 0L) {
             val videoType = intent.getStringExtra(VIDEO_TYPE)
             val videoName = intent.getStringExtra(VIDEO_NAME)
-            titleView?.text = videoName
+            viewBinding.txtVideoTitle.text = videoName
             val previousId = viewModel.currentId
-            viewModel.setCurrentVideo(videoId)
+            val queueType = intent.getParcelableExtra<VideoQueueType>(QUEUE_TYPE)
+            viewModel.prepareQueue(queueType!!, videoId)
             if (videoId != previousId)
                 newVideo = true
         }
-
-        if (intent != null) {
-            viewModel.playWhenReady = true
-        }
-
+        viewModel.playWhenReady = true
         return newVideo
     }
 
@@ -520,6 +527,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         titleView?.ellipsize = TextUtils.TruncateAt.END
         titleView?.textDirection = View.TEXT_DIRECTION_LOCALE
         centerView.addView(titleView)
+        titleView?.isVisible = false // titleView to be removed
     }
 
     private fun setViewParams(
@@ -641,6 +649,10 @@ class VideoPlayerActivity : AppCompatActivity() {
             if (state == Player.STATE_READY) {
                 frameRendered = true
             }
+
+            if (state == Player.STATE_ENDED && PreferenceUtil.autoPlayNextVideo) {
+                viewModel.playNextVideo()
+            }
         }
     }
 
@@ -651,6 +663,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         const val VIDEO_ID = "video_id"
         const val VIDEO_NAME = "video_name"
         const val VIDEO_TYPE = "video_type"
+        const val QUEUE_TYPE = "queue_type"
         const val PIP_SETTINGS = "android.settings.PICTURE_IN_PICTURE_SETTINGS"
 
         const val REQUEST_PLAY = 1
