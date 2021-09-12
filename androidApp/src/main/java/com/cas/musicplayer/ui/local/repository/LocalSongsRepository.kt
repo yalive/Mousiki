@@ -1,5 +1,7 @@
 package com.cas.musicplayer.ui.local.repository
 
+import android.app.RecoverableSecurityException
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -14,6 +16,11 @@ import com.mousiki.shared.domain.models.Song
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+
+import android.content.ContentValues
+import android.os.Build
+import androidx.annotation.RequiresApi
+
 
 /**
  * Created by Fayssel Yabahddou on 6/18/21.
@@ -58,6 +65,46 @@ class LocalSongsRepository(private val context: Context) {
                 withFilter = false
             )
         )
+    }
+
+    suspend fun updateSong(
+        songId: Long,
+        name: String,
+        artist: String,
+        album: String,
+        composer: String
+    ): Song? = withContext(Dispatchers.IO) {
+
+        val cv = ContentValues()
+        val uri = ContentUris.withAppendedId(Media.EXTERNAL_CONTENT_URI, songId)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues()
+            values.put(Media.IS_PENDING, 1)
+            val updatedRows: Int = context.contentResolver.update(uri, values, null, null)
+            if (updatedRows == 0)
+                return@withContext null
+            cv.put(Media.IS_PENDING, 0)
+        }
+
+        cv.put(Media.TITLE, name)
+        cv.put(Media.ARTIST, artist)
+        cv.put(Media.ALBUM, album)
+        cv.put(Media.COMPOSER, composer)
+
+        val rowsUpdated: Int = context.contentResolver.update(uri, cv, null, null)
+
+        if (rowsUpdated > 0) {
+            return@withContext song(
+                makeSongCursor(
+                    selection = AudioColumns._ID + "=?",
+                    selectionValues = arrayOf(songId.toString()),
+                    withFilter = false
+                )
+            )
+        } else
+            return@withContext null
+
     }
 
     fun songsByFilePath(filePath: String): List<Song> {
