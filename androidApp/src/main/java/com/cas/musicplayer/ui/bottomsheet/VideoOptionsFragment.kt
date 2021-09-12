@@ -11,7 +11,9 @@ import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentTrackOptionsBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
+import com.cas.musicplayer.ui.local.folders.FolderType
 import com.cas.musicplayer.utils.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -61,10 +63,23 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
         binding.viewRemoveFromCurrentPlaylist.isVisible = false
         binding.viewAddToQuee.isVisible = false
         binding.viewAddToPlaylist.isVisible = false
+        binding.showInformation.isVisible = true
 
         binding.shareVia.onClick {
             Utils.shareTrack(track, requireContext())
             if (this.isVisible) this.dismiss()
+        }
+
+        binding.showInformation.onClick {
+            if ((activity as MainActivity).isBottomPanelExpanded()) {
+                (activity as MainActivity).collapseBottomPanel()
+            }
+            SongInfoFragment.present(
+                fm = requireActivity().supportFragmentManager,
+                track = track,
+                FolderType.VIDEO
+            )
+            dismiss()
         }
 
         configureAdView()

@@ -75,26 +75,33 @@ class LocalSongsRepository(private val context: Context) {
         composer: String
     ): Song? = withContext(Dispatchers.IO) {
 
-        val cv = ContentValues()
-        val uri = ContentUris.withAppendedId(Media.EXTERNAL_CONTENT_URI, songId)
+        val cv = ContentValues(1)
+        val uri = ContentUris.withAppendedId(mediaUri(), songId)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val values = ContentValues()
+            val values = ContentValues(1)
             values.put(Media.IS_PENDING, 1)
             val updatedRows: Int = context.contentResolver.update(uri, values, null, null)
             if (updatedRows == 0)
                 return@withContext null
-            cv.put(Media.IS_PENDING, 0)
         }
-
+        Log.d("UpdateSong","name : $name artist : $artist")
+        cv.put(Media.DISPLAY_NAME, name)
         cv.put(Media.TITLE, name)
         cv.put(Media.ARTIST, artist)
+        cv.put(Media.ARTIST_ID, artist)
+        cv.put(Media.ALBUM_ARTIST, artist)
         cv.put(Media.ALBUM, album)
         cv.put(Media.COMPOSER, composer)
 
         val rowsUpdated: Int = context.contentResolver.update(uri, cv, null, null)
 
         if (rowsUpdated > 0) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val values = ContentValues(1)
+                values.put(Media.IS_PENDING, 0)
+                context.contentResolver.update(uri, values, null, null)
+            }
             return@withContext song(
                 makeSongCursor(
                     selection = AudioColumns._ID + "=?",
@@ -129,7 +136,7 @@ class LocalSongsRepository(private val context: Context) {
         val albumId = cursor.getLong(AudioColumns.ALBUM_ID)
         val albumName = cursor.getStringOrNull(AudioColumns.ALBUM)
         val artistId = cursor.getLong(AudioColumns.ARTIST_ID)
-        val artistName = cursor.getStringOrNull(AudioColumns.ARTIST)
+        val artistName = cursor.getStringOrNull(Media.ARTIST)
         val composer = cursor.getStringOrNull(AudioColumns.COMPOSER)
         val albumArtist = cursor.getStringOrNull("album_artist")
         val path = data.substringBeforeLast("/")
@@ -253,7 +260,7 @@ val baseProjection = arrayOf(
     AudioColumns.ALBUM_ID, // 7
     AudioColumns.ALBUM, // 8
     AudioColumns.ARTIST_ID, // 9
-    AudioColumns.ARTIST, // 10
+    Media.ARTIST, // 10
     AudioColumns.COMPOSER, // 11
     AudioColumns.SIZE, // 11
     "album_artist" // 12

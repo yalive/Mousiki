@@ -1,8 +1,11 @@
 package com.cas.musicplayer.ui.local.repository
 
+import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import com.cas.musicplayer.utils.*
@@ -56,6 +59,50 @@ class LocalVideosRepository(private val context: Context) {
                 withFilter = false
             )
         )
+    }
+
+    suspend fun updateSong(
+        songId: Long,
+        name: String,
+        artist: String,
+        album: String,
+        composer: String
+    ): Song? = withContext(Dispatchers.IO) {
+
+        val cv = ContentValues(1)
+        val uri = ContentUris.withAppendedId(mediaUri(), songId)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues(1)
+            values.put(MediaStore.Video.Media.IS_PENDING, 1)
+            val updatedRows: Int = context.contentResolver.update(uri, values, null, null)
+            if (updatedRows == 0)
+                return@withContext null
+        }
+        Log.d("UpdateSong","name : $name artist : $artist")
+        cv.put(MediaStore.Video.Media.TITLE, name)
+        cv.put(MediaStore.Video.VideoColumns.ARTIST, artist)
+        cv.put(MediaStore.Video.VideoColumns.ALBUM, album)
+        //cv.put(Media.COMPOSER, composer)
+
+        val rowsUpdated: Int = context.contentResolver.update(uri, cv, null, null)
+
+        if (rowsUpdated > 0) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val values = ContentValues(1)
+                values.put(MediaStore.Video.Media.IS_PENDING, 0)
+                context.contentResolver.update(uri, values, null, null)
+            }
+            return@withContext video(
+                makeVideoCursor(
+                    selection = MediaStore.Video.VideoColumns._ID + "=?",
+                    selectionValues = arrayOf(songId.toString()),
+                    withFilter = false
+                )
+            )
+        } else
+            return@withContext null
+
     }
 
     fun songsByFilePath(filePath: String): List<Song> {

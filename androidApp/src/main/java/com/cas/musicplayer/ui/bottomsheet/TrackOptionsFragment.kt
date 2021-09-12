@@ -18,8 +18,10 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
+import com.cas.musicplayer.ui.local.folders.FolderType
 import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistFragment
 import com.cas.musicplayer.utils.*
+import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mousiki.shared.domain.models.LocalSong
@@ -116,9 +118,10 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             if ((activity as MainActivity).isBottomPanelExpanded()) {
                 (activity as MainActivity).collapseBottomPanel()
             }
-            TrackInfoFragment.present(
+            SongInfoFragment.present(
                 fm = requireActivity().supportFragmentManager,
-                track = track
+                track = track,
+                FolderType.SONG
             )
             dismiss()
         }
