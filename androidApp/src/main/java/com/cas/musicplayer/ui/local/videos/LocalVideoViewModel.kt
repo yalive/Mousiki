@@ -11,6 +11,7 @@ import com.cas.musicplayer.ui.local.repository.filterNotHidden
 import com.cas.musicplayer.utils.SongsUtil
 import com.cas.musicplayer.utils.Utils
 import com.mousiki.shared.domain.models.*
+import com.mousiki.shared.domain.usecase.recent.AddVideoToRecentlyPlayedUseCase
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
@@ -19,6 +20,7 @@ import java.io.File
 
 class LocalVideoViewModel(
     private val localSongsRepository: LocalVideosRepository,
+    private val addVideoToRecentlyPlayed: AddVideoToRecentlyPlayedUseCase,
     private val playSongsDelegate: PlaySongDelegate,
 ) : BaseViewModel(), PlaySongDelegate by playSongsDelegate {
 
@@ -75,5 +77,9 @@ class LocalVideoViewModel(
                 }
             }
         }
+    }
+
+    fun onPlayVideo(track: Track) = viewModelScope.launch {
+        addVideoToRecentlyPlayed(track)
     }
 }

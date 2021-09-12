@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import java.lang.Exception
 import java.lang.RuntimeException
+import kotlin.math.abs
 
 /**
  **********************************
@@ -44,8 +45,6 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
     private var seekMax: Long = 0
     private var canBoostVolume = false
     private var canSetAutoBrightness = false
-
-    var controllerVisible = false
 
     private var gestureScrollY = 0f
     private var gestureScrollX = 0f
@@ -146,17 +145,13 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    open fun tap(): Boolean {
+    fun tap(): Boolean {
         if (locked) {
             showText("", MESSAGE_TIMEOUT_LONG)
             setIconLock(true)
             return true
         }
-        if (!isControllerFullyVisible) {
-            showController()
-            return true
-        } else if (player?.isPlaying!!) {
-            hideController()
+        if (!isControllerFullyVisible || player?.isPlaying!!) {
             return true
         }
         return false
@@ -165,7 +160,6 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        // If the PlayerView is set by XML then call the corresponding setter method
         if (controllerRef != -1) {
             try {
                 val view = (parent as View).findViewById<View>(this.controllerRef)
@@ -244,9 +238,6 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
     ): Boolean {
         if (mScaleDetector!!.isInProgress || player == null || locked) return false
 
-        // Exclude edge areas
-
-        // Exclude edge areas
         if (motionEvent?.y!! < IGNORE_BORDER || motionEvent.x < IGNORE_BORDER || motionEvent.y > height - IGNORE_BORDER || motionEvent.x > width - IGNORE_BORDER) return false
 
         if (gestureScrollY == 0f || gestureScrollX == 0f) {
@@ -264,7 +255,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
                 // Do not show controller if not already visible
                 controllerAutoShow = false
                 if (gestureOrientation == Orientation.UNKNOWN) {
-                    if (player?.isPlaying()!!) {
+                    if (player?.isPlaying!!) {
                         restorePlayState = true
                         player?.pause()
                     }
@@ -276,7 +267,9 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
                 gestureOrientation = Orientation.HORIZONTAL
                 val position: Long
                 val distanceDiff =
-                    Math.max(0.5f, Math.min(Math.abs(context.pixelsToDp(distanceX) / 4), 10f))
+                    0.5f.coerceAtLeast(
+                        abs(context.pixelsToDp(distanceX) / 4).coerceAtMost(10f)
+                    )
                 if (gestureScrollX > 0) {
                     if (seekStart + seekChange - SEEK_STEP * distanceDiff >= 0) {
                         player?.seekToPrevious()
@@ -301,9 +294,6 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
             }
         }
 
-        // LEFT = Brightness  |  RIGHT = Volume
-
-        // LEFT = Brightness  |  RIGHT = Volume
         if (gestureOrientation == Orientation.VERTICAL || gestureOrientation == Orientation.UNKNOWN) {
             gestureScrollY += distanceY
             if (Math.abs(gestureScrollY) > SCROLL_STEP) {
@@ -312,7 +302,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
                     canSetAutoBrightness = currentBrightnessLevel <= 0
                 }
                 gestureOrientation = Orientation.VERTICAL
-                if (motionEvent?.x!! < (width / 2).toFloat()) {
+                if (motionEvent.x < (width / 2).toFloat()) {
                     changeBrightness(
                         this,
                         gestureScrollY > 0,
@@ -334,7 +324,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
             isHandledLongPress = true
             showText("", MESSAGE_TIMEOUT_LONG)
             setIconLock(locked)
-            if (locked && controllerVisible) {
+            if (locked) {
                 hideController()
             }
         }
@@ -374,7 +364,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         mScaleFactor = videoSurfaceView!!.scaleX
         if (resizeMode != AspectRatioFrameLayout.RESIZE_MODE_ZOOM) {
             canScale = false
-            setAspectRatioListener { targetAspectRatio: Float, naturalAspectRatio: Float, aspectRatioMismatch: Boolean ->
+            setAspectRatioListener { _: Float, _: Float, _: Boolean ->
                 setAspectRatioListener(null)
                 mScaleFactorFit = getScaleFit()
                 mScaleFactor = mScaleFactorFit
@@ -391,7 +381,6 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
 
     override fun onScaleEnd(detector: ScaleGestureDetector?) {
         if (locked) return
-
         restoreSurfaceView()
     }
 
@@ -401,7 +390,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
             exoProgress?.getGlobalVisibleRect(systemGestureExclusionRect)
             systemGestureExclusionRect.left = left
             systemGestureExclusionRect.right = right
-            setSystemGestureExclusionRects(listOf(systemGestureExclusionRect))
+            systemGestureExclusionRects = listOf(systemGestureExclusionRect)
         }
     }
 
@@ -411,19 +400,19 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
     }
 
 
-    open fun showText(text: String?, timeout: Long) {
-        this.removeCallbacks(this.textClearRunnable)
-        this.clearIcon()
-        this.setCustomErrorMessage(text)
-        this.postDelayed(this.textClearRunnable, timeout)
+    fun showText(text: String?, timeout: Long = MESSAGE_TIMEOUT_LONG) {
+        removeCallbacks(this.textClearRunnable)
+        clearIcon()
+        setCustomErrorMessage(text)
+        postDelayed(this.textClearRunnable, timeout)
     }
 
-    open fun clearIcon() {
+    fun clearIcon() {
         exoErrorMessage?.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         setHighlight(false)
     }
 
-    open fun setIconLock(locked: Boolean) {
+    private fun setIconLock(locked: Boolean) {
         exoErrorMessage!!.setCompoundDrawablesWithIntrinsicBounds(
             if (locked) R.drawable.ic_lock_24dp else R.drawable.ic_lock_open_24dp,
             0,
@@ -432,7 +421,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         )
     }
 
-    open fun setIconVolume(volumeActive: Boolean) {
+     private fun setIconVolume(volumeActive: Boolean) {
         exoErrorMessage!!.setCompoundDrawablesWithIntrinsicBounds(
             if (volumeActive) R.drawable.ic_volume_up_24dp else R.drawable.ic_volume_off_24dp,
             0,
@@ -441,13 +430,13 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         )
     }
 
-    open fun setHighlight(active: Boolean) {
+     private fun setHighlight(active: Boolean) {
         if (active) exoErrorMessage!!.background.setTint(Color.RED) else exoErrorMessage!!.background.setTintList(
             null
         )
     }
 
-    open fun setIconBrightness() {
+     private fun setIconBrightness() {
         exoErrorMessage!!.setCompoundDrawablesWithIntrinsicBounds(
             R.drawable.ic_brightness_medium_24,
             0,
@@ -456,7 +445,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         )
     }
 
-    open fun setIconBrightnessAuto() {
+     private fun setIconBrightnessAuto() {
         exoErrorMessage!!.setCompoundDrawablesWithIntrinsicBounds(
             R.drawable.ic_brightness_auto_24dp,
             0,
@@ -465,7 +454,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         )
     }
 
-    open fun changeBrightness(
+     private fun changeBrightness(
         playerView: CustomStyledPlayerView,
         increase: Boolean,
         canSetAuto: Boolean
@@ -491,26 +480,27 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
             playerView.setCustomErrorMessage(" $currentBrightnessLevel")
         }
     }
-    open fun setScreenBrightness(brightness: Float) {
-        if(context is Activity){
+
+     private fun setScreenBrightness(brightness: Float) {
+        if (context is Activity) {
             val lp: WindowManager.LayoutParams = (context as Activity).window.attributes
             lp.screenBrightness = brightness
             (context as Activity).window.attributes = lp
         }
     }
 
-    open fun levelToBrightness(level: Int): Float {
+     private fun levelToBrightness(level: Int): Float {
         val d = 0.064 + 0.936 / 30.toDouble() * level.toDouble()
         return (d * d).toFloat()
     }
 
-    open fun formatMilisSign(time: Long): String? {
+     fun formatMilisSign(time: Long): String? {
         return if (time > -1000 && time < 1000) formatMilis(time) else (if (time < 0) "−" else "+") + formatMilis(
             time
         )
     }
 
-    open fun formatMilis(time: Long): String? {
+     private fun formatMilis(time: Long): String? {
         val totalSeconds = Math.abs(time.toInt() / 1000)
         val seconds = totalSeconds % 60
         val minutes = totalSeconds % 3600 / 60
@@ -523,19 +513,19 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         ) else String.format("%02d:%02d", minutes, seconds)
     }
 
-    open fun isVolumeMax(audioManager: AudioManager?): Boolean {
+     private fun isVolumeMax(audioManager: AudioManager?): Boolean {
         return audioManager?.getStreamVolume(AudioManager.STREAM_MUSIC) == audioManager?.getStreamMaxVolume(
             AudioManager.STREAM_MUSIC
         )
     }
 
-    open fun isVolumeMin(audioManager: AudioManager?): Boolean {
+     private fun isVolumeMin(audioManager: AudioManager?): Boolean {
         val min =
             if (Build.VERSION.SDK_INT >= 28) audioManager?.getStreamMinVolume(AudioManager.STREAM_MUSIC) else 0
         return audioManager?.getStreamVolume(AudioManager.STREAM_MUSIC) == min
     }
 
-    open fun adjustVolume(
+     private fun adjustVolume(
         audioManager: AudioManager?,
         raise: Boolean,
         canBoost: Boolean
@@ -581,19 +571,19 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         loudnessEnhancer?.enabled = boostLevel > 0
         setHighlight(boostLevel > 0)
     }
+
     private fun isCrossingThreshold(val1: Float, val2: Float, threshold: Float): Boolean {
         return val1 < threshold && val2 >= threshold || val1 > threshold && val2 <= threshold
     }
+
     private fun restoreSurfaceView() {
         if (videoSurfaceView!!.alpha != 1f) {
             videoSurfaceView!!.alpha = 1f
         }
     }
+
     private fun getScaleFit(): Float {
-        return Math.min(
-            height.toFloat() / videoSurfaceView!!.height.toFloat(),
-            width.toFloat() / videoSurfaceView!!.width.toFloat()
-        )
+        return (height.toFloat() / videoSurfaceView!!.height.toFloat()).coerceAtMost(width.toFloat() / videoSurfaceView!!.width.toFloat())
     }
 
     private class DoubleTapGestureListener(private val rootView: CustomStyledPlayerView) :
@@ -675,7 +665,7 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    companion object{
+    companion object {
         const val SEEK_STEP: Long = 1000
         const val MESSAGE_TIMEOUT_TOUCH = 400L
         const val MESSAGE_TIMEOUT_LONG = 1400L
@@ -684,6 +674,6 @@ class CustomStyledPlayerView(context: Context, attrs: AttributeSet?) :
 
 }
 
-private enum class Orientation {
+enum class Orientation {
     HORIZONTAL, VERTICAL, UNKNOWN
 }

@@ -25,7 +25,7 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
     R.layout.local_video_fragment
 ), StoragePermissionDelegate by StoragePermissionDelegateImpl() {
 
-    override val screenName: String = "LocalVideoFragment"
+    override val screenName: String = "PlayedVideoFragment"
     override val viewModel by viewModel { Injector.playedVideoViewModel }
 
     private val binding by viewBinding(LocalVideoFragmentBinding::bind)
@@ -41,10 +41,11 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
     }
 
     private fun playVideo(track: Track) {
+        viewModel.onPlayVideo(track)
         val intent = Intent(activity, VideoPlayerActivity::class.java)
-        intent.putExtra("video_type", track.type)
-        intent.putExtra("video_id", track.id.toLong())
-        intent.putExtra("video_name", track.title)
+        intent.putExtra(VideoPlayerActivity.VIDEO_TYPE, track.type)
+        intent.putExtra(VideoPlayerActivity.VIDEO_ID, track.id.toLong())
+        intent.putExtra(VideoPlayerActivity.VIDEO_NAME, track.title)
         startActivity(intent)
     }
 
