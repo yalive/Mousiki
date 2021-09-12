@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
-import com.cas.common.extensions.hideSoftKeyboard
 import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentTrackInfoBinding
@@ -20,21 +19,19 @@ import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.utils.Constants
 import java.io.File
 import android.app.Activity
-import android.app.RecoverableSecurityException
-import android.content.IntentSender
-import android.os.Build
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
+import com.cas.musicplayer.ui.local.folders.FolderType
 
 
-class TrackInfoFragment : BottomSheetDialogFragment() {
+class SongInfoFragment : BottomSheetDialogFragment() {
 
     var onDismissed: (() -> Unit)? = null
 
     lateinit var track: Track
+    lateinit var folderType: FolderType
 
     private val viewModel by lazy { Injector.trackInfoViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
@@ -54,7 +51,8 @@ class TrackInfoFragment : BottomSheetDialogFragment() {
         track = arguments?.getParcelable(Constants.MUSIC_TRACK_KEY)!!
         binding.imgTrack.loadTrackImage(track)
 
-        viewModel.initSong(track.id.toLong())
+        viewModel.folderType = folderType
+        viewModel.initTrack(track.id.toLong())
 
         updateVisibility(false)
 
@@ -93,7 +91,7 @@ class TrackInfoFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateSong() {
-        viewModel.updateSong(
+        viewModel.updateTrack(
             binding.txtTrackTitle.text.toString(),
             binding.txtTrackArtist.text.toString(),
             binding.txtTrackAlbum.text.toString(),
@@ -181,13 +179,15 @@ class TrackInfoFragment : BottomSheetDialogFragment() {
         fun present(
             fm: FragmentManager,
             track: Track,
+            folderType: FolderType,
             onDismissed: () -> Unit = {}
         ) {
-            val bottomSheetFragment = TrackInfoFragment()
+            val bottomSheetFragment = SongInfoFragment()
             val bundle = Bundle()
             bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
             bottomSheetFragment.arguments = bundle
             bottomSheetFragment.onDismissed = onDismissed
+            bottomSheetFragment.folderType = folderType
             bottomSheetFragment.show(fm, bottomSheetFragment.tag)
         }
     }
