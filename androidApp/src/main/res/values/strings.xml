@@ -245,5 +245,6 @@
     <string name="screen_zoom">Zoom</string>
     <string name="screen_fixed_w">Fixed width</string>
     <string name="screen_fixed_h">Fixed height</string>
+    <string name="label_no_video_played_yet">Oops! look like you haven\'t played any videos</string>
 
 </resources>
