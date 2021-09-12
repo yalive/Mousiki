@@ -112,6 +112,17 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
+        binding.showInformation.onClick {
+            if ((activity as MainActivity).isBottomPanelExpanded()) {
+                (activity as MainActivity).collapseBottomPanel()
+            }
+            TrackInfoFragment.present(
+                fm = requireActivity().supportFragmentManager,
+                track = track
+            )
+            dismiss()
+        }
+
         binding.setAsRingtoneView.onClick {
             val context = requireContext()
             if (RingtoneManager.requiresDialog(context)) {
