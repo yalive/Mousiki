@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.local.videos.history
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -15,7 +16,10 @@ import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
 import com.cas.musicplayer.ui.local.videos.LocalVideoAdapter
 import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
 import com.cas.musicplayer.utils.viewBinding
+import com.cas.musicplayer.utils.visibleInScreen
+import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.ui.resource.Resource
 
 class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
     R.layout.local_video_fragment
@@ -56,7 +60,27 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             observe(viewModel.playedVideos) {
-                adapter.submitList(it)
+                updateUI(it)
+            }
+        }
+    }
+
+    private fun updateUI(resource: Resource<List<DisplayableItem>>) {
+        when (resource) {
+            Resource.Loading -> {
+                binding.shimmerView.loadingView.isVisible = true
+                binding.shimmerView.loadingView.startShimmer()
+                binding.shimmerView.loadingView.alpha = 1f
+            }
+            is Resource.Success -> {
+                binding.shimmerView.loadingView.alpha = 0f
+                binding.shimmerView.loadingView.stopShimmer()
+                binding.shimmerView.loadingView.isVisible = false
+                adapter.submitList(resource.data)
+
+            }
+            is Resource.Failure -> {
+
             }
         }
     }

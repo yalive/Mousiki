@@ -19,6 +19,13 @@
         tools:listitem="@layout/item_local_song" />
 
     <include
+        android:id="@+id/shimmerView"
+        layout="@layout/layout_shimmer_loading_videos_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/storagePermissionView"
         layout="@layout/layout_no_storage_permission"
         android:layout_width="match_parent"
