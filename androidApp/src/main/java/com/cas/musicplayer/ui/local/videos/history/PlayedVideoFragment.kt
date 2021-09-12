@@ -16,7 +16,6 @@ import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
 import com.cas.musicplayer.ui.local.videos.LocalVideoAdapter
 import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
 import com.cas.musicplayer.utils.viewBinding
-import com.cas.musicplayer.utils.visibleInScreen
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.ui.resource.Resource
@@ -77,7 +76,17 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
                 binding.shimmerView.loadingView.alpha = 0f
                 binding.shimmerView.loadingView.stopShimmer()
                 binding.shimmerView.loadingView.isVisible = false
-                adapter.submitList(resource.data)
+                if (resource.data.isNullOrEmpty()) {
+                    binding.noHistoryImage.isVisible = true
+                    binding.noHistoryLabel.isVisible = true
+                    binding.localVideosRecyclerViewView.isVisible = false
+                } else {
+                    binding.noHistoryImage.isVisible = false
+                    binding.noHistoryLabel.isVisible = false
+                    binding.localVideosRecyclerViewView.isVisible = true
+                    adapter.submitList(resource.data)
+
+                }
 
             }
             is Resource.Failure -> {
