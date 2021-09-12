@@ -15,6 +15,7 @@ import com.cas.musicplayer.ui.bottomsheet.SortVideoByFragment
 import com.cas.musicplayer.ui.local.StoragePermissionDelegate
 import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
 import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
+import com.cas.musicplayer.ui.local.videos.player.VideoQueueType
 import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
@@ -44,6 +45,7 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
         val intent = Intent(activity, VideoPlayerActivity::class.java)
         intent.putExtra(VideoPlayerActivity.VIDEO_TYPE, track.type)
         intent.putExtra(VideoPlayerActivity.VIDEO_ID, track.id.toLong())
+        intent.putExtra(VideoPlayerActivity.QUEUE_TYPE, VideoQueueType.AllVideos)
         intent.putExtra(VideoPlayerActivity.VIDEO_NAME, track.title)
         startActivity(intent)
     }

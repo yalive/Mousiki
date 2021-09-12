@@ -139,6 +139,7 @@ val useCasesModule = module {
     factory { AddVideoToRecentlyPlayedUseCase(get()) }
     factory { GetRecentlyPlayedSongsFlowUseCase(get()) }
     factory { GetRecentlyPlayedVideosFlowUseCase(get()) }
+    factory { GetRecentlyPlayedVideosUseCase(get()) }
     factory { GetRecentlyPlayedSongsUseCase(get()) }
     factory { GetGoogleSearchSuggestionsUseCase(get()) }
     factory { GetRecentSearchQueriesUseCase(get()) }

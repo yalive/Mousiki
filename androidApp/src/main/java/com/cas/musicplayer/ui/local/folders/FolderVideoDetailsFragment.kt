@@ -8,27 +8,25 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FolderDetailsFragmentBinding
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.base.setupToolbar
 import com.cas.musicplayer.ui.local.videos.LocalVideoAdapter
 import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
+import com.cas.musicplayer.ui.local.videos.player.VideoQueueType
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.domain.models.Track
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
     R.layout.folder_details_fragment
 ) {
 
     override val screenName: String = "FolderDetailsFragment"
-
+    private val folder by lazy { requireArguments().getParcelable<Folder>(EXTRAS_FOLDER)!! }
     override val viewModel by viewModel {
-        val path = arguments?.getString(EXTRAS_FOLDER_PATH)
         Injector.folderVideoDetailsViewModel.also { viewModel ->
-            path?.let { viewModel.loadSongsFromPath(it) }
+            viewModel.loadSongsFromPath(folder.path)
         }
     }
 
@@ -36,7 +34,7 @@ class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
 
     private val adapter by lazy {
         LocalVideoAdapter(
-            onClickTrack = {playVideo(it)},
+            onClickTrack = { playVideo(it) },
             onSortClicked = {},
             onFilterClicked = {},
             showCountsAndSortButton = true,
@@ -49,6 +47,7 @@ class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
         val intent = Intent(activity, VideoPlayerActivity::class.java)
         intent.putExtra(VideoPlayerActivity.VIDEO_TYPE, track.type)
         intent.putExtra(VideoPlayerActivity.VIDEO_ID, track.id.toLong())
+        intent.putExtra(VideoPlayerActivity.QUEUE_TYPE, VideoQueueType.FolderLocation(folder))
         intent.putExtra(VideoPlayerActivity.VIDEO_NAME, track.title)
         startActivity(intent)
     }
@@ -60,20 +59,9 @@ class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
     }
 
     private fun initViews() {
-        val folderName = arguments?.getString(EXTRAS_FOLDER_NAME)
-        folderName?.let { setupToolbar(binding.toolbarView.toolbar, it) }
+        setupToolbar(binding.toolbarView.toolbar, folder.name)
         binding.localSongsRecyclerView.adapter = adapter
         observe(viewModel.localSongs, adapter::submitList)
-
-        observe(PlaybackLiveData) { state ->
-            if (state == PlayerConstants.PlayerState.PLAYING
-                || state == PlayerConstants.PlayerState.BUFFERING
-                || state == PlayerConstants.PlayerState.PAUSED
-                || state == PlayerConstants.PlayerState.ENDED
-            ) {
-                viewModel.onPlaybackStateChanged()
-            }
-        }
 
         observe(DeviceInset) { inset ->
             binding.root.updatePadding(top = inset.top)
@@ -81,8 +69,6 @@ class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
     }
 
     companion object {
-        const val EXTRAS_FOLDER_PATH = "extras.folder.path"
-        const val EXTRAS_FOLDER_NAME = "extras.folder.name"
-
+        const val EXTRAS_FOLDER = "extras.folder"
     }
 }
