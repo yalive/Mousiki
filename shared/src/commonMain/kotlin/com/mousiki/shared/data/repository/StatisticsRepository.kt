@@ -96,6 +96,21 @@ class StatisticsRepository(
             }.flowOn(Dispatchers.Default)
     }
 
+    suspend fun getRecentlyPlayedVideos(
+        max: Int = 10
+    ): List<Track> = withContext(Dispatchers.Default) {
+        return@withContext recentVideosDao.getVideos(max.toLong())
+            .executeAsList()
+            .map { dbVideo ->
+                LocalSong(
+                    song = Song.emptySong.copy(
+                        id = dbVideo.video_id.toLongOrZero(),
+                        duration = dbVideo.duration,
+                    )
+                )
+            }
+    }
+
     suspend fun getHeavyList(max: Int = 10): List<Track> {
         return recentTracksDao.getHeavyList(max.toLong()).executeAsList().map {
             it.toTrack()

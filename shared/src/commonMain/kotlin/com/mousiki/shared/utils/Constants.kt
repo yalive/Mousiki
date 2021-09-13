@@ -12,6 +12,7 @@ object Constants {
     const val SONG_SORT_ORDER = "song_sort_order"
 
     const val VIDEO_SORT_ORDER = "video_sort_order"
+    const val AUTO_PAY_NEXT_VIDEO = "auto_pay_next_video"
 
     const val FILTER_SONG = "filter_song"
 

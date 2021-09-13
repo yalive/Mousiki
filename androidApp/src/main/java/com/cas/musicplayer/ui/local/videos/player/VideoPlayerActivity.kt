@@ -16,28 +16,35 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Rational
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
+import androidx.transition.Slide
+import androidx.transition.TransitionManager
+import com.cas.common.extensions.onClick
+import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityVideoPlayerBinding
+import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
 import com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
+import com.cas.musicplayer.ui.local.videos.queue.VideosQueueFragment
+import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.SystemSettings
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.ui.TimeBar.OnScrubListener
-import java.lang.RuntimeException
-import java.util.ArrayList
+import com.mousiki.shared.domain.models.Track
+import java.util.*
 import kotlin.math.abs
 
 
@@ -52,7 +59,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         ActivityVideoPlayerBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: VideoPlayerViewModel by viewModels()
+    private val viewModel: VideoPlayerViewModel by viewModel { Injector.videoPlayerViewModel }
 
     private var mPictureInPictureParamsBuilder: Any? = null
 
@@ -126,7 +133,8 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
 
         viewBinding.videoView.setControllerVisibilityListener {
-
+            TransitionManager.beginDelayedTransition(viewBinding.topBar, Slide(Gravity.TOP))
+            viewBinding.topBar.isVisible = it == View.VISIBLE
             if (viewBinding.videoView.restoreControllerTimeout) {
                 viewBinding.videoView.restoreControllerTimeout = false
                 if (viewModel.player == null || !viewModel.player?.isPlaying!!) {
@@ -238,8 +246,26 @@ class VideoPlayerActivity : AppCompatActivity() {
                 }
             }
         })
+
+        viewBinding.btnBack.onClick { onBackPressed() }
+        viewBinding.btnShowQueue.onClick {
+            VideosQueueFragment.present(supportFragmentManager)
+        }
+        viewBinding.switchAutoNext.isChecked = PreferenceUtil.autoPlayNextVideo
+        viewBinding.switchAutoNext.setOnCheckedChangeListener { _, isChecked ->
+            PreferenceUtil.autoPlayNextVideo = isChecked
+            val toast = when (isChecked) {
+                true -> R.string.video_auto_play_next_on
+                false -> R.string.video_auto_play_next_off
+            }
+            viewBinding.videoView.showText(getString(toast))
+        }
         setupMediaReceiver()
         getVideoInfoFromIntent(intent)
+
+        observe(viewModel.currentVideo) {
+            viewBinding.txtVideoTitle.text = it.songTitle
+        }
     }
 
     override fun onPictureInPictureModeChanged(
@@ -295,24 +321,15 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     private fun getVideoInfoFromIntent(intent: Intent?): Boolean {
+        if (intent == null) return false
         var newVideo = false
-        val videoId = intent?.getLongExtra(VIDEO_ID, 0)
-        if (videoId != null) {
-            val currentUri =
-                ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoId)
-            val videoType = intent.getStringExtra(VIDEO_TYPE)
-            val videoName = intent.getStringExtra(VIDEO_NAME)
-            titleView?.text = videoName
-            viewModel.currentUri = currentUri
-            if (videoId != viewModel.currentId)
-                newVideo = true
-            viewModel.currentId = videoId
-        }
-
-        if (intent != null) {
-            viewModel.playWhenReady = true
-        }
-
+        val video = intent.getParcelableExtra<Track>(VIDEO) ?: return false
+        val previousId = viewModel.currentVideo.value?.track?.id
+        val queueType = intent.getParcelableExtra<VideoQueueType>(QUEUE_TYPE)
+        viewModel.prepareQueue(queueType!!, video)
+        if (video.id != previousId)
+            newVideo = true
+        viewModel.playWhenReady = true
         return newVideo
     }
 
@@ -511,6 +528,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         titleView?.ellipsize = TextUtils.TruncateAt.END
         titleView?.textDirection = View.TEXT_DIRECTION_LOCALE
         centerView.addView(titleView)
+        titleView?.isVisible = false // titleView to be removed
     }
 
     private fun setViewParams(
@@ -632,6 +650,10 @@ class VideoPlayerActivity : AppCompatActivity() {
             if (state == Player.STATE_READY) {
                 frameRendered = true
             }
+
+            if (state == Player.STATE_ENDED && PreferenceUtil.autoPlayNextVideo) {
+                viewModel.playNextVideo()
+            }
         }
     }
 
@@ -639,9 +661,8 @@ class VideoPlayerActivity : AppCompatActivity() {
         const val TAG = "VideoPlayerActivity1"
         const val ACTION_MEDIA_CONTROL = "media_control"
         const val EXTRA_CONTROL_TYPE = "control_type"
-        const val VIDEO_ID = "video_id"
-        const val VIDEO_NAME = "video_name"
-        const val VIDEO_TYPE = "video_type"
+        const val VIDEO = "video"
+        const val QUEUE_TYPE = "queue_type"
         const val PIP_SETTINGS = "android.settings.PICTURE_IN_PICTURE_SETTINGS"
 
         const val REQUEST_PLAY = 1

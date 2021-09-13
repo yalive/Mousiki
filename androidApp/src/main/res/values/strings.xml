@@ -247,4 +247,12 @@
     <string name="screen_fixed_h">Fixed height</string>
     <string name="label_no_video_played_yet">Oops! look like you haven\'t played any videos</string>
 
+    <!-- Video player header-->
+    <string name="video_auto_play_next_on">Autoplay next on</string>
+    <string name="video_auto_play_next_off">Autoplay next off</string>
+
+    <!-- Video player queue-->
+    <string name="video_player_queue_all">All</string>
+    <string name="video_player_queue_history">History</string>
+
 </resources>
