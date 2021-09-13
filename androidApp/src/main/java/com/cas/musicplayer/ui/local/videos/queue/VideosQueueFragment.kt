@@ -80,7 +80,7 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
         }
 
         val title = when (val currentQueueType = videoPlayerViewModel.currentQueueType) {
-            VideoQueueType.AllVideos -> getString(R.string.video_player_queue_all)
+            VideoQueueType.AllVideos -> getString(R.string.btn_select_all_title)
             is VideoQueueType.FolderLocation -> currentQueueType.folder.name
             VideoQueueType.History -> getString(R.string.video_player_queue_history)
             null -> ""
