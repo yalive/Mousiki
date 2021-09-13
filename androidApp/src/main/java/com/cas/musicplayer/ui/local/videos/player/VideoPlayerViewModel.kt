@@ -21,6 +21,7 @@ import com.mousiki.shared.Parcelable
 import com.mousiki.shared.Parcelize
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedVideosUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
@@ -36,8 +37,8 @@ class VideoPlayerViewModel(
     private val _queue = MutableLiveData<List<DisplayedVideoItem>>()
     val queue: LiveData<List<DisplayedVideoItem>> = _queue
 
-    private val _currentVideo = MutableLiveData<Long>()
-    val currentVideo: LiveData<Long> = _currentVideo
+    private val _currentVideo = MutableLiveData<DisplayedVideoItem>()
+    val currentVideo: LiveData<DisplayedVideoItem> = _currentVideo
 
     var player: SimpleExoPlayer? = null
     var loudnessEnhancer: LoudnessEnhancer? = null
@@ -47,7 +48,6 @@ class VideoPlayerViewModel(
     private var playbackPosition = 0L
 
     private var currentUri: Uri? = null
-    var currentId: Long = 0L
 
     var currentQueueType: VideoQueueType? = null
         private set
@@ -80,13 +80,16 @@ class VideoPlayerViewModel(
         }
     }
 
-    fun playVideo(videoId: Long) {
-        _currentVideo.value = videoId
+    fun playVideo(video: Track) {
+        _currentVideo.value = video.toDisplayedVideoItem()
         currentUri =
-            ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoId)
+            ContentUris.withAppendedId(
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                video.id.toLong()
+            )
         start()
 
-        _queue.value = _queue.value?.map { it.copy(isCurrent = it.track.id == videoId.toString()) }
+        _queue.value = _queue.value?.map { it.copy(isCurrent = it.track.id == video.id) }
     }
 
     fun start() {
@@ -116,11 +119,14 @@ class VideoPlayerViewModel(
 
     fun prepareQueue(
         queueType: VideoQueueType,
-        videoId: Long
+        video: Track
     ) {
-        _currentVideo.value = videoId
+        _currentVideo.value = video.toDisplayedVideoItem()
         currentUri =
-            ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoId)
+            ContentUris.withAppendedId(
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                video.id.toLong()
+            )
 
         // Load queue videos
         if (currentQueueType == queueType) return // Queue unchanged
@@ -136,18 +142,18 @@ class VideoPlayerViewModel(
                 VideoQueueType.History -> getRecentlyPlayedVideos(200).map {
                     LocalSong(localVideosRepository.video(it.id.toLong())).toDisplayedVideoItem()
                 }
-            }.map { it.copy(isCurrent = it.track.id == videoId.toString()) }
+            }.map { it.copy(isCurrent = it.track.id == video.id) }
         }
     }
 
     fun playNextVideo() {
-        val index = _queue.value?.indexOfFirst { it.track.id == currentVideo.value.toString() }
+        val index =
+            _queue.value?.indexOfFirst { it.track.id == currentVideo.value?.track?.id.toString() }
         if (index == null || index == -1) return
         val nextVideo = _queue.value?.getOrNull(index + 1) ?: return
-        playVideo(nextVideo.track.id.toLong())
+        playVideo(nextVideo.track)
     }
 }
-
 
 sealed class VideoQueueType : Parcelable {
     @Parcelize

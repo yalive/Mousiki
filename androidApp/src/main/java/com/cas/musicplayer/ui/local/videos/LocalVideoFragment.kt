@@ -43,10 +43,8 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
     private fun playVideo(track: Track) {
         viewModel.onPlayVideo(track)
         val intent = Intent(activity, VideoPlayerActivity::class.java)
-        intent.putExtra(VideoPlayerActivity.VIDEO_TYPE, track.type)
-        intent.putExtra(VideoPlayerActivity.VIDEO_ID, track.id.toLong())
+        intent.putExtra(VideoPlayerActivity.VIDEO, track)
         intent.putExtra(VideoPlayerActivity.QUEUE_TYPE, VideoQueueType.AllVideos)
-        intent.putExtra(VideoPlayerActivity.VIDEO_NAME, track.title)
         startActivity(intent)
     }
 
