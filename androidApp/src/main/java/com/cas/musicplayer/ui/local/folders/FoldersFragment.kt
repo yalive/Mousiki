@@ -2,6 +2,7 @@ package com.cas.musicplayer.ui.local.folders
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -9,9 +10,9 @@ import com.cas.musicplayer.databinding.FoldersFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
-import com.cas.musicplayer.ui.local.folders.options.FolderOption
 import com.cas.musicplayer.ui.local.StoragePermissionDelegate
 import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
+import com.cas.musicplayer.ui.local.folders.options.FolderOption
 import com.cas.musicplayer.utils.toast
 import com.cas.musicplayer.utils.viewBinding
 
@@ -24,6 +25,8 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
     override val viewModel by viewModel { Injector.foldersViewModel }
 
     private val binding by viewBinding(FoldersFragmentBinding::bind)
+
+    private val folderType by lazy { requireArguments().get(EXTRA_FOLDER_TYPE) as FolderType }
 
     private val adapter by lazy {
         FoldersAdapter(::onFolderOption)
@@ -55,10 +58,13 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
         }
     }
 
-    private var folderType = FolderType.SONG
 
     companion object {
-        fun newInstance(folderType: FolderType) =
-            FoldersFragment().also { it.folderType = folderType }
+        private const val EXTRA_FOLDER_TYPE = "folder.type"
+        fun newInstance(folderType: FolderType) = FoldersFragment().apply {
+            arguments = bundleOf(
+                EXTRA_FOLDER_TYPE to folderType
+            )
+        }
     }
 }
