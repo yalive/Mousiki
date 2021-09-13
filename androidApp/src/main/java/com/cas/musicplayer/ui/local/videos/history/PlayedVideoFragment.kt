@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
-import com.cas.musicplayer.databinding.LocalVideoFragmentBinding
 import com.cas.musicplayer.databinding.PlayedVideoFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
@@ -17,6 +16,7 @@ import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
 import com.cas.musicplayer.ui.local.videos.LocalVideoAdapter
 import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
 import com.cas.musicplayer.ui.local.videos.player.VideoQueueType
+import com.cas.musicplayer.utils.readStoragePermissionsGranted
 import com.cas.musicplayer.utils.viewBinding
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.Track
@@ -67,6 +67,9 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
     }
 
     private fun updateUI(resource: Resource<List<DisplayableItem>>) {
+        if (!readStoragePermissionsGranted()) {
+            return
+        }
         when (resource) {
             Resource.Loading -> {
                 binding.shimmerView.loadingView.isVisible = true
@@ -78,20 +81,15 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
                 binding.shimmerView.loadingView.stopShimmer()
                 binding.shimmerView.loadingView.isVisible = false
                 if (resource.data.isNullOrEmpty()) {
-                    binding.noHistoryImage.isVisible = true
-                    binding.noHistoryLabel.isVisible = true
+                    binding.emptyView.isVisible = true
                     binding.localVideosRecyclerViewView.isVisible = false
                 } else {
-                    binding.noHistoryImage.isVisible = false
-                    binding.noHistoryLabel.isVisible = false
+                    binding.emptyView.isVisible = false
                     binding.localVideosRecyclerViewView.isVisible = true
                     adapter.submitList(resource.data)
-
                 }
-
             }
             is Resource.Failure -> {
-
             }
         }
     }

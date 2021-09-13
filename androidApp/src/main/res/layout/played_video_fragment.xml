@@ -25,13 +25,19 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="no_history_image,no_history_label" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/no_history_image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="@dimen/sixteen_16dp"
         android:scaleType="fitCenter"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_history"
         app:tint="@color/localSongsPrimaryColor" />
@@ -48,7 +54,6 @@
         android:textColor="?colorOnSurface"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/no_history_image" />
 
     <include
