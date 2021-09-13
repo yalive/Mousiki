@@ -11,6 +11,7 @@ import com.mousiki.shared.utils.Constants.ALBUM_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_ALBUM_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_SONG_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_SORT_ORDER
+import com.mousiki.shared.utils.Constants.AUTO_PAY_NEXT_VIDEO
 import com.mousiki.shared.utils.Constants.FILTER_SONG
 import com.mousiki.shared.utils.Constants.FILTER_SONGS_LESS_THAN_100k
 import com.mousiki.shared.utils.Constants.FILTER_SONGS_LESS_THAN_60S
@@ -47,6 +48,12 @@ object PreferenceUtil {
         )
         set(value) = sharedPreferences.edit {
             putString(VIDEO_SORT_ORDER, value)
+        }
+
+    var autoPlayNextVideo
+        get() = sharedPreferences.getBoolean(AUTO_PAY_NEXT_VIDEO, false)
+        set(value) = sharedPreferences.edit {
+            putBoolean(AUTO_PAY_NEXT_VIDEO, value)
         }
 
     val filterLength get() = sharedPreferences.getInt(FILTER_SONG, 20)
