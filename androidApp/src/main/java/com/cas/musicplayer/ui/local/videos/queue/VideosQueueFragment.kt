@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.activityViewModel
-import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentVideoQueueBinding
 import com.cas.musicplayer.di.Injector
@@ -29,9 +28,6 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
 
     private val binding by viewBinding(FragmentVideoQueueBinding::bind)
     private val analyticsApi by lazy { get<AnalyticsApi>() }
-    private val viewModel: VideosQueueViewModel by viewModel {
-        Injector.videosQueueViewModel
-    }
 
     private val videoPlayerViewModel by activityViewModel { Injector.videoPlayerViewModel }
 
@@ -39,7 +35,7 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
         LocalVideoQueueAdapter(
             onClickTrack = {
                 dismiss()
-                videoPlayerViewModel.playVideo(it.id.toLong())
+                videoPlayerViewModel.playVideo(it)
             }
         )
     }
@@ -81,10 +77,6 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
                 currentTrackIndex,
                 (requireContext().screenSize().heightPx * HEIGHT_RATIO).toInt() / 3
             )
-        }
-
-        observe(videoPlayerViewModel.currentVideo) {
-            viewModel.onVideoChanged(it)
         }
 
         val title = when (val currentQueueType = videoPlayerViewModel.currentQueueType) {

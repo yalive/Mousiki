@@ -32,6 +32,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityVideoPlayerBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
 import com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
 import com.cas.musicplayer.ui.local.videos.queue.VideosQueueFragment
@@ -42,6 +43,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.ui.TimeBar.OnScrubListener
+import com.mousiki.shared.domain.models.Track
 import java.util.*
 import kotlin.math.abs
 
@@ -260,6 +262,10 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
         setupMediaReceiver()
         getVideoInfoFromIntent(intent)
+
+        observe(viewModel.currentVideo) {
+            viewBinding.txtVideoTitle.text = it.songTitle
+        }
     }
 
     override fun onPictureInPictureModeChanged(
@@ -317,17 +323,12 @@ class VideoPlayerActivity : AppCompatActivity() {
     private fun getVideoInfoFromIntent(intent: Intent?): Boolean {
         if (intent == null) return false
         var newVideo = false
-        val videoId = intent.getLongExtra(VIDEO_ID, 0)
-        if (videoId != 0L) {
-            val videoType = intent.getStringExtra(VIDEO_TYPE)
-            val videoName = intent.getStringExtra(VIDEO_NAME)
-            viewBinding.txtVideoTitle.text = videoName
-            val previousId = viewModel.currentId
-            val queueType = intent.getParcelableExtra<VideoQueueType>(QUEUE_TYPE)
-            viewModel.prepareQueue(queueType!!, videoId)
-            if (videoId != previousId)
-                newVideo = true
-        }
+        val video = intent.getParcelableExtra<Track>(VIDEO) ?: return false
+        val previousId = viewModel.currentVideo.value?.track?.id
+        val queueType = intent.getParcelableExtra<VideoQueueType>(QUEUE_TYPE)
+        viewModel.prepareQueue(queueType!!, video)
+        if (video.id != previousId)
+            newVideo = true
         viewModel.playWhenReady = true
         return newVideo
     }
@@ -660,9 +661,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         const val TAG = "VideoPlayerActivity1"
         const val ACTION_MEDIA_CONTROL = "media_control"
         const val EXTRA_CONTROL_TYPE = "control_type"
-        const val VIDEO_ID = "video_id"
-        const val VIDEO_NAME = "video_name"
-        const val VIDEO_TYPE = "video_type"
+        const val VIDEO = "video"
         const val QUEUE_TYPE = "queue_type"
         const val PIP_SETTINGS = "android.settings.PICTURE_IN_PICTURE_SETTINGS"
 
