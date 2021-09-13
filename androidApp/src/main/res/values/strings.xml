@@ -57,7 +57,6 @@
     <string name="search">Search</string>
     <string name="search_button_title">Artists, songs, or podcasts</string>
     <string name="artists_find_an_artist">Find an artist</string>
-    <string name="turn_on_to_hide">Turn on to hide</string>
     <string name="audio_duration_less_than">Filter audio files less than 60s</string>
     <string name="audio_size_less_than">Filter audio files less than 100k</string>
     <string name="video_duration_less_than">Filter video files less than 60s</string>
@@ -229,15 +228,13 @@
     <string name="error_details">Details</string>
     <string name="error_files_missing">Files app is disabled or missing</string>
 
+    // not used yet
     <string name="request_scope">To automatically load external subtitles or enable skipping to next file in a directory, grant %s access to the topmost folder containing your videos (e.g. Movies).</string>
-
     <string name="delete_query">Delete this file\?</string>
-    <string name="delete_confirmation">Delete</string>
 
     <!-- Screen orientation-->
     <string name="screen_portrait">Portrait</string>
     <string name="screen_landscape">Landscape</string>
-    <string name="screen_auto">Auto</string>
 
     <!-- Screen ratio-->
     <string name="screen_fit">Fit</string>
@@ -252,7 +249,8 @@
     <string name="video_auto_play_next_off">Autoplay next off</string>
 
     <!-- Video player queue-->
-    <string name="video_player_queue_all">All</string>
     <string name="video_player_queue_history">History</string>
+    <string name="turn_on_to_hide">Turn on to hide</string>
+    <string name="screen_auto">Auto</string>
 
 </resources>
