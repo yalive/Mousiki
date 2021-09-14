@@ -10,7 +10,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.dpToPixel
-import com.cas.common.extensions.isDarkMode
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.enforceSingleScrollDirection
 import com.cas.common.viewmodel.viewModel
