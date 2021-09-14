@@ -50,7 +50,7 @@ open class NewHorizontalSongsAdapterDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = parent.inflate(R.layout.horizontal_songs_list)
-        return HorizontalSongsListViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(
@@ -60,7 +60,7 @@ open class NewHorizontalSongsAdapterDelegate(
     ) {
         val songs = songsFromItem(items[position])
         val title = getHeaderTitle(items, position)
-        (holder as HorizontalSongsListViewHolder).bind(title, songs, title.isNotEmpty())
+        (holder as ViewHolder).bind(title, songs, title.isNotEmpty())
     }
 
     override fun onBindViewHolder(
@@ -76,11 +76,15 @@ open class NewHorizontalSongsAdapterDelegate(
             else -> null
         }
 
-        val viewHolder = holder as HorizontalSongsListViewHolder
+        val viewHolder = holder as ViewHolder
         if (payloads.isEmpty() || payloads[0] !is Bundle) {
+            val resource = when (item) {
+                is HomeItem.PopularsItem -> item.resource
+                else -> Resource.Success(tracks.orEmpty())
+            }
             viewHolder.bind(
                 getHeaderTitle(items, position),
-                Resource.Success(tracks.orEmpty()),
+                resource,
                 item is HomeItem.VideoList
             )
         } else {
@@ -104,7 +108,7 @@ open class NewHorizontalSongsAdapterDelegate(
         return ""
     }
 
-    inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view),
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view),
         HomeMarginProvider {
 
         private var tracks: List<Track> = emptyList()
