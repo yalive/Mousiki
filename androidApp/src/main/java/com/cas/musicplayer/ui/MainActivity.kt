@@ -70,7 +70,7 @@ class MainActivity : BaseActivity() {
             // just to prepare ads
         }
         setupPlayerFragment()
-        binding.bottomNavView.setOnNavigationItemSelectedListener { item ->
+        binding.bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navHome -> handleClickMenuHome()
                 R.id.navVideo -> handleClickMenuVideo()
@@ -145,6 +145,10 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
+
+        lifecycleScope.launchWhenStarted {
+            binding.bottomNavView.selectedItemId = R.id.navMusic
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
