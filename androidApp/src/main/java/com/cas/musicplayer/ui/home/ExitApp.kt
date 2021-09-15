@@ -14,7 +14,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.ui.MainActivity
-import com.cas.musicplayer.utils.PreferenceUtil
+import com.cas.musicplayer.utils.SystemSettings
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
@@ -73,7 +73,7 @@ fun MainActivity.showExitDialog(): BottomSheetDialog {
 @SuppressLint("NewApi")
 private fun MainActivity.exitApp(dialog: BottomSheetDialog) {
     dialog.dismiss()
-    if (PreferenceUtil.usingPip() && PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
+    if (SystemSettings.canEnterPiPMode() && PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
         enterPictureInPictureMode(PictureInPictureParams.Builder().build())
     } else {
         lifecycleScope.launch {

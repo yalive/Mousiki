@@ -8,7 +8,6 @@ import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
-import com.cas.musicplayer.ui.EXTRA_START_PIP
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.YtbTrack
@@ -100,11 +99,11 @@ class YTBPlayer(
     }
 
     override fun play() {
-        if (PreferenceUtil.usingPip() && !isScreenLocked() && !MusicApp.get().isInForeground) {
+        if (SystemSettings.canEnterPiPMode() && !isScreenLocked() && !MusicApp.get().isInForeground) {
             // Force activity in PIP mode
             val intent = Intent(MusicApp.get(), MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                putExtra(EXTRA_START_PIP, true)
+                putExtra(MainActivity.EXTRA_START_PIP, true)
             }
             MusicApp.get().startActivity(intent)
             return
@@ -161,7 +160,7 @@ class YTBPlayer(
     private fun ytbPolicyRespected(): Boolean {
         if (isScreenLocked()) return false
         val context = MusicApp.get()
-        if (PreferenceUtil.usingPip()) return context.isInForeground
+        if (SystemSettings.canEnterPiPMode()) return context.isInForeground
         return context.canDrawOverApps() || context.isInForeground
     }
 }
