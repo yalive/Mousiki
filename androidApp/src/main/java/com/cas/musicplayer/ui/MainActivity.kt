@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
@@ -17,6 +18,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.adcolony.sdk.AdColony
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
+import com.afollestad.materialdialogs.checkbox.checkBoxPrompt
 import com.cas.common.extensions.bool
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.viewmodel.viewModel
@@ -134,7 +139,26 @@ class MainActivity : BaseActivity() {
         observe(PlayerQueue) { currentTrack ->
             if (!SystemSettings.canEnterPiPMode() && !canDrawOverApps() && currentTrack !is LocalSong) {
                 if (SystemSettings.isPiPSupported()) {
-                    SystemSettings.openPipSetting(this)
+                    if (PreferenceUtil.showPipDialog) {
+                        var dontAskMeAgain = false
+                        MaterialDialog(this).show {
+                            message(R.string.pip_dialog_mesage)
+                            if (PreferenceUtil.askPipPermissionCount >= 2) {
+                                checkBoxPrompt(R.string.pip_dialog_checkbox_dont_ask_me_again) {
+                                    dontAskMeAgain = it
+                                }
+                            }
+                            title(R.string.pip_dialog_title)
+                            positiveButton(R.string.yes) {
+                                SystemSettings.openPipSetting(this@MainActivity)
+                            }
+                            negativeButton(R.string.no) {
+                                PreferenceUtil.showPipDialog = !dontAskMeAgain
+                            }
+                            getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
+                        }
+                        PreferenceUtil.askPipPermissionCount++
+                    }
                 } else {
                     val dialog = Utils.requestDrawOverAppsPermission(this) {
                         drawOverAppsRequested = true
