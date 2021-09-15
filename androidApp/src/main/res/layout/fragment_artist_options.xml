@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_small"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/scroller"
+        android:layout_width="35dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/eight_8dp"
+        android:alpha="0.6"
+        android:background="@drawable/bg_rounded_button"
+        android:backgroundTint="?colorOnSurface" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/four_4dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgArtist"
+            android:layout_width="@dimen/dimen_local_song_image"
+            android:layout_height="@dimen/dimen_local_song_image"
+            android:layout_marginStart="@dimen/sixteen_16dp"
+            android:layout_marginBottom="@dimen/eight_8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            app:srcCompat="@drawable/ic_artist_placeholder" />
+
+        <TextView
+            android:id="@+id/txtArtistName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="?android:textColorPrimary"
+            android:textDirection="ltr"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtTracksCount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgArtist"
+            app:layout_constraintTop_toTopOf="@id/imgArtist"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="SmallSp"
+            tools:text="Download" />
+
+        <TextView
+            android:id="@+id/txtTracksCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:alpha="0.5"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgArtist"
+            app:layout_constraintStart_toEndOf="@id/imgArtist"
+            app:layout_constraintTop_toBottomOf="@id/txtArtistName"
+            tools:ignore="SmallSp"
+            tools:text="10 songs" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/half_05dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:alpha="0.5"
+        android:background="#616060"
+        app:layout_constraintTop_toBottomOf="@id/imgArtist" />
+
+    <LinearLayout
+        android:id="@+id/viewPlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="12dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btnAddAsNext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/two_2dp"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_play" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/player_notification_play"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewShufflePlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="12dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/two_2dp"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_shuffle_16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/shuffle_play"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewAddTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/sixteen_16dp"
+        android:paddingTop="12dp"
+        android:paddingRight="@dimen/sixteen_16dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btnAddToPlaylist"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/two_2dp"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_playlist_add_rounded" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/label_add_to"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

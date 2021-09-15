@@ -2,13 +2,19 @@ package com.cas.musicplayer.ui.playlist.custom
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
+import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.valueOrNull
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
+import com.cas.musicplayer.ui.local.playlists.options.PlaylistOptionsFragment
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.domain.models.isCustom
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 /**
@@ -18,6 +24,14 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
  */
 
 class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewModel>() {
+
+    override val tracks: List<Track>
+        get() = viewModel.songs.valueOrNull()
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track }.orEmpty()
+
+    override val playlist: Playlist?
+        get() = viewModel.playlist
 
     override val screenName: String = "CustomPlaylistSongsFragment"
 
@@ -34,6 +48,11 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
         observe(viewModel.playlistImage, ::setupHeaderImage)
         binding.txtPlaylistName.text = viewModel.playlist.title
         binding.txtScreenTitle.text = viewModel.playlist.title
+        binding.btnMore.isVisible = viewModel.playlist.isCustom
+        binding.btnMore.onClick {
+            val fm = requireActivity().supportFragmentManager
+            PlaylistOptionsFragment.present(fm, viewModel.playlist, false)
+        }
     }
 
     override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {

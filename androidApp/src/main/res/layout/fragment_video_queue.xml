@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/spacing_large" />
+
+        <ImageButton
+            android:id="@+id/btnDismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:background="?selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline"
+            app:srcCompat="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:lines="1"
+            android:textColor="?android:textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDismiss"
+            app:layout_constraintEnd_toStartOf="@+id/txtRepeatMode"
+            app:layout_constraintStart_toEndOf="@+id/btnDismiss"
+            app:layout_constraintTop_toTopOf="@+id/btnDismiss"
+            tools:text="Queue title" />
+
+        <TextView
+            android:id="@+id/txtRepeatMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_x_small"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Repeat"
+            android:textColor="?android:textColorPrimary"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDismiss"
+            app:layout_constraintEnd_toStartOf="@+id/btnRepeatMode"
+            app:layout_constraintTop_toTopOf="@+id/btnDismiss" />
+
+        <ImageButton
+            android:id="@+id/btnRepeatMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:background="?selectableItemBackgroundBorderless"
+            android:tint="?colorOnSurface"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDismiss"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnDismiss"
+            app:srcCompat="@drawable/ic_repeat" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.cas.musicplayer.utils.AutoRefreshRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_normal"
+        android:visibility="visible"
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_local_video" />
+</LinearLayout>

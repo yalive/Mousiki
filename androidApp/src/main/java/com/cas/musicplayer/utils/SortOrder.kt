@@ -89,6 +89,37 @@ class SortOrder {
         }
     }
 
+    interface VideoSortOrder {
+
+        companion object {
+
+            /* Song sort order A-Z */
+            const val SONG_A_Z = MediaStore.Video.Media.DEFAULT_SORT_ORDER
+
+            /* Song sort order Z-A */
+            const val SONG_Z_A = "$SONG_A_Z DESC"
+
+            /* Song sort order artist */
+            const val SONG_ARTIST = MediaStore.Video.Media.DEFAULT_SORT_ORDER
+
+            /* Song sort order album */
+            const val SONG_ALBUM = MediaStore.Video.Media.DEFAULT_SORT_ORDER
+
+            /* Song sort order year */
+            const val SONG_YEAR = MediaStore.Audio.Media.YEAR + " DESC"
+
+            /* Song sort order duration */
+            const val SONG_DURATION = MediaStore.Video.VideoColumns.DURATION + " DESC"
+
+            /* Song sort order date */
+            const val SONG_DATE = MediaStore.Video.VideoColumns.DATE_ADDED + " DESC"
+
+            /* Song sort modified date */
+            const val SONG_DATE_MODIFIED = MediaStore.Audio.Media.DATE_MODIFIED + " DESC"
+
+        }
+    }
+
     /**
      * Album song sort order entries.
      */

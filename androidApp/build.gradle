@@ -30,8 +30,8 @@ android {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 57
-        versionName "4.1.2"
+        versionCode 58
+        versionName "4.2.0"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
     }
@@ -176,7 +176,8 @@ dependencies {
     implementation 'com.github.sephiroth74:android-target-tooltip:2.0.3'
 
     // Exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.0'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.0'
 
     // Modules
     implementation project(path: ':common')

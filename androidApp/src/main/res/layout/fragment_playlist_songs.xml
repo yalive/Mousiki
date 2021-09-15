@@ -56,6 +56,31 @@
         app:layout_constraintTop_toTopOf="@+id/viewBack"
         tools:text="@tools:sample/full_names" />
 
+    <ImageButton
+        android:id="@+id/btnMultiSelect"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:background="?selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomGuideline"
+        app:layout_constraintEnd_toStartOf="@+id/btnMore"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline"
+        app:srcCompat="@drawable/ic_multiselect_24"
+        app:tint="?colorOnSurface" />
+
+    <ImageButton
+        android:id="@+id/btnMore"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:background="?selectableItemBackground"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline"
+        app:srcCompat="@drawable/ic_more_vertical"
+        app:tint="?colorOnSurface" />
+
     <ImageView
         android:id="@+id/imgArtist"
         android:layout_width="120dp"

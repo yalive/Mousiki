@@ -9,4 +9,20 @@
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
     </plurals>
+    <plurals name="numberOfVideos">
+        <item quantity="one">%d video</item>
+        <item quantity="other">%d videos</item>
+    </plurals>
+
+    <plurals name="quick_seek_x_second">
+        <item quantity="other">%d seconds</item>
+        <item quantity="one">%d second</item>
+        <item quantity="many">%d seconds</item>
+    </plurals>
+
+    <plurals name="confirm_delete_tracks_from_playlist">
+        <item quantity="one">Delete %s song from the list?</item>
+        <item quantity="other">Delete %s songs from the list?</item>
+    </plurals>
+
 </resources>

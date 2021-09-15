@@ -22,9 +22,7 @@ import com.mousiki.shared.domain.usecase.chart.LoadChartLastThreeTracksUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.*
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
 import com.mousiki.shared.domain.usecase.library.*
-import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
-import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
-import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
+import com.mousiki.shared.domain.usecase.recent.*
 import com.mousiki.shared.domain.usecase.search.*
 import com.mousiki.shared.domain.usecase.song.GetFeaturedSongsUseCase
 import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
@@ -123,6 +121,7 @@ val useCasesModule = module {
     factory { CreateCustomPlaylistUseCase(get()) }
     factory { CustomPlaylistFirstYtbTrackUseCase(get()) }
     factory { DeleteTrackFromCustomPlaylistUseCase(get()) }
+    factory { GetCustomPlaylistTracksFlowUseCase(get()) }
     factory { RemoveSongFromRecentlyPlayedUseCase(get()) }
     factory { GetLocalPlaylistsUseCase(get()) }
     factory { GetLocalPlaylistItemCountUseCase(get()) }
@@ -137,7 +136,10 @@ val useCasesModule = module {
     factory { GetHeavyTracksUseCase(get()) }
     factory { RemoveSongFromFavouriteListUseCase(get()) }
     factory { AddTrackToRecentlyPlayedUseCase(get()) }
+    factory { AddVideoToRecentlyPlayedUseCase(get()) }
     factory { GetRecentlyPlayedSongsFlowUseCase(get()) }
+    factory { GetRecentlyPlayedVideosFlowUseCase(get()) }
+    factory { GetRecentlyPlayedVideosUseCase(get()) }
     factory { GetRecentlyPlayedSongsUseCase(get()) }
     factory { GetGoogleSearchSuggestionsUseCase(get()) }
     factory { GetRecentSearchQueriesUseCase(get()) }

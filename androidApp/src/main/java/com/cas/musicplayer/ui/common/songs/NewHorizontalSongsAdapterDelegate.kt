@@ -10,8 +10,10 @@ import androidx.annotation.StringRes
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.cas.common.extensions.activity
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.common.recyclerview.AlignLeftPagerSnapHelper
@@ -19,6 +21,7 @@ import com.cas.common.recyclerview.PercentGridLayoutManager
 import com.cas.musicplayer.R
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.home.delegates.HomeMarginProvider
 import com.cas.musicplayer.utils.dpToPixel
 import com.mousiki.shared.domain.models.DisplayableItem
@@ -47,7 +50,7 @@ open class NewHorizontalSongsAdapterDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = parent.inflate(R.layout.horizontal_songs_list)
-        return HorizontalSongsListViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(
@@ -57,7 +60,7 @@ open class NewHorizontalSongsAdapterDelegate(
     ) {
         val songs = songsFromItem(items[position])
         val title = getHeaderTitle(items, position)
-        (holder as HorizontalSongsListViewHolder).bind(title, songs, title.isNotEmpty())
+        (holder as ViewHolder).bind(title, songs, title.isNotEmpty())
     }
 
     override fun onBindViewHolder(
@@ -73,11 +76,15 @@ open class NewHorizontalSongsAdapterDelegate(
             else -> null
         }
 
-        val viewHolder = holder as HorizontalSongsListViewHolder
+        val viewHolder = holder as ViewHolder
         if (payloads.isEmpty() || payloads[0] !is Bundle) {
+            val resource = when (item) {
+                is HomeItem.PopularsItem -> item.resource
+                else -> Resource.Success(tracks.orEmpty())
+            }
             viewHolder.bind(
                 getHeaderTitle(items, position),
-                Resource.Success(tracks.orEmpty()),
+                resource,
                 item is HomeItem.VideoList
             )
         } else {
@@ -101,7 +108,7 @@ open class NewHorizontalSongsAdapterDelegate(
         return ""
     }
 
-    inner class HorizontalSongsListViewHolder(view: View) : RecyclerView.ViewHolder(view),
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view),
         HomeMarginProvider {
 
         private var tracks: List<Track> = emptyList()
@@ -113,6 +120,10 @@ open class NewHorizontalSongsAdapterDelegate(
             onClickMore = { track ->
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, track)
+            },
+            onLongPressTrack = { track ->
+                val activity = itemView.activity as? FragmentActivity ?: return@SongsAdapter
+                MultiSelectTrackFragment.present(activity, tracks, track)
             }
         )
         private val txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)

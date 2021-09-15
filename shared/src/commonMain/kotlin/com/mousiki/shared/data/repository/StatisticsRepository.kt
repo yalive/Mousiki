@@ -2,8 +2,12 @@ package com.mousiki.shared.data.repository
 
 import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.RecentPlayedTrack
+import com.mousiki.shared.data.db.toLongOrZero
 import com.mousiki.shared.data.db.toTrack
+import com.mousiki.shared.db.DbRecentPlayedVideo
 import com.mousiki.shared.db.Db_recentTrack
+import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.Song
 import com.mousiki.shared.domain.models.Track
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
@@ -11,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 /**
  ***************************************
@@ -20,12 +25,14 @@ import kotlinx.coroutines.flow.map
 class StatisticsRepository(
     private val db: MousikiDb
 ) {
-    private val recentDao by lazy { db.recentPlayedTracksQueries }
+    private val recentTracksDao by lazy { db.recentPlayedTracksQueries }
+    private val recentVideosDao by lazy { db.recentPlayedVideoQueries }
+
 
     suspend fun addTrackToRecent(track: Track) {
-        val recentTrack = recentDao.getByTrackId(track.id).executeAsOneOrNull()
+        val recentTrack = recentTracksDao.getByTrackId(track.id).executeAsOneOrNull()
         val playCount = if (recentTrack != null) recentTrack.play_count + 1 else 1
-        recentDao.insert(
+        recentTracksDao.insert(
             RecentPlayedTrack(
                 id = 0,
                 track_id = track.id,
@@ -39,34 +46,79 @@ class StatisticsRepository(
         )
     }
 
+    suspend fun addVideoToRecent(track: Track) = withContext(Dispatchers.Default) {
+        val recentVideo = recentVideosDao.getByVideoId(track.id).executeAsOneOrNull()
+        val playCount = if (recentVideo != null) recentVideo.play_count + 1 else 1
+        recentVideosDao.insert(
+            DbRecentPlayedVideo(
+                id = 0,
+                video_id = track.id,
+                duration = track.duration.toLong(),
+                play_count = playCount,
+                stop_at = 0
+            )
+        )
+    }
+
     suspend fun removeTrackFromRecent(trackId: String) {
-        recentDao.deleteTrack(
+        recentTracksDao.deleteTrack(
             trackId
         )
     }
 
     suspend fun getRecentlyPlayedTracks(max: Int = 10): List<Track> {
-        return recentDao.getTracks(max.toLong()).executeAsList().map {
+        return recentTracksDao.getTracks(max.toLong()).executeAsList().map {
             it.toTrack()
         }
     }
 
     fun getRecentlyPlayedTracksFlow(max: Int = 10): Flow<List<Track>> {
-        return recentDao.getTracks(max.toLong())
+        return recentTracksDao.getTracks(max.toLong())
             .asFlow()
             .mapToList()
             .map { it.map(RecentPlayedTrack::toTrack) }
             .flowOn(Dispatchers.Default)
     }
 
+    fun getRecentlyPlayedVideosFlow(max: Int = 10): Flow<List<Track>> {
+        return recentVideosDao.getVideos(max.toLong())
+            .asFlow()
+            .mapToList()
+            .map {
+                it.map { dbVideo ->
+                    LocalSong(
+                        song = Song.emptySong.copy(
+                            id = dbVideo.video_id.toLongOrZero(),
+                            duration = dbVideo.duration,
+                        )
+                    )
+                }
+            }.flowOn(Dispatchers.Default)
+    }
+
+    suspend fun getRecentlyPlayedVideos(
+        max: Int = 10
+    ): List<Track> = withContext(Dispatchers.Default) {
+        return@withContext recentVideosDao.getVideos(max.toLong())
+            .executeAsList()
+            .map { dbVideo ->
+                LocalSong(
+                    song = Song.emptySong.copy(
+                        id = dbVideo.video_id.toLongOrZero(),
+                        duration = dbVideo.duration,
+                    )
+                )
+            }
+    }
+
     suspend fun getHeavyList(max: Int = 10): List<Track> {
-        return recentDao.getHeavyList(max.toLong()).executeAsList().map {
+        return recentTracksDao.getHeavyList(max.toLong()).executeAsList().map {
             it.toTrack()
         }
     }
 
     fun getHeavyListFlow(max: Int = 10): Flow<List<Track>> {
-        return recentDao.getHeavyList(max.toLong())
+        return recentTracksDao.getHeavyList(max.toLong())
             .asFlow()
             .mapToList()
             .map { it.map(Db_recentTrack::toTrack) }

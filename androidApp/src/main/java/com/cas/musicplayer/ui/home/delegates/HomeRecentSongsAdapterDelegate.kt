@@ -3,11 +3,13 @@ package com.cas.musicplayer.ui.home.delegates
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.findFragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.cas.common.extensions.activity
 import com.cas.common.extensions.inflate
 import com.cas.common.extensions.onClick
 import com.cas.common.recyclerview.AlignLeftPagerSnapHelper
@@ -16,6 +18,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.HomeRecentTracksSectionBinding
 import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
 import com.mousiki.shared.domain.models.DisplayableItem
@@ -76,6 +79,10 @@ class HomeRecentSongsAdapterDelegate(
             onClickMore = { track ->
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
                 TrackOptionsFragment.present(fm, track, true)
+            },
+            onLongPressTrack = { track ->
+                val activity = itemView.activity as? FragmentActivity ?: return@SongsAdapter
+                MultiSelectTrackFragment.present(activity, tracks, track)
             }
         )
 

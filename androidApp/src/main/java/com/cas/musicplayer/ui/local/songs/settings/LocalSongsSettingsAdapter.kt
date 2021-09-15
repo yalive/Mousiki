@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterAudioSettingsAdapterDelegate
 import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterAudioSettingsItem
-import com.cas.musicplayer.ui.local.songs.settings.delegate.FilterFolderAdapterAdapterDelegate
-import com.cas.musicplayer.ui.local.songs.settings.model.FolderUiModel
+import com.cas.musicplayer.ui.local.folders.settings.FilterFolderAdapterAdapterDelegate
+import com.cas.musicplayer.ui.local.folders.settings.FolderUiModel
 import com.mousiki.shared.domain.models.DisplayableItem
 
 class LocalSongsSettingsAdapter : MousikiAdapter(
