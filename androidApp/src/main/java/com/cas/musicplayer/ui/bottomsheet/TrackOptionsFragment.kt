@@ -107,7 +107,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             }
             AddTrackToPlaylistFragment.present(
                 fm = requireActivity().supportFragmentManager,
-                track = track
+                tracks = listOf(track)
             )
             dismiss()
         }

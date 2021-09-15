@@ -80,10 +80,10 @@ class MainActivity : BaseActivity() {
             // just to prepare ads
         }
         setupPlayerFragment()
-        binding.bottomNavView.setOnNavigationItemSelectedListener { item ->
+        binding.bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navHome -> handleClickMenuHome()
-                R.id.navLibrary -> handleClickMenuLibrary()
+                R.id.navVideo -> handleClickMenuVideo()
                 R.id.navSearch -> handleClickMenuSearch()
                 R.id.navMusic -> handleClickMenuMusic()
                 else -> {
@@ -133,6 +133,9 @@ class MainActivity : BaseActivity() {
         if (!PreferenceUtil.musicSeen)
             binding.bottomNavView.getOrCreateBadge(R.id.navMusic)
 
+        if (!PreferenceUtil.videoSeen)
+            binding.bottomNavView.getOrCreateBadge(R.id.navVideo)
+
         observe(PlayerQueue) { currentTrack ->
             if (!PreferenceUtil.usingPip() && !canDrawOverApps() && currentTrack !is LocalSong) {
                 val dialog = Utils.requestDrawOverAppsPermission(this) {
@@ -152,6 +155,10 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
+
+        lifecycleScope.launchWhenStarted {
+            binding.bottomNavView.selectedItemId = R.id.navMusic
+        }
     }
 
     @SuppressLint("NewApi")
@@ -204,7 +211,7 @@ class MainActivity : BaseActivity() {
             R.id.localSongsContainerFragment -> {
                 binding.bottomNavView.menu[1].isChecked = true
             }
-            R.id.libraryFragment -> {
+            R.id.localVideoContainerFragment -> {
                 binding.bottomNavView.menu[2].isChecked = true
             }
             R.id.mainSearchFragment -> {
@@ -227,10 +234,14 @@ class MainActivity : BaseActivity() {
         navController.popBackStack(R.id.homeFragment, false)
     }
 
-    private fun handleClickMenuLibrary() {
-        if (navController.currentDestination?.id == R.id.libraryFragment) return
-        if (!navController.popBackStack(R.id.libraryFragment, false)) {
-            navController.navigate(R.id.libraryFragment)
+    private fun handleClickMenuVideo() {
+        if (navController.currentDestination?.id == R.id.localVideoContainerFragment) return
+        if (!navController.popBackStack(R.id.localVideoContainerFragment, false)) {
+            navController.navigate(R.id.localVideoContainerFragment)
+        }
+        if (!PreferenceUtil.videoSeen) {
+            binding.bottomNavView.removeBadge(R.id.navVideo)
+            PreferenceUtil.videoSeen = true
         }
     }
 

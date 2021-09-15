@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorSurface"
+    android:focusable="true"
+    android:orientation="vertical"
+    tools:context=".ui.local.songs.settings.LocalSongsSettingsFragment">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:src="@drawable/ic_close"
+            android:tint="?colorOnSurface" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_toStartOf="@+id/btnSelectAll"
+            android:layout_toEndOf="@+id/btnClose"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:textColor="?colorOnSurface"
+            android:textSize="18sp"
+            tools:text="0" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/cancel"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnSelectAll"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/btn_select_all_title" />
+
+    </RelativeLayout>
+
+    <com.cas.musicplayer.utils.AutoRefreshRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_small"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/spacing_medium"
+        app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlayNext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBar"
+        tools:listitem="@layout/item_multiselect_track" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPlayNext"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_play_next"
+        android:textColor="?colorOnSurface"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_play"
+        app:iconGravity="top"
+        app:iconPadding="@dimen/spacing_x_small"
+        app:iconTint="?colorOnSurface"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
+        app:layout_constraintEnd_toStartOf="@+id/btnAddToPlaylist"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddToPlaylist"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_add_to"
+        android:textColor="?colorOnSurface"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_playlist_add"
+        app:iconGravity="textTop"
+        app:iconTint="?colorOnSurface"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
+        app:layout_constraintEnd_toStartOf="@+id/btnRemoveFromPlaylist"
+        app:layout_constraintStart_toEndOf="@+id/btnPlayNext" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRemoveFromPlaylist"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_delete"
+        android:textColor="?colorOnSurface"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_remove_circle"
+        app:iconGravity="textTop"
+        app:iconTint="?colorOnSurface"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnAddToPlaylist" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="@dimen/spacing_medium" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

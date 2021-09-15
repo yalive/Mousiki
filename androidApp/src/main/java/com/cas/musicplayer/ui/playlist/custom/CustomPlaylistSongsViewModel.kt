@@ -9,6 +9,7 @@ import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.usecase.customplaylist.CustomPlaylistFirstYtbTrackUseCase
+import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.customplaylist.GetCustomPlaylistTracksUseCase
 import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.library.GetHeavyTracksFlowUseCase
@@ -31,6 +32,7 @@ class CustomPlaylistSongsViewModel(
     private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
     private val getHeavyTracks: GetHeavyTracksFlowUseCase,
     private val getCustomPlaylistFirstYtbTrack: CustomPlaylistFirstYtbTrackUseCase,
+    private val getCustomPlaylistTracksFlow: GetCustomPlaylistTracksFlowUseCase,
     private val localSongsRepository: LocalSongsRepository,
     delegate: PlaySongDelegate
 ) : BaseViewModel(), PlaySongDelegate by delegate {
@@ -54,7 +56,7 @@ class CustomPlaylistSongsViewModel(
             Playlist.TYPE_FAV -> getFavouriteTracks(300).collect { tracksMapper(it) }
             Playlist.TYPE_RECENT -> getRecentlyPlayedSongs(300).collect { tracksMapper(it) }
             Playlist.TYPE_HEAVY -> getHeavyTracks(300).collect { tracksMapper(it) }
-            else -> tracksMapper(getCustomPlaylistTracks(playlist.id))
+            else -> getCustomPlaylistTracksFlow(playlist.id).collect { tracksMapper(it) }
         }
     }
 

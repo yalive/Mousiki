@@ -10,8 +10,13 @@ import com.cas.musicplayer.databinding.LocalSongsFragmentBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.tmp.observeEvent
+import com.cas.musicplayer.tmp.tracks
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.SortByFragment
+import com.cas.musicplayer.ui.local.StoragePermissionDelegate
+import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
@@ -29,6 +34,10 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
     private val adapter by lazy {
         LocalSongsAdapter(
             onClickTrack = { viewModel.onClickTrack(it) },
+            onLongPressTrack = { track ->
+                val tracks = viewModel.localSongs.tracks
+                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
+            },
             onSortClicked = { saveAndSetOrder() },
             onFilterClicked = { showFilterScreen() },
             showCountsAndSortButton = true,
@@ -53,6 +62,11 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
             binding.localSongsRecyclerView,
             binding.storagePermissionView
         )
+
+        observeEvent(viewModel.showMultiSelection) {
+            val tracks = viewModel.localSongs.tracks
+            MultiSelectTrackFragment.present(requireActivity(), tracks)
+        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             observe(viewModel.localSongs) {

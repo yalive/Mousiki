@@ -49,7 +49,8 @@ class FoldersAdapter(
                     R.id.action_localSongsContainerFragment_to_folderDetailsFragment,
                     bundleOf(
                         FolderDetailsFragment.EXTRAS_FOLDER_PATH to folder.path,
-                        FolderDetailsFragment.EXTRAS_FOLDER_NAME to folder.name
+                        FolderDetailsFragment.EXTRAS_FOLDER_NAME to folder.name,
+                        FolderVideoDetailsFragment.EXTRAS_FOLDER to folder
                     )
                 )
             }

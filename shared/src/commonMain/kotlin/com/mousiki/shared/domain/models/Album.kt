@@ -14,10 +14,14 @@
 
 package com.mousiki.shared.domain.models
 
+import com.mousiki.shared.Parcelable
+import com.mousiki.shared.Parcelize
+
+@Parcelize
 data class Album(
     val id: Long,
     val songs: List<Song>
-) {
+) : Parcelable {
 
     val title: String
         get() = safeGetFirstSong().albumName

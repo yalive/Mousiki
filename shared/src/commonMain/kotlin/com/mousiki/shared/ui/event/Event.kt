@@ -1,5 +1,7 @@
 package com.mousiki.shared.ui.event
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 /**
  **********************************
  * Created by Abdelhadi on 4/8/19.
@@ -33,4 +35,12 @@ open class Event<out T>(private val content: T) {
 
 fun <T> T.asEvent(): Event<T> {
     return Event(this)
+}
+
+fun <T> MutableStateFlow<Event<T>>.trigger(eventContent: T) {
+    value = eventContent.asEvent()
+}
+
+fun MutableStateFlow<Event<Unit>>.trigger() {
+    value = kotlin.Unit.asEvent()
 }

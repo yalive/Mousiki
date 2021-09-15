@@ -10,10 +10,15 @@ import com.cas.musicplayer.ui.local.albums.LocalAlbumsViewModel
 import com.cas.musicplayer.ui.local.artists.ArtistDetailsViewModel
 import com.cas.musicplayer.ui.local.artists.LocalArtistsViewModel
 import com.cas.musicplayer.ui.local.folders.FolderDetailsViewModel
+import com.cas.musicplayer.ui.local.folders.FolderVideoDetailsViewModel
 import com.cas.musicplayer.ui.local.folders.FoldersViewModel
 import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsViewModel
 import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsViewModel
+import com.cas.musicplayer.ui.local.videos.LocalVideoViewModel
+import com.cas.musicplayer.ui.local.videos.history.PlayedVideoViewModel
+import com.cas.musicplayer.ui.local.videos.player.VideoPlayerViewModel
+import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
@@ -39,16 +44,21 @@ val viewModelsModule = module {
     factory { EmptyViewModel() }
     factory { SettingsViewModel() }
     factory { AddTrackToPlaylistViewModel(get(), get(), get(), get()) }
-    factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { CreatePlaylistViewModel(get(), get()) }
     factory { QueueViewModel(get()) }
     factory { LocalSongsViewModel(get(), get()) }
+    factory { LocalVideoViewModel(get(), get(), get()) }
+    factory { PlayedVideoViewModel(get(), get(), get()) }
     factory { LocalSongsSettingsViewModel(get(), get()) }
+    factory { LocalVideosSettingsViewModel(get()) }
     factory { LocalPlaylistsViewModel(get(), get(), get(), get(), get()) }
     factory { LocalAlbumsViewModel(get()) }
     factory { LocalArtistsViewModel(get()) }
     factory { FoldersViewModel(get()) }
     factory { AlbumDetailsViewModel(get(), get()) }
     factory { FolderDetailsViewModel(get(), get()) }
+    factory { FolderVideoDetailsViewModel(get(), get(), get()) }
     factory { ArtistDetailsViewModel(get(), get()) }
+    factory { VideoPlayerViewModel(get(), get(), get()) }
 }
