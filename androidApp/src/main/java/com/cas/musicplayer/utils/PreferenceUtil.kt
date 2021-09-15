@@ -32,8 +32,6 @@ import com.mousiki.shared.utils.Constants.VIDEO_SORT_ORDER
 object PreferenceUtil {
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MusicApp.get())
 
-    private val pipEnabled = true
-
     var songSortOrder
         get() = sharedPreferences.getStringOrDefault(
             SONG_SORT_ORDER,
@@ -178,7 +176,7 @@ object PreferenceUtil {
     }
 
     fun usingPip(): Boolean {
-        return pipEnabled && SystemSettings.canEnterPiPMode()
+        return SystemSettings.canEnterPiPMode()
     }
 
     fun toggleVideosFolderVisibility(path: String) {
