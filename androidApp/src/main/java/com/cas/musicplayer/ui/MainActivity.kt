@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.Toast
@@ -27,7 +26,6 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
-import com.cas.musicplayer.player.TAG_PLAYER
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
@@ -47,8 +45,6 @@ import com.mousiki.shared.preference.UserPrefs
 import com.unity3d.ads.UnityAds
 import kotlinx.coroutines.delay
 
-const val EXTRA_START_PIP = "start_pip"
-
 class MainActivity : BaseActivity() {
 
     val adsViewModel by viewModel { Injector.adsViewModel }
@@ -64,7 +60,6 @@ class MainActivity : BaseActivity() {
     private var drawOverAppsRequested = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG_PLAYER, "onCreate: Activity")
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -137,11 +132,15 @@ class MainActivity : BaseActivity() {
             binding.bottomNavView.getOrCreateBadge(R.id.navVideo)
 
         observe(PlayerQueue) { currentTrack ->
-            if (!PreferenceUtil.usingPip() && !canDrawOverApps() && currentTrack !is LocalSong) {
-                val dialog = Utils.requestDrawOverAppsPermission(this) {
-                    drawOverAppsRequested = true
+            if (!SystemSettings.canEnterPiPMode() && !canDrawOverApps() && currentTrack !is LocalSong) {
+                if (SystemSettings.isPiPSupported()) {
+                    SystemSettings.openPipSetting(this)
+                } else {
+                    val dialog = Utils.requestDrawOverAppsPermission(this) {
+                        drawOverAppsRequested = true
+                    }
+                    dialogDrawOverApps = dialog
                 }
-                dialogDrawOverApps = dialog
             }
         }
 
@@ -163,9 +162,8 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("NewApi")
     override fun onUserLeaveHint() {
-        Log.d(TAG_PLAYER, "onUserLeaveHint: Activity")
         super.onUserLeaveHint()
-        if (PreferenceUtil.usingPip() && PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
+        if (SystemSettings.canEnterPiPMode() && PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
             enterPictureInPictureMode(PictureInPictureParams.Builder().build())
         }
     }
@@ -174,7 +172,6 @@ class MainActivity : BaseActivity() {
         isInPictureInPictureMode: Boolean,
         newConfig: Configuration?
     ) {
-        Log.d(TAG_PLAYER, "onPictureInPictureModeChanged: $isInPictureInPictureMode")
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
         binding.pipVideoView.isVisible = isInPictureInPictureMode
         if (isInPictureInPictureMode) {
@@ -257,19 +254,12 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onNewIntent(intent: Intent?) {
-        Log.d(TAG_PLAYER, "onNewIntent")
         super.onNewIntent(intent)
         setIntent(intent)
     }
 
-    override fun onStart() {
-        Log.d(TAG_PLAYER, "onStart: activity")
-        super.onStart()
-    }
-
     @SuppressLint("NewApi")
     override fun onResume() {
-        Log.d(TAG_PLAYER, "onResume: activity")
         super.onResume()
         if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
             expandBottomPanel()
@@ -309,7 +299,7 @@ class MainActivity : BaseActivity() {
         }
 
         // Check PIP
-        if (PreferenceUtil.usingPip() && intent.getBooleanExtra(EXTRA_START_PIP, false)) {
+        if (SystemSettings.canEnterPiPMode() && intent.getBooleanExtra(EXTRA_START_PIP, false)) {
             enterPictureInPictureMode(PictureInPictureParams.Builder().build())
             intent = intent.apply {
                 putExtra(EXTRA_START_PIP, false)
@@ -318,18 +308,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onPause() {
-        Log.d(TAG_PLAYER, "onPause: activity")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d(TAG_PLAYER, "onStop: activity")
-        super.onStop()
-    }
-
     override fun onDestroy() {
-        Log.d(TAG_PLAYER, "onDestroy: activity")
         exitDialog?.dismiss()
         dialogDrawOverApps?.dismiss()
         super.onDestroy()
@@ -434,5 +413,6 @@ class MainActivity : BaseActivity() {
     companion object {
         const val EXTRAS_FROM_PLAYER_SERVICE = "from_player_service"
         const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
+        const val EXTRA_START_PIP = "start_pip"
     }
 }

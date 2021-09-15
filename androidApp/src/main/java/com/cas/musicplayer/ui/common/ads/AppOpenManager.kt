@@ -10,7 +10,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.common.extensions.isInPictureInPictureModeCompact
 import com.cas.musicplayer.MusicApp
-import com.cas.musicplayer.ui.MainActivity
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -27,7 +26,6 @@ import java.util.*
 class AppOpenManager(
     private val appConfig: RemoteAppConfig
 ) : Application.ActivityLifecycleCallbacks, LifecycleObserver {
-    private val LOG_TAG = "AppOpenManager"
     private val AD_UNIT_ID = "ca-app-pub-6125597516229421/1325389808"
     private var appOpenAd: AppOpenAd? = null
 
@@ -144,7 +142,7 @@ class AppOpenManager(
     @OnLifecycleEvent(ON_RESUME)
     fun onResume() {
         val activity = currentActivity
-        if (activity != null && activity is MainActivity && activity.isInPictureInPictureModeCompact) {
+        if (activity != null && activity.isInPictureInPictureModeCompact) {
             return
         }
         val frequency = appConfig.appOpenAdFrequency()

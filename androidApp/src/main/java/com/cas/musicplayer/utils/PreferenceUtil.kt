@@ -175,10 +175,6 @@ object PreferenceUtil {
         return sharedPreferences.getBoolean(path, false)
     }
 
-    fun usingPip(): Boolean {
-        return SystemSettings.canEnterPiPMode()
-    }
-
     fun toggleVideosFolderVisibility(path: String) {
         val hidden = sharedPreferences.getBoolean(path, false)
         sharedPreferences.edit { putBoolean(path, !hidden) }

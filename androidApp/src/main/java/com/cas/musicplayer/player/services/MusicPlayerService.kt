@@ -359,7 +359,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
     private fun observeForegroundToggle() {
         VideoEmplacementLiveData.observe(this, Observer { emplacement ->
-            if (PreferenceUtil.usingPip()) {
+            if (SystemSettings.canEnterPiPMode()) {
                 floatingPlayerView.isVisible = false
                 return@Observer
             }
@@ -456,7 +456,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
 
             // Ensure floating video is visible
             val track = PlayerQueue.value
-            if (state.isPlaying && track is YtbTrack && !PreferenceUtil.usingPip()) {
+            if (state.isPlaying && track is YtbTrack && !SystemSettings.canEnterPiPMode()) {
                 floatingPlayerView.isVisible = true
             }
         }

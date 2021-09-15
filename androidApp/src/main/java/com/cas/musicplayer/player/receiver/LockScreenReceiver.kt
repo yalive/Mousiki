@@ -55,7 +55,7 @@ class LockScreenReceiver(
         } else if (intent.action == Intent.ACTION_USER_PRESENT && context.canDrawOverApps()) {
             Log.d(TAG_PLAYER, "onReceive screen on")
 
-            if (PreferenceUtil.usingPip()) {
+            if (SystemSettings.canEnterPiPMode()) {
                 context.toast(R.string.battery_saver_mode_instead_of_lock_screen)
             } else {
                 if (shouldShowPopup) {
