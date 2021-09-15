@@ -61,6 +61,12 @@
     <string name="audio_size_less_than">Filter audio files less than 100k</string>
     <string name="video_duration_less_than">Filter video files less than 60s</string>
     <string name="video_size_less_than">Filter video files less than 100k</string>
+    <string name="settings_pip">Picture-in-picture</string>
+
+    <string name="pip_dialog_title">Picture-in-picture</string>
+    <string name="pip_dialog_mesage">Allow Mousiki app to create a picture-in-picture window while the app is open or after you leave it to continue watching youtube videos. This window displays on top of other apps you\'re using.</string>
+    <string name="pip_dialog_checkbox_dont_ask_me_again">Don\'t ask me again</string>
+
 
     <!-- Playlist -->
     <string name="add_to_playlist">Add to playlist</string>
@@ -86,6 +92,7 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="choose_dark_mode_theme">Choose theme</string>
     <string name="label_error">Error</string>
     <string name="label_developed_with_youtube_part1" translatable="false">Powered by</string>
