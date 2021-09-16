@@ -187,7 +187,7 @@ class MainActivity : BaseActivity() {
     @SuppressLint("NewApi")
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        if (SystemSettings.canEnterPiPMode() && PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
+        if (SystemSettings.canEnterPiPMode() && (PlaybackLiveData.isPlaying() || PlaybackLiveData.isBuffering()) && PlayerQueue.value is YtbTrack) {
             enterPictureInPictureMode(PictureInPictureParams.Builder().build())
         }
     }
