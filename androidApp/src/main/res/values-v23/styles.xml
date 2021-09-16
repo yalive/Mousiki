@@ -8,7 +8,7 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="md_background_color">@color/colorBackgroundDialog</item>
-        <item name="android:navigationBarColor">@color/colorDarkNavigationView</item>
+        <item name="android:navigationBarColor">@color/colorTransparent</item>
     </style>
 
     <style name="AppTheme.Launcher">
