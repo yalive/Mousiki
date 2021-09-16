@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.common.ads
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.Keep
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleObserver
@@ -10,6 +11,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.cas.common.extensions.isInPictureInPictureModeCompact
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.player.TAG_PLAYER
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -31,7 +33,7 @@ class AppOpenManager(
 
     private lateinit var loadCallback: AppOpenAdLoadCallback
 
-    private var currentActivity: Activity? = null
+    var currentActivity: Activity? = null
 
     private var isShowingAd = false
 
@@ -119,10 +121,12 @@ class AppOpenManager(
     override fun onActivityPaused(activity: Activity) {}
 
     override fun onActivityStarted(activity: Activity) {
+        Log.d(TAG_PLAYER, "onActivityStarted: $activity")
         currentActivity = activity
     }
 
     override fun onActivityDestroyed(activity: Activity) {
+        Log.d(TAG_PLAYER, "onActivityDestroyed: $activity")
         currentActivity = null
     }
 
@@ -133,6 +137,7 @@ class AppOpenManager(
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
 
     override fun onActivityResumed(activity: Activity) {
+        Log.d(TAG_PLAYER, "onActivityResumed: $activity")
         currentActivity = activity
     }
 

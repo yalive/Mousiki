@@ -1,5 +1,6 @@
 package com.cas.musicplayer
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -66,7 +67,7 @@ class MusicApp : Application(), KoinComponent {
             }
             single { AlbumRepository(get()) }
             single { LocalArtistRepository(get(), get()) }
-            single { FoldersRepository(get(),get()) }
+            single { FoldersRepository(get(), get()) }
         }
 
         initKoin(
@@ -106,6 +107,8 @@ class MusicApp : Application(), KoinComponent {
         })
     }
 
+
+    fun currentActivity(): Activity? = appOpenManager?.currentActivity
 
     /**
      * Ensure admob SDK is initialized

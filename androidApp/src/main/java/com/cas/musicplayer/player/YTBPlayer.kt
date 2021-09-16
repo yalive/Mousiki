@@ -82,6 +82,12 @@ class YTBPlayer(
     }
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
+        if (SystemSettings.canEnterPiPMode() && !isScreenLocked() && !MusicApp.get().isInForeground) {
+            Log.d(TAG_PLAYER, "YTB player loadVideo, will force PIP")
+            enterPipMode()
+            youTubePlayer?.loadVideo(videoId, 0f)
+            return
+        }
         if (!ytbPolicyRespected()) return
         if (!MusicApp.get().isInForeground) {
             VideoEmplacementLiveData.out()
@@ -89,6 +95,15 @@ class YTBPlayer(
         Log.d(TAG_PLAYER, "YTB player loadVideo")
         elapsedSeconds = 0
         youTubePlayer?.loadVideo(videoId, 0f)
+    }
+
+    private fun enterPipMode() {
+        // Force activity in PIP mode
+        val intent = Intent(MusicApp.get(), MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(MainActivity.EXTRA_START_PIP, true)
+        }
+        MusicApp.get().startActivity(intent)
     }
 
     override fun cueVideo(videoId: String, startSeconds: Float) {
@@ -100,12 +115,8 @@ class YTBPlayer(
 
     override fun play() {
         if (SystemSettings.canEnterPiPMode() && !isScreenLocked() && !MusicApp.get().isInForeground) {
-            // Force activity in PIP mode
-            val intent = Intent(MusicApp.get(), MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                putExtra(MainActivity.EXTRA_START_PIP, true)
-            }
-            MusicApp.get().startActivity(intent)
+            Log.d(TAG_PLAYER, "YTB player play, will force PIP")
+            enterPipMode()
             return
         }
         if (!ytbPolicyRespected()) return
@@ -160,7 +171,7 @@ class YTBPlayer(
     private fun ytbPolicyRespected(): Boolean {
         if (isScreenLocked()) return false
         val context = MusicApp.get()
-        if (SystemSettings.canEnterPiPMode()) return context.isInForeground
+        if (SystemSettings.canEnterPiPMode()) return true /*context.isInForeground*/
         return context.canDrawOverApps() || context.isInForeground
     }
 }
