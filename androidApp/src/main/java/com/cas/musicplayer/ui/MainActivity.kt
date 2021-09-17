@@ -439,6 +439,7 @@ class MainActivity : BaseActivity() {
         return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
     }
 
+    @SuppressLint("NewApi")
     private fun handleSharedVideo() {
         val title = intent.getStringExtra(Intent.EXTRA_SUBJECT)
         val videoId = intent.getStringExtra(Intent.EXTRA_TEXT)
@@ -453,8 +454,11 @@ class MainActivity : BaseActivity() {
                 }
                 is Result.Success -> result.data
             } as? YtbTrack ?: return@launch
-            expandBottomPanel()
             viewModel.playTrackFromSharedLink(track)
+
+            if (SystemSettings.canEnterPiPMode()) {
+                enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            }
         }
     }
 
