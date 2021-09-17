@@ -27,6 +27,7 @@ import com.mousiki.shared.domain.usecase.search.*
 import com.mousiki.shared.domain.usecase.song.GetFeaturedSongsUseCase
 import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
+import com.mousiki.shared.domain.usecase.song.GetYtbSongUseCase
 import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 import com.mousiki.shared.ui.home.HomeViewModel
 import com.mousiki.shared.ui.library.LibraryViewModel
@@ -92,7 +93,7 @@ val dataSourcesModule = module {
             get()
         )
     }
-    factory { RemoteSongsDataSource(get(), get(), get(), get(), get(), get(), get(), get()) }
+    factory { RemoteSongsDataSource(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     factory {
         PlaylistSongsRemoteDataSource(
             get(),
@@ -150,6 +151,7 @@ val useCasesModule = module {
     factory { GetFeaturedSongsUseCase() }
     factory { GetPlaylistVideosUseCase(get()) }
     factory { GetPopularSongsUseCase(get()) }
+    factory { GetYtbSongUseCase(get()) }
 }
 
 val kmmViewModelsModule = module {
