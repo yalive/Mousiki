@@ -82,6 +82,43 @@
         android:layout_height="0.3dp"
         android:background="@color/dividerColor" />
 
+    <FrameLayout
+        android:id="@+id/vSwitchPip"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchPip"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:drawableStart="@drawable/ic_video_size"
+            android:drawablePadding="16dp"
+            android:focusable="true"
+            android:fontFamily="@font/pangram_regular"
+            android:gravity="start|center_vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="16dp"
+            android:text="@string/settings_pip"
+            android:textAllCaps="false"
+            android:textColor="?android:textColorPrimary"
+            app:drawableTint="?colorOnSurface" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSwitchPip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:insetTop="0dp"
+            android:insetBottom="0dp" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/dividerColor" />
+
     <TextView
         android:id="@+id/btnShareApp"
         android:layout_width="match_parent"

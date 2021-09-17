@@ -11,6 +11,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 
 object PlaybackLiveData : MutableLiveData<PlayerConstants.PlayerState>() {
     fun isPlaying() = value == PlayerConstants.PlayerState.PLAYING
+    fun isBuffering() = value == PlayerConstants.PlayerState.BUFFERING
     fun isPause() = value == PlayerConstants.PlayerState.PAUSED
     fun isUnknown() = value == PlayerConstants.PlayerState.UNKNOWN
 }

@@ -1,6 +1,7 @@
 package com.cas.common.extensions
 
 import android.app.Activity
+import android.os.Build
 import android.view.View
 
 /**
@@ -21,3 +22,6 @@ fun Activity.enterFullScreen() {
 fun Activity.exitFullScreen() {
     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
 }
+
+val Activity.isInPictureInPictureModeCompact: Boolean
+    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) isInPictureInPictureMode else false
