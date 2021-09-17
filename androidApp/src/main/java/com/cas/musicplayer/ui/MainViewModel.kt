@@ -42,6 +42,10 @@ class MainViewModel(
         playTrackFromQueue(track, listOf(track))
     }
 
+    fun playTrackFromSharedLink(track: YtbTrack) = viewModelScope.launch {
+        playTrackFromQueue(track, listOf(track))
+    }
+
     fun checkToRateApp() = viewModelScope.launch {
         if (BuildConfig.DEBUG) return@launch
         val launchCount = UserPrefs.getLaunchCount()

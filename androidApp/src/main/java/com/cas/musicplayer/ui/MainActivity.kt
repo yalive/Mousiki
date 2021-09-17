@@ -36,9 +36,11 @@ import com.mopub.common.SdkConfiguration
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.toYoutubeDuration
+import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.preference.UserPrefs
 import com.unity3d.ads.UnityAds
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity() {
 
@@ -149,6 +151,8 @@ class MainActivity : BaseActivity() {
         lifecycleScope.launchWhenStarted {
             binding.bottomNavView.selectedItemId = R.id.navMusic
         }
+
+        if (intent.isSharedVideo) handleSharedVideo()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -215,6 +219,7 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
+        if (intent.isSharedVideo) handleSharedVideo()
     }
 
     override fun onResume() {
@@ -359,8 +364,30 @@ class MainActivity : BaseActivity() {
         return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
     }
 
+    private fun handleSharedVideo() {
+        val title = intent.getStringExtra(Intent.EXTRA_SUBJECT)
+        val videoId = intent.getStringExtra(Intent.EXTRA_TEXT)
+            ?.split("/")?.lastOrNull().orEmpty()
+        if (videoId.isEmpty()) return
+        lifecycleScope.launch {
+            val result = Injector.getYtbSong(videoId)
+            val track = when (result) {
+                is Result.Error -> {
+                    toast("Unable to get video information")
+                    null
+                }
+                is Result.Success -> result.data
+            } as? YtbTrack ?: return@launch
+            expandBottomPanel()
+            viewModel.playTrackFromSharedLink(track)
+        }
+    }
+
     companion object {
         const val EXTRAS_FROM_PLAYER_SERVICE = "from_player_service"
         const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
     }
 }
+
+val Intent?.isSharedVideo: Boolean
+    get() = this?.type == "text/plain" && action == Intent.ACTION_SEND

@@ -75,6 +75,10 @@ class MousikiApiImpl(
         return client.get("$url/api/videos/$videoId/audio")
     }
 
+    override suspend fun getVideo(url: String, videoId: String): MousikiSearchApiResult {
+        return client.get("$url/api/videos/$videoId")
+    }
+
     /////    Ytb API   /////
 
     override suspend fun suggestions(url: String): String {
