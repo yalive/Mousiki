@@ -266,6 +266,22 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
     }
 
+    private fun showGuide() {
+        viewModel.player?.pause()
+        viewModel.playWhenReady = false
+        PreferenceUtil.showVideoGuide = false
+        viewBinding.videoGuide1.root.visibility = View.VISIBLE
+        viewBinding.videoGuide1.gotIt1.onClick {
+            viewBinding.videoGuide2.root.visibility = View.VISIBLE
+            viewBinding.videoGuide1.root.visibility = View.GONE
+        }
+        viewBinding.videoGuide2.gotIt2.onClick {
+            viewBinding.videoGuide2.root.visibility = View.GONE
+            viewModel.player?.play()
+            viewModel.playWhenReady = true
+        }
+    }
+
     override fun onPictureInPictureModeChanged(
         isInPictureInPictureMode: Boolean,
         newConfig: Configuration?
@@ -307,6 +323,8 @@ class VideoPlayerActivity : AppCompatActivity() {
         if (viewModel.playWhenReady) {
             viewModel.start()
         }
+        if (PreferenceUtil.showVideoGuide)
+            showGuide()
     }
 
     override fun onStop() {
