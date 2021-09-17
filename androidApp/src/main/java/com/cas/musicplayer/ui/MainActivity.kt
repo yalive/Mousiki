@@ -1,6 +1,10 @@
 package com.cas.musicplayer.ui
 
+import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
 import android.content.Intent
+import android.content.res.Configuration
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
@@ -14,14 +18,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.adcolony.sdk.AdColony
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
+import com.afollestad.materialdialogs.checkbox.checkBoxPrompt
 import com.cas.common.extensions.bool
 import com.cas.common.extensions.fromDynamicLink
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.BuildConfig
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.ui.home.showExitDialog
@@ -129,11 +139,34 @@ class MainActivity : BaseActivity() {
             binding.bottomNavView.getOrCreateBadge(R.id.navVideo)
 
         observe(PlayerQueue) { currentTrack ->
-            if (!canDrawOverApps() && currentTrack !is LocalSong) {
-                val dialog = Utils.requestDrawOverAppsPermission(this) {
-                    drawOverAppsRequested = true
+            if (!SystemSettings.canEnterPiPMode() && !canDrawOverApps() && currentTrack !is LocalSong) {
+                if (SystemSettings.isPiPSupported()) {
+                    if (PreferenceUtil.showPipDialog) {
+                        var dontAskMeAgain = false
+                        MaterialDialog(this).show {
+                            message(R.string.pip_dialog_mesage)
+                            if (PreferenceUtil.askPipPermissionCount >= 2) {
+                                checkBoxPrompt(R.string.pip_dialog_checkbox_dont_ask_me_again) {
+                                    dontAskMeAgain = it
+                                }
+                            }
+                            title(R.string.pip_dialog_title)
+                            positiveButton(R.string.yes) {
+                                SystemSettings.openPipSetting(this@MainActivity)
+                            }
+                            negativeButton(R.string.no) {
+                                PreferenceUtil.showPipDialog = !dontAskMeAgain
+                            }
+                            getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
+                        }
+                        PreferenceUtil.askPipPermissionCount++
+                    }
+                } else {
+                    val dialog = Utils.requestDrawOverAppsPermission(this) {
+                        drawOverAppsRequested = true
+                    }
+                    dialogDrawOverApps = dialog
                 }
-                dialogDrawOverApps = dialog
             }
         }
 
@@ -153,6 +186,38 @@ class MainActivity : BaseActivity() {
         }
 
         if (intent.isSharedVideo) handleSharedVideo()
+    }
+
+    @SuppressLint("NewApi")
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (SystemSettings.canEnterPiPMode() && (PlaybackLiveData.isPlaying() || PlaybackLiveData.isBuffering()) && PlayerQueue.value is YtbTrack) {
+            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+        }
+    }
+
+    override fun onPictureInPictureModeChanged(
+        isInPictureInPictureMode: Boolean,
+        newConfig: Configuration?
+    ) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        binding.pipVideoView.isVisible = isInPictureInPictureMode
+        if (isInPictureInPictureMode) {
+            showPipPlayerView()
+        } else if (!MusicApp.get().isInForeground) {
+            // Make sure to pause player if playing Ytb track
+            if (PlaybackLiveData.isPlaying() && PlayerQueue.value is YtbTrack) {
+                PlayerQueue.pause()
+            }
+        }
+    }
+
+    fun showPipPlayerView() {
+        val playerView = playerFragment.reusedPlayerView ?: return
+        if (playerView.parent == binding.pipVideoView) return
+        val oldParent = playerView.parent as? ViewGroup
+        oldParent?.removeView(playerView)
+        binding.pipVideoView.addView(playerView, 0)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -222,6 +287,7 @@ class MainActivity : BaseActivity() {
         if (intent.isSharedVideo) handleSharedVideo()
     }
 
+    @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
         if (!wasLaunchedFromRecent() && intent.bool(EXTRAS_FROM_PLAYER_SERVICE)) {
@@ -258,6 +324,15 @@ class MainActivity : BaseActivity() {
 
         if (drawOverAppsRequested) {
             drawOverAppsRequested = false
+            PlayerQueue.resume()
+        }
+
+        // Check PIP
+        if (SystemSettings.canEnterPiPMode() && intent.getBooleanExtra(EXTRA_START_PIP, false)) {
+            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            intent = intent.apply {
+                putExtra(EXTRA_START_PIP, false)
+            }
             PlayerQueue.resume()
         }
     }
@@ -386,6 +461,7 @@ class MainActivity : BaseActivity() {
     companion object {
         const val EXTRAS_FROM_PLAYER_SERVICE = "from_player_service"
         const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
+        const val EXTRA_START_PIP = "start_pip"
     }
 }
 

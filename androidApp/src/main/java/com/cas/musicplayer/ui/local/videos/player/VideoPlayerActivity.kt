@@ -1,7 +1,6 @@
 package com.cas.musicplayer.ui.local.videos.player
 
 import android.annotation.TargetApi
-import android.app.AppOpsManager
 import android.app.PendingIntent
 import android.app.PictureInPictureParams
 import android.app.RemoteAction
@@ -12,10 +11,8 @@ import android.graphics.Color
 import android.graphics.drawable.Icon
 import android.media.audiofx.AudioEffect
 import android.media.audiofx.LoudnessEnhancer
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Process
 import android.text.TextUtils
 import android.util.Rational
 import android.util.TypedValue
@@ -32,6 +29,7 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityVideoPlayerBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
 import com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
@@ -120,7 +118,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             layoutInflater.inflate(R.layout.controls, null) as HorizontalScrollView
         val controls = horizontalScrollView.findViewById<LinearLayout>(R.id.controls)
 
-        if (SystemSettings.isPiPSupported(this)) {
+        if (SystemSettings.isPiPSupported()) {
             controls.addView(buttonPiP)
         }
         controls.addView(buttonAspectRatio)
@@ -295,6 +293,7 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        PlayerQueue.pause()
         if (getVideoInfoFromIntent(intent))
             viewModel.start()
         else if (!viewModel.player?.isPlaying!!) {
@@ -304,6 +303,7 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        PlayerQueue.pause()
         if (viewModel.playWhenReady) {
             viewModel.start()
         }
@@ -364,21 +364,8 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun enterPiP() {
-        val appOpsManager = getSystemService(APP_OPS_SERVICE) as AppOpsManager
-        if (AppOpsManager.MODE_ALLOWED != appOpsManager.checkOpNoThrow(
-                AppOpsManager.OPSTR_PICTURE_IN_PICTURE, Process.myUid(),
-                packageName
-            )
-        ) {
-            val intent = Intent(
-                PIP_SETTINGS, Uri.fromParts(
-                    "package",
-                    packageName, null
-                )
-            )
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }
+        if (!SystemSettings.canEnterPiPMode()) {
+            SystemSettings.openPipSetting(this)
             return
         }
         viewBinding.videoView.controllerAutoShow = false
@@ -408,7 +395,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     private fun setupPiPButton() {
-        if (SystemSettings.isPiPSupported(this)) {
+        if (SystemSettings.isPiPSupported()) {
             mPictureInPictureParamsBuilder = PictureInPictureParams.Builder()
             updatePictureInPictureActions(
                 R.drawable.ic_play_arrow_24dp,
@@ -607,7 +594,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             viewBinding.videoView.keepScreenOn = isPlaying
 
-            if (SystemSettings.isPiPSupported(this@VideoPlayerActivity)) {
+            if (SystemSettings.isPiPSupported()) {
                 if (isPlaying) {
                     updatePictureInPictureActions(
                         R.drawable.ic_pause_24dp,
