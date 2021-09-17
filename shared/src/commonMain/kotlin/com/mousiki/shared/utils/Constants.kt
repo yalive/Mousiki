@@ -46,5 +46,6 @@ object Constants {
 
     const val MUSIC_SEEN = "music_seen"
     const val VIDEO_SEEN = "video_seen"
+    const val SHOW_VIDEO_GUIDE = "show_video_guide"
 
 }

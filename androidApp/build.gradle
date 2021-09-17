@@ -179,6 +179,8 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.15.0'
     implementation 'com.google.android.exoplayer:extension-mediasession:2.15.0'
 
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
     // Modules
     implementation project(path: ':common')
     implementation project(path: ':shared')
