@@ -30,6 +30,13 @@
     <string name="library_empty_heavy_list">List is empty</string>
     <string name="library_empty_favourite_list">You can make any song as favourite, \n and you can access to it from here.</string>
     <string name="empty_favourite_list">No favourite track.</string>
+    <string name="swipe_left_right">Swipe left or right to adjust video progress</string>
+    <string name="swipe_up_down_left">Swipe up or down to adjust brightness</string>
+    <string name="swipe_up_down_right">Swipe up or down to adjust volume</string>
+    <string name="hold_screen">Hold to lock or unlock screen</string>
+    <string name="double_click_next">Double tap to progress on 10 seconds</string>
+    <string name="double_click_back">Double tap to progress back 10 seconds</string>
+    <string name="got_it">Got it</string>
 
     <!-- Common -->
     <string name="common_empty_song_list">No song found</string>
