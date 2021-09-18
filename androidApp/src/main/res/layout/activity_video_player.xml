@@ -66,4 +66,19 @@
             app:srcCompat="@drawable/ic_queue_music" />
     </LinearLayout>
 
+    <include
+        android:id="@+id/video_guide_1"
+        layout="@layout/video_guide_one"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/video_guide_2"
+        layout="@layout/video_guide_two"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
