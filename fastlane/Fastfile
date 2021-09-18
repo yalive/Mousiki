@@ -32,7 +32,7 @@ platform :android do
             groups: "qa-team-internal",
             firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
             release_notes: "
-            - Add guides for video player
+            - update player background color
             "
         )
     end
