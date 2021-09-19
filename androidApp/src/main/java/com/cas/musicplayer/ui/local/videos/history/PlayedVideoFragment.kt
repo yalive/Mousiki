@@ -37,7 +37,8 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
             onSortClicked = { },
             onFilterClicked = { },
             showCountsAndSortButton = false,
-            showFilter = false
+            showFilter = false,
+            isFromHistory = true
         )
     }
 
