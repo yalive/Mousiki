@@ -11,6 +11,7 @@ import com.mousiki.shared.utils.Constants.ALBUM_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_ALBUM_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_SONG_SORT_ORDER
 import com.mousiki.shared.utils.Constants.ARTIST_SORT_ORDER
+import com.mousiki.shared.utils.Constants.ASK_PIP_PERMISSION_COUNT
 import com.mousiki.shared.utils.Constants.AUTO_PAY_NEXT_VIDEO
 import com.mousiki.shared.utils.Constants.FILTER_SONG
 import com.mousiki.shared.utils.Constants.FILTER_SONGS_LESS_THAN_100k
@@ -21,6 +22,7 @@ import com.mousiki.shared.utils.Constants.FILTER_VIDEO_DURATION
 import com.mousiki.shared.utils.Constants.FILTER_VIDEO_SIZE
 import com.mousiki.shared.utils.Constants.INITIALIZED_BLACKLIST
 import com.mousiki.shared.utils.Constants.MUSIC_SEEN
+import com.mousiki.shared.utils.Constants.SHOW_PIP_DIALOG
 import com.mousiki.shared.utils.Constants.SHOW_VIDEO_GUIDE
 import com.mousiki.shared.utils.Constants.SONG_SORT_ORDER
 import com.mousiki.shared.utils.Constants.VIDEO_SEEN
@@ -49,6 +51,18 @@ object PreferenceUtil {
         )
         set(value) = sharedPreferences.edit {
             putString(VIDEO_SORT_ORDER, value)
+        }
+
+    var askPipPermissionCount
+        get() = sharedPreferences.getInt(ASK_PIP_PERMISSION_COUNT, 0)
+        set(value) = sharedPreferences.edit {
+            putInt(ASK_PIP_PERMISSION_COUNT, value)
+        }
+
+    var showPipDialog
+        get() = sharedPreferences.getBoolean(SHOW_PIP_DIALOG, true)
+        set(value) = sharedPreferences.edit {
+            putBoolean(SHOW_PIP_DIALOG, value)
         }
 
     var autoPlayNextVideo
