@@ -11,7 +11,9 @@ import com.mousiki.shared.domain.models.toDisplayedVideoItem
 import com.mousiki.shared.domain.usecase.recent.AddVideoToRecentlyPlayedUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedVideosFlowUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.resource.Resource
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class PlayedVideoViewModel(
@@ -20,8 +22,8 @@ class PlayedVideoViewModel(
     private val addVideoToRecentlyPlayed: AddVideoToRecentlyPlayedUseCase,
 ) : BaseViewModel() {
 
-    private val _playedVideos = MutableLiveData<List<DisplayableItem>>()
-    val playedVideos: LiveData<List<DisplayableItem>>
+    private val _playedVideos = MutableLiveData<Resource<List<DisplayableItem>>>()
+    val playedVideos: LiveData<Resource<List<DisplayableItem>>>
         get() = _playedVideos
 
     init {
@@ -29,11 +31,14 @@ class PlayedVideoViewModel(
     }
 
     fun getAllPlayedVideos() = viewModelScope.launch {
-        getRecentlyPlayedVideosFlow(300).collect { videos ->
-            _playedVideos.value = videos.map {
-                LocalSong(localVideosRepository.video(it.id.toLong())).toDisplayedVideoItem()
+        getRecentlyPlayedVideosFlow(300)
+            .onStart { _playedVideos.value = Resource.Loading }
+            .collect { videos ->
+                val videoTracks =
+                    videos.map { LocalSong(localVideosRepository.video(it.id.toLong())).toDisplayedVideoItem() }
+
+                _playedVideos.value = Resource.Success(videoTracks)
             }
-        }
     }
 
     fun onPlayVideo(track: Track) = viewModelScope.launch {

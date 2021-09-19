@@ -9,10 +9,11 @@ class LocalVideoAdapter(
     onSortClicked: () -> Unit,
     onFilterClicked: () -> Unit,
     showCountsAndSortButton: Boolean,
-    showFilter: Boolean
+    showFilter: Boolean,
+    isFromHistory: Boolean = false
 ) : MousikiAdapter(
     listOf(
-        LocalVideoAdapterDelegate(onClickTrack),
+        LocalVideoAdapterDelegate(isFromHistory,onClickTrack),
         HeaderVideoActionsAdapterDelegate(
             onSortClicked = onSortClicked,
             onFilterClicked = onFilterClicked,

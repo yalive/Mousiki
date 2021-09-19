@@ -4,6 +4,7 @@ import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.bottomsheet.SongInfoViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
+import com.cas.musicplayer.ui.bottomsheet.VideoOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.genres.GenresViewModel
 import com.cas.musicplayer.ui.local.albums.AlbumDetailsViewModel
@@ -18,6 +19,7 @@ import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsViewModel
 import com.cas.musicplayer.ui.local.videos.LocalVideoViewModel
 import com.cas.musicplayer.ui.local.videos.history.PlayedVideoViewModel
+import com.cas.musicplayer.ui.local.videos.player.VideoPlayerViewModel
 import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
@@ -58,7 +60,9 @@ val viewModelsModule = module {
     factory { FoldersViewModel(get()) }
     factory { AlbumDetailsViewModel(get(), get()) }
     factory { FolderDetailsViewModel(get(), get()) }
-    factory { FolderVideoDetailsViewModel(get(), get(),get()) }
+    factory { FolderVideoDetailsViewModel(get(), get(), get()) }
     factory { ArtistDetailsViewModel(get(), get()) }
+    factory { VideoPlayerViewModel(get(), get(), get()) }
+    factory { VideoOptionsViewModel(get()) }
     factory { SongInfoViewModel(get(),get()) }
 }

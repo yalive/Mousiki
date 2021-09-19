@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import com.cas.common.extensions.onClick
@@ -62,6 +63,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
                 }
                 .show()
         }
+
+        binding.vSwitchPip.isVisible = SystemSettings.isPiPSupported()
+
         binding.btnTimer.onClick {
             TimerDialog.present(childFragmentManager)
         }
@@ -81,6 +85,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         }
         binding.btnShareApp.onClick {
             Utils.shareAppVia()
+        }
+        binding.btnSwitchPip.onClick {
+            SystemSettings.openPipSetting(requireActivity())
         }
         binding.btnOutVideoSize.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
@@ -116,6 +123,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
             isEnabled = false // Disable back press listener
             slideDown()
         }
+        binding.switchPip.isChecked = SystemSettings.canEnterPiPMode()
     }
 
     companion object {

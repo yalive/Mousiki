@@ -4,6 +4,7 @@ import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
 import com.cas.musicplayer.ui.bottomsheet.SongInfoViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
+import com.cas.musicplayer.ui.bottomsheet.VideoOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
 import com.cas.musicplayer.ui.common.ads.RewardedAdDelegate
 import com.cas.musicplayer.ui.genres.GenresViewModel
@@ -21,6 +22,7 @@ import com.cas.musicplayer.ui.local.songs.LocalSongsViewModel
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsViewModel
 import com.cas.musicplayer.ui.local.videos.LocalVideoViewModel
 import com.cas.musicplayer.ui.local.videos.history.PlayedVideoViewModel
+import com.cas.musicplayer.ui.local.videos.player.VideoPlayerViewModel
 import com.cas.musicplayer.ui.local.videos.settings.LocalVideosSettingsViewModel
 import com.cas.musicplayer.ui.player.PlayerViewModel
 import com.cas.musicplayer.ui.player.queue.QueueViewModel
@@ -81,6 +83,9 @@ object Injector : KoinComponent {
         get() = get()
 
     val trackInfoViewModel: SongInfoViewModel
+        get() = get()
+
+    val videoOptionsViewModel: VideoOptionsViewModel
         get() = get()
 
     val playerViewModel: PlayerViewModel
@@ -171,5 +176,8 @@ object Injector : KoinComponent {
         get() = get()
 
     val localVideosRepository: LocalVideosRepository
+        get() = get()
+
+    val videoPlayerViewModel: VideoPlayerViewModel
         get() = get()
 }
