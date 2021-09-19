@@ -11,6 +11,7 @@ import android.os.IBinder
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
@@ -25,12 +26,15 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.cas.common.dpToPixel
+import com.cas.common.extensions.isInPictureInPictureModeCompact
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentPlayerBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.TAG_PLAYER
+import com.cas.musicplayer.player.extensions.toText
 import com.cas.musicplayer.player.iconId
 import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.services.MusicPlayerService
@@ -67,18 +71,20 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private var mediaController: MediaControllerCompat? = null
     private var playerService: MusicPlayerService? = null
 
-    private val reusedPlayerView: YouTubePlayerView?
+    val reusedPlayerView: YouTubePlayerView?
         get() = playerService?.getPlayerView()
 
     private var serviceBound = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d(TAG_PLAYER, "onServiceDisconnected: PlayerFragment")
             playerService = null
             serviceBound = false
         }
 
         override fun onServiceConnected(name: ComponentName?, binder: IBinder) {
+            Log.d(TAG_PLAYER, "onServiceConnected: PlayerFragment")
             val service = (binder as MusicPlayerService.ServiceBinder).service()
             playerService = service
             mediaController = MediaControllerCompat(requireContext(), service.mediaSession)
@@ -88,12 +94,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         override fun onBindingDied(name: ComponentName?) {
+            Log.d(TAG_PLAYER, "onBindingDied: PlayerFragment")
             super.onBindingDied(name)
             unbindService()
             bindServiceIfNecessary()
         }
 
         override fun onNullBinding(name: ComponentName?) {
+            Log.d(TAG_PLAYER, "onNullBinding: PlayerFragment")
             super.onNullBinding(name)
             unbindService()
             bindServiceIfNecessary()
@@ -103,20 +111,24 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val mediaControllerCallback = object : MediaControllerCompat.Callback() {
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
+            Log.d(TAG_PLAYER, "onPlaybackStateChanged: (${state?.toText()}) PlayerFragment")
             state?.let { onPlayMusicStateChanged(state) }
         }
 
         override fun onSessionDestroyed() {
+            Log.d(TAG_PLAYER, "onSessionDestroyed: PlayerFragment")
             serviceBound = false
             bindServiceIfNecessary()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG_PLAYER, "onCreate: PlayerFragment")
         super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG_PLAYER, "onViewCreated: PlayerFragment")
         super.onViewCreated(view, savedInstanceState)
         setupView()
         observeViewModel()
@@ -124,22 +136,29 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     override fun onStart() {
+        Log.d(TAG_PLAYER, "onStart: PlayerFragment")
         super.onStart()
         VideoEmplacementLiveData.inApp()
         viewModel.prepareAds()
     }
 
     override fun onResume() {
+        Log.d(TAG_PLAYER, "onResume: PlayerFragment")
         super.onResume()
         if (binding.lockScreenView.isVisible) {
             checkLockScreen(true)
         }
 
         // Make sure video is visible if service is bound
-        showPlayerView()
+        if (requireActivity().isInPictureInPictureModeCompact) {
+            (requireActivity() as MainActivity).showPipPlayerView()
+        } else {
+            showPlayerView()
+        }
     }
 
     override fun onPause() {
+        Log.d(TAG_PLAYER, "onPause: PlayerFragment")
         super.onPause()
         if (binding.lockScreenView.isVisible) {
             binding.lockScreenView.disableLock()
@@ -148,6 +167,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     override fun onStop() {
+        Log.d(TAG_PLAYER, "onStop: PlayerFragment")
         super.onStop()
         // Movable video
         if (PlaybackLiveData.isPlaying()) {
@@ -156,6 +176,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     override fun onDestroyView() {
+        Log.d(TAG_PLAYER, "onDestroyView: PlayerFragment")
         super.onDestroyView()
         unbindService()
     }

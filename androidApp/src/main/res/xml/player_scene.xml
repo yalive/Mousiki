@@ -115,7 +115,7 @@
             app:layout_constraintTop_toTopOf="parent">
             <CustomAttribute
                 app:attributeName="backgroundColor"
-                app:customColorValue="#2E2F33" />
+                app:customColorValue="@color/colorDarkNavigationView" />
         </Constraint>
 
         <Constraint

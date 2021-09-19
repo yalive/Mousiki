@@ -31,6 +31,13 @@
     <string name="library_empty_heavy_list">List is empty</string>
     <string name="library_empty_favourite_list">You can make any song as favourite, \n and you can access to it from here.</string>
     <string name="empty_favourite_list">No favourite track.</string>
+    <string name="swipe_left_right">Swipe left or right to adjust video progress</string>
+    <string name="swipe_up_down_left">Swipe up or down to adjust brightness</string>
+    <string name="swipe_up_down_right">Swipe up or down to adjust volume</string>
+    <string name="hold_screen">Hold to lock or unlock screen</string>
+    <string name="double_click_next">Double tap to progress on 10 seconds</string>
+    <string name="double_click_back">Double tap to progress back 10 seconds</string>
+    <string name="got_it">Got it</string>
 
     <!-- Common -->
     <string name="common_empty_song_list">No song found</string>
@@ -58,11 +65,16 @@
     <string name="search">Search</string>
     <string name="search_button_title">Artists, songs, or podcasts</string>
     <string name="artists_find_an_artist">Find an artist</string>
-    <string name="turn_on_to_hide">Turn on to hide</string>
     <string name="audio_duration_less_than">Filter audio files less than 60s</string>
     <string name="audio_size_less_than">Filter audio files less than 100k</string>
     <string name="video_duration_less_than">Filter video files less than 60s</string>
     <string name="video_size_less_than">Filter video files less than 100k</string>
+    <string name="settings_pip">Picture-in-picture</string>
+
+    <string name="pip_dialog_title">Picture-in-picture</string>
+    <string name="pip_dialog_mesage">Allow Mousiki app to create a picture-in-picture window while the app is open or after you leave it to continue watching youtube videos. This window displays on top of other apps you\'re using.</string>
+    <string name="pip_dialog_checkbox_dont_ask_me_again">Don\'t ask me again</string>
+
 
     <!-- Playlist -->
     <string name="add_to_playlist">Add to playlist</string>
@@ -88,6 +100,7 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="choose_dark_mode_theme">Choose theme</string>
     <string name="label_error">Error</string>
     <string name="label_developed_with_youtube_part1" translatable="false">Powered by</string>
@@ -230,15 +243,13 @@
     <string name="error_details">Details</string>
     <string name="error_files_missing">Files app is disabled or missing</string>
 
+    // not used yet
     <string name="request_scope">To automatically load external subtitles or enable skipping to next file in a directory, grant %s access to the topmost folder containing your videos (e.g. Movies).</string>
-
     <string name="delete_query">Delete this file\?</string>
-    <string name="delete_confirmation">Delete</string>
 
     <!-- Screen orientation-->
     <string name="screen_portrait">Portrait</string>
     <string name="screen_landscape">Landscape</string>
-    <string name="screen_auto">Auto</string>
 
     <!-- Screen ratio-->
     <string name="screen_fit">Fit</string>
@@ -246,6 +257,16 @@
     <string name="screen_zoom">Zoom</string>
     <string name="screen_fixed_w">Fixed width</string>
     <string name="screen_fixed_h">Fixed height</string>
+    <string name="label_no_video_played_yet">Oops! look like you haven\'t played any videos</string>
+
+    <!-- Video player header-->
+    <string name="video_auto_play_next_on">Autoplay next on</string>
+    <string name="video_auto_play_next_off">Autoplay next off</string>
+
+    <!-- Video player queue-->
+    <string name="video_player_queue_history">History</string>
+    <string name="turn_on_to_hide">Turn on to hide</string>
+    <string name="screen_auto">Auto</string>
 
     <!-- Track Info -->
     <string name="track_edit">EDIT</string>

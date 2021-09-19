@@ -31,6 +31,9 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
 
     lateinit var track: Track
 
+    var isRecentlyPlayed = false
+
+    private val viewModel by lazy { Injector.videoOptionsViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
     private val binding by viewBinding(FragmentTrackOptionsBinding::bind)
 
@@ -59,7 +62,7 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
 
         binding.setAsRingtoneView.isVisible = false
         binding.favController.isVisible = false
-        binding.viewRemoveFromRecentlyPlayed.isVisible = false
+        binding.viewRemoveFromRecentlyPlayed.isVisible = isRecentlyPlayed
         binding.viewRemoveFromCurrentPlaylist.isVisible = false
         binding.viewAddToQuee.isVisible = false
         binding.viewAddToPlaylist.isVisible = false
@@ -68,6 +71,12 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
         binding.shareVia.onClick {
             Utils.shareTrack(track, requireContext())
             if (this.isVisible) this.dismiss()
+        }
+
+        binding.viewRemoveFromRecentlyPlayed.onClick {
+            viewModel.removeVideoFromRecentlyPlayed(track)
+            onDismissed?.invoke()
+            dismiss()
         }
 
         binding.showInformation.onClick {
@@ -124,6 +133,7 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
         fun present(
             fm: FragmentManager,
             track: Track,
+            isRecentlyPlayed: Boolean,
             onDismissed: () -> Unit = {}
         ) {
             val bottomSheetFragment = VideoOptionsFragment()
@@ -131,6 +141,7 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
             bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
             bottomSheetFragment.arguments = bundle
             bottomSheetFragment.onDismissed = onDismissed
+            bottomSheetFragment.isRecentlyPlayed = isRecentlyPlayed
             bottomSheetFragment.show(fm, bottomSheetFragment.tag)
         }
     }
