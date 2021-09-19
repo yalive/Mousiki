@@ -5,8 +5,11 @@ import android.content.Context
 import android.provider.MediaStore
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
+import com.cas.common.extensions.isInPictureInPictureModeCompact
+import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.player.services.PlaybackDuration
 import com.cas.musicplayer.player.services.PlaybackLiveData
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.local.repository.LocalSongsRepository
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
@@ -73,6 +76,10 @@ class LocalPlayer(
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
         Log.d(TAG_PLAYER, "Local player loadVideo $videoId")
+        val mainActivity = MusicApp.get().currentActivity() as? MainActivity
+        if (mainActivity != null && mainActivity.isInPictureInPictureModeCompact) {
+            mainActivity.moveTaskToBack(false)
+        }
         setCurrentPlayingTrack(videoId, true)
     }
 

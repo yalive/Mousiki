@@ -3,12 +3,15 @@ package com.cas.musicplayer.ui.common.ads
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.Keep
-import androidx.lifecycle.Lifecycle.Event.ON_START
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.cas.common.extensions.isInPictureInPictureModeCompact
 import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.player.TAG_PLAYER
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -25,13 +28,12 @@ import java.util.*
 class AppOpenManager(
     private val appConfig: RemoteAppConfig
 ) : Application.ActivityLifecycleCallbacks, LifecycleObserver {
-    private val LOG_TAG = "AppOpenManager"
     private val AD_UNIT_ID = "ca-app-pub-6125597516229421/1325389808"
     private var appOpenAd: AppOpenAd? = null
 
     private lateinit var loadCallback: AppOpenAdLoadCallback
 
-    private var currentActivity: Activity? = null
+    var currentActivity: Activity? = null
 
     private var isShowingAd = false
 
@@ -119,10 +121,12 @@ class AppOpenManager(
     override fun onActivityPaused(activity: Activity) {}
 
     override fun onActivityStarted(activity: Activity) {
+        Log.d(TAG_PLAYER, "onActivityStarted: $activity")
         currentActivity = activity
     }
 
     override fun onActivityDestroyed(activity: Activity) {
+        Log.d(TAG_PLAYER, "onActivityDestroyed: $activity")
         currentActivity = null
     }
 
@@ -133,14 +137,19 @@ class AppOpenManager(
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
 
     override fun onActivityResumed(activity: Activity) {
+        Log.d(TAG_PLAYER, "onActivityResumed: $activity")
         currentActivity = activity
     }
 
 
     /** LifecycleObserver methods  */
     @Keep
-    @OnLifecycleEvent(ON_START)
-    fun onStart() {
+    @OnLifecycleEvent(ON_RESUME)
+    fun onResume() {
+        val activity = currentActivity
+        if (activity != null && activity.isInPictureInPictureModeCompact) {
+            return
+        }
         val frequency = appConfig.appOpenAdFrequency()
         if (appOpenCount % frequency == 0) {
             showAdIfAvailable()

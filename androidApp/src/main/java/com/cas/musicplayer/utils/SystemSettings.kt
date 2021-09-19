@@ -1,14 +1,21 @@
 package com.cas.musicplayer.utils
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.os.Process
 import android.provider.Settings
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.cas.musicplayer.MusicApp
+import com.cas.musicplayer.ui.local.videos.player.VideoPlayerActivity
 
 /**
  ***************************************
@@ -16,6 +23,35 @@ import androidx.fragment.app.Fragment
  ***************************************
  */
 object SystemSettings {
+
+    @SuppressLint("InlinedApi")
+    fun canEnterPiPMode(): Boolean {
+        if (!isPiPSupported()) return false
+        val context = MusicApp.get()
+        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        return AppOpsManager.MODE_ALLOWED == appOpsManager.checkOpNoThrow(
+            AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
+            Process.myUid(), context.packageName
+        )
+    }
+
+    fun isPiPSupported(): Boolean {
+        val context = MusicApp.get()
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && context.packageManager.hasSystemFeature(
+            PackageManager.FEATURE_PICTURE_IN_PICTURE
+        )
+    }
+
+    fun openPipSetting(activity: FragmentActivity) {
+        val intent = Intent(
+            VideoPlayerActivity.PIP_SETTINGS,
+            Uri.fromParts("package", activity.packageName, null)
+        )
+        if (intent.resolveActivity(activity.packageManager) != null) {
+            activity.startActivity(intent)
+        }
+    }
+
     fun canDrawOverApps(context: Context): Boolean {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
                 (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(context))
@@ -50,10 +86,5 @@ object SystemSettings {
                 fragment.startActivityForResult(intent, rqCode)
             }
         }
-    }
-    fun isPiPSupported(context: Context): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && context.packageManager.hasSystemFeature(
-            PackageManager.FEATURE_PICTURE_IN_PICTURE
-        )
     }
 }
