@@ -24,6 +24,7 @@ import com.mousiki.shared.preference.UserPrefs
 import java.io.File
 
 class LocalVideoAdapterDelegate(
+    val isFromHistory: Boolean = false,
     private val onClickTrack: (Track) -> Unit
 ) : AdapterDelegate<List<DisplayableItem>>() {
 
@@ -75,7 +76,7 @@ class LocalVideoAdapterDelegate(
             binding.txtTitle.setTextColor(colorText)
             binding.btnMore.onClick {
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
-                VideoOptionsFragment.present(fm, video.track)
+                VideoOptionsFragment.present(fm, video.track, isFromHistory)
             }
         }
     }
