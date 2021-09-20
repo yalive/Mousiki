@@ -17,7 +17,6 @@ import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.adcolony.sdk.AdColony
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -42,8 +41,6 @@ import com.cas.musicplayer.utils.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
-import com.mopub.common.MoPub
-import com.mopub.common.SdkConfiguration
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.toYoutubeDuration
@@ -426,14 +423,6 @@ class MainActivity : BaseActivity() {
     private fun comeFromPlayerService() = intent.hasExtra(EXTRAS_FROM_PLAYER_SERVICE)
 
     private fun initMediationSDK() {
-        val sdkConfiguration = SdkConfiguration.Builder("bc645649938646db9030829e2d969ad8").build()
-        MoPub.initializeSdk(this, sdkConfiguration, null)
-        AdColony.configure(
-            this,
-            "appee158214620447b7ba",
-            "vzc26139c68efb46f492", "vz59b9a39b315e495b9c"
-        )
-
         val testMode = BuildConfig.DEBUG
         UnityAds.initialize(this, getString(R.string.unity_rewarded_game_id), testMode)
     }
