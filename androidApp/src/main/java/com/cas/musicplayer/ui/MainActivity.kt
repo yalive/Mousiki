@@ -7,9 +7,9 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +31,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityMainBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.PlayerQueue
+import com.cas.musicplayer.player.TAG_PLAYER
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
@@ -137,8 +138,9 @@ class MainActivity : BaseActivity() {
             binding.bottomNavView.getOrCreateBadge(R.id.navVideo)
 
         observe(PlayerQueue) { currentTrack ->
-            if (!SystemSettings.canEnterPiPMode() && !canDrawOverApps() && currentTrack !is LocalSong) {
-                if (SystemSettings.isPiPSupported()) {
+            if (currentTrack is LocalSong) return@observe
+            when {
+                SystemSettings.isPiPSupported() -> if (!SystemSettings.canEnterPiPMode()) {
                     if (PreferenceUtil.showPipDialog) {
                         var dontAskMeAgain = false
                         MaterialDialog(this).show {
@@ -159,7 +161,8 @@ class MainActivity : BaseActivity() {
                         }
                         PreferenceUtil.askPipPermissionCount++
                     }
-                } else {
+                }
+                else -> if (!canDrawOverApps()) {
                     val dialog = Utils.requestDrawOverAppsPermission(this) {
                         drawOverAppsRequested = true
                     }
@@ -179,13 +182,18 @@ class MainActivity : BaseActivity() {
             }
         })
 
-        lifecycleScope.launchWhenStarted {
-            binding.bottomNavView.selectedItemId = R.id.navMusic
+
+        // Ignore default tab when app started from shortcut
+        if (!intent.fromShortcut()) {
+            lifecycleScope.launchWhenStarted {
+                binding.bottomNavView.selectedItemId = R.id.navMusic
+            }
         }
     }
 
     @SuppressLint("NewApi")
     override fun onUserLeaveHint() {
+        Log.d(TAG_PLAYER, "onUserLeaveHint: ")
         super.onUserLeaveHint()
         if (SystemSettings.canEnterPiPMode() && (PlaybackLiveData.isPlaying() || PlaybackLiveData.isBuffering()) && PlayerQueue.value is YtbTrack) {
             enterPictureInPictureMode(PictureInPictureParams.Builder().build())
@@ -196,6 +204,7 @@ class MainActivity : BaseActivity() {
         isInPictureInPictureMode: Boolean,
         newConfig: Configuration?
     ) {
+        Log.d(TAG_PLAYER, "onPictureInPictureModeChanged: $isInPictureInPictureMode")
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
         binding.pipVideoView.isVisible = isInPictureInPictureMode
         if (isInPictureInPictureMode) {
@@ -278,6 +287,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onNewIntent(intent: Intent?) {
+        Log.d(TAG_PLAYER, "onNewIntent")
         super.onNewIntent(intent)
         setIntent(intent)
     }
@@ -291,23 +301,22 @@ class MainActivity : BaseActivity() {
                 playerFragment.openBatterySaverMode()
             }
         }
-        handleDynamicLinks()
+
+        if (intent.fromDynamicLink()) handleDynamicLinks()
 
         // Check open audio track with Mousiki/ or via share
         // exclude search and new_releases shortcuts
         val uri = intent?.data ?: intent?.getParcelableExtra(Intent.EXTRA_STREAM)
-        if (uri != null && !uri.toString().startsWith("mousiki", true)) {
+        if (uri != null
+            && !uri.toString().startsWith("mousiki", true)
+            && !intent.fromDynamicLink()
+        ) {
             if (SongsUtil.playFromUri(this, uri)) {
                 expandBottomPanel()
             } else {
                 //error can't play this song
-                Toast.makeText(
-                    this,
-                    getString(R.string.error_cannot_play_local_song),
-                    Toast.LENGTH_LONG
-                ).show()
+                toast(R.string.error_cannot_play_local_song)
             }
-
             intent = Intent()
         }
 
@@ -333,6 +342,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        Log.d(TAG_PLAYER, "onDestroy: main activity")
         exitDialog?.dismiss()
         dialogDrawOverApps?.dismiss()
         super.onDestroy()
@@ -361,7 +371,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleDynamicLinks() {
-        if (!canDrawOverApps()) return
+        if (!intent.fromDynamicLink()) return
         Firebase.dynamicLinks
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
@@ -387,7 +397,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun checkPushNotificationTrack() {
-        if (!canDrawOverApps()) return
         lifecycleScope.launchWhenResumed {
             delay(100)
             val videoId = intent.extras?.getString("videoId")
@@ -439,4 +448,8 @@ class MainActivity : BaseActivity() {
         const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
         const val EXTRA_START_PIP = "start_pip"
     }
+}
+
+fun Intent.fromShortcut(): Boolean {
+    return data.toString().startsWith("mousiki://", true)
 }
