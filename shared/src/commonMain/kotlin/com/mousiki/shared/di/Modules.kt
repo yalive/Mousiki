@@ -123,6 +123,7 @@ val useCasesModule = module {
     factory { DeleteTrackFromCustomPlaylistUseCase(get()) }
     factory { GetCustomPlaylistTracksFlowUseCase(get()) }
     factory { RemoveSongFromRecentlyPlayedUseCase(get()) }
+    factory { RemoveVideoFromRecentlyPlayedUseCase(get()) }
     factory { GetLocalPlaylistsUseCase(get()) }
     factory { GetLocalPlaylistItemCountUseCase(get()) }
     factory { GetLocalPlaylistsFlowUseCase(get()) }
