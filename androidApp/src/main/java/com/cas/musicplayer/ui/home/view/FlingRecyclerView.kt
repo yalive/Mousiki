@@ -13,6 +13,6 @@ class FlingRecyclerView @JvmOverloads constructor(
     }
 
     companion object {
-        private const val FLING_SPEED_FACTOR = 1.2f
+        private const val FLING_SPEED_FACTOR = 1.3f
     }
 }
