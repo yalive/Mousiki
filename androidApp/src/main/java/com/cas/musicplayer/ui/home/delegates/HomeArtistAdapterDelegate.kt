@@ -4,14 +4,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.inflate
-import com.cas.musicplayer.delegateadapter.AdapterDelegate
-import com.mousiki.shared.domain.models.DisplayableItem
 import com.cas.musicplayer.R
-import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.ui.home.model.HomeItem
+import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.home.GridSpacingItemDecoration
 import com.cas.musicplayer.ui.home.adapters.HomeArtistsAdapter
 import com.cas.musicplayer.utils.dpToPixel
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.ui.home.model.HomeItem
 
 /**
  ***************************************
