@@ -11,7 +11,7 @@ class YTBVideoToTrack : Mapper<YTBVideo, YtbTrack> {
         val duration = from.contentDetails?.duration.orEmpty()
         val artistName = from.snippet?.channelTitle.orEmpty()
         val channelId = from.snippet?.channelId.orEmpty()
-        val track = YtbTrack(id, title, duration, artistName, channelId)
+        val track = YtbTrack(id, title, duration,0, artistName,channelId)
         from.snippet?.thumbnails?.urlOrEmpty()?.let { url ->
             track.fullImageUrl = url
         }

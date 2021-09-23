@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.bottomsheet
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +20,16 @@ import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.utils.Constants
 import java.io.File
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import com.cas.musicplayer.ui.local.folders.FolderType
 
 
@@ -42,6 +49,9 @@ class SongInfoFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            registerForActivityResult()
+        }
         return inflater.inflate(R.layout.fragment_track_info, container, false)
     }
 
@@ -57,7 +67,16 @@ class SongInfoFragment : BottomSheetDialogFragment() {
         updateVisibility(false)
 
         binding.edit.setOnClickListener {
-            updateVisibility(true)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                updateVisibility(true)
+            } else {
+                shouldShowRequestPermissionRationale =
+                    ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                mPermissionResult.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
         }
         binding.save.setOnClickListener {
             updateVisibility(false)
@@ -77,11 +96,9 @@ class SongInfoFragment : BottomSheetDialogFragment() {
             binding.txtTrackArtistTv.text = song.artistName
             binding.txtTrackAlbumTv.text = song.albumName
             binding.txtTrackComposerTv.text = song.composer
-            binding.txtTrackDurationTv.text = song.duration.toString()
-            val file = File(song.data)
-            binding.txtTrackSizeTv.text = file.sizeMB()
+            binding.txtTrackDurationTv.text = TimeUtils.durationToHMS(song.duration)
+            binding.txtTrackSizeTv.text = Utils.getSizeFormatted(song.size)
             binding.txtTrackPathTv.text = song.data
-
             binding.txtTrackTitle.setText(song.title)
             binding.txtTrackArtist.setText(song.artistName)
             binding.txtTrackAlbum.setText(song.albumName)
@@ -122,8 +139,8 @@ class SongInfoFragment : BottomSheetDialogFragment() {
             binding.txtTrackAlbumTv.visibility = View.GONE
             binding.txtTrackComposerTv.visibility = View.GONE
 
-            binding.edit.visibility = View.GONE
-            binding.save.visibility = View.VISIBLE
+            //binding.edit.visibility = View.GONE
+            //binding.save.visibility = View.VISIBLE
         } else {
             binding.txtTrackTitle.visibility = View.GONE
             binding.txtTrackArtist.visibility = View.GONE
@@ -135,8 +152,41 @@ class SongInfoFragment : BottomSheetDialogFragment() {
             binding.txtTrackAlbumTv.visibility = View.VISIBLE
             binding.txtTrackComposerTv.visibility = View.VISIBLE
 
-            binding.save.visibility = View.GONE
-            binding.edit.visibility = View.VISIBLE
+            //binding.save.visibility = View.GONE
+            //binding.edit.visibility = View.VISIBLE
+        }
+    }
+
+    private lateinit var mPermissionResult: ActivityResultLauncher<String>
+    private var shouldShowRequestPermissionRationale = true
+
+    fun registerForActivityResult() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return
+        }
+        mPermissionResult =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (!it) {
+                    val perResult = ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                    if (!perResult && !shouldShowRequestPermissionRationale) {
+                        openAppSettings()
+                    }
+                } else {
+                    updateVisibility(true)
+                }
+            } as ActivityResultLauncher<String>
+    }
+
+    private fun openAppSettings() {
+        try {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", requireActivity().packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        } catch (e: Exception) {
         }
     }
 
