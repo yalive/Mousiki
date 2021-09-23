@@ -114,6 +114,7 @@ class TrackOptionsFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
+        binding.showInformation.isVisible = track is LocalSong
         binding.showInformation.onClick {
             if ((activity as MainActivity).isBottomPanelExpanded()) {
                 (activity as MainActivity).collapseBottomPanel()
