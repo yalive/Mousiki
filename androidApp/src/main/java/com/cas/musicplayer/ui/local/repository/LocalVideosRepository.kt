@@ -126,6 +126,7 @@ class LocalVideosRepository(private val context: Context) {
         val artistName = cursor.getStringOrNull(MediaStore.Video.VideoColumns.ARTIST)
         val path = data.substringBeforeLast("/")
         val size = cursor.getLong(MediaStore.Video.VideoColumns.SIZE)
+        val mimeType = cursor.getString(MediaStore.Video.VideoColumns.MIME_TYPE)
         val resolution = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.RESOLUTION))
         return Song(
             id = id,
@@ -143,6 +144,7 @@ class LocalVideosRepository(private val context: Context) {
             albumArtist = "",
             path = path,
             size = size,
+            mimeType = mimeType,
             resolution = resolution ?: ""
         )
     }
@@ -241,4 +243,5 @@ val videoBaseProjection = arrayOf(
     MediaStore.Video.VideoColumns.ARTIST, // 10
     MediaStore.Video.VideoColumns.SIZE, // 11
     MediaStore.Video.Media.RESOLUTION,
+    MediaStore.Video.Media.MIME_TYPE,
 )

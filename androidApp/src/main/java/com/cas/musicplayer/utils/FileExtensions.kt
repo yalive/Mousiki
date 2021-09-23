@@ -28,7 +28,3 @@ fun File.fixedPath(context: Context): String {
 fun File.fixedName(context: Context): String {
     return File(fixedPath(context)).name
 }
-
-fun File.sizeMB(): String {
-    return "${length() / MEGA_BYTES_SIZE} MB"
-}

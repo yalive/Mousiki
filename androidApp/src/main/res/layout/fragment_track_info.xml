@@ -36,6 +36,7 @@
         <TextView
             android:id="@+id/edit"
             android:textSize="16sp"
+            android:visibility="gone"
             android:textColor="@color/colorBlue"
             android:fontFamily="@font/pangram_bold"
             android:layout_alignParentEnd="true"
@@ -46,6 +47,7 @@
         <TextView
             android:id="@+id/save"
             android:textSize="16sp"
+            android:visibility="gone"
             android:textColor="@color/colorBlue"
             android:fontFamily="@font/pangram_bold"
             android:layout_alignParentEnd="true"
