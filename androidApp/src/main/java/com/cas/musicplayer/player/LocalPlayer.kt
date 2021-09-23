@@ -75,8 +75,8 @@ class LocalPlayer(
     }
 
     override fun loadVideo(videoId: String, startSeconds: Float) {
-        Log.d(TAG_PLAYER, "Local player loadVideo $videoId")
         val mainActivity = MusicApp.get().currentActivity() as? MainActivity
+        Log.d(TAG_PLAYER, "Local player loadVideo $videoId, mainActivity=$mainActivity, and isInPictureInPictureModeCompact=${mainActivity?.isInPictureInPictureModeCompact}")
         if (mainActivity != null && mainActivity.isInPictureInPictureModeCompact) {
             mainActivity.moveTaskToBack(false)
         }
