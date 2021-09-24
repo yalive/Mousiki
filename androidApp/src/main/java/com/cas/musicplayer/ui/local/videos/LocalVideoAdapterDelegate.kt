@@ -14,7 +14,6 @@ import com.cas.musicplayer.delegateadapter.AdapterDelegate
 import com.cas.musicplayer.ui.bottomsheet.VideoOptionsFragment
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.color
-import com.cas.musicplayer.utils.sizeMB
 import com.cas.musicplayer.utils.themeColor
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
@@ -62,7 +61,7 @@ class LocalVideoAdapterDelegate(
                 .into(binding.imgSong)
             binding.txtCategory.text = itemView.context.getString(
                 R.string.label_resolution_and_size,
-                file.sizeMB(),
+                Utils.getSizeFormatted(localSong.size),
                 Utils.getResolution(localSong.song.resolution)
             )
             itemView.onClick {

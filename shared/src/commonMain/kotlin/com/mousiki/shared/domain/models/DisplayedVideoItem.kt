@@ -11,6 +11,7 @@ data class DisplayedVideoItem(
     val track: Track,
     val songTitle: String,
     val songDuration: String,
+    val songSize: Long,
     val songImagePath: String,
     val isCurrent: Boolean = false,
     val isPlaying: Boolean = false,
@@ -21,6 +22,7 @@ fun Track.toDisplayedVideoItem() = DisplayedVideoItem(
     track = this,
     songTitle = title,
     songDuration = durationFormatted,
+    songSize = size,
     songImagePath = imgUrl
 )
 
@@ -31,6 +33,7 @@ fun Track.toDisplayedVideoItem(
     track = this,
     songTitle = title,
     songDuration = durationFormatted,
+    songSize = size,
     songImagePath = imgUrl,
     isCurrent = isCurrent,
     isPlaying = isPlaying

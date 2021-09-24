@@ -12,6 +12,7 @@
     <string name="label_share">Share</string>
     <string name="label_hide">Hide</string>
     <string name="label_add_to">Add to…</string>
+    <string name="show_information">Show Information</string>
     <string name="label_play_next">Play next</string>
     <string name="common_more">More</string>
     <string name="common_turn_on">TURN ON</string>
@@ -266,5 +267,16 @@
     <string name="video_player_queue_history">History</string>
     <string name="turn_on_to_hide">Turn on to hide</string>
     <string name="screen_auto">Auto</string>
+
+    <!-- Track Info -->
+    <string name="track_edit">EDIT</string>
+    <string name="track_save">SAVE</string>
+    <string name="track_name">Name</string>
+    <string name="track_artist">Artist</string>
+    <string name="track_album">Album</string>
+    <string name="track_composer">Composer</string>
+    <string name="track_duration">Duration</string>
+    <string name="track_size">Size</string>
+    <string name="track_path">Path</string>
 
 </resources>
