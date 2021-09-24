@@ -1,8 +1,11 @@
 package com.cas.musicplayer.ui.local.repository
 
+import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import com.cas.musicplayer.utils.*
@@ -58,6 +61,50 @@ class LocalVideosRepository(private val context: Context) {
         )
     }
 
+    suspend fun updateSong(
+        songId: Long,
+        name: String,
+        artist: String,
+        album: String,
+        composer: String
+    ): Song? = withContext(Dispatchers.IO) {
+
+        val cv = ContentValues(1)
+        val uri = ContentUris.withAppendedId(mediaUri(), songId)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues(1)
+            values.put(MediaStore.Video.Media.IS_PENDING, 1)
+            val updatedRows: Int = context.contentResolver.update(uri, values, null, null)
+            if (updatedRows == 0)
+                return@withContext null
+        }
+        Log.d("UpdateSong","name : $name artist : $artist")
+        cv.put(MediaStore.Video.Media.TITLE, name)
+        cv.put(MediaStore.Video.VideoColumns.ARTIST, artist)
+        cv.put(MediaStore.Video.VideoColumns.ALBUM, album)
+        //cv.put(Media.COMPOSER, composer)
+
+        val rowsUpdated: Int = context.contentResolver.update(uri, cv, null, null)
+
+        if (rowsUpdated > 0) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val values = ContentValues(1)
+                values.put(MediaStore.Video.Media.IS_PENDING, 0)
+                context.contentResolver.update(uri, values, null, null)
+            }
+            return@withContext video(
+                makeVideoCursor(
+                    selection = MediaStore.Video.VideoColumns._ID + "=?",
+                    selectionValues = arrayOf(songId.toString()),
+                    withFilter = false
+                )
+            )
+        } else
+            return@withContext null
+
+    }
+
     fun songsByFilePath(filePath: String): List<Song> {
         return videos(
             makeVideoCursor(
@@ -79,6 +126,7 @@ class LocalVideosRepository(private val context: Context) {
         val artistName = cursor.getStringOrNull(MediaStore.Video.VideoColumns.ARTIST)
         val path = data.substringBeforeLast("/")
         val size = cursor.getLong(MediaStore.Video.VideoColumns.SIZE)
+        val mimeType = cursor.getString(MediaStore.Video.VideoColumns.MIME_TYPE)
         val resolution = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.RESOLUTION))
         return Song(
             id = id,
@@ -96,6 +144,7 @@ class LocalVideosRepository(private val context: Context) {
             albumArtist = "",
             path = path,
             size = size,
+            mimeType = mimeType,
             resolution = resolution ?: ""
         )
     }
@@ -194,4 +243,5 @@ val videoBaseProjection = arrayOf(
     MediaStore.Video.VideoColumns.ARTIST, // 10
     MediaStore.Video.VideoColumns.SIZE, // 11
     MediaStore.Video.Media.RESOLUTION,
+    MediaStore.Video.Media.MIME_TYPE,
 )
