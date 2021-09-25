@@ -25,7 +25,6 @@ class LocalSongsSettingsFragment : BaseFragment<LocalSongsSettingsViewModel>(
     override val screenName: String = "LocalSongsSettingsFragment"
     override val viewModel by viewModel { Injector.localSongsSettingsViewModel }
     private val binding by viewBinding(LocalSongsSettingsFragmentBinding::bind)
-    private val adapter by lazy { LocalSongsSettingsAdapter() }
 
     // For now when user close this fragment we refresh songs list
     // The ideal is to detect if there is any change in the settings
@@ -36,6 +35,7 @@ class LocalSongsSettingsFragment : BaseFragment<LocalSongsSettingsViewModel>(
         view.setOnClickListener {
             // Just to prevent underline click detection
         }
+        val adapter = LocalSongsSettingsAdapter()
         binding.recyclerView.adapter = adapter
         binding.btnClose.onClick { activity?.onBackPressed() }
 

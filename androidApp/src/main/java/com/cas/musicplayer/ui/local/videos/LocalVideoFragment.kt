@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.local.videos
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -33,10 +32,7 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
 
     private fun playVideo(track: Track) {
         viewModel.onPlayVideo(track)
-        val intent = Intent(activity, VideoPlayerActivity::class.java)
-        intent.putExtra(VideoPlayerActivity.VIDEO, track)
-        intent.putExtra(VideoPlayerActivity.QUEUE_TYPE, VideoQueueType.AllVideos)
-        startActivity(intent)
+        VideoPlayerActivity.start(requireContext(), track, VideoQueueType.AllVideos)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
