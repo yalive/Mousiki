@@ -48,4 +48,10 @@ abstract class BaseSearchResultFragment(
         recyclerView?.isVisible = true
         progressBar?.isVisible = false
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recyclerView = null
+        progressBar = null
+    }
 }

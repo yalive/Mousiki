@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.local.folders
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
@@ -32,31 +31,24 @@ class FolderVideoDetailsFragment : BaseFragment<FolderVideoDetailsViewModel>(
 
     private val binding by viewBinding(FolderDetailsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalVideoAdapter(
+    private fun playVideo(track: Track) {
+        viewModel.onPlayVideo(track)
+        VideoPlayerActivity.start(requireContext(), track, VideoQueueType.FolderLocation(folder))
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    private fun initViews() {
+        val adapter = LocalVideoAdapter(
             onClickTrack = { playVideo(it) },
             onSortClicked = {},
             onFilterClicked = {},
             showCountsAndSortButton = true,
             showFilter = false
         )
-    }
-
-    private fun playVideo(track: Track) {
-        viewModel.onPlayVideo(track)
-        val intent = Intent(activity, VideoPlayerActivity::class.java)
-        intent.putExtra(VideoPlayerActivity.VIDEO, track)
-        intent.putExtra(VideoPlayerActivity.QUEUE_TYPE, VideoQueueType.FolderLocation(folder))
-        startActivity(intent)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-    }
-
-    private fun initViews() {
         setupToolbar(binding.toolbarView.toolbar, folder.name)
         binding.localSongsRecyclerView.adapter = adapter
         observe(viewModel.localSongs, adapter::submitList)

@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.local.videos.history
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -34,10 +33,7 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
 
     private fun playVideo(track: Track) {
         viewModel.onPlayVideo(track)
-        val intent = Intent(activity, VideoPlayerActivity::class.java)
-        intent.putExtra(VideoPlayerActivity.VIDEO, track)
-        intent.putExtra(VideoPlayerActivity.QUEUE_TYPE, VideoQueueType.History)
-        startActivity(intent)
+        VideoPlayerActivity.start(requireContext(), track, VideoQueueType.History)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

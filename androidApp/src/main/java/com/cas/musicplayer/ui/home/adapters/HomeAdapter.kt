@@ -18,7 +18,6 @@ import com.mousiki.shared.ui.home.HomeViewModel
  */
 class HomeAdapter(
     viewModel: HomeViewModel,
-    chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
     onVideoSelected: (Track, List<Track>) -> Unit,
     onClickRetryNewRelease: () -> Unit
 ) : MousikiAdapter(
@@ -28,7 +27,6 @@ class HomeAdapter(
         SimplePlaylistSectionDelegate(),
         VideoListAdapterDelegate(onVideoSelected),
         HomeArtistAdapterDelegate(),
-        chartDelegate,
         HomeGenreAdapterDelegate(),
         HomeHeaderAdapterDelegate(viewModel),
         NewHorizontalSongsAdapterDelegate(

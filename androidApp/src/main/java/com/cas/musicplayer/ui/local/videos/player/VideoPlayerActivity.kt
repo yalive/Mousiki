@@ -29,7 +29,6 @@ import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ActivityVideoPlayerBinding
 import com.cas.musicplayer.di.Injector
-import com.cas.musicplayer.player.PlayerQueue
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
 import com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
@@ -309,7 +308,6 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        PlayerQueue.pause()
         if (getVideoInfoFromIntent(intent))
             viewModel.start()
         else if (!viewModel.player?.isPlaying!!) {
@@ -319,7 +317,6 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        PlayerQueue.pause()
         if (viewModel.playWhenReady) {
             viewModel.start()
         }
@@ -674,6 +671,13 @@ class VideoPlayerActivity : AppCompatActivity() {
         const val REQUEST_PAUSE = 2
         const val CONTROL_TYPE_PLAY = 1
         const val CONTROL_TYPE_PAUSE = 2
+
+        fun start(context: Context, video: Track, queueType: VideoQueueType) {
+            val intent = Intent(context, VideoPlayerActivity::class.java)
+            intent.putExtra(VIDEO, video)
+            intent.putExtra(QUEUE_TYPE, queueType)
+            context.startActivity(intent)
+        }
     }
 }
 

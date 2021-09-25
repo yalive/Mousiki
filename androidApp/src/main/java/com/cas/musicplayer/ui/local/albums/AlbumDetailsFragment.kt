@@ -36,8 +36,14 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
 
     private val binding by viewBinding(AlbumDetailsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalSongsAdapter(
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+
+    }
+
+    private fun initViews() {
+        val adapter = LocalSongsAdapter(
             onClickTrack = viewModel::onClickTrack,
             onLongPressTrack = { track ->
                 val tracks = viewModel.localSongs.tracks
@@ -48,16 +54,6 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
             showCountsAndSortButton = false,
             showFilter = false
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-
-    }
-
-    private fun initViews() {
         binding.localSongsRecyclerView.adapter = adapter
         binding.btnBack.onClick {
             findNavController().popBackStack()
@@ -100,7 +96,5 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
 
     companion object {
         val EXTRAS_ALBUM_ID = "extras.album.id"
-        fun newInstance() = AlbumDetailsFragment()
     }
-
 }

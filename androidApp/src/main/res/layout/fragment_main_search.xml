@@ -46,7 +46,7 @@
     <com.cas.musicplayer.utils.AutoRefreshRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/eight_8dp"
         android:layout_marginEnd="@dimen/eight_8dp"
         android:background="?colorSurface"
@@ -54,6 +54,7 @@
         android:paddingTop="@dimen/sixteen_16dp"
         android:paddingBottom="@dimen/padding_for_player_space"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
