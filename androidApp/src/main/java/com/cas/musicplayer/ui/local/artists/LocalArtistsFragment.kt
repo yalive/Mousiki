@@ -26,12 +26,9 @@ class LocalArtistsFragment : BaseFragment<LocalArtistsViewModel>(
 
     private val binding by viewBinding(LocalArtistsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalArtistsAdapter()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = LocalArtistsAdapter()
         binding.localArtistsRecyclerView.adapter = adapter
         registerForActivityResult(
             this,

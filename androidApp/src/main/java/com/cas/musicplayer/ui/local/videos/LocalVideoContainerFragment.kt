@@ -21,12 +21,10 @@ class LocalVideoContainerFragment : Fragment(R.layout.fragment_local_songs_conta
 
     private val binding by viewBinding(FragmentLocalVideosContainerBinding::bind)
 
-    private lateinit var adapter: LocalVideoViewPagerAdapter
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
-        adapter = LocalVideoViewPagerAdapter(this)
+        val adapter = LocalVideoViewPagerAdapter(this)
         val pager: ViewPager2 = binding.pager
 
         pager.adapter = adapter

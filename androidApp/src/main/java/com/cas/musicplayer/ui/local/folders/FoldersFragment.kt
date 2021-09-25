@@ -28,12 +28,9 @@ class FoldersFragment : BaseFragment<FoldersViewModel>(
 
     private val folderType by lazy { requireArguments().get(EXTRA_FOLDER_TYPE) as FolderType }
 
-    private val adapter by lazy {
-        FoldersAdapter(::onFolderOption)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = FoldersAdapter(::onFolderOption)
         binding.folderRecyclerView.adapter = adapter
         registerForActivityResult(this, binding.folderRecyclerView, binding.storagePermissionView)
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {

@@ -14,9 +14,9 @@ import com.cas.musicplayer.tmp.observeEvent
 import com.cas.musicplayer.tmp.tracks
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.SortByFragment
+import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.local.StoragePermissionDelegate
 import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
-import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
@@ -31,8 +31,9 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
 
     private val binding by viewBinding(LocalSongsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalSongsAdapter(
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val adapter = LocalSongsAdapter(
             onClickTrack = { viewModel.onClickTrack(it) },
             onLongPressTrack = { track ->
                 val tracks = viewModel.localSongs.tracks
@@ -43,10 +44,6 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
             showCountsAndSortButton = true,
             showFilter = true
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         binding.localSongsRecyclerView.adapter = adapter
         observe(PlaybackLiveData) { state ->
             if (state == PlayerConstants.PlayerState.PLAYING
