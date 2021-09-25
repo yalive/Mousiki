@@ -21,20 +21,18 @@ class LocalPlaylistsFragment : BaseFragment<LocalPlaylistsViewModel>(
 
     private val binding by viewBinding(LocalPlaylistsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalPlaylistsAdapter { viewModel.deletePlaylist(it) }
-    }
-
     override fun onResume() {
         super.onResume()
         observe(viewModel.playlist) {
-            adapter.submitList(it)
+            val adapter = binding.localPlaylistRecyclerView.adapter
+            (adapter as LocalPlaylistsAdapter).submitList(it)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.localPlaylistRecyclerView.adapter = adapter
+        binding.localPlaylistRecyclerView.adapter =
+            LocalPlaylistsAdapter { viewModel.deletePlaylist(it) }
         binding.itemAddPlaylist.root.onClick {
             CreatePlaylistFragment.present(childFragmentManager)
         }
