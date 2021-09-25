@@ -69,26 +69,6 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
         }
     }
 
-    private var searchSuggestionsAdapter = SearchSuggestionsAdapter(
-        onClickItem = { suggestion ->
-            binding.suggestionsView.gone()
-            viewPager.gone()
-            progressBar.visible()
-            removeQueryListener()
-            searchView.setQuery(suggestion.value, false)
-            attachQueryListener()
-            searchView.hideSoftKeyboard()
-            viewModel.search(suggestion.value)
-            searchView.clearFocus()
-        },
-        onClickAutocomplete = { suggestion ->
-            searchView.setQuery(suggestion.value, false)
-        },
-        onClickRemoveHistoricItem = {
-            viewModel.removeHistoricItem(it)
-        }
-    )
-
 
     private fun setupSearchView() {
         searchView.queryHint = getString(R.string.search_button_title)
@@ -105,6 +85,25 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val searchSuggestionsAdapter = SearchSuggestionsAdapter(
+            onClickItem = { suggestion ->
+                binding.suggestionsView.gone()
+                viewPager.gone()
+                progressBar.visible()
+                removeQueryListener()
+                searchView.setQuery(suggestion.value, false)
+                attachQueryListener()
+                searchView.hideSoftKeyboard()
+                viewModel.search(suggestion.value)
+                searchView.clearFocus()
+            },
+            onClickAutocomplete = { suggestion ->
+                searchView.setQuery(suggestion.value, false)
+            },
+            onClickRemoveHistoricItem = {
+                viewModel.removeHistoricItem(it)
+            }
+        )
         val fragments = listOf<PageableFragment>(
             ResultSearchSongsFragment()
         )
@@ -153,7 +152,8 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
             binding.suggestionsView.visible()
             viewPager.gone()
             progressBar.gone()
-            searchSuggestionsAdapter.dataItems = suggestions.orEmpty().toMutableList()
+            val adapter = binding.recyclerViewSuggestions.adapter as SearchSuggestionsAdapter
+            adapter.dataItems = suggestions.orEmpty().toMutableList()
         }
 
         observe(viewModel.hideSearchLoading.asLiveData()) { event ->

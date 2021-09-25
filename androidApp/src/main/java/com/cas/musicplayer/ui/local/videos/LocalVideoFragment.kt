@@ -30,15 +30,6 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
 
     private val binding by viewBinding(LocalVideoFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalVideoAdapter(
-            onClickTrack = { playVideo(it) },
-            onSortClicked = { saveAndSetOrder() },
-            onFilterClicked = { showFilterScreen() },
-            showCountsAndSortButton = true,
-            showFilter = true
-        )
-    }
 
     private fun playVideo(track: Track) {
         viewModel.onPlayVideo(track)
@@ -50,6 +41,13 @@ class LocalVideoFragment : BaseFragment<LocalVideoViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = LocalVideoAdapter(
+            onClickTrack = { playVideo(it) },
+            onSortClicked = { saveAndSetOrder() },
+            onFilterClicked = { showFilterScreen() },
+            showCountsAndSortButton = true,
+            showFilter = true
+        )
         binding.localVideosRecyclerViewView.adapter = adapter
 
         registerForActivityResult(

@@ -26,6 +26,7 @@ import com.squareup.picasso.Target
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
+import java.lang.ref.WeakReference
 import kotlin.coroutines.resume
 
 
@@ -49,6 +50,7 @@ fun ImageView.loadTrackImage(
     track: Track,
     fit: Boolean = true
 ) {
+    val weakRef = WeakReference(this)
     val url = when (track) {
         is LocalSong -> {
             val cacheDir = File(MusicApp.get().filesDir, SongsUtil.CACHE_IMAGE_DIR)
@@ -75,10 +77,11 @@ fun ImageView.loadTrackImage(
 
                 override fun onError(e: java.lang.Exception?) {
                     if (track is YtbTrack) {
+                        val imageView = weakRef.get() ?: return
                         Picasso.get().load(track.imgUrlDef0)
                             .error(R.drawable.ic_mousiki_placeholder)
                             .fit()
-                            .into(this@loadTrackImage)
+                            .into(imageView)
                         UserPrefs.setTrackImageUrl(track, track.imgUrlDef0)
                     }
                 }
