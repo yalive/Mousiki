@@ -30,8 +30,8 @@ interface StoragePermissionDelegate {
 
 class StoragePermissionDelegateImpl : StoragePermissionDelegate {
 
-    lateinit var mainView: View
-    lateinit var permissionView: LayoutNoStoragePermissionBinding
+    private lateinit var mainView: WeakReference<View>
+    private lateinit var permissionView: WeakReference<LayoutNoStoragePermissionBinding>
     private lateinit var mPermissionResult: ActivityResultLauncher<String>
     private lateinit var fragmentRef: WeakReference<Fragment>
     private var shouldShowRequestPermissionRationale = true
@@ -41,8 +41,8 @@ class StoragePermissionDelegateImpl : StoragePermissionDelegate {
         mainView: View,
         permissionView: LayoutNoStoragePermissionBinding
     ) {
-        this.mainView = mainView
-        this.permissionView = permissionView
+        this.mainView = WeakReference(mainView)
+        this.permissionView = WeakReference(permissionView)
         this.fragmentRef = WeakReference(fragment)
 
         permissionView.btnAllowPermission.onClick {
@@ -75,19 +75,19 @@ class StoragePermissionDelegateImpl : StoragePermissionDelegate {
         val readStoragePermissionsGranted = fragmentRef.get()?.readStoragePermissionsGranted()
 
         if (readStoragePermissionsGranted != null && readStoragePermissionsGranted) {
-            permissionView.root.isVisible = false
-            mainView.isVisible = true
+            permissionView.get()?.root?.isVisible = false
+            mainView.get()?.isVisible = true
             onUserGrantPermission()
         } else {
-            permissionView.root.isVisible = true
-            mainView.isVisible = false
+            permissionView.get()?.root?.isVisible = true
+            mainView.get()?.isVisible = false
         }
     }
 
     private fun openAppSettings() {
         try {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val context = mainView.context
+            val context = mainView.get()?.context ?: return
             val uri = Uri.fromParts("package", context.packageName, null)
             intent.data = uri
             context.startActivity(intent)

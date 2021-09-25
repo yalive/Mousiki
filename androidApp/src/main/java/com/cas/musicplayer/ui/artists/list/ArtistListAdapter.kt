@@ -7,8 +7,9 @@ import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
+import com.cas.musicplayer.ui.artists.thumbnail
 import com.mousiki.shared.data.models.Artist
-import com.cas.musicplayer.utils.loadImage
+import com.squareup.picasso.Picasso
 
 
 /**
@@ -21,32 +22,13 @@ class ArtistListAdapter(
 ) : SimpleBaseAdapter<Artist, ArtistListAdapter.ArtistsViewHolder>() {
 
     override val cellResId: Int = R.layout.item_list_artist
-    private val headPositionMap = HashMap<String, Int>()
 
     override fun createViewHolder(view: View): ArtistsViewHolder {
         return ArtistsViewHolder(view, onClickArtist)
     }
 
-    override fun onDataChanged() {
-        fillHeadMap()
-        notifyDataSetChanged()
-    }
-
-    private fun fillHeadMap() {
-        for ((index, item) in dataItems.withIndex()) {
-            val firstLetter = item.name[0].toString()
-            if (!headPositionMap.containsKey(firstLetter)) {
-                headPositionMap[firstLetter] = index
-            }
-        }
-    }
-
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_list_artist
-    }
-
-    fun getLetterPosition(letter: String): Int {
-        return if (headPositionMap.containsKey(letter)) (headPositionMap[letter] as Int).toInt() else -1
     }
 
     inner class ArtistsViewHolder(
@@ -57,13 +39,11 @@ class ArtistListAdapter(
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
-        override fun bind(item: Artist) {
-            imgSong.loadImage(item.imageFullPath, placeHolder = null, errorImage = null)
-            txtTitle.text = item.name
+        override fun bind(artist: Artist) {
+            Picasso.get().load(artist.thumbnail).into(imgSong)
+            txtTitle.text = artist.name
             itemView.onClick {
-                if (adapterPosition >= 0) {
-                    onClickArtist(item)
-                }
+                onClickArtist(artist)
             }
         }
     }
