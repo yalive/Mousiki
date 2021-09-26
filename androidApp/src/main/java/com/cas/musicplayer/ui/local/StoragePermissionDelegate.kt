@@ -30,8 +30,8 @@ interface StoragePermissionDelegate {
 
 class StoragePermissionDelegateImpl : StoragePermissionDelegate {
 
-    private lateinit var mainView: WeakReference<View>
-    private lateinit var permissionView: WeakReference<LayoutNoStoragePermissionBinding>
+    private lateinit var mainViewRef: WeakReference<View>
+    private lateinit var permissionViewRef: WeakReference<LayoutNoStoragePermissionBinding>
     private lateinit var mPermissionResult: ActivityResultLauncher<String>
     private lateinit var fragmentRef: WeakReference<Fragment>
     private var shouldShowRequestPermissionRationale = true
@@ -41,11 +41,11 @@ class StoragePermissionDelegateImpl : StoragePermissionDelegate {
         mainView: View,
         permissionView: LayoutNoStoragePermissionBinding
     ) {
-        this.mainView = WeakReference(mainView)
-        this.permissionView = WeakReference(permissionView)
+        this.mainViewRef = WeakReference(mainView)
+        this.permissionViewRef = WeakReference(permissionView)
         this.fragmentRef = WeakReference(fragment)
 
-        permissionView.btnAllowPermission.onClick {
+        permissionViewRef.get()?.btnAllowPermission?.onClick {
             shouldShowRequestPermissionRationale = shouldShowRequestPermissionRationale(
                 fragmentRef.get()!!.requireActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
@@ -53,46 +53,42 @@ class StoragePermissionDelegateImpl : StoragePermissionDelegate {
             mPermissionResult.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
 
-        mPermissionResult =
-            fragmentRef.get()
-                ?.registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-                    if (!it) {
-                        val perResult = shouldShowRequestPermissionRationale(
-                            fragmentRef.get()!!.requireActivity(),
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        )
-                        if (!perResult && !shouldShowRequestPermissionRationale) {
-                            openAppSettings()
-                        }
+        mPermissionResult = fragmentRef.get()
+            ?.registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (!it) {
+                    val perResult = shouldShowRequestPermissionRationale(
+                        fragmentRef.get()!!.requireActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                    if (!perResult && !shouldShowRequestPermissionRationale) {
+                        openAppSettings()
                     }
-                } as ActivityResultLauncher<String>
+                }
+            } as ActivityResultLauncher<String>
     }
 
-    override fun checkStoragePermission(
-        onUserGrantPermission: () -> Unit
-    ) {
+    override fun checkStoragePermission(onUserGrantPermission: () -> Unit) {
 
         val readStoragePermissionsGranted = fragmentRef.get()?.readStoragePermissionsGranted()
 
         if (readStoragePermissionsGranted != null && readStoragePermissionsGranted) {
-            permissionView.get()?.root?.isVisible = false
-            mainView.get()?.isVisible = true
+            permissionViewRef.get()?.root?.isVisible = false
+            mainViewRef.get()?.isVisible = true
             onUserGrantPermission()
         } else {
-            permissionView.get()?.root?.isVisible = true
-            mainView.get()?.isVisible = false
+            permissionViewRef.get()?.root?.isVisible = true
+            mainViewRef.get()?.isVisible = false
         }
     }
 
     private fun openAppSettings() {
         try {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val context = mainView.get()?.context ?: return
+            val context = mainViewRef.get()?.context ?: return
             val uri = Uri.fromParts("package", context.packageName, null)
             intent.data = uri
             context.startActivity(intent)
         } catch (e: Exception) {
         }
     }
-
 }

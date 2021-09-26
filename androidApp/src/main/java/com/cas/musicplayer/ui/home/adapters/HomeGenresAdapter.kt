@@ -1,13 +1,14 @@
 package com.cas.musicplayer.ui.home.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -25,6 +26,7 @@ import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.domain.models.GenreMusic
+import com.squareup.picasso.Picasso
 
 /**
  ***************************************
@@ -38,16 +40,25 @@ internal class HomeGenresAdapter : SimpleBaseAdapter<GenreMusic, HomeGenreViewHo
     }
 }
 
+@SuppressLint("ClickableViewAccessibility")
 internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreMusic>(view) {
     private val imgCategory: ImageView = view.findViewById(R.id.imgCategory)
     private val backgroundCategory: ImageView = view.findViewById(R.id.backgroundCategory)
     private val cardImgCategory: CardView = view.findViewById(R.id.cardImgCategory)
     private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
-    override fun bind(genreMusic: GenreMusic) {
-        txtTitle.text = genreMusic.title
-        imgCategory.setImageDrawable(genreMusic.getImage(itemView.context))
+    init {
+        view.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                v.scaleDown(to = 0.97f)
+            } else if (event.action != MotionEvent.ACTION_MOVE) {
+                v.scaleOriginal()
+            }
+            return@setOnTouchListener false
+        }
+
         view.findViewById<ViewGroup>(R.id.cardView).onClick {
+            val genreMusic = itemView.tag as GenreMusic
             val artist = Artist(
                 genreMusic.title,
                 "US",
@@ -67,15 +78,16 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
                 RequestAdsLiveData.value = AdsOrigin("genre")
             }
         }
+    }
 
-        view.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                v.scaleDown(to = 0.97f)
-            } else if (event.action != MotionEvent.ACTION_MOVE) {
-                v.scaleOriginal()
-            }
-            return@setOnTouchListener false
-        }
+    override fun bind(genreMusic: GenreMusic) {
+        itemView.tag = genreMusic
+        txtTitle.text = genreMusic.title
+        Picasso.get()
+            .load(genreMusic.getImageRes(itemView.context))
+            .fit()
+            .into(imgCategory)
+
         try {
             val color = Color.parseColor(genreMusic.backgroundColor)
             backgroundCategory.setBackgroundColor(color)
@@ -86,10 +98,10 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
     }
 }
 
-fun GenreMusic.getImage(context: Context): Drawable {
+@DrawableRes
+fun GenreMusic.getImageRes(context: Context): Int {
     val resources = context.resources
-    val resourceId: Int = resources.getIdentifier(
+    return resources.getIdentifier(
         imageName, "drawable", context.packageName
     )
-    return resources.getDrawable(resourceId)
 }
