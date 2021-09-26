@@ -210,4 +210,16 @@
     <string name="video_auto_play_next_on">Jogo automático próximo em</string>
     <string name="video_auto_play_next_off">Jogo automático a seguir</string>
     <string name="video_player_queue_history">História</string>
+    <string name="swipe_left_right">Deslize para a esquerda ou direita para ajustar o progresso do vídeo</string>
+    <string name="swipe_up_down_left">Deslize para cima ou para baixo para ajustar o brilho</string>
+    <string name="swipe_up_down_right">Deslize para cima ou para baixo para ajustar o volume</string>
+    <string name="hold_screen">Segure para bloquear ou desbloquear a tela</string>
+    <string name="double_click_next">Clique duas vezes para avançar 10 segundos</string>
+    <string name="double_click_back">Toque duas vezes para retroceder 10 segundos</string>
+    <string name="got_it">Entendi</string>
+    <string name="settings_pip">Picture-in-picture</string>
+    <string name="pip_dialog_title">Picture-in-picture</string>
+    <string name="pip_dialog_mesage">Permita que o aplicativo Mousiki crie uma janela picture-in-picture enquanto o aplicativo está aberto ou após você deixá-lo para continuar a assistir a vídeos do youtube. Esta janela é exibida em cima de outros aplicativos que você está usando.</string>
+    <string name="pip_dialog_checkbox_dont_ask_me_again">Não me pergunte de novo</string>
+    <string name="no">Não</string>
 </resources>

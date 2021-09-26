@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.local.repository
 
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -14,6 +15,11 @@ import com.mousiki.shared.domain.models.Song
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+
+import android.content.ContentValues
+import android.os.Build
+import androidx.annotation.RequiresApi
+
 
 /**
  * Created by Fayssel Yabahddou on 6/18/21.
@@ -60,6 +66,79 @@ class LocalSongsRepository(private val context: Context) {
         )
     }
 
+    suspend fun updateSong(
+        songId: Long,
+        name: String,
+        artist: String,
+        album: String,
+        composer: String
+    ): Song = withContext(Dispatchers.IO) {
+        return@withContext if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            updateSongQ(songId, name, artist, album, composer)
+        } else {
+            updateSongBQ(songId, name, artist, album, composer)
+        }
+    }
+
+    private suspend fun updateSongBQ(
+        songId: Long,
+        name: String,
+        artist: String,
+        album: String,
+        composer: String
+    ): Song = withContext(Dispatchers.IO) {
+        val cv = ContentValues(1)
+        val uri = ContentUris.withAppendedId(mediaUri(), songId)
+        cv.put(Media.TITLE, name)
+        cv.put(Media.ARTIST, artist)
+        cv.put(Media.ALBUM, album)
+        cv.put(Media.COMPOSER, composer)
+        context.contentResolver.update(uri, cv, null, null)
+        return@withContext song(
+            makeSongCursor(
+                selection = AudioColumns._ID + "=?",
+                selectionValues = arrayOf(songId.toString()),
+                withFilter = false
+            )
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private suspend fun updateSongQ(
+        songId: Long,
+        name: String,
+        artist: String,
+        album: String,
+        composer: String
+    ): Song = withContext(Dispatchers.IO) {
+
+        val uri = ContentUris.withAppendedId(mediaUri(), songId)
+
+        val values1 = ContentValues().apply {
+            put(Media.IS_PENDING, 1)
+        }
+        context.contentResolver.update(uri, values1, null, null)
+
+        val values = ContentValues().apply {
+            put(Media.TITLE, name)
+            put(Media.DISPLAY_NAME, name)
+            put(Media.ARTIST, artist)
+            put(Media.ALBUM, album)
+            put(Media.COMPOSER, composer)
+            put(Media.IS_PENDING, 0)
+        }
+
+        context.contentResolver.update(uri, values, null, null)
+
+        return@withContext song(
+            makeSongCursor(
+                selection = AudioColumns._ID + "=?",
+                selectionValues = arrayOf(songId.toString()),
+                withFilter = false
+            )
+        )
+    }
+
     fun songsByFilePath(filePath: String): List<Song> {
         return songs(
             makeSongCursor(
@@ -82,11 +161,12 @@ class LocalSongsRepository(private val context: Context) {
         val albumId = cursor.getLong(AudioColumns.ALBUM_ID)
         val albumName = cursor.getStringOrNull(AudioColumns.ALBUM)
         val artistId = cursor.getLong(AudioColumns.ARTIST_ID)
-        val artistName = cursor.getStringOrNull(AudioColumns.ARTIST)
+        val artistName = cursor.getStringOrNull(Media.ARTIST)
         val composer = cursor.getStringOrNull(AudioColumns.COMPOSER)
         val albumArtist = cursor.getStringOrNull("album_artist")
         val path = data.substringBeforeLast("/")
         val size = cursor.getLong(AudioColumns.SIZE)
+        val mimeType = cursor.getString(AudioColumns.MIME_TYPE)
         return Song(
             id = id,
             title = title,
@@ -102,7 +182,8 @@ class LocalSongsRepository(private val context: Context) {
             composer = composer ?: "",
             albumArtist = albumArtist ?: "",
             path = path,
-            size = size
+            size = size,
+            mimeType = mimeType
         )
     }
 
@@ -146,8 +227,8 @@ class LocalSongsRepository(private val context: Context) {
     }
 
     private fun mediaUri(): Uri {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
         } else {
             Media.EXTERNAL_CONTENT_URI
         }
@@ -209,5 +290,6 @@ val baseProjection = arrayOf(
     AudioColumns.ARTIST, // 10
     AudioColumns.COMPOSER, // 11
     AudioColumns.SIZE, // 11
+    AudioColumns.MIME_TYPE, // 11
     "album_artist" // 12
 )
