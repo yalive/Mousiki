@@ -89,6 +89,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         binding.btnSwitchPip.onClick {
             SystemSettings.openPipSetting(requireActivity())
         }
+        binding.btnOutVideoSize.isVisible = !SystemSettings.isPiPSupported()
+        binding.dividerVideoSize.isVisible = !SystemSettings.isPiPSupported()
         binding.btnOutVideoSize.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
                 .setSingleChoiceItems(
