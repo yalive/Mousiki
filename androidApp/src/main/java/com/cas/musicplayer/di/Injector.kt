@@ -2,6 +2,7 @@ package com.cas.musicplayer.di
 
 import com.cas.musicplayer.ui.MainViewModel
 import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
+import com.cas.musicplayer.ui.bottomsheet.SongInfoViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.bottomsheet.VideoOptionsViewModel
 import com.cas.musicplayer.ui.common.ads.CommonAdsViewModel
@@ -79,6 +80,9 @@ object Injector : KoinComponent {
         get() = get()
 
     val trackOptionsViewModel: TrackOptionsViewModel
+        get() = get()
+
+    val trackInfoViewModel: SongInfoViewModel
         get() = get()
 
     val videoOptionsViewModel: VideoOptionsViewModel
