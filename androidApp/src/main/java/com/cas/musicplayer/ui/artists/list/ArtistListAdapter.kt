@@ -39,12 +39,17 @@ class ArtistListAdapter(
         private val imgSong: ImageView = view.findViewById(R.id.imgSong)
         private val txtTitle: TextView = view.findViewById(R.id.txtTitle)
 
+        init {
+            itemView.onClick {
+                onClickArtist(itemView.tag as Artist)
+            }
+        }
+
         override fun bind(artist: Artist) {
+            itemView.tag = artist
             Picasso.get().load(artist.thumbnail).into(imgSong)
             txtTitle.text = artist.name
-            itemView.onClick {
-                onClickArtist(artist)
-            }
+
         }
     }
 }

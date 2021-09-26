@@ -1,18 +1,14 @@
 package com.cas.musicplayer.ui.local.playlists
 
 import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
 import com.cas.common.extensions.activity
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
@@ -93,34 +89,5 @@ class PlaylistDiffCallback : DiffUtil.ItemCallback<Playlist>() {
 
     override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
         return oldItem == newItem
-    }
-}
-inline fun View.onPlaylistOption(
-    playlist: Playlist,
-    crossinline onDelete: () -> Unit
-) {
-    onClick {
-        val popup = PopupMenu(context, this)
-        val inflater: MenuInflater = popup.menuInflater
-        inflater.inflate(R.menu.menu_custom_playlist, popup.menu)
-        popup.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.btnActionDelete -> {
-                    MaterialDialog(context).show {
-                        message(
-                            text = context.getString(
-                                R.string.confirm_delete_playlist,
-                                playlist.title
-                            )
-                        )
-                        positiveButton(res = R.string.ok) { onDelete() }
-                        negativeButton(res = R.string.cancel)
-                    }
-                    true
-                }
-                else -> false
-            }
-        }
-        popup.show()
     }
 }
