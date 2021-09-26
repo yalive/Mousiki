@@ -187,7 +187,7 @@ dependencies {
 
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // Modules
     implementation project(path: ':common')
