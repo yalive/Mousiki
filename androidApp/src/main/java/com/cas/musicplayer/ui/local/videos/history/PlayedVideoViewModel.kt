@@ -26,10 +26,6 @@ class PlayedVideoViewModel(
     val playedVideos: LiveData<Resource<List<DisplayableItem>>>
         get() = _playedVideos
 
-    init {
-        getAllPlayedVideos()
-    }
-
     fun getAllPlayedVideos() = viewModelScope.launch {
         getRecentlyPlayedVideosFlow(300)
             .onStart { _playedVideos.value = Resource.Loading }
