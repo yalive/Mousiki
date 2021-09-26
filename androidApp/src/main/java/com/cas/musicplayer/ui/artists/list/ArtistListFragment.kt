@@ -34,8 +34,6 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     override val viewModel by activityViewModel { Injector.artistListViewModel }
     private val binding by viewBinding(FragmentArtistsBinding::bind)
 
-    private lateinit var adapter: ArtistListAdapter
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
@@ -62,7 +60,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     }
 
     private fun setupRecyclerView() {
-        adapter = ArtistListAdapter(onClickArtist = {
+        val adapter = ArtistListAdapter(onClickArtist = {
             view?.hideSoftKeyboard()
             val bundle = Bundle()
             bundle.putParcelable(EXTRAS_ARTIST, it)
@@ -82,6 +80,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
         observe(viewModel.filteredArtists) { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    val adapter = binding.recyclerView.adapter as ArtistListAdapter
                     adapter.dataItems = resource.data.toMutableList()
                     binding.recyclerView.visible()
                     binding.progressBar.gone()

@@ -34,8 +34,9 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
         getString(R.string.title_videos)
     }
 
-    private val adapter: SongsAdapter by lazy {
-        SongsAdapter(
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val adapter = SongsAdapter(
             onVideoSelected = { track ->
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
@@ -57,10 +58,6 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
                 MultiSelectTrackFragment.present(requireActivity(), tracks, track)
             }
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         recyclerView?.adapter = adapter
         recyclerView?.addOnScrollListener(EndlessRecyclerOnScrollListener { page ->
             Log.d(TAG, "load more: $page")
@@ -75,6 +72,7 @@ class ResultSearchSongsFragment : BaseSearchResultFragment(
         observe(parentFragment.viewModel.videos.asLiveData()) { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    val adapter = recyclerView?.adapter as? SongsAdapter ?: return@observe
                     adapter.submitList(resource.data.toMutableList())
                     onLoadSearchResults()
                 }
