@@ -15,7 +15,10 @@ import com.mousiki.shared.domain.usecase.recent.AddVideoToRecentlyPlayedUseCase
 import com.mousiki.shared.player.PlaySongDelegate
 import com.mousiki.shared.player.updateCurrentPlaying
 import com.mousiki.shared.ui.base.BaseViewModel
+import com.mousiki.shared.ui.resource.Resource
+import com.mousiki.shared.ui.resource.doOnSuccess
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.onStart
 import java.io.File
 
 class LocalVideoViewModel(
@@ -24,15 +27,12 @@ class LocalVideoViewModel(
     private val playSongsDelegate: PlaySongDelegate,
 ) : BaseViewModel(), PlaySongDelegate by playSongsDelegate {
 
-    private val _localSongs = MutableLiveData<List<DisplayableItem>>()
-    val localSongs: LiveData<List<DisplayableItem>>
+    private val _localSongs = MutableLiveData<Resource<List<DisplayableItem>>>()
+    val localSongs: LiveData<Resource<List<DisplayableItem>>>
         get() = _localSongs
 
-    init {
-        loadAllVideos()
-    }
-
-    fun loadAllVideos() = viewModelScope.launch {
+    fun loadAllVideos() = viewModelScope.launch(Dispatchers.IO) {
+        _localSongs.postValue(Resource.Loading)
         val songs = localSongsRepository.videos().filterNotHidden()
         val songsItems = songs.map {
             LocalSong(it).toDisplayedVideoItem()
@@ -42,41 +42,7 @@ class LocalVideoViewModel(
             add(HeaderVideosActionsItem(songsItems.size))
             addAll(songsItems)
         }
-        _localSongs.value = updateCurrentPlaying(displayedItems)
-
-        // cache images if needed
-        //syncVideosImages(songs)
-    }
-
-    fun onClickTrack(track: Track) = scope.launch {
-        val tracks = _localSongs.value
-            ?.filterIsInstance<DisplayedVideoItem>()
-            ?.map { it.track } ?: return@launch
-        playTrackFromQueue(track, tracks)
-    }
-
-    fun onPlaybackStateChanged() {
-        val currentItems = _localSongs.value ?: return
-        val updatedList = updateCurrentPlaying(currentItems)
-        _localSongs.value = updatedList
-    }
-
-    private fun CoroutineScope.syncVideosImages(songs: List<Song>) = launch(Dispatchers.Default) {
-        val cacheDir = File(MusicApp.get().filesDir, SongsUtil.CACHE_IMAGE_DIR)
-        if (!cacheDir.exists()) cacheDir.mkdir()
-        songs.forEach { song ->
-            val file = File(cacheDir, "${song.id}.jpeg")
-            if (!file.exists()) {
-                val uri = ContentUris.withAppendedId(
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                    song.id
-                )
-                val byteArray = Utils.getVideoThumbnail(uri)
-                if (byteArray != null) {
-                    file.writeBytes(byteArray)
-                }
-            }
-        }
+        _localSongs.postValue(Resource.Success(updateCurrentPlaying(displayedItems)))
     }
 
     fun onPlayVideo(track: Track) = viewModelScope.launch {
