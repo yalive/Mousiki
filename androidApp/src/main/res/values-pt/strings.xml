@@ -222,4 +222,14 @@
     <string name="pip_dialog_mesage">Permita que o aplicativo Mousiki crie uma janela picture-in-picture enquanto o aplicativo está aberto ou após você deixá-lo para continuar a assistir a vídeos do youtube. Esta janela é exibida em cima de outros aplicativos que você está usando.</string>
     <string name="pip_dialog_checkbox_dont_ask_me_again">Não me pergunte de novo</string>
     <string name="no">Não</string>
+    <string name="track_edit">EDITAR</string>
+    <string name="track_save">SALVE</string>
+    <string name="track_name">Nome</string>
+    <string name="track_artist">Artista</string>
+    <string name="track_album">Álbum</string>
+    <string name="track_composer">Compositor</string>
+    <string name="track_duration">Duração</string>
+    <string name="track_size">Tamanho</string>
+    <string name="track_path">Caminho</string>
+    <string name="show_information">Mostrar informação</string>
 </resources>
