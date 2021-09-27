@@ -1,5 +1,6 @@
 package com.cas.musicplayer.ui.common.songs
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -34,7 +35,7 @@ class SongAdapterDelegate(
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val binding = ItemYtbTrackBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-        return PopularSongsViewHolder(binding)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(
@@ -42,7 +43,7 @@ class SongAdapterDelegate(
         position: Int,
         holder: RecyclerView.ViewHolder
     ) {
-        val viewHolder = holder as PopularSongsViewHolder
+        val viewHolder = holder as ViewHolder
         viewHolder.bind(items[position] as DisplayedVideoItem)
     }
 
@@ -53,7 +54,7 @@ class SongAdapterDelegate(
         payloads: List<Any>
     ) {
         val item = items[position] as DisplayedVideoItem
-        val viewHolder = holder as PopularSongsViewHolder
+        val viewHolder = holder as ViewHolder
         if (payloads.isEmpty() || payloads[0] !is Bundle) {
             viewHolder.bind(item)
         } else {
@@ -66,9 +67,13 @@ class SongAdapterDelegate(
         return item.track.id.hashCode().toLong()
     }
 
-    inner class PopularSongsViewHolder(
-        val binding: ItemYtbTrackBinding
+    @SuppressLint("ClickableViewAccessibility")
+    inner class ViewHolder(
+        private val binding: ItemYtbTrackBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val colorOnSurface = itemView.context.themeColor(R.attr.colorOnSurface)
+        private val colorAccent = itemView.context.color(R.color.colorAccent)
 
         init {
             itemView.setOnTouchListener { v, event ->
@@ -79,9 +84,23 @@ class SongAdapterDelegate(
                 }
                 return@setOnTouchListener false
             }
+
+            binding.btnMore.onClick {
+                onClickMoreOptions(itemView.tag as Track)
+            }
+            itemView.onClick {
+                UserPrefs.onClickTrack()
+                onVideoSelected(itemView.tag as Track)
+            }
+
+            binding.root.setOnLongClickListener {
+                onLongPressTrack(itemView.tag as Track)
+                true
+            }
         }
 
         fun bind(item: DisplayedVideoItem) {
+            itemView.tag = item.track
             binding.txtTitle.text = item.songTitle
             binding.txtCategory.apply {
                 text = itemView.context.getString(
@@ -95,35 +114,16 @@ class SongAdapterDelegate(
                     setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
-
             binding.imgSong.loadTrackImage(item.track)
-            binding.btnMore.onClick {
-                onClickMoreOptions(item.track)
-            }
-            itemView.onClick {
-                UserPrefs.onClickTrack()
-                onVideoSelected(item.track)
-            }
-
-            binding.root.setOnLongClickListener {
-                onLongPressTrack(item.track)
-                true
-            }
             // Configure playing track
-            val colorAccent = itemView.context.color(R.color.colorAccent)
-            val colorText = if (item.isCurrent) colorAccent
-            else itemView.context.themeColor(R.attr.colorOnSurface)
+            val colorText = if (item.isCurrent) colorAccent else colorOnSurface
             binding.txtTitle.setTextColor(colorText)
-
             binding.indicatorPlaying.setMusicPlayingState(item)
         }
 
         fun update(item: DisplayedVideoItem) {
-            val colorAccent = itemView.context.color(R.color.colorAccent)
-            val colorText = if (item.isCurrent) colorAccent
-            else itemView.context.themeColor(R.attr.colorOnSurface)
+            val colorText = if (item.isCurrent) colorAccent else colorOnSurface
             binding.txtTitle.setTextColor(colorText)
-
             binding.indicatorPlaying.setMusicPlayingState(item)
         }
     }
