@@ -106,7 +106,7 @@
 	<string name="rate_app_happy">Contento</string>
 	<string name="rate_app_mixed_feeling">Sentimenti misti</string>
 	<string name="rate_app_not_happy">Non felice</string>
-	<string name="rate_app_message_play_store">Quindi, sei abbastanza soddisfatto di Mousiki.\n\nTi dispiacerebbe dedicare 1 minuto a valutare l'app? Ti ameremo per sempre se ci dai 5 stelle!</string>
+	<string name="rate_app_message_play_store">Quindi, sei abbastanza soddisfatto di Mousiki.\n\nTi dispiacerebbe dedicare 1 minuto a valutare l\'app? Ti ameremo per sempre se ci dai 5 stelle!</string>
 	<string name="comment_about_app_dialog_title">Come possiamo renderti felice?</string>
 	<string name="comment_about_app_dialog_subtitle">Ci piacerebbe sapere come possiamo migliorare la tua esperienza.</string>
 	<string name="common_later">Dopo</string>
