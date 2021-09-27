@@ -223,4 +223,14 @@
     <string name="pip_dialog_mesage">Erlauben Sie der Mousiki-App, ein Bild-in-Bild-Fenster zu erstellen, während die App geöffnet ist oder nachdem Sie sie verlassen haben, um weiterhin YouTube-Videos anzusehen. Dieses Fenster wird über anderen von Ihnen verwendeten Apps angezeigt.</string>
     <string name="pip_dialog_checkbox_dont_ask_me_again">Frag mich nicht mehr</string>
     <string name="no">Nein</string>
+    <string name="track_edit">BEARBEITEN</string>
+    <string name="track_save">SPEICHERN</string>
+    <string name="track_name">Name</string>
+    <string name="track_artist">Künstler</string>
+    <string name="track_album">Album</string>
+    <string name="track_composer">Komponist</string>
+    <string name="track_duration">Dauer</string>
+    <string name="track_size">Größe</string>
+    <string name="track_path">Weg</string>
+    <string name="show_information">Informationen anzeigen</string>
 </resources>
