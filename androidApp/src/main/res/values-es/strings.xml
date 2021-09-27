@@ -222,4 +222,14 @@
     <string name="pip_dialog_mesage">Permita que la aplicación Mousiki cree una ventana de imagen en imagen mientras la aplicación está abierta o después de dejarla para continuar viendo videos de YouTube. Esta ventana se muestra encima de otras aplicaciones que está utilizando.</string>
     <string name="pip_dialog_checkbox_dont_ask_me_again">No me vuelvas a preguntar</string>
     <string name="no">No</string>
+    <string name="track_edit">EDITAR</string>
+    <string name="track_save">AHORRAR</string>
+    <string name="track_name">Nombre</string>
+    <string name="track_artist">Artista</string>
+    <string name="track_album">Álbum</string>
+    <string name="track_composer">Compositor</string>
+    <string name="track_duration">Duración</string>
+    <string name="track_size">Tamaño</string>
+    <string name="track_path">Sendero</string>
+    <string name="show_information">Muestra información</string>
 </resources>
