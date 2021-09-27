@@ -274,9 +274,9 @@
     <string name="track_name">Name</string>
     <string name="track_artist">Artist</string>
     <string name="track_album">Album</string>
-    <string name="track_composer">Composer</string>
     <string name="track_duration">Duration</string>
-    <string name="track_size">Size</string>
     <string name="track_path">Path</string>
+    <string name="track_composer">Composer</string>
+    <string name="track_size">Size</string>
 
 </resources>
