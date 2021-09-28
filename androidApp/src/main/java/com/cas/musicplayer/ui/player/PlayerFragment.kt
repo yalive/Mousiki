@@ -47,6 +47,7 @@ import com.cas.musicplayer.ui.base.darkStatusBar
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.player.queue.QueueFragment
 import com.cas.musicplayer.ui.player.view.animateProgress
+import com.cas.musicplayer.ui.settings.TimerDialog
 import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.preference.UserPrefs
@@ -252,6 +253,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun setUpUserEvents() {
         binding.btnPlayPauseMain.onClick {
             onClickPlayPause()
+        }
+
+        binding.btnSleepTimer.onClick {
+            TimerDialog.present(childFragmentManager)
         }
 
         binding.btnShareVia.onClick {
