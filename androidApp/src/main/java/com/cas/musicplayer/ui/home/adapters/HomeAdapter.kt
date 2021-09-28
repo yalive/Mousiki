@@ -23,6 +23,7 @@ class HomeAdapter(
 ) : MousikiAdapter(
     listOf(
         HomeRecentSongsAdapterDelegate(onVideoSelected),
+        HomeFavouriteSongsAdapterDelegate(onVideoSelected),
         CompactPlaylistSectionDelegate(),
         SimplePlaylistSectionDelegate(),
         VideoListAdapterDelegate(onVideoSelected),
