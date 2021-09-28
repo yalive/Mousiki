@@ -1,0 +1,265 @@
+<resources>
+    <string name="no_equalizer">Ekolayzır bulunamadı.</string>
+    <string name="no_audio_ID">Önce bir şarkı çalın, ardından tekrar deneyin.</string>
+    <string name="favourites">Favoriler</string>
+    <string name="genres">Türler</string>
+    <string name="artists">sanatçılar</string>
+    <string name="sponsored">sponsorlu</string>
+    <string name="label_share">Paylaş</string>
+    <string name="label_hide">Saklamak</string>
+    <string name="label_add_to">A ekle…</string>
+    <string name="show_information">Bilgi göster</string>
+    <string name="label_play_next">Sonrakini çal</string>
+    <string name="common_more">Daha</string>
+    <string name="common_turn_on">AÇ</string>
+    <string name="share_track_link_message">Senin için bir şarkı buldum… %s 🔥 Şimdi #Mousiki\'de ücretsiz dinle, %s</string>
+
+    <!-- Videos -->
+    <string name="library">Kütüphane</string>
+    <string name="video">Video</string>
+    <string name="video_file_settings">Video dosyaları ayarları</string>
+    <string name="library_recently_played">Son oynatılan</string>
+    <string name="library_favourites">Favoriler</string>
+    <string name="library_recent">Son</string>
+    <string name="library_heavy_songs">Ağır şarkılar</string>
+    <string name="library_heavy">En çok çalınan şarkılar</string>
+    <string name="library_empty_recent_list">En son parçalarınızı\n burada görmek için şarkıları çalmaya başlayın!</string>
+    <string name="library_empty_heavy_list">Liste boş</string>
+    <string name="library_empty_favourite_list">Herhangi bir şarkıyı favori yapabilirsiniz, \n ve buradan erişebilirsiniz.</string>
+    <string name="empty_favourite_list">Favori parça yok.</string>
+    <string name="swipe_left_right">Video ilerlemesini ayarlamak için sola veya sağa kaydırın</string>
+    <string name="swipe_up_down_left">Parlaklığı ayarlamak için yukarı veya aşağı kaydırın</string>
+    <string name="swipe_up_down_right">Sesi ayarlamak için yukarı veya aşağı kaydırın</string>
+    <string name="hold_screen">Ekranı kilitleme veya kilidini açmak için basılı tutun</string>
+    <string name="double_click_next">10 saniyede ilerlemek için iki kez dokunun</string>
+    <string name="double_click_back">10 saniye geri gitmek için iki kez dokunun</string>
+    <string name="got_it">Anladım</string>
+
+    <!-- Common -->
+    <string name="common_empty_song_list">şarkı bulunamadı</string>
+    <string name="menu_settings">Ayarlar</string>
+    <string name="message_enable_draw">Kayan oynatıcı penceresini başlatmak için lütfen "Diğer uygulamaların üzerine çiz" iznini etkinleştirin.</string>
+    <string name="message_enable_draw_over_apps_manually">Lütfen ayarlara gidin ve kayan oynatıcı penceresini başlatmak için "Diğer uygulamaların üzerine çiz" iznini etkinleştirin.</string>
+    <string name="title_button_set_timer">Ayarlamak</string>
+    <string name="loading">Yükleniyor …</string>
+    <string name="error_while_loading_song_list">Şarkı listesi yüklenirken hata oluştu</string>
+
+    <!-- Settings -->
+    <string name="sleep_timer">Uyku Zamanlayıcısı</string>
+    <string name="settings_rate_app">Bizi değerlendirin</string>
+    <string name="settings_feedback">Geri bildirim</string>
+    <string name="settings_facebook_like">Facebook sayfasını beğen</string>
+    <string name="settings_policy">Gizlilik Politikası</string>
+    <string name="settings_size_out_video">Video boyutu</string>
+    <string name="settings_choose_out_video_size">Video boyutunu seçin</string>
+    <string name="settings_share_app">Uygulamayı arkadaşlarınızla paylaşın</string>
+    <string name="rate_app_give_rating">5 yıldızla derecelendir</string>
+    <string name="rate_app_remind_me_later">Bana daha sonra hatırlat</string>
+    <string name="rate_app_no_thanks">Hayır teşekkürler</string>
+    <string name="rate_app_dialo_title">Bu uygulamayı beğendiniz mi? Lütfen desteğinize ihtiyacımız var.</string>
+    <string name="rate_app_dialog_message">Bir dakikadan fazla sürmez. Desteğin için teşekkürler!</string>
+    <string name="search">Ara</string>
+    <string name="search_button_title">Sanatçılar, şarkılar veya podcast\'ler</string>
+    <string name="artists_find_an_artist">Bir sanatçı bul</string>
+    <string name="audio_duration_less_than">60\'ların altındaki ses dosyalarını filtreleyin</string>
+    <string name="audio_size_less_than">100k\'dan az ses dosyalarını filtreleyin</string>
+    <string name="video_duration_less_than">60\'ların altındaki video dosyalarını filtreleyin</string>
+    <string name="video_size_less_than">100k\'dan az video dosyalarını filtreleyin</string>
+    <string name="settings_pip">Fotoğraf içinde fotoğraf</string>
+
+    <string name="pip_dialog_title">Fotoğraf içinde fotoğraf</string>
+    <string name="pip_dialog_mesage">Mousiki uygulamasının, uygulama açıkken veya siz uygulamadan çıktıktan sonra youtube videolarını izlemeye devam etmek için bir resim içinde resim penceresi oluşturmasına izin verin. Bu pencere, kullandığınız diğer uygulamaların üzerinde görüntülenir.</string>
+    <string name="pip_dialog_checkbox_dont_ask_me_again">bana bir daha sorma</string>
+
+
+    <!-- Playlist -->
+    <string name="add_to_playlist">Oynatma listesine ekle</string>
+    <string name="new_playlist">Yeni oynatma listesi</string>
+    <string name="create_playlist">Oynatma listesi yarat</string>
+    <string name="playlist_name">Oynatma listesi adı</string>
+    <string name="give_your_playlist_a_name">Çalma listenize bir ad verin.</string>
+    <string name="create">Oluşturmak</string>
+    <string name="remove_from_this_playlist">Bu oynatma listesinden kaldır</string>
+    <string name="remove_from_recently_played">Son oynatılanlardan kaldır</string>
+    <string name="playlist_favorite">Favori</string>
+    <string name="shuffle_play">Karıştır</string>
+    <string name="playlist_exist_message">Oynatma listesi %s var</string>
+    <string name="track_added_to_playlist">Oynatma %s eklendi</string>
+    <string name="playlist_created">Oynatma listesi %s oluşturuldu</string>
+
+
+    <!-- Other -->
+    <string name="dark_mode">Karanlık mod</string>
+    <string name="light_mode">Işık modu</string>
+    <string name="default_mode">Sistem varsayılanı</string>
+    <string name="done">Tamamlandı</string>
+    <string name="ok">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="yes">Evet</string>
+    <string name="no">Numara</string>
+    <string name="choose_dark_mode_theme">Tema seçin</string>
+    <string name="label_error">Hata</string>
+    <string name="btn_unfavorite">favori olmayan</string>
+    <string name="label_no_songs">şarkı yok</string>
+    <string name="action_delete">Silmek</string>
+    <string name="title_channels">Kanallar</string>
+    <string name="title_videos">Videolar</string>
+    <string name="title_playlist">çalma listeleri</string>
+    <string name="btn_favorite">Favori</string>
+    <string name="btn_close">Kapat</string>
+    <string name="title_discover">Keşfetmek</string>
+    <string name="title_home">Ana ekran</string>
+    <string name="btn_deny">İNKAR ETMEK</string>
+    <string name="btn_agree">KATILIYORUM</string>
+    <string name="title_new_release">Yeni sürümler</string>
+    <string name="title_top_charts">En iyi grafikler</string>
+    <string name="no_connection">Bağlantı yok</string>
+    <string name="connection_back">Yeniden çevrimiçi</string>
+
+    <!-- Rating -->
+    <string name="question_feeling_about_app">Mousiki uygulamasını kullanmak hakkında ne düşünüyorsunuz?</string>
+    <string name="rate_app_happy">Mutlu</string>
+    <string name="rate_app_mixed_feeling">Karışık duygular</string>
+    <string name="rate_app_not_happy">Mutlu değil</string>
+
+    <string name="rate_app_message_play_store">Mousiki\'den oldukça memnunsunuz.\n\nUygulamayı derecelendirmek için 1 dakikanızı ayırabilir misiniz? Bize 5 yıldız verirseniz sizi sonsuza kadar severiz!</string>
+    <string name="comment_about_app_dialog_title">Seni nasıl mutlu edebiliriz?</string>
+    <string name="comment_about_app_dialog_subtitle">Deneyiminizi nasıl geliştirebileceğimizi bilmek isteriz.</string>
+    <string name="common_later">Daha sonra</string>
+    <string name="hint_your_comments">Yorumların, yorumlarınız…</string>
+    <string name="message_feedback_sent">Geri bildiriminiz için teşekkür ederiz!.\nMesajınız destek ekibimize gönderildi.</string>
+
+    <string name="notification_channel">Şimdi oynuyor</string>
+    <string name="notification_channel_description">Mousiki\'de şu anda hangi müziğin çaldığını gösterir</string>
+
+    <!-- Player Notification -->
+    <string name="player_notification_skip_to_previous">Öncekine atla</string>
+    <string name="player_notification_play">Oynamak</string>
+    <string name="player_notification_pause">Duraklat</string>
+    <string name="player_notification_skip_to_next">Sonrakine atla</string>
+    <string name="player_add_to_favourite">favoriye ekle</string>
+    <string name="player_remove_from_favourite">Favoriden kaldır</string>
+
+    <!-- Feedback -->
+    <string name="send">Göndermek</string>
+    <string name="hint_your_feedback">Görüşleriniz…</string>
+    <string name="feedback_about_app_dialog_title">Bir Mousiki özelliği hakkında bize geri bildirimde bulunur musunuz?</string>
+    <string name="feedback_about_app_dialog_message">Mousiki deneyiminizi nasıl geliştirebileceğimizi bize bildirin.</string>
+
+    <!-- Battery saver mode -->
+    <string name="battery_saver_mode_request_change_settings">Güç Tasarruf Modu, ekran parlaklığını azaltmak için "sistem ayarlarını değiştirme" iznine ihtiyaç duyar. Lütfen ayarlardan etkinleştirin.</string>
+    <string name="battery_saver_mode_instead_of_lock_screen">YouTube Hizmet Şartları\'nı karşılamak için Mousiki arka planda müzik videosu oynatamaz. Ekranınızı kilitlemek için güç tasarrufu modunu açabilirsiniz.</string>
+    <string name="label_slide_unlock">Açmak için kaydırın</string>
+
+    <!-- Error playing youtube video -->
+    <string name="error_cannot_play_youtube_video">Üzgünüz, bu video oynatılamıyor!</string>
+    <string name="error_cannot_play_local_song">Üzgünüz, bu ses çalınamıyor!</string>
+
+    <!-- Shortcuts -->
+    <string name="app_shortcut_search">Arama</string>
+    <string name="app_shortcut_new_releases">Trend olan</string>
+
+    <!-- Video sizes -->
+    <string name="video_size_small">Küçük</string>
+    <string name="video_size_normal">Normal</string>
+    <string name="video_size_large">Büyük</string>
+    <string name="video_size_circular">dairesel</string>
+    <string name="exit">çıkış</string>
+    <string name="tool_tip_battery_saver">Pil tasarrufu modunu etkinleştirmek için buraya tıklayın</string>
+    <string name="queue">Sıra</string>
+
+    <!-- Genres List -->
+    <string name="genre_music">Müzik</string>
+    <string name="genre_mood">Mod</string>
+
+    <!-- Search -->
+    <string name="suggestion_history">Tarih</string>
+    <string name="suggestion_clear_history_button_title">Açık</string>
+    <string name="confirm_clear_search_history_message">Tüm arama geçmişini silmek istediğinizden emin misiniz?</string>
+    <string name="tap_any_song_to_start_playing">Çalmaya başlamak için herhangi bir şarkıya dokunun</string>
+
+    <!-- Local songs -->
+    <string name="audio_file_settings">Ses dosyaları ayarları</string>
+
+    <string name="local_songs_no_permission_title">Müzik çalmaya izin verilsin mi?</string>
+    <string name="local_songs_no_permission_description">Lütfen Mousiki\'nin müzik çalmak için depolama iznine erişmesine izin verin</string>
+    <string name="allow">İzin vermek</string>
+    <string name="label_sort_by">Göre sırala</string>
+    <string name="label_sort_album">Albüm</string>
+    <string name="label_sort_artist">Sanatçı</string>
+    <string name="label_sort_duration">Süre</string>
+    <string name="label_sort_year">Yıl</string>
+    <string name="confirm_delete_playlist">Bu oynatma listesini silmek istiyor musunuz: %s</string>
+
+    <string name="dialog_title_confirm_hide_folder">Klasörü gizle</string>
+    <string name="dialog_message_confirm_hide_folder">\"%s\" klasörünü Mousiki Player\'dan gizlemek istediğinizden emin misiniz?</string>
+    <string name="folder_hidden_message">\"%s\" klasörü gizli, onu Ses dosyaları ayarlarından kurtarabilirsiniz.</string>
+
+    <string name="x_has_been_set_as_ringtone">%1$s \'yi zil sesiniz olarak ayarlayın.</string>
+    <string name="dialog_title_set_ringtone">Zil sesi ayarla</string>
+    <string name="dialog_message_set_ringtone">Mousiki\'nin ses ayarlarını değiştirmesine izin ver</string>
+    <string name="action_set_as_ringtone">Ses tonu olarak ayarla</string>
+
+    <!--    time values -->
+    <string name="min">\u0020 dakika</string>
+    <string name="mins">\u0020 dakika</string>
+    <string name="sec">\u0020 saniye</string>
+    <string name="secs">\u0020 saniye</string>
+    <string name="hour">\u0020 saat</string>
+    <string name="hours">\u0020 saat</string>
+
+    <string name="label_by">%s tarafından</string>
+    <string name="label_sort_last_added">En son eklenmiş</string>
+    <string name="btn_select_all_title">Tüm</string>
+
+    <!-- Multi select songs-->
+    <string name="added_to_play_next">Sonrakine eklendi</string>
+
+    <string name="video_resize_fit">Yerleştirmek</string>
+    <string name="video_resize_crop">Mahsul</string>
+
+    <string name="video_orientation_video">Video yönü</string>
+    <string name="video_orientation_sensor">Otomatik döndürme</string>
+
+    <string name="onboarding_open_title">Oynatmak için bir video seçin</string>
+    <string name="onboarding_open_description">Bir video dosyasını açmak için dokunun. Harici altyazıları yüklemek için uzun dokunun.</string>
+
+    <string name="open_subtitles">Altyazıları yükle</string>
+
+    <string name="error_details">Detaylar</string>
+    <string name="error_files_missing">Dosyalar uygulaması devre dışı veya eksik</string>
+
+
+    <!-- Screen orientation-->
+    <string name="screen_portrait">Vesika</string>
+    <string name="screen_landscape">Manzara</string>
+
+    <!-- Screen ratio-->
+    <string name="screen_fit">Yerleştirmek</string>
+    <string name="screen_fill">Doldurmak</string>
+    <string name="screen_zoom">yakınlaştır</string>
+    <string name="screen_fixed_w">Sabit genişlik</string>
+    <string name="screen_fixed_h">Sabit yükseklik</string>
+    <string name="label_no_video_played_yet">Hata! hiç video oynatmamış gibi görünüyorsun</string>
+
+    <!-- Video player header-->
+    <string name="video_auto_play_next_on">Sonrakinde otomatik oynat</string>
+    <string name="video_auto_play_next_off">Sonraki otomatik oynat</string>
+
+    <!-- Video player queue-->
+    <string name="video_player_queue_history">Tarih</string>
+    <string name="turn_on_to_hide">Gizlemek için aç</string>
+    <string name="screen_auto">Oto</string>
+
+    <!-- Track Info -->
+    <string name="track_edit">DÜZENLE</string>
+    <string name="track_save">KAYDETMEK</string>
+    <string name="track_name">İsim</string>
+    <string name="track_artist">Sanatçı</string>
+    <string name="track_album">Albüm</string>
+    <string name="track_duration">Süre</string>
+    <string name="track_path">Yol</string>
+    <string name="track_composer">Besteci</string>
+    <string name="track_size">Boy</string>
+
+</resources>
