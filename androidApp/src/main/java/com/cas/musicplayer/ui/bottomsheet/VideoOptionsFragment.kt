@@ -11,7 +11,9 @@ import com.cas.common.viewmodel.activityViewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentTrackOptionsBinding
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.home.populateNativeAdView
+import com.cas.musicplayer.ui.local.folders.FolderType
 import com.cas.musicplayer.utils.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -29,6 +31,9 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
 
     lateinit var track: Track
 
+    var isRecentlyPlayed = false
+
+    private val viewModel by lazy { Injector.videoOptionsViewModel }
     private val adsViewModel by activityViewModel { Injector.adsViewModel }
     private val binding by viewBinding(FragmentTrackOptionsBinding::bind)
 
@@ -57,14 +62,33 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
 
         binding.setAsRingtoneView.isVisible = false
         binding.favController.isVisible = false
-        binding.viewRemoveFromRecentlyPlayed.isVisible = false
+        binding.viewRemoveFromRecentlyPlayed.isVisible = isRecentlyPlayed
         binding.viewRemoveFromCurrentPlaylist.isVisible = false
         binding.viewAddToQuee.isVisible = false
         binding.viewAddToPlaylist.isVisible = false
+        binding.showInformation.isVisible = true
 
         binding.shareVia.onClick {
             Utils.shareTrack(track, requireContext())
             if (this.isVisible) this.dismiss()
+        }
+
+        binding.viewRemoveFromRecentlyPlayed.onClick {
+            viewModel.removeVideoFromRecentlyPlayed(track)
+            onDismissed?.invoke()
+            dismiss()
+        }
+
+        binding.showInformation.onClick {
+            if ((activity as MainActivity).isBottomPanelExpanded()) {
+                (activity as MainActivity).collapseBottomPanel()
+            }
+            SongInfoFragment.present(
+                fm = requireActivity().supportFragmentManager,
+                track = track,
+                FolderType.VIDEO
+            )
+            dismiss()
         }
 
         configureAdView()
@@ -109,6 +133,7 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
         fun present(
             fm: FragmentManager,
             track: Track,
+            isRecentlyPlayed: Boolean,
             onDismissed: () -> Unit = {}
         ) {
             val bottomSheetFragment = VideoOptionsFragment()
@@ -116,6 +141,7 @@ class VideoOptionsFragment : BottomSheetDialogFragment() {
             bundle.putParcelable(Constants.MUSIC_TRACK_KEY, track)
             bottomSheetFragment.arguments = bundle
             bottomSheetFragment.onDismissed = onDismissed
+            bottomSheetFragment.isRecentlyPlayed = isRecentlyPlayed
             bottomSheetFragment.show(fm, bottomSheetFragment.tag)
         }
     }

@@ -59,7 +59,7 @@
                 android:id="@+id/imgCategory"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/img_genres_0" />
+                tools:src="@drawable/img_genres_0" />
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -15,6 +15,7 @@ import com.cas.musicplayer.databinding.ItemLocalArtistBinding
 import com.cas.musicplayer.ui.local.artists.model.LocalArtist
 import com.cas.musicplayer.ui.local.artists.options.ArtistOptionsFragment
 import com.cas.musicplayer.utils.Utils.getAlbumArtUri
+import com.cas.musicplayer.utils.navigateSafeAction
 import com.squareup.picasso.Picasso
 
 
@@ -44,7 +45,7 @@ class LocalArtistsAdapter :
             )
 
             itemView.onClick {
-                itemView.findNavController().navigate(
+                itemView.findNavController().navigateSafeAction(
                     R.id.action_localSongsContainerFragment_to_artistDetailsFragment,
                     bundleOf(ArtistDetailsFragment.EXTRAS_ARTIST_ID to artist.id)
                 )

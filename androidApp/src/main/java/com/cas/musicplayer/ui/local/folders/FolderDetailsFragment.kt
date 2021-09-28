@@ -34,8 +34,13 @@ class FolderDetailsFragment : BaseFragment<FolderDetailsViewModel>(
 
     private val binding by viewBinding(FolderDetailsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalSongsAdapter(
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    private fun initViews() {
+        val adapter = LocalSongsAdapter(
             onClickTrack = viewModel::onClickTrack,
             onLongPressTrack = { track ->
                 val tracks = viewModel.localSongs.tracks
@@ -46,15 +51,6 @@ class FolderDetailsFragment : BaseFragment<FolderDetailsViewModel>(
             showCountsAndSortButton = false,
             showFilter = false
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initViews()
-    }
-
-    private fun initViews() {
         val folderName = arguments?.getString(EXTRAS_FOLDER_NAME)
         folderName?.let { setupToolbar(binding.toolbarView.toolbar, it) }
         binding.localSongsRecyclerView.adapter = adapter

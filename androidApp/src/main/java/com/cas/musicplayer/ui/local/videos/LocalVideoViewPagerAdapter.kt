@@ -6,7 +6,9 @@ import com.cas.musicplayer.ui.local.folders.FolderType
 import com.cas.musicplayer.ui.local.folders.FoldersFragment
 import com.cas.musicplayer.ui.local.videos.history.PlayedVideoFragment
 
-class LocalVideoViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class LocalVideoViewPagerAdapter(
+    fragment: Fragment
+) : FragmentStateAdapter(fragment.childFragmentManager, fragment.viewLifecycleOwner.lifecycle) {
 
     override fun getItemCount(): Int = 3
 

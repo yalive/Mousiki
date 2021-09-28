@@ -14,6 +14,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalAlbumBinding
 import com.cas.musicplayer.ui.local.albums.options.AlbumOptionsFragment
 import com.cas.musicplayer.utils.Utils.getAlbumArtUri
+import com.cas.musicplayer.utils.navigateSafeAction
 import com.mousiki.shared.domain.models.Album
 import com.squareup.picasso.Picasso
 
@@ -55,7 +56,7 @@ class AlbumsAdapter :
                 .into(binding.imgAlbum)
 
             itemView.onClick {
-                itemView.findNavController().navigate(
+                itemView.findNavController().navigateSafeAction(
                     R.id.action_localSongsContainerFragment_to_albumDetailsFragment,
                     bundleOf(AlbumDetailsFragment.EXTRAS_ALBUM_ID to album.id)
                 )

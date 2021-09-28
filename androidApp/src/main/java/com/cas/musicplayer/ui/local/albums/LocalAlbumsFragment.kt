@@ -26,12 +26,9 @@ class LocalAlbumsFragment : BaseFragment<LocalAlbumsViewModel>(
 
     private val binding by viewBinding(LocalAlbumsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        AlbumsAdapter()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = AlbumsAdapter()
         binding.albumsRecyclerView.adapter = adapter
         registerForActivityResult(this, binding.albumsRecyclerView, binding.storagePermissionView)
 
@@ -46,5 +43,4 @@ class LocalAlbumsFragment : BaseFragment<LocalAlbumsViewModel>(
             viewModel.loadAllAlbums()
         }
     }
-
 }

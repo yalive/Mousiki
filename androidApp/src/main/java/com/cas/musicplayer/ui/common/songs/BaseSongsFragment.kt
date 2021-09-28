@@ -57,8 +57,10 @@ abstract class BaseSongsFragment<T : BaseViewModel>
         get() = binding.imgBackground
 
     protected val binding by viewBinding(FragmentPlaylistSongsBinding::bind)
-    protected val adapter by lazy {
-        SongsAdapter(
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val adapter = SongsAdapter(
             onVideoSelected = { track ->
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.collapseBottomPanel()
@@ -80,10 +82,6 @@ abstract class BaseSongsFragment<T : BaseViewModel>
                 bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
             }
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
         (binding.recyclerView.itemAnimator as? SimpleItemAnimator)?.moveDuration = 400
         binding.recyclerView.itemsMarginDecorator(MarginItemDecoration(
@@ -140,6 +138,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
     }
 
     protected fun updateUI(resource: Resource<List<DisplayableItem>>?) {
+        val adapter = binding.recyclerView.adapter as SongsAdapter
         binding.btnMultiSelect.isVisible =
             resource is Resource.Success && resource.data.isNotEmpty()
         when (resource) {

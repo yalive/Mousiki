@@ -36,9 +36,6 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
             .also { vm -> vm.init(tracks) }
     }
     private val binding by viewBinding(FragmentAddTrackPlaylistBinding::bind)
-    private val adapter by lazy {
-        SelectPlaylistAdapter(context = requireContext(), viewModel::addTrackToPlaylist)
-    }
 
     private var onAddedToPlaylist: (() -> Unit)? = null
 
@@ -53,6 +50,7 @@ class AddTrackToPlaylistFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ensureRoundedBackground()
+        val adapter = SelectPlaylistAdapter(requireContext(), viewModel::addTrackToPlaylist)
         binding.recyclerView.adapter = adapter
         observe(viewModel.playlists) { playlists ->
             adapter.dataItems = playlists.toMutableList()

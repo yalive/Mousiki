@@ -1,7 +1,6 @@
 package com.cas.musicplayer.ui.local.songs
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
@@ -24,12 +23,10 @@ class LocalSongsContainerFragment : Fragment(R.layout.fragment_local_songs_conta
 
     private val binding by viewBinding(FragmentLocalSongsContainerBinding::bind)
 
-    private lateinit var adapter: LocalSongsViewPagerAdapter
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adjustStatusBarWithTheme()
-        adapter = LocalSongsViewPagerAdapter(this)
+        val adapter = LocalSongsViewPagerAdapter(this)
         val pager: ViewPager2 = binding.pager
 
         pager.adapter = adapter

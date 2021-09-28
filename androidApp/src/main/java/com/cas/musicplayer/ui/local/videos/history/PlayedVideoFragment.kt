@@ -1,6 +1,5 @@
 package com.cas.musicplayer.ui.local.videos.history
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -8,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.PlayedVideoFragmentBinding
+import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.base.BaseFragment
@@ -31,26 +31,21 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
 
     private val binding by viewBinding(PlayedVideoFragmentBinding::bind)
 
-    private val adapter by lazy {
-        LocalVideoAdapter(
-            onClickTrack = { playVideo(it) },
-            onSortClicked = { },
-            onFilterClicked = { },
-            showCountsAndSortButton = false,
-            showFilter = false
-        )
-    }
-
     private fun playVideo(track: Track) {
         viewModel.onPlayVideo(track)
-        val intent = Intent(activity, VideoPlayerActivity::class.java)
-        intent.putExtra(VideoPlayerActivity.VIDEO, track)
-        intent.putExtra(VideoPlayerActivity.QUEUE_TYPE, VideoQueueType.History)
-        startActivity(intent)
+        VideoPlayerActivity.start(requireContext(), track, VideoQueueType.History)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = LocalVideoAdapter(
+            onClickTrack = { playVideo(it) },
+            onSortClicked = { },
+            onFilterClicked = { },
+            showCountsAndSortButton = false,
+            showFilter = false,
+            isFromHistory = true
+        )
         binding.localVideosRecyclerViewView.adapter = adapter
 
         registerForActivityResult(
@@ -66,26 +61,27 @@ class PlayedVideoFragment : BaseFragment<PlayedVideoViewModel>(
         }
     }
 
-    private fun updateUI(resource: Resource<List<DisplayableItem>>) {
+    private fun updateUI(resource: Resource<List<DisplayableItem>>) = with(binding) {
         if (!readStoragePermissionsGranted()) {
             return
         }
         when (resource) {
             Resource.Loading -> {
-                binding.shimmerView.loadingView.isVisible = true
-                binding.shimmerView.loadingView.startShimmer()
-                binding.shimmerView.loadingView.alpha = 1f
+                shimmerView.loadingView.isVisible = true
+                shimmerView.loadingView.startShimmer()
+                shimmerView.loadingView.alpha = 1f
             }
             is Resource.Success -> {
-                binding.shimmerView.loadingView.alpha = 0f
-                binding.shimmerView.loadingView.stopShimmer()
-                binding.shimmerView.loadingView.isVisible = false
+                shimmerView.loadingView.alpha = 0f
+                shimmerView.loadingView.stopShimmer()
+                shimmerView.loadingView.isVisible = false
                 if (resource.data.isNullOrEmpty()) {
-                    binding.emptyView.isVisible = true
-                    binding.localVideosRecyclerViewView.isVisible = false
+                    emptyView.isVisible = true
+                    localVideosRecyclerViewView.isVisible = false
                 } else {
-                    binding.emptyView.isVisible = false
-                    binding.localVideosRecyclerViewView.isVisible = true
+                    emptyView.isVisible = false
+                    localVideosRecyclerViewView.isVisible = true
+                    val adapter = localVideosRecyclerViewView.adapter as MousikiAdapter
                     adapter.submitList(resource.data)
                 }
             }

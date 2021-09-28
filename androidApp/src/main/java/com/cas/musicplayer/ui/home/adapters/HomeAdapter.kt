@@ -18,17 +18,16 @@ import com.mousiki.shared.ui.home.HomeViewModel
  */
 class HomeAdapter(
     viewModel: HomeViewModel,
-    chartDelegate: HomeChartAdapterDelegate = HomeChartAdapterDelegate(),
     onVideoSelected: (Track, List<Track>) -> Unit,
     onClickRetryNewRelease: () -> Unit
 ) : MousikiAdapter(
     listOf(
         HomeRecentSongsAdapterDelegate(onVideoSelected),
+        HomeFavouriteSongsAdapterDelegate(onVideoSelected),
         CompactPlaylistSectionDelegate(),
         SimplePlaylistSectionDelegate(),
         VideoListAdapterDelegate(onVideoSelected),
         HomeArtistAdapterDelegate(),
-        chartDelegate,
         HomeGenreAdapterDelegate(),
         HomeHeaderAdapterDelegate(viewModel),
         NewHorizontalSongsAdapterDelegate(

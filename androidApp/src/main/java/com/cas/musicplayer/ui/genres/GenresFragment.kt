@@ -33,16 +33,15 @@ class GenresFragment : BaseFragment<GenresViewModel>(
     override val viewModel by viewModel { Injector.genresViewModel }
     private val binding by viewBinding(FragmentGenresBinding::bind)
 
-    private val adapter by lazy {
-        val delegates = listOf(
-            HeaderGenreDelegate(),
-            GenreAdapterDelegate(clickItemDestination = R.id.action_genresFragment_to_playlistVideosFragment)
-        )
-        MousikiAdapter(delegates)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = MousikiAdapter(
+            listOf(
+                HeaderGenreDelegate(),
+                GenreAdapterDelegate(clickItemDestination = R.id.action_genresFragment_to_playlistVideosFragment)
+            )
+        )
+
         setupToolbar(binding.toolbarView.toolbar, R.string.genres)
         val eightDp = dpToPixel(8)
         binding.recyclerView.itemsMarginDecorator(MarginItemDecoration(
@@ -67,13 +66,9 @@ class GenresFragment : BaseFragment<GenresViewModel>(
                 }
             }
         adjustStatusBarWithTheme()
-        observeViewModel()
+        observe(viewModel.genres, adapter::submitList)
         observe(DeviceInset) { inset ->
             binding.root.updatePadding(top = inset.top)
         }
-    }
-
-    private fun observeViewModel() {
-        observe(viewModel.genres, adapter::submitList)
     }
 }
