@@ -12,6 +12,7 @@ import com.cas.musicplayer.databinding.ItemHorizontalAlbumBinding
 import com.cas.musicplayer.ui.local.albums.AlbumDetailsFragment
 import com.cas.musicplayer.utils.Utils
 import com.cas.musicplayer.utils.dpToPixel
+import com.cas.musicplayer.utils.navigateSafeAction
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mousiki.shared.domain.models.Album
 import com.squareup.picasso.Picasso
@@ -67,7 +68,7 @@ class HorizontalAlbumsAdapter(
         }
 
         private fun navigateToAlbumDetails(albumId: Long) {
-            itemView.findNavController().navigate(
+            itemView.findNavController().navigateSafeAction(
                 R.id.action_artistDetailsFragment_to_albumDetailsFragment,
                 bundleOf(AlbumDetailsFragment.EXTRAS_ALBUM_ID to albumId)
             )

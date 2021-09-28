@@ -16,6 +16,7 @@ private const val MEGA_BYTES_SIZE = 1048576
 
 fun File.fixedPath(context: Context): String {
     val storagePaths = getStoragePaths(context)
+    if (storagePaths.isEmpty()) return path
     val type = path.contains(storagePaths[0])
     Timber.d("fixedPath()")
     return when{
