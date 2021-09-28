@@ -6,12 +6,15 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +42,7 @@ import com.cas.musicplayer.ui.player.PlayerFragment
 import com.cas.musicplayer.ui.settings.rate.askUserForFeelingAboutApp
 import com.cas.musicplayer.utils.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.mousiki.shared.domain.models.LocalSong
@@ -193,7 +197,7 @@ class MainActivity : BaseActivity() {
         Log.d(TAG_PLAYER, "onUserLeaveHint: ")
         super.onUserLeaveHint()
         if (SystemSettings.canEnterPiPMode() && (PlaybackLiveData.isPlaying() || PlaybackLiveData.isBuffering()) && PlayerQueue.value is YtbTrack) {
-            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            tryEnterPip()
         }
     }
 
@@ -330,7 +334,7 @@ class MainActivity : BaseActivity() {
 
         // Check PIP
         if (SystemSettings.canEnterPiPMode() && intent.getBooleanExtra(EXTRA_START_PIP, false)) {
-            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            tryEnterPip()
             intent = intent.apply {
                 putExtra(EXTRA_START_PIP, false)
             }
@@ -441,4 +445,15 @@ class MainActivity : BaseActivity() {
 
 fun Intent.fromShortcut(): Boolean {
     return data.toString().startsWith("mousiki://", true)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun AppCompatActivity.tryEnterPip(
+    params: PictureInPictureParams = PictureInPictureParams.Builder().build()
+) {
+    try {
+        enterPictureInPictureMode(params)
+    } catch (e: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(e)
+    }
 }
