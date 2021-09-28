@@ -38,6 +38,7 @@ import com.mousiki.shared.domain.usecase.library.AddSongToFavouriteUseCase
 import com.mousiki.shared.domain.usecase.library.RemoveSongFromFavouriteListUseCase
 import com.mousiki.shared.domain.usecase.recent.AddTrackToRecentlyPlayedUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
+import com.mousiki.shared.domain.usecase.song.GetYtbSongUseCase
 import com.mousiki.shared.preference.PreferencesHelper
 import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 import com.mousiki.shared.ui.home.HomeViewModel
@@ -179,5 +180,8 @@ object Injector : KoinComponent {
         get() = get()
 
     val videoPlayerViewModel: VideoPlayerViewModel
+        get() = get()
+
+    val getYtbSong: GetYtbSongUseCase
         get() = get()
 }

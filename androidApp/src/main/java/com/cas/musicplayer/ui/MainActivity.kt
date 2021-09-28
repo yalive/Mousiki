@@ -48,9 +48,11 @@ import com.google.firebase.ktx.Firebase
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.toYoutubeDuration
+import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.preference.UserPrefs
 import com.unity3d.ads.UnityAds
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity() {
 
@@ -190,6 +192,8 @@ class MainActivity : BaseActivity() {
                 binding.bottomNavView.selectedItemId = R.id.navMusic
             }
         }
+
+        if (intent.isSharedVideo) handleSharedVideo()
     }
 
     @SuppressLint("NewApi")
@@ -291,6 +295,7 @@ class MainActivity : BaseActivity() {
         Log.d(TAG_PLAYER, "onNewIntent")
         super.onNewIntent(intent)
         setIntent(intent)
+        if (intent.isSharedVideo) handleSharedVideo()
     }
 
     @SuppressLint("NewApi")
@@ -436,12 +441,36 @@ class MainActivity : BaseActivity() {
         return flags == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
     }
 
+    @SuppressLint("NewApi")
+    private fun handleSharedVideo() {
+        val title = intent.getStringExtra(Intent.EXTRA_SUBJECT)
+        val videoId = intent.getStringExtra(Intent.EXTRA_TEXT)
+            ?.split("/")?.lastOrNull().orEmpty()
+        if (videoId.isEmpty()) return
+        lifecycleScope.launch {
+            val ytbTrack = when (val result = Injector.getYtbSong(videoId)) {
+                is Result.Error -> {
+                    toast(R.string.cannot_extract_video_information_from_shared_link)
+                    null
+                }
+                is Result.Success -> result.data
+            }
+            val track = ytbTrack as? YtbTrack ?: return@launch
+            viewModel.playTrackFromSharedLink(track)
+
+            if (SystemSettings.canEnterPiPMode()) tryEnterPip()
+        }
+    }
+
     companion object {
         const val EXTRAS_FROM_PLAYER_SERVICE = "from_player_service"
         const val EXTRAS_OPEN_BATTERY_SAVER_MODE = "start_battery_saver_mode"
         const val EXTRA_START_PIP = "start_pip"
     }
 }
+
+val Intent?.isSharedVideo: Boolean
+    get() = this?.type == "text/plain" && action == Intent.ACTION_SEND
 
 fun Intent.fromShortcut(): Boolean {
     return data.toString().startsWith("mousiki://", true)
