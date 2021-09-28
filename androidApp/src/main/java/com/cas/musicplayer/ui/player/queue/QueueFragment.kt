@@ -49,11 +49,7 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
         Injector.queueViewModel
     }
     private var onCloseQueue: (() -> Unit)? = null
-    private val adapter: QueueAdapter by lazy {
-        QueueAdapter(viewModel) { holder ->
-            itemTouchHelper.startDrag(holder)
-        }
-    }
+
     private val itemTouchHelper by lazy {
         val callback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -110,10 +106,10 @@ class QueueFragment : Fragment(R.layout.fragment_queue), KoinComponent {
         view.setOnClickListener {
             // Just to prevent player slide trigger
         }
-
+        val adapter = QueueAdapter(viewModel, callbackDrag = itemTouchHelper::startDrag)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
         binding.btnClose.onClick { activity?.onBackPressed() }
-        DeviceInset.observe(viewLifecycleOwner, Observer { inset ->
+        DeviceInset.observe(viewLifecycleOwner, { inset ->
             binding.topBar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = inset.top
             }

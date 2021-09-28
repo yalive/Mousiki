@@ -11,7 +11,9 @@ import com.cas.musicplayer.ui.local.playlists.LocalPlaylistsFragment
 /**
  * Created by Fayssel Yabahddou on 6/21/21.
  */
-class LocalSongsViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class LocalSongsViewPagerAdapter(
+    fragment: Fragment
+) : FragmentStateAdapter(fragment.childFragmentManager, fragment.viewLifecycleOwner.lifecycle) {
 
     override fun getItemCount(): Int = 5
 

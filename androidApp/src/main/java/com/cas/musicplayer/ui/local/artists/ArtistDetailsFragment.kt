@@ -32,22 +32,19 @@ class ArtistDetailsFragment : BaseFragment<ArtistDetailsViewModel>(
 
     private val binding by viewBinding(ArtistDetailsFragmentBinding::bind)
 
-    private val adapter by lazy {
-        ArtistsDetailsAdapter(
-            onClickTrack = viewModel::onClickTrack,
-            onLongPressTrack = { track ->
-                val tracks = viewModel.localSongs.tracks
-                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
-            }
-        )
-    }
-
     companion object {
         const val EXTRAS_ARTIST_ID = "extras.artist.id"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = ArtistsDetailsAdapter(
+            onClickTrack = viewModel::onClickTrack,
+            onLongPressTrack = { track ->
+                val tracks = viewModel.localSongs.tracks
+                MultiSelectTrackFragment.present(requireActivity(), tracks, track)
+            }
+        )
         observe(viewModel.artist) { artist ->
             binding.artistName.text = artist.name
             binding.txtScreenTitle.text = artist.name

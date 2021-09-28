@@ -27,6 +27,9 @@ import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedVideosUseCase
 import com.mousiki.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 import java.io.File
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.audio.AudioAttributes
+
 
 class VideoPlayerViewModel(
     private val appContext: Context,
@@ -65,8 +68,13 @@ class VideoPlayerViewModel(
         val trackSelector = DefaultTrackSelector(appContext).apply {
             setParameters(buildUponParameters().setMaxVideoSizeSd())
         }
+        val audioAttributes: AudioAttributes = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.CONTENT_TYPE_MUSIC)
+            .build()
         player = SimpleExoPlayer.Builder(appContext)
             .setTrackSelector(trackSelector)
+            .setAudioAttributes(audioAttributes, true)
             .build()
             .also { exoPlayer ->
                 exoPlayer.playWhenReady = playWhenReady

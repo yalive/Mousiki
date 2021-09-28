@@ -55,40 +55,38 @@ class LockScreenReceiver(
         } else if (intent.action == Intent.ACTION_USER_PRESENT && context.canDrawOverApps()) {
             Log.d(TAG_PLAYER, "onReceive screen on")
 
-            if (SystemSettings.canEnterPiPMode()) {
+            if (SystemSettings.canEnterPiPMode() && shouldShowPopup) {
+                shouldShowPopup = false
                 context.toast(R.string.battery_saver_mode_instead_of_lock_screen)
-            } else {
-                if (shouldShowPopup) {
-                    shouldShowPopup = false
-
-                    MaterialDialog(context).show {
-                        message(R.string.battery_saver_mode_instead_of_lock_screen) {
-                            messageTextView.setTextColor(context.color(R.color.colorWhite))
-                            lineSpacing(1.2f)
-                        }
-                        cancelOnTouchOutside(false)
-                        cancelable(false)
-                        cornerRadius(literalDp = 8f)
-                        positiveButton(R.string.common_turn_on) {
-                            mediaController.transportControls.play()
-                            val startLockScreenIntent = Intent(context, MainActivity::class.java)
-                            startLockScreenIntent.putExtra(
-                                MainActivity.EXTRAS_FROM_PLAYER_SERVICE,
-                                true
-                            )
-                            startLockScreenIntent.putExtra(
-                                MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE,
-                                true
-                            )
-                            startLockScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            context.startActivity(startLockScreenIntent)
-                        }
-                        view.setBackgroundColor(context.color(R.color.colorDarkNavigationView))
-                        negativeButton(R.string.cancel)
-                        getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
-                        getActionButton(WhichButton.POSITIVE).updateTextColor(Color.parseColor("#D81B60"))
-                        window?.setType(windowOverlayTypeOrPhone)
+            } else if (shouldShowPopup) {
+                shouldShowPopup = false
+                MaterialDialog(context).show {
+                    message(R.string.battery_saver_mode_instead_of_lock_screen) {
+                        messageTextView.setTextColor(context.color(R.color.colorWhite))
+                        lineSpacing(1.2f)
                     }
+                    cancelOnTouchOutside(false)
+                    cancelable(false)
+                    cornerRadius(literalDp = 8f)
+                    positiveButton(R.string.common_turn_on) {
+                        mediaController.transportControls.play()
+                        val startLockScreenIntent = Intent(context, MainActivity::class.java)
+                        startLockScreenIntent.putExtra(
+                            MainActivity.EXTRAS_FROM_PLAYER_SERVICE,
+                            true
+                        )
+                        startLockScreenIntent.putExtra(
+                            MainActivity.EXTRAS_OPEN_BATTERY_SAVER_MODE,
+                            true
+                        )
+                        startLockScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(startLockScreenIntent)
+                    }
+                    view.setBackgroundColor(context.color(R.color.colorDarkNavigationView))
+                    negativeButton(R.string.cancel)
+                    getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.parseColor("#808184"))
+                    getActionButton(WhichButton.POSITIVE).updateTextColor(Color.parseColor("#D81B60"))
+                    window?.setType(windowOverlayTypeOrPhone)
                 }
             }
         }

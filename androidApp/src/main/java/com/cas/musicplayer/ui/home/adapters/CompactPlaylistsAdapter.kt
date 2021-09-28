@@ -1,22 +1,23 @@
 package com.cas.musicplayer.ui.home.adapters
 
 import android.view.View
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.cas.common.adapter.SimpleBaseAdapter
 import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
-import com.mousiki.shared.data.models.Artist
-import com.mousiki.shared.data.models.CompactPlaylist
 import com.cas.musicplayer.databinding.ItemHomeCompactPlaylistBinding
 import com.cas.musicplayer.ui.artists.EXTRAS_ARTIST
 import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
-import com.cas.musicplayer.utils.*
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.cas.musicplayer.utils.AdsOrigin
+import com.cas.musicplayer.utils.RequestAdsLiveData
+import com.cas.musicplayer.utils.Utils
+import com.cas.musicplayer.utils.navigateSafeAction
+import com.mousiki.shared.data.models.Artist
+import com.mousiki.shared.data.models.CompactPlaylist
 import com.squareup.picasso.Picasso
 
 
@@ -43,8 +44,6 @@ class CompactPlaylistsAdapter(
         val binding: ItemHomeCompactPlaylistBinding,
         val items: List<CompactPlaylist>
     ) : SimpleBaseViewHolder<CompactPlaylist>(binding.root) {
-        private val txtTitle: TextView = binding.txtTitle
-        private val txtDesc: TextView = binding.txtDesc
 
         init {
             binding.cardView.onClick {
@@ -74,20 +73,10 @@ class CompactPlaylistsAdapter(
         }
 
 
-        override fun bind(item: CompactPlaylist) {
+        override fun bind(item: CompactPlaylist) = with(binding) {
             txtTitle.text = item.title
             txtDesc.text = item.description
-            try {
-                val imageSize = itemView.context.dpToPixel(180f)
-                Picasso.get()
-                    .load(item.featuredImage)
-                    .resize(imageSize, imageSize)
-                    .into(binding.backgroundCategory)
-            } catch (e: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            } catch (e: OutOfMemoryError) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-            }
+            Picasso.get().load(item.featuredImage).fit().into(backgroundCategory)
         }
     }
 }

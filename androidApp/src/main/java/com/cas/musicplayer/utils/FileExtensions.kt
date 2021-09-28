@@ -16,6 +16,7 @@ private const val MEGA_BYTES_SIZE = 1048576
 
 fun File.fixedPath(context: Context): String {
     val storagePaths = getStoragePaths(context)
+    if (storagePaths.isEmpty()) return path
     val type = path.contains(storagePaths[0])
     Timber.d("fixedPath()")
     return when{
@@ -27,8 +28,4 @@ fun File.fixedPath(context: Context): String {
 
 fun File.fixedName(context: Context): String {
     return File(fixedPath(context)).name
-}
-
-fun File.sizeMB(): String {
-    return "${length() / MEGA_BYTES_SIZE} MB"
 }

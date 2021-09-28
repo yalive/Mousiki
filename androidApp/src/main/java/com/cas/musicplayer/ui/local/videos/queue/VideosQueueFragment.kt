@@ -31,15 +31,6 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
 
     private val videoPlayerViewModel by activityViewModel { Injector.videoPlayerViewModel }
 
-    private val adapter: LocalVideoQueueAdapter by lazy {
-        LocalVideoQueueAdapter(
-            onClickTrack = {
-                dismiss()
-                videoPlayerViewModel.playVideo(it)
-            }
-        )
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,7 +43,12 @@ class VideosQueueFragment : BottomSheetDialogFragment(), KoinComponent {
         super.onViewCreated(view, savedInstanceState)
         ensureRoundedBackgroundWithDismissIndicator()
 
-
+        val adapter = LocalVideoQueueAdapter(
+            onClickTrack = {
+                dismiss()
+                videoPlayerViewModel.playVideo(it)
+            }
+        )
         /*val offsetFromTop = requireContext().screenSize().heightPx * (1 - HEIGHT_RATIO)
         (dialog as? BottomSheetDialog)?.behavior?.apply {
             isFitToContents = false

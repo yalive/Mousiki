@@ -31,7 +31,6 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
 ) {
     override val screenName: String = "MainSearchFragment"
     override val viewModel by viewModel { Injector.mainSearchViewModel }
-    private val searchGenresAdapter by lazy { SearchGenresAdapter() }
 
     private val binding by viewBinding(FragmentMainSearchBinding::bind)
 
@@ -44,6 +43,7 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val searchGenresAdapter = SearchGenresAdapter()
         binding.recyclerView.adapter = searchGenresAdapter
         binding.recyclerView.addItemDecoration(
             MarginItemDecoration(
@@ -75,7 +75,10 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
     }
 
     private fun observeViewModel() {
-        observe(viewModel.genres, searchGenresAdapter::submitList)
+        observe(viewModel.genres) {
+            val adapter = binding.recyclerView.adapter as SearchGenresAdapter
+            adapter.submitList(it)
+        }
     }
 
     private fun startSearch() {

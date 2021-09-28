@@ -41,13 +41,13 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
     }
 
     private val binding by viewBinding(MultiSelectTracksFragmentBinding::bind)
-    private val adapter by lazy { MultiSelectTracksAdapter(viewModel) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.setOnClickListener {
             // Just to prevent underline click detection
         }
+        val adapter = MultiSelectTracksAdapter(viewModel)
         binding.recyclerView.adapter = adapter
         binding.btnRemoveFromPlaylist.isVisible = playlist != null
         binding.btnClose.onClick { activity?.onBackPressed() }
@@ -109,6 +109,7 @@ class MultiSelectTrackFragment : BaseFragment<MultiSelectTracksViewModel>(
             delay(animDuration.toLong())
             observe(viewModel.tracks.asLiveData()) {
                 val items = it ?: return@observe
+                val adapter = binding.recyclerView.adapter as MultiSelectTracksAdapter
                 adapter.submitList(items)
             }
         }

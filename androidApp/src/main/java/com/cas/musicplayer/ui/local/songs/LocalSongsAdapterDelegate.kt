@@ -45,7 +45,28 @@ class LocalSongsAdapterDelegate(
     inner class ViewHolder(val binding: ItemLocalSongBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val localSongsPrimaryColor = itemView.context.color(R.color.localSongsPrimaryColor)
+        private val colorOnSurface = itemView.context.themeColor(R.attr.colorOnSurface)
+
+        init {
+            itemView.onClick {
+                UserPrefs.onClickTrack()
+                onClickTrack(itemView.tag as Track)
+            }
+
+            binding.btnMore.onClick {
+                val fm = itemView.findFragment<Fragment>().childFragmentManager
+                TrackOptionsFragment.present(fm, itemView.tag as Track)
+            }
+
+            binding.root.setOnLongClickListener {
+                onLongPressTrack(itemView.tag as Track)
+                true
+            }
+        }
+
         fun bind(song: DisplayedVideoItem) {
+            itemView.tag = song.track
             binding.txtTitle.text = song.songTitle
             binding.txtArtist.text = itemView.context.getString(
                 R.string.label_artist_name_and_duration,
@@ -54,25 +75,9 @@ class LocalSongsAdapterDelegate(
             )
             val localSong = song.track as LocalSong
             binding.imgSong.loadTrackImage(localSong)
-            itemView.onClick {
-                UserPrefs.onClickTrack()
-                onClickTrack(song.track)
-            }
-
-            val localSongsPrimaryColor = itemView.context.color(R.color.localSongsPrimaryColor)
-            val colorText = if (song.isCurrent) localSongsPrimaryColor
-            else itemView.context.themeColor(R.attr.colorOnSurface)
+            val colorText = if (song.isCurrent) localSongsPrimaryColor else colorOnSurface
             binding.txtTitle.setTextColor(colorText)
             binding.indicatorPlaying.setLocalMusicPlayingState(song)
-            binding.btnMore.onClick {
-                val fm = itemView.findFragment<Fragment>().childFragmentManager
-                TrackOptionsFragment.present(fm, song.track)
-            }
-
-            binding.root.setOnLongClickListener {
-                onLongPressTrack(song.track)
-                true
-            }
         }
     }
 }

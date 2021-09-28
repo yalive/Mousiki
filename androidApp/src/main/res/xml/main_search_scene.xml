@@ -65,6 +65,15 @@
     </ConstraintSet>
 
     <Transition
+        app:constraintSetEnd="@+id/end"
+        app:constraintSetStart="@+id/start">
+        <OnSwipe
+            app:onTouchUp="stop"
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@+id/btnStartSearch" />
+    </Transition>
+
+   <!-- <Transition
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start">
 
@@ -72,6 +81,6 @@
             app:dragDirection="dragUp"
             app:touchAnchorId="@id/recyclerView"
             app:touchAnchorSide="top" />
-    </Transition>
+    </Transition>-->
 
 </MotionScene>

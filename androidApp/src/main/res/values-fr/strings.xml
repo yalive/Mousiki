@@ -216,4 +216,26 @@
     <string name="video_auto_play_next_on">Lecture automatique suivante activée</string>
     <string name="video_auto_play_next_off">La lecture automatique suivante est désactivée</string>
     <string name="video_player_queue_history">Historique</string>
+    <string name="swipe_left_right">Glisser sur la gauche ou la droite pour ajuster la progression de la vidéo</string>
+    <string name="swipe_up_down_left">Balayez vers le haut ou vers le bas pour régler la luminosité</string>
+    <string name="swipe_up_down_right">Balayez vers le haut ou vers le bas pour régler le volume</string>
+    <string name="hold_screen">Maintenez enfoncé pour verrouiller ou déverrouiller l\'écran</string>
+    <string name="double_click_next">Double-cliquez pour avancer de 10 secondes</string>
+    <string name="double_click_back">Appuyez deux fois pour reculer de 10 secondes</string>
+    <string name="got_it">J\'ai compris</string>
+    <string name="settings_pip">Image dans l\'image</string>
+    <string name="pip_dialog_title">Image dans l\'image</string>
+    <string name="pip_dialog_mesage">Autorisez l\'application Mousiki à créer une fenêtre d\'image dans l\'image pendant que l\'application est ouverte ou après l\'avoir laissée pour continuer à regarder des vidéos YouTube. Cette fenêtre s\'affiche au-dessus des autres applications que vous utilisez.</string>
+    <string name="pip_dialog_checkbox_dont_ask_me_again">Ne me demande plus</string>
+    <string name="no">Non</string>
+    <string name="track_edit">ÉDITER</string>
+    <string name="track_save">ENREGISTRER</string>
+    <string name="track_name">Nom</string>
+    <string name="track_artist">Artiste</string>
+    <string name="track_album">Album</string>
+    <string name="track_composer">Compositeur</string>
+    <string name="track_duration">Durée</string>
+    <string name="track_size">Taille</string>
+    <string name="track_path">Chemin</string>
+    <string name="show_information">Montrer l\'information</string>
 </resources>

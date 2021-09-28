@@ -11,7 +11,6 @@ plugins {
 repositories {
     maven { url 'https://jitpack.io' }
     maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
-    maven { url "https://adcolony.bintray.com/AdColony" }
 }
 
 android {
@@ -30,8 +29,8 @@ android {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 58
-        versionName "4.2.0"
+        versionCode 59
+        versionName "4.2.1"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
     }
@@ -94,10 +93,10 @@ dependencies {
 
     // Android X
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.core:core-ktx:1.5.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0-alpha2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'com.google.android.material:material:1.5.0-alpha01'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.preference:preference-ktx:1.1.1'
@@ -112,10 +111,9 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     // View pager
     implementation "androidx.viewpager2:viewpager2:1.0.0"
@@ -132,7 +130,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:okhttp3-integration:1.5.0'
 
     // Serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
 
     // Youtube Player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
@@ -145,22 +143,29 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation 'com.google.firebase:firebase-config-ktx:20.0.2'
-    implementation 'com.google.firebase:firebase-ads:20.2.0'
-    implementation 'com.google.firebase:firebase-core:18.0.0'
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
-    implementation 'com.google.firebase:firebase-dynamic-links:19.1.1'
-    implementation "com.google.firebase:firebase-dynamic-links-ktx:19.1.1"
-    implementation 'com.google.firebase:firebase-storage-ktx:19.2.1'
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+
+    implementation 'com.google.firebase:firebase-perf-ktx'
+
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    implementation 'com.google.firebase:firebase-config-ktx'
+
+    implementation 'com.google.firebase:firebase-ads:20.3.0'
+
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     // Slide to unlock button
     implementation 'com.ncorti:slidetoact:0.8.0'
 
     // Facebook and mediation adapter
-    implementation 'com.google.ads.mediation:adcolony:4.3.0.0'
-    implementation 'com.google.ads.mediation:mopub:5.17.0.0'
     implementation 'com.google.ads.mediation:unity:3.6.0.0'
     implementation 'com.google.ads.mediation:facebook:6.5.0.0'
     implementation 'com.facebook.android:audience-network-sdk:6.5.0'
@@ -176,10 +181,12 @@ dependencies {
     implementation 'com.github.sephiroth74:android-target-tooltip:2.0.3'
 
     // Exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.15.0'
-    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.1'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // Modules
     implementation project(path: ':common')
@@ -190,3 +197,5 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+

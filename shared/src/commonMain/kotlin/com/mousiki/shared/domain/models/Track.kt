@@ -14,6 +14,7 @@ sealed class Track : Parcelable {
     abstract val title: String
     abstract val artistName: String
     abstract val duration: String
+    abstract val size: Long
     abstract val artistId: String
 
     val type: String
@@ -33,6 +34,7 @@ data class LocalSong(val song: Song) : Track() {
     override val id: String = "${song.id}"
     override val title: String = song.title
     override val duration: String = "${song.duration}"
+    override val size: Long = song.size
     override val artistName: String = song.artistName
     override val artistId: String = "${song.artistId}"
     val data: String get() = song.data
@@ -44,6 +46,7 @@ data class YtbTrack(
     val youtubeId: String,
     override val title: String,
     override val duration: String,
+    override val size: Long = 0,
     override val artistName: String,
     override val artistId: String
 ) : Track() {
@@ -121,6 +124,7 @@ val YtbTrack.Companion.EMPTY: YtbTrack
         youtubeId = "",
         title = "",
         duration = "",
+        size = 0,
         artistName = "",
         artistId = ""
     )

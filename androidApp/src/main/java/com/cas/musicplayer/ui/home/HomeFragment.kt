@@ -4,17 +4,16 @@ package com.cas.musicplayer.ui.home
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.asLiveData
-import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.dpToPixel
 import com.cas.common.recyclerview.MarginItemDecoration
 import com.cas.common.recyclerview.enforceSingleScrollDirection
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentHomeBinding
+import com.cas.musicplayer.delegateadapter.MousikiAdapter
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
@@ -38,40 +37,39 @@ class HomeFragment : BaseFragment<HomeViewModel>(
 
     override val viewModel by viewModel { Injector.homeViewModel }
 
-    private val recyclerView: RecyclerView
-        get() = binding.recyclerView
-
-    private val progressBar: ProgressBar
-        get() = binding.progressBar
-
-    private val homeAdapter by lazy {
-        HomeAdapter(viewModel = viewModel, onVideoSelected = { track, tracks ->
-            (activity as? MainActivity)?.collapseBottomPanel()
-            viewModel.onClickTrack(track, tracks)
-        }, onClickRetryNewRelease = {
-            viewModel.onClickRetryNewRelease()
-        })
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.run {
-            addItemDecoration(HomeMarginItemDecoration())
-            adapter = homeAdapter
-            enforceSingleScrollDirection()
-            observe(DeviceInset) { inset ->
-                updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    topMargin = inset.top
-                }
+        val homeAdapter = HomeAdapter(
+            viewModel = viewModel,
+            onVideoSelected = { track, tracks ->
+                (activity as? MainActivity)?.collapseBottomPanel()
+                viewModel.onClickTrack(track, tracks)
+            },
+            onClickRetryNewRelease = {
+                viewModel.onClickRetryNewRelease()
             }
-            addItemDecoration(MarginItemDecoration(
-                topMarginProvider = { position ->
-                    when (viewModel.homeItems.value?.get(position)) {
-                        is AdsItem -> dpToPixel(32)
-                        else -> 0
+        )
+
+        with(binding) {
+            recyclerView.run {
+                addItemDecoration(HomeMarginItemDecoration())
+                adapter = homeAdapter
+                enforceSingleScrollDirection()
+                observe(DeviceInset) { inset ->
+                    updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        topMargin = inset.top
                     }
                 }
-            ))
+                addItemDecoration(MarginItemDecoration(
+                    topMarginProvider = { position ->
+                        when (viewModel.homeItems.value?.get(position)) {
+                            is AdsItem -> dpToPixel(32)
+                            else -> 0
+                        }
+                    }
+                ))
+            }
+
         }
 
         observeViewModel()
@@ -91,8 +89,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(
     private fun observeViewModel() {
         observe(viewModel.homeItems.asLiveData()) { items ->
             if (items == null) return@observe
-            homeAdapter.submitList(items)
-            progressBar.isVisible = false
+            (binding.recyclerView.adapter as MousikiAdapter).submitList(items)
+            binding.progressBar.isVisible = false
         }
     }
 }

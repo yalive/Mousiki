@@ -14,6 +14,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemLocalFolderBinding
 import com.cas.musicplayer.ui.local.folders.options.FolderOption
 import com.cas.musicplayer.ui.local.folders.options.FolderOptionsFragment
+import com.cas.musicplayer.utils.navigateSafeAction
 
 
 class FoldersAdapter(
@@ -45,7 +46,7 @@ class FoldersAdapter(
                 }
             }
             itemView.onClick {
-                itemView.findNavController().navigate(
+                itemView.findNavController().navigateSafeAction(
                     R.id.action_localSongsContainerFragment_to_folderDetailsFragment,
                     bundleOf(
                         FolderDetailsFragment.EXTRAS_FOLDER_PATH to folder.path,

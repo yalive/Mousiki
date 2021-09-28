@@ -211,4 +211,26 @@
     <string name="video_auto_play_next_on">Als nächstes automatisch wiedergeben</string>
     <string name="video_auto_play_next_off">Autoplay als nächstes aus</string>
     <string name="video_player_queue_history">Geschichte</string>
+    <string name="swipe_left_right">Nach links oder rechts wischen, um den Videofortschritt anzupassen</string>
+    <string name="swipe_up_down_left">Wischen Sie nach oben oder unten, um die Helligkeit anzupassen</string>
+    <string name="swipe_up_down_right">Wischen Sie nach oben oder unten, um die Lautstärke anzupassen</string>
+    <string name="hold_screen">Zum Sperren oder Entsperren des Bildschirms gedrückt halten</string>
+    <string name="double_click_next">Doppelklicken, um 10 Sekunden vorzuspulen</string>
+    <string name="double_click_back">Doppeltippen, um 10 Sekunden zurückzuspulen</string>
+    <string name="got_it">Ich habs</string>
+    <string name="settings_pip">Bild im Bild</string>
+    <string name="pip_dialog_title">Bild im Bild</string>
+    <string name="pip_dialog_mesage">Erlauben Sie der Mousiki-App, ein Bild-in-Bild-Fenster zu erstellen, während die App geöffnet ist oder nachdem Sie sie verlassen haben, um weiterhin YouTube-Videos anzusehen. Dieses Fenster wird über anderen von Ihnen verwendeten Apps angezeigt.</string>
+    <string name="pip_dialog_checkbox_dont_ask_me_again">Frag mich nicht mehr</string>
+    <string name="no">Nein</string>
+    <string name="track_edit">BEARBEITEN</string>
+    <string name="track_save">SPEICHERN</string>
+    <string name="track_name">Name</string>
+    <string name="track_artist">Künstler</string>
+    <string name="track_album">Album</string>
+    <string name="track_composer">Komponist</string>
+    <string name="track_duration">Dauer</string>
+    <string name="track_size">Größe</string>
+    <string name="track_path">Weg</string>
+    <string name="show_information">Informationen anzeigen</string>
 </resources>

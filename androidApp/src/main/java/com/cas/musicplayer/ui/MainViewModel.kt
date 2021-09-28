@@ -27,8 +27,7 @@ class MainViewModel(
 ) : BaseViewModel(), PlaySongDelegate by delegate {
 
     private val _rateApp = MutableLiveData<Event<Unit>>()
-    val rateApp: LiveData<Event<Unit>>
-        get() = _rateApp
+    val rateApp: LiveData<Event<Unit>> get() = _rateApp
 
     private val _doubleClickSearch = MutableLiveData<Event<Unit>>()
     val doubleClickSearch: LiveData<Event<Unit>>
