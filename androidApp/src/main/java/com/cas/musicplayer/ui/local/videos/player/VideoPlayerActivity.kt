@@ -33,6 +33,7 @@ import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.ui.local.videos.player.views.CustomDefaultTimeBar
 import com.cas.musicplayer.ui.local.videos.player.views.CustomStyledPlayerView
 import com.cas.musicplayer.ui.local.videos.queue.VideosQueueFragment
+import com.cas.musicplayer.ui.tryEnterPip
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.SystemSettings
 import com.google.android.exoplayer2.*
@@ -395,7 +396,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             rationalLimitWide else if (rational.toFloat() < rationalLimitTall.toFloat()) rational =
             rationalLimitTall
         (mPictureInPictureParamsBuilder as PictureInPictureParams.Builder).setAspectRatio(rational)
-        enterPictureInPictureMode((mPictureInPictureParamsBuilder as PictureInPictureParams.Builder).build())
+        tryEnterPip((mPictureInPictureParamsBuilder as PictureInPictureParams.Builder).build())
     }
 
     private fun getRational(format: Format): Rational {
