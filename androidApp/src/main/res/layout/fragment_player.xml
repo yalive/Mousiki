@@ -38,8 +38,8 @@
             android:contentDescription="@string/app_name"
             android:rotation="90"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_arrow_right" />
+            app:srcCompat="@drawable/ic_arrow_right"
+            app:tint="@color/colorWhite" />
 
         <View
             android:layout_width="0dp"
@@ -55,8 +55,8 @@
             android:layout_marginEnd="8dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/app_name"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_lock_screen" />
+            app:srcCompat="@drawable/ic_lock_screen"
+            app:tint="@color/colorWhite" />
 
         <ImageButton
             android:id="@+id/btnTrackOptions"
@@ -67,8 +67,8 @@
             android:layout_marginEnd="16dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/app_name"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_more_vertical" />
+            app:srcCompat="@drawable/ic_more_vertical"
+            app:tint="@color/colorWhite" />
 
     </LinearLayout>
 
@@ -123,6 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorTransparent"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/seekBarView"
@@ -130,18 +131,31 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
-            android:id="@+id/btnShareVia"
+            android:id="@+id/btnSleepTimer"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/sixteen_16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/app_name"
+            android:padding="6dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_clock_32dp"
+            app:tint="@color/colorWhite" />
+
+        <ImageButton
+            android:id="@+id/btnShareVia"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_toEndOf="@+id/btnSleepTimer"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/app_name"
             android:padding="8dp"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_share_light" />
+            app:srcCompat="@drawable/ic_share_light"
+            app:tint="@color/colorWhite" />
 
         <TextView
             android:id="@+id/txtTitle"
@@ -173,8 +187,8 @@
             android:contentDescription="@string/app_name"
             android:padding="8dp"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_heart_light" />
+            app:srcCompat="@drawable/ic_heart_light"
+            app:tint="@color/colorWhite" />
 
         <TextView
             android:id="@+id/artistName"
@@ -261,8 +275,8 @@
             android:contentDescription="@string/app_name"
             android:padding="10dp"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_random" />
+            app:srcCompat="@drawable/ic_random"
+            app:tint="@color/colorWhite" />
 
         <View
             android:layout_width="0dp"
@@ -277,8 +291,8 @@
             android:contentDescription="@string/app_name"
             android:padding="4dp"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_skip_previous" />
+            app:srcCompat="@drawable/ic_skip_previous"
+            app:tint="@color/colorWhite" />
 
         <View
             android:layout_width="0dp"
@@ -294,8 +308,8 @@
             android:contentDescription="@string/app_name"
             android:padding="8dp"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_play" />
+            app:srcCompat="@drawable/ic_play"
+            app:tint="@color/colorWhite" />
 
         <View
             android:layout_width="0dp"
@@ -310,8 +324,8 @@
             android:contentDescription="@string/app_name"
             android:padding="4dp"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_skip_next" />
+            app:srcCompat="@drawable/ic_skip_next"
+            app:tint="@color/colorWhite" />
 
         <View
             android:layout_width="0dp"
@@ -327,8 +341,8 @@
             android:contentDescription="@string/app_name"
             android:padding="6dp"
             android:scaleType="fitXY"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_queue_music" />
+            app:srcCompat="@drawable/ic_queue_music"
+            app:tint="@color/colorWhite" />
     </LinearLayout>
 
     <!-- Mini player -->
