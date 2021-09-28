@@ -21,7 +21,6 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
-import com.cas.musicplayer.utils.navigateSafeAction
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Playlist
@@ -34,12 +33,12 @@ import com.mousiki.shared.ui.home.model.HomeItem
  ***************************************
  */
 
-class HomeRecentSongsAdapterDelegate(
+class HomeFavouriteSongsAdapterDelegate(
     private val onVideoSelected: (Track, List<Track>) -> Unit,
 ) : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
-        return items[position] is HomeItem.Recent
+        return items[position] is HomeItem.Favourite
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -63,9 +62,9 @@ class HomeRecentSongsAdapterDelegate(
         holder: RecyclerView.ViewHolder,
         payloads: List<Any>
     ) {
-        val recentItem = items[position] as HomeItem.Recent
+        val favItem = items[position] as HomeItem.Favourite
         val viewHolder = holder as ViewHolder
-        viewHolder.bind(recentItem.tracks)
+        viewHolder.bind(favItem.tracks)
     }
 
     inner class ViewHolder(
@@ -79,7 +78,7 @@ class HomeRecentSongsAdapterDelegate(
             },
             onClickMore = { track ->
                 val fm = itemView.findFragment<Fragment>().childFragmentManager
-                TrackOptionsFragment.present(fm, track, true)
+                TrackOptionsFragment.present(fm, track)
             },
             onLongPressTrack = { track ->
                 val activity = itemView.activity as? FragmentActivity ?: return@SongsAdapter
@@ -88,7 +87,7 @@ class HomeRecentSongsAdapterDelegate(
         )
 
         init {
-
+            binding.txtTitle.setText(R.string.favourites)
             // Setup recycler view
             with(binding.recyclerView) {
                 layoutManager = PercentGridLayoutManager(itemView.context, DEF_SPAN_COUNT)
@@ -98,17 +97,17 @@ class HomeRecentSongsAdapterDelegate(
             }
 
             binding.headerView.onClick {
-                val recentPlaylist = Playlist(
+                val favPlaylist = Playlist(
                     id = "",
-                    title = itemView.context.getString(R.string.library_recently_played),
+                    title = itemView.context.getString(R.string.favourites),
                     itemCount = 0,
-                    type = Playlist.TYPE_RECENT,
+                    type = Playlist.TYPE_FAV,
                     urlImage = ""
                 )
-                itemView.findNavController().navigateSafeAction(
+                itemView.findNavController().navigate(
                     R.id.action_homeFragment_to_customPlaylistSongsFragment,
                     bundleOf(
-                        CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to recentPlaylist
+                        CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to favPlaylist
                     )
                 )
             }
