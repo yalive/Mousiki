@@ -50,6 +50,7 @@ class TimerDialog : BaseDialogFragment() {
             PlayerQueue.scheduleStopMusic(progress)
             dismiss()
         }
+        binding.btnCancel.onClick { dismiss() }
         isCancelable = true
     }
 
