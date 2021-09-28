@@ -16,6 +16,7 @@ import com.cas.musicplayer.ui.common.songs.AppImage
 import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.ui.playlist.songs.PlaylistSongsFragment
 import com.cas.musicplayer.utils.loadImage
+import com.cas.musicplayer.utils.navigateSafeAction
 
 /**
  ***************************************
@@ -45,7 +46,7 @@ class PlaylistsAdapter : SimpleBaseAdapter<Playlist, PlaylistsAdapter.ViewHolder
                     BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE,
                     AppImage.AppImageUrl(artist.urlImage)
                 )
-                itemView.findNavController().navigate(R.id.playlistVideosFragment, bundle)
+                itemView.findNavController().navigateSafeAction(R.id.playlistVideosFragment, bundle)
             }
         }
 

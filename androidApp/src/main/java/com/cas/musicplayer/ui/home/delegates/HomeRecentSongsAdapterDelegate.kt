@@ -21,6 +21,7 @@ import com.cas.musicplayer.ui.bottomsheet.TrackOptionsFragment
 import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
 import com.cas.musicplayer.ui.common.songs.SongsAdapter
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsFragment
+import com.cas.musicplayer.utils.navigateSafeAction
 import com.mousiki.shared.domain.models.DisplayableItem
 import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.Playlist
@@ -104,7 +105,7 @@ class HomeRecentSongsAdapterDelegate(
                     type = Playlist.TYPE_RECENT,
                     urlImage = ""
                 )
-                itemView.findNavController().navigate(
+                itemView.findNavController().navigateSafeAction(
                     R.id.action_homeFragment_to_customPlaylistSongsFragment,
                     bundleOf(
                         CustomPlaylistSongsFragment.EXTRAS_PLAYLIST to recentPlaylist
