@@ -448,19 +448,17 @@ class MainActivity : BaseActivity() {
             ?.split("/")?.lastOrNull().orEmpty()
         if (videoId.isEmpty()) return
         lifecycleScope.launch {
-            val result = Injector.getYtbSong(videoId)
-            val track = when (result) {
+            val ytbTrack = when (val result = Injector.getYtbSong(videoId)) {
                 is Result.Error -> {
-                    toast("Unable to get video information")
+                    toast(R.string.cannot_extract_video_information_from_shared_link)
                     null
                 }
                 is Result.Success -> result.data
-            } as? YtbTrack ?: return@launch
+            }
+            val track = ytbTrack as? YtbTrack ?: return@launch
             viewModel.playTrackFromSharedLink(track)
 
-            if (SystemSettings.canEnterPiPMode()) {
-                enterPictureInPictureMode(PictureInPictureParams.Builder().build())
-            }
+            if (SystemSettings.canEnterPiPMode()) tryEnterPip()
         }
     }
 

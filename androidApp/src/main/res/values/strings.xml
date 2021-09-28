@@ -17,6 +17,7 @@
     <string name="common_more">More</string>
     <string name="common_turn_on">TURN ON</string>
     <string name="share_track_link_message">Here\'s a new song for you on <b>Mousiki</b> 🎧❀ヅ❤♫…%s.\n%s</string>
+    <string name="cannot_extract_video_information_from_shared_link">Sorry, connot extract video information!</string>
 
     <!-- Videos -->
     <string name="library">Library</string>
