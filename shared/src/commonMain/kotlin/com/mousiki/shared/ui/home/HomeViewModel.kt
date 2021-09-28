@@ -14,6 +14,7 @@ import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.domain.usecase.artist.GetCountryArtistsUseCase
 import com.mousiki.shared.domain.usecase.genre.GetGenresUseCase
+import com.mousiki.shared.domain.usecase.library.GetFavouriteTracksFlowUseCase
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.player.PlaySongDelegate
@@ -45,6 +46,7 @@ class HomeViewModel(
     private val homeRepository: HomeRepository,
     private val appConfig: RemoteAppConfig,
     private val getRecentlyPlayedSongs: GetRecentlyPlayedSongsFlowUseCase,
+    private val getFavouriteTracks: GetFavouriteTracksFlowUseCase,
     playSongDelegate: PlaySongDelegate,
     facebookAdsDelegate: FacebookAdsDelegate,
     getListAdsDelegate: GetListAdsDelegate
@@ -120,6 +122,7 @@ class HomeViewModel(
                 loadGenres()
                 loadArtists()
                 observeRecent()
+                observeFavourites()
                 prepareAds()
             }
             is Result.Error -> showOldHome()
@@ -136,10 +139,32 @@ class HomeViewModel(
 
     private fun observeRecent() = scope.launch {
         getRecentlyPlayedSongs(300).collect { tracks ->
-            if (tracks.isEmpty()) return@collect
+            if (tracks.isEmpty()) {
+                removeItem { it is HomeItem.Recent }
+                return@collect
+            }
             val recentTracks = localTrackMapper.mapTracks(tracks)
                 .map { it.toDisplayedVideoItem(this@HomeViewModel) }
             updateOrAddItem(HomeItem.Recent(recentTracks), 1, where = { it is HomeItem.Recent })
+        }
+    }
+
+    private fun observeFavourites() = scope.launch {
+        getFavouriteTracks(100).collect { tracks ->
+            if (tracks.isEmpty()) {
+                removeItem { it is HomeItem.Favourite }
+                return@collect
+            }
+            val recentTracks = localTrackMapper.mapTracks(tracks)
+                .map { it.toDisplayedVideoItem(this@HomeViewModel) }
+
+            val recentPosition = _homeItems.value?.indexOfFirst { it is HomeItem.Recent } ?: -1
+
+            updateOrAddItem(
+                item = HomeItem.Favourite(recentTracks),
+                addAt = if (recentPosition == -1) 1 else (recentPosition + 1),
+                where = { it is HomeItem.Favourite }
+            )
         }
     }
 
@@ -190,6 +215,7 @@ class HomeViewModel(
         loadGenres()
         loadArtists()
         observeRecent()
+        observeFavourites()
     }
 
     private suspend fun prepareAds() {
@@ -235,6 +261,13 @@ class HomeViewModel(
         _homeItems.value = homeListItems
     }
 
+    private fun removeItem(where: (DisplayableItem) -> Boolean) {
+        val homeListItems = _homeItems.value?.toMutableList() ?: return
+        if (homeListItems.removeAll(where)) {
+            _homeItems.value = homeListItems
+        }
+    }
+
     private fun updateItem(item: DisplayableItem, where: (DisplayableItem) -> Boolean) {
         val homeListItems = _homeItems.value?.toMutableList() ?: return
         val index = homeListItems.indexOfFirst { where(it) }
@@ -250,6 +283,14 @@ class HomeViewModel(
                 ?.firstOrNull()?.tracks ?: return@launch
             val recentTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
             updateItem(HomeItem.Recent(recentTracks), where = { it is HomeItem.Recent })
+        }
+
+        // Update favourites
+        scope.launch {
+            val tracks = _homeItems.value?.filterIsInstance<HomeItem.Favourite>()
+                ?.firstOrNull()?.tracks ?: return@launch
+            val favTracks = updateCurrentPlaying(tracks).filterIsInstance<DisplayedVideoItem>()
+            updateItem(HomeItem.Favourite(favTracks), where = { it is HomeItem.Favourite })
         }
 
         // Update new release

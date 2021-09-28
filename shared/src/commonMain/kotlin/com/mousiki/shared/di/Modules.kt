@@ -168,6 +168,7 @@ val kmmViewModelsModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }

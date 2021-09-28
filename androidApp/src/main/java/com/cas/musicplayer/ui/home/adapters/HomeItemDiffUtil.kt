@@ -27,6 +27,13 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
             }
         }
 
+        if (oldItem is HomeItem.Favourite && newItem is HomeItem.Favourite) {
+            if (oldItem.tracks.size == newItem.tracks.size) { // Can be improved!
+                return bundleOf()
+            }
+        }
+
+
         if (oldItem is HomeItem.PopularsItem && newItem is HomeItem.PopularsItem) {
             val resourceOld = oldItem.resource
             val resourceNew = newItem.resource
@@ -68,6 +75,7 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
             is HomeItem.SimplePlaylists -> newItem is HomeItem.SimplePlaylists && newItem.title == oldItem.title
             is HomeItem.VideoList -> newItem is HomeItem.VideoList && newItem.title == oldItem.title
             is HomeItem.Recent -> newItem is HomeItem.Recent
+            is HomeItem.Favourite -> newItem is HomeItem.Favourite
         }
     }
 
@@ -98,6 +106,7 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
             is HomeItem.SimplePlaylists -> areSimplePlayListTheSame(oldItem.playlists, newItem)
             is HomeItem.VideoList -> areVideoListTheSame(oldItem.items, newItem)
             is HomeItem.Recent -> areRecentTheSame(oldItem.tracks, newItem)
+            is HomeItem.Favourite -> areFavouritesTheSame(oldItem.tracks, newItem)
         }
     }
 
@@ -159,6 +168,15 @@ class HomeItemDiffUtil : DiffUtil.ItemCallback<DisplayableItem>() {
     }
 
     private fun areRecentTheSame(
+        tracks: List<DisplayedVideoItem>,
+        newItem: HomeItem
+    ): Boolean {
+        if (newItem !is HomeItem.Recent) return false
+        val newTracks = newItem.tracks
+        return newTracks == tracks
+    }
+
+    private fun areFavouritesTheSame(
         tracks: List<DisplayedVideoItem>,
         newItem: HomeItem
     ): Boolean {

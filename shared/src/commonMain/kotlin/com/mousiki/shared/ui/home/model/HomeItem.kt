@@ -17,6 +17,7 @@ import com.mousiki.shared.utils.Strings
  **********************************
  */
 sealed class HomeItem : DisplayableItem {
+    data class Favourite(val tracks: List<DisplayedVideoItem>) : HomeItem()
     data class Recent(val tracks: List<DisplayedVideoItem>) : HomeItem()
     data class PopularsItem(val resource: Resource<List<DisplayedVideoItem>>) : HomeItem()
     data class ChartItem(val charts: List<ChartModel>) : HomeItem()
@@ -53,6 +54,7 @@ fun HomeItem.title(strings: Strings): String {
         is HeaderItem.ArtistsHeader -> strings.artists
         is HeaderItem.GenresHeader -> strings.genres
         is HomeItem.Recent -> strings.libraryRecent
+        is HomeItem.Favourite -> strings.libraryFavourites
         is HomeItem.PopularsItem -> strings.titleNewRelease
         is HomeItem.ChartItem -> strings.titleTopCharts
         is HomeItem.ArtistItem -> strings.artists
