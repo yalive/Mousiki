@@ -52,6 +52,7 @@ class CompactPlaylistsAdapter(
                     val artist = Artist(item.title, "US", item.playlistId)
                     val bundle = bundleOf(
                         PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to item.playlistId,
+                        PlaylistSongsFragment.EXTRAS_PLAYLIST_DESC to item.description,
                         EXTRAS_ARTIST to artist,
                         BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageUrl(
                             item.featuredImage

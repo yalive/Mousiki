@@ -6,7 +6,7 @@
         <Constraint
             android:id="@id/imgBackground"
             android:layout_width="match_parent"
-            android:layout_height="380dp"
+            android:layout_height="360dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -23,25 +23,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
-        <Constraint
-            android:id="@id/txtPlaylistName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:alpha="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgArtist" />
-
-        <Constraint
-            android:id="@id/txtNumberOfSongs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtPlaylistName" />
 
         <Constraint
             android:id="@id/txtScreenTitle"
@@ -54,8 +35,8 @@
             app:layout_constraintTop_toTopOf="@+id/viewBack" />
 
         <Constraint
-            android:id="@id/btnPlayAll"
-            android:layout_width="wrap_content"
+            android:id="@id/playBtnsLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/imgBackground"
             app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +66,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@id/imgArtist"
+            android:id="@id/artistLayout"
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_marginTop="64dp"
@@ -97,30 +78,8 @@
             app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
 
         <Constraint
-            android:id="@id/txtPlaylistName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:alpha="1"
-            android:scaleX="0.7"
-            android:scaleY="0.7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgArtist" />
-        <Constraint
-            android:id="@id/txtNumberOfSongs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="1"
-            android:scaleX="0.7"
-            android:scaleY="0.7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtPlaylistName" />
-        <Constraint
-            android:id="@id/btnPlayAll"
-            android:layout_width="wrap_content"
+            android:id="@id/playBtnsLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -168,7 +127,7 @@
                 android:scaleX="1.0"
                 android:scaleY="1.0"
                 app:framePosition="5"
-                app:motionTarget="@id/imgArtist" />
+                app:motionTarget="@id/artistLayout" />
         </KeyFrameSet>
 
         <KeyFrameSet>

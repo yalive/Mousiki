@@ -104,6 +104,13 @@ abstract class BaseSongsFragment<T : BaseViewModel>
             mainActivity.collapseBottomPanel()
             onClickTrackPlayAll()
         }
+        binding.btnShufflePlay.onClick {
+            if (adapter.dataItems.isEmpty()) return@onClick
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.collapseBottomPanel()
+            onClickShufflePlay()
+        }
+
         binding.btnBack.onClick {
             findNavController().popBackStack()
         }
@@ -143,7 +150,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
             resource is Resource.Success && resource.data.isNotEmpty()
         when (resource) {
             is Resource.Success -> {
-                binding.btnPlayAll.alpha = 1f
+                binding.playBtnsLayout.alpha = 1f
                 binding.shimmerView.loadingView.alpha = 0f
                 binding.shimmerView.loadingView.stopShimmer()
                 val newList = resource.data
@@ -157,11 +164,11 @@ abstract class BaseSongsFragment<T : BaseViewModel>
             }
             Resource.Loading -> {
                 binding.shimmerView.loadingView.alpha = 1f
-                binding.btnPlayAll.alpha = 0f
+                binding.playBtnsLayout.alpha = 0f
             }
             is Resource.Failure -> {
                 binding.shimmerView.loadingView.alpha = 0f
-                binding.btnPlayAll.alpha = 0f
+                binding.playBtnsLayout.alpha = 0f
                 if (adapter.dataItems.isEmpty()) {
                     binding.txtNumberOfSongs.setText(R.string.error_while_loading_song_list)
                 }
@@ -218,6 +225,7 @@ abstract class BaseSongsFragment<T : BaseViewModel>
 
     abstract fun onClickTrack(track: Track)
     abstract fun onClickTrackPlayAll()
+    abstract fun onClickShufflePlay()
 
     companion object {
         val EXTRAS_ID_FEATURED_IMAGE = "extras.featured.image"
