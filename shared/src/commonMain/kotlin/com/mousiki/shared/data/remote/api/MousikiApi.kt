@@ -3,6 +3,7 @@ package com.mousiki.shared.data.remote.api
 import com.mousiki.shared.data.models.AudioInfoRS
 import com.mousiki.shared.data.models.HomeRS
 import com.mousiki.shared.data.models.MousikiSearchApiRS
+import com.mousiki.shared.data.models.MousikiSearchApiResult
 
 interface MousikiApi : YoutubeApi {
 
@@ -30,4 +31,9 @@ interface MousikiApi : YoutubeApi {
         url: String,
         videoId: String
     ): AudioInfoRS
+
+    suspend fun getVideo(
+        url: String,
+        videoId: String
+    ): MousikiSearchApiResult
 }

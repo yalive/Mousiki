@@ -102,7 +102,8 @@ class HomeFavouriteSongsAdapterDelegate(
                     title = itemView.context.getString(R.string.favourites),
                     itemCount = 0,
                     type = Playlist.TYPE_FAV,
-                    urlImage = ""
+                    urlImage = "",
+                    createdBy = Playlist.CREATED_BY_USER
                 )
                 itemView.findNavController().navigate(
                     R.id.action_homeFragment_to_customPlaylistSongsFragment,

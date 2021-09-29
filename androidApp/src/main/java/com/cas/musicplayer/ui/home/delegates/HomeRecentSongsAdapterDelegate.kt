@@ -103,7 +103,8 @@ class HomeRecentSongsAdapterDelegate(
                     title = itemView.context.getString(R.string.library_recently_played),
                     itemCount = 0,
                     type = Playlist.TYPE_RECENT,
-                    urlImage = ""
+                    urlImage = "",
+                    createdBy = Playlist.CREATED_BY_APP
                 )
                 itemView.findNavController().navigateSafeAction(
                     R.id.action_homeFragment_to_customPlaylistSongsFragment,
