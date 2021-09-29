@@ -60,6 +60,6 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
     }
 
     companion object {
-        val EXTRAS_PLAYLIST_ID = "playlist_id"
+        const val EXTRAS_PLAYLIST_ID = "playlist_id"
     }
 }

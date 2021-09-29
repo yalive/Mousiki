@@ -9,6 +9,7 @@ fun Db_playlist.asPlaylist(itemCount: Int = 0, urlFirstTrack: String = ""): Play
         title = name,
         itemCount = itemCount,
         urlImage = urlFirstTrack,
-        type = type
+        type = type,
+        createdBy = created_by
     )
 }
