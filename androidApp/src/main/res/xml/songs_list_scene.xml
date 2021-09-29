@@ -43,16 +43,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgBackground" />
 
-        <Constraint
-            android:id="@id/btnMore"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="@dimen/spacing_small"
-            app:layout_constraintBottom_toBottomOf="@+id/bottomGuideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/topGuideline"
-            app:visibilityMode="ignore" />
-
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -67,15 +57,14 @@
 
         <Constraint
             android:id="@id/artistLayout"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="180dp"
-            android:layout_marginTop="64dp"
-            android:alpha="0.5"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
+            android:alpha="0"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
+            app:layout_constraintBottom_toTopOf="@+id/topGuideline" />
 
         <Constraint
             android:id="@id/playBtnsLayout"
@@ -94,16 +83,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/viewBack" />
-
-        <Constraint
-            android:id="@id/btnMore"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="@dimen/spacing_small"
-            app:layout_constraintBottom_toBottomOf="@+id/bottomGuideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/topGuideline"
-            app:visibilityMode="ignore" />
     </ConstraintSet>
 
     <Transition
@@ -120,14 +99,6 @@
                 android:alpha="0"
                 app:framePosition="70"
                 app:motionTarget="@id/txtScreenTitle" />
-        </KeyFrameSet>
-
-        <KeyFrameSet>
-            <KeyAttribute
-                android:scaleX="1.0"
-                android:scaleY="1.0"
-                app:framePosition="5"
-                app:motionTarget="@id/artistLayout" />
         </KeyFrameSet>
 
         <KeyFrameSet>
