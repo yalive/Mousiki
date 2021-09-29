@@ -15,7 +15,8 @@ data class Playlist(
     val title: String,
     val itemCount: Int,
     val urlImage: String,
-    val type: String
+    val type: String,
+    val createdBy: String
 ) : Parcelable {
 
     companion object {

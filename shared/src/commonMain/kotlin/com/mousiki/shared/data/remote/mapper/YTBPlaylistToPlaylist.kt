@@ -11,8 +11,13 @@ class YTBPlaylistToPlaylist : Mapper<YTBPlaylist, Playlist> {
         val itemCount = from.contentDetails?.itemCount ?: 0
         val urlImage = from.snippet?.thumbnails?.urlOrEmpty().orEmpty()
 
-        val playlist = Playlist(id, title, itemCount, urlImage, Playlist.TYPE_YTB)
-
-        return playlist
+        return Playlist(
+            id = id,
+            title = title,
+            itemCount = itemCount,
+            urlImage = urlImage,
+            type = Playlist.TYPE_YTB,
+            createdBy = Playlist.CREATED_BY_APP
+        )
     }
 }
