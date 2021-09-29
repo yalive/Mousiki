@@ -54,5 +54,6 @@ class ArtistSongsFragment : BaseSongsFragment<ArtistSongsViewModel>() {
     }
 
     override fun onClickShufflePlay() {
+        viewModel.onClickShufflePlayAll()
     }
 }

@@ -172,6 +172,7 @@
                 android:layout_width="@dimen/btn_size_header"
                 android:layout_height="@dimen/btn_size_header"
                 android:layout_marginEnd="@dimen/eight_8dp"
+                android:visibility="gone"
                 app:icon="@drawable/ic_playlist_add" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

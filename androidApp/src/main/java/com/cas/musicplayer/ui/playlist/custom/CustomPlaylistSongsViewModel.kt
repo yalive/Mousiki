@@ -113,6 +113,16 @@ class CustomPlaylistSongsViewModel(
         }
     }
 
+    fun onClickShufflePlay() {
+        viewModelScope.launch {
+            var allSongs = _songs.valueOrNull()
+                ?.filterIsInstance<DisplayedVideoItem>() ?: emptyList()
+            if (allSongs.isEmpty()) return@launch
+            allSongs = allSongs.shuffled()
+            playTrackFromQueue(allSongs.first().track, allSongs.map { it.track })
+        }
+    }
+
     fun refresh() {
         getPlaylistSongs()
     }

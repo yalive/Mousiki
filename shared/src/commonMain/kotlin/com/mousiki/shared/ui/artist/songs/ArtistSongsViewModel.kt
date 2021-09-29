@@ -59,6 +59,15 @@ class ArtistSongsViewModel(
         }
     }
 
+    fun onClickShufflePlayAll() {
+        scope.launch {
+            var allSongs = _tracks.songList()
+            if (allSongs.isEmpty()) return@launch
+            allSongs = allSongs.shuffled()
+            playTrackFromQueue(allSongs.first(), allSongs)
+        }
+    }
+
     fun onPlaybackStateChanged() {
         val currentItems = _tracks.valueOrNull() ?: return
         val updatedList = updateCurrentPlaying(currentItems)
