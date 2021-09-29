@@ -25,7 +25,6 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
             ?.map { it.track }.orEmpty()
 
     override val screenName: String = "PlaylistSongsFragment"
-
     override val viewModel: PlaylistSongsViewModel by viewModel {
         val playlistId = arguments?.getString(EXTRAS_PLAYLIST_ID)!!
         Injector.playlistVideosViewModel.also {
@@ -67,7 +66,7 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
     }
 
     companion object {
-        val EXTRAS_PLAYLIST_ID = "playlist_id"
-        val EXTRAS_PLAYLIST_DESC = "playlist_desc"
+        const val EXTRAS_PLAYLIST_DESC = "playlist_desc"
+        const val EXTRAS_PLAYLIST_ID = "playlist_id"
     }
 }

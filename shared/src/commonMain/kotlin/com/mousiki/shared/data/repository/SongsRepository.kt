@@ -50,6 +50,10 @@ class SongsRepository(
         }
     }
 
+    suspend fun getSong(videoId: String): Result<Track> {
+        return remoteDataSource.getSong(videoId)
+    }
+
     suspend fun getFavouriteSongs(max: Int = 10): List<Track> =
         withContext(Dispatchers.Default) {
             return@withContext favouriteTracksDaoSql.getTracks(max.toLong()).executeAsList().map {

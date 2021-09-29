@@ -1,11 +1,14 @@
 package com.mousiki.shared.data.datasource
 
+import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.models.TrackDto
 import com.mousiki.shared.data.models.toDomainModel
+import com.mousiki.shared.data.models.toMusicTrack
 import com.mousiki.shared.data.remote.api.MousikiApi
 import com.mousiki.shared.data.remote.mapper.YTBVideoToTrack
 import com.mousiki.shared.data.remote.mapper.toListMapper
 import com.mousiki.shared.data.remote.runner.NetworkRunner
+import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
 import com.mousiki.shared.fs.ContentEncoding
@@ -31,7 +34,8 @@ class RemoteSongsDataSource(
     private val json: Json,
     private val analytics: AnalyticsApi,
     private val connectivityState: ConnectivityChecker,
-    private val storage: StorageApi
+    private val storage: StorageApi,
+    private var appConfig: RemoteAppConfig,
 ) {
 
     suspend fun getTrendingSongs(max: Int): Result<List<YtbTrack>> {
@@ -60,6 +64,13 @@ class RemoteSongsDataSource(
             connectivityState = connectivityState,
             logErrorMessage = "Cannot load ${getCurrentLocale()} trending songs file from firebase"
         )
+    }
+
+    suspend fun getSong(videoId: String): Result<Track> {
+        return networkRunner.loadWithRetry(appConfig.playlistApiConfig()) { url ->
+            val mousikiVideo = mousikiApi.getVideo(url, videoId)
+            mousikiVideo.video!!.toMusicTrack(mousikiVideo.owner)
+        }
     }
 
     fun deleteLocalTrendingFile() {

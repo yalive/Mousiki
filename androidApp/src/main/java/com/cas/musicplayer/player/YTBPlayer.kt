@@ -72,6 +72,14 @@ class YTBPlayer(
         updateMediaSessionState(state)
     }
 
+    override fun onVideoDuration(youTubePlayer: YouTubePlayer, duration: Float) {
+        Log.d(TAG_PLAYER, "onVideoDuration: $duration")
+    }
+
+    override fun onVideoId(youTubePlayer: YouTubePlayer, videoId: String) {
+        Log.d(TAG_PLAYER, "onVideoId: $videoId")
+    }
+
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
         if (seekToCalled) return // Ignore if seekTo being called, and wait effect of seekTo.
         elapsedSeconds = second.toInt()

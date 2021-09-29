@@ -75,6 +75,13 @@
                 <data android:mimeType="audio/*" />
             </intent-filter>
 
+            <!-- Open app when user share ytb url-->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
