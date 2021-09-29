@@ -66,6 +66,7 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
             )
             val bundle = bundleOf(
                 PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to genreMusic.topTracksPlaylist,
+                PlaylistSongsFragment.EXTRAS_PLAYLIST_DESC to "",
                 EXTRAS_ARTIST to artist,
                 BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageName(
                     genreMusic.imageName
