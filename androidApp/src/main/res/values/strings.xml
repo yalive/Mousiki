@@ -280,4 +280,10 @@
     <string name="track_composer">Composer</string>
     <string name="track_size">Size</string>
 
+    <!-- In app update -->
+    <string name="in_app_update_progress_dialog_title">Update</string>
+    <string name="in_app_update_progress_dialog_message">Downloading…</string>
+    <string name="in_app_update_installed">An update has just been downloaded.</string>
+    <string name="in_app_update_restart_app">Restart</string>
+
 </resources>
