@@ -59,9 +59,8 @@ class PlaylistSongsViewModel(
 
     fun onClickShufflePlay() {
         scope.launch {
-            var allSongs = _songs.songList()
+            val allSongs = _songs.songList().shuffled()
             if (allSongs.isEmpty()) return@launch
-            allSongs = allSongs.shuffled()
             playTrackFromQueue(allSongs.first(), allSongs)
         }
     }

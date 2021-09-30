@@ -92,13 +92,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topGuideline">
 
-        <ImageView
-            android:id="@+id/imgArtist"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imgArtistCV"
             android:layout_width="180dp"
             android:layout_height="180dp"
+            app:cardCornerRadius="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/ic_launcher" />
+            app:strokeColor="@color/white"
+            app:strokeWidth="0.5dp">
+
+            <ImageView
+                android:id="@+id/imgArtist"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@mipmap/ic_launcher" />
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/txtPlaylistName"
@@ -112,7 +123,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imgArtist"
+            app:layout_constraintStart_toEndOf="@+id/imgArtistCV"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/full_names" />
 
@@ -127,7 +138,7 @@
             android:text="@string/loading"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/imgArtist"
+            app:layout_constraintStart_toEndOf="@+id/imgArtistCV"
             app:layout_constraintTop_toBottomOf="@id/txtPlaylistName"
             tools:text="40 songs" />
 
@@ -145,18 +156,18 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgArtist"
+            app:layout_constraintTop_toBottomOf="@+id/imgArtistCV"
             tools:text="Country Hotlist Country Hotlist Country Hotlist Country Hotlist Country Hotlist hello" />
 
         <LinearLayout
             android:id="@+id/actionsLayout"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintStart_toEndOf="@+id/imgArtist"
-            app:layout_constraintTop_toBottomOf="@id/txtNumberOfSongs"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/imgArtistCV"
+            app:layout_constraintTop_toBottomOf="@id/txtNumberOfSongs">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMultiSelect"
@@ -184,14 +195,13 @@
         android:background="?colorSurface"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingTop="20dp"
         android:paddingBottom="@dimen/padding_for_player_space"
         android:visibility="visible"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgBackground"
+        app:layout_constraintTop_toBottomOf="@id/playBtnsLayout"
         tools:itemCount="20"
         tools:listitem="@layout/item_ytb_track" />
 
@@ -239,14 +249,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPlayAll"
-            android:layout_width="0dp"
-            app:strokeColor="@color/white"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:strokeWidth="1dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/colorIconSettings"
             android:outlineProvider="bounds"
             android:paddingStart="24dp"
             android:paddingTop="12dp"
@@ -254,7 +263,6 @@
             android:paddingBottom="12dp"
             android:stateListAnimator="@null"
             android:text="@string/play"
-            android:backgroundTint="@color/colorIconSettings"
             android:textColor="@color/colorWhite"
             app:cornerRadius="8dp"
             app:elevation="16dp"
@@ -262,7 +270,9 @@
             app:iconSize="16dp"
             app:iconTint="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/imgBackground"
-            app:layout_constraintTop_toBottomOf="@+id/imgBackground" />
+            app:layout_constraintTop_toBottomOf="@+id/imgBackground"
+            app:strokeColor="@color/white"
+            app:strokeWidth="1dp" />
 
     </LinearLayout>
 
