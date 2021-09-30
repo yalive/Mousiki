@@ -76,6 +76,7 @@ class MainActivity : BaseActivity() {
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
         setContentView(binding.root)
+        InAppUpdateManager(this, R.id.motionLayout).init()
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             updateBottomNavigationMenu(destination.id)
