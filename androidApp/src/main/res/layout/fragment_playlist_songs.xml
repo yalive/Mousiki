@@ -36,8 +36,8 @@
             android:layout_marginEnd="16dp"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="8dp"
-            android:tint="@color/colorWhite"
-            app:srcCompat="@drawable/ic_arrow_left_light" />
+            app:srcCompat="@drawable/ic_arrow_left_light"
+            app:tint="@color/colorWhite" />
     </FrameLayout>
 
     <TextView
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toTopOf="@+id/viewBack"
         tools:text="@tools:sample/full_names" />
 
-    <ImageButton
+    <!--<ImageButton
         android:id="@+id/btnMultiSelect"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -66,7 +66,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btnMore"
         app:layout_constraintTop_toTopOf="@+id/topGuideline"
         app:srcCompat="@drawable/ic_multiselect_24"
-        app:tint="?colorOnSurface" />
+        app:tint="?colorOnSurface" />-->
 
     <ImageButton
         android:id="@+id/btnMore"
@@ -81,45 +81,112 @@
         app:srcCompat="@drawable/ic_more_vertical"
         app:tint="?colorOnSurface" />
 
-    <ImageView
-        android:id="@+id/imgArtist"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/artistLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topGuideline"
-        tools:src="@mipmap/ic_launcher" />
+        app:layout_constraintTop_toBottomOf="@+id/topGuideline">
 
-    <TextView
-        android:id="@+id/txtPlaylistName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/pangram_regular"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgArtist"
-        tools:text="@tools:sample/full_names" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imgArtistCV"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            app:cardCornerRadius="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/white"
+            app:strokeWidth="0.5dp">
 
-    <TextView
-        android:id="@+id/txtNumberOfSongs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/pangram_regular"
-        android:gravity="center"
-        android:text="@string/loading"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtPlaylistName"
-        tools:text="40 songs" />
+            <ImageView
+                android:id="@+id/imgArtist"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@mipmap/ic_launcher" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/txtPlaylistName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="0dp"
+            android:fontFamily="@font/pangram_regular"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgArtistCV"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/full_names" />
+
+        <TextView
+            android:id="@+id/txtNumberOfSongs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/pangram_regular"
+            android:gravity="center"
+            android:text="@string/loading"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/imgArtistCV"
+            app:layout_constraintTop_toBottomOf="@id/txtPlaylistName"
+            tools:text="40 songs" />
+
+        <TextView
+            android:id="@+id/txtDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.5"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
+            android:gravity="start"
+            android:lines="3"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgArtistCV"
+            tools:text="Country Hotlist Country Hotlist Country Hotlist Country Hotlist Country Hotlist hello" />
+
+        <LinearLayout
+            android:id="@+id/actionsLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/imgArtistCV"
+            app:layout_constraintTop_toBottomOf="@id/txtNumberOfSongs">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMultiSelect"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="@dimen/btn_size_header"
+                android:layout_height="@dimen/btn_size_header"
+                android:layout_marginEnd="@dimen/eight_8dp"
+                app:icon="@drawable/ic_multiselect_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addItem"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="@dimen/btn_size_header"
+                android:layout_height="@dimen/btn_size_header"
+                android:layout_marginEnd="@dimen/eight_8dp"
+                android:visibility="gone"
+                app:icon="@drawable/ic_playlist_add" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.cas.musicplayer.utils.AutoRefreshRecyclerView
         android:id="@+id/recyclerView"
@@ -128,14 +195,13 @@
         android:background="?colorSurface"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingTop="20dp"
         android:paddingBottom="@dimen/padding_for_player_space"
         android:visibility="visible"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgBackground"
+        app:layout_constraintTop_toBottomOf="@id/playBtnsLayout"
         tools:itemCount="20"
         tools:listitem="@layout/item_ytb_track" />
 
@@ -150,24 +216,65 @@
         app:layout_constraintTop_toBottomOf="@+id/imgBackground"
         tools:visibility="gone" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnPlayAll"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/playBtnsLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:outlineProvider="bounds"
-        android:paddingStart="32dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="32dp"
-        android:paddingBottom="12dp"
-        android:stateListAnimator="@null"
-        android:text="@string/shuffle_play"
-        android:textColor="@color/colorWhite"
-        app:cornerRadius="24dp"
-        app:elevation="16dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/imgBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgBackground" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBackground">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnShufflePlay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:outlineProvider="bounds"
+            android:paddingStart="24dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="40dp"
+            android:paddingBottom="12dp"
+            android:stateListAnimator="@null"
+            android:text="@string/shuffle"
+            android:textColor="@color/colorWhite"
+            app:cornerRadius="8dp"
+            app:elevation="16dp"
+            app:icon="@drawable/ic_shuffle"
+            app:iconSize="16dp"
+            app:iconTint="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPlayAll"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorIconSettings"
+            android:outlineProvider="bounds"
+            android:paddingStart="24dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="48dp"
+            android:paddingBottom="12dp"
+            android:stateListAnimator="@null"
+            android:text="@string/play"
+            android:textColor="@color/colorWhite"
+            app:cornerRadius="8dp"
+            app:elevation="16dp"
+            app:icon="@drawable/ic_play"
+            app:iconSize="16dp"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imgBackground"
+            app:layout_constraintTop_toBottomOf="@+id/imgBackground"
+            app:strokeColor="@color/white"
+            app:strokeWidth="1dp" />
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideline"

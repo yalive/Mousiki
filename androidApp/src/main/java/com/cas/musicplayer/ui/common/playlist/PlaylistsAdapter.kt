@@ -40,6 +40,7 @@ class PlaylistsAdapter : SimpleBaseAdapter<Playlist, PlaylistsAdapter.ViewHolder
                 val item = dataItems[adapterPosition]
                 val bundle = Bundle()
                 bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_ID, item.id)
+                bundle.putString(PlaylistSongsFragment.EXTRAS_PLAYLIST_DESC, "")
                 val artist = Artist(item.title, "US", item.id, item.urlImage)
                 bundle.putParcelable(EXTRAS_ARTIST, artist)
                 bundle.putParcelable(

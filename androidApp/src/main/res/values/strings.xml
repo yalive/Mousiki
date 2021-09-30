@@ -88,6 +88,8 @@
     <string name="remove_from_recently_played">Remove from recently played</string>
     <string name="playlist_favorite">Favourite</string>
     <string name="shuffle_play">Shuffle play</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="play">Play</string>
     <string name="playlist_exist_message">Playlist %s existed</string>
     <string name="track_added_to_playlist">Added to %s</string>
     <string name="playlist_created">Playlist %s created</string>
