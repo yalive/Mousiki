@@ -39,7 +39,6 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-
     }
 
     private fun initViews() {
@@ -58,6 +57,19 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
         binding.btnBack.onClick {
             findNavController().popBackStack()
         }
+
+        binding.btnMultiSelect.onClick {
+            viewModel.onMultiSelect()
+        }
+
+        binding.btnPlayAll.onClick {
+            viewModel.onPlayAll()
+        }
+
+        binding.btnShufflePlay.onClick {
+            viewModel.onShufflePlay()
+        }
+
         observe(viewModel.localSongs, adapter::submitList)
 
         observe(PlaybackLiveData) { state ->
@@ -80,7 +92,7 @@ class AlbumDetailsFragment : BaseFragment<AlbumDetailsViewModel>(
                 Picasso.get()
                     .load(Utils.getAlbumArtUri(album.id))
                     .placeholder(R.drawable.ic_music_note)
-                    .into(binding.albumArt)
+                    .into(binding.albumImg)
             } catch (e: Exception) {
                 FirebaseCrashlytics.getInstance().recordException(e)
             } catch (e: OutOfMemoryError) {

@@ -82,6 +82,12 @@ class PopularSongsViewModel(
         playTrackFromQueue(allSongs.first(), allSongs)
     }
 
+    fun onClickShufflePlay() = scope.launch {
+        val allSongs = _newReleases.songList().shuffled()
+        if (allSongs.isEmpty()) return@launch
+        playTrackFromQueue(allSongs.first(), allSongs)
+    }
+
     fun onPlaybackStateChanged() {
         val currentItems = _newReleases.valueOrNull() ?: return
         val updatedList = updateCurrentPlaying(currentItems)

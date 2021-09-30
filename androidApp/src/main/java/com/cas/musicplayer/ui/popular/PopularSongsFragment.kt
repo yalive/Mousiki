@@ -55,6 +55,10 @@ class PopularSongsFragment : BaseSongsFragment<PopularSongsViewModel>() {
         viewModel.onClickTrackPlayAll()
     }
 
+    override fun onClickShufflePlay() {
+        viewModel.onClickShufflePlay()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         gotFirstTrack = false

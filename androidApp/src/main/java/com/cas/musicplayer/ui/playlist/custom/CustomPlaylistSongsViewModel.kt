@@ -113,6 +113,15 @@ class CustomPlaylistSongsViewModel(
         }
     }
 
+    fun onClickShufflePlay() {
+        viewModelScope.launch {
+            val allSongs = _songs.valueOrNull()
+                ?.filterIsInstance<DisplayedVideoItem>()?.shuffled() ?: emptyList()
+            if (allSongs.isEmpty()) return@launch
+            playTrackFromQueue(allSongs.first().track, allSongs.map { it.track })
+        }
+    }
+
     fun refresh() {
         getPlaylistSongs()
     }

@@ -67,6 +67,10 @@ class CustomPlaylistSongsFragment : BaseSongsFragment<CustomPlaylistSongsViewMod
         viewModel.onClickTrackPlayAll()
     }
 
+    override fun onClickShufflePlay() {
+        viewModel.onClickShufflePlay()
+    }
+
     override fun onBottomOptionsMenuDismissed() {
         viewModel.refresh()
     }

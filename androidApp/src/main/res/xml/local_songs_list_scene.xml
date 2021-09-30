@@ -15,7 +15,7 @@
 
         <Constraint
             android:id="@id/cardAlbumArt"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="180dp"
             android:layout_marginStart="@dimen/sixteen_16dp"
             android:layout_marginTop="64dp"
@@ -23,40 +23,8 @@
             android:scaleX="1.0"
             android:scaleY="1.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
-
-        <Constraint
-            android:id="@id/albumName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginTop="@dimen/sixteen_16dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            android:alpha="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cardAlbumArt"
-            app:layout_constraintTop_toTopOf="@id/cardAlbumArt" />
-
-        <Constraint
-            android:id="@id/artistName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginTop="@dimen/eight_8dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            android:alpha="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/albumName"
-            app:layout_constraintTop_toBottomOf="@id/albumName" />
-
-        <Constraint
-            android:id="@id/txtNumberOfSongs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="1"
-            app:layout_constraintStart_toStartOf="@id/cardAlbumArt"
-            app:layout_constraintTop_toBottomOf="@id/cardAlbumArt" />
 
         <Constraint
             android:id="@id/txtScreenTitle"
@@ -67,6 +35,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/viewBack"
             app:layout_constraintTop_toTopOf="@id/viewBack" />
+
+        <Constraint
+            android:id="@id/playBtnsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/imgBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgBackground" />
 
     </ConstraintSet>
 
@@ -82,42 +59,13 @@
 
         <Constraint
             android:id="@id/cardAlbumArt"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="180dp"
             android:layout_marginStart="@dimen/sixteen_16dp"
             android:alpha="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="parent" />
-
-        <Constraint
-            android:id="@id/albumName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginTop="@dimen/sixteen_16dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            android:alpha="0.0"
-            app:layout_constraintStart_toEndOf="@id/cardAlbumArt"
-            app:layout_constraintTop_toTopOf="@id/cardAlbumArt" />
-
-        <Constraint
-            android:id="@id/artistName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_8dp"
-            android:alpha="0.0"
-            app:layout_constraintStart_toStartOf="@id/albumName"
-            app:layout_constraintTop_toBottomOf="@id/albumName" />
-
-        <Constraint
-            android:id="@id/txtNumberOfSongs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="0.0"
-            android:scaleX="0.7"
-            android:scaleY="0.7"
-            app:layout_constraintStart_toStartOf="@id/cardAlbumArt"
-            app:layout_constraintTop_toBottomOf="@id/cardAlbumArt" />
 
         <Constraint
             android:id="@id/txtScreenTitle"
@@ -128,6 +76,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/viewBack"
             app:layout_constraintTop_toTopOf="@id/viewBack" />
+        <Constraint
+            android:id="@id/playBtnsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtScreenTitle" />
     </ConstraintSet>
 
     <Transition

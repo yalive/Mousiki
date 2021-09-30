@@ -45,6 +45,8 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
         observe(viewModel.songs.asLiveData(), this::updateUI)
         binding.txtPlaylistName.text = artist.name
         binding.txtScreenTitle.text = artist.name
+        val playlistDesc = arguments?.getString(EXTRAS_PLAYLIST_DESC)!!
+        binding.txtDesc.text = playlistDesc
     }
 
     override fun onClickTrack(track: Track) {
@@ -55,11 +57,16 @@ class PlaylistSongsFragment : BaseSongsFragment<PlaylistSongsViewModel>() {
         viewModel.onClickTrackPlayAll()
     }
 
+    override fun onClickShufflePlay() {
+        viewModel.onClickShufflePlay()
+    }
+
     override fun updateCurrentPlayingItem(state: PlayerConstants.PlayerState) {
         viewModel.onPlaybackStateChanged()
     }
 
     companion object {
+        const val EXTRAS_PLAYLIST_DESC = "playlist_desc"
         const val EXTRAS_PLAYLIST_ID = "playlist_id"
     }
 }
