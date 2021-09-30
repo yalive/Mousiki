@@ -83,9 +83,8 @@ class PopularSongsViewModel(
     }
 
     fun onClickShufflePlay() = scope.launch {
-        var allSongs = _newReleases.songList()
+        val allSongs = _newReleases.songList().shuffled()
         if (allSongs.isEmpty()) return@launch
-        allSongs = allSongs.shuffled()
         playTrackFromQueue(allSongs.first(), allSongs)
     }
 
