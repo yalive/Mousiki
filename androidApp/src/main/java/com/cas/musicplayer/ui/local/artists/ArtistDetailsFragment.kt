@@ -57,12 +57,23 @@ class ArtistDetailsFragment : BaseFragment<ArtistDetailsViewModel>(
             Picasso.get()
                 .load(Utils.getAlbumArtUri(artist.safeGetFirstAlbum().id))
                 .placeholder(R.drawable.ic_artist_placeholder)
-                .into(binding.imgBackground)
+                .into(binding.artistImg)
 
         }
         binding.localSongsRecyclerView.adapter = adapter
         binding.btnBack.onClick {
             findNavController().popBackStack()
+        }
+        binding.btnMultiSelect.onClick {
+            viewModel.onMultiSelect()
+        }
+
+        binding.btnPlayAll.onClick {
+            viewModel.onPlayAll()
+        }
+
+        binding.btnShufflePlay.onClick {
+            viewModel.onShufflePlay()
         }
         observe(viewModel.localSongs, adapter::submitList)
 
