@@ -36,7 +36,7 @@
             android:layout_marginEnd="16dp"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="8dp"
-            android:tint="?colorOnSurface"
+            app:tint="?colorOnSurface"
             app:srcCompat="@drawable/ic_arrow_left_light" />
     </FrameLayout>
 
