@@ -14,27 +14,6 @@
         </Constraint>
 
         <Constraint
-            android:id="@id/artistName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginTop="@dimen/eight_8dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            android:alpha="1"
-            app:layout_constraintBottom_toTopOf="@id/txtNumberOfSongs"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Constraint
-            android:id="@id/txtNumberOfSongs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:alpha="1"
-            app:layout_constraintBottom_toBottomOf="@id/imgBackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Constraint
             android:id="@id/txtScreenTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -49,32 +28,25 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@id/imgBackground"
-            android:layout_height="320dp"
-            android:alpha="0.0"
-            app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Constraint
-            android:id="@id/artistName"
+            android:layout_height="0dp"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_8dp"
-            android:layout_marginTop="@dimen/eight_8dp"
-            android:layout_marginEnd="@dimen/eight_8dp"
-            android:alpha="0.0"
-            app:layout_constraintBottom_toTopOf="@id/txtNumberOfSongs"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Constraint
-            android:id="@id/txtNumberOfSongs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:alpha="0"
-            app:layout_constraintBottom_toBottomOf="@id/imgBackground"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@id/cardArtistArt"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:alpha="0"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/topGuideline" />
 
         <Constraint
             android:id="@id/txtScreenTitle"
@@ -85,6 +57,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/viewBack"
             app:layout_constraintTop_toTopOf="@id/viewBack" />
+
+        <Constraint
+            android:id="@id/playBtnsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtScreenTitle"/>
     </ConstraintSet>
 
     <Transition
