@@ -39,14 +39,6 @@ class ArtistDetailsViewModel(
         }
 
         val displayedItems = mutableListOf<DisplayableItem>().apply {
-            add(HeaderSongsActionsItem(songsItems.size,
-                onPlayAllTracks = {
-                    if (songsItems.isEmpty()) return@HeaderSongsActionsItem
-                    onClickTrack(songsItems[0].track)
-                },
-                onShuffleAllTracks = { onShufflePlay() },
-                onMultiSelectTracks = { _showMultiSelection.trigger() }
-            ))
             addAll(songsItems)
         }
 
@@ -61,13 +53,26 @@ class ArtistDetailsViewModel(
         playTrackFromQueue(track, tracks)
     }
 
-    private fun onShufflePlay() = scope.launch {
+    fun onShufflePlay() = scope.launch {
         val tracks = _localSongs.value
             ?.filterIsInstance<DisplayedVideoItem>()
             ?.map { it.track }?.shuffled() ?: return@launch
 
         if (tracks.isEmpty()) return@launch
-        playTrackFromQueue(tracks.random(), tracks)
+        playTrackFromQueue(tracks[0], tracks)
+    }
+
+    fun onPlayAll() = scope.launch {
+        val tracks = _localSongs.value
+            ?.filterIsInstance<DisplayedVideoItem>()
+            ?.map { it.track } ?: return@launch
+
+        if (tracks.isEmpty()) return@launch
+        playTrackFromQueue(tracks[0], tracks)
+    }
+
+    fun onMultiSelect() {
+        _showMultiSelection.trigger()
     }
 
     fun onPlaybackStateChanged() {

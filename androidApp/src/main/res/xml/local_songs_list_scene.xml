@@ -51,7 +51,7 @@
         <Constraint
             android:id="@id/imgBackground"
             android:layout_height="0dp"
-            android:alpha="0.8"
+            android:alpha="0"
             app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
