@@ -1,7 +1,6 @@
 package com.cas.musicplayer.utils
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.util.Log
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,6 +10,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.cas.musicplayer.R
 import com.cas.musicplayer.di.Injector
+import com.cas.musicplayer.ui.settings.InAppUpdateProgressDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.common.IntentSenderForResultStarter
@@ -35,15 +35,8 @@ class InAppUpdateManager(
         handleActivityResult(it.resultCode)
     }
 
-    // TODO: Use custom dialog
     private val progressDialog by lazy {
-        ProgressDialog(activity).apply {
-            setCancelable(false)
-            setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-            setTitle(R.string.in_app_update_progress_dialog_title)
-            setMessage(activity.getString(R.string.in_app_update_progress_dialog_message))
-            show()
-        }
+        InAppUpdateProgressDialog.present(activity.supportFragmentManager)
     }
 
     fun init() {
@@ -90,7 +83,7 @@ class InAppUpdateManager(
             ) {
                 Log.d(TAG, "UPDATE_AVAILABLE")
                 val clientVersionStalenessDays = appUpdateInfo.clientVersionStalenessDays() ?: -1
-                //if (clientVersionStalenessDays < 5) return@addOnSuccessListener
+                if (clientVersionStalenessDays < 5) return@addOnSuccessListener
 
                 // Request the update.
                 val senderResult = IntentSenderForResultStarter { intentSender, _, _, _, _, _, _ ->
@@ -115,7 +108,7 @@ class InAppUpdateManager(
             if (state.installStatus() == InstallStatus.DOWNLOADING) {
                 val percent = if (state.totalBytesToDownload() == 0L) 0
                 else state.bytesDownloaded() * 100 / state.totalBytesToDownload()
-                progressDialog.progress = percent.toInt()
+                progressDialog.setProgress(percent.toInt())
             }
 
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
