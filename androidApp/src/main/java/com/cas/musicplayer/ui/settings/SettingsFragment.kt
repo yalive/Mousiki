@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
@@ -14,6 +15,7 @@ import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSettingsBinding
 import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.tmp.observe
+import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.ui.base.setupToolbar
@@ -90,19 +92,23 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         binding.btnSwitchPip.onClick {
             SystemSettings.openPipSetting(requireActivity())
         }
-        if (PreferenceUtil.hasNewVersion){
-            binding.appVersion.setCompoundDrawablesWithIntrinsicBounds(R.drawable.has_update, 0, 0, 0);
+        if (PreferenceUtil.hasNewVersion) {
+            binding.appVersion.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.has_update,
+                0,
+                0,
+                0
+            );
             binding.appVersion.onClick {
-                InAppUpdateManager(requireActivity(), R.id.motionLayout, false).checkUpdate()
+                val inAppUpdateManager = (requireActivity() as MainActivity).inAppUpdateManager
+                inAppUpdateManager.checkUpdate(false)
             }
         }
-
         binding.btnOutVideoSize.isVisible = !SystemSettings.isPiPSupported()
-        binding.appVersion.text =
-            if (PreferenceUtil.hasNewVersion) getString(
-                R.string.version_available,
-                BuildConfig.VERSION_NAME
-            ) else getString(R.string.last_version, BuildConfig.VERSION_NAME)
+        binding.appVersion.text = if (PreferenceUtil.hasNewVersion) HtmlCompat.fromHtml(
+            getString(R.string.version_available, BuildConfig.VERSION_NAME),
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        ) else getString(R.string.last_version, BuildConfig.VERSION_NAME)
 
         binding.dividerVideoSize.isVisible = !SystemSettings.isPiPSupported()
         binding.btnOutVideoSize.onClick {

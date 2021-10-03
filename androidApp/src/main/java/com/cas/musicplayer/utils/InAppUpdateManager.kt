@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.IdRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -24,8 +23,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class InAppUpdateManager(
     private val activity: FragmentActivity,
-    @IdRes private val snakeBarRootViewRes: Int,
-    private val automaticCheck: Boolean = true
+    @IdRes private val snakeBarRootViewRes: Int
 ) {
     private val analytics by lazy { Injector.analytics }
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(activity) }
@@ -47,35 +45,7 @@ class InAppUpdateManager(
         })
     }
 
-    private fun handleActivityResult(resultCode: Int) {
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                Log.d(TAG, "onActivityResult Ok")
-                analytics.logEvent(ANALYTICS_UPDATE_STARTED)
-            }
-            Activity.RESULT_CANCELED -> {
-                Log.d(TAG, "onActivityResult KO")
-                analytics.logEvent(ANALYTICS_UPDATE_CANCELED)
-                PreferenceUtil.canShowUpdateDialog = false
-            }
-            ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
-                Log.d(TAG, "onActivityResult in app failed")
-                analytics.logEvent(ANALYTICS_UPDATE_FAILED)
-            }
-        }
-    }
-
-    private fun checkNonInstalledUpdate() {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            // If the update is downloaded but not installed,
-            // notify the user to complete the update.
-            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                popupSnackBarForCompleteUpdate()
-            }
-        }
-    }
-
-    public fun checkUpdate() {
+    fun checkUpdate(automaticCheck: Boolean = true) {
         Log.d(TAG, "checking update...")
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
@@ -83,12 +53,12 @@ class InAppUpdateManager(
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
-                Log.d(TAG, "UPDATE_AVAILABLE")
+                Log.d(TAG, "UPDATE_AVAILABLE, newVersion=${appUpdateInfo.availableVersionCode()}")
                 PreferenceUtil.lastVersion = appUpdateInfo.availableVersionCode()
 
                 if (automaticCheck) {
                     val days = appUpdateInfo.clientVersionStalenessDays() ?: -1
-                    if (days < 5) return@addOnSuccessListener
+                    if (days in 1..4) return@addOnSuccessListener
                     if (!PreferenceUtil.canShowUpdateDialog) return@addOnSuccessListener
                 }
 
@@ -124,6 +94,34 @@ class InAppUpdateManager(
                 progressDialog.dismiss()
                 // After the update is downloaded, show a notification
                 // and request user confirmation to restart the app.
+                popupSnackBarForCompleteUpdate()
+            }
+        }
+    }
+
+    private fun handleActivityResult(resultCode: Int) {
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                Log.d(TAG, "onActivityResult Ok")
+                analytics.logEvent(ANALYTICS_UPDATE_STARTED)
+            }
+            Activity.RESULT_CANCELED -> {
+                Log.d(TAG, "onActivityResult KO")
+                analytics.logEvent(ANALYTICS_UPDATE_CANCELED)
+                PreferenceUtil.canShowUpdateDialog = false
+            }
+            ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
+                Log.d(TAG, "onActivityResult in app failed")
+                analytics.logEvent(ANALYTICS_UPDATE_FAILED)
+            }
+        }
+    }
+
+    private fun checkNonInstalledUpdate() {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            // If the update is downloaded but not installed,
+            // notify the user to complete the update.
+            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                 popupSnackBarForCompleteUpdate()
             }
         }
