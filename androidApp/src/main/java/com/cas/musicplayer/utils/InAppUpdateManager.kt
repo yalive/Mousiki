@@ -23,9 +23,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class InAppUpdateManager(
     private val activity: AppCompatActivity,
-    @IdRes private val snakeBarRootViewRes: Int
+    @IdRes private val snakeBarRootViewRes: Int,
+    private val automaticCheck: Boolean = true
 ) {
-
     private val analytics by lazy { Injector.analytics }
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(activity) }
     private val updateLauncher = activity.registerForActivityResult(
@@ -55,6 +55,7 @@ class InAppUpdateManager(
             Activity.RESULT_CANCELED -> {
                 Log.d(TAG, "onActivityResult KO")
                 analytics.logEvent(ANALYTICS_UPDATE_CANCELED)
+                PreferenceUtil.canShowUpdateDialog = false
             }
             ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
                 Log.d(TAG, "onActivityResult in app failed")
@@ -83,8 +84,12 @@ class InAppUpdateManager(
             ) {
                 Log.d(TAG, "UPDATE_AVAILABLE")
                 PreferenceUtil.lastVersion = appUpdateInfo.availableVersionCode()
-                val clientVersionStalenessDays = appUpdateInfo.clientVersionStalenessDays() ?: -1
-                if (clientVersionStalenessDays < 5) return@addOnSuccessListener
+
+                if (automaticCheck) {
+                    val days = appUpdateInfo.clientVersionStalenessDays() ?: -1
+                    if (days < 5) return@addOnSuccessListener
+                    if (!PreferenceUtil.canShowUpdateDialog) return@addOnSuccessListener
+                }
 
                 // Request the update.
                 val senderResult = IntentSenderForResultStarter { intentSender, _, _, _, _, _, _ ->

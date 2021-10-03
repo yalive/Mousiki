@@ -50,6 +50,5 @@ object Constants {
 
     // App Update
     const val PREF_APP_LATEST_VERSION = "app_latest_version"
-
-
+    const val PREF_CAN_SHOW_UPDATE_DIALOG = "can_show_update_dialog"
 }
