@@ -90,11 +90,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         binding.btnSwitchPip.onClick {
             SystemSettings.openPipSetting(requireActivity())
         }
-        binding.update.onClick {
-            InAppUpdateManager(requireActivity(), R.id.motionLayout, false).init()
-        }
+        if (PreferenceUtil.hasNewVersion)
+            binding.appVersion.onClick {
+                InAppUpdateManager(requireActivity(), R.id.motionLayout, false).checkUpdate()
+            }
         binding.btnOutVideoSize.isVisible = !SystemSettings.isPiPSupported()
-        binding.update.isVisible = PreferenceUtil.hasNewVersion
         binding.appVersion.text =
             if (PreferenceUtil.hasNewVersion) getString(
                 R.string.version_available,
