@@ -71,7 +71,7 @@
     <string name="video_duration_less_than">Filter video files less than 60s</string>
     <string name="video_size_less_than">Filter video files less than 100k</string>
     <string name="settings_pip">Picture-in-picture</string>
-    <string name="version_available">v %s (new version available)</string>
+    <string name="version_available">v %s (<u>new version available</u>)</string>
     <string name="last_version">v %s (last version)</string>
     <string name="update">update</string>
 

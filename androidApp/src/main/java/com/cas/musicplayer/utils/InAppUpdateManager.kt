@@ -75,7 +75,7 @@ class InAppUpdateManager(
         }
     }
 
-    private fun checkUpdate() {
+    public fun checkUpdate() {
         Log.d(TAG, "checking update...")
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
