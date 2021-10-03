@@ -82,6 +82,7 @@ class InAppUpdateManager(
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
                 Log.d(TAG, "UPDATE_AVAILABLE")
+                PreferenceUtil.lastVersion = appUpdateInfo.availableVersionCode()
                 val clientVersionStalenessDays = appUpdateInfo.clientVersionStalenessDays() ?: -1
                 if (clientVersionStalenessDays < 5) return@addOnSuccessListener
 
