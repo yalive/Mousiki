@@ -6,6 +6,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.cas.musicplayer.R
@@ -22,7 +23,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 
 class InAppUpdateManager(
-    private val activity: AppCompatActivity,
+    private val activity: FragmentActivity,
     @IdRes private val snakeBarRootViewRes: Int,
     private val automaticCheck: Boolean = true
 ) {

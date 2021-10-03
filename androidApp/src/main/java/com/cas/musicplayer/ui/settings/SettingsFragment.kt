@@ -9,6 +9,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import com.cas.common.extensions.onClick
 import com.cas.common.viewmodel.viewModel
+import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.FragmentSettingsBinding
 import com.cas.musicplayer.di.Injector
@@ -89,7 +90,17 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(
         binding.btnSwitchPip.onClick {
             SystemSettings.openPipSetting(requireActivity())
         }
+        binding.update.onClick {
+            InAppUpdateManager(requireActivity(), R.id.motionLayout, false).init()
+        }
         binding.btnOutVideoSize.isVisible = !SystemSettings.isPiPSupported()
+        binding.update.isVisible = PreferenceUtil.hasNewVersion
+        binding.appVersion.text =
+            if (PreferenceUtil.hasNewVersion) getString(
+                R.string.version_available,
+                BuildConfig.VERSION_NAME
+            ) else getString(R.string.last_version, BuildConfig.VERSION_NAME)
+
         binding.dividerVideoSize.isVisible = !SystemSettings.isPiPSupported()
         binding.btnOutVideoSize.onClick {
             AlertDialog.Builder(requireContext(), R.style.AppTheme_AlertDialog)
