@@ -64,7 +64,9 @@ class MainActivity : BaseActivity() {
     private var exitDialog: BottomSheetDialog? = null
 
     val binding by viewBinding(ActivityMainBinding::inflate)
-
+    val inAppUpdateManager by lazy {
+        InAppUpdateManager(this, R.id.motionLayout)
+    }
     private var dialogDrawOverApps: AlertDialog? = null
     private var drawOverAppsRequested = false
 
@@ -76,6 +78,7 @@ class MainActivity : BaseActivity() {
         UserPrefs.onLaunchApp()
         UserPrefs.resetNumberOfTrackClick()
         setContentView(binding.root)
+        inAppUpdateManager.init()
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             updateBottomNavigationMenu(destination.id)
