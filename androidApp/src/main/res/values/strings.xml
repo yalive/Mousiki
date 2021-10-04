@@ -71,6 +71,9 @@
     <string name="video_duration_less_than">Filter video files less than 60s</string>
     <string name="video_size_less_than">Filter video files less than 100k</string>
     <string name="settings_pip">Picture-in-picture</string>
+    <string name="version_available">v %s (&lt;u&gt;new version available&lt;/u&gt;)</string>
+    <string name="last_version">v %s (latest version)</string>
+    <string name="update">update</string>
 
     <string name="pip_dialog_title">Picture-in-picture</string>
     <string name="pip_dialog_mesage">Allow Mousiki app to create a picture-in-picture window while the app is open or after you leave it to continue watching youtube videos. This window displays on top of other apps you\'re using.</string>
@@ -281,5 +284,11 @@
     <string name="track_path">Path</string>
     <string name="track_composer">Composer</string>
     <string name="track_size">Size</string>
+
+    <!-- In app update -->
+    <string name="in_app_update_progress_dialog_title">Update</string>
+    <string name="in_app_update_progress_dialog_message">Downloading…</string>
+    <string name="in_app_update_installed">An update has just been downloaded.</string>
+    <string name="in_app_update_restart_app">Restart</string>
 
 </resources>

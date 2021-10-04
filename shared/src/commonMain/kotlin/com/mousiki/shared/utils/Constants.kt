@@ -48,4 +48,7 @@ object Constants {
     const val VIDEO_SEEN = "video_seen"
     const val SHOW_VIDEO_GUIDE = "show_video_guide"
 
+    // App Update
+    const val PREF_APP_LATEST_VERSION = "app_latest_version"
+    const val PREF_CAN_SHOW_UPDATE_DIALOG = "can_show_update_dialog"
 }

@@ -3,6 +3,7 @@ package com.cas.musicplayer.utils
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.cas.musicplayer.BuildConfig
 import com.cas.musicplayer.MusicApp
 import com.mousiki.shared.utils.Constants.ALBUM_ARTISTS_ONLY
 import com.mousiki.shared.utils.Constants.ALBUM_DETAIL_SONG_SORT_ORDER
@@ -22,6 +23,8 @@ import com.mousiki.shared.utils.Constants.FILTER_VIDEO_DURATION
 import com.mousiki.shared.utils.Constants.FILTER_VIDEO_SIZE
 import com.mousiki.shared.utils.Constants.INITIALIZED_BLACKLIST
 import com.mousiki.shared.utils.Constants.MUSIC_SEEN
+import com.mousiki.shared.utils.Constants.PREF_APP_LATEST_VERSION
+import com.mousiki.shared.utils.Constants.PREF_CAN_SHOW_UPDATE_DIALOG
 import com.mousiki.shared.utils.Constants.SHOW_PIP_DIALOG
 import com.mousiki.shared.utils.Constants.SHOW_VIDEO_GUIDE
 import com.mousiki.shared.utils.Constants.SONG_SORT_ORDER
@@ -187,6 +190,24 @@ object PreferenceUtil {
             true
         )
         set(value) = sharedPreferences.edit { putBoolean(SHOW_VIDEO_GUIDE, value) }
+
+
+    var lastVersion: Int
+        get() = sharedPreferences.getInt(PREF_APP_LATEST_VERSION, -1)
+        set(value) {
+            val currentLatestVersion = sharedPreferences.getInt(PREF_APP_LATEST_VERSION, -1)
+            if (currentLatestVersion != -1 && value != currentLatestVersion) {
+                canShowUpdateDialog = true
+            }
+            sharedPreferences.edit { putInt(PREF_APP_LATEST_VERSION, value) }
+        }
+
+    val hasNewVersion: Boolean
+        get() = lastVersion != -1 && lastVersion != BuildConfig.VERSION_CODE
+
+    var canShowUpdateDialog
+        get() = sharedPreferences.getBoolean(PREF_CAN_SHOW_UPDATE_DIALOG, true)
+        set(value) = sharedPreferences.edit { putBoolean(PREF_CAN_SHOW_UPDATE_DIALOG, value) }
 
     fun toggleFolderVisibility(path: String) {
         val hidden = sharedPreferences.getBoolean(path, false)
