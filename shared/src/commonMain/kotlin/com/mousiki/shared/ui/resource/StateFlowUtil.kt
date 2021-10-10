@@ -1,7 +1,9 @@
 package com.mousiki.shared.ui.resource
 
 import com.mousiki.shared.domain.models.DisplayableItem
+import com.mousiki.shared.domain.models.DisplayedVideoItem
 import com.mousiki.shared.domain.models.LoadingItem
+import com.mousiki.shared.domain.models.Track
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -54,4 +56,8 @@ fun MutableStateFlow<Resource<List<DisplayableItem>>?>.appendItems(
         oldList.remove(LoadingItem)
     }
     value = Resource.Success(oldList)
+}
+
+fun StateFlow<List<DisplayableItem>?>.songList(): List<Track> {
+    return this.value?.filterIsInstance<DisplayedVideoItem>()?.map { it.track } ?: emptyList()
 }
