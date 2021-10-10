@@ -49,7 +49,7 @@ val viewModelsModule = module {
     factory { CustomPlaylistSongsViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { CreatePlaylistViewModel(get(), get()) }
     factory { QueueViewModel(get()) }
-    factory { LocalSongsViewModel(get(), get()) }
+    factory { LocalSongsViewModel(get(), get(), get()) }
     factory { LocalVideoViewModel(get(), get(), get()) }
     factory { PlayedVideoViewModel(get(), get(), get()) }
     factory { LocalSongsSettingsViewModel(get(), get()) }
