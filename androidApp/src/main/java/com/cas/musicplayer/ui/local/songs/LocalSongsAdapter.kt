@@ -1,6 +1,7 @@
 package com.cas.musicplayer.ui.local.songs
 
 import com.cas.musicplayer.delegateadapter.MousikiAdapter
+import com.cas.musicplayer.ui.common.ads.AdsCellDelegate
 import com.cas.musicplayer.ui.popular.SongItemDiffUtil
 import com.mousiki.shared.domain.models.Track
 
@@ -19,7 +20,8 @@ class LocalSongsAdapter(
             onFilterClicked = onFilterClicked,
             showCountsAndSortButton = showCountsAndSortButton,
             showFilter = showFilter
-        )
+        ),
+        AdsCellDelegate()
     ),
     SongItemDiffUtil()
 )

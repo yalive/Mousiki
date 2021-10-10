@@ -52,6 +52,11 @@ class GetListAdsDelegateImp(
         }
     }
 
+    override suspend fun getOrAwaitNativeAds(count: Int): List<DisplayableItem> {
+        awaitLoadAds()
+        return getNativeAds(count)
+    }
+
     override suspend fun awaitLoadAds() {
         AdsManager.awaitLoadAds()
     }

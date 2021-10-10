@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.local.songs
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.cas.common.viewmodel.viewModel
 import com.cas.musicplayer.R
@@ -11,7 +12,6 @@ import com.cas.musicplayer.di.Injector
 import com.cas.musicplayer.player.services.PlaybackLiveData
 import com.cas.musicplayer.tmp.observe
 import com.cas.musicplayer.tmp.observeEvent
-import com.cas.musicplayer.tmp.tracks
 import com.cas.musicplayer.ui.base.BaseFragment
 import com.cas.musicplayer.ui.bottomsheet.SortByFragment
 import com.cas.musicplayer.ui.common.multiselection.MultiSelectTrackFragment
@@ -20,6 +20,7 @@ import com.cas.musicplayer.ui.local.StoragePermissionDelegateImpl
 import com.cas.musicplayer.ui.local.songs.settings.LocalSongsSettingsFragment
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.ui.resource.songList
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
@@ -36,7 +37,7 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         val adapter = LocalSongsAdapter(
             onClickTrack = { viewModel.onClickTrack(it) },
             onLongPressTrack = { track ->
-                val tracks = viewModel.localSongs.tracks
+                val tracks = viewModel.localSongs.songList()
                 MultiSelectTrackFragment.present(requireActivity(), tracks, track)
             },
             onSortClicked = { saveAndSetOrder() },
@@ -61,13 +62,14 @@ class LocalSongsFragment : BaseFragment<LocalSongsViewModel>(
         )
 
         observeEvent(viewModel.showMultiSelection) {
-            val tracks = viewModel.localSongs.tracks
+            val tracks = viewModel.localSongs.songList()
             MultiSelectTrackFragment.present(requireActivity(), tracks)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            observe(viewModel.localSongs) {
-                adapter.submitList(it)
+            observe(viewModel.localSongs.asLiveData()) { tracks ->
+                if (tracks == null) return@observe
+                adapter.submitList(tracks)
             }
         }
     }
