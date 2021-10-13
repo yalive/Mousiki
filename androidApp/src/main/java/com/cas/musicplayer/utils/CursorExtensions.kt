@@ -31,9 +31,9 @@ internal fun Cursor.getString(columnName: String): String {
 }
 
 internal fun Cursor.getStringOrNull(columnName: String): String? {
-    try {
-        return this.getString(this.getColumnIndex(columnName))
+    return try {
+        getString(columnName)
     } catch (ex: Throwable) {
-        throw IllegalStateException("invalid column $columnName", ex)
+        null
     }
 }
