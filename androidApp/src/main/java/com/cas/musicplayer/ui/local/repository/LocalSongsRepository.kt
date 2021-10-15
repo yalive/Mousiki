@@ -1,24 +1,23 @@
 package com.cas.musicplayer.ui.local.repository
 
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.provider.MediaStore.Audio.AudioColumns
 import android.provider.MediaStore.Audio.Media
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.cas.musicplayer.MusicApp
 import com.cas.musicplayer.utils.*
 import com.mousiki.shared.domain.models.Song
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-
-import android.content.ContentValues
-import android.os.Build
-import androidx.annotation.RequiresApi
 
 
 /**
@@ -166,7 +165,7 @@ class LocalSongsRepository(private val context: Context) {
         val albumArtist = cursor.getStringOrNull("album_artist")
         val path = data.substringBeforeLast("/")
         val size = cursor.getLong(AudioColumns.SIZE)
-        val mimeType = cursor.getString(AudioColumns.MIME_TYPE)
+        val mimeType = cursor.getStringOrNull(AudioColumns.MIME_TYPE)
         return Song(
             id = id,
             title = title,
@@ -183,7 +182,7 @@ class LocalSongsRepository(private val context: Context) {
             albumArtist = albumArtist ?: "",
             path = path,
             size = size,
-            mimeType = mimeType
+            mimeType = mimeType.orEmpty()
         )
     }
 

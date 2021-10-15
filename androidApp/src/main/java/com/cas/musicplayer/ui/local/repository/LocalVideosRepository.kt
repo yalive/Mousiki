@@ -79,7 +79,7 @@ class LocalVideosRepository(private val context: Context) {
             if (updatedRows == 0)
                 return@withContext null
         }
-        Log.d("UpdateSong","name : $name artist : $artist")
+        Log.d("UpdateSong", "name : $name artist : $artist")
         cv.put(MediaStore.Video.Media.TITLE, name)
         cv.put(MediaStore.Video.VideoColumns.ARTIST, artist)
         cv.put(MediaStore.Video.VideoColumns.ALBUM, album)
@@ -88,7 +88,7 @@ class LocalVideosRepository(private val context: Context) {
         val rowsUpdated: Int = context.contentResolver.update(uri, cv, null, null)
 
         if (rowsUpdated > 0) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val values = ContentValues(1)
                 values.put(MediaStore.Video.Media.IS_PENDING, 0)
                 context.contentResolver.update(uri, values, null, null)
@@ -126,7 +126,7 @@ class LocalVideosRepository(private val context: Context) {
         val artistName = cursor.getStringOrNull(MediaStore.Video.VideoColumns.ARTIST)
         val path = data.substringBeforeLast("/")
         val size = cursor.getLong(MediaStore.Video.VideoColumns.SIZE)
-        val mimeType = cursor.getString(MediaStore.Video.VideoColumns.MIME_TYPE)
+        val mimeType = cursor.getStringOrNull(MediaStore.Video.VideoColumns.MIME_TYPE)
         val resolution = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.RESOLUTION))
         return Song(
             id = id,
@@ -144,7 +144,7 @@ class LocalVideosRepository(private val context: Context) {
             albumArtist = "",
             path = path,
             size = size,
-            mimeType = mimeType,
+            mimeType = mimeType.orEmpty(),
             resolution = resolution ?: ""
         )
     }
