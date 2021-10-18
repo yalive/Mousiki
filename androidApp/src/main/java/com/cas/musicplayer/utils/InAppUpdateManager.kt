@@ -14,6 +14,7 @@ import com.cas.musicplayer.ui.settings.InAppUpdateProgressDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.common.IntentSenderForResultStarter
+import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.ActivityResult
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
@@ -38,10 +39,31 @@ class InAppUpdateManager(
         InAppUpdateProgressDialog.present(activity.supportFragmentManager)
     }
 
+    private val inAppUpdateListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADING) {
+            val percent = if (state.totalBytesToDownload() == 0L) 0
+            else state.bytesDownloaded() * 100 / state.totalBytesToDownload()
+            progressDialog.setProgress(percent.toInt())
+        }
+
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            Log.d(TAG, "Update DOWNLOADED")
+            analytics.logEvent(ANALYTICS_UPDATE_DOWNLOADED)
+            progressDialog.dismiss()
+            // After the update is downloaded, show a notification
+            // and request user confirmation to restart the app.
+            popupSnackBarForCompleteUpdate()
+        }
+    }
+
     fun init() {
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) = checkUpdate()
+
             override fun onResume(owner: LifecycleOwner) = checkNonInstalledUpdate()
+            override fun onStop(owner: LifecycleOwner) {
+                appUpdateManager.unregisterListener(inAppUpdateListener)
+            }
         })
     }
 
@@ -80,23 +102,7 @@ class InAppUpdateManager(
                 Log.d(TAG, "UPDATE NOT AVAILABLE")
             }
         }
-
-        appUpdateManager.registerListener { state ->
-            if (state.installStatus() == InstallStatus.DOWNLOADING) {
-                val percent = if (state.totalBytesToDownload() == 0L) 0
-                else state.bytesDownloaded() * 100 / state.totalBytesToDownload()
-                progressDialog.setProgress(percent.toInt())
-            }
-
-            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                Log.d(TAG, "Update DOWNLOADED")
-                analytics.logEvent(ANALYTICS_UPDATE_DOWNLOADED)
-                progressDialog.dismiss()
-                // After the update is downloaded, show a notification
-                // and request user confirmation to restart the app.
-                popupSnackBarForCompleteUpdate()
-            }
-        }
+        appUpdateManager.registerListener(inAppUpdateListener)
     }
 
     private fun handleActivityResult(resultCode: Int) {
