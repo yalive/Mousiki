@@ -11,6 +11,19 @@ import shared
 
 class IOSStrings: Strings {
     
+    func playlistCreated(playlistName: String) -> String {
+        "Playlist \(playlistName) created"
+    }
+    
+    func playlistExist(playlistName: String) -> String {
+        "Playlist \(playlistName) already exist"
+    }
+    
+    func trackAddedToPlaylist(playlistName: String) -> String {
+        "Added to \(playlistName)"
+    }
+    
+    
     /// Home
     lazy var artists: String = R.string.localizable.artists()
     lazy var genres: String = R.string.localizable.genres()

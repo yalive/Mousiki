@@ -6,6 +6,15 @@ plugins {
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.4.10"
     id("com.squareup.sqldelight")
+    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
+}
+
+multiplatformSwiftPackage {
+    packageName("MousikiShared")
+    swiftToolsVersion("5.3")
+    targetPlatforms {
+        iOS { v("13") }
+    }
 }
 
 kotlin {

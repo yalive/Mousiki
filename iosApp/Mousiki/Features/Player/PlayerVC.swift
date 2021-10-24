@@ -187,7 +187,7 @@ class PlayerVC: UIViewController {
     }
     
     private func loadTrackUrl() {
-        guard let videoId = self.currentTrack?.track.youtubeId else {
+        guard let videoId = (self.currentTrack?.track as? YtbTrack)?.id else {
             return
         }
         

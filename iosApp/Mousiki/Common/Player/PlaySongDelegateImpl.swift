@@ -11,13 +11,20 @@ import shared
 
 class PlaySongDelegateImpl: PlaySongDelegate {
     
+    
+    var currentSong: Track?
+    
+    
     func playTrackFromQueue(
-        track: MusicTrack,
-        queue: [MusicTrack],
+        track: Track,
+        queue: [Track],
         completionHandler: @escaping (KotlinUnit?, Error?) -> Void) {
         
-        //completionHandler(KotlinUInt())
-        
+        completionHandler(KotlinUnit(), nil)
     }
     
+    func isPlayingASong() -> Bool {
+        // TODO: check if a song is playing
+        return true
+    }
 }
