@@ -1,6 +1,5 @@
-package com.cas.musicplayer.ui.searchyoutube
+package com.mousiki.shared.ui.search
 
-import androidx.lifecycle.viewModelScope
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.result.Result
@@ -17,6 +16,7 @@ import com.mousiki.shared.ui.resource.valueOrNull
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -153,7 +153,7 @@ class SearchYoutubeViewModel(
         _searchSuggestions.value = _searchSuggestions.value?.filter {
             it != suggestion
         }
-        viewModelScope.launch {
+        scope.launch {
             removeSearchQuery(suggestion.value)
         }
         if (_searchSuggestions.value.orEmpty().isEmpty()) {
@@ -161,7 +161,7 @@ class SearchYoutubeViewModel(
         }
     }
 
-    fun clearUserSearchHistory() = viewModelScope.launch {
+    fun clearUserSearchHistory() = scope.launch {
         clearSearchHistory()
         _searchSuggestions.value = emptyList()
         _clearHistoryVisible.value = Event(false)
@@ -171,5 +171,32 @@ class SearchYoutubeViewModel(
         val currentItems = _videos.valueOrNull() ?: return
         val updatedList = updateCurrentPlaying(currentItems)
         _videos.value = Resource.Success(updatedList)
+    }
+
+    // For iOS
+    inline fun observeVideos(
+        crossinline onError: () -> Unit,
+        crossinline onLoading: () -> Unit,
+        crossinline onSuccess: (List<DisplayableItem>) -> Unit
+    ) {
+        scope.launch {
+            videos.collect { resource ->
+                when (resource) {
+                    is Resource.Failure -> onError()
+                    is Resource.Loading -> onLoading()
+                    is Resource.Success -> onSuccess(resource.data)
+                }
+            }
+        }
+    }
+
+    inline fun observeSuggestions(
+        crossinline onSuggestionsChanged: (List<SearchSuggestion>) -> Unit
+    ) {
+        scope.launch {
+            searchSuggestions.collect {
+                it?.let { onSuggestionsChanged(it) }
+            }
+        }
     }
 }
