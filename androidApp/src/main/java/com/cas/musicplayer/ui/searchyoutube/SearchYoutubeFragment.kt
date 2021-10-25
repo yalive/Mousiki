@@ -29,6 +29,7 @@ import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.ui.searchyoutube.result.ResultSearchSongsFragment
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.ui.search.SearchYoutubeViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 /**

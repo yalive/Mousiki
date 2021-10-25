@@ -1,6 +1,5 @@
-package com.cas.musicplayer.ui.popular
+package com.mousiki.shared.ui.trending
 
-import com.cas.musicplayer.tmp.*
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.domain.models.*
 import com.mousiki.shared.domain.result.Result
