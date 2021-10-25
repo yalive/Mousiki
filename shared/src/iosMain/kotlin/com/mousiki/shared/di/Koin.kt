@@ -1,10 +1,15 @@
 package com.mousiki.shared.di
 
+import com.mousiki.shared.ads.FacebookAdsDelegate
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.config.RemoteConfigDelegate
+import com.mousiki.shared.data.repository.LocalSongProvider
+import com.mousiki.shared.data.repository.LocalTrackMapper
+import com.mousiki.shared.domain.models.Song
 import com.mousiki.shared.downloader.extractor.Extractor
 import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.ui.home.model.HomeItem
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.StorageApi
 import com.mousiki.shared.utils.Strings
@@ -20,6 +25,24 @@ fun initIOSKoin(provider: IOSDependenciesProvider) {
         single { provider.listAdsDelegate } bind GetListAdsDelegate::class
         single { provider.strings } bind Strings::class
         single { provider.extractor } bind Extractor::class
+        single {
+            LocalTrackMapper(
+                object : LocalSongProvider {
+                    override suspend fun getSongById(id: Long): Song {
+                        TODO("Not supported in iOS")
+                    }
+                }
+            )
+        }
+
+        // TEMP
+        single {
+            object : FacebookAdsDelegate {
+                override suspend fun getHomeFacebookNativeAds(count: Int): List<HomeItem.FBNativeAd> {
+                    return emptyList()
+                }
+            }
+        } bind FacebookAdsDelegate::class
     }
     initKoin(iOSModule)
 }

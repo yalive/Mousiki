@@ -7,6 +7,7 @@ import com.cas.common.adapter.SimpleBaseViewHolder
 import com.cas.common.extensions.onClick
 import com.cas.musicplayer.R
 import com.cas.musicplayer.databinding.ItemYoutubeSerachSuggestionBinding
+import com.mousiki.shared.ui.search.SearchSuggestion
 
 
 /**

@@ -3,6 +3,7 @@ package com.cas.musicplayer.ui.searchyoutube
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.cas.common.dpToPixel
 import com.cas.common.extensions.onClick
@@ -20,6 +21,7 @@ import com.cas.musicplayer.ui.base.adjustStatusBarWithTheme
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.ui.search.MainSearchViewModel
 
 /**
  ***************************************
@@ -75,7 +77,8 @@ class MainSearchFragment : BaseFragment<MainSearchViewModel>(
     }
 
     private fun observeViewModel() {
-        observe(viewModel.genres) {
+        observe(viewModel.genres.asLiveData()) {
+            if (it == null) return@observe
             val adapter = binding.recyclerView.adapter as SearchGenresAdapter
             adapter.submitList(it)
         }
