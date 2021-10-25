@@ -32,6 +32,8 @@ import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 import com.mousiki.shared.ui.home.HomeViewModel
 import com.mousiki.shared.ui.library.LibraryViewModel
 import com.mousiki.shared.ui.playlist.PlaylistSongsViewModel
+import com.mousiki.shared.ui.search.MainSearchViewModel
+import com.mousiki.shared.ui.search.SearchYoutubeViewModel
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
@@ -176,4 +178,6 @@ val kmmViewModelsModule = module {
     }
     factory { LibraryViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { ArtistSongsViewModel(get(), get(), get()) }
+    factory { MainSearchViewModel(get()) }
+    factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 }

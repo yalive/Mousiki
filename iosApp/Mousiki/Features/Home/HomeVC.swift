@@ -30,6 +30,21 @@ class HomeVC: UIViewController {
         tableView.registerCellNib("HomeGenreCell", identifier: "HomeGenreCell")
         tableView.registerCellNib("HomeArtistRow", identifier: "HomeArtistRow")
         observeViewModel()
+        
+        let vm = Injector().searchViewModel
+        vm.observeVideos {
+            print("searchViewModel: OnError")
+        } onLoading: {
+            print("searchViewModel: onLoading")
+        } onSuccess: { items in
+            print("searchViewModel: got videos [\(items.count)]")
+        }
+
+        //vm.search(query: "Hamid el kasri")
+        vm.getSuggestions(keyword: "adel")
+        vm.observeSuggestions { suggestions in
+            print("\(suggestions)")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +52,7 @@ class HomeVC: UIViewController {
     }
     
     func observeViewModel() {
+
         viewModel.homeItemsFlow.watch { items in
             guard let items = items else { return }
             let dispItems = items as! [DisplayableItem]

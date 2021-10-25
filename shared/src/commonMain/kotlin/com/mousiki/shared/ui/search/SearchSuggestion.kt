@@ -1,4 +1,4 @@
-package com.cas.musicplayer.ui.searchyoutube
+package com.mousiki.shared.ui.search
 
 data class SearchSuggestion(
     val value: String,

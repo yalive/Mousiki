@@ -15,4 +15,6 @@ class GetHeavyTracksFlowUseCase(
     operator fun invoke(max: Int = 10): Flow<List<Track>> {
         return statisticsRepository.getHeavyListFlow(max)
     }
+
+    //fun getIOSFlow(max: Int = 10): CommonFlow<List<Track>> = invoke(max).asCommonFlow()
 }
