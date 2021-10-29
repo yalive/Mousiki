@@ -36,7 +36,7 @@ class HomeVC: UIViewController {
             print("")
         }
         
-        Injector().GetLocalPlaylistsFlow.stream().watch { items in
+        Injector().getLocalPlaylistsFlow.stream().watch { items in
             print("")
         }
 //        Injector().getFavouriteTracks.invoke(max: 10) { tracks, error in
