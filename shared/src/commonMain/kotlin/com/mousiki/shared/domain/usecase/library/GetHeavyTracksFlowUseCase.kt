@@ -2,6 +2,8 @@ package com.mousiki.shared.domain.usecase.library
 
 import com.mousiki.shared.data.repository.StatisticsRepository
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.utils.CommonFlow
+import com.mousiki.shared.utils.asCommonFlow
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -16,5 +18,5 @@ class GetHeavyTracksFlowUseCase(
         return statisticsRepository.getHeavyListFlow(max)
     }
 
-    //fun getIOSFlow(max: Int = 10): CommonFlow<List<Track>> = invoke(max).asCommonFlow()
+    fun stream(): CommonFlow<List<Track>> = invoke(100).asCommonFlow()
 }

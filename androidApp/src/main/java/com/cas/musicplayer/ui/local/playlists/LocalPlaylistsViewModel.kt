@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class LocalPlaylistsViewModel(
     private val getLocalPlaylistsFlow: GetLocalPlaylistsFlowUseCase,
     private val getCustomPlaylistTracks: GetCustomPlaylistTracksUseCase,
-    private val getLocalPlaylistItemCount: GetLocalPlaylistItemCountUseCase,
+    private val getLocalPlaylistItemCountFlow: GetLocalPlaylistItemCountFlowUseCase,
     private val removeCustomPlaylist: RemoveCustomPlaylistUseCase,
     private val getCustomPlaylistFirstYtbTrack: CustomPlaylistFirstYtbTrackUseCase,
 ) : BaseViewModel() {
@@ -43,7 +43,7 @@ class LocalPlaylistsViewModel(
     private fun CoroutineScope.observePlaylistItemsCount(playlists: List<Playlist>) {
         playlists.forEach { pList ->
             launch {
-                getLocalPlaylistItemCount(pList).collect { newCount ->
+                getLocalPlaylistItemCountFlow(pList).collect { newCount ->
                     val previousCount = _playlists.value?.firstOrNull {
                         it.id == pList.id
                     }?.itemCount

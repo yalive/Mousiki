@@ -21,4 +21,7 @@ target 'Mousiki' do
   
   # Utils
   pod 'MarqueeLabel'
+
+  # shared
+  pod 'shared', :path => '../shared'
 end
