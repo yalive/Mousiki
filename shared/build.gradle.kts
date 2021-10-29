@@ -7,10 +7,13 @@ plugins {
     kotlin("plugin.serialization") version "1.4.10"
     id("com.squareup.sqldelight")
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
+    kotlin("native.cocoapods")
 }
 
+version = "1.0"
+
 multiplatformSwiftPackage {
-    packageName("MousikiShared")
+    packageName("shared")
     swiftToolsVersion("5.3")
     targetPlatforms {
         iOS { v("13") }
@@ -19,13 +22,23 @@ multiplatformSwiftPackage {
 
 kotlin {
     android()
-    ios {
-        binaries {
-            framework {
-                baseName = "shared"
-            }
-        }
+
+    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
+        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
+        else -> ::iosX64
     }
+
+    iosTarget("ios") {
+    }
+
+    cocoapods {
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        ios.deploymentTarget = "13.0"
+        frameworkName = "shared"
+        podfile = project.file("../iosApp/Podfile")
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -82,22 +95,6 @@ android {
         }
     }
 }
-
-val packForXcode by tasks.creating(Sync::class) {
-    group = "build"
-    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
-    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
-    print("Target is $targetName")
-    val framework =
-        kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
-    inputs.property("mode", mode)
-    dependsOn(framework.linkTask)
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
-}
-tasks.getByName("build").dependsOn(packForXcode)
 
 sqldelight {
     database("MousikiDb") {
