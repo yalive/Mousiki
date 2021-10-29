@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -23,13 +21,11 @@ multiplatformSwiftPackage {
 kotlin {
     android()
 
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
-        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
-        else -> ::iosX64
-    }
-
-    iosTarget("ios") {
-    }
+    listOf(
+        iosX64(),
+        iosArm64()
+        //iosSimulatorArm64() waiting ktor M1 support
+    )
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -72,8 +68,17 @@ kotlin {
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
             }
         }
-        val iosMain by getting {
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        //val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            //iosSimulatorArm64Main.dependsOn(this)
             dependencies {
+                //Network
                 implementation(Deps.SqlDelight.driverIos)
                 implementation(Deps.Ktor.ios)
             }
