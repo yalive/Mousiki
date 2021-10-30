@@ -4,6 +4,7 @@ import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.imgUrl
 import com.mousiki.shared.player.PlaySort
 import com.russhwolf.settings.Settings
+import com.squareup.sqldelight.internal.Atomic
 
 /**
  **********************************
@@ -12,7 +13,9 @@ import com.russhwolf.settings.Settings
  */
 object UserPrefs {
 
-    private lateinit var settings: Settings
+    private val atomicSettings: Atomic<Settings?> = Atomic(null)
+    private val settings: Settings get() = atomicSettings.get()!!
+
 
     private val KEY_CURRENT_SORT = "current-sort"
     private val KEY_LAUNCH_COUNT = "launch-count"
@@ -24,7 +27,7 @@ object UserPrefs {
     private val KEY_TOOL_TIP_BATTERY_SAVER = "has_seen_tool_tip_battery_saver"
 
     fun init(settingsProvider: SettingsProvider) {
-        settings = settingsProvider.providesOldSettings()
+        atomicSettings.set(settingsProvider.providesOldSettings())
     }
 
     fun saveFav(videoId: String?, isAdd: Boolean) {

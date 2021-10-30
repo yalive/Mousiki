@@ -2,6 +2,8 @@ package com.mousiki.shared.domain.usecase.library
 
 import com.mousiki.shared.data.repository.SongsRepository
 import com.mousiki.shared.domain.models.Track
+import com.mousiki.shared.utils.CommonFlow
+import com.mousiki.shared.utils.asCommonFlow
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -12,7 +14,9 @@ import kotlinx.coroutines.flow.Flow
 class GetFavouriteTracksFlowUseCase(
     private val songsRepository: SongsRepository
 ) {
-    suspend operator fun invoke(max: Int = 10): Flow<List<Track>> {
+    operator fun invoke(max: Int = 10): Flow<List<Track>> {
         return songsRepository.getFavouriteSongsFlow(max)
     }
+
+    fun stream(): CommonFlow<List<Track>> = invoke(100).asCommonFlow()
 }

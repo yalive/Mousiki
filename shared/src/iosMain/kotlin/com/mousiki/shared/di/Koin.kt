@@ -9,6 +9,7 @@ import com.mousiki.shared.data.repository.LocalTrackMapper
 import com.mousiki.shared.domain.models.Song
 import com.mousiki.shared.downloader.extractor.Extractor
 import com.mousiki.shared.player.PlaySongDelegate
+import com.mousiki.shared.preference.UserPrefs
 import com.mousiki.shared.ui.home.model.HomeItem
 import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.StorageApi
@@ -45,8 +46,8 @@ fun initIOSKoin(provider: IOSDependenciesProvider) {
         } bind FacebookAdsDelegate::class
     }
     initKoin(iOSModule)
+    UserPrefs.init(Injector.preferencesHelper.provider)
 }
-
 
 interface IOSDependenciesProvider {
     val storage: StorageApi

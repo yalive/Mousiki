@@ -115,6 +115,7 @@ PODS:
   - R.swift (5.2.2):
     - R.swift.Library (~> 5.2.0)
   - R.swift.Library (5.2.0)
+  - shared (1.0)
   - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
@@ -128,6 +129,7 @@ DEPENDENCIES:
   - Kingfisher (= 6.0.1)
   - MarqueeLabel
   - R.swift
+  - shared (from `../shared`)
   - SVProgressHUD
 
 SPEC REPOS:
@@ -160,6 +162,8 @@ EXTERNAL SOURCES:
   EZAlertController:
     :branch: master
     :git: https://github.com/thellimist/EZAlertController.git
+  shared:
+    :path: "../shared"
 
 CHECKOUT OPTIONS:
   EZAlertController:
@@ -190,8 +194,9 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   R.swift: 7c52cdc57a66840ffe6cbd8a823d732059d42a32
   R.swift.Library: 5ba4f1631300caf9a4d890186930da85d540769d
+  shared: f84d81e591a5a2ac5aabfe21551c414cdf7f6ef1
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 1118a5a2bafaec2a4dd0c32edc99f5c90e744080
+PODFILE CHECKSUM: 38bc58025caf7f1cf38b8b01570da2f9f3a975e5
 
 COCOAPODS: 1.11.2
