@@ -22,6 +22,7 @@
         android:layout_marginEnd="4dp"
         android:clipToPadding="false"
         android:orientation="vertical"
+        android:paddingTop="@dimen/spacing_large"
         android:paddingBottom="@dimen/padding_for_player_space"
         android:visibility="visible"
         app:layoutManager="com.cas.musicplayer.ui.common.MousikiLayoutManager"
