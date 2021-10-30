@@ -36,6 +36,7 @@ import com.cas.musicplayer.ui.local.videos.queue.VideosQueueFragment
 import com.cas.musicplayer.ui.tryEnterPip
 import com.cas.musicplayer.utils.PreferenceUtil
 import com.cas.musicplayer.utils.SystemSettings
+import com.cas.musicplayer.utils.VideoPlayerSettings
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerControlView
@@ -118,7 +119,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             layoutInflater.inflate(R.layout.controls, null) as HorizontalScrollView
         val controls = horizontalScrollView.findViewById<LinearLayout>(R.id.controls)
 
-        if (SystemSettings.isPiPSupported()) {
+        if (VideoPlayerSettings.isPiPSupported()) {
             controls.addView(buttonPiP)
         }
         controls.addView(buttonAspectRatio)
@@ -380,7 +381,7 @@ class VideoPlayerActivity : AppCompatActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun enterPiP() {
-        if (!SystemSettings.canEnterPiPMode()) {
+        if (!VideoPlayerSettings.canEnterPiPMode()) {
             SystemSettings.openPipSetting(this)
             return
         }
@@ -411,7 +412,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     private fun setupPiPButton() {
-        if (SystemSettings.isPiPSupported()) {
+        if (VideoPlayerSettings.isPiPSupported()) {
             mPictureInPictureParamsBuilder = PictureInPictureParams.Builder()
             updatePictureInPictureActions(
                 R.drawable.ic_play_arrow_24dp,
@@ -610,7 +611,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             viewBinding.videoView.keepScreenOn = isPlaying
 
-            if (SystemSettings.isPiPSupported()) {
+            if (VideoPlayerSettings.isPiPSupported()) {
                 if (isPlaying) {
                     updatePictureInPictureActions(
                         R.drawable.ic_pause_24dp,
