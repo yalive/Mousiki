@@ -2,7 +2,6 @@ package com.mousiki.shared.domain.usecase.library
 
 import com.mousiki.shared.data.repository.SongsRepository
 import com.mousiki.shared.domain.models.Track
-import com.mousiki.shared.domain.models.YtbTrack
 
 /**
  ***************************************

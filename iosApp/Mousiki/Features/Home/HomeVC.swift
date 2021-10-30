@@ -31,20 +31,55 @@ class HomeVC: UIViewController {
         tableView.registerCellNib("HomeArtistRow", identifier: "HomeArtistRow")
         observeViewModel()
         
-        let vm = Injector().searchViewModel
-        vm.observeVideos {
-            print("searchViewModel: OnError")
-        } onLoading: {
-            print("searchViewModel: onLoading")
-        } onSuccess: { items in
-            print("searchViewModel: got videos [\(items.count)]")
+    
+        Injector().getLocalPlaylists.invoke { playlists, error in
+            print("")
         }
-
-        //vm.search(query: "Hamid el kasri")
-        vm.getSuggestions(keyword: "adel")
-        vm.observeSuggestions { suggestions in
-            print("\(suggestions)")
+        
+        Injector().getLocalPlaylistsFlow.stream().watch { items in
+            print("")
         }
+//        Injector().getFavouriteTracks.invoke(max: 10) { tracks, error in
+//            if let tracks = tracks {
+//                print("Favourite: One shot tracks = \(tracks.count)")
+//            } else {
+//                print("Favourite: error one shot tracks")
+//            }
+//        }
+//
+//        Injector().getRecentlyPlayedSongs.invoke { tracks, error in
+//            if let tracks = tracks {
+//                print("RecentTracks: One shot tracks = \(tracks.count)")
+//            } else {
+//                print("RecentTracks: error one shot tracks")
+//            }
+//        }
+//
+//        Injector().getHeavyTracks.invoke(max: 10) { tracks, error in
+//            if let tracks = tracks {
+//                print("HeavyTracks: One shot tracks = \(tracks.count)")
+//            } else {
+//                print("HeavyTracks: error one shot tracks")
+//            }
+//        }
+//
+//        let stream = Injector().getFavouriteTracksFlow.stream()
+//        stream.watch { tracks in
+//            print("Stream changed size (\(tracks?.count)")
+//        }
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+//            let track = YtbTrack(youtubeId: "K-xymUfJCgm", title: "Hamid", duration: "PT1H2M30S", size: 0, artistName: "Hamid el kasri", artistId: "123456789")
+//
+//            let addToFav = Injector().addSongToFavourite
+//            addToFav.invoke(track: track) { unit, error in
+//                if let error = error {
+//                    print("Favourite: Error add to fav")
+//                } else {
+//                    print("Favourite: Added to fav")
+//                }
+//            }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +87,7 @@ class HomeVC: UIViewController {
     }
     
     func observeViewModel() {
-
+        
         viewModel.homeItemsFlow.watch { items in
             guard let items = items else { return }
             let dispItems = items as! [DisplayableItem]
