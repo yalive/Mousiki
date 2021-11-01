@@ -91,6 +91,7 @@ class MainActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.navHome -> handleClickMenuHome()
                 R.id.navVideo -> handleClickMenuVideo()
+                R.id.navLibrary -> handleClickMenuLibrary()
                 R.id.navSearch -> handleClickMenuSearch()
                 R.id.navMusic -> handleClickMenuMusic()
                 else -> {
@@ -249,11 +250,14 @@ class MainActivity : BaseActivity() {
             R.id.localSongsContainerFragment -> {
                 binding.bottomNavView.menu[1].isChecked = true
             }
-            R.id.localVideoContainerFragment -> {
+            R.id.libraryFragment -> {
                 binding.bottomNavView.menu[2].isChecked = true
             }
-            R.id.mainSearchFragment -> {
+            R.id.localVideoContainerFragment -> {
                 binding.bottomNavView.menu[3].isChecked = true
+            }
+            R.id.mainSearchFragment -> {
+                binding.bottomNavView.menu[4].isChecked = true
             }
         }
     }
@@ -272,6 +276,13 @@ class MainActivity : BaseActivity() {
         navController.popBackStack(R.id.homeFragment, false)
     }
 
+    private fun handleClickMenuLibrary() {
+        if (navController.currentDestination?.id == R.id.libraryFragment) return
+        if (!navController.popBackStack(R.id.libraryFragment, false)) {
+            navController.navigate(R.id.libraryFragment)
+        }
+    }
+
     private fun handleClickMenuVideo() {
         if (navController.currentDestination?.id == R.id.localVideoContainerFragment) return
         if (!navController.popBackStack(R.id.localVideoContainerFragment, false)) {
@@ -282,6 +293,7 @@ class MainActivity : BaseActivity() {
             PreferenceUtil.videoSeen = true
         }
     }
+
 
     private fun handleClickMenuMusic() {
         if (navController.currentDestination?.id == R.id.localSongsContainerFragment) return

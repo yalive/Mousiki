@@ -49,15 +49,12 @@
 		FA9AFFF025BD9FEB00809B22 /* HomeArtistRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9AFFEE25BD9FEB00809B22 /* HomeArtistRow.xib */; };
 		FA9AFFF425BDA03D00809B22 /* HomeArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AFFF225BDA03D00809B22 /* HomeArtistCell.swift */; };
 		FA9AFFF525BDA03D00809B22 /* HomeArtistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9AFFF325BDA03D00809B22 /* HomeArtistCell.xib */; };
-		FA9E286826433C7500A57E9A /* html.html in Resources */ = {isa = PBXBuildFile; fileRef = FA9E286726433C7500A57E9A /* html.html */; };
 		FA9E286A2643CFAD00A57E9A /* SwiftYtExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E28692643CFAD00A57E9A /* SwiftYtExtractor.swift */; };
 		FAA207DD25B6DBFC004D12CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */; };
 		FAA207DF25B6DBFC004D12CF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA207DE25B6DBFC004D12CF /* SceneDelegate.swift */; };
 		FAA207E625B6DBFE004D12CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E525B6DBFE004D12CF /* Assets.xcassets */; };
 		FAA207E925B6DBFE004D12CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */; };
 		FAABE1EA25B85B9F001FD8C5 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1E925B85B9F001FD8C5 /* R.generated.swift */; };
-		FAABE1F225B85CF7001FD8C5 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAABE1F125B85CF7001FD8C5 /* shared.framework */; };
-		FAABE1F325B85CF7001FD8C5 /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAABE1F125B85CF7001FD8C5 /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAABE1F625B8661C001FD8C5 /* UIColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1F525B8661C001FD8C5 /* UIColorExt.swift */; };
 		FAABE1F825B86698001FD8C5 /* UIViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1F725B86698001FD8C5 /* UIViewController+Helper.swift */; };
 		FAABE1FA25B866C1001FD8C5 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAABE1F925B866C1001FD8C5 /* String+Extension.swift */; };
@@ -87,20 +84,6 @@
 		FABF509E263FD64300F59867 /* PlayerSongCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FABF509C263FD64300F59867 /* PlayerSongCell.xib */; };
 		FAD6AF5725CB0EBC00F798C0 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD6AF5625CB0EBC00F798C0 /* Config.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		FAABE1F425B85CF7001FD8C5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				FAABE1F325B85CF7001FD8C5 /* shared.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		03D7859ADD3CF7DCE340599D /* Pods-Mousiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mousiki.release.xcconfig"; path = "Target Support Files/Pods-Mousiki/Pods-Mousiki.release.xcconfig"; sourceTree = "<group>"; };
@@ -147,7 +130,6 @@
 		FA9AFFEE25BD9FEB00809B22 /* HomeArtistRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeArtistRow.xib; sourceTree = "<group>"; };
 		FA9AFFF225BDA03D00809B22 /* HomeArtistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeArtistCell.swift; sourceTree = "<group>"; };
 		FA9AFFF325BDA03D00809B22 /* HomeArtistCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeArtistCell.xib; sourceTree = "<group>"; };
-		FA9E286726433C7500A57E9A /* html.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = html.html; sourceTree = "<group>"; };
 		FA9E28692643CFAD00A57E9A /* SwiftYtExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftYtExtractor.swift; sourceTree = "<group>"; };
 		FAA207D925B6DBFC004D12CF /* Mousiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mousiki.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAA207DC25B6DBFC004D12CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -157,7 +139,6 @@
 		FAA207EA25B6DBFE004D12CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAABE1E925B85B9F001FD8C5 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		FAABE1F025B85CE4001FD8C5 /* xcode-frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "xcode-frameworks"; path = "../shared/build/xcode-frameworks"; sourceTree = "<group>"; };
-		FAABE1F125B85CF7001FD8C5 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
 		FAABE1F525B8661C001FD8C5 /* UIColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExt.swift; sourceTree = "<group>"; };
 		FAABE1F725B86698001FD8C5 /* UIViewController+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helper.swift"; sourceTree = "<group>"; };
 		FAABE1F925B866C1001FD8C5 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -194,7 +175,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C200231F94EBB0BB2E3694B0 /* Pods_Mousiki.framework in Frameworks */,
-				FAABE1F225B85CF7001FD8C5 /* shared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,7 +184,6 @@
 		2BCA627819188D7BC715F2CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FAABE1F125B85CF7001FD8C5 /* shared.framework */,
 				FAABE1F025B85CE4001FD8C5 /* xcode-frameworks */,
 				97DCBB982EA6D2D4FD6925B1 /* Pods_Mousiki.framework */,
 			);
@@ -388,7 +367,6 @@
 		FA5FFCC725B81F7A00DA9920 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				FA9E286726433C7500A57E9A /* html.html */,
 				FA5FFCEC25B8246E00DA9920 /* Fonts */,
 				FAA207E725B6DBFE004D12CF /* LaunchScreen.storyboard */,
 				FAA207E525B6DBFE004D12CF /* Assets.xcassets */,
@@ -618,13 +596,11 @@
 			buildConfigurationList = FAA207ED25B6DBFE004D12CF /* Build configuration list for PBXNativeTarget "Mousiki" */;
 			buildPhases = (
 				A5FB0B7139D555E257BED3BC /* [CP] Check Pods Manifest.lock */,
-				FAABE1EE25B85C9B001FD8C5 /* ShellScript */,
 				FAABE1E725B85B53001FD8C5 /* ShellScript */,
 				FAA207D525B6DBFC004D12CF /* Sources */,
 				FAA207D625B6DBFC004D12CF /* Frameworks */,
 				FAA207D725B6DBFC004D12CF /* Resources */,
 				EA0A79CFD3060BC2017939D9 /* [CP] Embed Pods Frameworks */,
-				FAABE1F425B85CF7001FD8C5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -686,7 +662,6 @@
 				FA5FFCD825B8218C00DA9920 /* LibraryVC.xib in Resources */,
 				FABF509E263FD64300F59867 /* PlayerSongCell.xib in Resources */,
 				FA498D2F25B900D6000DAE82 /* HomeSectionView.xib in Resources */,
-				FA9E286826433C7500A57E9A /* html.html in Resources */,
 				FA511E8225E26B0000B28E54 /* PlaylistSongsVC.xib in Resources */,
 				FAB91B3E25BA04E30080C968 /* CompactPlaylistCell.xib in Resources */,
 				FA9AFFF025BD9FEB00809B22 /* HomeArtistRow.xib in Resources */,
@@ -765,23 +740,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
-		};
-		FAABE1EE25B85C9B001FD8C5 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
