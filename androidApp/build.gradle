@@ -29,8 +29,8 @@ android {
         applicationId "com.cas.musicplayer"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 63
-        versionName "4.2.5"
+        versionCode 65
+        versionName "4.2.7"
         signingConfig signingConfigs.releaseConfig
         vectorDrawables.useSupportLibrary = true
     }
