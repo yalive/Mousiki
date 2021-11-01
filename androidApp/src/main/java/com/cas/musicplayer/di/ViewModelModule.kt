@@ -26,9 +26,9 @@ import com.cas.musicplayer.ui.player.queue.QueueViewModel
 import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
 import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistViewModel
-import com.cas.musicplayer.ui.popular.PopularSongsViewModel
-import com.cas.musicplayer.ui.searchyoutube.MainSearchViewModel
-import com.cas.musicplayer.ui.searchyoutube.SearchYoutubeViewModel
+import com.mousiki.shared.ui.trending.PopularSongsViewModel
+import com.mousiki.shared.ui.search.MainSearchViewModel
+import com.mousiki.shared.ui.search.SearchYoutubeViewModel
 import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
 import org.koin.dsl.module
@@ -38,11 +38,9 @@ val viewModelsModule = module {
     factory { CommonAdsViewModel(get()) }
     factory { PopularSongsViewModel(get(), get(), get()) }
     factory { ArtistListViewModel(get()) }
-    factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { GenresViewModel(get()) }
     factory { TrackOptionsViewModel(get(), get(), get(), get()) }
     factory { PlayerViewModel(get(), get(), get(), get(), get()) }
-    factory { MainSearchViewModel(get()) }
     factory { EmptyViewModel() }
     factory { SettingsViewModel() }
     factory { AddTrackToPlaylistViewModel(get(), get(), get(), get()) }

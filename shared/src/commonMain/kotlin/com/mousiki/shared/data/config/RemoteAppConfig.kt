@@ -5,6 +5,7 @@ import com.mousiki.shared.utils.AnalyticsApi
 import com.mousiki.shared.utils.ConnectivityChecker
 import com.mousiki.shared.utils.getCurrentLocale
 import com.mousiki.shared.utils.logEvent
+import com.squareup.sqldelight.internal.AtomicBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -24,12 +25,12 @@ class RemoteAppConfig(
     private val connectivityChecker: ConnectivityChecker
 ) {
 
-    private var gotConfigResponse = false
+    private var gotConfigResponse: AtomicBoolean = AtomicBoolean(false)
 
     init {
         val connectedBefore = connectivityChecker.isConnected()
         delegate.fetchAndActivate { success ->
-            gotConfigResponse = true
+            gotConfigResponse.set(true)
             if (!success) {
                 analytics.logEvent(
                     "error_fetch_remote_config",
@@ -50,7 +51,7 @@ class RemoteAppConfig(
     // withContext(Dispatchers.Main) needed for iOS
     suspend fun awaitActivation() = withContext(Dispatchers.Main) {
         var count = 0
-        while (!gotConfigResponse && count < MAX_CYCLES) {
+        while (!gotConfigResponse.get() && count < MAX_CYCLES) {
             count++
             delay(WAIT_INTERVAL_MS)
         }

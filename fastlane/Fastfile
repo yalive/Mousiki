@@ -32,7 +32,8 @@ platform :android do
             groups: "qa-team-internal",
             firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
             release_notes: "
-            - Ads in local songs
+            - Back to draw over apps.
+            - Back library.
             "
         )
     end

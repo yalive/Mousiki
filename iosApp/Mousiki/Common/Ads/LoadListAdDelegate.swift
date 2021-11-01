@@ -11,6 +11,25 @@ import shared
 
 class LoadListAdDelegate: GetListAdsDelegate {
     
+    func awaitLoadAds(completionHandler: @escaping (KotlinUnit?, Error?) -> Void) {
+        // TODO
+        completionHandler(KotlinUnit(), nil)
+    }
+    
+    
+    func getNativeAds(count: Int32, completionHandler: @escaping ([DisplayableItem]?, Error?) -> Void) {
+        // TODO
+        completionHandler([], nil)
+    }
+    
+  
+    
+    func getOrAwaitNativeAds(count: Int32, completionHandler: @escaping ([DisplayableItem]?, Error?) -> Void) {
+        // TODO
+        completionHandler([], nil)
+    }
+    
+    
     func insertAdsIn(
         items: [DisplayableItem],
         completionHandler: @escaping ([DisplayableItem]?, Error?) -> Void) {
@@ -23,4 +42,5 @@ class LoadListAdDelegate: GetListAdsDelegate {
         
         completionHandler(KotlinUnit.init(), nil)
     }
+    
 }
