@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.findFragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cas.common.extensions.activity
 import com.cas.common.extensions.inflate
@@ -166,6 +167,7 @@ open class NewHorizontalSongsAdapterDelegate(
                     progressBar.isVisible = true
                 }
                 is Resource.Success -> {
+                    adjustSpanCount(resource.data.count())
                     adapter.submitList(resource.data)
                     viewError.isVisible = resource.data.isEmpty()
                     progressBar.isVisible = false
@@ -178,6 +180,16 @@ open class NewHorizontalSongsAdapterDelegate(
                     progressBar.isVisible = false
                     recyclerView.isInvisible = true
                 }
+            }
+        }
+
+        private fun adjustSpanCount(itemsCount: Int) {
+            val manager = recyclerView.layoutManager as? GridLayoutManager
+            val spanCount = manager?.spanCount ?: 1
+            if (itemsCount < DEF_SPAN_COUNT) {
+                manager?.spanCount = if (itemsCount > 0) itemsCount else 1
+            } else if (spanCount != DEF_SPAN_COUNT) {
+                manager?.spanCount = DEF_SPAN_COUNT
             }
         }
 
@@ -194,5 +206,9 @@ open class NewHorizontalSongsAdapterDelegate(
 
             this.tracks = items.map { it.track }
         }
+    }
+
+    companion object {
+        private const val DEF_SPAN_COUNT = 3
     }
 }
