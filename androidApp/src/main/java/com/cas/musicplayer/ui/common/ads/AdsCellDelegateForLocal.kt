@@ -18,14 +18,14 @@ import com.mousiki.shared.domain.models.DisplayableItem
  * Created by Abdelhadi on 2019-12-01.
  ***************************************
  */
-open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
+open class AdsCellDelegateForLocal : AdapterDelegate<List<DisplayableItem>>() {
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int): Boolean {
         return items[position] is AdsItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        val view = parent.inflate(R.layout.item_ad)
+        val view = parent.inflate(R.layout.item_ad_for_local)
         return AdsViewHolder(view)
     }
 
@@ -44,7 +44,7 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
 
         private val adView = itemView.findViewById<NativeAdView>(R.id.ad_view).apply {
             mediaView = findViewById<View>(R.id.ad_media) as MediaView
-            mediaView.setImageScaleType(ImageView.ScaleType.FIT_XY)
+            mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP)
             // Register the view used for each individual asset.
             headlineView = findViewById(R.id.ad_headline)
             bodyView = findViewById(R.id.ad_body)
@@ -61,21 +61,4 @@ open class AdsCellDelegate : AdapterDelegate<List<DisplayableItem>>() {
             populateNativeAdView(ad, adView)
         }
     }
-}
-
-data class AdsItem(val ad: NativeAd) : DisplayableItem
-
-fun NativeAd.sameAs(other: NativeAd): Boolean {
-    return other.headline == headline
-            && other.body == body
-            && other.callToAction == callToAction
-}
-
-fun NativeAd.sameContentAs(other: NativeAd): Boolean {
-    return other.headline == headline
-            && other.body == body
-            && other.callToAction == callToAction
-            && other.price == price
-            && other.advertiser == advertiser
-            && other.store == store
 }
