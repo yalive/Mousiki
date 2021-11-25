@@ -252,6 +252,7 @@ object Utils : KoinComponent {
         crossinline onRequested: () -> Unit
     ): AlertDialog {
         return AlertDialog.Builder(context).setCancelable(false)
+            .setView(R.layout.dialog_image_draw_over_apps)
             .setMessage(R.string.message_enable_draw)
             .setNegativeButton(context.getString(R.string.btn_deny)) { _, _ ->
             }.setPositiveButton(context.getString(R.string.btn_agree)) { _, _ ->
