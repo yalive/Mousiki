@@ -122,6 +122,6 @@ class LocalSongsViewModel(
     }
 
     companion object {
-        private const val ADS_COUNT = 2
+        private const val ADS_COUNT = 1
     }
 }
