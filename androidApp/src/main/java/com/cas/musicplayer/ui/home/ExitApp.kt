@@ -121,7 +121,7 @@ fun populateNativeAdView(
         adView.advertiserView.visibility = View.INVISIBLE
     } else {
         (adView.advertiserView as TextView).text = nativeAd.advertiser
-        adView.advertiserView.visibility = View.VISIBLE
+      //  adView.advertiserView.visibility = View.VISIBLE
     }
     // Assign native ad object to the native view.
     try {
