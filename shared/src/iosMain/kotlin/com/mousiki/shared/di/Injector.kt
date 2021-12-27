@@ -12,6 +12,7 @@ import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsFlowUseCas
 import com.mousiki.shared.domain.usecase.recent.GetRecentlyPlayedSongsUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.ui.artist.ArtistListViewModel
 import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 import com.mousiki.shared.ui.home.HomeViewModel
 import com.mousiki.shared.ui.library.LibraryViewModel
@@ -31,6 +32,7 @@ object Injector : KoinComponent {
     val libraryViewModel: LibraryViewModel get() = get()
     val playlistSongsViewModel: PlaylistSongsViewModel get() = get()
     val artistSongsViewModel: ArtistSongsViewModel get() = get()
+    val artistsViewModel: ArtistListViewModel get() = get()
     val searchViewModel: SearchYoutubeViewModel get() = get()
     val mainSearchViewModel: MainSearchViewModel get() = get()
 

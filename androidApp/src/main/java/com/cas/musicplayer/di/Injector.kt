@@ -1,7 +1,7 @@
 package com.cas.musicplayer.di
 
 import com.cas.musicplayer.ui.MainViewModel
-import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
+import com.mousiki.shared.ui.artist.ArtistListViewModel
 import com.cas.musicplayer.ui.bottomsheet.SongInfoViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.bottomsheet.VideoOptionsViewModel
