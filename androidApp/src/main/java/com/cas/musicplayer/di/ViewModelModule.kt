@@ -1,7 +1,7 @@
 package com.cas.musicplayer.di
 
 import com.cas.musicplayer.ui.MainViewModel
-import com.cas.musicplayer.ui.artists.list.ArtistListViewModel
+import com.mousiki.shared.ui.artist.ArtistListViewModel
 import com.cas.musicplayer.ui.bottomsheet.SongInfoViewModel
 import com.cas.musicplayer.ui.bottomsheet.TrackOptionsViewModel
 import com.cas.musicplayer.ui.bottomsheet.VideoOptionsViewModel
@@ -27,8 +27,6 @@ import com.cas.musicplayer.ui.playlist.create.CreatePlaylistViewModel
 import com.cas.musicplayer.ui.playlist.custom.CustomPlaylistSongsViewModel
 import com.cas.musicplayer.ui.playlist.select.AddTrackToPlaylistViewModel
 import com.mousiki.shared.ui.trending.PopularSongsViewModel
-import com.mousiki.shared.ui.search.MainSearchViewModel
-import com.mousiki.shared.ui.search.SearchYoutubeViewModel
 import com.cas.musicplayer.ui.settings.SettingsViewModel
 import com.cas.musicplayer.utils.EmptyViewModel
 import org.koin.dsl.module
@@ -37,7 +35,6 @@ val viewModelsModule = module {
     factory { MainViewModel(get(), get(), get()) }
     factory { CommonAdsViewModel(get()) }
     factory { PopularSongsViewModel(get(), get(), get()) }
-    factory { ArtistListViewModel(get()) }
     factory { GenresViewModel(get()) }
     factory { TrackOptionsViewModel(get(), get(), get(), get()) }
     factory { PlayerViewModel(get(), get(), get(), get(), get()) }

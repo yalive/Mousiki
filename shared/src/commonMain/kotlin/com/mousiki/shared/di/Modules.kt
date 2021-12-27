@@ -28,6 +28,7 @@ import com.mousiki.shared.domain.usecase.song.GetFeaturedSongsUseCase
 import com.mousiki.shared.domain.usecase.song.GetPlaylistVideosUseCase
 import com.mousiki.shared.domain.usecase.song.GetPopularSongsUseCase
 import com.mousiki.shared.domain.usecase.song.GetYtbSongUseCase
+import com.mousiki.shared.ui.artist.ArtistListViewModel
 import com.mousiki.shared.ui.artist.songs.ArtistSongsViewModel
 import com.mousiki.shared.ui.home.HomeViewModel
 import com.mousiki.shared.ui.library.LibraryViewModel
@@ -180,4 +181,5 @@ val kmmViewModelsModule = module {
     factory { ArtistSongsViewModel(get(), get(), get()) }
     factory { MainSearchViewModel(get()) }
     factory { SearchYoutubeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    factory { ArtistListViewModel(get()) }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.cas.common.extensions.gone
 import com.cas.common.extensions.hideSoftKeyboard
@@ -23,6 +24,7 @@ import com.cas.musicplayer.ui.common.songs.BaseSongsFragment
 import com.cas.musicplayer.utils.DeviceInset
 import com.cas.musicplayer.utils.navigateSafeAction
 import com.cas.musicplayer.utils.viewBinding
+import com.mousiki.shared.ui.artist.ArtistListViewModel
 import com.mousiki.shared.ui.resource.Resource
 
 
@@ -39,7 +41,6 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
         adjustStatusBarWithTheme()
         setupRecyclerView()
         observeViewModel()
-        viewModel.loadAllArtists()
         binding.editSearch.doAfterTextChanged {
             filterArtists()
         }
@@ -77,7 +78,7 @@ class ArtistListFragment : BaseFragment<ArtistListViewModel>(
     }
 
     private fun observeViewModel() {
-        observe(viewModel.filteredArtists) { resource ->
+        observe(viewModel.artists.asLiveData()) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val adapter = binding.recyclerView.adapter as ArtistListAdapter
