@@ -61,6 +61,10 @@ class HomeViewModel(
         getHome()
     }
 
+    fun sayHi(){
+        println("Hi from KMM")
+    }
+
     private fun getHome() = scope.launch {
         appConfig.awaitActivation()
         if (appConfig.newHomeEnabled()) loadNewHome() else showOldHome()
