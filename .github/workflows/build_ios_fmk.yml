@@ -1,0 +1,57 @@
+on:
+  push:
+    tags:
+      - 'iOSFMK-*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v2
+        with:
+          path: main
+
+      - name: Checkout framwork repository
+        uses: actions/checkout@v2
+        with:
+          repository: yalive/MousikiSharedPod
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          path: iOS-framwork
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Build iOS framework
+        id: buildPackage
+        run: |
+          cd main
+          ./gradlew createXCFramework
+
+      - name: Copy swiftpackage to ios-framwork folder
+        run: |
+          cp -R ./main/shared/swiftpackage/shared.xcframework ./iOS-framwork/
+
+      - name: Prepare FMK version
+        id: get-version
+        run: |
+          version=$(echo ${{github.ref_name}} | cut -d- -f2)
+          echo "::set-output name=fmkVersion::$version"
+
+      - name: Check FMK version
+        run: |
+          echo 'Tag that generate build is ${{ github.ref_name }}'
+          echo 'FMK version ${{ steps.get-version.outputs.fmkVersion }} will be pushed'
+
+      - name: Push to iOS framwork repository
+        run: |
+          cd iOS-framwork
+          git add .
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "Updated from Github actions"
+          git tag ${{ steps.get-version.outputs.fmkVersion }}
+          git push origin main --tags
