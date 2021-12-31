@@ -61,8 +61,8 @@ class HomeViewModel(
         getHome()
     }
 
-    fun sayHi(){
-        println("Hi from KMM")
+    fun sayHey() {
+        println("Hey from KMM")
     }
 
     private fun getHome() = scope.launch {
