@@ -2,6 +2,14 @@
 import java.io.File
 
 val newVersion = args.first()
+val semVersion = newVersion.split(".")
+if (semVersion.count() != 3) {
+    error("Not using semantic versioning!!")
+}
+semVersion[0].toIntOrNull() ?: error("Major version must be integer")
+semVersion[1].toIntOrNull() ?: error("Minor version must be integer")
+semVersion[2].toIntOrNull() ?: error("Patch version must be integer")
+
 val input = File("./iOS-framwork/shared.podspec")
 val versionLine = input.readLines().map { it.trim() }
     .first { it.startsWith("spec.version") }
