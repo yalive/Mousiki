@@ -36,15 +36,19 @@ jobs:
           cp -R ./main/shared/swiftpackage/shared.xcframework ./iOS-framwork/
 
       - name: Prepare FMK version
-        id: get-version
+        id: get-tag
         run: |
-          version=$(echo ${{github.ref_name}} | cut -d- -f2)
-          echo "::set-output name=fmkVersion::$version"
+          tag=$(echo ${{github.ref_name}} | cut -d- -f2)
+          echo "::set-output name=tag::$tag"
+
+      - name: Update podspec file version
+        run: kotlin ./main/.github/scripts/PodspecUpdate.kts ${{ steps.get-tag.outputs.tag }}
+
 
       - name: Check FMK version
         run: |
           echo 'Tag that generate build is ${{ github.ref_name }}'
-          echo 'FMK version ${{ steps.get-version.outputs.fmkVersion }} will be pushed'
+          echo 'FMK version ${{ steps.get-tag.outputs.tag }} will be pushed'
 
       - name: Push to iOS framwork repository
         run: |
@@ -53,5 +57,5 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git commit -am "Updated from Github actions"
-          git tag ${{ steps.get-version.outputs.fmkVersion }}
+          git tag ${{ steps.get-tag.outputs.tag }}
           git push origin main --tags
