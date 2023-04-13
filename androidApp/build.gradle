@@ -1,0 +1,203 @@
+plugins {
+    id 'com.android.application'
+
+    id 'kotlin-android'
+
+    id 'kotlin-parcelize'
+
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+}
+
+android {
+
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'todo-read-from-env'
+            keyPassword 'todo-read-from-env'
+            storeFile file('../keystore/keystore.jks')
+            storePassword 'todo-read-from-env'
+        }
+    }
+
+    compileSdkVersion 30
+    defaultConfig {
+        applicationId "com.cas.musicplayer"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 66
+        versionName "4.2.8"
+        signingConfig signingConfigs.releaseConfig
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    flavorDimensions "default"
+
+    packagingOptions {
+        exclude 'META-INF/core_release.kotlin_module'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        disable 'ContentDescription'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.releaseConfig
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), "$project.rootDir/tools/rules-proguard.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    productFlavors {
+
+        prod {
+            resValue("string", "app_name", "Mousiki")
+        }
+
+        dev {
+            versionCode 97
+            versionName "1.97"
+            applicationIdSuffix ".dev"
+            resValue("string", "app_name", "Mousiki β")
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    def lifecycle_version = "2.2.0"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Android X
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'com.google.android.material:material:1.5.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+
+    // Activity && Fragment KTX
+    implementation 'androidx.activity:activity-ktx:1.3.1'
+    implementation 'androidx.fragment:fragment-ktx:1.4.0-alpha06'
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    // View pager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    // Palette
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    // Network
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:1.5.0'
+
+    // Serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
+
+    // Youtube Player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
+    // Circle imageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // Material dialogs
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
+
+    // Firebase
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+
+    implementation 'com.google.firebase:firebase-perf-ktx'
+
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    implementation 'com.google.firebase:firebase-config-ktx'
+
+    implementation 'com.google.firebase:firebase-ads:20.3.0'
+
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    // Slide to unlock button
+    implementation 'com.ncorti:slidetoact:0.8.0'
+
+    // Facebook and mediation adapter
+    implementation 'com.google.ads.mediation:unity:3.6.0.0'
+    implementation 'com.google.ads.mediation:facebook:6.5.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.5.0'
+    implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
+
+    // Shimmer effect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // Lootie
+    implementation 'com.airbnb.android:lottie:3.4.0'
+
+    // Tip
+    implementation 'com.github.sephiroth74:android-target-tooltip:2.0.3'
+
+    // Exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.1'
+
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    implementation("com.google.android.play:core-ktx:1.8.1")
+
+    // Modules
+    implementation project(path: ':common')
+    implementation project(path: ':shared')
+
+    implementation(Deps.koinCore)
+}
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
