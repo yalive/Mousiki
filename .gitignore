@@ -238,4 +238,4 @@ gradle-app.setting
 ### Gradle Patch ###
 **/build/
 
-# End of https://www.gitignore.io/api/git,gradle,kotlin,android,androidstudio
+# End of https://www.gitignore.io/api/git,gradle,kotlin,android,androidstudiokeystore/
