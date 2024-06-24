@@ -65,7 +65,8 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            viewModel.getSuggestions(newText)
+            //viewModel.getSuggestions(newText)
+            viewModel.search(newText.toString())
             return true
         }
     }
@@ -150,7 +151,7 @@ class SearchYoutubeFragment : BaseFragment<SearchYoutubeViewModel>(
         }
 
         observe(viewModel.searchSuggestions.asLiveData()) { suggestions ->
-            binding.suggestionsView.visible()
+            //binding.suggestionsView.visible()
             viewPager.gone()
             progressBar.gone()
             val adapter = binding.recyclerViewSuggestions.adapter as SearchSuggestionsAdapter

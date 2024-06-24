@@ -62,6 +62,7 @@ class PlayerViewModel(
             when (it) {
                 is LocalSong -> LocalSong(localSongsRepository.song(it.song.id))
                 is YtbTrack -> it
+                is AiTrack -> it
             }
         }
         if (recentTracks.isNotEmpty()) {

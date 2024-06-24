@@ -1,6 +1,7 @@
 package com.cas.musicplayer.player
 
 import android.util.Log
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.YtbTrack
 
@@ -27,6 +28,12 @@ class MultiPlayer(
                 localPlayer.pause()
                 ytbPlayer.loadVideo(videoId, startSeconds)
             }
+
+            is AiTrack -> {
+                currentPlayer = localPlayer
+                ytbPlayer.pause()
+                localPlayer.loadVideo(videoId, startSeconds)
+            }
         }
     }
 
@@ -43,6 +50,12 @@ class MultiPlayer(
                 currentPlayer = ytbPlayer
                 localPlayer.pause()
                 ytbPlayer.cueVideo(videoId, startSeconds)
+            }
+
+            is AiTrack -> {
+                currentPlayer = localPlayer
+                ytbPlayer.pause()
+                localPlayer.cueVideo(videoId, startSeconds)
             }
         }
     }

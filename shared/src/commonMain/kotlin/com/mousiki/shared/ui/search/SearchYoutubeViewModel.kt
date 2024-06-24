@@ -74,7 +74,7 @@ class SearchYoutubeViewModel(
     }
 
     fun loadMore(page: Int) = scope.launch {
-        if (searchKey == null || searchToken == null) {
+       /* if (searchKey == null || searchToken == null) {
             // Ignore if there is no token
             // util if data come from local data base
             return@launch
@@ -99,22 +99,22 @@ class SearchYoutubeViewModel(
                 trackList.addAll(newTracksPageWithAds)
                 _videos.value = Resource.Success(trackList)
             }
-        }
+        }*/
     }
 
     private suspend fun loadVideos(query: String) {
         _videos.value = Resource.Loading
         val result = searchSongs(query)
         _videos.value = result.map { searchResult ->
-            searchKey = searchResult.key
-            searchToken = searchResult.token
-            searchResult.tracks.toDisplayedVideoItems(playDelegate)
+            //searchKey = searchResult.key
+            //searchToken = searchResult.token
+            searchResult.toDisplayedVideoItems(playDelegate)
         }.asResource()
         populateAdsIn(_videos)
     }
 
     fun getSuggestions(keyword: String?) = scope.launch {
-        if (keyword == null || keyword.isEmpty() || keyword.length <= 1) {
+        if (keyword.isNullOrEmpty() || keyword.length <= 1) {
             showHistoricSearch()
             return@launch
         }

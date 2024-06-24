@@ -45,6 +45,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.models.toYoutubeDuration
@@ -145,7 +146,7 @@ class MainActivity : BaseActivity() {
             binding.bottomNavView.getOrCreateBadge(R.id.navVideo)
 
         observe(PlayerQueue) { currentTrack ->
-            if (currentTrack is LocalSong) return@observe
+            if (currentTrack is LocalSong || currentTrack is AiTrack) return@observe
             when {
                 SystemSettings.isPiPSupported() -> if (!SystemSettings.canEnterPiPMode()) {
                     if (PreferenceUtil.showPipDialog) {

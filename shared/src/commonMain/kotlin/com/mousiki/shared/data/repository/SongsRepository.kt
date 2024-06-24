@@ -5,6 +5,7 @@ import com.mousiki.shared.data.datasource.LocalSongsDataSource
 import com.mousiki.shared.data.datasource.RemoteSongsDataSource
 import com.mousiki.shared.data.db.FavouriteTrackEntity
 import com.mousiki.shared.data.db.toTrack
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
 import com.mousiki.shared.domain.result.Result
@@ -70,6 +71,8 @@ class SongsRepository(
     }
 
     suspend fun addSongToFavourite(track: Track) = withContext(Dispatchers.Default) {
+        val streamUrl = if (track is AiTrack) track.streamUrl else ""
+        val imageUrl = if (track is AiTrack) track.image else ""
         favouriteTracksDaoSql.insert(
             FavouriteTrackEntity(
                 id = 0,
@@ -78,7 +81,9 @@ class SongsRepository(
                 duration = track.duration,
                 type = track.type,
                 artist_name = track.artistName,
-                artist_id = track.artistId
+                artist_id = track.artistId,
+                stream_url = streamUrl,
+                image_url = imageUrl
             )
         )
         UserPrefs.saveFav(track.id, true)

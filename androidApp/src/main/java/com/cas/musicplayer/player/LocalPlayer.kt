@@ -2,6 +2,7 @@ package com.cas.musicplayer.player
 
 import android.content.ContentUris
 import android.content.Context
+import android.net.Uri
 import android.provider.MediaStore
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
@@ -16,7 +17,9 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.YtbTrack
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import kotlinx.coroutines.*
 
@@ -111,15 +114,20 @@ class LocalPlayer(
 
     private fun setCurrentPlayingTrack(videoId: String, playWhenReady: Boolean) {
         val track = PlayerQueue.getTrack(videoId) ?: return
-        if (track !is LocalSong) return
+        if (track is YtbTrack) return
         scope.launch {
-            val uri = ContentUris.withAppendedId(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                videoId.toLong()
-            )
 
-            exoPlayer.setMediaItem(MediaItem.fromUri(uri))
+            if (track is LocalSong) {
+                val uri = ContentUris.withAppendedId(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    videoId.toLong()
+                )
+                exoPlayer.setMediaItem(MediaItem.fromUri(uri))
+            } else if (track is AiTrack) {
+                exoPlayer.setMediaItem(MediaItem.fromUri(track.streamUrl))
+            }
             exoPlayer.playWhenReady = playWhenReady
+            exoPlayer.prepare()
         }
     }
 

@@ -4,16 +4,25 @@ import com.mousiki.shared.data.config.RemoteAppConfig
 import com.mousiki.shared.data.config.apiList
 import com.mousiki.shared.data.config.maxApi
 import com.mousiki.shared.data.config.retryCount
+import com.mousiki.shared.data.models.AiSearchRequest
+import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.HomeRS
+import com.mousiki.shared.data.models.SearchQuery
+import com.mousiki.shared.data.models.SearchResponse
+import com.mousiki.shared.data.models.SongsResponse
+import com.mousiki.shared.data.models.UdioUsersResponse
 import com.mousiki.shared.data.remote.api.MousikiApi
+import com.mousiki.shared.data.remote.api.UdioApi
 import com.mousiki.shared.data.remote.runner.NetworkRunner
 import com.mousiki.shared.domain.result.NO_RESULT
 import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.map
 import com.mousiki.shared.fs.ContentEncoding
 import com.mousiki.shared.fs.FileSystem
 import com.mousiki.shared.fs.PathComponent
 import com.mousiki.shared.fs.exists
 import com.mousiki.shared.preference.PreferencesHelper
+import com.mousiki.shared.utils.TextResource
 import com.mousiki.shared.utils.elapsedRealtime
 import com.mousiki.shared.utils.getCurrentLocale
 import com.mousiki.shared.utils.getOrEmpty
@@ -37,6 +46,83 @@ class HomeRepository(
     private val appConfig: RemoteAppConfig,
     private val mousikiApi: MousikiApi
 ) {
+
+    private suspend fun get(playlistId: String): Result<String> {
+        return networkRunner.executeNetworkCall {
+            mousikiApi.playlistSongsIds(UdioApi.PLAYLISTS, playlistId)
+        }.map {
+            it.playlists?.firstOrNull()?.songList?.joinToString(",").orEmpty()
+        }
+
+    }
+
+    suspend fun getSongs(playlistId: String): Result<SongsResponse> {
+        return when (val result = get(playlistId)) {
+            is Result.Error -> {
+                result
+            }
+
+            is Result.Success -> {
+                networkRunner.executeNetworkCall {
+                    mousikiApi.getSongs(result.data)
+                }
+            }
+        }
+    }
+
+    suspend fun getTrending(): Result<SearchResponse> {
+        val searchRequest = AiSearchRequest(
+            searchQuery = SearchQuery(sort = "cache_trending_score"),
+            pageSize = 24,
+            pageParam = 0
+        )
+        return try {
+            networkRunner.executeNetworkCall { mousikiApi.getSongsFromQuery(searchRequest) }
+        } catch (e: Exception) {
+            Result.Error(TextResource.fromText(e.toString()))
+        }
+    }
+
+    suspend fun getUsers(ids: List<String>): Result<UdioUsersResponse> {
+        val request = AiSearchRequest(
+            pageSize = 24,
+            pageParam = 0,
+            userIds = ids
+        )
+        return try {
+            networkRunner.executeNetworkCall { mousikiApi.getUsers(request) }
+        } catch (e: Exception) {
+            Result.Error(TextResource.fromText(e.toString()))
+        }
+    }
+
+    suspend fun getUserSongs(artist: Artist) : Result<SearchResponse> {
+        val searchRequest = AiSearchRequest(
+            searchQuery = SearchQuery(userId = artist.channelId),
+            pageSize = 24,
+            pageParam = 0
+        )
+        return try {
+            networkRunner.executeNetworkCall { mousikiApi.getSongsFromQuery(searchRequest) }
+        } catch (e: Exception) {
+            Result.Error(TextResource.fromText(e.toString()))
+        }
+    }
+
+    suspend fun getSearchSongs(query: String) : Result<SearchResponse> {
+        val searchRequest = AiSearchRequest(
+            searchQuery = SearchQuery(
+                searchTerm = query
+            ),
+            pageSize = 24,
+            pageParam = 0
+        )
+        return try {
+            networkRunner.executeNetworkCall { mousikiApi.getSongsFromQuery(searchRequest) }
+        } catch (e: Exception) {
+            Result.Error(TextResource.fromText(e.toString()))
+        }
+    }
 
     private val homeCachePath: PathComponent by lazy {
         val homeCache = FileSystem.contentsDirectory

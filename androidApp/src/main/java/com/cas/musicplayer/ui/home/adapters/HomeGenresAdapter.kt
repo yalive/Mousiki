@@ -64,13 +64,17 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
                 "US",
                 genreMusic.topTracksPlaylist
             )
+            val image = if (genreMusic.imageUrl.isEmpty()) {
+                AppImage.AppImageName(genreMusic.imageName)
+            } else {
+                AppImage.AppImageUrl(genreMusic.imageUrl)
+            }
+
             val bundle = bundleOf(
                 PlaylistSongsFragment.EXTRAS_PLAYLIST_ID to genreMusic.topTracksPlaylist,
                 PlaylistSongsFragment.EXTRAS_PLAYLIST_DESC to "",
                 EXTRAS_ARTIST to artist,
-                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to AppImage.AppImageName(
-                    genreMusic.imageName
-                )
+                BaseSongsFragment.EXTRAS_ID_FEATURED_IMAGE to image
             )
             itemView.findNavController()
                 .navigateSafeAction(R.id.action_homeFragment_to_playlistVideosFragment, bundle)
@@ -84,10 +88,17 @@ internal class HomeGenreViewHolder(val view: View) : SimpleBaseViewHolder<GenreM
     override fun bind(genreMusic: GenreMusic) {
         itemView.tag = genreMusic
         txtTitle.text = genreMusic.title
-        Picasso.get()
-            .load(genreMusic.getImageRes(itemView.context))
-            .fit()
-            .into(imgCategory)
+        if (genreMusic.imageUrl.isEmpty()) {
+            Picasso.get()
+                .load(genreMusic.getImageRes(itemView.context))
+                .fit()
+                .into(imgCategory)
+        } else {
+            Picasso.get()
+                .load(genreMusic.imageUrl)
+                .fit()
+                .into(imgCategory)
+        }
 
         try {
             val color = Color.parseColor(genreMusic.backgroundColor)

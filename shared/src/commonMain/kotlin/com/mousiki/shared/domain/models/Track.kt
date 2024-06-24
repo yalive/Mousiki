@@ -2,6 +2,10 @@ package com.mousiki.shared.domain.models
 
 import com.mousiki.shared.Parcelable
 import com.mousiki.shared.Parcelize
+import com.mousiki.shared.data.models.UdioSong
+import kotlin.math.round
+import kotlin.math.roundToLong
+import kotlin.time.times
 
 /**
  **********************************
@@ -21,11 +25,13 @@ sealed class Track : Parcelable {
         get() = when (this) {
             is LocalSong -> TYPE_LOCAL_AUDIO
             is YtbTrack -> TYPE_YTB
+            is AiTrack -> TYPE_AI_AUDIO
         }
 
     companion object {
         const val TYPE_YTB = "YTB"
         const val TYPE_LOCAL_AUDIO = "LOCAL_AUD"
+        const val TYPE_AI_AUDIO = "AIL_AUD"
     }
 }
 
@@ -39,6 +45,18 @@ data class LocalSong(val song: Song) : Track() {
     override val artistId: String = "${song.artistId}"
     val data: String get() = song.data
     val albumId: Long get() = song.albumId
+}
+
+@Parcelize
+data class AiTrack(val udioSong: UdioSong) : Track() {
+    override val id: String = udioSong.id
+    override val title: String = udioSong.title
+    override val duration: String = "${udioSong.duration}"
+    override val size: Long = 0
+    override val artistName: String = udioSong.artist
+    override val artistId: String = udioSong.userId
+    val image: String get() = udioSong.imageUrl
+    val streamUrl : String get() = udioSong.songPath
 }
 
 @Parcelize
@@ -72,6 +90,7 @@ fun Track.durationToSeconds(): Long {
             }
         }
         is YtbTrack -> this.durationToSeconds()
+        is AiTrack -> this.duration.toDouble().roundToLong()
     }
 }
 

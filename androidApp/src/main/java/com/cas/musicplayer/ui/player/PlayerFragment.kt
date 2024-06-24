@@ -413,7 +413,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun onVideoChanged(track: Track) {
-        val isLocalSong = track is LocalSong
+        val isLocalSong = track is LocalSong || track is AiTrack
         if (isLocalSong) {
             binding.poweredByValue.setText(R.string.app_name)
             binding.imgAudio.loadTrackImage(track, false)

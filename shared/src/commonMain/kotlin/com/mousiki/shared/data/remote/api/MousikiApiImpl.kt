@@ -24,7 +24,7 @@ class MousikiApiImpl(
         }
 
         install(Logging) {
-            this.logger = object : io.ktor.client.features.logging.Logger {
+            this.logger = object : Logger {
                 override fun log(message: String) {
                     println("Network_mousiki: $message")
                 }
@@ -35,6 +35,10 @@ class MousikiApiImpl(
 
     private val youtubeApi by lazy {
         YoutubeApiImpl(client, preferencesHelper)
+    }
+
+    private val udioApi by lazy {
+        UdioApiImpl(client)
     }
 
     override suspend fun getHome(url: String, gl: String): HomeRS {
@@ -123,5 +127,21 @@ class MousikiApiImpl(
         maxResults: Int
     ): SearchResults {
         return youtubeApi.searchItemIdsByQuery(query, type, maxResults)
+    }
+
+    override suspend fun playlistSongsIds(url: String, playListId: String): UdioPlaylistResponse {
+        return udioApi.playlistSongsIds(url, playListId)
+    }
+
+    override suspend fun getSongs(ids: String): SongsResponse {
+        return udioApi.getSongs(ids)
+    }
+
+    override suspend fun getSongsFromQuery(request: AiSearchRequest): SearchResponse {
+        return udioApi.getSongsFromQuery(request)
+    }
+
+    override suspend fun getUsers(request: AiSearchRequest): UdioUsersResponse {
+        return udioApi.getUsers(request)
     }
 }

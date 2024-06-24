@@ -1,8 +1,9 @@
 package com.mousiki.shared.domain.usecase.song
 
-import com.mousiki.shared.data.repository.YtbPlaylistRepository
-import com.mousiki.shared.domain.models.YtbTrack
+import com.mousiki.shared.data.repository.HomeRepository
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.result.Result
+import com.mousiki.shared.domain.result.map
 
 /**
  ***************************************
@@ -10,9 +11,15 @@ import com.mousiki.shared.domain.result.Result
  ***************************************
  */
 class GetPlaylistVideosUseCase(
-    private val repositoryYtb: YtbPlaylistRepository
+    //private val repositoryYtb: YtbPlaylistRepository
+    private val homeRepository: HomeRepository
 ) {
-    suspend operator fun invoke(playlistId: String): Result<List<YtbTrack>> {
-        return repositoryYtb.playlistVideos(playlistId)
+    suspend operator fun invoke(playlistId: String): Result<List<AiTrack>> {
+        return homeRepository.getSongs(playlistId)
+            .map {
+                it.songs.map { song ->
+                    AiTrack(song)
+                }
+            }
     }
 }

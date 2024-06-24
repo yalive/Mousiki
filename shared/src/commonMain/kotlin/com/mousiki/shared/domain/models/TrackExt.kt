@@ -1,9 +1,12 @@
 package com.mousiki.shared.domain.models
 
+import kotlin.math.roundToLong
+
 val Track.imgUrlDef0: String
     get() = when (this) {
         is LocalSong -> albumImage
         is YtbTrack -> this.imgUrlDef0
+        is AiTrack -> this.image
     }
 
 
@@ -25,12 +28,14 @@ val Track.imgUrlDefault: String
     get() = when (this) {
         is LocalSong -> albumImage
         is YtbTrack -> this.imgUrlDefault
+        is AiTrack -> this.image
     }
 
 val Track.imgUrl: String
     get() = when (this) {
         is LocalSong -> albumImage
         is YtbTrack -> this.imgUrl
+        is AiTrack -> this.image
     }
 
 val Track.durationFormatted: String
@@ -47,6 +52,17 @@ val Track.durationFormatted: String
             }
         }
         is YtbTrack -> this.durationFormatted
+        is AiTrack -> {
+            val milliseconds = (duration.toDouble()*1000).roundToLong()
+            val seconds = (milliseconds / 1000).toInt() % 60
+            val minutes = (milliseconds / (1000 * 60) % 60).toInt()
+            val hours = (milliseconds / (1000 * 60 * 60) % 24).toInt()
+            if (hours == 0) {
+                "${minutes.twoDigits()}:${seconds.twoDigits()}"
+            } else {
+                "$hours:${minutes.twoDigits()}:${seconds.twoDigits()}"
+            }
+        }
     }
 
 val YtbTrack.durationFormatted: String

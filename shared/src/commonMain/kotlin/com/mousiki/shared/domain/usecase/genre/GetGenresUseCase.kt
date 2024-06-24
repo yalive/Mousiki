@@ -12,6 +12,6 @@ class GetGenresUseCase(
     private val repository: GenresRepository
 ) {
     suspend operator fun invoke(): List<GenreMusic> {
-        return repository.loadGenres()
+        return repository.loadAiGenres()
     }
 }

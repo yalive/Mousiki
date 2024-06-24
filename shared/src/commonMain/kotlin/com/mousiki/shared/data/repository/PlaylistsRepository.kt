@@ -4,6 +4,7 @@ import com.cas.musicplayer.MousikiDb
 import com.mousiki.shared.data.db.*
 import com.mousiki.shared.db.Custom_playlist_track
 import com.mousiki.shared.db.Db_playlist
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.imgUrlDef0
@@ -89,6 +90,8 @@ class PlaylistsRepository(
     suspend fun addTrackToCustomPlaylist(
         track: Track, playlistId: Long
     ) = withContext(Dispatchers.Default) {
+        val streamUrl = if (track is AiTrack) track.streamUrl else ""
+        val imageUrl = if (track is AiTrack) track.image else ""
         customPlaylistTrackDao.insert(
             CustomPlaylistTrackEntity(
                 id = 0,
@@ -98,7 +101,9 @@ class PlaylistsRepository(
                 playlist_id = playlistId,
                 type = track.type,
                 artist_name = track.artistName,
-                artist_id = track.artistId
+                artist_id = track.artistId,
+                stream_url = streamUrl,
+                image_url = imageUrl
             )
         )
     }
@@ -133,7 +138,7 @@ class PlaylistsRepository(
     suspend fun getCustomPlaylistFirstYtbTrack(playlistId: Long): Track? =
         withContext(Dispatchers.Default) {
             return@withContext customPlaylistTrackDao
-                .playlistFirstTrack(playlist_id = playlistId, type = Track.TYPE_YTB)
+                .playlistFirstTrack(playlist_id = playlistId, type = Track.TYPE_AI_AUDIO)
                 .executeAsOneOrNull()
                 ?.toTrack()
         }

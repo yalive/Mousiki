@@ -1,4 +1,4 @@
 include ':shared'
 include ':androidApp'
 include ':common'
-enableFeaturePreview('GRADLE_METADATA')
+//enableFeaturePreview('GRADLE_METADATA')

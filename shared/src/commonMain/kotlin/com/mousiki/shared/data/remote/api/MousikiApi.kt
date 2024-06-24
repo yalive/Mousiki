@@ -5,7 +5,7 @@ import com.mousiki.shared.data.models.HomeRS
 import com.mousiki.shared.data.models.MousikiSearchApiRS
 import com.mousiki.shared.data.models.MousikiSearchApiResult
 
-interface MousikiApi : YoutubeApi {
+interface MousikiApi : YoutubeApi, UdioApi {
 
     suspend fun getHome(url: String, gl: String): HomeRS
 

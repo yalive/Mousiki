@@ -24,6 +24,7 @@ import com.cas.musicplayer.utils.*
 import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Playlist
 import com.mousiki.shared.domain.models.Track

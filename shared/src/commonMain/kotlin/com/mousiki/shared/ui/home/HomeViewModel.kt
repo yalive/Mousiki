@@ -3,6 +3,7 @@ package com.mousiki.shared.ui.home
 import com.mousiki.shared.ads.FacebookAdsDelegate
 import com.mousiki.shared.ads.GetListAdsDelegate
 import com.mousiki.shared.data.config.RemoteAppConfig
+import com.mousiki.shared.data.models.Artist
 import com.mousiki.shared.data.models.toTrack
 import com.mousiki.shared.data.repository.HomeRepository
 import com.mousiki.shared.data.repository.LocalTrackMapper
@@ -25,7 +26,12 @@ import com.mousiki.shared.ui.home.model.HomeItem
 import com.mousiki.shared.ui.home.model.MousikiTopBarItem
 import com.mousiki.shared.ui.resource.Resource
 import com.mousiki.shared.ui.resource.asResource
-import com.mousiki.shared.utils.*
+import com.mousiki.shared.utils.AnalyticsApi
+import com.mousiki.shared.utils.CommonFlow
+import com.mousiki.shared.utils.ConnectivityChecker
+import com.mousiki.shared.utils.asCommonFlow
+import com.mousiki.shared.utils.getCurrentLocale
+import com.mousiki.shared.utils.logEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -129,6 +135,7 @@ class HomeViewModel(
                 observeFavourites()
                 prepareAds()
             }
+
             is Result.Error -> showOldHome()
         }
     }
@@ -177,8 +184,12 @@ class HomeViewModel(
         updateItem(HomeItem.PopularsItem(Resource.Loading), where = { it is HomeItem.PopularsItem })
         val result = getNewReleasedSongs(max = 15)
         val resource = result.map { tracks ->
-            tracks.map { it.toDisplayedVideoItem() }
+            tracks.map {
+                it.toDisplayedVideoItem()
+            }
         }.asResource()
+
+        if (resource is Resource.Success) loadUsers(resource.data.map {it.track.artistId})
         updateItem(HomeItem.PopularsItem(resource), where = { it is HomeItem.PopularsItem })
         if (result is Result.Error) {
             analytics.logEvent(
@@ -196,11 +207,30 @@ class HomeViewModel(
         updateItem(genreItem, where = { it is HomeItem.GenreItem })
     }
 
+    private fun loadUsers(ids: List<String>) = scope.launch {
+        val result = homeRepository.getUsers(ids)
+            .map { response ->
+                response.data
+                    .filter { it.avatarUrl != null && it.username != null}
+                    .map { user ->
+                        Artist(
+                            name = (user.username ?: user.fullName).toString(),
+                            channelId = user.id,
+                            urlImage = user.avatarUrl.toString()
+                        )
+                    }
+            }
+        if (result is Result.Success) {
+            val artistsItem = HomeItem.ArtistItem(result.data)
+            updateItem(artistsItem, where = { it is HomeItem.ArtistItem })
+        }
+    }
+
     private fun loadArtists() = scope.launch {
         val result = getCountryArtists()
         if (result is Result.Success) {
             val artistsItem = HomeItem.ArtistItem(result.data)
-            updateItem(artistsItem, where = { it is HomeItem.ArtistItem })
+            //updateItem(artistsItem, where = { it is HomeItem.ArtistItem })
         }
     }
 

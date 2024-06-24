@@ -282,6 +282,99 @@ class GenresRepository {
         }
     }
 
+    fun loadAiGenres(): List<GenreMusic> {
+        return mutableListOf<GenreMusic>().apply {
+            add(
+                GenreMusic(
+                    title = "Country",
+                    imageName = "",
+                    channelId = "UCE80FOXpJydkkMo-BYoJdEg",
+                    topTracksPlaylist = "935deb12-dc32-4005-a1fe-3c00c284ca52",
+                    isMood = false,
+                    backgroundColor = "#8C67AC",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/273352b9-ff83-4bf6-ed30-0997689c0000/public"
+                )
+            )
+            add(
+                GenreMusic(
+                    title = "Universal Groove",
+                    imageName = "",
+                    channelId = "UCUnSTiCHiHgZA9NQUG6lZkQ",
+                    topTracksPlaylist = "9f56646d-110c-40f5-89f1-5a556ece8fd9",
+                    isMood = false,
+                    backgroundColor = "#B95E17",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/7290512a-cef1-4b99-5ab6-6624e0e32500/public"
+                )
+            )
+            add(
+                GenreMusic(
+                    title = "Jazz",
+                    imageName = "",
+                    channelId = "UCUnSTiCHiHgZA9NQUG6lZkQ",
+                    topTracksPlaylist = "89f0089f-1bfe-4713-8070-5830a6161afb",
+                    isMood = false,
+                    backgroundColor = "#E7125C",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/ebe39ad5-bfaa-4b7f-6c69-9e6c1ee78700/public"
+                )
+            )
+            add(
+                GenreMusic(
+                    title = "Electronic",
+                    imageName = "",
+                    channelId = "UCHtUkBSmt4d92XP8q17JC3w",
+                    topTracksPlaylist = "8a1ca2e1-0c2a-473b-9ece-766c41a6ab25",
+                    isMood = false,
+                    backgroundColor = "#E515E5",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/00a241a5-1eb9-48b4-a0b3-3bca01ed6100/public"
+                )
+            )
+            add(
+                GenreMusic(
+                    title = "Metal",
+                    imageName = "",
+                    channelId = "UCh3PEQmV2_1D69MCcx-PArg",
+                    topTracksPlaylist = "75e3a66c-3900-4544-a015-e818a9ae3edf",
+                    isMood = false,
+                    backgroundColor = "#2D46BA",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/791ae212-4aa2-424c-494e-a28d6604dc00/public"
+                )
+            )
+            add(
+                GenreMusic(
+                    title = "Rock",
+                    imageName = "",
+                    channelId = "UCSkJDgBGvNOEXSQl4YNjDtQ",
+                    topTracksPlaylist = "d033aa6e-655e-45d0-8138-dc9a0dc6b3a6",
+                    isMood = false,
+                    backgroundColor = "#B95E17",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/7a479ab0-572c-449e-a30c-0fed00dc8b00/public"
+                )
+            )
+            add(
+                GenreMusic(
+                    title = "Hip-Hop",
+                    imageName = "",
+                    channelId = "UCsEonk9fs_9jmtw9PwER9yg",
+                    topTracksPlaylist = "5cf3221a-8f5b-4508-9e2b-b65bbdb4ab9d",
+                    isMood = false,
+                    backgroundColor = "#158A14",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/7b1de7e7-49e3-4a2f-4e94-39532265d000/public"
+                )
+            )
+            add(
+                GenreMusic(
+                    title = "Folk",
+                    imageName = "",
+                    channelId = "UCCIPrrom6DIftcrInjeMvsQ",
+                    topTracksPlaylist = "d9aa8da6-881a-4899-ac8a-92f0e4b63b36",
+                    isMood = false,
+                    backgroundColor = "#8C67AC",
+                    imageUrl = "https://imagedelivery.net/C9yUr1FL21Q6JwfYYh2ozQ/31f1f4b5-b316-4e16-f6a1-76eb9fc46600/public"
+                )
+            )
+        }
+    }
+
     fun isTopTrackOfGenre(playlistId: String): Boolean {
         return loadGenres().firstOrNull {
             it.topTracksPlaylist == playlistId

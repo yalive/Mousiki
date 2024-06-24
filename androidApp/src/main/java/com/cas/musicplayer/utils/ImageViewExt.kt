@@ -58,6 +58,7 @@ fun ImageView.loadTrackImage(
             Uri.fromFile(file).toString()
         }
         is YtbTrack -> UserPrefs.getTrackImageUrl(track)
+        is AiTrack -> UserPrefs.getTrackImageUrl(track)
     }
     if (url.isNotEmpty()) {
         Picasso.get().load(url)

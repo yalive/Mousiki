@@ -111,7 +111,7 @@ class LocalSongsViewModel(
             if (!file.exists()) {
                 val uri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                    song.id
+                    song.id.toLong()
                 )
                 val byteArray = Utils.getSongThumbnail(uri)
                 if (byteArray != null) {

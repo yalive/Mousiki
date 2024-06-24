@@ -17,7 +17,9 @@ import com.cas.musicplayer.player.TAG_PLAYER
 import com.cas.musicplayer.player.extensions.isPlaying
 import com.cas.musicplayer.ui.MainActivity
 import com.cas.musicplayer.utils.*
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.LocalSong
+import com.mousiki.shared.domain.models.YtbTrack
 
 /**
  ***************************************
@@ -42,7 +44,7 @@ class LockScreenReceiver(
 
     override fun onReceive(context: Context, intent: Intent) {
         val currentTrack = PlayerQueue.value
-        if (currentTrack is LocalSong) return
+        if (currentTrack is LocalSong || currentTrack is AiTrack) return
         if (intent.action == Intent.ACTION_SCREEN_OFF) {
             Log.d(TAG_PLAYER, "onReceive screen off")
             val isPlaying = mediaController.playbackState?.isPlaying == true

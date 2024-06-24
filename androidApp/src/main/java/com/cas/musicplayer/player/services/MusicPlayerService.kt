@@ -39,6 +39,7 @@ import com.cas.musicplayer.player.receiver.FavouriteReceiver
 import com.cas.musicplayer.player.receiver.LockScreenReceiver
 import com.cas.musicplayer.utils.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Track
 import com.mousiki.shared.domain.models.YtbTrack
@@ -116,7 +117,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
         observeForegroundToggle()
 
         PlayerQueue.observe(this) { currentTrack ->
-            floatingPlayerView.isInvisible = currentTrack is LocalSong
+            floatingPlayerView.isInvisible = currentTrack is LocalSong || currentTrack is AiTrack
         }
     }
 
@@ -326,6 +327,7 @@ class MusicPlayerService : LifecycleService(), SleepTimer by MusicSleepTimer() {
                 Uri.fromFile(file).toString()
             }
             is YtbTrack -> currentTrack.imgUrl
+            is AiTrack -> currentTrack.imgUrl
         }
         val loadBitmap = Picasso.get().getBitmap(imgUrl, 320)
         metadataBuilder.albumArt = loadBitmap

@@ -6,6 +6,7 @@ import com.mousiki.shared.data.db.toLongOrZero
 import com.mousiki.shared.data.db.toTrack
 import com.mousiki.shared.db.DbRecentPlayedVideo
 import com.mousiki.shared.db.Db_recentTrack
+import com.mousiki.shared.domain.models.AiTrack
 import com.mousiki.shared.domain.models.LocalSong
 import com.mousiki.shared.domain.models.Song
 import com.mousiki.shared.domain.models.Track
@@ -32,6 +33,8 @@ class StatisticsRepository(
     suspend fun addTrackToRecent(track: Track) {
         val recentTrack = recentTracksDao.getByTrackId(track.id).executeAsOneOrNull()
         val playCount = if (recentTrack != null) recentTrack.play_count + 1 else 1
+        val streamUrl = if (track is AiTrack) track.streamUrl else ""
+        val imageUrl = if (track is AiTrack) track.image else ""
         recentTracksDao.insert(
             RecentPlayedTrack(
                 id = 0,
@@ -41,7 +44,9 @@ class StatisticsRepository(
                 play_count = playCount,
                 type = track.type,
                 artist_name = track.artistName,
-                artist_id = track.artistId
+                artist_id = track.artistId,
+                stream_url = streamUrl,
+                image_url = imageUrl
             )
         )
     }

@@ -47,6 +47,11 @@ class ArtistSongsViewModel(
         populateAdsIn(_tracks)
     }
 
+    private fun loadUserTracks(artist: Artist) = scope.launch {
+        _tracks.value = Resource.Loading
+
+    }
+
     fun onClickTrack(track: Track) = scope.launch {
         playTrackFromQueue(track, _tracks.songList())
     }
